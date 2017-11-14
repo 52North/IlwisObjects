@@ -1,0 +1,86 @@
+#ifndef ILWISERRORHANDLER_H
+#define ILWISERRORHANDLER_H
+
+#include <QQmlListProperty>
+#include <QVariant>
+#include <QColor>
+#include "kernel.h"
+#include "issuelogger.h"
+#include "juliantime.h"
+#include "ilwiscoreui_global.h"
+
+#include <QObject>
+
+namespace Ilwis {
+	namespace Ui {
+
+		class ILWISCOREUISHARED_EXPORT MessageModel : public QObject {
+			Q_OBJECT
+
+				Q_PROPERTY(QString time READ time CONSTANT)
+				Q_PROPERTY(QString shorttime READ shorttime CONSTANT)
+				Q_PROPERTY(QString message READ message CONSTANT)
+				Q_PROPERTY(QString type READ type CONSTANT)
+				Q_PROPERTY(quint64 id READ id CONSTANT)
+				Q_PROPERTY(QColor color READ color CONSTANT)
+
+		public:
+			MessageModel();
+			explicit MessageModel(const Ilwis::IssueObject& issue, QObject *parent);
+			QString time() const;
+			QString shorttime() const;
+			QString type() const;
+			QString message() const;
+			quint64 id();
+			QColor color() const;
+			QString messageIcon() const;
+			void resetColor();
+
+		private:
+			Ilwis::IssueObject _message;
+			bool _isReset = false;
+		};
+
+		typedef QQmlListProperty<MessageModel> QMLMessageList;
+
+		class ILWISCOREUISHARED_EXPORT UserMessageHandler : public QObject
+		{
+			Q_OBJECT
+
+				Q_PROPERTY(QList<QObject *> messages READ messages NOTIFY messageChanged)
+				Q_PROPERTY(QQmlListProperty<Ilwis::Ui::MessageModel> commands READ commands NOTIFY commandsChanged)
+				Q_PROPERTY(QString results READ results NOTIFY resultsChanged)
+				Q_PROPERTY(QString messageIcon READ messageIcon NOTIFY messageIconChanged)
+
+		public:
+			explicit UserMessageHandler(QObject *parent = 0);
+
+			QList<QObject *> messages();
+			QQmlListProperty<MessageModel> commands();
+			QString results();
+			QString messageIcon() const;
+			Q_INVOKABLE void resetColor(int index);
+			Q_INVOKABLE void clearResults();
+
+		signals:
+			void messageChanged();
+			void messageIconChanged();
+			void resultsChanged();
+			void commandsChanged();
+
+			public slots:
+			void addMessage(const Ilwis::IssueObject &issue);
+
+		private:
+			QList<QObject *> _messages;
+			QList<MessageModel *> _commands;
+			QList<MessageModel *> _results;
+		};
+	}
+}
+
+Q_DECLARE_METATYPE(Ilwis::Ui::QMLMessageList)
+
+
+
+#endif // ERRORHANDLER_H
