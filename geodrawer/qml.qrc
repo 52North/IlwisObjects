@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/draw.js</file>
+        <file>qml/SpatialView.qml</file>
+        <file>qml/three.js</file>
+    </qresource>
+</RCC>

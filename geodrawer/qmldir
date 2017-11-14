@@ -1,0 +1,4 @@
+module LayersView
+SpatialView 1.0 qml/SpatialView.qml
+plugin LayersView 1.0
+
