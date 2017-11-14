@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{40B79BD5-37C4-3123-B3F5-08A454072CF8}</ProjectGuid>
+    <RootNamespace>proj4impl</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolSet>v140</PlatformToolSet>
+    <OutputDirectory>..\libraries\win32release\extensions\proj4impl\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>proj4impl</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolSet>v140</PlatformToolSet>
+    <OutputDirectory>..\libraries\win32debug\extensions\proj4impl\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>proj4impl</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\libraries\win32release\extensions\proj4impl\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">proj4impl</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PostBuildEventUseInBuild>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libraries\win32debug\extensions\proj4impl\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\proj4impl\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">proj4impl</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external;D:/Projects/Ilwis/ilwismsvc64/IlwisCore/../external/geos;projectionimplproj4;projectionimplproj4\proj4\src;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4100;4267;4305;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;PROJECTIONIMPLPROJ4_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_DEBUG;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ilwiscore.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\Projects\Ilwis\ilwismsvc64\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\proj4impl.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;PROJECTIONIMPLPROJ4_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\proj4impl</Command>
+      <Message>Copy proj4impl.dll to ..\output\win32release\bin\extensions\proj4impl</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;../external/geos;projectionimplproj4;projectionimplproj4\proj4\src;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4100;4267;4305;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;PROJECTIONIMPLPROJ4_LIBRARY;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>D:\Projects\Ilwis\ilwismsvc64\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <OutputFile>$(OutDir)\proj4impl.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <Profile>true</Profile>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;PROJECTIONIMPLPROJ4_LIBRARY;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\proj4impl</Command>
+      <Message>Copy proj4impl.dll to ..\output\win32debug\bin\extensions\proj4impl</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\Debug\moc_projectionmodule.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_projectionmodule.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_aea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_aeqd.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_airy.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_aitoff.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_august.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_bacon.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_bipc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_boggs.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_bonne.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_cass.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_cc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_cea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_chamb.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_collg.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_crast.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_denoy.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eck1.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eck2.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eck3.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eck4.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eck5.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eqc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_eqdc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_fahey.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_fouc_s.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_gall.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_geos.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_gins8.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_gn_sinu.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_gnom.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_goode.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_gstmerc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_hammer.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_hatano.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_healpix.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_igh.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_imw_p.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_isea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_krovak.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_labrd.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_laea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_lagrng.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_larr.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_lask.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_lcc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_lcca.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_loxim.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_lsat.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_mbt_fps.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_mbtfpp.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_mbtfpq.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_merc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_mill.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_mod_ster.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_moll.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_natearth.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_nell.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_nell_h.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_nocol.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_nsper.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_nzmg.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_ob_tran.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_ocea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_oea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_omerc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_ortho.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_poly.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_putp2.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_putp3.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_putp4p.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_putp5.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_putp6.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_robin.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_rpoly.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_sconics.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_somerc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_stere.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_sterea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_sts.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_tcc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_tcea.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_tmerc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_tpeqd.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_urm5.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_urmfps.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_vandg.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_vandg2.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_vandg4.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_wag2.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_wag3.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_wag7.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_wink1.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\PJ_wink2.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\aasincos.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\adjlon.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\bch2bps.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\bchgen.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\biveval.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\cs2cs.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\dmstor.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\emess.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\gen_cheb.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\geocent.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\geod_for.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\geod_inv.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\geod_set.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\hypot.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\mk_cheby.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\nad_cvt.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\nad_init.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\nad_intr.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\p_series.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_apply_gridshift.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_apply_vgridshift.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_auth.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_ctx.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_datum_set.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_datums.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_deriv.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_ell_set.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_ellps.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_errno.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_factors.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_fwd.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_gauss.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_geocent.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_gridinfo.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_gridlist.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_init.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_initcache.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_inv.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_latlong.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_list.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_log.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_malloc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_mlfn.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_msfn.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_mutex.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_open_lib.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_param.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_phi2.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_pr_list.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_qsfn.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_release.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_strerrno.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_transform.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_tsfn.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_units.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_utils.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\pj_zpoly1.c" />
+    <ClCompile Include="projectionimplproj4\prjimplfactoryproj4.cpp" />
+    <ClCompile Include="projectionimplproj4\prjimplproj4.cpp" />
+    <ClCompile Include="projectionimplproj4\proj4\src\proj_etmerc.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\proj_mdist.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\proj_rouss.c" />
+    <ClCompile Include="projectionimplproj4\projectionmodule.cpp" />
+    <ClCompile Include="projectionimplproj4\proj4\src\rtodms.c" />
+    <ClCompile Include="projectionimplproj4\proj4\src\vector1.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="projectionimplproj4\proj4\src\emess.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\geocent.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\geodesic.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\nad_list.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\org_proj4_PJ.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\org_proj4_Projections.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\pj_list.h" />
+    <ClInclude Include="projectionimplproj4\prjimplproj4.h" />
+    <ClInclude Include="projectionimplproj4\prjmplfactoryproj4.h" />
+    <ClInclude Include="projectionimplproj4\proj4\src\proj_api.h" />
+    <CustomBuild Include="projectionimplproj4\projectionmodule.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DPROJECTIONIMPLPROJ4_LIBRARY -DQT_NO_DEBUG -DQT_PLUGIN -DQT_GUI_LIB -DQT_SQL_LIB -DQT_DEBUG -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-ID:\Projects\Ilwis\ilwismsvc64\IlwisCore\..\external\geos" "-I.\projectionimplproj4" "-I.\projectionimplproj4\proj4\src" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing projectionmodule.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DPROJECTIONIMPLPROJ4_LIBRARY -DQT_PLUGIN -DQT_GUI_LIB -DQT_SQL_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\external\geos" "-I.\projectionimplproj4" "-I.\projectionimplproj4\proj4\src" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing projectionmodule.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="projectionimplproj4\proj4\src\projects.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="qtmsvc64" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

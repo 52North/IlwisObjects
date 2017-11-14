@@ -1,0 +1,7 @@
+*.user
+*.opendb
+*.db
+/x64/
+/Debug/
+/GeneratedFiles/
+/Release/

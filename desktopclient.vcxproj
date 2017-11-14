@@ -1,0 +1,898 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9AB0FA31-AC92-3AD3-9579-C8DD6541516B}</ProjectGuid>
+    <RootNamespace>ilwisclient</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolSet>v140</PlatformToolSet>
+    <OutputDirectory>..\output\win32release\bin\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>ilwisclient</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolSet>v140</PlatformToolSet>
+    <OutputDirectory>..\output\win32debug\bin\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>ilwisclient</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\output\win32release\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\desktopclient</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ilwisclient</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\output\win32debug\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\ilwisclient\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ilwisclient</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;core;ilwiscoreui;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core\ilwisobjects\representation;core\catalog;core\geos\include;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui\models\workflow;ilwiscoreui/models/coveragedisplay;..\external;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4100;4267;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(QTDIR)\lib\qtmain.lib;shell32.lib;ilwiscore.lib;ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\utils\postgresql\pgsql\lib;C:\utils\my_sql\my_sql\lib;$(QTDIR)\lib;D:\Projects\Ilwis\ilwismsvc64\libraries\win32release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\ilwisclient.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;core;ilwiscoreui;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core\ilwisobjects\representation;core\catalog;core\geos\include;core\ilwisobjects\domain;ilwiscoreui;ilwiscoreui\models;ilwiscoreui\models\workflow;ilwiscoreui/models/coveragedisplay;..\external;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4100;4267;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(QTDIR)\lib\qtmaind.lib;shell32.lib;..\libraries\win32debug\ilwiscore.lib;..\libraries\win32debug\ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quickd.lib;$(QTDIR)\lib\Qt5OpenGLd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Qmld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\ilwisclient.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>xcopy  desktopclient\qml ..\output\win32debug\bin\qml /S /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Debug\moc_applicationformexpressionparser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ilwistype.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_keyfilter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_startilwis.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_workflowmetadataformbuilder.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="desktopclient\applicationformexpressionparser.cpp" />
+    <ClCompile Include="desktopclient\ilwistype.cpp" />
+    <ClCompile Include="desktopclient\keyfilter.cpp" />
+    <ClCompile Include="desktopclient\main.cpp" />
+    <ClCompile Include="desktopclient\startilwis.cpp" />
+    <ClCompile Include="desktopclient\workflowmetadataformbuilder.cpp" />
+    <ClCompile Include="Release\moc_workflowmetadataformbuilder.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="desktopclient\applicationformexpressionparser.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DNDEBUG  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing applicationformexpressionparser.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing applicationformexpressionparser.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\buildnumber.h" />
+    <CustomBuild Include="desktopclient\ilwistype.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DNDEBUG  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing ilwistype.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing ilwistype.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="desktopclient\keyfilter.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DNDEBUG  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing keyfilter.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing keyfilter.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="desktopclient\startilwis.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DNDEBUG  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing startilwis.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing startilwis.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="desktopclient\workflowmetadataformbuilder.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DNDEBUG  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing workflowmetadataformbuilder.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\geos\include" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\models\workflow" "-I.\ilwiscoreui\models\coveragedisplay" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing workflowmetadataformbuilder.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Release\moc_applicationformexpressionparser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ilwistype.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_keyfilter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_startilwis.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="desktopclient\qml\CheckBoxStyle1.qml" />
+    <None Include="desktopclient\qml\CommandLineArea.qml" />
+    <None Include="desktopclient\qml\controls\ActionButtonH.qml" />
+    <None Include="desktopclient\qml\controls\ActionButtonV.qml" />
+    <None Include="desktopclient\qml\controls\CatalogTab.qml" />
+    <None Include="desktopclient\qml\controls\CollapsiblePanel.qml" />
+    <None Include="desktopclient\qml\controls\ColorList.qml" />
+    <None Include="desktopclient\qml\controls\ColorPicker.qml" />
+    <None Include="desktopclient\qml\controls\ColorPicker2.qml" />
+    <None Include="desktopclient\qml\controls\ComboxLabelPair.qml" />
+    <None Include="desktopclient\qml\controls\CommandLine.qml" />
+    <None Include="desktopclient\qml\controls\ConsoleLineDelegate.qml" />
+    <None Include="desktopclient\qml\controls\CoordinateSystemBounds.qml" />
+    <None Include="desktopclient\qml\controls\CreateProjection.qml" />
+    <None Include="desktopclient\qml\controls\DropableItem.qml" />
+    <None Include="desktopclient\qml\controls\DropListLablePair.qml" />
+    <None Include="desktopclient\qml\controls\DummySpatial.qml" />
+    <None Include="desktopclient\qml\controls\EllipsoidSelector.qml" />
+    <None Include="desktopclient\qml\controls\ExpandableText.qml" />
+    <None Include="desktopclient\qml\controls\FilteredTextEditLabelPair.qml" />
+    <None Include="desktopclient\qml\controls\FlatButton.qml" />
+    <None Include="desktopclient\qml\controls\FloatingRectangle.qml" />
+    <None Include="desktopclient\qml\controls\FolderSelection.qml" />
+    <None Include="desktopclient\qml\controls\FormatsComboBox.qml" />
+    <None Include="desktopclient\qml\controls\HScrollBar.qml" />
+    <None Include="desktopclient\qml\controls\IlwisComboBox.qml" />
+    <None Include="desktopclient\qml\controls\LabeledCheckBox.qml" />
+    <None Include="desktopclient\qml\controls\LatLonCoordinate.qml" />
+    <None Include="desktopclient\qml\controls\LatLonEnvelopeLine.qml" />
+    <None Include="desktopclient\qml\controls\LayerExtentMouseActions.qml" />
+    <None Include="desktopclient\qml\controls\LayerExtentsToolbar.qml" />
+    <None Include="desktopclient\qml\controls\MapExtentButton.qml" />
+    <None Include="desktopclient\qml\controls\ProjectionParametersEditor.qml" />
+    <None Include="desktopclient\qml\controls\RotatingArrow.qml" />
+    <None Include="desktopclient\qml\controls\SelectProjection.qml" />
+    <None Include="desktopclient\qml\controls\SpatialSelection.qml" />
+    <None Include="desktopclient\qml\controls\SpatialSelectionDropDown.qml" />
+    <None Include="desktopclient\qml\controls\SpatialSelectionToolbar.qml" />
+    <None Include="desktopclient\qml\controls\SplitHandle.qml" />
+    <None Include="desktopclient\qml\controls\TextAreaLabelPair.qml" />
+    <None Include="desktopclient\qml\controls\TextEditLabelPair.qml" />
+    <None Include="desktopclient\qml\controls\TextFieldDropArea.qml" />
+    <None Include="desktopclient\qml\controls\ToolButton.qml" />
+    <None Include="desktopclient\qml\controls\ToolTip.qml" />
+    <None Include="desktopclient\qml\controls\ToolTipLabel.qml" />
+    <None Include="desktopclient\qml\controls\Tree.qml" />
+    <None Include="desktopclient\qml\controls\TreeNode.qml" />
+    <None Include="desktopclient\qml\controls\ValidatedTextField.qml" />
+    <None Include="desktopclient\qml\controls\VScrollBar.qml" />
+    <None Include="desktopclient\qml\controls\WideButton.qml" />
+    <None Include="desktopclient\qml\datapanel\ButtonBarTabViewStyle.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogActions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogButton.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogButtonBar.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogContextMenu.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogFilterButtons.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogFilterComboBox.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogFilterOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogGrid.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogGridDelegate.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogLayoutButtonBar.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogLocationView.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogMap.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogPanel.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogProperties.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogRefreshOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogTable.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogThumbGrid.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogViewOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogViews.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\DCatalogListThumb.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\DCatalogThumb.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\DropConversionFormats.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\ObjectCopyOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\ObjectDeleteOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\OperationLayoutButtonBar.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\OperationPanel.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\OperationTable.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\QuickProps.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\SelectedSpatialItems.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\ThumbImage.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\ToolBarButton.qml" />
+    <None Include="desktopclient\qml\datapanel\DataPane.qml" />
+    <None Include="desktopclient\qml\datapanel\DataTabView2.qml" />
+    <None Include="desktopclient\qml\datapanel\FloatingWindow.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisCreateForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisList.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\ManagerAnalysisView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\ModellerAnalysisView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\applicationview\AppAddForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\applicationview\ApplicationList.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\applicationview\ManagerApplicationView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\applicationview\ModellerApplicationView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\conceptualview\ManagerConceptualView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\conceptualview\ModellerConceptualView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\CopyAsBox.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\GenericTools.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\ModellerDataPane.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\ModellerErrorView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\ModellerWorkArea.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\ModelManager.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\AttachmentRectangle.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionTests.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\FlowParametersChoiceForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\JunctionItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopTest.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopTestRange.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopTests.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ManagerWorkflowView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ModellerWorkflowView.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\OperationItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\SaveAsBox.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\SelectedOperationForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\SelectedOperationMetaData.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\StepForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\TestDetailFlowChoiceForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WFCanvas.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WFCanvasMouseArea.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowChoiceForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowCreateForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowDataForms.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowPythonScript.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowRunForm.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\Workflows.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTabStyle.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTools.qml" />
+    <None Include="desktopclient\qml\datapanel\script\AreaHeader.qml" />
+    <None Include="desktopclient\qml\datapanel\script\ScriptActions.qml" />
+    <None Include="desktopclient\qml\datapanel\script\ScriptArea.qml" />
+    <None Include="desktopclient\qml\datapanel\script\ScriptMetaDataOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\script\ScriptPane.qml" />
+    <None Include="desktopclient\qml\datapanel\script\ScriptRunOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\table\AggregateCell.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ChartsPanel.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnHeader.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnList.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnManagement.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnMetadataList.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnOperation.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnOperationList.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ConvertColumn.qml" />
+    <None Include="desktopclient\qml\datapanel\table\FirstColumn.qml" />
+    <None Include="desktopclient\qml\datapanel\table\NormalCell.qml" />
+    <None Include="desktopclient\qml\datapanel\table\SortColumn.qml" />
+    <None Include="desktopclient\qml\datapanel\table\TableColumn.qml" />
+    <None Include="desktopclient\qml\datapanel\table\TablePane.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\LayerExtentMouseActions.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\LayersInfo.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\LocationBar.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MapArea.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MapPanel.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MapScrollers.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MapWindow.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MetaData.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MetaDataLayerList.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MetaDataSpatialInfo.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\OverViewDrawer.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\OverviewExtentToolbar.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridPropertyEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ItemRepresentation.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerDelegate.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerOpacity.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerPropertyManagement.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayersList.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerTransparency.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LegendGrid.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LegendItemEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LineStyleSetter.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MapinfoProperties.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\NumericRepresentation.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PolygonProperties.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PropertyEditorsList.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\UndefinedValueSetter.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ViewAttributes.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeEditorList.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeList.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\RepresentationProperties.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\ViewManager.qml" />
+    <None Include="desktopclient\qml\DesktopClient.qml" />
+    <None Include="desktopclient\qml\Global.js" />
+    <None Include="desktopclient\qml\images\pannel-center.sci" />
+    <None Include="desktopclient\qml\images\pannel-top.sci" />
+    <None Include="desktopclient\qml\images\raster20.png.backup" />
+    <None Include="desktopclient\qml\MainSplit.qml" />
+    <None Include="desktopclient\qml\pubsub.js" />
+    <None Include="desktopclient\qml\RotateTranslateSplash.qml" />
+    <None Include="desktopclient\qml\Splash.qml" />
+    <None Include="desktopclient\qml\StartBlock.qml" />
+    <None Include="desktopclient\qml\StartWindow.qml" />
+    <None Include="desktopclient\qml\TabStyle1.qml" />
+    <None Include="desktopclient\qml\TabStyle2.qml" />
+    <None Include="desktopclient\qml\TabStyleCatalog.qml" />
+    <None Include="desktopclient\qml\TopArea.qml" />
+    <None Include="desktopclient\qml\workbench\ApplicationForm.qml" />
+    <None Include="desktopclient\qml\workbench\Bookmarks.qml" />
+    <None Include="desktopclient\qml\workbench\CreateCatalogForm.qml" />
+    <None Include="desktopclient\qml\workbench\DataSourceFormButtons.qml" />
+    <None Include="desktopclient\qml\workbench\DebugInfo.qml" />
+    <None Include="desktopclient\qml\workbench\DOperation.qml" />
+    <None Include="desktopclient\qml\workbench\FileSelectionPanel.qml" />
+    <None Include="desktopclient\qml\workbench\FunctionBarHeader.qml" />
+    <None Include="desktopclient\qml\workbench\Info.qml" />
+    <None Include="desktopclient\qml\workbench\MessagesPane.qml" />
+    <None Include="desktopclient\qml\workbench\Navigator.qml" />
+    <None Include="desktopclient\qml\workbench\NavigatorTopButtonBar.qml" />
+    <None Include="desktopclient\qml\workbench\ObjectCreation.qml" />
+    <None Include="desktopclient\qml\workbench\ObjectProperties.qml" />
+    <None Include="desktopclient\qml\workbench\OperationCatagoriesList.qml" />
+    <None Include="desktopclient\qml\workbench\OperationFormArea.qml" />
+    <None Include="desktopclient\qml\workbench\OperationList.qml" />
+    <None Include="desktopclient\qml\workbench\OperationSearchBar.qml" />
+    <None Include="desktopclient\qml\workbench\OperationSelection.qml" />
+    <None Include="desktopclient\qml\workbench\Preferences.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ActualNumericRange.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\AttributeProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\CatalogProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\CombinationMatrixProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\CoordinateSystemProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\CoverageDataProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\DataPropertyPane.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\DPropertyForm.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\EllipsoidProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\Envelope.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\FeatureCoverageDataProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\GeneralPropertyPane.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\GeoreferencePart.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\GeoreferenceProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\IndexedItemDomainProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\IndexItemRange.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\IntervalItemProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ItemDomainProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\NumericDomainProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\OperationProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ParameterDelegate.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ProjectionProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ProjectionPropertiesAll.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\PropertyEditButtons.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\RangeValuesCombo.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\RasterCoverageDataProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\SpatialProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\TableProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\TextRangeDefinition.qml" />
+    <None Include="desktopclient\qml\workbench\SelectServiceForm.qml" />
+    <None Include="desktopclient\qml\workbench\Tranquilizers.qml" />
+    <None Include="desktopclient\qml\workbench\WorkBench.qml" />
+    <None Include="desktopclient\qml\workbench\WorkBenchButton.qml" />
+    <None Include="desktopclient\qml\workbench\WorkBenchButtonBar.qml" />
+    <None Include="desktopclient\qml\workbench\WorkBenchShifter.qml" />
+    <None Include="desktopclient\qml\workbench\Workspaces.qml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="desktopclient\qml\images\52nlogobig.png" />
+    <Image Include="desktopclient\qml\images\addbookmarkCS1.png" />
+    <Image Include="desktopclient\qml\images\all20.png" />
+    <Image Include="desktopclient\qml\images\all35-grey.png" />
+    <Image Include="desktopclient\qml\images\all35.png" />
+    <Image Include="desktopclient\qml\images\analysis_green.png" />
+    <Image Include="desktopclient\qml\images\analysis_grey.png" />
+    <Image Include="desktopclient\qml\images\animation20.png" />
+    <Image Include="desktopclient\qml\images\apply20.png" />
+    <Image Include="desktopclient\qml\images\app_green.png" />
+    <Image Include="desktopclient\qml\images\app_grey.png" />
+    <Image Include="desktopclient\qml\images\arrowdown.png" />
+    <Image Include="desktopclient\qml\images\arrowdownlight.png" />
+    <Image Include="desktopclient\qml\images\arrowleftlight.png" />
+    <Image Include="desktopclient\qml\images\arrowright.png" />
+    <Image Include="desktopclient\qml\images\arrowrightlight.png" />
+    <Image Include="desktopclient\qml\images\arrowuplight.png" />
+    <Image Include="desktopclient\qml\images\back1.png" />
+    <Image Include="desktopclient\qml\images\back2.png" />
+    <Image Include="desktopclient\qml\images\blank.png" />
+    <Image Include="desktopclient\qml\images\bluebuttonr.png" />
+    <Image Include="desktopclient\qml\images\bookmark.png" />
+    <Image Include="desktopclient\qml\images\bookmarkCS1.png" />
+    <Image Include="desktopclient\qml\images\bookmark_add.png" />
+    <Image Include="desktopclient\qml\images\bookmark_close.png" />
+    <Image Include="desktopclient\qml\images\bookmark_delete.png" />
+    <Image Include="desktopclient\qml\images\bookmark_open.png" />
+    <Image Include="desktopclient\qml\images\bool20.png" />
+    <Image Include="desktopclient\qml\images\boundsonlycsy20.png" />
+    <Image Include="desktopclient\qml\images\catalogGrid20.png" />
+    <Image Include="desktopclient\qml\images\catalogsources.png" />
+    <Image Include="desktopclient\qml\images\catalogSpatial20.png" />
+    <Image Include="desktopclient\qml\images\catalogTable20.png" />
+    <Image Include="desktopclient\qml\images\catalogThumbGrid20.png" />
+    <Image Include="desktopclient\qml\images\catalogThumbList20.png" />
+    <Image Include="desktopclient\qml\images\choice20.png" />
+    <Image Include="desktopclient\qml\images\close20.png" />
+    <Image Include="desktopclient\qml\images\close_grey.png" />
+    <Image Include="desktopclient\qml\images\close_white.png" />
+    <Image Include="desktopclient\qml\images\collapse.png" />
+    <Image Include="desktopclient\qml\images\collection.PNG" />
+    <Image Include="desktopclient\qml\images\colordom20.png" />
+    <Image Include="desktopclient\qml\images\colorpalette20.png" />
+    <Image Include="desktopclient\qml\images\concept_green.png" />
+    <Image Include="desktopclient\qml\images\concept_grey.png" />
+    <Image Include="desktopclient\qml\images\configCS2.png" />
+    <Image Include="desktopclient\qml\images\configCS3.png" />
+    <Image Include="desktopclient\qml\images\connection20.png" />
+    <Image Include="desktopclient\qml\images\connectionselect20.png" />
+    <Image Include="desktopclient\qml\images\console.png" />
+    <Image Include="desktopclient\qml\images\coord20.png" />
+    <Image Include="desktopclient\qml\images\coordinate.png" />
+    <Image Include="desktopclient\qml\images\coordinatesystem20.png" />
+    <Image Include="desktopclient\qml\images\coordsys35-grey.png" />
+    <Image Include="desktopclient\qml\images\coordsys35.png" />
+    <Image Include="desktopclient\qml\images\copy.png" />
+    <Image Include="desktopclient\qml\images\copy20.png" />
+    <Image Include="desktopclient\qml\images\copy_green.png" />
+    <Image Include="desktopclient\qml\images\copy_grey.png" />
+    <Image Include="desktopclient\qml\images\coverage20.png" />
+    <Image Include="desktopclient\qml\images\create.png" />
+    <Image Include="desktopclient\qml\images\createCS.png" />
+    <Image Include="desktopclient\qml\images\createCS1.png" />
+    <Image Include="desktopclient\qml\images\createCS3.png" />
+    <Image Include="desktopclient\qml\images\csy.png" />
+    <Image Include="desktopclient\qml\images\csy1.png" />
+    <Image Include="desktopclient\qml\images\csy20.png" />
+    <Image Include="desktopclient\qml\images\csyCS.png" />
+    <Image Include="desktopclient\qml\images\csyCS2.png" />
+    <Image Include="desktopclient\qml\images\customcontainer.png" />
+    <Image Include="desktopclient\qml\images\customcontainerCS3.png" />
+    <Image Include="desktopclient\qml\images\customCS.png" />
+    <Image Include="desktopclient\qml\images\darkbluearrow.png" />
+    <Image Include="desktopclient\qml\images\databasecatalog.png" />
+    <Image Include="desktopclient\qml\images\data_close.png" />
+    <Image Include="desktopclient\qml\images\data_drive.png" />
+    <Image Include="desktopclient\qml\images\data_folder.png" />
+    <Image Include="desktopclient\qml\images\data_open.png" />
+    <Image Include="desktopclient\qml\images\delete20.png" />
+    <Image Include="desktopclient\qml\images\deletebookmark20.png" />
+    <Image Include="desktopclient\qml\images\deletebookmarkCS1.png" />
+    <Image Include="desktopclient\qml\images\deleteC.png" />
+    <Image Include="desktopclient\qml\images\deleteCatalog.png" />
+    <Image Include="desktopclient\qml\images\deleteconnection20.png" />
+    <Image Include="desktopclient\qml\images\deleteH.png" />
+    <Image Include="desktopclient\qml\images\deleteO.png" />
+    <Image Include="desktopclient\qml\images\deleteoperation20.png" />
+    <Image Include="desktopclient\qml\images\display_options_green.png" />
+    <Image Include="desktopclient\qml\images\display_options_grey.png" />
+    <Image Include="desktopclient\qml\images\dm.PNG" />
+    <Image Include="desktopclient\qml\images\domain.png" />
+    <Image Include="desktopclient\qml\images\domain35-grey.png" />
+    <Image Include="desktopclient\qml\images\domain35.png" />
+    <Image Include="desktopclient\qml\images\domainn.PNG" />
+    <Image Include="desktopclient\qml\images\down.png" />
+    <Image Include="desktopclient\qml\images\down20.png" />
+    <Image Include="desktopclient\qml\images\drive20.png" />
+    <Image Include="desktopclient\qml\images\drop1.png" />
+    <Image Include="desktopclient\qml\images\ellipsoid.png" />
+    <Image Include="desktopclient\qml\images\ellipsoid20.png" />
+    <Image Include="desktopclient\qml\images\entiremap20.png" />
+    <Image Include="desktopclient\qml\images\error_sign.png" />
+    <Image Include="desktopclient\qml\images\expand20.png" />
+    <Image Include="desktopclient\qml\images\eye.png" />
+    <Image Include="desktopclient\qml\images\feature20.png" />
+    <Image Include="desktopclient\qml\images\feature20CS1.png" />
+    <Image Include="desktopclient\qml\images\feature35-grey.png" />
+    <Image Include="desktopclient\qml\images\feature35.png" />
+    <Image Include="desktopclient\qml\images\featureCS.png" />
+    <Image Include="desktopclient\qml\images\featureCS2.png" />
+    <Image Include="desktopclient\qml\images\filter.png" />
+    <Image Include="desktopclient\qml\images\filtercatalog.png" />
+    <Image Include="desktopclient\qml\images\filterSC2.png" />
+    <Image Include="desktopclient\qml\images\filterSC3.png" />
+    <Image Include="desktopclient\qml\images\filter_green.png" />
+    <Image Include="desktopclient\qml\images\filter_grey.png" />
+    <Image Include="desktopclient\qml\images\folder.png" />
+    <Image Include="desktopclient\qml\images\folder16.png" />
+    <Image Include="desktopclient\qml\images\folder20.png" />
+    <Image Include="desktopclient\qml\images\foldercatalog.png" />
+    <Image Include="desktopclient\qml\images\folderdisk.png" />
+    <Image Include="desktopclient\qml\images\folderdiskCS3.png" />
+    <Image Include="desktopclient\qml\images\folderFeature20.png" />
+    <Image Include="desktopclient\qml\images\folderzip.png" />
+    <Image Include="desktopclient\qml\images\folderzipCS3.png" />
+    <Image Include="desktopclient\qml\images\font20.png" />
+    <Image Include="desktopclient\qml\images\georef35-grey.png" />
+    <Image Include="desktopclient\qml\images\georef35.png" />
+    <Image Include="desktopclient\qml\images\georefCS.png" />
+    <Image Include="desktopclient\qml\images\georefCS2.png" />
+    <Image Include="desktopclient\qml\images\georeference.png" />
+    <Image Include="desktopclient\qml\images\georeference20.png" />
+    <Image Include="desktopclient\qml\images\georeftiepoints20.png" />
+    <Image Include="desktopclient\qml\images\graph_green.png" />
+    <Image Include="desktopclient\qml\images\graph_grey.png" />
+    <Image Include="desktopclient\qml\images\greenbacksh.png" />
+    <Image Include="desktopclient\qml\images\greenbuttonr.png" />
+    <Image Include="desktopclient\qml\images\greybuttonr.png" />
+    <Image Include="desktopclient\qml\images\greybuttonrect.PNG" />
+    <Image Include="desktopclient\qml\images\grf.png" />
+    <Image Include="desktopclient\qml\images\grid.png" />
+    <Image Include="desktopclient\qml\images\grid20.png" />
+    <Image Include="desktopclient\qml\images\gridCS1.png" />
+    <Image Include="desktopclient\qml\images\gridCS2.png" />
+    <Image Include="desktopclient\qml\images\grid_grey.png" />
+    <Image Include="desktopclient\qml\images\headerblue.png" />
+    <Image Include="desktopclient\qml\images\headerblue2CS1.png" />
+    <Image Include="desktopclient\qml\images\headerblueCS1.png" />
+    <Image Include="desktopclient\qml\images\headergreen.png" />
+    <Image Include="desktopclient\qml\images\helpCS1.png" />
+    <Image Include="desktopclient\qml\images\iddom20.png" />
+    <Image Include="desktopclient\qml\images\ilwis.ico" />
+    <Image Include="desktopclient\qml\images\ilwis4.bmp" />
+    <Image Include="desktopclient\qml\images\ilwis4.png" />
+    <Image Include="desktopclient\qml\images\ilwislogobig.png" />
+    <Image Include="desktopclient\qml\images\ilwis_logo_top.png" />
+    <Image Include="desktopclient\qml\images\ilwis_logo_txt.png" />
+    <Image Include="desktopclient\qml\images\indexeddom20.png" />
+    <Image Include="desktopclient\qml\images\info.png" />
+    <Image Include="desktopclient\qml\images\info_s_green.png" />
+    <Image Include="desktopclient\qml\images\info_s_grey.png" />
+    <Image Include="desktopclient\qml\images\inmove20.png" />
+    <Image Include="desktopclient\qml\images\internalcatalog.png" />
+    <Image Include="desktopclient\qml\images\intervaldom20.png" />
+    <Image Include="desktopclient\qml\images\itclogobig.png" />
+    <Image Include="desktopclient\qml\images\itemdom20.png" />
+    <Image Include="desktopclient\qml\images\itemdomain.png" />
+    <Image Include="desktopclient\qml\images\junction.png" />
+    <Image Include="desktopclient\qml\images\label3.png" />
+    <Image Include="desktopclient\qml\images\label4.png" />
+    <Image Include="desktopclient\qml\images\latloncsy20.png" />
+    <Image Include="desktopclient\qml\images\layers.png" />
+    <Image Include="desktopclient\qml\images\layers_s_green.png" />
+    <Image Include="desktopclient\qml\images\layers_s_grey.png" />
+    <Image Include="desktopclient\qml\images\leftbottom.PNG" />
+    <Image Include="desktopclient\qml\images\lefttop.PNG" />
+    <Image Include="desktopclient\qml\images\line20.png" />
+    <Image Include="desktopclient\qml\images\lineCS.png" />
+    <Image Include="desktopclient\qml\images\lineCS2.png" />
+    <Image Include="desktopclient\qml\images\list.png" />
+    <Image Include="desktopclient\qml\images\list20.png" />
+    <Image Include="desktopclient\qml\images\listCS1.png" />
+    <Image Include="desktopclient\qml\images\listCS2.png" />
+    <Image Include="desktopclient\qml\images\list_grey.png" />
+    <Image Include="desktopclient\qml\images\location20.png" />
+    <Image Include="desktopclient\qml\images\locator.png" />
+    <Image Include="desktopclient\qml\images\locator_start.png" />
+    <Image Include="desktopclient\qml\images\loop.png" />
+    <Image Include="desktopclient\qml\images\maplist20.png" />
+    <Image Include="desktopclient\qml\images\maps40.png" />
+    <Image Include="desktopclient\qml\images\mapsdisabled40.png" />
+    <Image Include="desktopclient\qml\images\mapview.bmp" />
+    <Image Include="desktopclient\qml\images\mapview.png" />
+    <Image Include="desktopclient\qml\images\max1.png" />
+    <Image Include="desktopclient\qml\images\maximize.png" />
+    <Image Include="desktopclient\qml\images\maximize_small_grey.png" />
+    <Image Include="desktopclient\qml\images\message.png" />
+    <Image Include="desktopclient\qml\images\message40.png" />
+    <Image Include="desktopclient\qml\images\messageCS1.png" />
+    <Image Include="desktopclient\qml\images\messageorange40.png" />
+    <Image Include="desktopclient\qml\images\messageorangeCS1.png" />
+    <Image Include="desktopclient\qml\images\messagepurple40.png" />
+    <Image Include="desktopclient\qml\images\messagepurpleCS1.png" />
+    <Image Include="desktopclient\qml\images\messagered40.png" />
+    <Image Include="desktopclient\qml\images\messageredCS1.png" />
+    <Image Include="desktopclient\qml\images\message_large_critical.png" />
+    <Image Include="desktopclient\qml\images\message_large_error.png" />
+    <Image Include="desktopclient\qml\images\message_large_result.png" />
+    <Image Include="desktopclient\qml\images\message_large_warning.png" />
+    <Image Include="desktopclient\qml\images\message_orange.png" />
+    <Image Include="desktopclient\qml\images\message_red.png" />
+    <Image Include="desktopclient\qml\images\message_small_critical.png" />
+    <Image Include="desktopclient\qml\images\message_small_error.png" />
+    <Image Include="desktopclient\qml\images\message_small_warning.png" />
+    <Image Include="desktopclient\qml\images\metadata.png" />
+    <Image Include="desktopclient\qml\images\metadata20.png" />
+    <Image Include="desktopclient\qml\images\metadata_s_green.png" />
+    <Image Include="desktopclient\qml\images\metadata_s_grey.png" />
+    <Image Include="desktopclient\qml\images\min1.png" />
+    <Image Include="desktopclient\qml\images\minimize.png" />
+    <Image Include="desktopclient\qml\images\minimize_small_grey.png" />
+    <Image Include="desktopclient\qml\images\minisave.png" />
+    <Image Include="desktopclient\qml\images\minus.png" />
+    <Image Include="desktopclient\qml\images\model.png" />
+    <Image Include="desktopclient\qml\images\modeller40.png" />
+    <Image Include="desktopclient\qml\images\modellerCS1.png" />
+    <Image Include="desktopclient\qml\images\move20.png" />
+    <Image Include="desktopclient\qml\images\navigatorCS1.png" />
+    <Image Include="desktopclient\qml\images\navigatorCS2.png" />
+    <Image Include="desktopclient\qml\images\navigatorCS3.png" />
+    <Image Include="desktopclient\qml\images\newCatalog.png" />
+    <Image Include="desktopclient\qml\images\newcatalogCS1.png" />
+    <Image Include="desktopclient\qml\images\newcatalog_left.png" />
+    <Image Include="desktopclient\qml\images\newcatalog_left_white.png" />
+    <Image Include="desktopclient\qml\images\newcatalog_right.png" />
+    <Image Include="desktopclient\qml\images\newcatalog_right_white.png" />
+    <Image Include="desktopclient\qml\images\numbers20.png" />
+    <Image Include="desktopclient\qml\images\numericdomain.png" />
+    <Image Include="desktopclient\qml\images\openCS1.png" />
+    <Image Include="desktopclient\qml\images\openfloat20.png" />
+    <Image Include="desktopclient\qml\images\openmult20.png" />
+    <Image Include="desktopclient\qml\images\opensingle20.png" />
+    <Image Include="desktopclient\qml\images\operation.png" />
+    <Image Include="desktopclient\qml\images\operation20.png" />
+    <Image Include="desktopclient\qml\images\operationCS1.png" />
+    <Image Include="desktopclient\qml\images\operationitem.png" />
+    <Image Include="desktopclient\qml\images\operationitemSelected.png" />
+    <Image Include="desktopclient\qml\images\operationitemSelectedStep.png" />
+    <Image Include="desktopclient\qml\images\operationitemStep.png" />
+    <Image Include="desktopclient\qml\images\operations.png" />
+    <Image Include="desktopclient\qml\images\page.png" />
+    <Image Include="desktopclient\qml\images\pan20.png" />
+    <Image Include="desktopclient\qml\images\pan20A.png" />
+    <Image Include="desktopclient\qml\images\panel-center2.png" />
+    <Image Include="desktopclient\qml\images\panel-top2.png" />
+    <Image Include="desktopclient\qml\images\pause20.png" />
+    <Image Include="desktopclient\qml\images\pixel20.png" />
+    <Image Include="desktopclient\qml\images\plus.png" />
+    <Image Include="desktopclient\qml\images\plus20.png" />
+    <Image Include="desktopclient\qml\images\point20.png" />
+    <Image Include="desktopclient\qml\images\pointCS.png" />
+    <Image Include="desktopclient\qml\images\pointCS2.png" />
+    <Image Include="desktopclient\qml\images\polygon.png" />
+    <Image Include="desktopclient\qml\images\polygon20.png" />
+    <Image Include="desktopclient\qml\images\polygon20CS1.png" />
+    <Image Include="desktopclient\qml\images\polygonCS.png" />
+    <Image Include="desktopclient\qml\images\polygonCS2.png" />
+    <Image Include="desktopclient\qml\images\preferencesCS1.png" />
+    <Image Include="desktopclient\qml\images\process.png" />
+    <Image Include="desktopclient\qml\images\progress.png" />
+    <Image Include="desktopclient\qml\images\progress2CS1.png" />
+    <Image Include="desktopclient\qml\images\progress40.png" />
+    <Image Include="desktopclient\qml\images\progressCS1.png" />
+    <Image Include="desktopclient\qml\images\projectedcsy20.png" />
+    <Image Include="desktopclient\qml\images\projection.png" />
+    <Image Include="desktopclient\qml\images\projection20.png" />
+    <Image Include="desktopclient\qml\images\properties40.png" />
+    <Image Include="desktopclient\qml\images\propertiesCS1.png" />
+    <Image Include="desktopclient\qml\images\propertiesCS2.png" />
+    <Image Include="desktopclient\qml\images\propertiesCS3.png" />
+    <Image Include="desktopclient\qml\images\raster.png" />
+    <Image Include="desktopclient\qml\images\raster20.png" />
+    <Image Include="desktopclient\qml\images\raster203d.png" />
+    <Image Include="desktopclient\qml\images\raster20CS1.png" />
+    <Image Include="desktopclient\qml\images\raster35-grey.png" />
+    <Image Include="desktopclient\qml\images\raster35.png" />
+    <Image Include="desktopclient\qml\images\rasterCS.png" />
+    <Image Include="desktopclient\qml\images\rasterCS2.png" />
+    <Image Include="desktopclient\qml\images\raster_set.png" />
+    <Image Include="desktopclient\qml\images\redbuttonr.png" />
+    <Image Include="desktopclient\qml\images\refresh.png" />
+    <Image Include="desktopclient\qml\images\refresh20.png" />
+    <Image Include="desktopclient\qml\images\refreshCS1.png" />
+    <Image Include="desktopclient\qml\images\refresh_green.png" />
+    <Image Include="desktopclient\qml\images\refresh_grey.png" />
+    <Image Include="desktopclient\qml\images\remote.png" />
+    <Image Include="desktopclient\qml\images\remoteBig.png" />
+    <Image Include="desktopclient\qml\images\representation.png" />
+    <Image Include="desktopclient\qml\images\representation20.png" />
+    <Image Include="desktopclient\qml\images\right.png" />
+    <Image Include="desktopclient\qml\images\rightbottom.PNG" />
+    <Image Include="desktopclient\qml\images\righttop.PNG" />
+    <Image Include="desktopclient\qml\images\run20.png" />
+    <Image Include="desktopclient\qml\images\rundelete.png" />
+    <Image Include="desktopclient\qml\images\runkeep.png" />
+    <Image Include="desktopclient\qml\images\runselected.png" />
+    <Image Include="desktopclient\qml\images\save.png" />
+    <Image Include="desktopclient\qml\images\save20.png" />
+    <Image Include="desktopclient\qml\images\saveas.png" />
+    <Image Include="desktopclient\qml\images\saveasb.png" />
+    <Image Include="desktopclient\qml\images\saveb.png" />
+    <Image Include="desktopclient\qml\images\script.png" />
+    <Image Include="desktopclient\qml\images\selection.png" />
+    <Image Include="desktopclient\qml\images\selection_green.png" />
+    <Image Include="desktopclient\qml\images\selection_grey.png" />
+    <Image Include="desktopclient\qml\images\service.png" />
+    <Image Include="desktopclient\qml\images\service2.png" />
+    <Image Include="desktopclient\qml\images\servicecatalog.png" />
+    <Image Include="desktopclient\qml\images\serviceFolder.png" />
+    <Image Include="desktopclient\qml\images\serviceFolderCS3.png" />
+    <Image Include="desktopclient\qml\images\settings.png" />
+    <Image Include="desktopclient\qml\images\spatial.png" />
+    <Image Include="desktopclient\qml\images\spatial_grey.png" />
+    <Image Include="desktopclient\qml\images\splash.png" />
+    <Image Include="desktopclient\qml\images\splithandle.png" />
+    <Image Include="desktopclient\qml\images\splithandledark.png" />
+    <Image Include="desktopclient\qml\images\splithandlegreen.png" />
+    <Image Include="desktopclient\qml\images\start_green.png" />
+    <Image Include="desktopclient\qml\images\start_grey.png" />
+    <Image Include="desktopclient\qml\images\stat_green.png" />
+    <Image Include="desktopclient\qml\images\stat_grey.png" />
+    <Image Include="desktopclient\qml\images\step20.png" />
+    <Image Include="desktopclient\qml\images\stop.png" />
+    <Image Include="desktopclient\qml\images\stop20.png" />
+    <Image Include="desktopclient\qml\images\stop40.png" />
+    <Image Include="desktopclient\qml\images\tabborderdrag.png" />
+    <Image Include="desktopclient\qml\images\table.jpg" />
+    <Image Include="desktopclient\qml\images\table.png" />
+    <Image Include="desktopclient\qml\images\table20.png" />
+    <Image Include="desktopclient\qml\images\table20CS1.png" />
+    <Image Include="desktopclient\qml\images\table35-grey.png" />
+    <Image Include="desktopclient\qml\images\table35.png" />
+    <Image Include="desktopclient\qml\images\tableCS.png" />
+    <Image Include="desktopclient\qml\images\tableCS2.png" />
+    <Image Include="desktopclient\qml\images\tab_big_active.png" />
+    <Image Include="desktopclient\qml\images\tab_big_active2.png" />
+    <Image Include="desktopclient\qml\images\tab_big_green.png" />
+    <Image Include="desktopclient\qml\images\tab_big_inactive.png" />
+    <Image Include="desktopclient\qml\images\tab_big_inactive2.png" />
+    <Image Include="desktopclient\qml\images\tab_grid_active.png" />
+    <Image Include="desktopclient\qml\images\tab_grid_inactive.png" />
+    <Image Include="desktopclient\qml\images\tab_list_active.png" />
+    <Image Include="desktopclient\qml\images\tab_list_inactive.png" />
+    <Image Include="desktopclient\qml\images\tab_spatial_active.png" />
+    <Image Include="desktopclient\qml\images\tab_spatial_inactive.png" />
+    <Image Include="desktopclient\qml\images\tab_thin_active.png" />
+    <Image Include="desktopclient\qml\images\tab_thin_inactive.png" />
+    <Image Include="desktopclient\qml\images\tab_thumb_active.png" />
+    <Image Include="desktopclient\qml\images\tab_thumb_inactive.png" />
+    <Image Include="desktopclient\qml\images\text20.png" />
+    <Image Include="desktopclient\qml\images\textdom20.png" />
+    <Image Include="desktopclient\qml\images\textdomain.png" />
+    <Image Include="desktopclient\qml\images\thematicdom.png" />
+    <Image Include="desktopclient\qml\images\thematicdomian.png" />
+    <Image Include="desktopclient\qml\images\thumblist20.png" />
+    <Image Include="desktopclient\qml\images\thumblistCS1.png" />
+    <Image Include="desktopclient\qml\images\thumbnail.png" />
+    <Image Include="desktopclient\qml\images\thumbnail_grey.png" />
+    <Image Include="desktopclient\qml\images\timedom20.png" />
+    <Image Include="desktopclient\qml\images\timeintervaldom20.png" />
+    <Image Include="desktopclient\qml\images\transparent.png" />
+    <Image Include="desktopclient\qml\images\trash20.png" />
+    <Image Include="desktopclient\qml\images\up.png" />
+    <Image Include="desktopclient\qml\images\users20.png" />
+    <Image Include="desktopclient\qml\images\valuedom20.png" />
+    <Image Include="desktopclient\qml\images\vector.png" />
+    <Image Include="desktopclient\qml\images\vector_fill.png" />
+    <Image Include="desktopclient\qml\images\vector_line.png" />
+    <Image Include="desktopclient\qml\images\vector_point.png" />
+    <Image Include="desktopclient\qml\images\vector_set.png" />
+    <Image Include="desktopclient\qml\images\view.png" />
+    <Image Include="desktopclient\qml\images\visualization40.png" />
+    <Image Include="desktopclient\qml\images\visualizationCS1.png" />
+    <Image Include="desktopclient\qml\images\visualizationdisabled40.png" />
+    <Image Include="desktopclient\qml\images\workflow.png" />
+    <Image Include="desktopclient\qml\images\workflow20.png" />
+    <Image Include="desktopclient\qml\images\workflowitem.png" />
+    <Image Include="desktopclient\qml\images\workflowitemSelected.png" />
+    <Image Include="desktopclient\qml\images\workinprogress.png" />
+    <Image Include="desktopclient\qml\images\workspaceCS1.png" />
+    <Image Include="desktopclient\qml\images\worldlines.PNG" />
+    <Image Include="desktopclient\qml\images\zoomin20.png" />
+    <Image Include="desktopclient\qml\images\zoomin20A.png" />
+    <Image Include="desktopclient\qml\images\zoomout20.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="qtmsvc64" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{c79d2f4f-d62f-43af-a180-16a8247f5f8c}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{7b85ffe8-23c9-4808-b690-4ab2761144be}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="streamconnector\catalogconnection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\catalogserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\combinationmatrixserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\coordinatesystemserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\coverageserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\domainserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\downloadmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\ellipsoidserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\featureserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\georefserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\modelserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\operationmetadataserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\projectionserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\rasterserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\rawconverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\remotecatalogexplorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\scriptserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\streamcatalogexplorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\streamconnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\streammodule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\streamobjectfactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\tableserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\versioneddatastreamfactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\versionedserializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="streamconnector\workflowserializerv1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_streammodule.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_streammodule.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_downloadmanager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_downloadmanager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="streamconnector\catalogconnection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\catalogserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\combinationmatrixserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\coordinatesystemserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\coverageserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\domainserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="streamconnector\downloadmanager.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="streamconnector\ellipsoidserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\featureserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\georefserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\modelserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\operationmetadataserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\projectionserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\rasterserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\rawconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\remotecatalogexplorer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\scriptserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\streamcatalogexplorer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\streamconnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="streamconnector\streammodule.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="streamconnector\streamobjectfactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\tableserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\versioneddatastreamfactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\versionedserializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\workflowserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8676F964-09A2-3019-9D14-5CFA2C3BCDDB}</ProjectGuid>
+    <RootNamespace>ilwiscore</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolSet>v140</PlatformToolSet>
+    <OutputDirectory>..\libraries\win32release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>ilwiscore</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolSet>v140</PlatformToolSet>
+    <OutputDirectory>..\libraries\win32debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>ilwiscore</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\libraries\win32release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ilwiscore</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PostBuildEventUseInBuild>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libraries\win32debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\core\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ilwiscore</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -std=c++11 -std=gnu++11 -Wno-unused-parameter -Wno-sign-compare -Wno-unused-local-typedefs -Wno-deprecated-declarations -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5XmlPatterns.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\ilwiscore.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>$(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\referencesystems.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\codes_with_latlon_order.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\projections.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\numericdomains.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\filters.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\epsg.pcs D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\ellipsoids.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\datums.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\representations.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\featurefragmentshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\featurevertexshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\rasterfragmentshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\rastervertexshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\ilwis.config D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\country_boundaries.ilwis D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\teritories.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\color_chart.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\svgcolornames.txt D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\extract_epsgCodes_with_forcedXY.py D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+if errorlevel 1 goto VCEnd
+
+if errorlevel 1 goto VCEnd
+copy "$(TargetPath)" ..\output\win32release\bin</Command>
+      <Message>$(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\referencesystems.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\codes_with_latlon_order.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\projections.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\numericdomains.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\filters.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\epsg.pcs D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\ellipsoids.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\datums.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\representations.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\featurefragmentshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\featurevertexshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\rasterfragmentshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\rastervertexshader_nvdia.glsl D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\ilwis.config D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\country_boundaries.ilwis D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\teritories.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\color_chart.csv D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\svgcolornames.txt D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+ $(COPY) D:\Projects\Ilwis\ilwisobjects\projects\core\resources\extract_epsgCodes_with_forcedXY.py D:\Projects\Ilwis\ilwisobjects\output\win32release\bin\resources
+Copy ilwiscore.dll to ..\output\win32release\bin</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4100;4267;4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_GUI_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;QT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5XmlPatternsd.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkDLL>true</LinkDLL>
+      <OutputFile>$(OutDir)\ilwiscore.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_GUI_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" ..\output\win32debug\bin</Command>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="core\geos\src\index\strtree\AbstractNode.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\AbstractPreparedPolygonContains.cpp" />
+    <ClCompile Include="core\geos\src\index\strtree\AbstractSTRtree.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\Angle.cpp" />
+    <ClCompile Include="core\geos\src\util\Assert.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\BasicPreparedGeometry.cpp" />
+    <ClCompile Include="core\geos\src\noding\BasicSegmentString.cpp" />
+    <ClCompile Include="core\geos\src\index\bintree\Bintree.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\BoundaryNodeRule.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\BufferBuilder.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\BufferInputLineSimplifier.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\BufferOp.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\BufferParameters.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\BufferSubgraph.cpp" />
+    <ClCompile Include="core\geos\src\io\ByteOrderDataInStream.cpp" />
+    <ClCompile Include="core\geos\src\io\ByteOrderValues.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\CGAlgorithms.cpp" />
+    <ClCompile Include="core\geos\src\io\CLocalizer.cpp" />
+    <ClCompile Include="core\geos\src\operation\union\CascadedPolygonUnion.cpp" />
+    <ClCompile Include="core\geos\src\operation\union\CascadedUnion.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\Centroid.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\CentroidArea.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\CentroidLine.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\CentroidPoint.cpp" />
+    <ClCompile Include="core\geos\src\precision\CommonBits.cpp" />
+    <ClCompile Include="core\geos\src\precision\CommonBitsOp.cpp" />
+    <ClCompile Include="core\geos\src\precision\CommonBitsRemover.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\ComponentCoordinateExtracter.cpp" />
+    <ClCompile Include="core\geos\src\operation\distance\ConnectedElementLocationFilter.cpp" />
+    <ClCompile Include="core\geos\src\operation\distance\ConnectedElementPointFilter.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\ConnectedInteriorTester.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\algorithm\ConnectedSubgraphFinder.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\ConsistentAreaTester.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\ConvexHull.cpp" />
+    <ClCompile Include="core\geos\src\geom\Coordinate.cpp" />
+    <ClCompile Include="core\geos\src\geom\CoordinateArraySequence.cpp" />
+    <ClCompile Include="core\geos\src\geom\CoordinateArraySequenceFactory.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\CoordinateOperation.cpp" />
+    <ClCompile Include="core\geos\src\geom\CoordinateSequence.cpp" />
+    <ClCompile Include="core\geos\src\geom\CoordinateSequenceFactory.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\DelaunayTriangulationBuilder.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\Depth.cpp" />
+    <ClCompile Include="core\geos\src\geom\Dimension.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\DirectedEdge.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\DirectedEdgePlanarGraph.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\DirectedEdgeStar.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\DirectedEdgeStarPlanarGraph.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\distance\DiscreteHausdorffDistance.cpp" />
+    <ClCompile Include="core\geos\src\operation\distance\DistanceOp.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\distance\DistanceToPoint.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\DoubleBits.cpp" />
+    <ClCompile Include="core\geos\src\simplify\DouglasPeuckerLineSimplifier.cpp" />
+    <ClCompile Include="core\geos\src\simplify\DouglasPeuckerSimplifier.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeEnd.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\EdgeEndBuilder.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\EdgeEndBundle.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\EdgeEndBundleStar.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeEndStar.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeGeomGraph.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeIntersectionList.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeList.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeNodingValidator.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\EdgePlanarGraph.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\EdgeRing.cpp" />
+    <ClCompile Include="core\geos\src\operation\polygonize\EdgeRingPologonize.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\EdgeSetNoder.cpp" />
+    <ClCompile Include="core\geos\src\operation\linemerge\EdgeString.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\ElevationMatrix.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\ElevationMatrixCell.cpp" />
+    <ClCompile Include="core\geos\src\precision\EnhancedPrecisionOp.cpp" />
+    <ClCompile Include="core\geos\src\geom\Envelope.cpp" />
+    <ClCompile Include="core\geos\src\linearref\ExtractLineByLocation.cpp" />
+    <ClCompile Include="core\geos\src\noding\FastNodingValidator.cpp" />
+    <ClCompile Include="core\geos\src\noding\FastSegmentSetIntersectionFinder.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\validate\FuzzyPointLocator.cpp" />
+    <ClCompile Include="core\geos\src\util\GeometricShapeFactory.cpp" />
+    <ClCompile Include="core\geos\src\geom\Geometry.cpp" />
+    <ClCompile Include="core\geos\src\geom\GeometryCollection.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\GeometryCombiner.cpp" />
+    <ClCompile Include="core\geos\src\geom\GeometryComponentFilter.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\GeometryEditor.cpp" />
+    <ClCompile Include="core\geos\src\geom\GeometryFactory.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\GeometryGraph.cpp" />
+    <ClCompile Include="core\geos\src\operation\GeometryGraphOperation.cpp" />
+    <ClCompile Include="core\geos\src\geom\GeometryList.cpp" />
+    <ClCompile Include="core\geos\src\operation\distance\GeometryLocation.cpp" />
+    <ClCompile Include="core\geos\src\noding\GeometryNoder.cpp" />
+    <ClCompile Include="core\geos\src\precision\GeometryPrecisionReducer.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\snap\GeometrySnapper.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\GeometryTransformer.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\GraphComponent.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\HCoordinate.cpp" />
+    <ClCompile Include="core\geos\src\noding\snapround\HotPixel.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\IncrementalDelaunayTriangulator.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\IndexedNestedRingTester.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\locate\IndexedPointInAreaLocator.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\InteriorPointArea.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\InteriorPointLine.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\InteriorPointPoint.cpp" />
+    <ClCompile Include="core\geos\src\util\Interrupt.cpp" />
+    <ClCompile Include="core\geos\src\noding\IntersectionAdder.cpp" />
+    <ClCompile Include="core\geos\src\noding\IntersectionFinderAdder.cpp" />
+    <ClCompile Include="core\geos\src\geom\IntersectionMatrix.cpp" />
+    <ClCompile Include="core\geos\src\index\bintree\IntervalBinTree.cpp" />
+    <ClCompile Include="core\geos\src\index\intervalrtree\IntervalRTreeBranchNode.cpp" />
+    <ClCompile Include="core\geos\src\index\intervalrtree\IntervalRTreeLeafNode.cpp" />
+    <ClCompile Include="core\geos\src\index\intervalrtree\IntervalRTreeNode.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\IntervalSize.cpp" />
+    <ClCompile Include="core\geos\src\index\strtree\IntervalStree.cpp" />
+    <ClCompile Include="core\geos\src\operation\IsSimpleOp.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\IsValidOp.cpp" />
+    <ClCompile Include="core\geos\src\index\strtree\ItemBoundable.cpp" />
+    <ClCompile Include="core\geos\src\noding\IteratedNoder.cpp" />
+    <ClCompile Include="core\geos\src\index\bintree\KeyBinTree.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\KeyQuadTree.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\Label.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\LastFoundQuadEdgeLocator.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LengthIndexOfPoint.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LengthIndexedLine.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LengthLocationMap.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\LineBuilder.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\LineIntersector.cpp" />
+    <ClCompile Include="core\geos\src\operation\linemerge\LineMergeDirectedEdge.cpp" />
+    <ClCompile Include="core\geos\src\operation\linemerge\LineMergeEdge.cpp" />
+    <ClCompile Include="core\geos\src\operation\linemerge\LineMergeGraph.cpp" />
+    <ClCompile Include="core\geos\src\operation\linemerge\LineMerger.cpp" />
+    <ClCompile Include="core\geos\src\geom\LineSegment.cpp" />
+    <ClCompile Include="core\geos\src\simplify\LineSegmentIndex.cpp" />
+    <ClCompile Include="core\geos\src\operation\linemerge\LineSequencer.cpp" />
+    <ClCompile Include="core\geos\src\geom\LineString.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\snap\LineStringSnapper.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\LinearComponentExtracter.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LinearGeometryBuilder.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LinearIterator.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LinearLocation.cpp" />
+    <ClCompile Include="core\geos\src\geom\LinearRing.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\LocateFailureException.cpp" />
+    <ClCompile Include="core\geos\src\geom\Location.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LocationIndexOfLine.cpp" />
+    <ClCompile Include="core\geos\src\linearref\LocationIndexOfPoint.cpp" />
+    <ClCompile Include="core\geos\src\noding\MCIndexNoder.cpp" />
+    <ClCompile Include="core\geos\src\noding\snapround\MCIndexPointSnapper.cpp" />
+    <ClCompile Include="core\geos\src\noding\MCIndexSegmentSetMutualIntersector.cpp" />
+    <ClCompile Include="core\geos\src\noding\snapround\MCIndexSnapRounder.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\MCPointInRing.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\MaximalEdgeRing.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\MinimalEdgeRing.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\MinimumDiameter.cpp" />
+    <ClCompile Include="core\geos\src\index\chain\MonotoneChain.cpp" />
+    <ClCompile Include="core\geos\src\index\chain\MonotoneChainBuilder.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\MonotoneChainEdge.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\MonotoneChainIndexer.cpp" />
+    <ClCompile Include="core\geos\src\index\chain\MonotoneChainOverlapAction.cpp" />
+    <ClCompile Include="core\geos\src\index\chain\MonotoneChainSelectAction.cpp" />
+    <ClCompile Include="core\geos\src\geom\MultiLineString.cpp" />
+    <ClCompile Include="core\geos\src\geom\MultiPoint.cpp" />
+    <ClCompile Include="core\geos\src\geom\MultiPolygon.cpp" />
+    <ClCompile Include="core\geos\src\index\bintree\NodeBaseBinTree.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\NodeBaseQuadTree.cpp" />
+    <ClCompile Include="core\geos\src\index\bintree\NodeBinTree.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\NodeFactory.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\NodeGeomGraph.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\NodeMap.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\NodeMapPlanarGraph.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\NodePlanarGraph.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\NodeQuadTree.cpp" />
+    <ClCompile Include="core\geos\src\noding\NodedSegmentString.cpp" />
+    <ClCompile Include="core\geos\src\noding\NodingValidator.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\NotRepresentableException.cpp" />
+    <ClCompile Include="core\geos\src\noding\Octant.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\OffsetCurveBuilder.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\OffsetCurveSetBuilder.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\validate\OffsetPointGenerator.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\OffsetSegmentGenerator.cpp" />
+    <ClCompile Include="core\geos\src\noding\OrientedCoordinateArray.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\OverlayNodeFactory.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\OverlayOp.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\validate\OverlayResultValidator.cpp" />
+    <ClCompile Include="core\geos\src\io\ParseException.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\PlanarGraph.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\PlanarGraphGG.cpp" />
+    <ClCompile Include="core\geos\src\geom\Point.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\PointBuilder.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\PointExtracter.cpp" />
+    <ClCompile Include="core\geos\src\operation\union\PointGeometryUnion.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\PointLocator.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\locate\PointOnGeometryLocator.cpp" />
+    <ClCompile Include="core\geos\src\geom\Polygon.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\PolygonBuilder.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\PolygonExtracter.cpp" />
+    <ClCompile Include="core\geos\src\operation\polygonize\PolygonizeDirectedEdge.cpp" />
+    <ClCompile Include="core\geos\src\operation\polygonize\PolygonizeEdge.cpp" />
+    <ClCompile Include="core\geos\src\operation\polygonize\PolygonizeGraph.cpp" />
+    <ClCompile Include="core\geos\src\operation\polygonize\Polygonizer.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\Position.cpp" />
+    <ClCompile Include="core\geos\src\geom\PrecisionModel.cpp" />
+    <ClCompile Include="core\geos\src\precision\PrecisionReducerCoordinateOperation.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedGeometry.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedGeometryFactory.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedLineString.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedLineStringIntersects.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPoint.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPolygon.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPolygonContains.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPolygonContainsProperly.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPolygonCovers.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPolygonIntersects.cpp" />
+    <ClCompile Include="core\geos\src\geom\prep\PreparedPolygonPredicate.cpp" />
+    <ClCompile Include="core\geos\src\util\Profiler.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\QuadEdge.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\QuadEdgeLocator.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\QuadEdgeSubdivision.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\Quadrant.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\Quadtree.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\QuadtreeNestedRingTester.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\RayCrossingCounter.cpp" />
+    <ClCompile Include="core\geos\src\operation\intersection\Rectangle.cpp" />
+    <ClCompile Include="core\geos\src\operation\predicate\RectangleContains.cpp" />
+    <ClCompile Include="core\geos\src\operation\intersection\RectangleIntersection.cpp" />
+    <ClCompile Include="core\geos\src\operation\intersection\RectangleIntersectionBuilder.cpp" />
+    <ClCompile Include="core\geos\src\operation\predicate\RectangleIntersects.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\RelateComputer.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\RelateNode.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\RelateNodeFactory.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\RelateNodeGraph.cpp" />
+    <ClCompile Include="core\geos\src\operation\relate\RelateOp.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\RepeatedPointTester.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\RightmostEdgeFinder.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\RobustDeterminant.cpp" />
+    <ClCompile Include="core\geos\src\index\bintree\RootBinTree.cpp" />
+    <ClCompile Include="core\geos\src\index\quadtree\RootQuadTree.cpp" />
+    <ClCompile Include="core\geos\src\index\strtree\SIRtree.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\SIRtreePointInRing.cpp" />
+    <ClCompile Include="core\geos\src\index\strtree\STRtree.cpp" />
+    <ClCompile Include="core\geos\src\noding\ScaledNoder.cpp" />
+    <ClCompile Include="core\geos\src\noding\SegmentIntersectionDetector.cpp" />
+    <ClCompile Include="core\geos\src\operation\predicate\SegmentIntersectionTester.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\SegmentIntersector.cpp" />
+    <ClCompile Include="core\geos\src\noding\SegmentNode.cpp" />
+    <ClCompile Include="core\geos\src\noding\SegmentNodeList.cpp" />
+    <ClCompile Include="core\geos\src\noding\SegmentString.cpp" />
+    <ClCompile Include="core\geos\src\noding\SegmentStringUtil.cpp" />
+    <ClCompile Include="core\geos\src\operation\sharedpaths\SharedPathsOp.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\ShortCircuitedGeometryVisitor.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\SimpleEdgeSetIntersector.cpp" />
+    <ClCompile Include="core\geos\src\precision\SimpleGeometryPrecisionReducer.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\SimpleMCSweepLineIntersector.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\SimpleNestedRingTester.cpp" />
+    <ClCompile Include="core\geos\src\noding\SimpleNoder.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\locate\SimplePointInAreaLocator.cpp" />
+    <ClCompile Include="core\geos\src\algorithm\SimplePointInRing.cpp" />
+    <ClCompile Include="core\geos\src\noding\snapround\SimpleSnapRounder.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\SimpleSweepLineIntersector.cpp" />
+    <ClCompile Include="core\geos\src\geom\util\SineStarFactory.cpp" />
+    <ClCompile Include="core\geos\src\noding\SingleInteriorIntersectionFinder.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\snap\SnapIfNeededOverlayOp.cpp" />
+    <ClCompile Include="core\geos\src\operation\overlay\snap\SnapOverlayOp.cpp" />
+    <ClCompile Include="core\geos\src\index\intervalrtree\SortedPackedIntervalRTree.cpp" />
+    <ClCompile Include="core\geos\src\io\StringTokenizer.cpp" />
+    <ClCompile Include="core\geos\src\planargraph\Subgraph.cpp" />
+    <ClCompile Include="core\geos\src\operation\buffer\SubgraphDepthLocater.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\SweepLineEvent.cpp" />
+    <ClCompile Include="core\geos\src\index\sweepline\SweepLineEventSL.cpp" />
+    <ClCompile Include="core\geos\src\index\sweepline\SweepLineIndex.cpp" />
+    <ClCompile Include="core\geos\src\index\sweepline\SweepLineInterval.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\index\SweepLineSegment.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\SweeplineNestedRingTester.cpp" />
+    <ClCompile Include="core\geos\src\simplify\TaggedLineSegment.cpp" />
+    <ClCompile Include="core\geos\src\simplify\TaggedLineString.cpp" />
+    <ClCompile Include="core\geos\src\simplify\TaggedLineStringSimplifier.cpp" />
+    <ClCompile Include="core\geos\src\simplify\TaggedLinesSimplifier.cpp" />
+    <ClCompile Include="core\geos\src\geomgraph\TopologyLocation.cpp" />
+    <ClCompile Include="core\geos\src\simplify\TopologyPreservingSimplifier.cpp" />
+    <ClCompile Include="core\geos\src\operation\valid\TopologyValidationError.cpp" />
+    <ClCompile Include="core\geos\src\geom\Triangle.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\TrianglePredicate.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\TriangleVisitor.cpp" />
+    <ClCompile Include="core\geos\src\operation\union\UnaryUnionOp.cpp" />
+    <ClCompile Include="core\geos\src\io\Unload.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\quadedge\Vertex.cpp" />
+    <ClCompile Include="core\geos\src\triangulate\VoronoiDiagramBuilder.cpp" />
+    <ClCompile Include="core\geos\src\io\WKBReader.cpp" />
+    <ClCompile Include="core\geos\src\io\WKBWriter.cpp" />
+    <ClCompile Include="core\geos\src\io\WKTReader.cpp" />
+    <ClCompile Include="core\geos\src\io\WKTWriter.cpp" />
+    <ClCompile Include="core\geos\src\io\Writer.cpp" />
+    <ClCompile Include="core\abstractfactory.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\analysispattern.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\applicationmodel.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\attributedefinition.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\attributetable.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\basetable.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\blockiterator.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\boundsonlycoordinatesystem.cpp" />
+    <ClCompile Include="core\util\bresenham.cpp" />
+    <ClCompile Include="core\catalog\catalog.cpp" />
+    <ClCompile Include="core\catalog\catalogconnector.cpp" />
+    <ClCompile Include="core\catalog\catalogexplorer.cpp" />
+    <ClCompile Include="core\catalog\catalogexplorerworker.cpp" />
+    <ClCompile Include="core\catalog\catalogquery.cpp" />
+    <ClCompile Include="core\catalog\catalogview.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\colordomain.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\coloritem.cpp" />
+    <ClCompile Include="core\ilwisobjects\representation\colorlookup.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\colorrange.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\columndefinition.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\combinationmatrix.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\commandhandler.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\conditionNode.cpp" />
+    <ClCompile Include="core\connectorfactory.cpp" />
+    <ClCompile Include="core\util\consoletranquilizer.cpp" />
+    <ClCompile Include="core\ilwisobjects\representation\continuouscolorlookup.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\controlpoint.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\conventionalcoordinatesystem.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\coordinatedomain.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\coordinatesystem.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\cornersgeoreference.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\coverage.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\csytransform.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\ctpgeoreference.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\datadefinition.cpp" />
+    <ClCompile Include="core\catalog\dataformat.cpp" />
+    <ClCompile Include="core\catalog\dataset.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\domain.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\domainhelper.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\domainmerger.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\ellipsoid.cpp" />
+    <ClCompile Include="core\errorobject.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\executionnode.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\feature.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\featurecoverage.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\featurefactory.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\featureiterator.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\classification\featurespace.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\flattable.cpp" />
+    <ClCompile Include="core\catalog\foldercatalogexplorer.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\geodeticdatum.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\geometryhelper.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\georefadapter.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\georeference.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\georefimplementation.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\georefimplementationfactory.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\grid.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\identifieritem.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\identifierrange.cpp" />
+    <ClCompile Include="core\identity.cpp" />
+    <ClCompile Include="core\identityinterface.cpp" />
+    <ClCompile Include="core\util\ilwisangle.cpp" />
+    <ClCompile Include="core\util\ilwisconfiguration.cpp" />
+    <ClCompile Include="core\ilwiscontext.cpp" />
+    <ClCompile Include="core\util\ilwiscoordinate.cpp" />
+    <ClCompile Include="core\ilwisobjects\ilwisobject.cpp" />
+    <ClCompile Include="core\ilwisobjects\ilwisobjectconnector.cpp" />
+    <ClCompile Include="core\ilwisobjects\ilwisobjectfactory.cpp" />
+    <ClCompile Include="core\ilwistypes.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\indexslicer.cpp" />
+    <ClCompile Include="core\geos\src\inlines.cpp" />
+    <ClCompile Include="core\internaldatabaseconnection.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\interval.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\intervalrange.cpp" />
+    <ClCompile Include="core\iooptions.cpp" />
+    <ClCompile Include="core\issuelogger.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\itemrange.cpp" />
+    <ClCompile Include="core\util\juliantime.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\junctionNode.cpp" />
+    <ClCompile Include="core\kernel.cpp">
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4577;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="core\util\locker.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\logicalexpressionparser.cpp" />
+    <ClCompile Include="core\catalog\mastercatalog.cpp" />
+    <ClCompile Include="core\catalog\mastercatalogcache.cpp" />
+    <ClCompile Include="core\geos\src\util\math.cpp" />
+    <ClCompile Include="core\util\mathhelper.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\model.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\modellerfactory.cpp" />
+    <ClCompile Include="core\module.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\numericdomain.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\numericoperation.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\numericrange.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operation.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operationExpression.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operationhelper.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operationhelperfeatures.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operationhelpergrid.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operationmetadata.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\operationnode.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\operationoverloads.cpp" />
+    <ClCompile Include="core\oshelper.cpp" />
+    <ClCompile Include="core\ilwisobjects\representation\palettecolorlookup.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\pixeliterator.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\planarctpgeoreference.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\proj4parameters.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\projection.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\coordinatesystem\projectionimplementation.cpp" />
+    <ClCompile Include="core\publicdatabase.cpp" />
+    <ClCompile Include="core\util\range.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\rangejunctionnode.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\rangenode.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\rastercoverage.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\rasterfilter.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\rasterinterpolator.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\record.cpp" />
+    <ClCompile Include="core\ilwisobjects\representation\representation.cpp" />
+    <ClCompile Include="core\catalog\resource.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\classification\sampleset.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\classification\samplestatistics.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\script.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\selectabletable.cpp" />
+    <ClCompile Include="core\ilwisobjects\representation\shapelookup.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\simpelgeoreference.cpp" />
+    <ClCompile Include="core\util\supportlibraryloader.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\symboltable.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\tablemerger.cpp" />
+    <ClCompile Include="core\ilwisobjects\table\tableselector.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\textdomain.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\thematicitem.cpp" />
+    <ClCompile Include="core\util\tranquilizer.cpp" />
+    <ClCompile Include="core\util\tranquilizerfactory.cpp" />
+    <ClCompile Include="core\ilwisobjects\geometry\georeference\undeterminedgeoreference.cpp" />
+    <ClCompile Include="core\version.cpp" />
+    <ClCompile Include="core\ilwisobjects\coverage\vertexiterator.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\workflow.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\workflowimplementation.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\workflownode.cpp" />
+    <ClCompile Include="core\ilwisobjects\operation\modeller\workflowparameter.cpp" />
+    <ClCompile Include="core\util\xmlstreamparser.cpp" />
+    <ClCompile Include="core\util\xpathparser.cpp" />
+    <ClCompile Include="Debug\moc_catalog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogexplorerworker.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogview.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ilwisobjectconnector.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_issuelogger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_kernel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_mastercatalog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_module.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_tranquilizer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_workflowimplementation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogexplorerworker.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogview.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ilwisobjectconnector.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_issuelogger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_kernel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mastercatalog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_module.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_tranquilizer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_workflowimplementation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_xmlstreamparser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\geos\include\geos\index\strtree\AbstractNode.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\AbstractPreparedPolygonContains.h" />
+    <ClInclude Include="core\geos\include\geos\index\strtree\AbstractSTRtree.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\Angle.h" />
+    <ClInclude Include="core\geos\include\geos\util\Assert.h" />
+    <ClInclude Include="core\geos\include\geos\util\AssertionFailedException.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\BasicPreparedGeometry.h" />
+    <ClInclude Include="core\geos\include\geos\noding\BasicSegmentString.h" />
+    <ClInclude Include="core\geos\include\geos\geom\BinaryOp.h" />
+    <ClInclude Include="core\geos\include\geos\index\bintree\Bintree.h" />
+    <ClInclude Include="core\geos\include\geos\index\strtree\Boundable.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\BoundaryNodeRule.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\BufferBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\BufferInputLineSimplifier.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\BufferOp.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\BufferParameters.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\BufferSubgraph.h" />
+    <ClInclude Include="core\geos\include\geos\io\ByteOrderDataInStream.h" />
+    <ClInclude Include="core\geos\include\geos\io\ByteOrderValues.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\CGAlgorithms.h" />
+    <ClInclude Include="core\geos\include\geos\io\CLocalizer.h" />
+    <ClInclude Include="core\geos\include\geos\operation\union\CascadedPolygonUnion.h" />
+    <ClInclude Include="core\geos\include\geos\operation\union\CascadedUnion.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\CentralEndpointIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\Centroid.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\CentroidArea.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\CentroidLine.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\CentroidPoint.h" />
+    <ClInclude Include="core\geos\include\geos\precision\CommonBits.h" />
+    <ClInclude Include="core\geos\include\geos\precision\CommonBitsOp.h" />
+    <ClInclude Include="core\geos\include\geos\precision\CommonBitsRemover.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\ComponentCoordinateExtracter.h" />
+    <ClInclude Include="core\geos\include\geos\operation\distance\ConnectedElementLocationFilter.h" />
+    <ClInclude Include="core\geos\include\geos\operation\distance\ConnectedElementPointFilter.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\ConnectedInteriorTester.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\algorithm\ConnectedSubgraphFinder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\ConsistentAreaTester.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\ConvexHull.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Coordinate.h" />
+    <ClInclude Include="core\geos\include\geos\util\CoordinateArrayFilter.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateArraySequence.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateArraySequenceFactory.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateFilter.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateList.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\CoordinateOperation.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateSequence.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateSequenceFactory.h" />
+    <ClInclude Include="core\geos\include\geos\geom\CoordinateSequenceFilter.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\DelaunayTriangulationBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\Depth.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Dimension.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\DirectedEdge.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\DirectedEdge.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\DirectedEdgeStar.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\DirectedEdgeStar.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\distance\DiscreteHausdorffDistance.h" />
+    <ClInclude Include="core\geos\include\geos\operation\distance\DistanceOp.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\distance\DistanceToPoint.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\DoubleBits.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\DouglasPeuckerLineSimplifier.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\DouglasPeuckerSimplifier.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\Edge.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\Edge.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeEnd.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\EdgeEndBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\EdgeEndBundle.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\EdgeEndBundleStar.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeEndStar.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeIntersection.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeIntersectionList.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeList.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeNodingValidator.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\EdgeRing.h" />
+    <ClInclude Include="core\geos\include\geos\operation\polygonize\EdgeRing.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\EdgeSetIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\EdgeSetNoder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\linemerge\EdgeString.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\ElevationMatrix.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\ElevationMatrixCell.h" />
+    <ClInclude Include="core\geos\include\geos\precision\EnhancedPrecisionOp.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Envelope.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\ExtractLineByLocation.h" />
+    <ClInclude Include="core\geos\include\geos\noding\FastNodingValidator.h" />
+    <ClInclude Include="core\geos\include\geos\noding\FastSegmentSetIntersectionFinder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\validate\FuzzyPointLocator.h" />
+    <ClInclude Include="core\geos\include\geos\util\GEOSException.h" />
+    <ClInclude Include="core\geos\include\geos\util\GeometricShapeFactory.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Geometry.h" />
+    <ClInclude Include="core\geos\include\geos\geom\GeometryCollection.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\GeometryCombiner.h" />
+    <ClInclude Include="core\geos\include\geos\geom\GeometryComponentFilter.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\GeometryEditor.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\GeometryEditorOperation.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\GeometryExtracter.h" />
+    <ClInclude Include="core\geos\include\geos\geom\GeometryFactory.h" />
+    <ClInclude Include="core\geos\include\geos\geom\GeometryFilter.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\GeometryGraph.h" />
+    <ClInclude Include="core\geos\include\geos\operation\GeometryGraphOperation.h" />
+    <ClInclude Include="core\geos\include\geos\geom\GeometryList.h" />
+    <ClInclude Include="core\geos\include\geos\operation\union\GeometryListHolder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\distance\GeometryLocation.h" />
+    <ClInclude Include="core\geos\include\geos\noding\GeometryNoder.h" />
+    <ClInclude Include="core\geos\include\geos\precision\GeometryPrecisionReducer.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\snap\GeometrySnapper.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\GeometryTransformer.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\GraphComponent.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\GraphComponent.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\HCoordinate.h" />
+    <ClInclude Include="core\geos\include\geos\noding\snapround\HotPixel.h" />
+    <ClInclude Include="core\geos\include\geos\util\IllegalArgumentException.h" />
+    <ClInclude Include="core\geos\include\geos\util\IllegalStateException.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\IncrementalDelaunayTriangulator.h" />
+    <ClInclude Include="core\geos\src\operation\valid\IndexedNestedRingTester.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\locate\IndexedPointInAreaLocator.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\InteriorPointArea.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\InteriorPointLine.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\InteriorPointPoint.h" />
+    <ClInclude Include="core\geos\include\geos\util\Interrupt.h" />
+    <ClInclude Include="core\geos\include\geos\noding\IntersectionAdder.h" />
+    <ClInclude Include="core\geos\include\geos\noding\IntersectionFinderAdder.h" />
+    <ClInclude Include="core\geos\include\geos\geom\IntersectionMatrix.h" />
+    <ClInclude Include="core\geos\include\geos\index\bintree\Interval.h" />
+    <ClInclude Include="core\geos\include\geos\index\strtree\Interval.h" />
+    <ClInclude Include="core\geos\include\geos\index\intervalrtree\IntervalRTreeBranchNode.h" />
+    <ClInclude Include="core\geos\include\geos\index\intervalrtree\IntervalRTreeLeafNode.h" />
+    <ClInclude Include="core\geos\include\geos\index\intervalrtree\IntervalRTreeNode.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\IntervalSize.h" />
+    <ClInclude Include="core\geos\include\geos\operation\IsSimpleOp.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\IsValidOp.h" />
+    <ClInclude Include="core\geos\include\geos\index\strtree\ItemBoundable.h" />
+    <ClInclude Include="core\geos\include\geos\index\ItemVisitor.h" />
+    <ClInclude Include="core\geos\include\geos\noding\IteratedNoder.h" />
+    <ClInclude Include="core\geos\include\geos\index\bintree\Key.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\Key.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\Label.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\LastFoundQuadEdgeLocator.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LengthIndexOfPoint.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LengthIndexedLine.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LengthLocationMap.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\LineBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\LineIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\operation\linemerge\LineMergeDirectedEdge.h" />
+    <ClInclude Include="core\geos\include\geos\operation\linemerge\LineMergeEdge.h" />
+    <ClInclude Include="core\geos\include\geos\operation\linemerge\LineMergeGraph.h" />
+    <ClInclude Include="core\geos\include\geos\operation\linemerge\LineMerger.h" />
+    <ClInclude Include="core\geos\include\geos\geom\LineSegment.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\LineSegmentIndex.h" />
+    <ClInclude Include="core\geos\include\geos\operation\linemerge\LineSequencer.h" />
+    <ClInclude Include="core\geos\include\geos\geom\LineString.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\snap\LineStringSnapper.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Lineal.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\LinearComponentExtracter.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LinearGeometryBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LinearIterator.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LinearLocation.h" />
+    <ClInclude Include="core\geos\include\geos\geom\LinearRing.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\LocateFailureException.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Location.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LocationIndexOfLine.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LocationIndexOfPoint.h" />
+    <ClInclude Include="core\geos\include\geos\linearref\LocationIndexedLine.h" />
+    <ClInclude Include="core\geos\include\geos\noding\MCIndexNoder.h" />
+    <ClInclude Include="core\geos\include\geos\noding\snapround\MCIndexPointSnapper.h" />
+    <ClInclude Include="core\geos\include\geos\noding\MCIndexSegmentSetMutualIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\noding\snapround\MCIndexSnapRounder.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\MCPointInRing.h" />
+    <ClInclude Include="core\geos\include\geos\util\Machine.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\MaximalEdgeRing.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\MinimalEdgeRing.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\MinimumDiameter.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\MonotoneChain.h" />
+    <ClInclude Include="core\geos\include\geos\index\chain\MonotoneChain.h" />
+    <ClInclude Include="core\geos\include\geos\index\chain\MonotoneChainBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\MonotoneChainEdge.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\MonotoneChainIndexer.h" />
+    <ClInclude Include="core\geos\include\geos\index\chain\MonotoneChainOverlapAction.h" />
+    <ClInclude Include="core\geos\include\geos\index\chain\MonotoneChainSelectAction.h" />
+    <ClInclude Include="core\geos\include\geos\geom\MultiLineString.h" />
+    <ClInclude Include="core\geos\include\geos\geom\MultiPoint.h" />
+    <ClInclude Include="core\geos\include\geos\geom\MultiPolygon.h" />
+    <ClInclude Include="core\geos\include\geos\noding\NodableSegmentString.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\Node.h" />
+    <ClInclude Include="core\geos\include\geos\index\bintree\Node.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\Node.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\Node.h" />
+    <ClInclude Include="core\geos\include\geos\index\bintree\NodeBase.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\NodeBase.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\NodeFactory.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\NodeMap.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\NodeMap.h" />
+    <ClInclude Include="core\geos\include\geos\noding\NodedSegmentString.h" />
+    <ClInclude Include="core\geos\include\geos\noding\Noder.h" />
+    <ClInclude Include="core\geos\include\geos\noding\NodingValidator.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\NotRepresentableException.h" />
+    <ClInclude Include="core\geos\include\geos\noding\Octant.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\OffsetCurveBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\OffsetCurveSetBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\validate\OffsetPointGenerator.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\OffsetSegmentGenerator.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\OffsetSegmentString.h" />
+    <ClInclude Include="core\geos\include\geos\noding\OrientedCoordinateArray.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\OverlayNodeFactory.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\OverlayOp.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\validate\OverlayResultValidator.h" />
+    <ClInclude Include="core\geos\include\geos\io\ParseException.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\PlanarGraph.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\PlanarGraph.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Point.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\PointBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\PointExtracter.h" />
+    <ClInclude Include="core\geos\include\geos\operation\union\PointGeometryUnion.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\PointInRing.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\PointLocator.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\locate\PointOnGeometryLocator.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\distance\PointPairDistance.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Polygon.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\PolygonBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\PolygonExtracter.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Polygonal.h" />
+    <ClInclude Include="core\geos\include\geos\operation\polygonize\PolygonizeDirectedEdge.h" />
+    <ClInclude Include="core\geos\include\geos\operation\polygonize\PolygonizeEdge.h" />
+    <ClInclude Include="core\geos\include\geos\operation\polygonize\PolygonizeGraph.h" />
+    <ClInclude Include="core\geos\include\geos\operation\polygonize\Polygonizer.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\Position.h" />
+    <ClInclude Include="core\geos\include\geos\geom\PrecisionModel.h" />
+    <ClInclude Include="core\geos\include\geos\precision\PrecisionReducerCoordinateOperation.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedGeometry.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedGeometryFactory.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedLineString.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedLineStringIntersects.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPoint.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPolygon.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPolygonContains.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPolygonContainsProperly.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPolygonCovers.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPolygonIntersects.h" />
+    <ClInclude Include="core\geos\include\geos\geom\prep\PreparedPolygonPredicate.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Puntal.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\QuadEdge.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\QuadEdgeLocator.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\QuadEdgeSubdivision.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\Quadrant.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\Quadtree.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\QuadtreeNestedRingTester.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\RayCrossingCounter.h" />
+    <ClInclude Include="core\geos\include\geos\operation\intersection\Rectangle.h" />
+    <ClInclude Include="core\geos\include\geos\operation\predicate\RectangleContains.h" />
+    <ClInclude Include="core\geos\include\geos\operation\intersection\RectangleIntersection.h" />
+    <ClInclude Include="core\geos\include\geos\operation\intersection\RectangleIntersectionBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\predicate\RectangleIntersects.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\RelateComputer.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\RelateNode.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\RelateNodeFactory.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\RelateNodeGraph.h" />
+    <ClInclude Include="core\geos\include\geos\operation\relate\RelateOp.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\RepeatedPointTester.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\RightmostEdgeFinder.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\RobustDeterminant.h" />
+    <ClInclude Include="core\geos\include\geos\index\bintree\Root.h" />
+    <ClInclude Include="core\geos\include\geos\index\quadtree\Root.h" />
+    <ClInclude Include="core\geos\include\geos\index\strtree\SIRtree.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\SIRtreePointInRing.h" />
+    <ClInclude Include="core\geos\include\geos\index\strtree\STRtree.h" />
+    <ClInclude Include="core\geos\include\geos\noding\ScaledNoder.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentIntersectionDetector.h" />
+    <ClInclude Include="core\geos\include\geos\operation\predicate\SegmentIntersectionTester.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SegmentIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentNode.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentNodeList.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentPointComparator.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentSetMutualIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentString.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SegmentStringUtil.h" />
+    <ClInclude Include="core\geos\include\geos\operation\sharedpaths\SharedPathsOp.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\ShortCircuitedGeometryVisitor.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SimpleEdgeSetIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\precision\SimpleGeometryPrecisionReducer.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SimpleMCSweepLineIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\SimpleNestedRingTester.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SimpleNoder.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\locate\SimplePointInAreaLocator.h" />
+    <ClInclude Include="core\geos\include\geos\algorithm\SimplePointInRing.h" />
+    <ClInclude Include="core\geos\include\geos\noding\snapround\SimpleSnapRounder.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SimpleSweepLineIntersector.h" />
+    <ClInclude Include="core\geos\include\geos\geom\util\SineStarFactory.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SingleInteriorIntersectionFinder.h" />
+    <ClInclude Include="core\geos\include\geos\noding\SinglePassNoder.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\snap\SnapIfNeededOverlayOp.h" />
+    <ClInclude Include="core\geos\include\geos\operation\overlay\snap\SnapOverlayOp.h" />
+    <ClInclude Include="core\geos\include\geos\index\intervalrtree\SortedPackedIntervalRTree.h" />
+    <ClInclude Include="core\geos\include\geos\index\SpatialIndex.h" />
+    <ClInclude Include="core\geos\include\geos\io\StringTokenizer.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph\Subgraph.h" />
+    <ClInclude Include="core\geos\include\geos\operation\buffer\SubgraphDepthLocater.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SweepLineEvent.h" />
+    <ClInclude Include="core\geos\include\geos\index\sweepline\SweepLineEvent.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SweepLineEventObj.h" />
+    <ClInclude Include="core\geos\include\geos\index\sweepline\SweepLineIndex.h" />
+    <ClInclude Include="core\geos\include\geos\index\sweepline\SweepLineInterval.h" />
+    <ClInclude Include="core\geos\include\geos\index\sweepline\SweepLineOverlapAction.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\index\SweepLineSegment.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\SweeplineNestedRingTester.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\TaggedLineSegment.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\TaggedLineString.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\TaggedLineStringSimplifier.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\TaggedLinesSimplifier.h" />
+    <ClInclude Include="core\geos\include\geos\util\TopologyException.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph\TopologyLocation.h" />
+    <ClInclude Include="core\geos\include\geos\simplify\TopologyPreservingSimplifier.h" />
+    <ClInclude Include="core\geos\include\geos\operation\valid\TopologyValidationError.h" />
+    <ClInclude Include="core\geos\include\geos\geom\Triangle.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\TrianglePredicate.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\TriangleVisitor.h" />
+    <ClInclude Include="core\geos\include\geos\operation\union\UnaryUnionOp.h" />
+    <ClInclude Include="core\geos\include\geos\util\UniqueCoordinateArrayFilter.h" />
+    <ClInclude Include="core\geos\include\geos\util\UnsupportedOperationException.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\quadedge\Vertex.h" />
+    <ClInclude Include="core\geos\include\geos\triangulate\VoronoiDiagramBuilder.h" />
+    <ClInclude Include="core\geos\include\geos\io\WKBConstants.h" />
+    <ClInclude Include="core\geos\include\geos\io\WKBReader.h" />
+    <ClInclude Include="core\geos\include\geos\io\WKBWriter.h" />
+    <ClInclude Include="core\geos\include\geos\io\WKTReader.h" />
+    <ClInclude Include="core\geos\include\geos\io\WKTWriter.h" />
+    <ClInclude Include="core\geos\include\geos\io\Writer.h" />
+    <ClInclude Include="core\abstractfactory.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\analysispattern.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\applicationmodel.h" />
+    <ClInclude Include="core\ilwisobjects\table\attributedefinition.h" />
+    <ClInclude Include="core\ilwisobjects\table\attributetable.h" />
+    <ClInclude Include="core\ilwisobjects\table\basetable.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\blockiterator.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\boundsonlycoordinatesystem.h" />
+    <ClInclude Include="core\util\box.h" />
+    <ClInclude Include="core\util\bresenham.h" />
+    <CustomBuild Include="core\catalog\catalog.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing catalog.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing catalog.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\catalog\catalogconnector.h" />
+    <ClInclude Include="core\catalog\catalogexplorer.h" />
+    <CustomBuild Include="core\catalog\catalogexplorerworker.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing catalogexplorerworker.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing catalogexplorerworker.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\catalog\catalogquery.h" />
+    <CustomBuild Include="core\catalog\catalogview.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing catalogview.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing catalogview.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\ilwisobjects\domain\colordomain.h" />
+    <ClInclude Include="core\ilwisobjects\domain\coloritem.h" />
+    <ClInclude Include="core\ilwisobjects\representation\colorlookup.h" />
+    <ClInclude Include="core\ilwisobjects\domain\colorrange.h" />
+    <ClInclude Include="core\ilwisobjects\table\columndefinition.h" />
+    <ClInclude Include="core\ilwisobjects\table\combinationmatrix.h" />
+    <CustomBuild Include="core\ilwisobjects\operation\commandhandler.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing commandhandler.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing commandhandler.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\ilwisobjects\operation\modeller\conditionNode.h" />
+    <ClInclude Include="core\connectorfactory.h" />
+    <ClInclude Include="core\connectorinterface.h" />
+    <ClInclude Include="core\util\consoletranquilizer.h" />
+    <ClInclude Include="core\util\containerstatistics.h" />
+    <ClInclude Include="core\ilwisobjects\representation\continuouscolorlookup.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\controlpoint.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\conventionalcoordinatesystem.h" />
+    <ClInclude Include="core\ilwisobjects\domain\coordinatedomain.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\coordinatesystem.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\cornersgeoreference.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\coverage.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\csytransform.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\ctpgeoreference.h" />
+    <ClInclude Include="core\ilwisobjects\domain\datadefinition.h" />
+    <ClInclude Include="core\catalog\dataformat.h" />
+    <ClInclude Include="core\catalog\dataset.h" />
+    <ClInclude Include="core\ilwisobjects\domain\domain.h" />
+    <ClInclude Include="core\ilwisobjects\domain\domainhelper.h" />
+    <ClInclude Include="core\ilwisobjects\domain\domainitem.h" />
+    <ClInclude Include="core\ilwisobjects\domain\domainmerger.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\ellipsoid.h" />
+    <ClInclude Include="core\util\errmessages.h" />
+    <ClInclude Include="core\errorobject.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\executionnode.h" />
+    <ClInclude Include="core\geos\include\geos\export.h" />
+    <ClInclude Include="core\factory.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\feature.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\featurecoverage.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\featurefactory.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\featureiterator.h" />
+    <ClInclude Include="core\ilwisobjects\operation\classification\featurespace.h" />
+    <ClInclude Include="core\ilwisobjects\table\flattable.h" />
+    <ClInclude Include="core\catalog\foldercatalogexplorer.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\geodeticdatum.h" />
+    <ClInclude Include="core\geos\include\geos\geom.h" />
+    <ClInclude Include="core\geos\include\geos\geomUtil.h" />
+    <ClInclude Include="core\util\geometries.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\geometryhelper.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraph.h" />
+    <ClInclude Include="core\geos\include\geos\geomgraphindex.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\georefadapter.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\georeference.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\georefimplementation.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\georefimplementationfactory.h" />
+    <ClInclude Include="core\geos\include\geos.h" />
+    <ClInclude Include="core\geos\include\geos\geosAlgorithm.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\grid.h" />
+    <ClInclude Include="core\ilwisobjects\domain\identifieritem.h" />
+    <ClInclude Include="core\ilwisobjects\domain\identifierrange.h" />
+    <ClInclude Include="core\identity.h" />
+    <ClInclude Include="core\identityinterface.h" />
+    <ClInclude Include="core\ilwis.h" />
+    <ClInclude Include="core\util\ilwisangle.h" />
+    <ClInclude Include="core\util\ilwisconfiguration.h" />
+    <ClInclude Include="core\ilwiscontext.h" />
+    <ClInclude Include="core\util\ilwiscoordinate.h" />
+    <ClInclude Include="core\ilwisobjects\ilwisdata.h" />
+    <ClInclude Include="core\ilwisinterfaces.h" />
+    <CustomBuild Include="core\ilwisobjects\ilwisobject.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing ilwisobject.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing ilwisobject.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="core\ilwisobjects\ilwisobjectconnector.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing ilwisobjectconnector.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing ilwisobjectconnector.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\ilwisobjects\ilwisobjectfactory.h" />
+    <ClInclude Include="core\ilwisobjects\operation\ilwisoperation.h" />
+    <ClInclude Include="core\ilwistypes.h" />
+    <ClInclude Include="core\geos\include\geos\indexBintree.h" />
+    <ClInclude Include="core\geos\include\geos\indexChain.h" />
+    <ClInclude Include="core\geos\include\geos\indexQuadtree.h" />
+    <ClInclude Include="core\geos\include\geos\indexStrtree.h" />
+    <ClInclude Include="core\geos\include\geos\indexSweepline.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\indexslicer.h" />
+    <ClInclude Include="core\geos\include\geos\inline.h" />
+    <ClInclude Include="core\internaldatabaseconnection.h" />
+    <ClInclude Include="core\ilwisobjects\domain\interval.h" />
+    <ClInclude Include="core\ilwisobjects\domain\intervalrange.h" />
+    <ClInclude Include="core\geos\include\geos\io.h" />
+    <ClInclude Include="core\iooptions.h" />
+    <CustomBuild Include="core\issuelogger.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing issuelogger.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing issuelogger.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\ilwisobjects\domain\itemdomain.h" />
+    <ClInclude Include="core\ilwisobjects\domain\itemiterator.h" />
+    <ClInclude Include="core\ilwisobjects\domain\itemrange.h" />
+    <ClInclude Include="core\util\juliantime.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\junctionNode.h" />
+    <CustomBuild Include="core\kernel.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing kernel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing kernel.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\kernel_global.h" />
+    <ClInclude Include="core\util\location.h" />
+    <ClInclude Include="core\util\locker.h" />
+    <ClInclude Include="core\ilwisobjects\operation\logicalexpressionparser.h" />
+    <CustomBuild Include="core\catalog\mastercatalog.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing mastercatalog.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing mastercatalog.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\catalog\mastercatalogcache.h" />
+    <ClInclude Include="core\geos\include\geos\util\math.h" />
+    <ClInclude Include="core\util\mathhelper.h" />
+    <ClInclude Include="core\util\memorymanager.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\model.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\modellerfactory.h" />
+    <CustomBuild Include="core\module.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing module.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing module.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\geos\include\geos\noding.h" />
+    <ClInclude Include="core\geos\include\geos\nodingSnapround.h" />
+    <ClInclude Include="core\ilwisobjects\domain\numericdomain.h" />
+    <ClInclude Include="core\ilwisobjects\operation\numericoperation.h" />
+    <ClInclude Include="core\ilwisobjects\domain\numericrange.h" />
+    <ClInclude Include="core\geos\include\geos\opBuffer.h" />
+    <ClInclude Include="core\geos\include\geos\opDistance.h" />
+    <ClInclude Include="core\geos\include\geos\opLinemerge.h" />
+    <ClInclude Include="core\geos\include\geos\opOverlay.h" />
+    <ClInclude Include="core\geos\include\geos\opPolygonize.h" />
+    <ClInclude Include="core\geos\include\geos\opPredicate.h" />
+    <ClInclude Include="core\geos\include\geos\opRelate.h" />
+    <ClInclude Include="core\geos\include\geos\opValid.h" />
+    <ClInclude Include="core\geos\include\geos\operation.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operation.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationExpression.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationconnector.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationhelper.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationhelperfeatures.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationhelpergrid.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationmetadata.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\operationnode.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationoverloads.h" />
+    <ClInclude Include="core\ilwisobjects\operation\operationspec.h" />
+    <ClInclude Include="core\oshelper.h" />
+    <ClInclude Include="core\ilwisobjects\representation\palettecolorlookup.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\pixeliterator.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\planarctpgeoreference.h" />
+    <ClInclude Include="core\geos\include\geos\planargraph.h" />
+    <ClInclude Include="core\geos\include\geos\platform.h.in" />
+    <ClInclude Include="core\geos\include\geos\platform.h.vc" />
+    <ClInclude Include="core\geos\include\geos\platform.h" />
+    <ClInclude Include="core\geos\include\geos\precision.h" />
+    <ClInclude Include="core\geos\include\geos\profiler.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\proj4parameters.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\projection.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\projectionfactory.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\projectionimplementation.h" />
+    <ClInclude Include="core\publicdatabase.h" />
+    <ClInclude Include="core\util\range.h" />
+    <ClInclude Include="core\ilwisobjects\domain\rangeiterator.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\rangejunctionnode.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\rangenode.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\raster.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\rastercoverage.h" />
+    <ClInclude Include="core\ilwisobjects\operation\rasterfilter.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\rasterinterpolator.h" />
+    <ClInclude Include="core\ilwisobjects\table\record.h" />
+    <ClInclude Include="core\ilwisobjects\representation\representation.h" />
+    <ClInclude Include="core\catalog\resource.h" />
+    <ClInclude Include="core\ilwisobjects\operation\classification\sampleset.h" />
+    <ClInclude Include="core\ilwisobjects\operation\classification\samplestatistics.h" />
+    <ClInclude Include="core\ilwisobjects\operation\script.h" />
+    <ClInclude Include="core\ilwisobjects\table\selectabletable.h" />
+    <ClInclude Include="core\ilwisobjects\representation\shapelookup.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\simpelgeoreference.h" />
+    <ClInclude Include="core\util\size.h" />
+    <ClInclude Include="core\geos\include\geos\spatialIndex.h" />
+    <ClInclude Include="core\util\supportlibraryloader.h" />
+    <ClInclude Include="core\ilwisobjects\operation\symboltable.h" />
+    <ClInclude Include="core\ilwisobjects\table\table.h" />
+    <ClInclude Include="core\ilwisobjects\table\tablemerger.h" />
+    <ClInclude Include="core\ilwisobjects\table\tableselector.h" />
+    <ClInclude Include="core\ilwisobjects\domain\textdomain.h" />
+    <ClInclude Include="core\ilwisobjects\domain\thematicitem.h" />
+    <ClInclude Include="core\geos\include\geos\timeval.h" />
+    <CustomBuild Include="core\util\tranquilizer.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing tranquilizer.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing tranquilizer.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\util\tranquilizerfactory.h" />
+    <ClInclude Include="core\ilwisobjects\geometry\georeference\undeterminedgeoreference.h" />
+    <ClInclude Include="core\geos\include\geos\unload.h" />
+    <ClInclude Include="core\geos\include\geos\util.h" />
+    <ClInclude Include="core\geos\include\geos\version.h.in" />
+    <ClInclude Include="core\geos\include\geos\version.h.vc" />
+    <ClInclude Include="core\geos\include\geos\version.h" />
+    <ClInclude Include="core\version.h" />
+    <ClInclude Include="core\ilwisobjects\coverage\vertexiterator.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\workflow.h" />
+    <CustomBuild Include="core\ilwisobjects\operation\modeller\workflowimplementation.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing workflowimplementation.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing workflowimplementation.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\ilwisobjects\operation\modeller\workflownode.h" />
+    <ClInclude Include="core\ilwisobjects\operation\modeller\workflowparameter.h" />
+    <CustomBuild Include="core\util\xmlstreamparser.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing xmlstreamparser.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DCORE_LIBRARY -DQT_GUI_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_DEBUG -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtXmlPatterns" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing xmlstreamparser.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="core\util\xpathparser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Debug\moc_commandhandler.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ilwisobject.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_xmlstreamparser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_commandhandler.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ilwisobject.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="core\geos\include\geos\._version.h.vc" />
+    <None Include="core\geos\include\config.h.in" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="qtmsvc64" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

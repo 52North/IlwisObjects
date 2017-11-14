@@ -1,0 +1,906 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{ea8fb42b-1228-4185-a0b4-199749cab0d4}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{1388cfb5-da57-43ae-8930-17464fe68f66}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\catalog">
+      <UniqueIdentifier>{058573ac-302f-458a-aac9-d0edd6546220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\spatialdrawing">
+      <UniqueIdentifier>{87019e15-1428-445a-9281-7dba010f4653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\spatialdrawing\editors">
+      <UniqueIdentifier>{efcff1fa-ac41-4202-bb75-fec9f8167c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\spatialdrawing">
+      <UniqueIdentifier>{a17f28e5-4712-444d-8bb6-40c6079c977e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ilwisobjects">
+      <UniqueIdentifier>{c4829e5e-c906-4b6b-87cc-cdbc7c398a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\catalog">
+      <UniqueIdentifier>{9b524f2c-cb9c-489f-b4c0-cef0dfbb2e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\modeller">
+      <UniqueIdentifier>{b994d067-7f14-4fa4-9bd7-682e8bc8474c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ilwisobjects">
+      <UniqueIdentifier>{38c7681f-7db3-4cdd-b3db-cd3ddfe595ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\modeller">
+      <UniqueIdentifier>{de6f16e6-63de-4ea0-83b7-349cdc45d751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\spatialdrawing\editors">
+      <UniqueIdentifier>{0e1429f9-a236-4fae-91e4-51eb913023be}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ilwiscoreui\models\workflow\applicationmodelui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\attributemodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\chartmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\columnmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\datapanemodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\desktoptranquilizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\domainitemmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\errormodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\graphmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\internaldatabasemodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\preferencesmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\projectionparametermodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\scriptmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\tabmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\tranquilizerhandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\uicontextmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\usermessagehandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workspacemodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_operationmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_operationmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_operationcatalogmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_operationcatalogmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_openattributetable.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_openattributetable.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_objectcreator.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_objectcreator.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_numericrepresentationsetter.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_numericrepresentationsetter.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_modeldesigner.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_modeldesigner.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_modelbuilder.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_modelbuilder.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_mastercatalogmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mastercatalogmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogscontroller.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogscontroller.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogmapitem.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogmapitem.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogfiltermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogfiltermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_uicontextmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_uicontextmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_tree.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_tree.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_tranquilizerhandler.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_tranquilizerhandler.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_tabmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_tabmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_tableoperation.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_tableoperation.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_tablemodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_tablemodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_sortcolumn.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_sortcolumn.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_scriptmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_scriptmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_datapanemodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_datapanemodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_convertcolumndomain.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_convertcolumndomain.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_convertattributedomain.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_convertattributedomain.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_conceptmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_conceptmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_columnmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_columnmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_chartmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_chartmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogviewmanager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogviewmanager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_workspacemodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_workspacemodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_workflowmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_workflowmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_workflowcatalogmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_workflowcatalogmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_visualpropertyeditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_visualpropertyeditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_visualattribute.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_visualattribute.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_usermessagehandler.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_usermessagehandler.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ilwisobjectmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ilwisobjectmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_ilwisobjectcreatormodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ilwisobjectcreatormodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_gridpropertyeditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_gridpropertyeditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_graphmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_graphmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_errormodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_errormodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_domainitemmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_domainitemmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_desktoptranquilizer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_desktoptranquilizer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_resourcemodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_resourcemodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_resourcemanager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_resourcemanager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_representationelement.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_representationelement.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_projectionparametermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_projectionparametermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_preferencesmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_preferencesmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_polygonattributesetter.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_polygonattributesetter.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_operationworker.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_operationworker.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_operationsbykeymodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_operationsbykeymodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_backgroundlayereditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_backgroundlayereditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_attributemodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_attributemodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_applyundefinedvaluedefinition.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_applyundefinedvaluedefinition.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_applicationmodelui.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_applicationmodelui.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_analysismodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_analysismodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_mapinformationattributesetter.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_mapinformationattributesetter.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_lineattributesetter.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_lineattributesetter.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_layeropacitysetter.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_layeropacitysetter.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_layermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_layermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_layerinfoitem.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_layerinfoitem.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_itemrepresentationsetter.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_itemrepresentationsetter.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_internaldatabasemodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_internaldatabasemodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\catalogfiltermodel.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\catalogmapitem.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\catalogmodel.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\catalogscontroller.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\catalogviewmanager.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\layermanager.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\layermodel.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\drawerattributesetter.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\drawerattributesetterfactory.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\draweroperation.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\backgroundlayereditor.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\resourcemanager.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\resourcemodel.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\visualattribute.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\visualpropertyeditor.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\itemrepresentationsetter.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\layeropacitysetter.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\lineattributesetter.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\mapinformationattributesetter.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\applyundefinedvaluedefinition.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\gridpropertyeditor.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\numericrepresentationsetter.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\openattributetable.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\polygonattributesetter.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelement.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\coveragelayermodel.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_coveragelayermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_coveragelayermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\oglbuffer.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\layerinfoitem.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_columnvisibility.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_columnvisibility.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\analysismodel.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\workflowcatalogmodel.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\workflowmodel.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\conceptmodel.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\tablemodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\tableoperation.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\tableoperationfactory.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\ilwisobjectcreatormodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\ilwisobjectmodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\mastercatalogmodel.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\columnvisibility.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\convertcolumndomain.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\sortcolumn.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\objectcreator.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\modelbuilder.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\modeldesigner.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\operationcatalogmodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\operationmodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\operationsbykeymodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\operationworker.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_rootlayermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_rootlayermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\rootlayermodel.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_intermediatelayermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_intermediatelayermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\intermediatelayermodel.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_layermanager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_layermanager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\attributemodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\chartmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\columnmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\datapanemodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\desktoptranquilizer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\errormodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\graphmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="ilwiscoreui\ilwiscoreui_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="ilwiscoreui\models\internaldatabasemodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\preferencesmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\sortcolumn.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\tabmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\tranquilizerhandler.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\tree.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\uicontextmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\usermessagehandler.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workspacemodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\layermanager.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\layermodel.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\layerinfoitem.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\visualattribute.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\visualpropertyeditor.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\coveragelayermodel.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\catalogfiltermodel.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\catalogmapitem.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\catalogmodel.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\catalogscontroller.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\catalogviewmanager.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\ilwisobjectcreatormodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\ilwisobjectmodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\modelbuilder.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\modeldesigner.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\objectcreator.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\projectionparametermodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\scriptmodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\tablemodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\tableoperation.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\analysismodel.h">
+      <Filter>Header Files\modeller</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\conceptmodel.h">
+      <Filter>Header Files\modeller</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\domainitemmodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\workflowcatalogmodel.h">
+      <Filter>Header Files\modeller</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\workflow\workflowmodel.h">
+      <Filter>Header Files\modeller</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\operationcatalogmodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\operationmodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\operationsbykeymodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\operationworker.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\resourcemanager.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\resourcemodel.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\mastercatalogmodel.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\applyundefinedvaluedefinition.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\backgroundlayereditor.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\columnvisibility.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\convertcolumndomain.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\gridpropertyeditor.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\itemrepresentationsetter.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\layeropacitysetter.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\lineattributesetter.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\mapinformationattributesetter.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\numericrepresentationsetter.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\openattributetable.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\polygonattributesetter.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelement.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\rootlayermodel.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\intermediatelayermodel.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ilwiscoreui\models\.gitignore">
+      <Filter>Distribution Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ilwiscoreui\coveragedisplay\oglbuffer.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\coveragedisplay\drawerattributesetter.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\coveragedisplay\drawerattributesetterfactory.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\coveragedisplay\drawerinterfaceenums.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\coveragedisplay\draweroperation.h">
+      <Filter>Header Files\spatialdrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\tableoperations\tableoperationfactory.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

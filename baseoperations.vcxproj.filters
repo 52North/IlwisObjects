@@ -1,0 +1,460 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{771feb50-e057-4aa1-a557-d048dfd79612}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{2dc1d403-373a-43ae-a14d-6473f76943db}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\creator">
+      <UniqueIdentifier>{74312cee-0c90-4559-b5b9-773461e21d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data">
+      <UniqueIdentifier>{a5e39403-1185-4127-badc-ded17e1b36e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry">
+      <UniqueIdentifier>{e3b00db2-aa2e-4a83-b1a4-ef64901b75e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{81a03c8c-db7c-4a53-9b8e-1c8e79c183af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\feature">
+      <UniqueIdentifier>{c46a09af-0b96-4702-8a77-6a5fbe21bb79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{d0279829-5caa-4470-8b6f-7496f5a3c99f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="baseoperations\baseoperationsmodule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_baseoperationsmodule.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_baseoperationsmodule.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\aggregatetable.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\addcolumn.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\binarylogical.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\binarymathraster.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\binarymathtable.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\conditions\compare.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\coord2pixel.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\copycolumn.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createcombinationmatrix.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createcornersgeoreference.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createidentifierdomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createintervaldomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createnumericdomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createpalettedomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createprojectedcoordinatesystem.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createrastercoverage.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createtable.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\createthematicdomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\addrasterband.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\columnjoin.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\columnunaryoperation.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\convertcolumndomain.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\fcoordinate.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\fpixel.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\gridsize.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\iffeature.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\iffraster.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\ifoperation.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\pixel2coord.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\assignment.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\calculatoroperation.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\conditions\iscompatible.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\mapcalc.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\binarymathfeature.cpp">
+      <Filter>Source Files\feature</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\selectionfeatures.cpp">
+      <Filter>Source Files\feature</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\selection.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\selectionbase.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\selectiontable.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\unarymath.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\unarymathoperations.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\unarymathrasterandnumber.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\unarymathtable.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\resampleraster.cpp">
+      <Filter>Source Files\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\setvariable.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\setvaluerange.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\setattributetabel.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\util\testoperation.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\util\text2output.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\serviceobject.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\conditions\junction.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\util\workingcatalog.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\saveas.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\rasvalue.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\mastergeoreference.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\connect.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\aggregation.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\property.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\conditions\rangeoperation.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\math\tabcalc.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\tablevalue.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\tablevaluebyprimarykey.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\geometry\spatialrelation.cpp">
+      <Filter>Source Files\feature</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\util\stringoperations.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\conditions\numbercondition.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="baseoperations\data\addcolumn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\addrasterband.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\aggregatetable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\aggregation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\assignment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\baseoperations_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="baseoperations\baseoperationsmodule.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="baseoperations\math\binarylogical.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\binarymathfeature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\binarymathraster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\binarymathtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\calculatoroperation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\columnjoin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\columnunaryoperation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\conditions\compare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\connect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\convertcolumndomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\coord2pixel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\copycolumn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createcombinationmatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createcornersgeoreference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createidentifierdomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createintervaldomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createnumericdomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createpalettedomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createprojectedcoordinatesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createrastercoverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createthematicdomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\fcoordinate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\fpixel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\gridsize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\iffeature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\iffraster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\ifoperation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\conditions\iscompatible.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\conditions\junction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\mapcalc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\mastergeoreference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\conditions\numbercondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\pixel2coord.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\property.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\conditions\rangeoperation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\rasvalue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\resampleraster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\saveas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\selection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\selectionbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\selectionfeatures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\selectiontable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\serviceobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\setattributetabel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\setvaluerange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\setvariable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\geometry\spatialrelation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\util\stringoperations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\tabcalc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\tablevalue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\tablevaluebyprimarykey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\util\testoperation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\util\text2output.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\unarymath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\unarymathoperations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\unarymathrasterandnumber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\math\unarymathtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\util\workingcatalog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

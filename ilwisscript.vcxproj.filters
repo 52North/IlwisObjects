@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{d69d0491-1fff-4a0c-b0a9-666f1a6bdd5b}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{b6182801-07c9-4b43-a2bb-d1ae954a1be8}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ilwisscript\parserlexer\IlwisScriptLexer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\IlwisScriptParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\addnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3baserecognizer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3basetree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3basetreeadaptor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3bitset.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3collections.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3commontoken.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3commontree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3commontreeadaptor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3commontreenodestream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3convertutf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3cyclicdfa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3debughandlers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3encodings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3exception.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3filestream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3inputstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3intstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3lexer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3parser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3rewritestreams.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3string.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3tokenstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\antlr3treeparser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\assignmentnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\astnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\breaknode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\bridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\commandnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\domainformatter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\expressionnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\formatter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\functionnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\functionstatementnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\idnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\ifnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ilwisscriptmodule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\multiplicationnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\operationnodescript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\outparametersnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\parametersnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\relationnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\returnnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\parserlexer\runtimechecks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\scriptlinenode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\scriptnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\selectnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\selectornode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\termnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\valuerangenode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\variablenode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwisscript\ast\whilenode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ilwisscriptmodule.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ilwisscriptmodule.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ilwisscript\parserlexer\IlwisScriptLexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\addnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3baserecognizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3basetree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3basetreeadaptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3bitset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3collections.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3commontoken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3commontree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3commontreeadaptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3commontreenodestream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3convertutf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3cyclicdfa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3debugeventlistener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3encodings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3errors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3filestream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3interfaces.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3intstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3lexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3parsetree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3recognizersharedstate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3rewritestreams.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3tokenstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\antlr3treeparser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\assignmentnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\astnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\breaknode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\include\bridge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\calculator_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\commandnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\domainformatter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\expressionnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\formatter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\formatters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\functionnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\functionstatementnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\idnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\ifnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\ilwisscript.g">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\parserlexer\ilwisscriptParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="ilwisscript\ilwisscriptmodule.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="ilwisscript\ast\multiplicationnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\operationnodescript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\outparametersnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\parametersnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\relationnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\returnnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\script.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\scriptlinenode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\scriptnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\selectnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\selectornode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\termnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\valuerangenode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\variablenode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwisscript\ast\whilenode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
