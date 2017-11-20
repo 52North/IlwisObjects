@@ -28,12 +28,13 @@ public:
     Q_PROPERTY(QString activeAttribute READ activeAttribute WRITE activeAttribute NOTIFY activeAttributeChanged)
 
     Q_INVOKABLE QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> vproperties(const QString& attrName);
+	Q_INVOKABLE void setActiveAttribute(int idx);
 
 	CoverageLayerModel();
     CoverageLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
 
     QString activeAttribute() const;
-    void activeAttribute(const QString& pName);
+	void activeAttribute(const QString& pName);
 
     virtual QVariant vproperty(const QString& pName) const;
     virtual void vproperty(const QString& pName, const QVariant& value);
