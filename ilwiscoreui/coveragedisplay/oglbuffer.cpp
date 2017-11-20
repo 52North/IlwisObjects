@@ -32,9 +32,9 @@ void OGLBuffer::changeColor(quint64 fid, const QColor& clr) {
 		for (int chunkIdx = marker._firstChunk; count < marker._count && chunkIdx < _buffers.size(); ++chunkIdx) {
 			OGLBufferChunck& buffer = _buffers[chunkIdx];
 			for (int i = start; count < marker._count && i < buffer._colors.size(); i+=3) {
-				buffer._colors[i] = clr.red();
-				buffer._colors[i+1] = clr.green();
-				buffer._colors[i+2] = clr.blue();
+				buffer._colors[i] = clr.redF();
+				buffer._colors[i+1] = clr.greenF();
+				buffer._colors[i+2] = clr.blueF();
 				count +=3;
 			}
 			start = 0;
