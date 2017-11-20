@@ -70,6 +70,7 @@ public:
 	Q_INVOKABLE quint32 meshCount() const;
 	Q_INVOKABLE quint32 meshIndex(int n) const;
 	Q_INVOKABLE void addMeshIndex(quint32 idx);
+	Q_INVOKABLE void clearMeshIndexes();
 
 	LayerModel();
     explicit LayerModel(TreeNode *parent);

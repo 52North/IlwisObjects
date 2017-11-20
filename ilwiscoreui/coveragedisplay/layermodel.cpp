@@ -82,27 +82,25 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
         active(value.toBool());
 
 
-
     if ( key.indexOf("visualattribute") == 0){
         QStringList parts = key.split("|");
-       /* auto iter = _visualAttributes.find(parts[2]);
-        if (iter == _visualAttributes.end())
-            return;
-        if ( parts.size() == 3){
-            if ( parts[1] == "representation"){
-                IRepresentation rpr = attrib.value<IRepresentation>();
+		VisualAttribute * vattr = visualAttribute(parts[1]);
+		if (!vattr)
+			return;
+
+        if ( parts.size() ==4){
+            if ( parts[2] == "representation"){
+				IRepresentation rpr(parts[3]);
                 if ( rpr.isValid()){
-                    VisualPropertyModel& attr = _visualAttributes[parts[2]];
-                    attr.representation(rpr);
+                    vattr->representation(rpr);
                 }
-            }else if( parts[1] == "domain"){
-                IDomain dom = attrib.value<IDomain>();
+            }else if( parts[2] == "domain"){
+				IDomain dom(parts[3]);
                 if ( dom.isValid()){
-                    VisualPropertyModel& attr = _visualAttributes[parts[2]];
-                    attr.domain(dom);
+                    vattr->domain(dom);
                 }
             }
-        }*/
+        }
     }
 }
 
@@ -349,6 +347,11 @@ void Ilwis::Ui::LayerModel::addMeshIndex(quint32 idx)
 	_meshes.push_back(idx);
 }
 
+void Ilwis::Ui::LayerModel::clearMeshIndexes()
+{
+	_meshes = std::vector<quint32>();
+}
+
 QStringList Ilwis::Ui::LayerModel::changedProperties() const
 {
 	QStringList props;
@@ -358,14 +361,14 @@ QStringList Ilwis::Ui::LayerModel::changedProperties() const
 	return props;
 }
 
-void Ilwis::Ui::LayerModel::removeFromChangedProperties(const QString & prop)
+void LayerModel::removeFromChangedProperties(const QString & prop)
 {
 	auto iter = std::find(_changedProperties.begin(), _changedProperties.end(), prop);
 	if (iter != _changedProperties.end())
 		_changedProperties.erase(iter);
 }
 
-void Ilwis::Ui::LayerModel::add2ChangedProperties(const QString & prop, bool propagate)
+void LayerModel::add2ChangedProperties(const QString & prop, bool propagate)
 {
 	_changedProperties.insert(prop);
 	if (propagate) {
