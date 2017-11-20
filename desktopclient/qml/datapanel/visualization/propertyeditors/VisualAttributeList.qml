@@ -3,6 +3,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import UIContextModel 1.0
+import VisualAttribute 1.0
 import LayerManager 1.0
 import "../../../controls" as Controls
 import "../../../Global.js" as Global
@@ -55,13 +56,12 @@ Rectangle {
             model : attributeListModel
 
             onCurrentIndexChanged: {
-                //currentCoverage.activeAttributeIndex = currentIndex;
-                editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
-                if ( editorListColumn.displayEditorModel.length > 0)
-                    editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
-                else
-                   editorColumn.currentEditor = null
-
+				currentCoverage.setActiveAttribute(currentIndex)
+				editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
+				if ( editorListColumn.displayEditorModel.length > 0)
+					editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
+				else
+					editorColumn.currentEditor = null
             }
 
             Component {
