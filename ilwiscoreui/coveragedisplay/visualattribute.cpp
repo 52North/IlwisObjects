@@ -112,6 +112,11 @@ LayerModel *VisualAttribute::layer() const
     return _layer;
 }
 
+bool Ilwis::Ui::VisualAttribute::isAbstractAttribute() const
+{
+	return _isAbstractAttribute;
+}
+
 void VisualAttribute::addVisualPropertyEditor(VisualPropertyEditor *property)
 {
     for(VisualPropertyEditor * prop : _vproperties){
@@ -174,6 +179,7 @@ LayerAttributeModel::LayerAttributeModel(LayerModel *parentLayer, const IIlwisOb
     VisualAttribute(parentLayer,def,"Layer Wide")
 {
    _vproperties = uicontext()->propertyEditors(this, obj, VisualAttribute::LAYER_ONLY);
+   _isAbstractAttribute = true;
 }
 
 //----------------------------------------------------------------------------
@@ -181,7 +187,8 @@ GlobalAttributeModel::GlobalAttributeModel(const QString &label, const QString& 
     VisualAttribute(parentLayer, DataDefinition(), "Global Layer"),
     _label(label)
 {
-        _vproperties.append(uicontext()->propertyEditors(this, IIlwisObject(), associatedEditor));
+	_vproperties.append(uicontext()->propertyEditors(this, IIlwisObject(), associatedEditor));
+	_isAbstractAttribute = true;
 }
 
 

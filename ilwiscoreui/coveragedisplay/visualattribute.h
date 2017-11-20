@@ -31,6 +31,7 @@ class ILWISCOREUISHARED_EXPORT VisualAttribute : public AttributeModel
     Q_OBJECT
 public:
 	Q_PROPERTY(QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> propertyEditors READ visualProperties NOTIFY propertyEditorChanged)
+    Q_PROPERTY(bool isAbstractAttribute READ isAbstractAttribute CONSTANT)
 
 	Q_INVOKABLE Ilwis::Ui::VisualPropertyEditor *visualProperty(const QString& name) const;
 
@@ -54,22 +55,22 @@ public:
 
     std::vector<QColor> colors(int size=256) const;
     LayerModel *layer() const;
+	bool isAbstractAttribute() const;
 
     void addVisualPropertyEditor(VisualPropertyEditor* property);
     QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> visualProperties();
 signals:
 	void propertyEditorChanged();
 protected:
+
      QList<VisualPropertyEditor *> _vproperties;
+	 bool _isAbstractAttribute = false;
 private:
     IRepresentation _representation;
     NumericRange _stretchRange;
     NumericRange _actualRange;
 //    IRasterCoverage _raster;
     LayerModel *_layer;
-
-
-
 };
 
 class ILWISCOREUISHARED_EXPORT LayerAttributeModel : public VisualAttribute{
