@@ -108,7 +108,6 @@ bool FeatureLayerModel::prepare(int prepType)
 		}
 	}
 
-	int featureIndex = 0;
 	VisualAttribute *attr = visualAttribute(activeAttribute());
 
 	if (hasType(prepType, LayerModel::ptGEOMETRY) && !isPrepared(LayerModel::ptGEOMETRY)) {
@@ -131,10 +130,13 @@ bool FeatureLayerModel::prepare(int prepType)
 			if (layers[geomtype]) {
 				auto *vlayer = layers[geomtype];
 				vlayer->addFeature(feature, attr, value, currentBuffer[geomtype]);
+				if (geomtype == itPOLYGON) {
+					vlayer = layers[itLINE];
+					vlayer->addFeature(feature, attr, value, currentBuffer[itLINE]);
+				}
 				if (points == 0 && vlayer->layerType() == itPOINTLAYER)
 					points = static_cast<PointLayerModel *>(vlayer);
 			}
-			++featureIndex;
 		}
 		if (points) {
 			points->finishAddingPoints();
@@ -142,16 +144,18 @@ bool FeatureLayerModel::prepare(int prepType)
 		_prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 
 	} if (hasType(prepType, LayerModel::ptRENDER)) {
-		int columnIndex = _features->attributeTable()->columnIndex(attr->attributename());
-		for (const SPFeatureI& feature : _features) {
-			QVariant value = feature(columnIndex);
-			IlwisTypes geomtype = feature->geometryType();
-			if (layers[geomtype]) {
-				auto *vlayer = layers[geomtype];
-
-				//vlayer->setColors(0, feature, attr, value);
+		if (!attr->isAbstractAttribute()) {
+			int columnIndex = _features->attributeTable()->columnIndex(attr->attributename());
+			for (const SPFeatureI& feature : _features) {
+				QVariant value = feature(columnIndex);
+				if (value.isValid()) {
+					IlwisTypes geomtype = feature->geometryType();
+					if (layers[geomtype]) {
+						auto *vlayer = layers[geomtype];
+						vlayer->setActiveFeatureColors(feature, attr, value);
+					}
+				}
 			}
-			++featureIndex;
 		}
 	}
 	return true;
