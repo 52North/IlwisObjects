@@ -53,11 +53,13 @@ Rectangle {
 		}
 
 		function drawVector(layer){
+		
 			// remove all previous renderings of this layer
 			for (var i = scene.children.length - 1; i >= 0; i--) {
 				if(scene.children[i].name === layer.layerId)
 					scene.remove(scene.children[i]);
 			}
+			layer.clearMeshIndexes()
 			//construct the meshes
 		    for(var i=0; i < layer.numberOfBuffers("pointcoverage");++i){
 				var geometry = new GL.THREE.BufferGeometry();
@@ -74,7 +76,7 @@ Rectangle {
 		    for(var i=0; i < layer.numberOfBuffers("linecoverage");++i){
 				var geometry = new GL.THREE.BufferGeometry();
 				canvas.setGeometry(layer, i,"linecoverage",geometry)
-				var material = new GL.THREE.LineBasicMaterial({ color: 0xff00ff, transparent : true,opacity : layer.opacity });
+				var material = new GL.THREE.LineBasicMaterial({  vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.opacity });
 				var lines = new GL.THREE.LineSegments( geometry, material );
 				lines.name = layer.layerId
 				lines.visible = layer.active
@@ -221,35 +223,43 @@ Rectangle {
 			}
 		}
 		function changeProperty(layer, property){
-			for(var i=0; i < layer.meshCount(); ++i){
-				var mshIdx = layer.meshIndex(i)
-				var mesh = scene.children[mshIdx]
-				if ( property == "opacity"){
-					mesh.material.opacity = layer.vproperty("opacity")
-				}else if ( property = "active"){
-					mesh.visible = layer.vproperty("active")
-				}
+			var  ok = true
+			if ( property == "activeattribute"){
+				ok = layer.prepare(1)
 				layer.removeFromChangedProperties(property)
+			}else {
+			    ok = true
+				for(var i=0; i < layer.meshCount(); ++i){
+					var mshIdx = layer.meshIndex(i)
+					var mesh = scene.children[mshIdx]
+					if ( property == "opacity"){
+						mesh.material.opacity = layer.vproperty("opacity")
+					}else if ( property = "active"){
+						mesh.visible = layer.vproperty("active")
+					}
+					layer.removeFromChangedProperties(property)
+				}
 			}
+			return ok
 		}
 
 		function drawLayers(layerList) {
 
 			for(var i=0; i < layerList.length; ++i){
 				var layer = layerList[i];
-				if (!layer.isDrawable )
-					continue;
-				if ( !layer.isValid)
-					continue;
-				if ( layer.updateGeometry){
-					layer.prepare(2)
-					if ( layer.isVectorLayer){
-						canvas.drawVector(layer)
+				var drawLayer = layer.isDrawable && layer.isValid // is there anything to draw at all
+				if ( drawLayer){
+					drawLayer = false // second check if we realy want a draw, either prepare or a property has changed
+					if ( layer.updateGeometry){
+						drawLayer = layer.prepare(2)
+					}else {
+						var changedProperties = layer.changedProperties
+						for(var j=0; j < changedProperties.length; ++j){
+							drawLayer = canvas.changeProperty(layer, changedProperties[j])
+						}
 					}
-				}else {
-					var changedProperties = layer.changedProperties
-					for(var j=0; j < changedProperties.length; ++j){
-						canvas.changeProperty(layer, changedProperties[j])
+					if ( drawLayer && layer.isVectorLayer){
+						canvas.drawVector(layer)
 					}
 				}
 			}
