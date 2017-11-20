@@ -33,6 +33,7 @@
 #include "identifieritem.h"
 #include "identifierrange.h"
 #include "featurecoverage.h"
+#include "thematicitem.h"
 #include "feature.h"
 #include "featureiterator.h"
 #include "containerstatistics.h"
@@ -309,12 +310,22 @@ void  FeatureConnector::addFeatures(map<quint32,vector<geos::geom::Geometry *>>&
         else{
             QVariant value( (*iter).first == 0 ? (quint32)iUNDEF : (*iter).first - 1);
             feature(COVERAGEKEYCOLUMN, value);
+			if (hasType(coldef.datadef().domain()->valueType(), itNAMEDITEM)) {
+				QString v = coldef.datadef().domain()->impliedValue(value).toString();
+				coldef.datadef().range<NamedIdentifierRange>()->add(new NamedIdentifier(v, rec));
+			}
+			else if (hasType(coldef.datadef().domain()->valueType(), itTHEMATICITEM)) {
+				QString v = coldef.datadef().domain()->impliedValue(value).toString();
+				coldef.datadef().range<ThematicRange>()->add(new ThematicItem({ v + "||" }, rec));
+			}
         }
 
         ++rec;
     }
-    if ( featureValues.size() == 0 && coldef.datadef().domain()->valueType() == itINDEXEDITEM){
-        coldef.datadef().range<IndexedIdentifierRange>()->add(new IndexedIdentifier("",0,rec));
+    if ( featureValues.size() == 0){
+		if (hasType(coldef.datadef().domain()->valueType(), itINDEXEDITEM)){
+			coldef.datadef().range<IndexedIdentifierRange>()->add(new IndexedIdentifier("",0,rec));
+		}
     }
 }
 
