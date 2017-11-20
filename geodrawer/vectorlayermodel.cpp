@@ -84,8 +84,14 @@ void VectorLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute * 
 {
 }
 
-int Ilwis::Ui::VectorLayerModel::numberOfBuffers(const QString &) const
+int VectorLayerModel::numberOfBuffers(const QString &) const
 {
 	return 0;
+}
+
+void VectorLayerModel::setActiveFeatureColors(const SPFeatureI & feature, VisualAttribute *attr, const QVariant & value)
+{
+	QColor clr = attr->value2color(value);
+	_buffer.changeColor(feature->featureid(), clr);
 }
 
