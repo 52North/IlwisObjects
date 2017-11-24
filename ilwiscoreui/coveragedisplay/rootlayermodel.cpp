@@ -394,16 +394,19 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	double aspectRatioCoverage = (_coverageEnvelope.xlength() - 1) / (_coverageEnvelope.ylength() - 1);
 
 	double deltaX = 0, deltaY = 0;
-	if (aspectRatioCoverage >= 1) {
-		deltaX = CalcNewSize(_coverageEnvelope.xlength() - 1, _coverageEnvelope.ylength() - 1, aspectRatioView);
+	double cwidth = _coverageEnvelope.xlength() - 1;
+	double cheight = _coverageEnvelope.ylength() - 1;
+	if (aspectRatioCoverage < 1) {
+		deltaX = CalcNewSize(cwidth, cheight, aspectRatioView);
 	}
 	else {
-		deltaY = CalcNewSize(_coverageEnvelope.ylength() - 1, _coverageEnvelope.xlength() - 1, aspectRatioView);
+		deltaY = CalcNewSize(cheight, cwidth, aspectRatioView);
 	}
 	Coordinate pmin = _coverageEnvelope.min_corner();
 	Coordinate pmax = _coverageEnvelope.max_corner();
 	pmin = { pmin.x - deltaX, pmin.y - deltaY, 0 };
 	pmax = { pmax.x + deltaX, pmax.y + deltaY, 0 };
+	qDebug() << pmin.x << pmin.y << pmax.x << pmax.y << aspectRatioCoverage << aspectRatioView;
 	_viewEnvelope = { pmin, pmax };
 	if (initial)
 		_zoomEnvelope = _viewEnvelope;
@@ -461,7 +464,7 @@ void RootLayerModel::cameraPosition(const QVariantMap & coord)
 			_cameraPosition.y = v;
 	}
 	if (coord.contains("z")) {
-		double v = coord["y"].toDouble(&ok);
+		double v = coord["z"].toDouble(&ok);
 		if (ok)
 			_cameraPosition.z = v;
 	}
