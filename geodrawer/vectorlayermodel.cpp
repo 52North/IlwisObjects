@@ -89,6 +89,13 @@ int VectorLayerModel::numberOfBuffers(const QString &) const
 	return 0;
 }
 
+void VectorLayerModel::setActiveAttribute(int idx)
+{
+	if (idx < _visualAttributes.size()) {
+		_featureLayer->setActiveAttribute(idx);
+	}
+}
+
 void VectorLayerModel::setActiveFeatureColors(const SPFeatureI & feature, VisualAttribute *attr, const QVariant & value)
 {
 	QColor clr = attr->value2color(value);

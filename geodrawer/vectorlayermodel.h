@@ -15,6 +15,8 @@ namespace Ilwis {
 			Q_OBJECT
 
 		public:
+			Q_INVOKABLE void setActiveAttribute(int idx);
+
 			VectorLayerModel(QObject *parent = 0);
 			VectorLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions& options);
 			QVariant vproperty(const QString & attrName) const;
@@ -23,6 +25,7 @@ namespace Ilwis {
 			void activeAttribute(const QString & pName);
 			virtual void addFeature(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value, int& currentBuffer);
 			virtual int numberOfBuffers(const QString&) const;
+
 			void setActiveFeatureColors(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value);
 		signals:
 			void activeAttributeChanged();
