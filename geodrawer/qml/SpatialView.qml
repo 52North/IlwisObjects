@@ -29,9 +29,10 @@ Rectangle {
 
 		function updateAfterSizeChange(){
 			if ( camera && renderer){
-				layermanager.rootLayer.initSizes(canvas.width, canvas.height, false)
+				layermanager.rootLayer.(canvas.width, canvas.height, false)
 				var aspect = canvas.width / canvas.height; 
-				var f = aspect >= 0 ? layermanager.rootLayer.height : layermanager.rootLayer.width
+				var f = aspect >= 0 ? layermanager.rootLainitSizesyer.height : layermanager.rootLayer.width
+				console.debug("ddd", f, aspect)
 				camera.left = f * aspect/-2
 				camera.right = f * aspect/2
 				camera.top = f /2  
@@ -52,44 +53,46 @@ Rectangle {
 			}
 		}
 
-		function drawVector(layer){
+		function setScene(layer){
 		
 			// remove all previous renderings of this layer
 			for (var i = scene.children.length - 1; i >= 0; i--) {
-				if(scene.children[i].name === layer.layerId)
-					scene.remove(scene.children[i]);
+				if(scene.children[i].name === layer.layerId){
+						scene.remove(scene.children[i]);
+					}
 			}
 			layer.clearMeshIndexes()
 			//construct the meshes
 		    for(var i=0; i < layer.numberOfBuffers("pointcoverage");++i){
 				var geometry = new GL.THREE.BufferGeometry();
 				setGeometry(layer,i,"pointcoverage",geometry)
-				var material = new GL.THREE.PointsMaterial( { size: 5, vertexColors: GL.THREE.VertexColors,sizeAttenuation : false, transparent : true,opacity : layer.opacity } );
+				var material = new GL.THREE.PointsMaterial( { size: 5, vertexColors: GL.THREE.VertexColors,sizeAttenuation : false, transparent : true,opacity : layer.vproperty("opacity") } );
 				var points = new GL.THREE.Points( geometry, material );
 				points.name = layer.layerId
-				points.visible = layer.active
+				points.visible = layer.vproperty("active")
 				layer.addMeshIndex(scene.children.length)
 				scene.add( points );
 
 				
 			}
 		    for(var i=0; i < layer.numberOfBuffers("linecoverage");++i){
+
 				var geometry = new GL.THREE.BufferGeometry();
 				canvas.setGeometry(layer, i,"linecoverage",geometry)
-				var material = new GL.THREE.LineBasicMaterial({  vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.opacity });
+				var material = new GL.THREE.LineBasicMaterial({  vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
 				var lines = new GL.THREE.LineSegments( geometry, material );
 				lines.name = layer.layerId
-				lines.visible = layer.active
+				lines.visible = layer.vproperty("active")
 				layer.addMeshIndex(scene.children.length)
 				scene.add( lines );
 			}
 		    for(var i=0; i < layer.numberOfBuffers("polygoncoverage");++i){
 				var geometry = new GL.THREE.BufferGeometry();
 				canvas.setGeometry(layer, i,"polygoncoverage",geometry)
-				var material = new GL.THREE.MeshBasicMaterial({ vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.opacity });
+				var material = new GL.THREE.MeshBasicMaterial({ vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
 				var polygons = new GL.THREE.Mesh( geometry, material );
 				polygons.name = layer.layerId
-				polygons.visible = layer.active
+				polygons.visible = layer.vproperty("active")
 				layer.addMeshIndex(scene.children.length)
 				scene.add( polygons );
 
@@ -224,55 +227,46 @@ Rectangle {
 		}
 		function changeProperty(layer, property){
 			var  ok = true
-			if ( property == "activeattribute"){
-				ok = layer.prepare(1)
-				layer.removeFromChangedProperties(property)
-			}else {
-			    ok = true
-				for(var i=0; i < layer.meshCount(); ++i){
-					var mshIdx = layer.meshIndex(i)
-					var mesh = scene.children[mshIdx]
-					if ( property == "opacity"){
-						mesh.material.opacity = layer.vproperty("opacity")
-					}else if ( property = "active"){
-						mesh.visible = layer.vproperty("active")
-					}
-					layer.removeFromChangedProperties(property)
-				}
-			}
+
+			//canvas.setScene(layer)
 			return ok
 		}
 
-		function drawLayers(layerList) {
-
-			for(var i=0; i < layerList.length; ++i){
-				var layer = layerList[i];
-				var drawLayer = layer.isDrawable && layer.isValid // is there anything to draw at all
-				if ( drawLayer){
-					drawLayer = false // second check if we realy want a draw, either prepare or a property has changed
-					if ( layer.updateGeometry){
-						drawLayer = layer.prepare(2)
-					}else {
-						var changedProperties = layer.changedProperties
-						for(var j=0; j < changedProperties.length; ++j){
-							drawLayer = canvas.changeProperty(layer, changedProperties[j])
+        function setProperties(layer) {
+            if ( layer.isDrawable && layer.isValid){
+                if ( layer.updateGeometry){
+                    return layer.prepare(2)
+                }else {
+                    var changedProperties = layer.changedProperties
+                    var ok  = changedProperties.length > 0
+                    for(var j=0; j < changedProperties.length; ++j){
+						var property = changedProperties[j]
+                        if ( property == "activeattribute"){
+							ok = layer.prepare(1)
 						}
-					}
-					if ( drawLayer && layer.isVectorLayer){
-						canvas.drawVector(layer)
-					}
-				}
-			}
-			//console.debug("xxx", parentLayer.isDrawable, parentLayer.updateGeometry, parentLayer.name)
-		
-		}
+						layer.removeFromChangedProperties(property)
+                    }
+                    return ok
+                }
+            }
+            return false
+        }
+        
 		onPaintGL : {
 			if (scene && camera){
 				if ( layermanager.needUpdate){
 					updatePositions()
 					layermanager.needUpdate = false
 				}
-				drawLayers(layermanager.layerList)
+				var ok = false
+				var layerList = layermanager.layerList
+				for(var i=0; i < layerList.length; ++i){
+					ok |= setProperties(layerList[i])
+				}
+				for(var i=0; ok && i < layerList.length; ++i){
+					canvas.setScene(layerList[i])
+				}
+
 
 				renderer.render(scene, camera);
 			}
