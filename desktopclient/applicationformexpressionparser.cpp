@@ -113,12 +113,12 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
     bool isOptional = false;
     bool checkGroup;
     int optionGroup = 0;
-    QString specials = "[]|,";
-    QStringList choices;
-    for(auto c : expression) {
+    QString specials = "[]|,"; 
+    QStringList choices;   
+    for(auto c : expression) {   
         if ( specials.indexOf(c) == -1){
             part += c;
-            continue;
+            continue; 
         }
         if ( c == ',' && !part.isEmpty()){
             part = part.trimmed();
@@ -149,7 +149,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
         }
         part.clear();
     }
-    // last parameter    
+    // last parameter     
     if (part != ""){  
         part = part.trimmed(); 
         setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional,optionGroup, workflowContext);
@@ -164,7 +164,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
             }
         }
     }
-    return parameters; 
+    return parameters;  
 
 }
 

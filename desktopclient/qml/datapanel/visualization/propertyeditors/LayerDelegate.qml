@@ -12,25 +12,29 @@ Row {
 	width : 250
 	height : 20
 	spacing : 3
+
+	function cactive() {
+		var nodeid = styleData.value.nodeid
+		var layer = layerview.manager.findLayer(nodeid)
+		return layer.active
+	}
+
 	CheckBox{
 		y : 2
 		id : visibilityCheck
 		width : 17
 		height: 17
-		checked : styleData.value ? styleData.value.active : false
+		checked : cactive()
 		opacity : 0.6
 		visible : styleData.value && styleData.value.nodeid != 0
-           
-		onClicked: {
+
+		onCheckedChanged : {
 			var nodeid = styleData.value.nodeid
-			if ( nodeid){
-				var layer = layerview.manager.findLayer(nodeid)
-				if ( layer){
-					layer.active = visibilityCheck.checked
-				}
-			}
+			var layer = layerview.manager.findLayer(nodeid)
+			layer.vproperty("active", visibilityCheck.checked)
 		}
-            
+
+
 	}
 	Image {
 		y : 2

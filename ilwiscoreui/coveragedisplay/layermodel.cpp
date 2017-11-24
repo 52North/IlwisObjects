@@ -78,8 +78,13 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
 {
     if ( key == "opacity")
        opacity(value.toFloat());
-    if ( key == "active")
-        active(value.toBool());
+	if (key == "active") {
+		active(value.toBool());
+		for (auto *node : children()) {
+			auto lyr = node->as<LayerModel>();
+			lyr->vproperty(key, value);
+		}
+	}
 
 
     if ( key.indexOf("visualattribute") == 0){

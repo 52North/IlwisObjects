@@ -16,7 +16,7 @@
 using namespace Ilwis;
 using namespace Ui;
 
-Q_INVOKABLE void Ilwis::Ui::CoverageLayerModel::setActiveAttribute(int idx)
+void Ilwis::Ui::CoverageLayerModel::setActiveAttribute(int idx)
 {
 	if (idx < _visualAttributes.size()) {
 		_activeAttribute = _visualAttributes[idx]->attributename();

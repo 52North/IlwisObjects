@@ -208,7 +208,11 @@ int LayerManager::registerLayerModel(const QString &modelname, CreateLayer func)
 void LayerManager::wholeMap()
 {
 	_globalLayer->zoomEnvelope(_globalLayer->viewEnvelope());
-	_globalLayer->cameraPosition(QVariantMap());
+	QVariantMap mp;
+	mp["x"] = 0;
+	mp["y"] = 0;
+	mp["z"] = 0;
+	_globalLayer->cameraPosition(mp);
 	_globalLayer->zoomFactor(1.0);
 	_zoomInMode = false;
 
