@@ -39,8 +39,8 @@ VisualPropertyEditor *LayerOpacitySetter::create(VisualAttribute *p)
 
 float LayerOpacitySetter::opacity() const
 {
-    if ( vpmodel()->layer())
-        return vpmodel()->layer()->vproperty("opacity").toFloat();
+	if (vpmodel()->layer())
+		return vpmodel()->layer()->opacity();
     return 1.0;
 }
 
@@ -50,7 +50,7 @@ void LayerOpacitySetter::opacity(float tr)
         return;
 
     if ( tr >= 0 && tr <= 1.0){
-       vpmodel()->layer()->vproperty("opacity", tr);
+		vpmodel()->layer()->opacity(tr);
        vpmodel()->layer()->redraw();
     }
 }
