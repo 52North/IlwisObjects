@@ -16,7 +16,7 @@ TreeNode::TreeNode(const QList<QVariant> &data, QObject * parentItem) :  QObject
 
 Ilwis::Ui::TreeNode::~TreeNode()
 {
-	qDebug() << "destroy " << _nodeId;
+	//qDebug() << "destroy " << _nodeId;
 }
 
 void TreeNode::txt(const QString& t){ _txt = t; }
@@ -166,6 +166,27 @@ TreeNode * TreeNode::findNode(int id)  {
 	return 0;
 }
 
+void TreeNode::tree(TreeModel *tr) {
+	_tree = tr;
+}
+
+TreeModel * Ilwis::Ui::TreeNode::tree()
+{
+	if (_parentItem) {
+		return _parentItem->tree();
+	}
+	return _tree;
+}
+
+void TreeNode::changed()
+{
+	TreeModel *tm = tree();
+	if (tm) {
+		QModelIndex idx = index(tm);
+		tm->changed(idx);
+	}
+}
+
 //---------------------------------------------------------------------------
 TreeModel::TreeModel(QObject * parent) : QAbstractItemModel(parent) {
 
@@ -174,6 +195,7 @@ TreeModel::TreeModel(QObject * parent) : QAbstractItemModel(parent) {
 Ilwis::Ui::TreeModel::TreeModel(TreeNode * root, QObject * parent) : QAbstractItemModel(parent)
 {
 	_rootItem = root;
+	_rootItem->tree(this);
 	_roleNameMapping[Qt::UserRole + 1] = "data";
 }
 
@@ -243,6 +265,11 @@ void TreeModel::appendChild(TreeNode *parentItem, TreeNode *child) {
 	parentItem->appendChild(child);
 	emit dataChanged(createIndex(parentItem->row(), 0, parentItem), createIndex(parentItem->row(), 0, parentItem));
 	//emit dataChanged(QModelIndex(), QModelIndex());
+}
+
+void TreeModel::changed(const QModelIndex& index) {
+	emit dataChanged(QModelIndex(), QModelIndex());
+	//emit dataChanged(index, index);
 }
 
 bool TreeModel::insertRows(int position, int rows, const QModelIndex &parent)

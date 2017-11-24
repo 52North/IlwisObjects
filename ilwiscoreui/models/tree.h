@@ -40,12 +40,15 @@ public:
 	QVariant data(int column) const;
 	int row() const;
 
+
 	bool setData(int column, const QVariant &value);
 
 	void appendChild(TreeNode *child);
 	bool insertChildren(int position, int count, int columns);
 	bool removeChildren(int position, int count);
 	TreeNode * findNode(int id) ;
+	void tree(TreeModel * tr);
+	TreeModel *tree();
 	QList<TreeNode*> children() const;
 	TreeNode *child(int row);
 	int childCount() const;
@@ -56,6 +59,9 @@ public:
 signals:
     void txtChanged();
 	void readonlyChanged();
+
+protected:
+	void changed();
 private:
     QString _txt;
 	bool _readonly = false;
@@ -63,6 +69,8 @@ private:
 	TreeNode *_parentItem;
 	QList<QVariant> _itemData;
 	int _nodeId = 0;
+	TreeModel *_tree = 0;
+
 
 };
 
@@ -88,6 +96,7 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 	void appendChild(TreeNode * parentItem, TreeNode * child);
+	void changed(const QModelIndex& index);
 	QModelIndex parent(const QModelIndex &index) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
