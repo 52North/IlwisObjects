@@ -388,7 +388,7 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 		double viewdim = dim2 * aspect;
 		return (viewdim - oldDim1) / 2.0;
 	};
-
+	Size<> sz = (initial || !_screenGrf.isValid()) ? Size<>() : _screenGrf->size();
 
 	double aspectRatioView = (double)newwidth / (double)newheight;
 	double aspectRatioCoverage = (_coverageEnvelope.xlength() - 1) / (_coverageEnvelope.ylength() - 1);
@@ -406,7 +406,7 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	Coordinate pmax = _coverageEnvelope.max_corner();
 	pmin = { pmin.x - deltaX, pmin.y - deltaY, 0 };
 	pmax = { pmax.x + deltaX, pmax.y + deltaY, 0 };
-	qDebug() << pmin.x << pmin.y << pmax.x << pmax.y << aspectRatioCoverage << aspectRatioView;
+	qDebug() << "dx="<< deltaX << "dy="<< deltaY << "arv=" << aspectRatioView << "atc=" << aspectRatioCoverage << "minx=" << pmin.x << "miny=" << pmin.y << "maxx=" << pmax.x << "maxyx=" << pmax.y;
 	_viewEnvelope = { pmin, pmax };
 	if (initial)
 		_zoomEnvelope = _viewEnvelope;

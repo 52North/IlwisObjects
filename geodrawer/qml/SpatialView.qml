@@ -29,10 +29,9 @@ Rectangle {
 
 		function updateAfterSizeChange(){
 			if ( camera && renderer){
-				layermanager.rootLayer.(canvas.width, canvas.height, false)
+				layermanager.rootLayer.initSizes(canvas.width, canvas.height, false)
 				var aspect = canvas.width / canvas.height; 
-				var f = aspect >= 0 ? layermanager.rootLainitSizesyer.height : layermanager.rootLayer.width
-				console.debug("ddd", f, aspect)
+				var f = aspect >= 0 ? layermanager.rootLayer.height : layermanager.rootLayer.width
 				camera.left = f * aspect/-2
 				camera.right = f * aspect/2
 				camera.top = f /2  

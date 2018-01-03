@@ -18,7 +18,7 @@
 using namespace Ilwis;
 using namespace Ui;
 
-//REGISTER_LAYERMODEL("rasterlayermodel",RasterLayerModel)
+REGISTER_LAYERMODEL("rastercoverage",RasterLayerModel)
 
 RasterLayerModel::RasterLayerModel() {
 
@@ -26,7 +26,10 @@ RasterLayerModel::RasterLayerModel() {
 
 RasterLayerModel::RasterLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options) : CoverageLayerModel(manager, parent,name, desc, options)
 {
-
+	_isDrawable = true;
+	_isValid = true;
+	_icon = "raster.png";
+	_layerType = itRASTERLAYER;
 }
 
 LayerModel *RasterLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)

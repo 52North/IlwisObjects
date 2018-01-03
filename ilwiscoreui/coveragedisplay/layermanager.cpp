@@ -189,7 +189,6 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const QString &type, L
 			layer->nodeId(lm->nextId());
 			layer->fillData();
 			lm->layerTree()->appendChild(parentLayer, layer);
-			//parentLayer->appendChild(layer);
             return layer;
         }
     }
