@@ -13,12 +13,33 @@ Item {
     id : firstColumn
     width : 180
 
+	property var dummy101 : manager.layerTree
+
+	onDummy101Changed : {
+		if ( manager.lastAddedCoverageLayer)
+			currentNodeId = manager.lastAddedCoverageLayer.nodeId
+	}
+
 	function setModel(){
 		tree.model = null
 		tree.model = manager.layerTree
 		var layer = manager.findLayer(currentNodeId)
 		if ( layer){
-			tree.expand(layer.index(manager.layerTree))
+			var index = layer.index(manager.layerTree)
+			tree.expand(index)
+		
+			tree.selection.setCurrentIndex(index, ItemSelectionModel.ClearAndSelect)
+			setTreeIndex(index)
+		}
+		
+	}
+
+	function setTreeIndex(index){
+		var idx = manager.layerTree.nodeid(index)
+		console.debug(index, idx)
+		if ( idx >= 0){
+			currentNodeId = idx
+			attributeListColumn.currentCoverage = manager.findLayer(idx)
 		}
 	}
 	property int currentNodeId : 0
@@ -144,11 +165,7 @@ Item {
 
 				onClicked : {
 					tree.selection.setCurrentIndex(index, ItemSelectionModel.ClearAndSelect)
-					var idx = manager.layerTree.nodeid(index)
-					if ( idx >= 0){
-						currentNodeId = idx
-						attributeListColumn.currentCoverage = manager.findLayer(idx)
-					}
+					setTreeIndex(index)
 				}
 
 				rowDelegate : Rectangle {
