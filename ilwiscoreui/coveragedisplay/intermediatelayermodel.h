@@ -10,6 +10,8 @@ namespace Ilwis {
 			Q_OBJECT
 
 		public:
+			Q_INVOKABLE void setActiveAttribute(int idx);
+
 			IntermediateLayerModel();
 			IntermediateLayerModel(TreeNode *parent);
 			IntermediateLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions & opt);
