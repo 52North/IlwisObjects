@@ -36,3 +36,6 @@ LayerModel *IntermediateLayerModel::create(LayerManager *manager, LayerModel *la
 {
 	return new IntermediateLayerModel(manager, layer, name, desc, options);
 }
+
+void IntermediateLayerModel::setActiveAttribute(int idx) {
+}
