@@ -406,7 +406,7 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	Coordinate pmax = _coverageEnvelope.max_corner();
 	pmin = { pmin.x - deltaX, pmin.y - deltaY, 0 };
 	pmax = { pmax.x + deltaX, pmax.y + deltaY, 0 };
-	qDebug() << "dx="<< deltaX << "dy="<< deltaY << "arv=" << aspectRatioView << "atc=" << aspectRatioCoverage << "minx=" << pmin.x << "miny=" << pmin.y << "maxx=" << pmax.x << "maxyx=" << pmax.y;
+	//qDebug() << "dx="<< deltaX << "dy="<< deltaY << "arv=" << aspectRatioView << "atc=" << aspectRatioCoverage << "minx=" << pmin.x << "miny=" << pmin.y << "maxx=" << pmax.x << "maxyx=" << pmax.y;
 	_viewEnvelope = { pmin, pmax };
 	if (initial)
 		_zoomEnvelope = _viewEnvelope;
