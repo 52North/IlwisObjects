@@ -152,16 +152,21 @@ QColor VisualAttribute::value2color(const QVariant &var) const
             return ColorRangeBase::defaultColor(index);
         }
     }
-    double v;
-    if ( hasType(datadefinition().domain()->valueType(), itCONTINUOUSCOLOR)){
-        return ColorRangeBase::toColor(var.toULongLong(), ColorRangeBase::cmRGBA);
-    }else if ( hasType(datadefinition().domain()->ilwisType(), itNUMERICDOMAIN | itITEMDOMAIN)){
-        v  =  var.toDouble();
-    }else{
-        v = tovalue2(var.toString());
-    }
+	if (datadefinition().isValid()) {
+		double v;
+		if (hasType(datadefinition().domain()->valueType(), itCONTINUOUSCOLOR)) {
+			return ColorRangeBase::toColor(var.toULongLong(), ColorRangeBase::cmRGBA);
+		}
+		else if (hasType(datadefinition().domain()->ilwisType(), itNUMERICDOMAIN | itITEMDOMAIN)) {
+			v = var.toDouble();
+		}
+		else {
+			v = tovalue2(var.toString());
+		}
 
-    return _representation->colors()->value2color(v, _actualRange, _stretchRange) ;
+		return _representation->colors()->value2color(v, _actualRange, _stretchRange);
+	}
+	return QColor();
 }
 
 NumericRange VisualAttribute::actualRange() const
