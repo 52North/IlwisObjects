@@ -45,6 +45,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
     Q_PROPERTY(int layerCount READ layerCount NOTIFY layerCountChanged)
 	Q_PROPERTY(bool needUpdate READ needUpdate WRITE needUpdate NOTIFY needUpdateChanged)
+    Q_PROPERTY(LayerModel *lastAddedCoverageLayer READ lastAddedCoverageLayer CONSTANT)
 
 public:
 	enum LayerMovement { lmUP, lmDOWN, lmREMOVE };
@@ -71,6 +72,8 @@ public:
 
     QString layerListName() const;
 	TreeModel *layerTree();
+	LayerModel *lastAddedCoverageLayer() const;
+	void lastAddedCoverageLayer(LayerModel *lyr);
 	QQmlListProperty<Ilwis::Ui::LayerModel> layerList() ;
 	QList<Ilwis::Ui::LayerModel *> layerList2() ;
 
@@ -120,6 +123,7 @@ private:
 	int _nodeCounter = 0;
     static quint32 _baseViewId;
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
+	LayerModel *_lastAddedCoverageLayer = 0;
 
 
 

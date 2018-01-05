@@ -108,6 +108,16 @@ TreeModel *LayerManager::layerTree()
 	return _tree;
 }
 
+LayerModel *Ilwis::Ui::LayerManager::lastAddedCoverageLayer() const
+{
+	return _lastAddedCoverageLayer;
+}
+
+void Ilwis::Ui::LayerManager::lastAddedCoverageLayer(LayerModel * lyr)
+{
+	_lastAddedCoverageLayer = lyr;
+}
+
 void buildList(QList<LayerModel *>& list, LayerModel *parentItem) {
 
 	if ( parentItem->isDrawable())
@@ -165,6 +175,7 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 		layer->nodeId(lm->nextId());
 		layer->fillData();
 		lm->layerTree()->appendChild(parentLayer, layer);
+		lm->lastAddedCoverageLayer(layer);
 
     
         return layer;
