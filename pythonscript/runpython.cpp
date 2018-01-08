@@ -1,5 +1,12 @@
 #include <cmath>
-#include "Python.h"
+#if defined(_DEBUG) && defined(SWIG_PYTHON_INTERPRETER_NO_DEBUG)
+/* Use debug wrappers with the Python release dll */
+# undef _DEBUG
+# include <Python.h>
+# define _DEBUG
+#else
+# include <Python.h>
+#endif
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "symboltable.h"
