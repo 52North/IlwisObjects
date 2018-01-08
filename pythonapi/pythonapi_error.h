@@ -56,8 +56,8 @@ namespace pythonapi{
     //can retrieve Ilwis::ErrorObject::message() or std::exception::what()
     const char *get_err_message(std::exception& e);
     //returns typeid(Ilwis::ErrorObject) to compare in translate_Exception_type
-    const std::type_info& ilwisErrorObject_type_info();
-    const std::type_info& ilwisFeatureCreationError_type_info();
+    const type_info& ilwisErrorObject_type_info();
+    const type_info& ilwisFeatureCreationError_type_info();
 
 }
 
