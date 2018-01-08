@@ -11,7 +11,7 @@ A 3D size measurer for integer spaces. It is similar to QSize of QT but then for
 If no third dimension is present to top is assumed to be at 0. Fro consistency with QSize the top member is a signed integer though a unsigned would make more sense
 The value of size dimensions can never be below 0 and will be reset to 0 if they do.
  */
-template <typename T=quint32> class KERNELSHARED_EXPORT Size
+template <typename T=quint32> class Size
 {
 public:
     /*!
