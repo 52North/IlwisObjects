@@ -183,7 +183,7 @@ namespace pythonapi {
 
     struct Properties{
         enum Values{pNONE = 0, pBASIC=1, pMIN=2, pMAX=4, pDISTANCE=8, pDELTA=16,pNETTOCOUNT=32, pCOUNT=64, pSUM=128,
-                          pMEAN=256, pMEDIAN=512, pPREDOMINANT=1024, pSTDEV=2048, pHISTOGRAM=4096, pLAST=8192, pALL=4294967296};
+                          pMEAN=256, pMEDIAN=512, pPREDOMINANT=1024, pSTDEV=2048, pHISTOGRAM=4096, pLAST=8192, pALL=4294967295};
 
     };
 
