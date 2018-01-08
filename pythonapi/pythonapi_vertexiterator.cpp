@@ -11,6 +11,7 @@
 #include "../../core/util/box.h"
 #include "../../core/ilwisobjects/geometry/coordinatesystem/coordinatesystem.h"
 #include "../../core/ilwisobjects/coverage/geometryhelper.h"
+#include "../../core/ilwisobjects/coverage/feature.h"
 #include "../../core/ilwisobjects/coverage/vertexiterator.h"
 
 #include "pythonapi_error.h"
