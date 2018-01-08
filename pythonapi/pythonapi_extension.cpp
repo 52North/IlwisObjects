@@ -22,7 +22,7 @@ namespace pythonapi {
 
     bool _initIlwisObjects(const char * ilwisDir){
         int argc = 0;
-        char* argv[0];
+        char * argv[1] = {};
         bool ret = true;
 
         app = QCoreApplication::instance();
