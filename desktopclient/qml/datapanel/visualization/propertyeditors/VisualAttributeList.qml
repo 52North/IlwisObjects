@@ -11,7 +11,7 @@ import "../../../Global.js" as Global
 Rectangle {
     property var currentCoverage
     property var attributeListModel : currentCoverage ? currentCoverage.visualAttributes : null
-    property alias currentIndex: attributesList.currentIndex
+    //property alias currentIndex: attributesList.currentIndex
 
     function iconSource(name) {
         if ( name === "")
@@ -20,6 +20,9 @@ Rectangle {
          return iconP
 
      }
+	 onCurrentCoverageChanged : {
+		attributesList.currentIndex = 1
+	 }
     color : Global.alternatecolor3
 
     Rectangle {
@@ -55,13 +58,21 @@ Rectangle {
             id : attributesList
             model : attributeListModel
 
+			onModelChanged :  {
+				currentIndex = 1
+			}
+
             onCurrentIndexChanged: {
-				currentCoverage.setActiveAttribute(currentIndex)
-				editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
-				if ( editorListColumn.displayEditorModel.length > 0)
-					editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
-				else
-					editorColumn.currentEditor = null
+				if ( currentCoverage) {
+					currentCoverage.setActiveAttribute(currentIndex)
+					if ( attributesList.model ){
+						editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
+						if ( editorListColumn.displayEditorModel.length > 0)
+							editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
+						else
+							editorColumn.currentEditor = null
+					}
+				}
             }
 
             Component {

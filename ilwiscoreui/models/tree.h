@@ -84,10 +84,12 @@ public:
 	~TreeModel();
 
 	Q_PROPERTY(int rowCount READ rowCount CONSTANT)
+	Q_PROPERTY(int lastAddedNodeId READ lastAddedNodeId CONSTANT)
 
 	Q_INVOKABLE QModelIndex findIndex(int nodeid, int column);
 	Q_INVOKABLE int nodeid(const QModelIndex& index);
 	Q_INVOKABLE QModelIndex makeIndex(int row, quintptr) const;
+
 
 
 	QVariant data(const QModelIndex &index, int role) const override;
@@ -102,6 +104,7 @@ public:
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 	bool insertRows(int position, int rows, const QModelIndex &parent = QModelIndex()) override;
 	TreeNode *findNode(int id) const;
+	int lastAddedNodeId() const;
 
 
 	QHash<int, QByteArray> roleNames() const override;
@@ -111,6 +114,7 @@ private:
 
 	TreeNode *_rootItem = 0;
 	QHash<int, QByteArray> _roleNameMapping;
+	int _lastAddedNode = -1;
 };
 
 

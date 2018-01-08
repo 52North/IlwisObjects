@@ -148,7 +148,7 @@ bool Ilwis::Ui::TreeNode::isValid() const
 QModelIndex TreeNode::index(TreeModel * tree) const
 {
 	int r = row();
-	return tree->makeIndex(r, (quintptr)_parentItem);
+	return tree->makeIndex(r, (quintptr)this);
 	
 }
 
@@ -263,6 +263,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 
 void TreeModel::appendChild(TreeNode *parentItem, TreeNode *child) {
 	parentItem->appendChild(child);
+	_lastAddedNode = child->nodeId();
 	emit dataChanged(createIndex(parentItem->row(), 0, parentItem), createIndex(parentItem->row(), 0, parentItem));
 	//emit dataChanged(QModelIndex(), QModelIndex());
 }
@@ -292,6 +293,11 @@ TreeNode * TreeModel::findNode(int id) const
 	return 0;
 }
 
+int Ilwis::Ui::TreeModel::lastAddedNodeId() const
+{
+	return _lastAddedNode;
+}
+
 QModelIndex Ilwis::Ui::TreeModel::makeIndex(int row, quintptr ptr) const
 {
 	return QAbstractItemModel::createIndex(row, 0, ptr);
@@ -311,7 +317,8 @@ int TreeModel::nodeid(const QModelIndex & index)
 		QMap<int, QVariant> data = itemData(index);
 		if (data.size() >= 0) {
 			QVariantMap mp = data.begin().value().toMap();
-			return mp["nodeid"].toInt();
+			if ( mp.contains("nodeid"))
+				return mp["nodeid"].toInt();
 		}
 	}
 	return -1;
