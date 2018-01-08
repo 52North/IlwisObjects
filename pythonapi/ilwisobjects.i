@@ -17,6 +17,8 @@
 #include "util/range.h"
 #include "itemrange.h"
 #include "catalog.h"
+#include "coverage.h"
+#include "feature.h"
 
 #include "pythonapi_pyobject.h"
 #include "pythonapi_error.h"
