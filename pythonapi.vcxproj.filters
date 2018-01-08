@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{355cf0fc-c628-4e8e-93b7-66fe186435c3}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{968e5c91-751c-47b6-b174-f234528833ba}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Other Files">
+      <UniqueIdentifier>{102685da-7dbb-4999-9629-390df81850c4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pythonapi\pythonapi_booleanobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_catalog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_collection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_columndefinition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_coordinatesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_coverage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_datadefinition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_domain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_domainitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_extension.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_feature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_featurecoverage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_featureiterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_geometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_georeference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_ilwisobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_pixeliterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_pyobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_qissuelogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_qvariant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_range.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_rangeiterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_rastercoverage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\pythonapi_vertexiterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_pythonapi_qissuelogger.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_pythonapi_qissuelogger.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="pythonapi\ilwisobjects_wrap.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pythonapi\pythonapi_booleanobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_catalog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_collection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_columndefinition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_coordinatesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_coverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_datadefinition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_domain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_domainitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_extension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_feature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_featurecoverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_featureiterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_georeference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_ilwisobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_pixeliterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_pyobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="pythonapi\pythonapi_qissuelogger.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="pythonapi\pythonapi_qtGNUTypedefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_qvariant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_range.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_rangeiterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_rastercoverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pythonapi\pythonapi_vertexiterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="pythonapi\CHANGELOG">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\ilwisobjects.i">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\ilwisobjects.py">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\installerPy.nsi">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\paths.py">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\README">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\test.py">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\UPDATE">
+      <Filter>Other Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -37,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "desktopclient", "desktopcli
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvasp", "..\..\..\canvasp\canvasp.vcxproj", "{34E30FBF-5402-364D-B210-DA79EC485981}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi", "pythonapi.vcxproj", "{D3E35BD0-24B8-33B1-84F8-218783A77FAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,10 @@ Global
 		{34E30FBF-5402-364D-B210-DA79EC485981}.Debug|x64.Build.0 = Debug|x64
 		{34E30FBF-5402-364D-B210-DA79EC485981}.Release|x64.ActiveCfg = Release|x64
 		{34E30FBF-5402-364D-B210-DA79EC485981}.Release|x64.Build.0 = Release|x64
+		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Debug|x64.ActiveCfg = Debug|x64
+		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Debug|x64.Build.0 = Debug|x64
+		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Release|x64.ActiveCfg = Release|x64
+		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
