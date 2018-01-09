@@ -338,7 +338,7 @@ QVariantMap RootLayerModel::drawEnvelope(const QString& envelope) const{
     return vmap;
 }
 
-QString RootLayerModel::layerInfo(const Coordinate &crdIn, const QString &attrName, QVariantList &items) 
+/*QString RootLayerModel::layerInfo(const Coordinate &crdIn, const QString &attrName, QVariantList &items) 
 {
 	QString result;
 	auto layers = layersManager()->layerList2();
@@ -350,9 +350,9 @@ QString RootLayerModel::layerInfo(const Coordinate &crdIn, const QString &attrNa
 	return result;
 
 	
-}
+}*/
 
-QString RootLayerModel::layerInfo(const QString& pixelpair) 
+QString RootLayerModel::layerInfo(const QString& pixelpair)  
 {
     try {
         if ( zoomInMode() || panningMode()) // when zooming we dont don' give info. costs too much performance
@@ -363,7 +363,7 @@ QString RootLayerModel::layerInfo(const QString& pixelpair)
             QStringList parts = pixelpair.split("|");
             if ( parts.size() == 2 ){
                 Ilwis::Coordinate crd = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
-               QString ret =  layerInfo(crd,"", _layerInfoItems);
+               QString ret = layersManager()->layerData(crd,"", _layerInfoItems);
 			   emit layerInfoItemsChanged();
 			   return ret;
             }

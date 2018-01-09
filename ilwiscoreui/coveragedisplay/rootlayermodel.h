@@ -62,7 +62,7 @@ public:
      void setCurrentCoordinate(const QString& var);
      QString currentLatLon() const;
      QVariantMap coord2Screen(const QVariantMap &var) const;
-     QString layerInfo(const Coordinate &crdIn, const QString& attrName, QVariantList &items) ;
+    // QString layerInfo(const Coordinate &crdIn, const QString& attrName, QVariantList &items) ;
 
 
      bool zoomInMode() const;
@@ -123,7 +123,7 @@ private:
 	double _zoomFactor = 1.0;
 	Coordinate _currentCoordinate;
 
-    QVariantList layerInfoItems();
+    QVariantList layerInfoItems() ;
     QVariantMap viewEnvelopePrivate() const;
     QVariantMap zoomEnvelopePrivate() const;
     QVariantMap latlonEnvelope() const;
