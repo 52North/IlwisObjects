@@ -76,6 +76,7 @@ public:
 	void lastAddedCoverageLayer(LayerModel *lyr);
 	QQmlListProperty<Ilwis::Ui::LayerModel> layerList() ;
 	QList<Ilwis::Ui::LayerModel *> layerList2() ;
+	QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
 
 
     static LayerModel *create(LayerModel *parentLayer,  const ICoverage& cov, LayerManager *lm, const IOOptions& options = IOOptions());

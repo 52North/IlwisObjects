@@ -145,6 +145,20 @@ QList<Ilwis::Ui::LayerModel*> Ilwis::Ui::LayerManager::layerList2()
 	return _layerList;
 }
 
+QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrName, QVariantList & items) const
+{
+	QString result;
+	for (auto *TreeNode : _rootNode->children()) {
+		LayerModel *layer = TreeNode->as<LayerModel>();
+		if (layer->isValid()) {
+			if (result != "")
+				result += ";";
+			result += layer->layerData(crdIn, attrName, items);
+		}
+	}
+	return result;
+}
+
 LayerModel * LayerManager::findLayer(int nodeid)
 {
 	return static_cast<LayerModel *>(_tree->findNode(nodeid));
