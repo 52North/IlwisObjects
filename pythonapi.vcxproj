@@ -64,7 +64,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external;core;D:/MyQtProjects/ilwisobjects/projects/../external/geos;..\external\Python35\include;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external;core;..\external\Python36\include;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -std=c++11 -std=gnu++11 -Wno-unused-parameter -Wno-sign-compare -Wno-unused-local-typedefs -Wno-deprecated-declarations -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -83,8 +83,8 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ilwiscore.lib;D:\MyQtProjects\ilwisobjects\libraries\win32release\libgeos.lib;python35.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\MyQtProjects\ilwisobjects\libraries\win32release;D:\MyQtProjects\ilwisobjects\libraries\win32release\extensions\pythonapi;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ilwiscore.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32release;..\libraries\win32release\extensions\pythonapi;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -104,61 +104,61 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>if not exist D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi mkdir D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+      <Command>if not exist ..\output\win32release\bin\extensions\pythonapi mkdir ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\libraries\win32release\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+ copy /y ..\libraries\win32release\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\test.py ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\README ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32release\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y /b D:\MyQtProjects\ilwisobjects\projects\pythonapi\paths.py + D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\temp.py
+ copy /y /b ..\projects\pythonapi\paths.py + ..\output\win32release\bin\extensions\pythonapi\ilwisobjects.py ..\output\win32release\bin\extensions\pythonapi\temp.py
 if errorlevel 1 goto VCEnd
- move /y D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\temp.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\__init__.py
+ move /y ..\output\win32release\bin\extensions\pythonapi\temp.py ..\output\win32release\bin\extensions\pythonapi\__init__.py
 if errorlevel 1 goto VCEnd
- del /f D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\ilwisobjects.py
+ del /f ..\output\win32release\bin\extensions\pythonapi\ilwisobjects.py
 if errorlevel 1 goto VCEnd
- if not exist D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ if not exist ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\test.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\README ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\output\win32release\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- move /y D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
+ move /y ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
 if errorlevel 1 goto VCEnd
 </Command>
-      <Message>if not exist D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi mkdir D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\libraries\win32release\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi
- copy /y /b D:\MyQtProjects\ilwisobjects\projects\pythonapi\paths.py + D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\temp.py
- move /y D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\temp.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\__init__.py
- del /f D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\ilwisobjects.py
- if not exist D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- move /y D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
+      <Message>if not exist ..\output\win32release\bin\extensions\pythonapi mkdir ..\output\win32release\bin\extensions\pythonapi
+ copy /y ..\libraries\win32release\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\test.py ..\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\README ..\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32release\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32release\bin\extensions\pythonapi
+ copy /y /b ..\projects\pythonapi\paths.py + ..\output\win32release\bin\extensions\pythonapi\ilwisobjects.py ..\output\win32release\bin\extensions\pythonapi\temp.py
+ move /y ..\output\win32release\bin\extensions\pythonapi\temp.py ..\output\win32release\bin\extensions\pythonapi\__init__.py
+ del /f ..\output\win32release\bin\extensions\pythonapi\ilwisobjects.py
+ if not exist ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\test.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\README ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\output\win32release\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ move /y ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
 </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -184,7 +184,7 @@ if errorlevel 1 goto VCEnd
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Python36\libs;$(QTDIR)\lib;..\libraries\win32debug;..\libraries\win32debug\extensions\pythonapi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;..\libraries\win32debug\extensions\pythonapi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -207,61 +207,61 @@ if errorlevel 1 goto VCEnd
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>if not exist D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi mkdir D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+      <Command>if not exist ..\output\win32debug\bin\extensions\pythonapi mkdir ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\libraries\win32debug\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\libraries\win32debug\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\test.py ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\README ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y /b D:\MyQtProjects\ilwisobjects\projects\pythonapi\paths.py + D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\temp.py
+ copy /y /b ..\projects\pythonapi\paths.py + ..\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonapi\temp.py
 if errorlevel 1 goto VCEnd
- move /y D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\temp.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\__init__.py
+ move /y ..\output\win32debug\bin\extensions\pythonapi\temp.py ..\output\win32debug\bin\extensions\pythonapi\__init__.py
 if errorlevel 1 goto VCEnd
- del /f D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py
+ del /f ..\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py
 if errorlevel 1 goto VCEnd
- if not exist D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ if not exist ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\test.py ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\README ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\output\win32debug\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- move /y D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
+ move /y ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
 if errorlevel 1 goto VCEnd
 </Command>
-      <Message>if not exist D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi mkdir D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\libraries\win32debug\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi
- copy /y /b D:\MyQtProjects\ilwisobjects\projects\pythonapi\paths.py + D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\temp.py
- move /y D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\temp.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\__init__.py
- del /f D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py
- if not exist D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\test.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\README D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\UPDATE D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\projects\pythonapi\CHANGELOG D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonapi\_ilwisobjects.pyd D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- move /y D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py D:\MyQtProjects\ilwisobjects\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
+      <Message>if not exist ..\output\win32debug\bin\extensions\pythonapi mkdir ..\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\libraries\win32debug\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\test.py ..\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\README ..\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32debug\bin\extensions\pythonapi
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32debug\bin\extensions\pythonapi
+ copy /y /b ..\projects\pythonapi\paths.py + ..\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonapi\temp.py
+ move /y ..\output\win32debug\bin\extensions\pythonapi\temp.py ..\output\win32debug\bin\extensions\pythonapi\__init__.py
+ del /f ..\output\win32debug\bin\extensions\pythonapi\ilwisobjects.py
+ if not exist ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\test.py ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\README ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\UPDATE ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\projects\pythonapi\CHANGELOG ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y ..\output\win32debug\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ move /y ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\win32debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
 </Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -342,7 +342,7 @@ if errorlevel 1 goto VCEnd
     <ClInclude Include="pythonapi\pythonapi_pixeliterator.h" />
     <ClInclude Include="pythonapi\pythonapi_pyobject.h" />
     <CustomBuild Include="pythonapi\pythonapi_qissuelogger.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-ID:\MyQtProjects\ilwisobjects\projects\..\external\geos" "-I.\..\external\Python35\include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_SQL_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\external\Python36\include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing pythonapi_qissuelogger.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DSWIG_PYTHON_INTERPRETER_NO_DEBUG -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_GUI_LIB -DQT_SQL_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -D_WINDLL  "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\external\geos" "-I.\..\external\Python36\include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing pythonapi_qissuelogger.h...</Message>
