@@ -16,6 +16,8 @@
 #include "smcemodel.h"
 #include "smce.h"
 
+using namespace Ilwis::Ui;
+
 REGISTER_ANALYSISMODEL(SMCEModel,"smce")
 
 SMCEModel::SMCEModel()

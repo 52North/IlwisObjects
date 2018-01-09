@@ -17,6 +17,8 @@
 #include "smcemodel.h"
 #include "smcespatialalternatives.h"
 
+using namespace Ilwis::Ui;
+
 REGISTER_APPMODEL(SMCESpatialAlternatives, "smce")
 
 using namespace Ilwis;

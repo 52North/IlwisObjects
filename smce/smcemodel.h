@@ -5,7 +5,7 @@
 #include "node.h"
 #include "workflow/analysismodel.h"
 
-class SMCEModel : public AnalysisModel
+class SMCEModel : public Ilwis::Ui::AnalysisModel
 {
     Q_OBJECT
 

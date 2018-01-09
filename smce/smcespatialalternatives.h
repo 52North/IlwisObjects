@@ -3,7 +3,7 @@
 
 #include "workflow/applicationmodelui.h"
 
-class SMCESpatialAlternatives : public ApplicationModelUI
+class SMCESpatialAlternatives : public Ilwis::Ui::ApplicationModelUI
 {
 public:
     SMCESpatialAlternatives();
