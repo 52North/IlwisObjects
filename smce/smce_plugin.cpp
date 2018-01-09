@@ -18,7 +18,6 @@
 #include "modeller/analysispattern.h"
 #include "geometries.h"
 #include "iooptions.h"
-#include "drawers/selectiondrawer.h"
 #include "smcemodel.h"
 #include "smcespatialalternatives.h"
 
