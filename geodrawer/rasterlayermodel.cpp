@@ -83,9 +83,9 @@ QString RasterLayerModel::value2string(const QVariant &value, const QString &att
 
 }
 
-QString RasterLayerModel::layerInfo(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
+QString RasterLayerModel::layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
 {
-    QString txt = CoverageLayerModel::layerInfo(crdIn, attrName, items);
+    QString txt = CoverageLayerModel::layerData(crdIn, attrName, items);
     IRasterCoverage raster = CoverageLayerModel::coverage().as<RasterCoverage>();
     Pixel pix = raster->georeference()->coord2Pixel(crdIn);
     QString pixtxt = QString("%1 %2").arg(pix.x + 1).arg(pix.y + 1);

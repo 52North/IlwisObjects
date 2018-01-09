@@ -48,7 +48,7 @@ public:
     QString url() const;
     QColor color(const IRepresentation &rpr, const QString& propName, double value, LayerModel::ColorValueMeaning cvm);
     virtual QString value2string(const QVariant& value, const QString& attrName="") const;
-    QString layerInfo(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
+    QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
 
 signals:
     void activeAttributeChanged();

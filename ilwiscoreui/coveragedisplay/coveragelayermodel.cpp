@@ -154,7 +154,7 @@ QString CoverageLayerModel::value2string(const QVariant &value, const QString &a
     return sUNDEF;
 }
 
-QString CoverageLayerModel::layerInfo(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
+QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
 {
     Coordinate crd = crdIn;
 
@@ -205,8 +205,15 @@ QString CoverageLayerModel::layerInfo(const Coordinate &crdIn, const QString &at
             outtext += "; ";
         outtext += txt;
     }
+	QString childTexts = LayerModel::layerData(crdIn, attrName, items);
+	if (outtext != "" && childTexts != "")
+		outtext += ";";
+	outtext += childTexts;
+
     if ( outtext == "")
-        outtext = "?";
+        outtext = sUNDEF;
+
+
     return outtext;
 }
 

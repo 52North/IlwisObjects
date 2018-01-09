@@ -19,7 +19,7 @@ public:
     void fillAttributes() ;
 	bool prepare(int);
     QString value2string(const QVariant &value, const QString &attrName) const;
-    QString layerInfo(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
+    QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 	bool usesColorData() const;
 
