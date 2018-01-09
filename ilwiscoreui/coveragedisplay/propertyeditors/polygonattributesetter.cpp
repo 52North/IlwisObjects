@@ -38,7 +38,7 @@ bool PolygonPropertySetter::canUse(const IIlwisObject& obj, const QString& name 
     Ilwis::IFeatureCoverage features = obj.as<Ilwis::FeatureCoverage>();
     if ( features->featureCount(itPOLYGON) == 0)
         return false;
-    return name == VisualAttribute::LAYER_ONLY;
+    return name == VisualAttribute::LAYER_ONLY && !vpmodel()->layer()->isSupportLayer();
 
 }
 
