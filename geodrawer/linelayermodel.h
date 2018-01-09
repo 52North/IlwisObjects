@@ -28,6 +28,8 @@ namespace Ilwis {
 
 			Q_INVOKABLE int numberOfBuffers(const QString & type) const;
 
+			void fillAttributes();
+
 			static LayerModel *create(LayerManager *, LayerModel *, const QString&, const QString&, const IOOptions&);
 
 			NEW_LAYERMODEL(LineLayerModel);
