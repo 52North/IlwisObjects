@@ -34,7 +34,8 @@ LineLayerModel::LineLayerModel(LayerManager * manager, QObject * parent, const Q
 	if (_linesetter) {
 		_linesetter->sourceCsySystem(_featureLayer->coverage()->coordinateSystem());
 	}
-	_isValid = _featureLayer->coverage().as<FeatureCoverage>()->featureCount(options.contains("boundaries") ? itPOLYGON :  itLINE) > 0;
+	isSupportLayer(options.contains("boundaries"));
+	_isValid = _featureLayer->coverage().as<FeatureCoverage>()->featureCount(isSupportLayer() ? itPOLYGON :  itLINE) > 0;
 	_icon = "vector_line.png";
 	_isDrawable = true;
 	_layerType = itLINELAYER;
@@ -89,6 +90,25 @@ int LineLayerModel::numberOfBuffers(const QString& type) const
 	if (type == "linecoverage")
 		return _buffer.bufferCount();
 	return 0;
+}
+
+void LineLayerModel::fillAttributes()
+{
+	if (_featureLayer->coverage().isValid()) {
+		_visualAttributes = QList<VisualAttribute *>();
+		_visualAttributes.push_back(new LayerAttributeModel(this, _featureLayer->coverage(), DataDefinition()));
+
+		// set default attribute
+		if (_visualAttributes.size() > 0) {
+			if (_visualAttributes.size() == 1)
+				activeAttribute(_visualAttributes.front()->attributename());
+			else
+				activeAttribute(_visualAttributes[1]->attributename());
+		}
+		auto layers = children();
+		for (auto *layer : layers)
+			layer->as<LayerModel>()->fillAttributes();
+	}
 }
 
 
