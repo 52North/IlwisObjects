@@ -28,19 +28,20 @@ bool OpenAttributeTable::canUse(const IIlwisObject &obj, const QString &name) co
         return false;
     Ilwis::ICoverage cov = obj.as<Coverage>();
 
-    return name == VisualAttribute::LAYER_ONLY && cov->hasAttributes();
+    return name == VisualAttribute::LAYER_ONLY && cov->hasAttributes() && !vpmodel()->layer()->isSupportLayer();
 }
 
 QStringList OpenAttributeTable::attributeTable() const
 {
     QStringList result;
     if ( vpmodel()->layer()){
-        ICoverage coverage = vpmodel()->layer()->as<CoverageLayerModel>()->coverage();
+		auto *lyr = vpmodel()->layer();
+        ICoverage coverage = lyr->as<CoverageLayerModel>()->coverage();
         if(coverage->hasAttributes() ){
             Resource res;
-//            if ( attribute()->layer()->coverage()->ilwisType() == itFEATURE)
-//                res = attribute()->layer()->coverage()->resource();
-//            else
+            if ( coverage->ilwisType() == itFEATURE)
+                res =coverage->resource();
+            else
                 res = coverage->attributeTable()->resource();
             result.append(QString::number(res.id()));
             result.append(res.url().toString());
