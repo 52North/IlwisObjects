@@ -41,7 +41,7 @@ public:
 
     enum PropertySets{pNONE = 0, pBASIC=1, pMIN=2, pMAX=4, pDISTANCE=8, pDELTA=16,pNETTOCOUNT=32, pCOUNT=64, pSUM=128,
                       pMEAN=256, pMEDIAN=512, pPREDOMINANT=1024, pSTDEV=2048, pHISTOGRAM=4096, pVARIANCE=8192, pSKEW=16384,pKURTOSIS=32768,
-                      pLAST=65536,pALL=2147483648};
+                      pLAST=65536,pALL=2147483647};
     static const quint32 pNUMERICS = pMIN | pMAX | pDISTANCE | pDELTA | pNETTOCOUNT | pCOUNT | pSUM | pMEAN | pMEDIAN | pPREDOMINANT | pVARIANCE | pSKEW | pKURTOSIS;
 
     ContainerStatistics(){
