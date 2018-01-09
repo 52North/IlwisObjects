@@ -29,7 +29,7 @@ bool MapInformationPropertySetter::canUse(const IIlwisObject& obj, const QString
         return false;
     if(!hasType(obj->ilwisType(), itCOVERAGE))
         return false;
-    return name == VisualAttribute::LAYER_ONLY;
+    return name == VisualAttribute::LAYER_ONLY && vpmodel()->layer()->layerType() != itLINELAYER;
 
 }
 
