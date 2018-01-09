@@ -117,12 +117,12 @@ void LayerModel::addVisualAttribute(VisualAttribute *attr)
     }
 }
 
-QString LayerModel::layerInfo(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
+QString LayerModel::layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
 {
     QString alltext;
     for(auto node : children()){
 		auto lyr = node->as<LayerModel>();
-        QString txt = lyr->layerInfo(crdIn, attrName, items);
+        QString txt = lyr->layerData(crdIn, attrName, items);
         if ( alltext != "")
             alltext += ";";
         alltext += txt;
@@ -215,6 +215,11 @@ VisualAttribute *LayerModel::visualAttribute(const QString &attrName) const
             return attr;
     }
     return 0;
+}
+
+void Ilwis::Ui::LayerModel::isSupportLayer(bool yesno)
+{
+	_isSupportLayer = yesno;
 }
 
 double LayerModel::opacity() const
@@ -422,6 +427,11 @@ void LayerModel::fillData() {
 	vmap["nodeid"] = nodeId();
 	vmap["active"] = active();
 	setData(0, vmap);
+}
+
+bool LayerModel::isSupportLayer() const
+{
+	return _isSupportLayer;
 }
 
 

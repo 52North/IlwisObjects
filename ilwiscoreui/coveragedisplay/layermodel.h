@@ -92,7 +92,7 @@ public:
     virtual QString url() const;
 	virtual void fillAttributes();
     void addVisualAttribute(VisualAttribute *attr);
-    virtual QString layerInfo(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
+    virtual QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     virtual QString icon() const;
 	virtual QString layerId() const;
 	IlwisTypes layerType() const;
@@ -107,6 +107,7 @@ public:
 	bool isValid() const;
 	bool isDrawable() const;
 	bool isVectorLayer() const;
+	bool isSupportLayer() const;
 	virtual bool usesColorData() const;
     void fillData();
 
@@ -115,6 +116,7 @@ protected:
     const LayerManager *layersManager() const;
 	LayerManager *layersManager() ;
     virtual VisualAttribute *visualAttribute(const QString &attrName) const;
+	void isSupportLayer(bool yesno);
 
 signals:
        void onActiveChanged();
@@ -152,6 +154,7 @@ private:
 	bool _geometryChanged = false;
 
 	std::set<QString> _changedProperties;
+	bool _isSupportLayer = false;
 
     QQmlListProperty<VisualAttribute> vattributes();
     QQmlListProperty<TreeNode> layersPrivate();
