@@ -227,7 +227,10 @@ TabModel *SidePanelModel::createPanel(quint32 index, const QString &filter, cons
         std::vector<Ilwis::Resource> resources = Ilwis::mastercatalog()->select(Ilwis::OSHelper::neutralizeFileName(filter));
         if ( resources.size() > 0 ){
             if (hasType(resources[0].ilwisType(), itCOVERAGE)) {
-                tab = new TabModel(url,"visualization/MapPanel.qml", outputtype, this);
+				if (outputtype == "table")
+					tab = new TabModel(url, "table/TablePane.qml", outputtype, this);
+				else
+					tab = new TabModel(url,"visualization/MapPanel.qml", outputtype, this);
             }
             else if (hasType(resources[0].ilwisType(), itTABLE)) {
                 tab = new TabModel(url,"table/TablePane.qml", outputtype, this);
