@@ -35,7 +35,11 @@ bool LinePropertySetter::canUse(const IIlwisObject &obj, const QString& name) co
 
     if ( hasType(obj->ilwisType(), itFEATURE)){
         IFeatureCoverage features = obj.as<FeatureCoverage>();
-        return (name == VisualAttribute::LAYER_ONLY) && (features->featureCount(itLINE) || features->featureCount(itPOLYGON)> 0);
+		bool hasPolygons = features->featureCount(itPOLYGON) > 0;
+        bool ok = (name == VisualAttribute::LAYER_ONLY) && (features->featureCount(itLINE) || hasPolygons);
+		if (hasPolygons && !vpmodel()->layer()->isSupportLayer())
+			ok = false;
+		return ok;
     }
     return false;
 }
