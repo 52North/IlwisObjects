@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi", "pythonapi.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonscript", "pythonscript.vcxproj", "{C0F6BA32-349F-3FC3-B614-0A36A6C612FE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smce", "smce.vcxproj", "{7F9F42AB-0D8A-38CF-BD28-41923F09EEE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -123,6 +125,10 @@ Global
 		{C0F6BA32-349F-3FC3-B614-0A36A6C612FE}.Debug|x64.Build.0 = Debug|x64
 		{C0F6BA32-349F-3FC3-B614-0A36A6C612FE}.Release|x64.ActiveCfg = Release|x64
 		{C0F6BA32-349F-3FC3-B614-0A36A6C612FE}.Release|x64.Build.0 = Release|x64
+		{7F9F42AB-0D8A-38CF-BD28-41923F09EEE7}.Debug|x64.ActiveCfg = Debug|x64
+		{7F9F42AB-0D8A-38CF-BD28-41923F09EEE7}.Debug|x64.Build.0 = Debug|x64
+		{7F9F42AB-0D8A-38CF-BD28-41923F09EEE7}.Release|x64.ActiveCfg = Release|x64
+		{7F9F42AB-0D8A-38CF-BD28-41923F09EEE7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
