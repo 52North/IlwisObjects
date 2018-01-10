@@ -281,6 +281,13 @@ void Node::setFileName(QString fileName)
         _fileName = url.fileName();
     }
 
+    if ((_type == NodeType::Factor || _type == NodeType::Constraint) && _standardization != 0) {
+        Standardization * stdDelete = _standardization;
+        setStandardization(0);
+        if (stdDelete != 0)
+            stdDelete->deleteLater();
+    }
+
     emit fileNameChanged();
     emit doneChanged();
     if (parent())
@@ -437,7 +444,7 @@ QString Node::getPython(QString outputName, bool first) const
                     }
                 }
                 if (_weight > 0 && _weight < 1) {
-                    result += QString("%1=%2*%1\n").arg(outputName).arg(_weight);
+                    result += QString("%1=%2*%1\n").arg(outputName).arg(_weight,0,'f',25);
                 }
                 if (first) {
                     QList<Node*> constraints = getConstraints();
@@ -469,7 +476,7 @@ QString Node::getPython(QString outputName, bool first) const
             result = coverageName + "=ilwis.RasterCoverage('" + _fileName + "')\n";
             result += _standardization->getPython(coverageName, outputName);
             if (_weight > 0 && _weight < 1)
-                result += QString("%1=%2*%1\n").arg(outputName).arg(_weight);
+                result += QString("%1=%2*%1\n").arg(outputName).arg(_weight,0,'f',25);
             result += "del " + coverageName + "\n";
             break;
         }
@@ -507,7 +514,7 @@ QString Node::getMapcalc() const
                 if (_weight > 0 && _weight < 1) {
                     if (children.length() > 1)
                         result = "(" + result + ")";
-                    result = QString("%1*%2").arg(_weight).arg(result);
+                    result = QString("%1*%2").arg(_weight,0,'f',25).arg(result);
                 }
             }
         }
@@ -517,7 +524,7 @@ QString Node::getMapcalc() const
             QString rasterCoverage = "ilwis.RasterCoverage('" + _fileName + "')";
             result = _standardization->getMapcalc(rasterCoverage);
             if (_weight > 0 && _weight < 1)
-                result = QString("%1*%2").arg(_weight).arg(result);
+                result = QString("%1*%2").arg(_weight,0,'f',25).arg(result);
             break;
         }
     default:
@@ -993,7 +1000,13 @@ double MaximumFunction::getFx(double x) const
 
 QString MaximumFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    QString result = QString("%1=%2\n").arg(outputName).arg(getMapcalc(rasterCoverage));
+    QString result;
+    if (_maxY != _minY) {
+        result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+        result += getMapcalc("@1");
+        result += QString("',%1)\n").arg(rasterCoverage);
+    } else
+        result = QString("%1=%2\n").arg(outputName).arg(getMapcalc(rasterCoverage));
     return result;
 }
 
@@ -1005,11 +1018,11 @@ QString MaximumFunction::getMapcalc(QString rasterCoverage)
     //return a * x + b;
     if (a != 0) {
         if (b != 0)
-            return QString ("%1*%2+%3").arg(a).arg(rasterCoverage).arg(b);
+            return QString ("%1*%2+%3").arg(a,0,'f',25).arg(rasterCoverage).arg(b,0,'f',25);
         else
-            return QString("%1*%2").arg(a).arg(rasterCoverage);
+            return QString("%1*%2").arg(a,0,'f',25).arg(rasterCoverage);
     } else {
-        return QString("%1").arg(b);
+        return QString("%1").arg(b,0,'f',25);
     }
 }
 
@@ -1038,7 +1051,13 @@ double IntervalFunction::getFx(double x) const
 
 QString IntervalFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    QString result = QString("%1=%2\n").arg(outputName).arg(getMapcalc(rasterCoverage));
+    QString result;
+    if (_maxY != _minY) {
+        result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+        result += getMapcalc("@1");
+        result += QString("',%1)\n").arg(rasterCoverage);
+    } else
+        result = QString("%1=%2\n").arg(outputName).arg(getMapcalc(rasterCoverage));
     return result;
 }
 
@@ -1050,11 +1069,11 @@ QString IntervalFunction::getMapcalc(QString rasterCoverage)
     //return a * x + b;
     if (a != 0) {
         if (b != 0)
-            return QString ("%1*%2+%3").arg(a).arg(rasterCoverage).arg(b);
+            return QString ("%1*%2+%3").arg(a,0,'f',25).arg(rasterCoverage).arg(b,0,'f',25);
         else
-            return QString("%1*%2").arg(a).arg(rasterCoverage);
+            return QString("%1*%2").arg(a,0,'f',25).arg(rasterCoverage);
     } else {
-        return QString("%1").arg(b);
+        return QString("%1").arg(b,0,'f',25);
     }
 }
 
@@ -1094,7 +1113,9 @@ double GoalFunction::getFx(double x) const
 
 QString GoalFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    QString result = QString("%1=ilwis.RasterCoverage.min(1,ilwis.RasterCoverage.max(0,%2))\n").arg(outputName).arg(getMapcalc(rasterCoverage));
+    QString result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+    result += "min(1,max(0," + getMapcalc("@1") + "))";
+    result += QString("',%1)\n").arg(rasterCoverage);
     return result;
 }
 
@@ -1104,11 +1125,11 @@ QString GoalFunction::getMapcalc(QString rasterCoverage)
     //return a * x + b;
     if (a != 0) {
         if (b != 0)
-            return QString ("%1*%2+%3").arg(a).arg(rasterCoverage).arg(b);
+            return QString ("%1*%2+%3").arg(a,0,'f',25).arg(rasterCoverage).arg(b,0,'f',25);
         else
-            return QString("%1*%2").arg(a).arg(rasterCoverage);
+            return QString("%1*%2").arg(a,0,'f',25).arg(rasterCoverage);
     } else {
-        return QString("%1").arg(b);
+        return QString("%1").arg(b,0,'f',25);
     }
 }
 
@@ -1227,14 +1248,9 @@ double ConvexFunction::getFx(double x) const
 
 QString ConvexFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    solveParams();
-    //return a + b * exp(c * x) OR _maxY - (a + b * exp(c * x))
-    QString sRet;
-    if (_benefit)
-        sRet = QString("%1+%2*ilwis.Engine.do('exp',%3*%4)").arg(a).arg(b).arg(c).arg(rasterCoverage);
-    else
-        sRet = QString("%1-(%2+%3*ilwis.Engine.do('exp',%4*%5))").arg(_maxY).arg(a).arg(b).arg(c).arg(rasterCoverage);
-    QString result = QString("%1=ilwis.RasterCoverage.min(1,ilwis.RasterCoverage.max(0,%2))\n").arg(outputName).arg(sRet);
+    QString result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+    result += "min(1,max(0," + getMapcalc("@1") + "))";
+    result += QString("',%1)\n").arg(rasterCoverage);
     return result;
 }
 
@@ -1244,9 +1260,9 @@ QString ConvexFunction::getMapcalc(QString rasterCoverage)
     //return a + b * exp(c * x) OR _maxY - (a + b * exp(c * x))
     QString sRet;
     if (_benefit)
-        sRet = QString("%1+%2*exp(%3*%4)").arg(a).arg(b).arg(c).arg(rasterCoverage);
+        sRet = QString("%1+%2*exp(%3*%4)").arg(a,0,'f',25).arg(b,0,'f',25).arg(c,0,'f',25).arg(rasterCoverage);
     else
-        sRet = QString("%1-(%2+%3*exp(%4*%5))").arg(_maxY).arg(a).arg(b).arg(c).arg(rasterCoverage);
+        sRet = QString("%1-(%2+%3*exp(%4*%5))").arg(_maxY,0,'f',25).arg(a,0,'f',25).arg(b,0,'f',25).arg(c,0,'f',25).arg(rasterCoverage);
 
     return sRet;
 }
@@ -1356,14 +1372,9 @@ double ConcaveFunction::getFx(double x) const
 
 QString ConcaveFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    solveParams();
-    //return a + b * exp(c * x) OR _maxY - (a + b * exp(c * x))
-    QString sRet;
-    if (_benefit)
-        sRet = QString("%1+%2*ilwis.Engine.do('exp',%3*%4)").arg(a).arg(b).arg(c).arg(rasterCoverage);
-    else
-        sRet = QString("%1-(%2+%3*ilwis.Engine.do('exp',%4*%5))").arg(_maxY).arg(a).arg(b).arg(c).arg(rasterCoverage);
-    QString result = QString("%1=ilwis.RasterCoverage.min(1,ilwis.RasterCoverage.max(0,%2))\n").arg(outputName).arg(sRet);
+    QString result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+    result += "min(1,max(0," + getMapcalc("@1") + "))";
+    result += QString("',%1)\n").arg(rasterCoverage);
     return result;
 }
 
@@ -1373,9 +1384,9 @@ QString ConcaveFunction::getMapcalc(QString rasterCoverage)
     //return a + b * exp(c * x) OR _maxY - (a + b * exp(c * x))
     QString sRet;
     if (_benefit)
-        sRet = QString("%1+%2*exp(%3*%4)").arg(a).arg(b).arg(c).arg(rasterCoverage);
+        sRet = QString("%1+%2*exp(%3*%4)").arg(a,0,'f',25).arg(b,0,'f',25).arg(c,0,'f',25).arg(rasterCoverage);
     else
-        sRet = QString("%1-(%2+%3*exp(%4*%5))").arg(_maxY).arg(a).arg(b).arg(c).arg(rasterCoverage);
+        sRet = QString("%1-(%2+%3*exp(%4*%5))").arg(_maxY,0,'f',25).arg(a,0,'f',25).arg(b,0,'f',25).arg(c,0,'f',25).arg(rasterCoverage);
 
     return sRet;
 }
@@ -1449,7 +1460,9 @@ double QuadraticFunction::getFx(double x) const
 
 QString QuadraticFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    QString result = QString("%1=ilwis.RasterCoverage.min(1,ilwis.RasterCoverage.max(0,%2))\n").arg(outputName).arg(getMapcalc(rasterCoverage));
+    QString result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+    result += "min(1,max(0," + getMapcalc("@1") + "))";
+    result += QString("',%1)\n").arg(rasterCoverage);
     return result;
 }
 
@@ -1459,7 +1472,7 @@ QString QuadraticFunction::getMapcalc(QString rasterCoverage)
     // return a * x * x + b * x + c
     // String sRet ("%lg*%S*%S+%lg*%S+%lg", a, sData, sData, b, sData, c);
     // return (a * x + b) * x + c (this is optimized so that sData is used twice instead of 3x)
-    QString sRet  = QString("(%1*%2+%3)*%4+%5").arg(a).arg(rasterCoverage).arg(b).arg(rasterCoverage).arg(c);
+    QString sRet  = QString("(%1*%2+%3)*%4+%5").arg(a,0,'f',25).arg(rasterCoverage).arg(b,0,'f',25).arg(rasterCoverage).arg(c,0,'f',25);
 
     return sRet;
 }
@@ -1538,14 +1551,9 @@ double GaussianFunction::getFx(double x) const
 
 QString GaussianFunction::getPython(QString rasterCoverage, QString outputName)
 {
-    solveParams();
-    // return a * exp(b * sq(x - c)) OR 1 - a * exp(b * sq(x - c))
-    QString sRet;
-    if (_benefit)
-        sRet = QString("%1*ilwis.Engine.do('exp',%2*ilwis.Engine.do('binarymathraster',%3-%4,2,'power'))").arg(a).arg(b).arg(rasterCoverage).arg(c);
-    else
-        sRet = QString("%1-%2*ilwis.Engine.do('exp',%3*ilwis.Engine.do('binarymathraster',%4-%5,2,'power'))").arg(_maxY).arg(a).arg(b).arg(rasterCoverage).arg(c);
-    QString result = QString("%1=ilwis.RasterCoverage.min(1,ilwis.RasterCoverage.max(0,%2))\n").arg(outputName).arg(sRet);
+    QString result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+    result += "min(1,max(0," + getMapcalc("@1") + "))";
+    result += QString("',%1)\n").arg(rasterCoverage);
     return result;
 }
 
@@ -1555,9 +1563,9 @@ QString GaussianFunction::getMapcalc(QString rasterCoverage)
     // return a * exp(b * sq(x - c)) OR 1 - a * exp(b * sq(x - c))
     QString sRet;
     if (_benefit)
-        sRet = QString("%1*exp(%2*sq(%3-%4))").arg(a).arg(b).arg(rasterCoverage).arg(c);
+        sRet = QString("%1*exp(%2*sq(%3-%4))").arg(a,0,'f',25).arg(b,0,'f',25).arg(rasterCoverage).arg(c,0,'f',25);
     else
-        sRet = QString("%1-%2*exp(%3*sq(%4-%5))").arg(_maxY).arg(a).arg(b).arg(rasterCoverage).arg(c);
+        sRet = QString("%1-%2*exp(%3*sq(%4-%5))").arg(_maxY,0,'f',25).arg(a,0,'f',25).arg(b,0,'f',25).arg(rasterCoverage).arg(c,0,'f',25);
 
     return sRet;
 }
@@ -1667,52 +1675,34 @@ QString PiecewiseLinear8Function::getLine(double a, QString x, double b)
     //return a * x + b;
     QString result;
     if (a != 0)
-        result = QString("%1*%2").arg(a).arg(x);
+        result = QString("%1*%2").arg(a,0,'f',25).arg(x);
     if (b != 0)
-        result += ((b > 0) ? "+":"") + QString("%1").arg(b);
+        result += ((b > 0 && a != 0) ? "+":"") + QString("%1").arg(b,0,'f',25);
+    else if (a == 0) // b == 0 && a == 0
+        result = "0";
     return result;
 }
 
 QString PiecewiseLinear8Function::getPython(QString rasterCoverage, QString outputName)
 {
-    solveParams();
-    QString result = QString("%1=%2\n").arg(outputName).arg(getLine(a8,rasterCoverage,b8));
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a7,rasterCoverage,b7));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[7]->x());
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a6,rasterCoverage,b6));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[6]->x());
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a5,rasterCoverage,b5));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[5]->x());
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a4,rasterCoverage,b4));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[4]->x());
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a3,rasterCoverage,b3));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[3]->x());
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a2,rasterCoverage,b2));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[2]->x());
-    result += QString("%1_term2=%2\n").arg(outputName).arg(getLine(a1,rasterCoverage,b1));
-    result += QString("%1=ilwis.Engine.do('iffraster',%2<%3,%1_term2,%1)\n").arg(outputName).arg(rasterCoverage).arg(_anchors[1]->x());
-    result += QString("del %1_term2\n").arg(outputName);
+    QString result = QString("%1=ilwis.Engine.do('mapcalc','").arg(outputName);
+    result += getMapcalc("@1");
+    result += QString("',%1)\n").arg(rasterCoverage);
     return result;
 }
 
 QString PiecewiseLinear8Function::getMapcalc(QString rasterCoverage)
 {
     solveParams();
-    QString cond1 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[1]->x());
-    QString cond2 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[2]->x());
-    QString cond3 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[3]->x());
-    QString cond4 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[4]->x());
-    QString cond5 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[5]->x());
-    QString cond6 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[6]->x());
-    QString cond7 = QString("ilwis.Engine.do('binarylogicalraster',%1,%2,'less')").arg(rasterCoverage).arg(_anchors[7]->x());
-    QString iff7 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond7).arg(getLine(a7,rasterCoverage,b7)).arg(getLine(a8,rasterCoverage,b8));
-    QString iff6 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond6).arg(getLine(a6,rasterCoverage,b6)).arg(iff7);
-    QString iff5 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond5).arg(getLine(a5,rasterCoverage,b5)).arg(iff6);
-    QString iff4 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond4).arg(getLine(a4,rasterCoverage,b4)).arg(iff5);
-    QString iff3 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond3).arg(getLine(a3,rasterCoverage,b3)).arg(iff4);
-    QString iff2 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond2).arg(getLine(a2,rasterCoverage,b2)).arg(iff3);
-    QString iff1 = QString("ilwis.Engine.do('iffraster',%1,%2,%3)").arg(cond1).arg(getLine(a1,rasterCoverage,b1)).arg(iff2);
-    return iff1;
+    QString sRet = QString("iff(%2<%1," + getLine(a1,"%2",b1) + ",").arg(_anchors[1]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString("iff(%2<%1," + getLine(a2,"%2",b2) + ",").arg(_anchors[2]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString("iff(%2<%1," + getLine(a3,"%2",b3) + ",").arg(_anchors[3]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString("iff(%2<%1," + getLine(a4,"%2",b4) + ",").arg(_anchors[4]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString("iff(%2<%1," + getLine(a5,"%2",b5) + ",").arg(_anchors[5]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString("iff(%2<%1," + getLine(a6,"%2",b6) + ",").arg(_anchors[6]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString("iff(%2<%1," + getLine(a7,"%2",b7) + ",").arg(_anchors[7]->x(),0,'f',25).arg(rasterCoverage);
+    sRet += QString(getLine(a8,"%1",b8) + ")))))))").arg(rasterCoverage);
+    return sRet;
 }
 
 /* ******************************************************* */
@@ -1838,42 +1828,81 @@ void Standardization::load(QDataStream &stream, Node * node)
     quint8 type;
     stream >> type;
     if (type != 0) {
-        Standardization * standardization = create(node);
-        if (standardization) { // corresponding rastermap exists and is valid
-            standardization->load(stream);
-            standardization->apply();
-        } else { // rastermap does not exist, or became invalid since last time; "consume" the standardization data ("load") but discard it (skip "apply")
-            StandardizationType stdType = static_cast<StandardizationType>(type);
-            switch(stdType) {
-            case Value:
-                {
-                    StandardizationValue * stdValue = new StandardizationValue(node, 0, 1);
-                    stdValue->setMethod(StandardizationValue::Maximum, true);
-                    standardization = stdValue;
-                }
-                break;
-            case ValueConstraint:
-                standardization = new StandardizationValueConstraint(node, 0, 1);
-                break;
-            case Class:
+        Ilwis::IRasterCoverage rc; // "probe" if the rastermap still exists and has the same type as the last time we used it; "consume" the standardization data ("load") but discard it (skip "apply") if not.
+        QString fileName = node->fileName();
+        if (fileName != "") {
+            try {
+                Ilwis::IRasterCoverage rc2(fileName, itRASTER);
+                if (rc2.isValid())
+                    rc = rc2;
+            } catch (const ErrorObject& err){
+                kernel()->issues()->log(QString(TR("SMCE: Error opening file '%1'. Cause: '%2'")).arg(fileName).arg(err.message()), IssueObject::itError);
+            }
+        }
+        Standardization * standardization = 0;
+        StandardizationType stdType = static_cast<StandardizationType>(type);
+        bool valid = false; // set to "true" only if the standardization on-disk matches the node-type and file-type, then the standardization can be safely applied to the node
+        switch(stdType) {
+        case Value:
+            {
+                StandardizationValue * stdValue;
+                if (rc.isValid() && node->type() == Node::NodeType::Factor && hasType(rc->datadefRef().domain<>()->valueType(), itNUMBER)) {
+                    Ilwis::NumericRange * range = rc->datadefRef().range()->as<Ilwis::NumericRange>();
+                    double min = range->min();
+                    double max = range->max();
+                    stdValue = new StandardizationValue(node, min, max);
+                    valid = true;
+                } else
+                    stdValue = new StandardizationValue(node, 0, 1);
+                stdValue->setMethod(StandardizationValue::Maximum, true);
+                standardization = stdValue;
+            }
+            break;
+        case ValueConstraint:
+            {
+                if (rc.isValid() && node->type() == Node::NodeType::Constraint && hasType(rc->datadefRef().domain<>()->valueType(), itNUMBER)) {
+                    Ilwis::NumericRange * range = rc->datadefRef().range()->as<Ilwis::NumericRange>();
+                    double min = range->min();
+                    double max = range->max();
+                    standardization = new StandardizationValueConstraint(node, min, max);
+                    valid = true;
+                } else
+                    standardization = new StandardizationValueConstraint(node, 0, 1);
+            }
+            break;
+        case Class:
+            {
                 standardization = new StandardizationClass(node, false);
-                break;
-            case ClassConstraint:
+                valid = rc.isValid() && node->type() == Node::NodeType::Factor && hasType(rc->datadefRef().domain<>()->valueType(), itTHEMATICITEM | itNAMEDITEM | itINDEXEDITEM | itNUMERICITEM);
+            }
+            break;
+        case ClassConstraint:
+            {
                 standardization = new StandardizationClass(node, true);
-                break;
-            case Bool:
+                valid = rc.isValid() && node->type() == Node::NodeType::Constraint && hasType(rc->datadefRef().domain<>()->valueType(), itTHEMATICITEM | itNAMEDITEM | itINDEXEDITEM | itNUMERICITEM);
+            }
+            break;
+        case Bool:
+            {
+                valid = rc.isValid() && node->type() == Node::NodeType::Factor && hasType(rc->datadefRef().domain<>()->valueType(), itBOOL);
                 standardization = new StandardizationBool(node);
-                break;
-            case BoolConstraint:
+            }
+            break;
+        case BoolConstraint:
+            {
+                valid = rc.isValid() && node->type() == Node::NodeType::Constraint && hasType(rc->datadefRef().domain<>()->valueType(), itBOOL);
                 standardization = new StandardizationBoolConstraint(node);
-                break;
-            default:
-                break;
             }
-            if (standardization) {
-                standardization->load(stream);
-                delete standardization;
-            }
+            break;
+        default:
+            break;
+        }
+        if (standardization) {
+            standardization->load(stream);
+            if (valid)
+                standardization->apply();
+            else
+                standardization->deleteLater();
         }
     }
 }
@@ -2267,15 +2296,15 @@ QString StandardizationValueConstraint::getMapcalc(QString rasterCoverage) const
     if (!(_useMin || _useMax))
         return rasterCoverage;
     else if (_useMin && !_useMax)
-        return QString("%1>=%2").arg(rasterCoverage).arg(_minVal);
+        return QString("%1>=%2").arg(rasterCoverage).arg(_minVal,0,'f',25);
     else if (!_useMin && _useMax)
-        return QString("%1<=%2").arg(rasterCoverage).arg(_maxVal);
+        return QString("%1<=%2").arg(rasterCoverage).arg(_maxVal,0,'f',25);
     else // (_useMin && _useMax)
     {
         if (_minVal <= _maxVal)
-            return QString("(%1>=%2) & (%1<=%3)").arg(rasterCoverage).arg(_minVal).arg(_maxVal);
+            return QString("(%1>=%2) & (%1<=%3)").arg(rasterCoverage).arg(_minVal,0,'f',25).arg(_maxVal,0,'f',25);
         else // _maxVal < _minVal
-            return QString("(%1<=%2) | (%1>=%3)").arg(rasterCoverage).arg(_maxVal).arg(_minVal);
+            return QString("(%1<=%2) | (%1>=%3)").arg(rasterCoverage).arg(_maxVal,0,'f',25).arg(_minVal,0,'f',25);
     }
 }
 
