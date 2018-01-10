@@ -40,29 +40,27 @@ DropArea {
         Rectangle {
             width : parent.width - 2
             height : parent.height - buttons.height - 5
-            color : "white"
+            color : "white" 
             ListView{
                 id : namesColumn
                 anchors.fill : parent
                 highlight: Rectangle{ width : 200; height : 20; color : Global.selectedColor}
-                delegate  {
-                    Item {
+                delegate :Item  {
                         width : parent.width
                         height : 20
                         x : 4
-                        Text {
+                        Text  {
                             anchors.fill: parent
                             text : modelData
-                            MouseArea{
+                            MouseArea {
                                 anchors.fill: parent
                                 onClicked: {
                                     namesColumn.currentIndex = index
                                 }
                             }
                         }
-                    }
                 }
-
+                
                 Component.onCompleted: {
                     currentIndex = 0
                 }
