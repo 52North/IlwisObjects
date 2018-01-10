@@ -4088,6 +4088,277 @@ SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_0(PyObject *SWIGUNUSEDPARM(self), P
   std::string arg7 ;
   std::string arg8 ;
   std::string arg9 ;
+  std::string arg10 ;
+  std::string arg11 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  PyObject * obj9 = 0 ;
+  PyObject * obj10 = 0 ;
+  qint64 result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOO:Engine__do2",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "1"" of type '" "std::string""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "3"" of type '" "std::string""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj3, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "4"" of type '" "std::string""'"); 
+    }
+    arg4 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj4, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "5"" of type '" "std::string""'"); 
+    }
+    arg5 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj5, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "6"" of type '" "std::string""'"); 
+    }
+    arg6 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj6, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "7"" of type '" "std::string""'"); 
+    }
+    arg7 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj7, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "8"" of type '" "std::string""'"); 
+    }
+    arg8 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj8, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "9"" of type '" "std::string""'"); 
+    }
+    arg9 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj9, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "10"" of type '" "std::string""'"); 
+    }
+    arg10 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj10, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "11"" of type '" "std::string""'"); 
+    }
+    arg11 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = (qint64)pythonapi::Engine::_do2(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string arg1 ;
+  std::string arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  std::string arg5 ;
+  std::string arg6 ;
+  std::string arg7 ;
+  std::string arg8 ;
+  std::string arg9 ;
+  std::string arg10 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  PyObject * obj9 = 0 ;
+  qint64 result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOO:Engine__do2",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "1"" of type '" "std::string""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "3"" of type '" "std::string""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj3, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "4"" of type '" "std::string""'"); 
+    }
+    arg4 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj4, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "5"" of type '" "std::string""'"); 
+    }
+    arg5 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj5, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "6"" of type '" "std::string""'"); 
+    }
+    arg6 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj6, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "7"" of type '" "std::string""'"); 
+    }
+    arg7 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj7, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "8"" of type '" "std::string""'"); 
+    }
+    arg8 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj8, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "9"" of type '" "std::string""'"); 
+    }
+    arg9 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj9, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do2" "', argument " "10"" of type '" "std::string""'"); 
+    }
+    arg10 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = (qint64)pythonapi::Engine::_do2(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_long_SS_long(static_cast< long long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string arg1 ;
+  std::string arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  std::string arg5 ;
+  std::string arg6 ;
+  std::string arg7 ;
+  std::string arg8 ;
+  std::string arg9 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -4196,7 +4467,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4304,7 +4575,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4401,7 +4672,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4487,7 +4758,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_6(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4562,7 +4833,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_7(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4626,7 +4897,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_6(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_8(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4679,7 +4950,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_7(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do2__SWIG_9(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -4723,14 +4994,14 @@ fail:
 
 SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[10] = {
+  PyObject *argv[12] = {
     0
   };
   Py_ssize_t ii;
   
   if (!PyTuple_Check(args)) SWIG_fail;
   argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 9) && (ii < argc); ii++) {
+  for (ii = 0; (ii < 11) && (ii < argc); ii++) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
   if (argc == 2) {
@@ -4741,7 +5012,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_Engine__do2__SWIG_7(self, args);
+        return _wrap_Engine__do2__SWIG_9(self, args);
       }
     }
   }
@@ -4756,7 +5027,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_Engine__do2__SWIG_6(self, args);
+          return _wrap_Engine__do2__SWIG_8(self, args);
         }
       }
     }
@@ -4775,7 +5046,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
           int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
           _v = SWIG_CheckState(res);
           if (_v) {
-            return _wrap_Engine__do2__SWIG_5(self, args);
+            return _wrap_Engine__do2__SWIG_7(self, args);
           }
         }
       }
@@ -4798,7 +5069,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
             int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
             _v = SWIG_CheckState(res);
             if (_v) {
-              return _wrap_Engine__do2__SWIG_4(self, args);
+              return _wrap_Engine__do2__SWIG_6(self, args);
             }
           }
         }
@@ -4825,7 +5096,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
               int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
               _v = SWIG_CheckState(res);
               if (_v) {
-                return _wrap_Engine__do2__SWIG_3(self, args);
+                return _wrap_Engine__do2__SWIG_5(self, args);
               }
             }
           }
@@ -4856,7 +5127,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
                 int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
                 _v = SWIG_CheckState(res);
                 if (_v) {
-                  return _wrap_Engine__do2__SWIG_2(self, args);
+                  return _wrap_Engine__do2__SWIG_4(self, args);
                 }
               }
             }
@@ -4891,7 +5162,7 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
                   int res = SWIG_AsPtr_std_string(argv[7], (std::string**)(0));
                   _v = SWIG_CheckState(res);
                   if (_v) {
-                    return _wrap_Engine__do2__SWIG_1(self, args);
+                    return _wrap_Engine__do2__SWIG_3(self, args);
                   }
                 }
               }
@@ -4930,7 +5201,99 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
                     int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
                     _v = SWIG_CheckState(res);
                     if (_v) {
-                      return _wrap_Engine__do2__SWIG_0(self, args);
+                      return _wrap_Engine__do2__SWIG_2(self, args);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  int res = SWIG_AsPtr_std_string(argv[7], (std::string**)(0));
+                  _v = SWIG_CheckState(res);
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      int res = SWIG_AsPtr_std_string(argv[9], (std::string**)(0));
+                      _v = SWIG_CheckState(res);
+                      if (_v) {
+                        return _wrap_Engine__do2__SWIG_1(self, args);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 11) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  int res = SWIG_AsPtr_std_string(argv[7], (std::string**)(0));
+                  _v = SWIG_CheckState(res);
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      int res = SWIG_AsPtr_std_string(argv[9], (std::string**)(0));
+                      _v = SWIG_CheckState(res);
+                      if (_v) {
+                        int res = SWIG_AsPtr_std_string(argv[10], (std::string**)(0));
+                        _v = SWIG_CheckState(res);
+                        if (_v) {
+                          return _wrap_Engine__do2__SWIG_0(self, args);
+                        }
+                      }
                     }
                   }
                 }
@@ -4945,6 +5308,8 @@ SWIGINTERN PyObject *_wrap_Engine__do2(PyObject *self, PyObject *args) {
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Engine__do2'.\n"
     "  Possible C/C++ prototypes are:\n"
+    "    pythonapi::Engine::_do2(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
+    "    pythonapi::Engine::_do2(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
     "    pythonapi::Engine::_do2(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
     "    pythonapi::Engine::_do2(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
     "    pythonapi::Engine::_do2(std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
@@ -4958,6 +5323,277 @@ fail:
 
 
 SWIGINTERN PyObject *_wrap_Engine__do__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string arg1 ;
+  std::string arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  std::string arg5 ;
+  std::string arg6 ;
+  std::string arg7 ;
+  std::string arg8 ;
+  std::string arg9 ;
+  std::string arg10 ;
+  std::string arg11 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  PyObject * obj9 = 0 ;
+  PyObject * obj10 = 0 ;
+  pythonapi::Object *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOO:Engine__do",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "1"" of type '" "std::string""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "3"" of type '" "std::string""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj3, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "4"" of type '" "std::string""'"); 
+    }
+    arg4 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj4, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "5"" of type '" "std::string""'"); 
+    }
+    arg5 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj5, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "6"" of type '" "std::string""'"); 
+    }
+    arg6 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj6, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "7"" of type '" "std::string""'"); 
+    }
+    arg7 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj7, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "8"" of type '" "std::string""'"); 
+    }
+    arg8 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj8, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "9"" of type '" "std::string""'"); 
+    }
+    arg9 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj9, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "10"" of type '" "std::string""'"); 
+    }
+    arg10 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj10, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "11"" of type '" "std::string""'"); 
+    }
+    arg11 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = (pythonapi::Object *)pythonapi::Engine::_do(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__Object, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string arg1 ;
+  std::string arg2 ;
+  std::string arg3 ;
+  std::string arg4 ;
+  std::string arg5 ;
+  std::string arg6 ;
+  std::string arg7 ;
+  std::string arg8 ;
+  std::string arg9 ;
+  std::string arg10 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  PyObject * obj9 = 0 ;
+  pythonapi::Object *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOO:Engine__do",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "1"" of type '" "std::string""'"); 
+    }
+    arg1 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "3"" of type '" "std::string""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj3, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "4"" of type '" "std::string""'"); 
+    }
+    arg4 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj4, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "5"" of type '" "std::string""'"); 
+    }
+    arg5 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj5, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "6"" of type '" "std::string""'"); 
+    }
+    arg6 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj6, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "7"" of type '" "std::string""'"); 
+    }
+    arg7 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj7, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "8"" of type '" "std::string""'"); 
+    }
+    arg8 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj8, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "9"" of type '" "std::string""'"); 
+    }
+    arg9 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj9, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "Engine__do" "', argument " "10"" of type '" "std::string""'"); 
+    }
+    arg10 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = (pythonapi::Object *)pythonapi::Engine::_do(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__Object, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5076,7 +5712,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5184,7 +5820,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5281,7 +5917,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5367,7 +6003,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_6(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5442,7 +6078,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_7(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5506,7 +6142,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_6(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_8(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5559,7 +6195,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Engine__do__SWIG_7(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Engine__do__SWIG_9(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
   std::string arg2 ;
@@ -5603,14 +6239,14 @@ fail:
 
 SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[10] = {
+  PyObject *argv[12] = {
     0
   };
   Py_ssize_t ii;
   
   if (!PyTuple_Check(args)) SWIG_fail;
   argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 9) && (ii < argc); ii++) {
+  for (ii = 0; (ii < 11) && (ii < argc); ii++) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
   if (argc == 2) {
@@ -5621,7 +6257,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_Engine__do__SWIG_7(self, args);
+        return _wrap_Engine__do__SWIG_9(self, args);
       }
     }
   }
@@ -5636,7 +6272,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_Engine__do__SWIG_6(self, args);
+          return _wrap_Engine__do__SWIG_8(self, args);
         }
       }
     }
@@ -5655,7 +6291,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
           int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
           _v = SWIG_CheckState(res);
           if (_v) {
-            return _wrap_Engine__do__SWIG_5(self, args);
+            return _wrap_Engine__do__SWIG_7(self, args);
           }
         }
       }
@@ -5678,7 +6314,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
             int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
             _v = SWIG_CheckState(res);
             if (_v) {
-              return _wrap_Engine__do__SWIG_4(self, args);
+              return _wrap_Engine__do__SWIG_6(self, args);
             }
           }
         }
@@ -5705,7 +6341,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
               int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
               _v = SWIG_CheckState(res);
               if (_v) {
-                return _wrap_Engine__do__SWIG_3(self, args);
+                return _wrap_Engine__do__SWIG_5(self, args);
               }
             }
           }
@@ -5736,7 +6372,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
                 int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
                 _v = SWIG_CheckState(res);
                 if (_v) {
-                  return _wrap_Engine__do__SWIG_2(self, args);
+                  return _wrap_Engine__do__SWIG_4(self, args);
                 }
               }
             }
@@ -5771,7 +6407,7 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
                   int res = SWIG_AsPtr_std_string(argv[7], (std::string**)(0));
                   _v = SWIG_CheckState(res);
                   if (_v) {
-                    return _wrap_Engine__do__SWIG_1(self, args);
+                    return _wrap_Engine__do__SWIG_3(self, args);
                   }
                 }
               }
@@ -5810,7 +6446,99 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
                     int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
                     _v = SWIG_CheckState(res);
                     if (_v) {
-                      return _wrap_Engine__do__SWIG_0(self, args);
+                      return _wrap_Engine__do__SWIG_2(self, args);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 10) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  int res = SWIG_AsPtr_std_string(argv[7], (std::string**)(0));
+                  _v = SWIG_CheckState(res);
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      int res = SWIG_AsPtr_std_string(argv[9], (std::string**)(0));
+                      _v = SWIG_CheckState(res);
+                      if (_v) {
+                        return _wrap_Engine__do__SWIG_1(self, args);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 11) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              int res = SWIG_AsPtr_std_string(argv[5], (std::string**)(0));
+              _v = SWIG_CheckState(res);
+              if (_v) {
+                int res = SWIG_AsPtr_std_string(argv[6], (std::string**)(0));
+                _v = SWIG_CheckState(res);
+                if (_v) {
+                  int res = SWIG_AsPtr_std_string(argv[7], (std::string**)(0));
+                  _v = SWIG_CheckState(res);
+                  if (_v) {
+                    int res = SWIG_AsPtr_std_string(argv[8], (std::string**)(0));
+                    _v = SWIG_CheckState(res);
+                    if (_v) {
+                      int res = SWIG_AsPtr_std_string(argv[9], (std::string**)(0));
+                      _v = SWIG_CheckState(res);
+                      if (_v) {
+                        int res = SWIG_AsPtr_std_string(argv[10], (std::string**)(0));
+                        _v = SWIG_CheckState(res);
+                        if (_v) {
+                          return _wrap_Engine__do__SWIG_0(self, args);
+                        }
+                      }
                     }
                   }
                 }
@@ -5825,6 +6553,8 @@ SWIGINTERN PyObject *_wrap_Engine__do(PyObject *self, PyObject *args) {
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Engine__do'.\n"
     "  Possible C/C++ prototypes are:\n"
+    "    pythonapi::Engine::_do(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
+    "    pythonapi::Engine::_do(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
     "    pythonapi::Engine::_do(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
     "    pythonapi::Engine::_do(std::string,std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
     "    pythonapi::Engine::_do(std::string,std::string,std::string,std::string,std::string,std::string,std::string)\n"
@@ -26419,6 +27149,392 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_RasterCoverage_min__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  pythonapi::RasterCoverage *arg1 = 0 ;
+  pythonapi::RasterCoverage *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  pythonapi::RasterCoverage *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RasterCoverage_min",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RasterCoverage_min" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_min" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg1 = reinterpret_cast< pythonapi::RasterCoverage * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RasterCoverage_min" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_min" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg2 = reinterpret_cast< pythonapi::RasterCoverage * >(argp2);
+  {
+    try {
+      result = (pythonapi::RasterCoverage *)pythonapi::RasterCoverage::min(*arg1,*arg2);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__RasterCoverage, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_min__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  pythonapi::RasterCoverage *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  pythonapi::RasterCoverage *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RasterCoverage_min",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RasterCoverage_min" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_min" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg1 = reinterpret_cast< pythonapi::RasterCoverage * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RasterCoverage_min" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = (pythonapi::RasterCoverage *)pythonapi::RasterCoverage::min(*arg1,arg2);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__RasterCoverage, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_min__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  pythonapi::RasterCoverage *arg2 = 0 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  pythonapi::RasterCoverage *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RasterCoverage_min",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "RasterCoverage_min" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RasterCoverage_min" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_min" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg2 = reinterpret_cast< pythonapi::RasterCoverage * >(argp2);
+  {
+    try {
+      result = (pythonapi::RasterCoverage *)pythonapi::RasterCoverage::min(arg1,*arg2);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__RasterCoverage, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_min(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RasterCoverage_min__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RasterCoverage_min__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RasterCoverage_min__SWIG_2(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RasterCoverage_min'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    pythonapi::RasterCoverage::min(pythonapi::RasterCoverage &,pythonapi::RasterCoverage &)\n"
+    "    pythonapi::RasterCoverage::min(pythonapi::RasterCoverage &,double)\n"
+    "    pythonapi::RasterCoverage::min(double,pythonapi::RasterCoverage &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_max__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  pythonapi::RasterCoverage *arg1 = 0 ;
+  pythonapi::RasterCoverage *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  pythonapi::RasterCoverage *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RasterCoverage_max",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RasterCoverage_max" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_max" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg1 = reinterpret_cast< pythonapi::RasterCoverage * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RasterCoverage_max" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_max" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg2 = reinterpret_cast< pythonapi::RasterCoverage * >(argp2);
+  {
+    try {
+      result = (pythonapi::RasterCoverage *)pythonapi::RasterCoverage::max(*arg1,*arg2);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__RasterCoverage, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_max__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  pythonapi::RasterCoverage *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  pythonapi::RasterCoverage *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RasterCoverage_max",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RasterCoverage_max" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_max" "', argument " "1"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg1 = reinterpret_cast< pythonapi::RasterCoverage * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RasterCoverage_max" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = (pythonapi::RasterCoverage *)pythonapi::RasterCoverage::max(*arg1,arg2);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__RasterCoverage, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_max__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  pythonapi::RasterCoverage *arg2 = 0 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  pythonapi::RasterCoverage *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:RasterCoverage_max",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "RasterCoverage_max" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_pythonapi__RasterCoverage,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RasterCoverage_max" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "RasterCoverage_max" "', argument " "2"" of type '" "pythonapi::RasterCoverage &""'"); 
+  }
+  arg2 = reinterpret_cast< pythonapi::RasterCoverage * >(argp2);
+  {
+    try {
+      result = (pythonapi::RasterCoverage *)pythonapi::RasterCoverage::max(arg1,*arg2);
+    }catch (std::exception& e) {
+      PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__RasterCoverage, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RasterCoverage_max(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RasterCoverage_max__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_RasterCoverage_max__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      void *vptr = 0;
+      int res = SWIG_ConvertPtr(argv[1], &vptr, SWIGTYPE_p_pythonapi__RasterCoverage, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RasterCoverage_max__SWIG_2(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'RasterCoverage_max'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    pythonapi::RasterCoverage::max(pythonapi::RasterCoverage &,pythonapi::RasterCoverage &)\n"
+    "    pythonapi::RasterCoverage::max(pythonapi::RasterCoverage &,double)\n"
+    "    pythonapi::RasterCoverage::max(double,pythonapi::RasterCoverage &)\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_RasterCoverage___iter__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   pythonapi::RasterCoverage *arg1 = (pythonapi::RasterCoverage *) 0 ;
@@ -39033,6 +40149,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Object_swigregister", Object_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Engine", _wrap_new_Engine, METH_VARARGS, (char *)"new_Engine() -> Engine"},
 	 { (char *)"Engine__do2", _wrap_Engine__do2, METH_VARARGS, (char *)"\n"
+		"_do2(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8, std::string c9, std::string c10, std::string c11) -> qint64\n"
+		"_do2(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8, std::string c9, std::string c10) -> qint64\n"
 		"_do2(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8, std::string c9) -> qint64\n"
 		"_do2(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8) -> qint64\n"
 		"_do2(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7) -> qint64\n"
@@ -39043,6 +40161,8 @@ static PyMethodDef SwigMethods[] = {
 		"Engine__do2(std::string output_name, std::string operation) -> qint64\n"
 		""},
 	 { (char *)"Engine__do", _wrap_Engine__do, METH_VARARGS, (char *)"\n"
+		"_do(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8, std::string c9, std::string c10, std::string c11) -> Object\n"
+		"_do(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8, std::string c9, std::string c10) -> Object\n"
 		"_do(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8, std::string c9) -> Object\n"
 		"_do(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7, std::string c8) -> Object\n"
 		"_do(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5, std::string c6, std::string c7) -> Object\n"
@@ -39654,6 +40774,16 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"RasterCoverage___ne__", _wrap_RasterCoverage___ne__, METH_VARARGS, (char *)"\n"
 		"__ne__(double value) -> RasterCoverage\n"
 		"RasterCoverage___ne__(RasterCoverage self, RasterCoverage rc) -> RasterCoverage\n"
+		""},
+	 { (char *)"RasterCoverage_min", _wrap_RasterCoverage_min, METH_VARARGS, (char *)"\n"
+		"min(RasterCoverage rc1, RasterCoverage rc2) -> RasterCoverage\n"
+		"min(RasterCoverage rc1, double value) -> RasterCoverage\n"
+		"RasterCoverage_min(double value, RasterCoverage rc2) -> RasterCoverage\n"
+		""},
+	 { (char *)"RasterCoverage_max", _wrap_RasterCoverage_max, METH_VARARGS, (char *)"\n"
+		"max(RasterCoverage rc1, RasterCoverage rc2) -> RasterCoverage\n"
+		"max(RasterCoverage rc1, double value) -> RasterCoverage\n"
+		"RasterCoverage_max(double value, RasterCoverage rc2) -> RasterCoverage\n"
 		""},
 	 { (char *)"RasterCoverage___iter__", _wrap_RasterCoverage___iter__, METH_VARARGS, (char *)"RasterCoverage___iter__(RasterCoverage self) -> PixelIterator"},
 	 { (char *)"RasterCoverage_coord2value", _wrap_RasterCoverage_coord2value, METH_VARARGS, (char *)"RasterCoverage_coord2value(RasterCoverage self, Coordinate c) -> double"},
