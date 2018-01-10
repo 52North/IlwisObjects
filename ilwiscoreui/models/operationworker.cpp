@@ -25,25 +25,30 @@ void OperationWorker::run(const OperationExpression &expression){
         Operation op(expression);
         SymbolTable tbl;
         ExecutionContext ctx;
-
         if(op->execute(&ctx, tbl)){
             if ( ctx._results.size() > 0){
                 for(auto resultName : ctx._results){
                     Symbol symbol = tbl.getSymbol(resultName);
                     if ( hasType(symbol._type, itINTEGER)){
                         QVariantList varList = symbol._var.value<QVariantList>();
-                        QString num = QString::number(varList[0].toInt());
-                        kernel()->issues()->log(num, IssueObject::itRESULT);
+                        if (varList.size() > 0) {
+                            QString num = QString::number(varList[0].toInt());
+                            kernel()->issues()->log(num, IssueObject::itRESULT);
+                        }
                     }else if ( hasType(symbol._type, itDOUBLE)){
                         QVariantList varList = symbol._var.value<QVariantList>();
-                        QString num = QString::number(varList[0].toDouble());
-                        kernel()->issues()->log(num, IssueObject::itRESULT);
+                        if (varList.size() > 0) {
+                            QString num = QString::number(varList[0].toDouble());
+                            kernel()->issues()->log(num, IssueObject::itRESULT);
+                        }
                     }  else if ( hasType(symbol._type, itSTRING)){
                         QVariantList varList = symbol._var.value<QVariantList>();
-                        kernel()->issues()->log(varList[0].toString(), IssueObject::itRESULT);
+                        if (varList.size() > 0)
+                            kernel()->issues()->log(varList[0].toString(), IssueObject::itRESULT);
                     }else if ( hasType(symbol._type, itBOOL)){
                         QVariantList varList = symbol._var.value<QVariantList>();
-                        kernel()->issues()->log(varList[0].toString(), IssueObject::itRESULT);
+                        if (varList.size() > 0)
+                            kernel()->issues()->log(varList[0].toString(), IssueObject::itRESULT);
                     }
                     if ( hasType(symbol._type, itCOVERAGE | itTABLE) ){
                         IIlwisObject obj = OperationHelper::variant2ilwisobject(symbol._var, symbol._type);
