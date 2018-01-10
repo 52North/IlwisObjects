@@ -58,7 +58,7 @@ IlwisObject *IlwisObject::create(const Resource& resource, const IOOptions &opti
 void IlwisObject::connectTo(const QUrl& outurl, const QString& format, const QString& fnamespace, ConnectorMode cmode, const IOOptions& options) {
 
     Locker<> lock(_mutex);
-    if ( isReadOnly())
+    if ( (!(cmode == cmOUTPUT)) && isReadOnly())
         return throw ErrorObject(TR(QString("format %1 or data object is readonly").arg(format)));
 
     QUrl url(outurl);
@@ -388,7 +388,7 @@ bool IlwisObject::prepare(const QString &)
 
 bool IlwisObject::setConnector(ConnectorInterface *connector, int mode, const IOOptions &options)
 {
-    if ( isReadOnly())
+    if ( (!(mode == cmOUTPUT)) && isReadOnly())
         return false;
 
 
