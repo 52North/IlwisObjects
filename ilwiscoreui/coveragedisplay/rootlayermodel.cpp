@@ -282,7 +282,7 @@ void RootLayerModel::setCurrentCoordinate(const QString &var)
 {
 	if (var != "") {
 		QStringList parts = var.split("|");
-		if (parts.size() == 2 && _screenCsy.isValid()) {
+		if (parts.size() == 2 && _screenCsy.isValid() && _screenGrf.isValid()) {
 			_currentCoordinate = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
 			emit currentcurrentCoordinateChanged();
 			emit currentLatLonChanged();
