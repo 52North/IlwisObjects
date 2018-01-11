@@ -93,6 +93,18 @@
     <Filter Include="Distribution Files\qml\workbench\metadata">
       <UniqueIdentifier>{cf46a216-2ad3-48cb-a443-2444c4113c8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Distribution Files\qml\workbench\creators">
+      <UniqueIdentifier>{8a503274-64ee-4a71-bc48-f86c710a143e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Distribution Files\qml\workbench\modeller">
+      <UniqueIdentifier>{145eff59-136f-43ee-8e40-84e65725eddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Distribution Files\qml\workbench\preferences">
+      <UniqueIdentifier>{0ea68250-ef0c-480c-877f-2ada05e3b4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Distribution Files\qml\workbench\workspace">
+      <UniqueIdentifier>{52124ac2-9d88-4f58-b185-9ef5030707eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="desktopclient\applicationformexpressionparser.cpp">
@@ -932,6 +944,165 @@
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\CopyAsBox.qml">
       <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\AddNewColorItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\AddNewIdentifierItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\AddNewNumericInterval.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\AddNewThematicItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ApplyCreateButtons.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateBoundsOnlyCsy.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateCombinationMatrix.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateContinousColorDomain.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateDomain.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateGeorefCorners.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateGeorefTiepoints.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateIdentifierDomain.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateIntervalDomain.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateLatLonCoordinateSystem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateModel.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateNumDom.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreatePaletteDomain.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateProjectedCoordinateSystem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateProjectionFromBase.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateRasterCoverage.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateScript.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateThematicDom.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateWorkflow.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreatorList.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\EditorHeader.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\EPSGSelector.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\IlwisObjectCommon.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\IntervalTable.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ItemDomainCommonPart.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ItemList.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ItemTable.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ObjectList.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\PaletteColorList.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ParameterDetails.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\ParameterList.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\SelectColorItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\SelectIdentifierItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\SelectNumericIntervalItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\SelectThematicItem.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\UnderDevelopment.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\modeller\ModellerCatagoriesList.qml">
+      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\modeller\ModellerList.qml">
+      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\modeller\ModellerMetadataForm.qml">
+      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\modeller\ModellerSelection.qml">
+      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\workspace\WorkSpaceCreation.qml">
+      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\workspace\WorkSpaceDataDelegate.qml">
+      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\workspace\WorkSpaceDataGrid.qml">
+      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\workspace\WorkSpaceInfo.qml">
+      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\workspace\WorkSpaceMetadata.qml">
+      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\workspace\WorkSpaceOperationGrid.qml">
+      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\preferences\DisplayOptions.qml">
+      <Filter>Distribution Files\qml\workbench\preferences</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\preferences\Locations.qml">
+      <Filter>Distribution Files\qml\workbench\preferences</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\preferences\PreferencesButton.qml">
+      <Filter>Distribution Files\qml\workbench\preferences</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
