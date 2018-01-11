@@ -57,6 +57,7 @@ public:
 	Q_PROPERTY(bool updateGeometry READ updateGeometry WRITE updateGeometry NOTIFY geometryChanged)
 	Q_PROPERTY(int layerCount READ layerCount NOTIFY layerCountChanged)
     Q_PROPERTY(bool isValid READ isValid NOTIFY validChanged)
+	Q_PROPERTY(bool isSupportLayer READ isSupportLayer CONSTANT)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
