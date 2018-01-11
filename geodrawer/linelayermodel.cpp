@@ -111,6 +111,36 @@ void LineLayerModel::fillAttributes()
 	}
 }
 
+void LineLayerModel::vproperty(const QString &key, const QVariant &value) {
+	VectorLayerModel::vproperty(key, value);
+
+	if (key == "fixedlinecolor") {
+
+		fixedColor(value.value<QColor>());
+	}
+}
+
+QVariant LineLayerModel::vproperty(const QString &key) const {
+	QVariant v = VectorLayerModel::vproperty(key);
+	if (!v.isValid()) {
+		if (key == "fixedlinecolor") {
+			v.setValue(fixedColor());
+		}
+	}
+	return v;
+}
+
+void Ilwis::Ui::LineLayerModel::fixedColor(const QColor & clr)
+{
+	_fixedColor = clr;
+	add2ChangedProperties("fixedlinecolor");
+}
+
+QColor Ilwis::Ui::LineLayerModel::fixedColor() const
+{
+	return _fixedColor;
+}
+
 
 LayerModel * Ilwis::Ui::LineLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
 {
