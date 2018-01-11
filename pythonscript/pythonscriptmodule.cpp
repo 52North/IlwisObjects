@@ -80,7 +80,7 @@ void PythonScriptModule::prepare()
             return;
         }
         wchar_t data[400];
-        std::memset(data, 0, 400);
+        std::memset(data, 0, 400 * sizeof(wchar_t));
         if ( home.toWCharArray(data) > 0){
             Py_SetPythonHome(data);
             Py_Initialize();
