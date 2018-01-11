@@ -76,10 +76,7 @@ void LinePropertySetter::setBoundaryColor(const QColor &clr)
     if ( !vpmodel()->layer())
         return ;
 
-    vpmodel()->layer()->vproperty("boundarycolor", clr);
-  //  vproperty()->layer()->drawer()->unprepare(Ilwis::Geodrawer::DrawerInterface::ptRENDER);
-  //  vproperty()->layer()->drawer()->prepare(Ilwis::Geodrawer::DrawerInterface::ptRENDER, Ilwis::IOOptions("polygononly",true));
-    vpmodel()->layer()->redraw();
+    vpmodel()->layer()->vproperty("fixedlinecolor", clr);
 }
 
 QColor LinePropertySetter::boundaryColor() const
