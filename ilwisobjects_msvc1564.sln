@@ -35,8 +35,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "geodrawer", "geodrawer.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "desktopclient", "desktopclient.vcxproj", "{9AB0FA31-AC92-3AD3-9579-C8DD6541516B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvasp", "..\..\..\canvasp\canvasp.vcxproj", "{34E30FBF-5402-364D-B210-DA79EC485981}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi", "pythonapi.vcxproj", "{D3E35BD0-24B8-33B1-84F8-218783A77FAC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonscript", "pythonscript.vcxproj", "{C0F6BA32-349F-3FC3-B614-0A36A6C612FE}"
@@ -113,10 +111,6 @@ Global
 		{9AB0FA31-AC92-3AD3-9579-C8DD6541516B}.Debug|x64.Build.0 = Debug|x64
 		{9AB0FA31-AC92-3AD3-9579-C8DD6541516B}.Release|x64.ActiveCfg = Release|x64
 		{9AB0FA31-AC92-3AD3-9579-C8DD6541516B}.Release|x64.Build.0 = Release|x64
-		{34E30FBF-5402-364D-B210-DA79EC485981}.Debug|x64.ActiveCfg = Debug|x64
-		{34E30FBF-5402-364D-B210-DA79EC485981}.Debug|x64.Build.0 = Debug|x64
-		{34E30FBF-5402-364D-B210-DA79EC485981}.Release|x64.ActiveCfg = Release|x64
-		{34E30FBF-5402-364D-B210-DA79EC485981}.Release|x64.Build.0 = Release|x64
 		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Debug|x64.ActiveCfg = Debug|x64
 		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Debug|x64.Build.0 = Debug|x64
 		{D3E35BD0-24B8-33B1-84F8-218783A77FAC}.Release|x64.ActiveCfg = Release|x64
