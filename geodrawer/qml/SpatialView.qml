@@ -219,7 +219,7 @@ Rectangle {
 				canvas.setGeometry(layer, i,"linecoverage",geometry)
 				var material
 				if ( layer.isSupportLayer){
-					material = new GL.THREE.LineBasicMaterial( {color: 0x00ee00,linewidth: 1, transparent : true,opacity : layer.vproperty("opacity")})
+					material = new GL.THREE.LineBasicMaterial( {color: 0x000000,linewidth: 1, transparent : true,opacity : layer.vproperty("opacity")})
 				}else {
 					material = new GL.THREE.LineBasicMaterial({  vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
 				}
