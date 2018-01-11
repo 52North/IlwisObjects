@@ -281,7 +281,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
     <CustomBuild Include="geodrawer\qml.qrc">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(FullPath);.\geodrawer\qml\draw.js;.\geodrawer\qml\SpatialView.qml;.\geodrawer\qml\three.js;%(AdditionalInputs)</AdditionalInputs>
@@ -297,10 +296,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="geodrawer\qml\draw.js">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
