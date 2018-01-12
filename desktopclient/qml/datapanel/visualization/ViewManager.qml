@@ -65,6 +65,7 @@ Item {
     Component {
         id : displayOptions
         DisplayOptions.LayerPropertyManagement{
+			width : parent.width
 			id : layersTree
 		}
     }
@@ -117,6 +118,8 @@ Item {
             tab.active = true
             tab.item.renderer = renderer
 
+			console.debug("zzzz", renderer)
+
             tab = addTab(qsTr("Layers Info"), layersinfo)
             tab.active = true
             tab = addTab(qsTr("Metadata"), metadata)            
@@ -125,8 +128,5 @@ Item {
 
         style: DataPanel.ButtonBarTabViewStyle{}
     }
-
-
-
 }
 
