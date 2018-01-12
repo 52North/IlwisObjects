@@ -8,7 +8,6 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
-import LayersView 1.0
 import SMCE 1.0
 import "../../../qml/Global.js" as Global
 import "../../../qml/controls" as Controls

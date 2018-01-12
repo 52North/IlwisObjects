@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import LayersView 1.0
 import "../../../qml/Global.js" as Global
 
 Item {
