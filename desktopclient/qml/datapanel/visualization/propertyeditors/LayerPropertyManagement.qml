@@ -35,9 +35,28 @@ Rectangle {
         width : parent.width - 5
         height : parent.height
         y : 2
+		id : layerProperties
+
 //        handleDelegate: Controls.SplitHandle{
 //            imageHeight: 15
 //        }
+		function initColumnWidth(name){
+			if ( name == "layerlist"){
+				return width - attributeListColumn.width - editorListColumn.width - editorColumn.width
+			}
+			if ( name == "visualattributelist"){
+				return width - layerColumn.width - editorListColumn.width - editorColumn.width
+			}
+			if ( name == "visualattributeeditorlist"){
+				return width - layerColumn.width - attributeListColumn.width - editorColumn.width
+			}
+			if ( name == "editorcolumn"){
+//				console.debug("uuuu",viewmanager.width, layerProperties.width, layerColumn.width,  attributeListColumn.width,editorListColumn.width)
+
+				return layerProperties.width - layerColumn.width - attributeListColumn.width - editorListColumn.width
+			}
+			return 0
+		}
 
         LayersList{
             id : layerColumn
@@ -62,11 +81,10 @@ Rectangle {
         }
         VisualAttributeEditor{
             height : parent.height - 3
-            Layout.fillWidth: true
+            width : layerProperties.initColumnWidth("editorcolumn")
             id : editorColumn
         }
     }
-
 }
 
 
