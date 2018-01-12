@@ -100,6 +100,7 @@
     </ResourceCompile>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\ui\SMCE
+copy /Y smce\qmldir ..\output\win32release\bin\extensions\ui\SMCE
 copy /Y smce\*.qml ..\output\win32release\bin\extensions\ui\SMCE
 xcopy  /S /Y /I smce\table ..\output\win32release\bin\extensions\ui\SMCE\table
 xcopy  /S /Y /I smce\tree ..\output\win32release\bin\extensions\ui\SMCE\tree
@@ -149,6 +150,7 @@ xcopy  /S /Y /I smce\controls ..\output\win32release\bin\extensions\ui\SMCE\cont
     </ResourceCompile>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\ui\SMCE
+copy /Y smce\qmldir ..\output\win32debug\bin\extensions\ui\SMCE
 copy /Y smce\*.qml ..\output\win32debug\bin\extensions\ui\SMCE
 xcopy  /S /Y /I smce\table ..\output\win32debug\bin\extensions\ui\SMCE\table
 xcopy  /S /Y /I smce\tree ..\output\win32debug\bin\extensions\ui\SMCE\tree
