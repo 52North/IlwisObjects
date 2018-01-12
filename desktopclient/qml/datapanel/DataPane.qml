@@ -127,7 +127,6 @@ Rectangle {
                     insertetTab = tabview.addTab(data, component)
                     insertetTab.active = true
                     insertetTab.item.tabmodel = newPanel
-                    insertetTab.item.width = parent.width
                     id = insertetTab.item.addDataSource(filter, url, outputtype)
                     activeItem = insertetTab.item
 

@@ -54,7 +54,9 @@ Rectangle {
             id : propertyEditor1
             width : parent.width
             height : parent.height
-
+			onLoaded : {
+				item.width = layerProperties.initColumnWidth("editorcolumn")
+			}
 
         }
         states: [
