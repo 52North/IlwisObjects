@@ -42,26 +42,26 @@ public:
 
 
     qint32 workflowCount() const;
-    Q_INVOKABLE WorkflowModel* workflow(qint32 index) const;
-    Q_INVOKABLE WorkflowModel* workflow(const QString& name) const;
-    Q_INVOKABLE WorkflowModel *addWorkflow(const QString &filter);
+    Q_INVOKABLE Ilwis::Ui::WorkflowModel* workflow(qint32 index) const;
+    Q_INVOKABLE Ilwis::Ui::WorkflowModel* workflow(const QString& name) const;
+    Q_INVOKABLE Ilwis::Ui::WorkflowModel *addWorkflow(const QString &filter);
     //Q_INVOKABLE bool addWorklfow(const IWorkflow& wf);
     Q_INVOKABLE void removeWorkflow(const QString& name);
     Q_INVOKABLE void removeWorkflow(qint32 index);
 
     QStringList analysisTypes() const;
     qint32 analysisCount() const;
-    Q_INVOKABLE AnalysisModel *analysisPattern(qint32 index) const;
-    Q_INVOKABLE bool addAnalysisPattern(AnalysisModel *amodel);
+    Q_INVOKABLE Ilwis::Ui::AnalysisModel *analysisPattern(qint32 index) const;
+    Q_INVOKABLE bool addAnalysisPattern(Ilwis::Ui::AnalysisModel *amodel);
     Q_INVOKABLE void removeAnalysisPattern(const QString& name);
     Q_INVOKABLE void removeAnalysisPattern(qint32 index);
     Q_INVOKABLE QStringList applicationNames(const QString& analysisName) const; // apps in the current model
     Q_INVOKABLE QStringList applicationsByAnalysis(const QString& analysisType) const; //all apps known based on a type
 
     qint32 applicationCount() const;
-    Q_INVOKABLE ApplicationModelUI* application(qint32 index) const;
+    Q_INVOKABLE Ilwis::Ui::ApplicationModelUI* application(qint32 index) const;
    // SPModelApplication application(const QString& name) const;
-    Q_INVOKABLE bool addApplication(ApplicationModelUI *app);
+    Q_INVOKABLE bool addApplication(Ilwis::Ui::ApplicationModelUI *app);
     Q_INVOKABLE  void removeApplication(const QString& name);
     Q_INVOKABLE void removeApplication(qint32 index);
 

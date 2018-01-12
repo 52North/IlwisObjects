@@ -75,7 +75,7 @@ public:
 
     Q_INVOKABLE Ilwis::Ui::LayerManager* createLayerManager(QObject *parent, QQuickItem *viewContainer);
     Q_INVOKABLE Ilwis::Ui::TableModel *createTableModel(QObject *parent,const QString& url, const QString& type);
-    Q_INVOKABLE Ilwis::Ui::ChartModel *chartModel(const QString& objectname, TableModel *tbl);
+    Q_INVOKABLE Ilwis::Ui::ChartModel *chartModel(const QString& objectname, Ilwis::Ui::TableModel *tbl);
     Q_INVOKABLE QString uniqueName();
     Q_INVOKABLE void exitUI();
     Q_INVOKABLE Ilwis::Ui::ScriptModel* scriptModel(const QString& fileorid, QObject *parent);

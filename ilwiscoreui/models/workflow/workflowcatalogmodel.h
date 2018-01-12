@@ -27,9 +27,9 @@ public:
     Q_INVOKABLE quint64 workflowId(quint32 index) const;
     Q_INVOKABLE QString executeworkflow(quint64 workflowid, const QString &parameters);
 
-    Q_INVOKABLE  WorkflowModel *newWorkflow(const QString &name);
+    Q_INVOKABLE  Ilwis::Ui::WorkflowModel *newWorkflow(const QString &name);
     Q_INVOKABLE  bool deleteWorkflow(quint32 index);
-    Q_INVOKABLE  WorkflowModel *saveWorkflow(quint32 index);
+    Q_INVOKABLE  Ilwis::Ui::WorkflowModel *saveWorkflow(quint32 index);
 
 private:
     QList<WorkflowModel *> _currentWorkflows;

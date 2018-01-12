@@ -26,7 +26,7 @@ public:
     ChartModel(TableModel *tbl, QObject *p);
 
     Q_INVOKABLE void setGraphs(int type);
-    Q_INVOKABLE GraphModel * graph(int index);
+    Q_INVOKABLE Ilwis::Ui::GraphModel * graph(int index);
     Q_INVOKABLE QList<QVariant> datasets(int graphType);
     Q_INVOKABLE void setXAxis(int columnIndex);
     Q_INVOKABLE QString xAxis() const;

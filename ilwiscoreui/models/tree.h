@@ -24,7 +24,7 @@ public:
 	Q_PROPERTY(int nodeId READ nodeId CONSTANT)
 	Q_PROPERTY(bool readonly READ readonly WRITE readonly NOTIFY readonlyChanged)
 
-	Q_INVOKABLE QModelIndex index(TreeModel * tree) const;
+	Q_INVOKABLE QModelIndex index(Ilwis::Ui::TreeModel * tree) const;
 
     void txt(const QString& t);
     QString txt() const;
