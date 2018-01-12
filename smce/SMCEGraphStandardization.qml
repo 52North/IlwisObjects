@@ -336,33 +336,31 @@ Column {
     Repeater {
         id: editor
         model: (selectedNode && selectedNode.standardization !== null && selectedNode.standardization.standardizationValue !== null) ? selectedNode.standardization.standardizationValue.anchors : null
-        delegate {
-            Row {
-                Controls.TextEditLabelPair {
-                    width: 100
-                    height: 20
-                    labelWidth: 20
-                    content: model.x.toFixed(3).toString()
-                    regexvalidator: /^-?\d*(\.\d*)?$/
-                    labelText: ("x" + index)
-                    onContentEdited: {
-                        model.x = parseFloat(content);
-                        selectedNode.standardization.standardizationValue.solveParams()
-                        graphCanvas.repaint()
-                    }
+        delegate : Row {
+            Controls.TextEditLabelPair {
+                width: 100
+                height: 20
+                labelWidth: 20
+                content: model.x.toFixed(3).toString()
+                regexvalidator: /^-?\d*(\.\d*)?$/
+                labelText: ("x" + index)
+                onContentEdited: {
+                    model.x = parseFloat(content);
+                    selectedNode.standardization.standardizationValue.solveParams()
+                    graphCanvas.repaint()
                 }
-                Controls.TextEditLabelPair {
-                    width: 80
-                    height: 20
-                    labelWidth: 20
-                    content: model.y.toFixed(3).toString()
-                    regexvalidator: /^-?\d*(\.\d*)?$/
-                    labelText: ("y" + index)
-                    onContentEdited: {
-                        model.y = parseFloat(content)
-                        selectedNode.standardization.standardizationValue.solveParams()
-                        graphCanvas.repaint()
-                    }
+            }
+            Controls.TextEditLabelPair {
+                width: 80
+                height: 20
+                labelWidth: 20
+                content: model.y.toFixed(3).toString()
+                regexvalidator: /^-?\d*(\.\d*)?$/
+                labelText: ("y" + index)
+                onContentEdited: {
+                    model.y = parseFloat(content)
+                    selectedNode.standardization.standardizationValue.solveParams()
+                    graphCanvas.repaint()
                 }
             }
         }
