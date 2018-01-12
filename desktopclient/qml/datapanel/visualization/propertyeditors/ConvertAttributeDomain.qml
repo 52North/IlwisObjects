@@ -2,25 +2,27 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
+import "../../.." as Base
 
 Rectangle {
-    width: 300
     height: parent ? parent.height - 10 : 0
     property var editor
+
 
     Column {
         id : col
         y : 8
-        width : 200
+        width : Math.min(parent.width * 0.95, 250)
         height : childrenRect.height + 10
         spacing : 4
+
         Text {
             text : qsTr("Domain type")
             width : 18
         }
         ComboBox{
             id : targets
-            width : 200
+            width : Math.min(parent.width * 0.95, 250)
             height : 20
             model :  editor.allowedDomains()
             Component.onCompleted: {
@@ -29,29 +31,30 @@ Rectangle {
         }
         Text {
             text : qsTr("Color scheme")
+			height : 20
             width : 18
         }
 
         ComboBox{
             id : colorscheme
-            width : 200
+            width : Math.min(parent.width * 0.95, 250)
             height : 20
             model :  editor.colorSchemes
         }
-        Row {
-            height : 20
-            width : 200
-            spacing : 40
+        Column {
+            height : 45
+            width : Math.min(parent.width , 250)
             CheckBox{
                 id : check
-                width : 60
+                width : parent.width
                 height : 20
                 checked : false
                 text : qsTr("Domain name")
+				style: Base.CheckBoxStyle1{}
             }
             TextField{
                 id : domainName
-                width : 100
+                width :parent.width
                 height : 20
                 enabled : check.checked
                 opacity : check.checked ? 1 : 0.25
@@ -68,13 +71,12 @@ Rectangle {
         anchors.top : col.bottom
         onClicked: {
             var attrIndex = attributeListColumn.currentIndex
-            if (editor.execute(targets.currentText, domainName.text, colorscheme.currentText,renderer.viewid)){
+			console.debug("aaaa", layerview.manager.viewid)
+            if (editor.execute(targets.currentText, domainName.text, colorscheme.currentText,layerview.manager.viewid)){
                 attributeListColumn.currentIndex = attrIndex
             }
         }
     }
-
-
 }
 
 
