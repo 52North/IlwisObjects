@@ -13,7 +13,7 @@ Canvas {
     id : wfcanvas
 
     property var component
-    property var ctx: getContext('2d')
+    property var ctx
     property point workingLineBegin : Qt.point(-1,-1)
     property point workingLineEnd : Qt.point(-1,-1)
     property double oldx : -1.0
@@ -66,6 +66,8 @@ Canvas {
     }
 
     function draw(force){
+        if (!ctx)
+            ctx = getContext('2d');
         ctx.clearRect(0,0,width, height);
 
         if (canvasValid == false || (force !== null && force)) {
