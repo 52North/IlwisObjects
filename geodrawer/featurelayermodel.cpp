@@ -108,7 +108,7 @@ bool FeatureLayerModel::prepare(int prepType)
 		}
 	}
 
-	VisualAttribute *attr = visualAttribute(activeAttribute());
+	VisualAttribute *attr = visualAttribute(activeAttributeName());
 
 	if (hasType(prepType, LayerModel::ptGEOMETRY) && !isPrepared(LayerModel::ptGEOMETRY)) {
 		if (!_features.isValid()) {
@@ -186,9 +186,9 @@ void FeatureLayerModel::fillAttributes()
 		// set default attribute
 		if (_visualAttributes.size() > 0) {
 			if (_visualAttributes.size() == 1)
-				activeAttribute(_visualAttributes.front()->attributename());
+				activeAttributeName(_visualAttributes.front()->attributename());
 			else
-				activeAttribute(_visualAttributes[1]->attributename());
+				activeAttributeName(_visualAttributes[1]->attributename());
 		}
 		auto layers = children();
 		for(auto *layer : layers)
