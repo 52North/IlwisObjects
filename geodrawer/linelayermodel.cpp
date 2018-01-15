@@ -101,9 +101,9 @@ void LineLayerModel::fillAttributes()
 		// set default attribute
 		if (_visualAttributes.size() > 0) {
 			if (_visualAttributes.size() == 1)
-				activeAttribute(_visualAttributes.front()->attributename());
+				activeAttributeName(_visualAttributes.front()->attributename());
 			else
-				activeAttribute(_visualAttributes[1]->attributename());
+				activeAttributeName(_visualAttributes[1]->attributename());
 		}
 		auto layers = children();
 		for (auto *layer : layers)
