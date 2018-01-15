@@ -22,7 +22,7 @@ namespace Ilwis {
 			QVariant vproperty(const QString & attrName) const;
 			void vproperty(const QString & attrName, const QVariant & value);
 			void fillAttributes();
-			void activeAttribute(const QString & pName);
+			void activeAttributeName(const QString & pName);
 			virtual void addFeature(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value, int& currentBuffer);
 			virtual int numberOfBuffers(const QString&) const;
 

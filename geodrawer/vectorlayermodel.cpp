@@ -59,14 +59,14 @@ void VectorLayerModel::fillAttributes()
 		// set default attribute
 		if (_visualAttributes.size() > 0) {
 			if (_visualAttributes.size() == 1)
-				activeAttribute(_visualAttributes.front()->attributename());
+				activeAttributeName(_visualAttributes.front()->attributename());
 			else
-				activeAttribute(_visualAttributes[1]->attributename());
+				activeAttributeName(_visualAttributes[1]->attributename());
 		}
 	}
 }
 
-void VectorLayerModel::activeAttribute(const QString& pName)
+void VectorLayerModel::activeAttributeName(const QString& pName)
 {
 	try {
 		if (pName == _activeAttribute)
