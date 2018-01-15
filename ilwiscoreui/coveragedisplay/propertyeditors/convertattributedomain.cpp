@@ -49,8 +49,8 @@ bool ConvertAttributeDomain::execute(const QString &targetDomainType, const QStr
 {
     try{
         CoverageLayerModel *clmodel = static_cast<CoverageLayerModel *>(vpmodel()->layer());
-        QString attrib = clmodel->activeAttribute();
-        QString expr = QString("convertcolumndomain(%1,%2,%3)").arg(vpmodel()->layer()->url()).arg(attrib).arg(targetDomainType);
+        QString attrib = clmodel->activeAttributeName();
+        QString expr = QString("convertcolumndomain(%1,%2,%3,\"?\")").arg(vpmodel()->layer()->url()).arg(attrib).arg(targetDomainType);
 
         Ilwis::OperationExpression ex(expr);
         Ilwis::Operation op(ex);
@@ -58,8 +58,12 @@ bool ConvertAttributeDomain::execute(const QString &targetDomainType, const QStr
         SymbolTable tbl;
         if (op->execute(&ctx, tbl)){
 
-               //vproperty()->layer()->updateAttribute(attrib, colorScheme);
-               return true;
+			IDomain dom = clmodel->activeAttribute()->domain();
+			IRepresentation rpr = clmodel->activeAttribute()->representation()->copyWith(dom);
+			rpr->colors(ColorLookUp::create(dom, colorScheme));
+			clmodel->activeAttribute()->representation(rpr);
+			clmodel->add2ChangedProperties("areacolor");
+            return true;
         }
     } catch(const ErrorObject& ){
     }
