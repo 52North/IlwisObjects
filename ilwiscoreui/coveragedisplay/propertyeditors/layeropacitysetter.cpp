@@ -51,7 +51,6 @@ void LayerOpacitySetter::opacity(float tr)
 
     if ( tr >= 0 && tr <= 1.0){
 		vpmodel()->layer()->opacity(tr);
-       vpmodel()->layer()->redraw();
     }
 }
 
