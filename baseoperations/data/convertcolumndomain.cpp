@@ -249,13 +249,13 @@ quint64 ConvertColumnDomain::createMetadata()
 {
     OperationResource operation({"ilwis://operations/convertcolumndomain"});
     operation.setLongName("convert column to other domain");
-    operation.setSyntax("convertcolumndomain(inputtable,columnname,targetdomaintype=!identifier|thematic|time|float|integer|color[, domain-name])");
+    operation.setSyntax("convertcolumndomain(inputtable,columnname,targetdomaintype=!identifier|thematic|time|float|integer|color, domain-name)");
     operation.setDescription(TR("translates the values of a string column in a table to a regular domain"));
     operation.setInParameterCount({4});
     operation.addInParameter(0,itTABLE|itFEATURE|itRASTER, TR("input table/coverage"),TR("input table/coverage with a to be translated string/numeric or id domain column"));
     operation.addInParameter(1,itSTRING,  TR("Column"),TR("Column to be translated; must contain string translatable values "), OperationResource::ueCOMBO);
     operation.addInParameter(2,itSTRING, TR("target domain type"),TR("The domain to which the string values are to be translated") );
-    operation.addInParameter(3,itDOMAIN,  TR("domain name"),TR("optional name of the to be created domain. If not given it will get the name of the column"));
+    operation.addInParameter(3,itDOMAIN,  TR("domain name"),TR("name  of the to be created domain. If not given or undefined it will get the name of the column"));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"),TR("New table with converted domain"));
     operation.addValidation(0,1,"columns");
