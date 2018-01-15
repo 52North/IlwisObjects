@@ -36,12 +36,12 @@ CoverageLayerModel::CoverageLayerModel( LayerManager *manager, QObject *parent, 
 	_isDrawable = true;
 }
 
-QString CoverageLayerModel::activeAttribute() const
+QString CoverageLayerModel::activeAttributeName() const
 {
     return _activeAttribute;
 }
 
-void CoverageLayerModel::activeAttribute(const QString& pName)
+void CoverageLayerModel::activeAttributeName(const QString& pName)
 {
     try{
         if ( pName == _activeAttribute)
@@ -52,6 +52,11 @@ void CoverageLayerModel::activeAttribute(const QString& pName)
     } catch(const ErrorObject& ){
 
     }
+}
+
+VisualAttribute * CoverageLayerModel::activeAttribute()
+{
+	return visualAttribute(_activeAttribute);
 }
 
 QVariant CoverageLayerModel::vproperty(const QString &pName) const

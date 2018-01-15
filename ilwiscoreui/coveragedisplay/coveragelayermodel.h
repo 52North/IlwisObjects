@@ -25,7 +25,7 @@ class ILWISCOREUISHARED_EXPORT CoverageLayerModel : public LayerModel
     Q_OBJECT
 
 public:
-    Q_PROPERTY(QString activeAttribute READ activeAttribute WRITE activeAttribute NOTIFY activeAttributeChanged)
+    Q_PROPERTY(QString activeAttribute READ activeAttributeName WRITE activeAttributeName NOTIFY activeAttributeChanged)
 
     Q_INVOKABLE QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> vproperties(const QString& attrName);
 	Q_INVOKABLE void setActiveAttribute(int idx);
@@ -33,8 +33,9 @@ public:
 	CoverageLayerModel();
     CoverageLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
 
-    QString activeAttribute() const;
-	void activeAttribute(const QString& pName);
+    QString activeAttributeName() const;
+	void activeAttributeName(const QString& pName);
+	VisualAttribute *activeAttribute();
 
     virtual QVariant vproperty(const QString& pName) const;
     virtual void vproperty(const QString& pName, const QVariant& value);
