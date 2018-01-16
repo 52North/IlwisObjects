@@ -234,7 +234,6 @@ Item {
 
                         zoomToExtents: false
                         hasPermanence: true
-                        panningDirection: Global.panningAlong
                         selectiondrawerColor: "basic"
                     }
                 }

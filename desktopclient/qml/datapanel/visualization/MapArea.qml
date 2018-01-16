@@ -69,7 +69,6 @@ DropArea {
 			zoomToExtents: true
 			hasPermanence: true
 			showInfo: true
-			panningDirection: Global.panningReverse
 			selectiondrawerColor: "basic"
 		} 
     }

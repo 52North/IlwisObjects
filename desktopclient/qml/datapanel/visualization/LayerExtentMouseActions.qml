@@ -11,14 +11,12 @@ MouseArea {
     hoverEnabled: true
     property LayerManager layerManager
     property bool zoomToExtents : true
-    property MapScrollers mapScrollers
     property bool showInfo : true
     property bool hasPermanence : false
     property bool zoomStarted : false
-    property bool panningStarted : false
-    property int panningPrevMouseX : -1
-    property int panningPrevMouseY : -1
-    property int panningDirection : Global.panningReverse
+    property bool panStarted : false
+    property int panPrevMouseX : -1
+    property int panPrevMouseY : -1
     property string selectiondrawerColor : "basic"
     property string subscription
     property var pStartX
@@ -43,22 +41,19 @@ MouseArea {
 				pEndX = pStartX
 				pEndY = pStartY
 				setRect()
-				//zoomRectangle.x = mouseX + parent.x
-				//zoomRectangle.y = mouseY + parent.y
 				zoomRectangle.visible = true
 				showInfo = false
 			}
             zoomStarted = true
-        }
-
-        if ( layerManager.panningMode ){
-            panningStarted = true
-            panningPrevMouseX = mouseX
-            panningPrevMouseY = mouseY
+        } else if ( layerManager.panningMode ){
+            panStarted = true
+            panPrevMouseX = mouseX
+            panPrevMouseY = mouseY
+            showInfo = false
             cursorShape = Qt.ClosedHandCursor
 
         }
-        if ( showInfo && layerManager.rootLayer.showLayerInfo && !zoomStarted){
+        if ( showInfo && layerManager.rootLayer.showLayerInfo && !zoomStarted && !panStarted){
           floatrect.enabled = true
           floatrect.opacity = 1
           floatrect.x = mouseX
@@ -66,11 +61,6 @@ MouseArea {
           var mposition = mouseX + "|" + mouseY
           floatrect.text = layerManager.rootLayer.layerInfo(mposition)
         }
-    }
-
-    function panMapArea(dX, dY) {
-        mapScrollers.vscroller.scroll(panningDirection * dY, true)
-        mapScrollers.hscroller.scroll(panningDirection * dX, true)
     }
 
     function setRect() {
@@ -106,29 +96,29 @@ MouseArea {
     }
 
     onPositionChanged: {
-		if (zoomStarted){
-			pEndX = mouseX + parent.x
-			pEndY = mouseY + parent.y
-			setRect()
-
-			/*
-			var aspect = width / height
-			if ( zoomRectangle.x < mouseX + parent.x)
-				zoomRectangle.width = mouseX + parent.x - zoomRectangle.x
-			else {
-				zoomRectangle.width = Math.abs(mouseX + parent.x - zoomRectangle.x) 
-				zoomRectangle.x = mouseX + parent.x
-			}
-			zoomRectangle.height = zoomRectangle.width / aspect
-			if ( zoomRectangle.y > mouseY + parent.y){
-				zoomRectangle.y = mouseY + parent.y
-			}
-			*/
-		}
+        if (zoomStarted){
+            pEndX = mouseX + parent.x
+            pEndY = mouseY + parent.y
+            setRect()
+        } else if (panStarted){
+            var dX = mouseX - panPrevMouseX
+            var dY = mouseY - panPrevMouseY
+            panPrevMouseX = mouseX
+            panPrevMouseY = mouseY
+            var cbZoom = manager.rootLayer.zoomEnvelope
+            var deltax = (cbZoom.minx - cbZoom.maxx) * dX / width;
+            var deltay = (cbZoom.maxy - cbZoom.miny) * dY / height;
+            cbZoom.minx += deltax;
+            cbZoom.maxx += deltax;
+            cbZoom.miny += deltay;
+            cbZoom.maxy += deltay;
+            var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
+            layerManager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
+        }
 /*        if (!layerManager.panningMode) {
             cursorShape = Qt.ArrowCursor
         } else {
-            if (!panningStarted)
+            if (!panStarted)
                 cursorShape = Qt.OpenHandCursor
             else
                 cursorShape = Qt.ClosedHandCursor
@@ -137,13 +127,13 @@ MouseArea {
         var mposition = mouseX + "|" + mouseY
         drawer.currentCoordinate = mposition
 
-        var dX = mouseX - panningPrevMouseX
-        var dY = mouseY - panningPrevMouseY
+        var dX = mouseX - panPrevMouseX
+        var dY = mouseY - panPrevMouseY
 
-        if ( (zoomStarted || panningStarted) && layerManager.hasSelectionDrawer){
+        if ( (zoomStarted || panStarted) && layerManager.hasSelectionDrawer){
             var position;
 
-            if (!panningStarted) { // zooming.....
+            if (!panStarted) { // zooming.....
                 position = {currentx: mouseX, currenty:mouseY}
                 layerManager.rootLayer.vproperty("selectiondrawer", position)
                 //drawer.copyAttribute("selectiondrawer","envelope");
@@ -172,8 +162,8 @@ MouseArea {
                     var newenvelope = nx1 + " " + ny1 + " " + nx2 + " " + ny2
                     viewmanager.newZoomExtent(newenvelope)
                    // layerview.publish( subscription, { envelope: newenvelope, options : false} )
-                    panningPrevMouseX = mouseX
-                    panningPrevMouseY = mouseY
+                    panPrevMouseX = mouseX
+                    panPrevMouseY = mouseY
                 }
             }
             drawer.update()
@@ -192,8 +182,8 @@ MouseArea {
             pEndX = mouseX + parent.x
             pEndY = mouseY + parent.y
             setRect()
-		    var minPos = {x: zoomRectangle.x-30, y: zoomRectangle.y-30, z: 0}
-			var maxPos = {x: zoomRectangle.width + zoomRectangle.x-30, y: zoomRectangle.height + zoomRectangle.y-30, z: 0}
+		    var minPos = {x: zoomRectangle.x - parent.x, y: zoomRectangle.y - parent.y, z: 0}
+			var maxPos = {x: zoomRectangle.width + zoomRectangle.x - parent.x, y: zoomRectangle.height + zoomRectangle.y - parent.y, z: 0}
 			var minCoord = manager.rootLayer.screen2Coord(minPos)
             var maxCoord = manager.rootLayer.screen2Coord(maxPos)
 			var envelope = minCoord.x + "," + minCoord.y + "," + maxCoord.x + "," + maxCoord.y
@@ -205,12 +195,12 @@ MouseArea {
             zoomStarted = false
 			showInfo = true
 			layerManager.refresh()
-        }
-        if ( layerManager.panningMode ){
-            panningStarted = false
-            panningPrevMouseX = -1
-            panningPrevMouseY = -1
-            cursorShape = Qt.OpenHandCursor
+        } else if ( layerManager.panningMode ){
+            panStarted = false
+            panPrevMouseX = -1
+            panPrevMouseY = -1
+            showInfo = true
+            cursorShape = Qt.ArrowCursor
         }
         floatrect.enabled = false
         floatrect.opacity = 0
