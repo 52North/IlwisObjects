@@ -45,26 +45,20 @@ void ConvertAttributeDomain::prepare( const IIlwisObject &obj, const DataDefinit
 
 }
 
-bool ConvertAttributeDomain::execute(const QString &targetDomainType, const QString &domainName, const QString& colorScheme, const QString& viewerId)
+bool ConvertAttributeDomain::execute(const QString& colorScheme, const QString& viewerId)
 {
-    try{
+    try {
         CoverageLayerModel *clmodel = static_cast<CoverageLayerModel *>(vpmodel()->layer());
-        QString attrib = clmodel->activeAttributeName();
-        QString expr = QString("convertcolumndomain(%1,%2,%3,\"?\")").arg(vpmodel()->layer()->url()).arg(attrib).arg(targetDomainType);
 
-        Ilwis::OperationExpression ex(expr);
-        Ilwis::Operation op(ex);
-        ExecutionContext ctx;
-        SymbolTable tbl;
-        if (op->execute(&ctx, tbl)){
-
-			IDomain dom = clmodel->activeAttribute()->domain();
-			IRepresentation rpr = clmodel->activeAttribute()->representation()->copyWith(dom);
-			rpr->colors(ColorLookUp::create(dom, colorScheme));
-			clmodel->activeAttribute()->representation(rpr);
-			clmodel->add2ChangedProperties("layer");
-            return true;
+        IDomain dom = clmodel->activeAttribute()->domain();
+        if (dom.isValid()) {
+            IRepresentation rpr = clmodel->activeAttribute()->representation()->copyWith(dom);
+            rpr->colors(ColorLookUp::create(dom, colorScheme));
+            clmodel->activeAttribute()->representation(rpr);
+            clmodel->add2ChangedProperties("buffers", true);
         }
+        return true;
+
     } catch(const ErrorObject& ){
     }
     return false;
