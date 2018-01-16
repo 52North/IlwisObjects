@@ -20,7 +20,7 @@ void Ilwis::Ui::CoverageLayerModel::setActiveAttribute(int idx)
 {
 	if (idx < _visualAttributes.size()) {
 		_activeAttribute = _visualAttributes[idx]->attributename();
-		add2ChangedProperties("activeattribute",true);
+		add2ChangedProperties("buffers",true);
 		emit activeAttributeChanged();
 	}
 }
