@@ -62,7 +62,7 @@ bool ConvertAttributeDomain::execute(const QString &targetDomainType, const QStr
 			IRepresentation rpr = clmodel->activeAttribute()->representation()->copyWith(dom);
 			rpr->colors(ColorLookUp::create(dom, colorScheme));
 			clmodel->activeAttribute()->representation(rpr);
-			clmodel->add2ChangedProperties("areacolor");
+			clmodel->add2ChangedProperties("layer");
             return true;
         }
     } catch(const ErrorObject& ){

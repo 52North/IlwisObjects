@@ -37,7 +37,6 @@ PointLayerModel::PointLayerModel(LayerManager * manager, QObject * parent, const
 	_isValid = _featureLayer->coverage().as<FeatureCoverage>()->featureCount(itPOINT) > 0;
 	_icon = "vector_point.png";
 	_isDrawable = true;
-	_isVector = true;
 	_layerType = itPOINTLAYER;
 }
 

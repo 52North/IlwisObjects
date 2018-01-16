@@ -118,7 +118,6 @@ Item {
             tab.active = true
             tab.item.renderer = renderer
 
-			console.debug("zzzz", renderer)
 
             tab = addTab(qsTr("Layers Info"), layersinfo)
             tab.active = true

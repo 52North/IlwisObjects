@@ -34,6 +34,8 @@ namespace Ilwis {
 			QVariant vproperty(const QString & key) const;
 			void fixedColor(const QColor& clr);
 			QColor fixedColor() const;
+			double linewidth() const;
+			void linewidth(double lw);
 
 			static LayerModel *create(LayerManager *, LayerModel *, const QString&, const QString&, const IOOptions&);
 
@@ -42,6 +44,7 @@ namespace Ilwis {
 		private:
 			std::shared_ptr<BaseSpatialAttributeSetter> _linesetter;
 			QColor _fixedColor;
+			double _linewidth = 1;
 
 		};
 	}
