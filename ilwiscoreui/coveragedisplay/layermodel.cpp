@@ -146,6 +146,21 @@ IlwisTypes LayerModel::layerType() const
 	return _layerType;
 }
 
+QString Ilwis::Ui::LayerModel::drawType() const
+{
+	switch (layerType()) {
+	case itPOINTLAYER:
+		return "point";
+	case itLINELAYER:
+		return "line";
+	case itPOLYGONLAYER:
+		return "polygon";
+	case itRASTERLAYER:
+		return "raster";
+	}
+	return sUNDEF;
+}
+
 Q_INVOKABLE int LayerModel::numberOfBuffers(const QString&) const
 {
 	return 0;
@@ -232,8 +247,7 @@ void LayerModel::opacity(double opacity)
 	if (opacity >= 0 && opacity <= 1.0) {
 		if (opacity != _opacity) {
 			_opacity = opacity;
-			add2ChangedProperties("opacity", childCount() > 0);
-
+			add2ChangedProperties(isSupportLayer() ? "material" : "layer", childCount() > 0);
 			emit opacityChanged();
 		}
 	}
@@ -257,6 +271,7 @@ void LayerModel::clearLayers()
 	_changedProperties = std::set<QString>();
 	_geometryChanged = true;
 	_meshes = std::vector<quint32>();
+
 }
 
 int LayerModel::layerCount() const
@@ -335,7 +350,7 @@ void LayerModel::active(bool yesno)
 {
 	if (yesno != _active) {
 		_active = yesno;
-		add2ChangedProperties("active", childCount() > 0);
+		add2ChangedProperties("layer", childCount() > 0);
 		emit onActiveChanged();
 	}
 }

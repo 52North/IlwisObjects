@@ -58,6 +58,7 @@ public:
 	Q_PROPERTY(int layerCount READ layerCount NOTIFY layerCountChanged)
     Q_PROPERTY(bool isValid READ isValid NOTIFY validChanged)
 	Q_PROPERTY(bool isSupportLayer READ isSupportLayer CONSTANT)
+	Q_PROPERTY(QString drawType READ drawType CONSTANT)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
@@ -72,6 +73,7 @@ public:
 	Q_INVOKABLE quint32 meshIndex(int n) const;
 	Q_INVOKABLE void addMeshIndex(quint32 idx);
 	Q_INVOKABLE void clearMeshIndexes();
+	Q_INVOKABLE bool isPrepared(quint32 type) const;
 
 	LayerModel();
     explicit LayerModel(TreeNode *parent);
@@ -83,7 +85,7 @@ public:
     QString visualVPropertyByIndex(int index) const;
     template<class T> T* as(){ return static_cast<T*>(this); }
 
-	bool isPrepared(quint32 type) const;
+
     void addLayer(LayerModel *layer);
     LayerModel *parentLayer() const;
     void clearLayers();
@@ -97,6 +99,7 @@ public:
     virtual QString icon() const;
 	virtual QString layerId() const;
 	IlwisTypes layerType() const;
+	QString drawType() const;
     double opacity() const;
     void opacity(double opacity);
     bool active() const;
@@ -131,6 +134,7 @@ signals:
 	   void geometryChanged();
 	   void layerCountChanged();
 	   void validChanged();
+	   void prepareChanged();
 
 public slots:
 
@@ -141,8 +145,7 @@ protected:
 	   bool _isVector = false;
 	   int _prepared = 0;
 	   IlwisTypes _layerType = itUNKNOWN;
-		bool _isValid = false;
-
+	   bool _isValid = false;
 
 private:
     LayerManager *_layerManager;
