@@ -176,20 +176,44 @@ MouseArea {
         if ( layerManager.zoomInMode ){
             pEnd = {x : mouseX + parent.x, y : mouseY + parent.y}
             setRect()
-		    var minPos = {x: zoomRectangle.x - parent.x, y: zoomRectangle.y - parent.y, z: 0}
-			var maxPos = {x: zoomRectangle.width + zoomRectangle.x - parent.x, y: zoomRectangle.height + zoomRectangle.y - parent.y, z: 0}
-			var minCoord = manager.rootLayer.screen2Coord(minPos)
-            var maxCoord = manager.rootLayer.screen2Coord(maxPos)
-			var envelope = minCoord.x + "," + minCoord.y + "," + maxCoord.x + "," + maxCoord.y
-
-            if (zoomStarted)
-                layerManager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
-
+            if (zoomStarted) {
+                if (zoomRectangle.width < 3 && zoomRectangle.height < 3) { // case of clicking on the map in zoom mode
+                    var cbZoom = manager.rootLayer.zoomEnvelope
+                    var posx = cbZoom.minx + (cbZoom.maxx - cbZoom.minx) * zoomRectangle.x / width; // determine click point
+                    var posy = cbZoom.maxy - (cbZoom.maxy - cbZoom.miny) * zoomRectangle.y / height;
+                    var w = (cbZoom.maxx - cbZoom.minx) / (2.0 * 1.41); // determine new window size
+                    var h = (cbZoom.maxy - cbZoom.miny) / (2.0 * 1.41);
+                    var envelope = (posx - w) + "," + (posy - h) + "," + (posx + w) + "," + (posy + h) // determine new bounds
+                    layerManager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
+                } else if (zoomRectangle.width >= 3 && zoomRectangle.height >= 3) {
+		            var minPos = {x: zoomRectangle.x - parent.x, y: zoomRectangle.y - parent.y, z: 0}
+			        var maxPos = {x: zoomRectangle.width + zoomRectangle.x - parent.x, y: zoomRectangle.height + zoomRectangle.y - parent.y, z: 0}
+			        var minCoord = manager.rootLayer.screen2Coord(minPos)
+                    var maxCoord = manager.rootLayer.screen2Coord(maxPos)
+			        var envelope = minCoord.x + "," + minCoord.y + "," + maxCoord.x + "," + maxCoord.y
+                    layerManager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
+                } // else if zoomRectangle is a horizontal or a vertical strip, do nothing
+            }
 			zoomRectangle.disable()
             zoomStarted = false
 			showInfo = true
 			layerManager.refresh()
         } else if ( layerManager.panningMode ){
+            if (panStarted){
+                var dX = mouseX - panPrevMouseX
+                var dY = mouseY - panPrevMouseY
+                panPrevMouseX = mouseX
+                panPrevMouseY = mouseY
+                var cbZoom = manager.rootLayer.zoomEnvelope
+                var deltax = (cbZoom.minx - cbZoom.maxx) * dX / width;
+                var deltay = (cbZoom.maxy - cbZoom.miny) * dY / height;
+                cbZoom.minx += deltax;
+                cbZoom.maxx += deltax;
+                cbZoom.miny += deltay;
+                cbZoom.maxy += deltay;
+                var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
+                layerManager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
+            }
             panStarted = false
             panPrevMouseX = -1
             panPrevMouseY = -1
