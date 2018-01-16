@@ -19,10 +19,8 @@ MouseArea {
     property int panPrevMouseY : -1
     property string selectiondrawerColor : "basic"
     property string subscription
-    property var pStartX
-    property var pStartY
-    property var pEndX
-    property var pEndY
+    property var pStart
+    property var pEnd
     signal zoomEnded(string envelope)
 
     Controls.FloatingRectangle{
@@ -36,10 +34,8 @@ MouseArea {
         }
         if ( layerManager.zoomInMode ){
 			if (!zoomStarted){
-				pStartX = mouseX + parent.x
-				pStartY = mouseY + parent.y
-				pEndX = pStartX
-				pEndY = pStartY
+				pStart = {x : mouseX + parent.x, y : mouseY + parent.y}
+				pEnd = pStart
 				setRect()
 				zoomRectangle.visible = true
 				showInfo = false
@@ -64,10 +60,10 @@ MouseArea {
     }
 
     function setRect() {
-        var x1 = pStartX;
-        var x2 = pEndX;
-        var y1 = pStartY;
-        var y2 = pEndY;
+        var x1 = pStart.x;
+        var x2 = pEnd.x;
+        var y1 = pStart.y;
+        var y2 = pEnd.y;
         var dx = x2 - x1;
         var dy = y2 - y1;
         var rFactX = Math.abs(dx / width);
@@ -97,8 +93,7 @@ MouseArea {
 
     onPositionChanged: {
         if (zoomStarted){
-            pEndX = mouseX + parent.x
-            pEndY = mouseY + parent.y
+            pEnd = {x : mouseX + parent.x, y : mouseY + parent.y}
             setRect()
         } else if (panStarted){
             var dX = mouseX - panPrevMouseX
@@ -179,8 +174,7 @@ MouseArea {
     }
     onReleased: {
         if ( layerManager.zoomInMode ){
-            pEndX = mouseX + parent.x
-            pEndY = mouseY + parent.y
+            pEnd = {x : mouseX + parent.x, y : mouseY + parent.y}
             setRect()
 		    var minPos = {x: zoomRectangle.x - parent.x, y: zoomRectangle.y - parent.y, z: 0}
 			var maxPos = {x: zoomRectangle.width + zoomRectangle.x - parent.x, y: zoomRectangle.height + zoomRectangle.y - parent.y, z: 0}
