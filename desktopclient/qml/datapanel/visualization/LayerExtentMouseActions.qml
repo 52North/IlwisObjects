@@ -21,6 +21,10 @@ MouseArea {
     property int panningDirection : Global.panningReverse
     property string selectiondrawerColor : "basic"
     property string subscription
+    property var pStartX
+    property var pStartY
+    property var pEndX
+    property var pEndY
     signal zoomEnded(string envelope)
 
     Controls.FloatingRectangle{
@@ -34,8 +38,13 @@ MouseArea {
         }
         if ( layerManager.zoomInMode ){
 			if (!zoomStarted){
-				zoomRectangle.x = mouseX
-				zoomRectangle.y = mouseY
+				pStartX = mouseX + parent.x
+				pStartY = mouseY + parent.y
+				pEndX = pStartX
+				pEndY = pStartY
+				setRect()
+				//zoomRectangle.x = mouseX + parent.x
+				//zoomRectangle.y = mouseY + parent.y
 				zoomRectangle.visible = true
 				showInfo = false
 			}
@@ -64,19 +73,57 @@ MouseArea {
         mapScrollers.hscroller.scroll(panningDirection * dX, true)
     }
 
+    function setRect() {
+        var x1 = pStartX;
+        var x2 = pEndX;
+        var y1 = pStartY;
+        var y2 = pEndY;
+        var dx = x2 - x1;
+        var dy = y2 - y1;
+        var rFactX = Math.abs(dx / width);
+        var rFactY = Math.abs(dy / height);
+        var rFact = width / height;
+        if (rFactX > rFactY)
+            y2 = y1 + Math.round(Math.abs(dx) * Math.sign(dy) / rFact);
+        else
+            x2 = x1 + Math.round(Math.abs(dy) * Math.sign(dx) * rFact);
+        if (Math.abs(x1-x2) < 3) x2 = x1;
+        if (Math.abs(y1-y2) < 3) y2 = y1;
+        if (x1 > x2) {
+            var temp = x1
+            x1 = x2
+            x2 = temp
+        }
+        if (y1 > y2) {
+            var temp = y1
+            y1 = y2
+            y2 = temp
+        }
+        zoomRectangle.x = x1
+        zoomRectangle.width = x2 - x1
+        zoomRectangle.y = y1
+        zoomRectangle.height = y2 - y1
+    }
+
     onPositionChanged: {
 		if (zoomStarted){
+			pEndX = mouseX + parent.x
+			pEndY = mouseY + parent.y
+			setRect()
+
+			/*
 			var aspect = width / height
-			if ( zoomRectangle.x < mouseX)
-				zoomRectangle.width = mouseX - zoomRectangle.x
+			if ( zoomRectangle.x < mouseX + parent.x)
+				zoomRectangle.width = mouseX + parent.x - zoomRectangle.x
 			else {
-				zoomRectangle.width = Math.abs(mouseX - zoomRectangle.x) 
-				zoomRectangle.x = mouseX
+				zoomRectangle.width = Math.abs(mouseX + parent.x - zoomRectangle.x) 
+				zoomRectangle.x = mouseX + parent.x
 			}
 			zoomRectangle.height = zoomRectangle.width / aspect
-			if ( zoomRectangle.y > mouseY){
-				zoomRectangle.y = mouseY
+			if ( zoomRectangle.y > mouseY + parent.y){
+				zoomRectangle.y = mouseY + parent.y
 			}
+			*/
 		}
 /*        if (!layerManager.panningMode) {
             cursorShape = Qt.ArrowCursor
@@ -142,6 +189,9 @@ MouseArea {
     }
     onReleased: {
         if ( layerManager.zoomInMode ){
+            pEndX = mouseX + parent.x
+            pEndY = mouseY + parent.y
+            setRect()
 		    var minPos = {x: zoomRectangle.x-30, y: zoomRectangle.y-30, z: 0}
 			var maxPos = {x: zoomRectangle.width + zoomRectangle.x-30, y: zoomRectangle.height + zoomRectangle.y-30, z: 0}
 			var minCoord = manager.rootLayer.screen2Coord(minPos)
