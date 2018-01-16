@@ -122,7 +122,7 @@ Rectangle {
 		}
 
         onPositionChanged: {
-            if ( pressed && containsMouse){
+            if ( pressed){
                 var scrollerTopThumbPos =  Math.floor(marea.height * currentPosition / maxSize)
                 var scrollerBottomThumbPos = Math.floor(marea.height * ( currentPosition + currentSize) / maxSize)
 
