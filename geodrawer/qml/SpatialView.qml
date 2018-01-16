@@ -168,12 +168,6 @@ Rectangle {
 
 			}
 		}
-		function changeProperty(layer, property){
-			var  ok = true
-
-			//canvas.setScene(layer)
-			return ok
-		}
 
 	function setGeometry(layer, bufferIndex, type, geometry){
 			var vertices = new Float32Array(layer.vertices(bufferIndex, type))
@@ -195,7 +189,9 @@ Rectangle {
 
 			for (var i = scene.children.length - 1; i >= 0; i--) {
 				if(scene.children[i].name === layer.layerId){
+						console.debug("removing", i, layer.name, layer.layerId, layer.meshCount(),scene.children.length)
 						scene.remove(scene.children[i]);
+						console.debug("after removing", scene.children.length)
 					}
 			}
 			layer.clearMeshIndexes()
@@ -207,11 +203,10 @@ Rectangle {
 				var points = new GL.THREE.Points( geometry, material );
 				points.name = layer.layerId
 				points.visible = layer.vproperty("active")
-				layer.addMeshIndex(scene.children.length)
+				layer.addMeshIndex(points.id)
 				scene.add( points );
-
-				
 			}
+
 		    for(var i=0; i < layer.numberOfBuffers("linecoverage");++i){
 
 
@@ -226,7 +221,8 @@ Rectangle {
 				var lines = new GL.THREE.LineSegments( geometry, material );
 				lines.name = layer.layerId
 				lines.visible = layer.vproperty("active")
-				layer.addMeshIndex(scene.children.length)
+				layer.addMeshIndex(lines.id)
+				console.debug("meshindex1", layer.meshIndex(0), lines.id)
 				scene.add( lines );
 			}
 		    for(var i=0; i < layer.numberOfBuffers("polygoncoverage");++i){
@@ -236,50 +232,67 @@ Rectangle {
 				var polygons = new GL.THREE.Mesh( geometry, material );
 				polygons.name = layer.layerId
 				polygons.visible = layer.vproperty("active")
-				layer.addMeshIndex(scene.children.length)
+				layer.addMeshIndex(polygons.id)
+				console.debug("meshindex2", layer.meshIndex(0))
 				scene.add( polygons );
 
 			}
 			layer.updateGeometry = false
 		}
 
-		function changeMeshProperty(layer, mesh, propertyName){
-			if ( propertyName == "fixedlinecolor"){
-				var clr = layer.vproperty("fixedlinecolor");
-				if ( layer.isSupportLayer){
-						mesh.material.color.setRGB(clr.r, clr.g, clr.b)
+		function getMesh(id){
+			for (var i = scene.children.length - 1; i >= 0; i--) {
+				var mesh = scene.children[i]
+				if ( id == mesh.id)
+					return mesh
+			}
+			return null
+		}
+
+		function changeProperty(propertyType, layer){
+			var ok = true
+			if ( propertyType == "buffers"){
+	            if ( layer.updateGeometry){
+                    ok = layer.prepare(2)
+                }else{
+					ok = layer.prepare(1)
 				}
-				mesh.material.needsUpdate = true;
+				if ( ok){
+					setScene(layer)
+				}
+			} else if ( propertyType == "material") {
+				for(var i=0; i < layer.meshCount(); ++i){
+					var mesh =  getMesh(layer.meshIndex(i)) 
+					if ( mesh && layer.drawType == "line"){
+						var clr = layer.vproperty("fixedlinecolor")
+						var linecolor = new GL.THREE.Color(clr.r, clr.g, clr.b)
+						var linewidth = layer.vproperty("linewidth")
+						var lineopacity = layer.vproperty("opacity")
+						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor,linewidth: 1, transparent : true,opacity : lineopacity})
+					}
+					mesh.material.needsUpdate = true;
+				}
+			} else if ( propertyType == "layer"){
+				for(var i=0; i < layer.meshCount(); ++i){
+					var mesh =  getMesh(layer.meshIndex(i)) 
+					console.debug("ccc", layer.name,layer.drawType, layer.vproperty("opacity"), layer.meshIndex(i))
+					if ( mesh){
+						mesh.visible = layer.vproperty("active")
+						mesh.material.opacity = layer.vproperty("opacity")
+					}
+				}
 			}
 		}
 
         function setProperties(layer) {
             if ( layer.isDrawable && layer.isValid){
-                if ( layer.updateGeometry){
-                    return layer.prepare(2)
-                }else {
-                    var changedProperties = layer.changedProperties
-					// not all changes to a property of a layer need a full recalculation of the geoms/materials. 
-                   var recalcSceneProperties  = false
-                   for(var j=0; j < changedProperties.length; ++j){
-					   var property = changedProperties[j]
-                       if ( property == "activeattribute")	{
-							recalcSceneProperties = layer.prepare(1)
-						}else{ 
-							// this loop only for properties that do not need a full update of geometries/materials
-							for(var i=0; i < layer.meshCount(); ++i){
-								var meshIndex = layer.meshIndex(i)
-								var mesh = scene.children[meshIndex]
-								changeMeshProperty(layer, mesh, property)
-								recalcSceneProperties |= false
-							}
-						}
-					}
-					layer.removeFromChangedProperties(property)
-					return recalcSceneProperties
-                }
+				var changedProperties = layer.changedProperties
+                for(var j=0; j < changedProperties.length; ++j){
+				   var property = changedProperties[j]
+				   changeProperty(property, layer)
+				   layer.removeFromChangedProperties(property)
+				}
             }
-            return false
         }
         
 		onPaintGL : {
@@ -288,13 +301,9 @@ Rectangle {
 					updatePositions()
 					layermanager.needUpdate = false
 				}
-				var recalcSceneProperties = false
 				var layerList = layermanager.layerList
 				for(var i=0; i < layerList.length; ++i){
-					recalcSceneProperties |= setProperties(layerList[i])
-				}
-				for(var i=0; recalcSceneProperties && i < layerList.length; ++i){
-					canvas.setScene(layerList[i])
+					setProperties(layerList[i])
 				}
 
 				renderer.render(scene, camera);
