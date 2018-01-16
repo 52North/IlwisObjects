@@ -56,7 +56,7 @@ IRepresentation VisualAttribute::representation() const
 
 void VisualAttribute::representation(const IRepresentation &rpr)
 {
-    if ( datadefinition().isValid())
+    if ( !datadefinition().isValid())
         return;
     if ( !datadefinition().domain().isValid() || !rpr.isValid())
         return;
@@ -68,9 +68,9 @@ void VisualAttribute::representation(const IRepresentation &rpr)
 IDomain VisualAttribute::domain() const
 {
     if ( datadefinition().isValid())
-        return IDomain();
+        return datadefinition().domain();
 
-    return datadefinition().domain();
+    return IDomain();
 }
 
 void VisualAttribute::domain(const IDomain &dom)
