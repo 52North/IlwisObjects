@@ -115,8 +115,11 @@ void LineLayerModel::vproperty(const QString &key, const QVariant &value) {
 	VectorLayerModel::vproperty(key, value);
 
 	if (key == "fixedlinecolor") {
-
 		fixedColor(value.value<QColor>());
+	}
+
+	if (key == "linewidth") {
+		linewidth(value.toDouble());
 	}
 }
 
@@ -126,6 +129,9 @@ QVariant LineLayerModel::vproperty(const QString &key) const {
 		if (key == "fixedlinecolor") {
 			v.setValue(fixedColor());
 		}
+		else if (key == "linewidth") {
+			v = _linewidth;
+		}
 	}
 	return v;
 }
@@ -133,12 +139,23 @@ QVariant LineLayerModel::vproperty(const QString &key) const {
 void Ilwis::Ui::LineLayerModel::fixedColor(const QColor & clr)
 {
 	_fixedColor = clr;
-	add2ChangedProperties("fixedlinecolor");
+	add2ChangedProperties("material");
 }
 
 QColor Ilwis::Ui::LineLayerModel::fixedColor() const
 {
 	return _fixedColor;
+}
+
+double Ilwis::Ui::LineLayerModel::linewidth() const
+{
+	return _linewidth;
+}
+
+void Ilwis::Ui::LineLayerModel::linewidth(double lw)
+{
+	if ( lw >= 0)
+		_linewidth = lw;
 }
 
 
