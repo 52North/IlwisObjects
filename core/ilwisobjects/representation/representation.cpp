@@ -33,7 +33,7 @@ IlwisData<Representation> Representation::copyWith(const IDomain &dom) const
     int count = 0;
     while((id = mastercatalog()->name2id(rprurl, itREPRESENTATION))!= i64UNDEF){
         rpr.prepare(id);
-        if ( rpr->domain() != dom){
+        if (id != dom->id()){
             rprurl = rprurl + "_" + QString::number(++count);
         }else
             break;

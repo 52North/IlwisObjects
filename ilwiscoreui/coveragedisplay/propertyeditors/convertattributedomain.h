@@ -19,7 +19,7 @@ public:
     bool canUse(const IIlwisObject &obj, const DataDefinition &) const;
     static VisualPropertyEditor *create(VisualAttribute *);
 
-    Q_INVOKABLE bool execute(const QString& targetDomainType, const QString& domainName, const QString& colorScheme, const QString& viewerId);
+    Q_INVOKABLE bool execute(const QString& colorScheme, const QString& viewerId);
     Q_INVOKABLE QStringList allowedDomains() const;
     Q_INVOKABLE int domainTypeIndex();
 

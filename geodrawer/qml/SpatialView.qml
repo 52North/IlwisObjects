@@ -251,6 +251,7 @@ Rectangle {
 
 		function changeProperty(propertyType, layer){
 			var ok = true
+            console.debug("zzzz", propertyType, layer.name)
 			if ( propertyType == "buffers"){
 	            if ( layer.updateGeometry){
                     ok = layer.prepare(2)
