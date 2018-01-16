@@ -139,7 +139,7 @@ bool ConvertColumnDomain::execute(ExecutionContext *ctx, SymbolTable &symTable)
             return false;
 
     bool ok = false;
-    ITable outputTable = _inputTable->copyTable("");
+    ITable outputTable = _inputTable->copyTable(ANONYMOUS_PREFIX);
     std::vector<QVariant> values = _inputTable->column(_columnName);
     if ( _targetDomainType == "identifier" ){
         ok = translate2ItemColumn<INamedIdDomain, NamedIdentifierRange>(_inputTable,outputTable, _columnName, values, _domainName);
