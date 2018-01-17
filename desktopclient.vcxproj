@@ -557,6 +557,8 @@
     <Image Include="desktopclient\qml\images\apply20.png" />
     <Image Include="desktopclient\qml\images\app_green.png" />
     <Image Include="desktopclient\qml\images\app_grey.png" />
+    <Image Include="desktopclient\qml\images\arrow20.png" />
+    <Image Include="desktopclient\qml\images\arrow20A.png" />
     <Image Include="desktopclient\qml\images\arrowdown.png" />
     <Image Include="desktopclient\qml\images\arrowdownlight.png" />
     <Image Include="desktopclient\qml\images\arrowleftlight.png" />
