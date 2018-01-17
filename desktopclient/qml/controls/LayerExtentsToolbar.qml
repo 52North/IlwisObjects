@@ -22,6 +22,7 @@ ToolBar{
             action : entireClicked
             onClicked: {
                 zoominButton.checked = false
+                zoomoutButton.checked = false
                 panButton.checked = false
             }
             Controls.ToolTip{
@@ -39,6 +40,7 @@ ToolBar{
             onClicked: {
                 checked = !checked
                 zoominButton.checked = false
+                zoomoutButton.checked = false
 
             }
             Controls.ToolTip{
@@ -55,21 +57,28 @@ ToolBar{
             checked: false
             onClicked: {
                 checked = !checked
+                zoomoutButton.checked = false
                 panButton.checked = false
             }
             Controls.ToolTip{
                 target: zoominButton
-                text : qsTr("Trigger a state so that a rectangle can be drawn for zooming purposes")
+                text : qsTr("Trigger a state so that a rectangle can be drawn for zooming in")
             }
         }
         MapExtentButton{
             id : zoomoutButton
-            icon :"zoomout20.png"
+            icon : zoomoutButton.checked ? "zoomout20A.png" : "zoomout20.png"
             action : zoomOutClicked
-
+            checkable: true
+            checked: false
+            onClicked: {
+                checked = !checked
+                zoominButton.checked = false
+                panButton.checked = false
+            }
             Controls.ToolTip{
                 target: zoomoutButton
-                text : qsTr("Enlarges the zoomed view by square root of 2 in x/y size while keeping the center constant")
+                text : qsTr("Trigger a state so that a rectangle can be drawn for zooming out")
             }
         }
     }

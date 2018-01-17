@@ -2288,5 +2288,8 @@
     <Image Include="desktopclient\qml\images\zoomout20.png">
       <Filter>Distribution Files\qml\images</Filter>
     </Image>
+    <Image Include="desktopclient\qml\images\zoomout20A.png">
+      <Filter>Distribution Files\qml\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

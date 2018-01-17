@@ -36,15 +36,16 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QAbstractItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
-	Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> layerList READ layerList NOTIFY layerListChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> layerList READ layerList NOTIFY layerListChanged)
     Q_PROPERTY(quint32 viewid READ viewid CONSTANT)
     Q_PROPERTY(bool hasSelectionDrawer READ hasSelectionDrawer WRITE setHasSelectionDrawer NOTIFY hasSelectionDrawerChanged)
-	Q_PROPERTY(bool zoomInMode READ zoomInMode WRITE setZoomInMode NOTIFY zoomInModeChanged)
-	Q_PROPERTY(bool panningMode READ panningMode WRITE setPanningMode NOTIFY panningModeChanged)
+    Q_PROPERTY(bool zoomInMode READ zoomInMode WRITE setZoomInMode NOTIFY zoomInModeChanged)
+    Q_PROPERTY(bool zoomOutMode READ zoomOutMode WRITE setZoomOutMode NOTIFY zoomOutModeChanged)
+    Q_PROPERTY(bool panningMode READ panningMode WRITE setPanningMode NOTIFY panningModeChanged)
     Q_PROPERTY(Ilwis::Ui::RootLayerModel* rootLayer READ rootLayer CONSTANT)
     Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
     Q_PROPERTY(int layerCount READ layerCount NOTIFY layerCountChanged)
-	Q_PROPERTY(bool needUpdate READ needUpdate WRITE needUpdate NOTIFY needUpdateChanged)
+    Q_PROPERTY(bool needUpdate READ needUpdate WRITE needUpdate NOTIFY needUpdateChanged)
     Q_PROPERTY(LayerModel *lastAddedCoverageLayer READ lastAddedCoverageLayer CONSTANT)
 
 public:
@@ -67,6 +68,8 @@ public:
     void setHasSelectionDrawer(bool yesno);
 	bool zoomInMode() const;
 	void setZoomInMode(bool yesno);
+	bool zoomOutMode() const;
+	void setZoomOutMode(bool yesno);
 	bool panningMode() const;
 	void setPanningMode(bool yesno);
 
@@ -116,6 +119,7 @@ private:
     static std::map<QString, CreateLayer> _createLayers;
     bool _hasSelectionDrawer = false;
 	bool _zoomInMode = false;
+    bool _zoomOutMode = false;
 	bool _panningMode = false;
     QString _layerListName = sUNDEF;
 	int nextId();

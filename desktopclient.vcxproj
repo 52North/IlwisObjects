@@ -940,6 +940,7 @@
     <Image Include="desktopclient\qml\images\zoomin20.png" />
     <Image Include="desktopclient\qml\images\zoomin20A.png" />
     <Image Include="desktopclient\qml\images\zoomout20.png" />
+    <Image Include="desktopclient\qml\images\zoomout20A.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -32,6 +32,7 @@ Item {
         onTriggered : {
             if ( manager){
                 manager.zoomInMode = !manager.zoomInMode
+                manager.zoomOutMode = false
                 manager.panningMode = false
             }
         }
@@ -43,6 +44,7 @@ Item {
             if ( manager){
                 manager.panningMode = !manager.panningMode
                 manager.zoomInMode = false
+                manager.zoomOutMode = false
             }
         }
     }
@@ -63,8 +65,9 @@ Item {
         id : zoomOutClicked
         onTriggered : {
             if ( manager){
-                var envelope = layers.drawer().attributeOfDrawer("rootdrawer","zoomenvelope");
-                Global.calcZoomOutEnvelope(envelope, layers, viewmanager,0.707)
+                manager.zoomOutMode = !manager.zoomOutMode
+                manager.zoomInMode = false
+                manager.panningMode = false
             }
         }
     }

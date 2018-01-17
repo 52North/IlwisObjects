@@ -72,6 +72,16 @@ void LayerManager::setZoomInMode(bool yesno)
 	_zoomInMode = yesno;
 }
 
+bool LayerManager::zoomOutMode() const
+{
+	return _zoomOutMode;
+}
+
+void LayerManager::setZoomOutMode(bool yesno)
+{
+	_zoomOutMode = yesno;
+}
+
 bool LayerManager::panningMode() const
 {
 	return _panningMode;
