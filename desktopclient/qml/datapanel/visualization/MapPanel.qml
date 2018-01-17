@@ -71,6 +71,16 @@ Item {
             }
         }
     }
+    Action {
+        id : normalClicked
+        onTriggered : {
+            if ( manager){
+                manager.zoomInMode = false
+                manager.zoomOutMode = false
+                manager.panningMode = false
+            }
+        }
+    }
     Controls.LayerExtentsToolbar{
         id : maptools
 

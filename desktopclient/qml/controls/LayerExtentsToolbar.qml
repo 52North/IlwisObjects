@@ -21,6 +21,7 @@ ToolBar{
             id : entireMap
             action : entireClicked
             onClicked: {
+                normalButton.checked = true
                 zoominButton.checked = false
                 zoomoutButton.checked = false
                 panButton.checked = false
@@ -39,6 +40,7 @@ ToolBar{
             checked: false
             onClicked: {
                 checked = !checked
+                normalButton.checked = !checked
                 zoominButton.checked = false
                 zoomoutButton.checked = false
 
@@ -57,6 +59,7 @@ ToolBar{
             checked: false
             onClicked: {
                 checked = !checked
+                normalButton.checked = !checked
                 zoomoutButton.checked = false
                 panButton.checked = false
             }
@@ -73,12 +76,33 @@ ToolBar{
             checked: false
             onClicked: {
                 checked = !checked
+                normalButton.checked = !checked
                 zoominButton.checked = false
                 panButton.checked = false
             }
             Controls.ToolTip{
                 target: zoomoutButton
                 text : qsTr("Trigger a state so that a rectangle can be drawn for zooming out")
+            }
+        }
+        MapExtentButton{
+            id : normalButton
+            icon : normalButton.checked ? "arrow20A.png" : "arrow20.png"
+            action : normalClicked
+            checkable: true
+            checked: true
+            onClicked: {
+                checked = true
+                zoominButton.checked = false
+                zoomoutButton.checked = false
+                panButton.checked = false
+            }
+            Controls.ToolTip{
+                target: normalButton
+                text : qsTr("Set mouse function to Normal")
+            }
+            Component.onCompleted: {
+                checked = true
             }
         }
     }
