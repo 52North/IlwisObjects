@@ -106,6 +106,7 @@ signals:
 	void layerTreeChanged();
     void hasSelectionDrawerChanged();
 	void zoomInModeChanged();
+    void zoomOutModeChanged();
 	void panningModeChanged();
     void isValidChanged();
 	void layerCountChanged();
