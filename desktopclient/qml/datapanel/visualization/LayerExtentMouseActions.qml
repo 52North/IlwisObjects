@@ -211,16 +211,16 @@ MouseArea {
                     var envelope = (posx - w) + "," + (posy - h) + "," + (posx + w) + "," + (posy + h) // determine new bounds
                     layerManager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
                 } else if (zoomRectangle.width >= 3 && zoomRectangle.height >= 3) {
-                    var top = zoomRectangle.y + zoomRectangle.height - parent.y
-                    var bottom = zoomRectangle.y - parent.y
+                    var top = zoomRectangle.y - parent.y
+                    var bottom = zoomRectangle.y + zoomRectangle.height - parent.y
                     var left = zoomRectangle.x - parent.x
                     var right = zoomRectangle.x + zoomRectangle.width - parent.x
-                    bottom = - bottom;
-                    top = height + (height - top);
+                    top = - top;
+                    bottom = height + (height - bottom);
                     left = - left;
                     right = width + (width - right);
-                    var minPos = {x: left, y: bottom, z: 0}
-                    var maxPos = {x: right, y: top, z: 0}
+                    var minPos = {x: left, y: top, z: 0}
+                    var maxPos = {x: right, y: bottom, z: 0}
                     var minCoord = manager.rootLayer.screen2Coord(minPos)
                     var maxCoord = manager.rootLayer.screen2Coord(maxPos)
                     var envelope = minCoord.x + "," + minCoord.y + "," + maxCoord.x + "," + maxCoord.y
