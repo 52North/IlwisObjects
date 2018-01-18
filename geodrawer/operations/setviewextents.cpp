@@ -39,17 +39,52 @@ bool SetViewExtent::execute(ExecutionContext *ctx, SymbolTable &symTable)
     }else{
         double area = _newExtents.area();
         if ( area > 0){
-			 Coordinate center = _newExtents.center();
 			 Envelope env = layerManager()->rootLayer()->viewEnvelope();
 			 double zx = env.xlength() / (_newExtents.xlength() - 1.0);
 			 double zy = env.ylength() / (_newExtents.ylength() - 1.0);
 			 double zoom = std::max(zx, zy);
-			 QVariantMap vmap;
-			 vmap["x"] = center.x - env.center().x ;
-			 vmap["y"] = center.y - env.center().y ;
-			 layerManager()->rootLayer()->cameraPosition(vmap);
-			 layerManager()->rootLayer()->zoomFactor(zoom);
-			 layerManager()->rootLayer()->zoomEnvelope(_newExtents);
+             if (zoom > 1.0) {
+                 double zwidth = _newExtents.xlength() - 1;
+                 if (zwidth > env.xlength() - 1.0) {
+                     double delta = (zwidth - env.xlength() - 1) / 2.0;
+                     _newExtents.min_corner().x = env.min_corner().x - delta;
+                     _newExtents.max_corner().x = env.max_corner().x + delta;
+                 } else {
+                     if (_newExtents.max_corner().x > env.max_corner().x) {
+                         _newExtents.max_corner().x = env.max_corner().x;
+                         _newExtents.min_corner().x = _newExtents.max_corner().x - zwidth;
+                     }
+                     if (_newExtents.min_corner().x < env.min_corner().x) {
+                         _newExtents.min_corner().x = env.min_corner().x;
+                         _newExtents.max_corner().x = _newExtents.min_corner().x + zwidth;
+                     }
+                 }
+                 double zheight = _newExtents.ylength() - 1;
+                 if (zheight > env.ylength() - 1.0) {
+                     double delta = (zheight - env.ylength() - 1) / 2.0;
+                     _newExtents.min_corner().y = env.min_corner().y - delta;
+                     _newExtents.max_corner().y = env.max_corner().y + delta;
+                 } else {
+                     if (_newExtents.max_corner().y > env.max_corner().y) {
+                         _newExtents.max_corner().y = env.max_corner().y;
+                         _newExtents.min_corner().y = _newExtents.max_corner().y - zheight;
+                     }
+                     if (_newExtents.min_corner().y < env.min_corner().y) {
+                         _newExtents.min_corner().y = env.min_corner().y;
+                         _newExtents.max_corner().y = _newExtents.min_corner().y + zheight;
+                     }
+                 }
+                 QVariantMap vmap;
+                 Coordinate center = _newExtents.center();
+                 vmap["x"] = center.x - env.center().x;
+                 vmap["y"] = center.y - env.center().y;
+                 layerManager()->rootLayer()->cameraPosition(vmap);
+                 layerManager()->rootLayer()->zoomFactor(zoom);
+                 layerManager()->rootLayer()->zoomEnvelope(_newExtents);
+             } else {
+                 _newExtents = env;
+                 layerManager()->wholeMap();
+             }
         }
     }
 	layerManager()->needUpdate(true);
