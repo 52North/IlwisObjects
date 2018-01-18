@@ -801,6 +801,7 @@
     <Image Include="desktopclient\qml\images\page.png" />
     <Image Include="desktopclient\qml\images\pan20.png" />
     <Image Include="desktopclient\qml\images\pan20A.png" />
+    <Image Include="desktopclient\qml\images\pan20B.png" />
     <Image Include="desktopclient\qml\images\panel-center2.png" />
     <Image Include="desktopclient\qml\images\panel-top2.png" />
     <Image Include="desktopclient\qml\images\pause20.png" />
@@ -943,6 +944,7 @@
     <Image Include="desktopclient\qml\images\zoomin20A.png" />
     <Image Include="desktopclient\qml\images\zoomout20.png" />
     <Image Include="desktopclient\qml\images\zoomout20A.png" />
+    <Image Include="desktopclient\qml\images\zoomout20B.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

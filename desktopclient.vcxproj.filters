@@ -2297,5 +2297,11 @@
     <Image Include="desktopclient\qml\images\arrow20A.png">
       <Filter>Distribution Files\qml\images</Filter>
     </Image>
+    <Image Include="desktopclient\qml\images\pan20B.png">
+      <Filter>Distribution Files\qml\images</Filter>
+    </Image>
+    <Image Include="desktopclient\qml\images\zoomout20B.png">
+      <Filter>Distribution Files\qml\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>
