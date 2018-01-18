@@ -248,7 +248,6 @@ void LayerManager::wholeMap()
 	mp["z"] = 0;
 	_globalLayer->cameraPosition(mp);
 	_globalLayer->zoomFactor(1.0);
-	_zoomInMode = false;
 
 	refresh();
 }

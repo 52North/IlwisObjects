@@ -198,6 +198,9 @@ MouseArea {
             zoomStarted = false
 			showInfo = true
 			layerManager.refresh()
+            var enablePanAndZoomOut = layerview.manager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerview.manager.rootLayer.scrollInfo.ysizeperc < 1.0
+            layerview.maptools.panButton.enabled = enablePanAndZoomOut
+            layerview.maptools.zoomoutButton.enabled = enablePanAndZoomOut
         } else if ( layerManager.zoomOutMode ){
             pEnd = {x : mouseX + parent.x, y : mouseY + parent.y}
             setRect()
@@ -231,6 +234,12 @@ MouseArea {
             zoomStarted = false
             showInfo = true
             layerManager.refresh()
+            var enablePanAndZoomOut = layerview.manager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerview.manager.rootLayer.scrollInfo.ysizeperc < 1.0
+            layerview.maptools.panButton.enabled = enablePanAndZoomOut
+            layerview.maptools.zoomoutButton.enabled = enablePanAndZoomOut
+            layerview.maptools.zoomoutButton.checked = enablePanAndZoomOut
+            layerview.maptools.normalButton.checked = !enablePanAndZoomOut
+            layerManager.zoomOutMode = enablePanAndZoomOut
         } else if ( layerManager.panningMode ){
             if (panStarted){
                 var dX = mouseX - panPrevMouseX

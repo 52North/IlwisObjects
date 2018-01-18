@@ -20,6 +20,7 @@ Item {
     property string panelType : "mappanel"
     property var createParameters : []
     property alias viewmanager : viewmanager
+    property alias maptools: maptools
     property LayerManager manager
     property bool canSeparate : true
     property string selectiondrawertopic : "main"
@@ -184,7 +185,6 @@ Item {
     }
 
     function entireMap() {
-        manager.zoomInMode = false
         manager.wholeMap()
     }
 

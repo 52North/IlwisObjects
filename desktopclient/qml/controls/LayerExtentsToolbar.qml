@@ -12,6 +12,9 @@ ToolBar{
     id : maptools
     width : parent.width
     height : 35
+    property alias normalButton: normalButton
+    property alias panButton: panButton
+    property alias zoomoutButton: zoomoutButton
     Row {
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
@@ -21,10 +24,13 @@ ToolBar{
             id : entireMap
             action : entireClicked
             onClicked: {
-                normalButton.checked = true
-                zoominButton.checked = false
-                zoomoutButton.checked = false
+                panButton.enabled = false
                 panButton.checked = false
+                zoomoutButton.enabled = false
+                zoomoutButton.checked = false
+                if (!zoominButton.checked) {
+                    normalButton.checked = true
+                }
             }
             Controls.ToolTip{
                 target: entireMap
@@ -34,7 +40,7 @@ ToolBar{
 
         MapExtentButton{
             id : panButton
-            icon : panButton.checked ? "pan20A.png" : "pan20.png"
+            icon : panButton.enabled ? (panButton.checked ? "pan20A.png" : "pan20.png") : "pan20B.png"
             action : panningClicked
             checkable: true
             checked: false
@@ -48,6 +54,9 @@ ToolBar{
             Controls.ToolTip{
                 target: panButton
                 text : qsTr("Triggers a state so that a mouse movement, while keeping the mouse button pressed,\n moves visibility window in the map panel ")
+            }
+            Component.onCompleted: {
+                enabled = false
             }
         }
 
@@ -70,7 +79,7 @@ ToolBar{
         }
         MapExtentButton{
             id : zoomoutButton
-            icon : zoomoutButton.checked ? "zoomout20A.png" : "zoomout20.png"
+            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout20A.png" : "zoomout20.png") : "zoomout20B.png"
             action : zoomOutClicked
             checkable: true
             checked: false
@@ -83,6 +92,9 @@ ToolBar{
             Controls.ToolTip{
                 target: zoomoutButton
                 text : qsTr("Trigger a state so that a rectangle can be drawn for zooming out")
+            }
+            Component.onCompleted: {
+                enabled = false
             }
         }
         MapExtentButton{
