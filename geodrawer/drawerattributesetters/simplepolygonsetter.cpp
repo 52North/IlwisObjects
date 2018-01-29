@@ -10,7 +10,6 @@
 #include "coveragedisplay/coveragelayermodel.h"
 #include "coveragedisplay/layermanager.h"
 #include "../featurelayermodel.h"
-#include "../tesselation/clip2tri.h"
 #include "../tesselation/ilwistesselator.h"
 #include "simplepolygonsetter.h"
 
@@ -33,7 +32,7 @@ void SimplePolygonSetter::getVertices(const SPFeatureI& feature, std::vector<qre
         const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
         if (!subgeom)
             continue;
-       tesselator.tesselate(_targetSystem,_sourceSystem, subgeom,pnt, vertices, indices);
+       tesselator.tesselate(_targetSystem,_sourceSystem, subgeom,pnt, vertices, indices); 
     }
 }
 
@@ -42,16 +41,9 @@ void SimplePolygonSetter::getColors(const VisualAttribute &attr, const QVariant 
 	QColor clr = attr.value2color(value);
     for(int j =0; j < colors.size(); j+=3){
         if ( value.isValid() && value.toInt() != iUNDEF) {
-			/*	if (defaultColor.isValid()) {
-					colors[j] =defaultColor.redF();
-					colors[j+1] =defaultColor.greenF();
-					colors[j+2] =defaultColor.blueF();
-				}
-				else*/ {
-					colors[j] =clr.redF();
-					colors[j+1] =clr.greenF();
-					colors[j+2] =clr.blueF();
-				}
-            }
+			colors[j] =clr.redF();
+			colors[j+1] =clr.greenF();
+			colors[j+2] =clr.blueF();
+        }
     }
 }
