@@ -32,8 +32,7 @@ Rectangle {
             id : attributeList
             anchors.fill: parent
             model : attributes
-            delegate {
-                Rectangle {
+            delegate : Rectangle {
                     id : myd
                     height : attProperties.height
                     width : parent.width
@@ -54,7 +53,6 @@ Rectangle {
                             valueTypeUsed: attributeValueType
                             columnName : attributename
                         }
-                    }
                 }
             }
         }
