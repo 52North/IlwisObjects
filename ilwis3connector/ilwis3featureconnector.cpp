@@ -114,6 +114,8 @@ bool FeatureConnector::loadBinaryPolygons30(FeatureCoverage *fcoverage, ITable& 
             //in this way all polygons with the same raw value will become a multipolygon
             double value;
             polTable.get(i, colValue, value);
+            if (value == rUNDEF || value == iILW3UNDEF || value == shILW3UNDEF)
+                continue;
             polygons[isNumeric ? i + 1 : (quint32)value].push_back(pol);
             if ( isNumeric) {
                 featureValues[i] = value;
@@ -255,6 +257,10 @@ bool FeatureConnector::loadBinaryPolygons37(FeatureCoverage *fcoverage, ITable& 
 
         quint32 numberOfHoles;
         stream.readRawData((char *)&value, 8);
+        if (value == rUNDEF) {
+            delete outerring; // this also deletes *outer
+            continue;
+        }
         stream.readRawData((char *)&numberOfHoles, 4);
         std::vector<geos::geom::Geometry*> *inners = new std::vector<geos::geom::Geometry*>();
         for(quint32 i=0; i< numberOfHoles;++i){
