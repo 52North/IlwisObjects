@@ -58,14 +58,14 @@
     <Filter Include="Source Files\operations">
       <UniqueIdentifier>{79552f57-7ec9-4408-9e29-7320b40d0909}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\tesselation">
-      <UniqueIdentifier>{9a792559-dd9f-4164-aa9b-fe657e063339}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\operations">
       <UniqueIdentifier>{a4d4b38d-710b-4edc-a0ef-ac644417d7ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\tesselation">
-      <UniqueIdentifier>{6ccc0e40-61a4-45fa-96b8-52db1e1a3dbb}</UniqueIdentifier>
+      <UniqueIdentifier>{e26a209c-3caa-41d1-9dfd-ed0792820afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tesselation">
+      <UniqueIdentifier>{021771a9-1269-46e9-8604-789b71359b31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,35 +150,11 @@
     <ClCompile Include="geodrawer\operations\showpolygonboundaries.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
     <ClCompile Include="geodrawer\featurelayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="geodrawer\rasterlayermodel.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\clip2tri.cpp">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\clipper.cpp">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\sweep\advancing_front.cc">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\sweep\cdt.cc">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\sweep\sweep.cc">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\sweep\sweep_context.cc">
-      <Filter>Source Files\tesselation</Filter>
-    </ClCompile>
-    <ClCompile Include="geodrawer\tesselation\common\shapes.cc">
-      <Filter>Source Files\tesselation</Filter>
     </ClCompile>
     <ClCompile Include="geodrawer\rasterimage.cpp">
       <Filter>Source Files</Filter>
@@ -206,6 +182,30 @@
     </ClCompile>
     <ClCompile Include="geodrawer\vectorlayermodel.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\bucketalloc.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\dict.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\geom.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\mesh.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\priorityq.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\sweep.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\tess.c">
+      <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp">
+      <Filter>Source Files\tesselation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,41 +281,11 @@
     <ClInclude Include="geodrawer\operations\adddrawer.h">
       <Filter>Header Files\operations</Filter>
     </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\ilwistesselator.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
     <ClInclude Include="geodrawer\featurelayermodel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="geodrawer\rasterlayermodel.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\clip2tri.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\poly2tri.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\sweep\advancing_front.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\sweep\cdt.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\sweep\sweep.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\sweep\sweep_context.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\common\shapes.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\common\utils.h">
-      <Filter>Header Files\tesselation</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\tesselation\clipper.hpp">
-      <Filter>Header Files\tesselation</Filter>
     </ClInclude>
     <ClInclude Include="geodrawer\pointlayermodel.h">
       <Filter>Header Files</Filter>
@@ -326,12 +296,36 @@
     <ClInclude Include="geodrawer\polygonlayermodel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\bucketalloc.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\dict.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\geom.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\ilwistesselator.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\mesh.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\priorityq.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\sweep.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\tess.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\tesselation\tesselator.h">
+      <Filter>Header Files\tesselation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="geodrawer\qml\draw.js">
       <Filter>Resource Files</Filter>
     </None>
     <CustomBuild Include="geodrawer\qml.qrc">
@@ -344,37 +338,6 @@
     <None Include="geodrawer\qml\draw.js" />
     <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
     <None Include="geodrawer\qml\three.js" />
   </ItemGroup>
   <ItemGroup>

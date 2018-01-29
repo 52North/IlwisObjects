@@ -48,15 +48,17 @@ PaletteColorLookUp::PaletteColorLookUp(boost::container::flat_map<quint32, QColo
 
 QColor PaletteColorLookUp::value2color(double index, const NumericRange &, const NumericRange &) const
 {
-    int localIndex  = index;
-    if ( _cyclic){
-        localIndex = localIndex % _colors.size();
-    }
-    auto iter = _colors.find(localIndex);
-    if ( iter != _colors.end()){
+    if (index != iUNDEF) {
+        int localIndex = index;
+        if (_cyclic) {
+            localIndex = localIndex % _colors.size();
+        }
+        auto iter = _colors.find(localIndex);
+        if (iter != _colors.end()) {
 
-        QColor clr =  (*iter).second;
-        return clr;
+            QColor clr = (*iter).second;
+            return clr;
+        }
     }
     return QColor();
 }

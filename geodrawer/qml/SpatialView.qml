@@ -189,9 +189,7 @@ Rectangle {
 
 			for (var i = scene.children.length - 1; i >= 0; i--) {
 				if(scene.children[i].name === layer.layerId){
-						console.debug("removing", i, layer.name, layer.layerId, layer.meshCount(),scene.children.length)
 						scene.remove(scene.children[i]);
-						console.debug("after removing", scene.children.length)
 					}
 			}
 			layer.clearMeshIndexes()
@@ -203,13 +201,10 @@ Rectangle {
 				var points = new GL.THREE.Points( geometry, material );
 				points.name = layer.layerId
 				points.visible = layer.vproperty("active")
-				layer.addMeshIndex(points.id)
 				scene.add( points );
 			}
 
 		    for(var i=0; i < layer.numberOfBuffers("linecoverage");++i){
-
-
 				var geometry = new GL.THREE.BufferGeometry();
 				canvas.setGeometry(layer, i,"linecoverage",geometry)
 				var material
@@ -222,21 +217,23 @@ Rectangle {
 				lines.name = layer.layerId
 				lines.visible = layer.vproperty("active")
 				layer.addMeshIndex(lines.id)
-				console.debug("meshindex1", layer.meshIndex(0), lines.id)
 				scene.add( lines );
 			}
+            var n = Date.now()
 		    for(var i=0; i < layer.numberOfBuffers("polygoncoverage");++i){
 				var geometry = new GL.THREE.BufferGeometry();
 				canvas.setGeometry(layer, i,"polygoncoverage",geometry)
-				var material = new GL.THREE.MeshBasicMaterial({ vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
+				var material = new GL.THREE.MeshBasicMaterial({ side : GL.THREE.DoubleSide, vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
 				var polygons = new GL.THREE.Mesh( geometry, material );
 				polygons.name = layer.layerId
 				polygons.visible = layer.vproperty("active")
 				layer.addMeshIndex(polygons.id)
-				console.debug("meshindex2", layer.meshIndex(0))
 				scene.add( polygons );
 
 			}
+            var n2 = Date.now()
+            console.debug("duration=", n2, n, (n2 - n)/1000.0)
+
 			layer.updateGeometry = false
 		}
 
@@ -251,7 +248,6 @@ Rectangle {
 
 		function changeProperty(propertyType, layer){
 			var ok = true
-            console.debug("zzzz", propertyType, layer.name)
 			if ( propertyType == "buffers"){
 	            if ( layer.updateGeometry){
                     ok = layer.prepare(2)
@@ -276,7 +272,6 @@ Rectangle {
 			} else if ( propertyType == "layer"){
 				for(var i=0; i < layer.meshCount(); ++i){
 					var mesh =  getMesh(layer.meshIndex(i)) 
-					console.debug("ccc", layer.name,layer.drawType, layer.vproperty("opacity"), layer.meshIndex(i))
 					if ( mesh){
 						mesh.visible = layer.vproperty("active")
 						mesh.material.opacity = layer.vproperty("opacity")

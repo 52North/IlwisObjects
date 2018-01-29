@@ -48,29 +48,27 @@ Rectangle {
             anchors.fill: parent
             anchors.margins: 2
             model : attributes
-            delegate {
-                Rectangle {
-                    id : myd
-                    height : attProperties.height
-                    width : parent.width
-                    color : index  % 2 == 0 ? "#F7F9FC" : "#DCDCDC"
-                    Text{
-                        id : attName
-                        text : attributename
-                        font.bold: true
-                        width : parent.width * 0.25
-                    }
-                    Item {
-                        anchors.left: attName.right
-                        width : parent.width * 0.749
-                        AttributeProperties{
+            delegate : Rectangle {
+                id : myd
+                height : attProperties.height
+                width : parent.width
+                color : index  % 2 == 0 ? "#F7F9FC" : "#DCDCDC"
+                Text{
+                    id : attName
+                    text : attributename
+                    font.bold: true
+                    width : parent.width * 0.25
+                 }
+                 Item {
+                     anchors.left: attName.right
+                     width : parent.width * 0.749
+                     AttributeProperties{
                             id : attProperties
                             width : parent.width
                             domainUsed: attributeDomain
                             valueTypeUsed: attributeValueType
                             domainTypeUsed: attributeDomainType
                             columnName : attributename
-                        }
                     }
                 }
             }

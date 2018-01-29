@@ -181,10 +181,6 @@
     <ClCompile Include="geodrawer\drawercolorsets.cpp" />
     <ClCompile Include="geodrawer\drawingcolor.cpp" />
     <ClCompile Include="geodrawer\geodrawer_plugin.cpp" />
-    <ClCompile Include="geodrawer\tesselation\clip2tri.cpp" />
-    <ClCompile Include="geodrawer\tesselation\clipper.cpp" />
-    <ClCompile Include="geodrawer\tesselation\common\shapes.cc" />
-    <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp" />
     <ClCompile Include="geodrawer\operations\layermanagement.cpp" />
     <ClCompile Include="geodrawer\openglhelper.cpp" />
     <ClCompile Include="geodrawer\operations\removedrawer.cpp" />
@@ -203,10 +199,14 @@
     <ClCompile Include="geodrawer\drawerattributesetters\simplelinesetter.cpp" />
     <ClCompile Include="geodrawer\drawerattributesetters\simplepointsetter.cpp" />
     <ClCompile Include="geodrawer\drawerattributesetters\simplepolygonsetter.cpp" />
-    <ClCompile Include="geodrawer\tesselation\sweep\advancing_front.cc" />
-    <ClCompile Include="geodrawer\tesselation\sweep\cdt.cc" />
-    <ClCompile Include="geodrawer\tesselation\sweep\sweep.cc" />
-    <ClCompile Include="geodrawer\tesselation\sweep\sweep_context.cc" />
+    <ClCompile Include="geodrawer\tesselation\bucketalloc.c" />
+    <ClCompile Include="geodrawer\tesselation\dict.c" />
+    <ClCompile Include="geodrawer\tesselation\geom.c" />
+    <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp" />
+    <ClCompile Include="geodrawer\tesselation\mesh.c" />
+    <ClCompile Include="geodrawer\tesselation\priorityq.c" />
+    <ClCompile Include="geodrawer\tesselation\sweep.c" />
+    <ClCompile Include="geodrawer\tesselation\tess.c" />
     <ClCompile Include="geodrawer\vectorlayermodel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +214,15 @@
     <ClInclude Include="geodrawer\linelayermodel.h" />
     <ClInclude Include="geodrawer\operations\adddrawer.h" />
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h" />
+    <ClInclude Include="geodrawer\tesselation\bucketalloc.h" />
+    <ClInclude Include="geodrawer\tesselation\dict.h" />
+    <ClInclude Include="geodrawer\tesselation\geom.h" />
+    <ClInclude Include="geodrawer\tesselation\ilwistesselator.h" />
+    <ClInclude Include="geodrawer\tesselation\mesh.h" />
+    <ClInclude Include="geodrawer\tesselation\priorityq.h" />
+    <ClInclude Include="geodrawer\tesselation\sweep.h" />
+    <ClInclude Include="geodrawer\tesselation\tess.h" />
+    <ClInclude Include="geodrawer\tesselation\tesselator.h" />
     <CustomBuild Include="geodrawer\vectorlayermodel.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing vectorlayermodel.h...</Message>
@@ -240,13 +249,6 @@
     <ClInclude Include="geodrawer\operations\cleardrawers.h" />
     <ClInclude Include="geodrawer\drawercolorsets.h" />
     <ClInclude Include="geodrawer\drawingcolor.h" />
-    <ClInclude Include="geodrawer\tesselation\common\shapes.h" />
-    <ClInclude Include="geodrawer\tesselation\common\utils.h" />
-    <ClInclude Include="geodrawer\tesselation\poly2tri.h" />
-    <ClInclude Include="geodrawer\tesselation\sweep\advancing_front.h" />
-    <ClInclude Include="geodrawer\tesselation\sweep\cdt.h" />
-    <ClInclude Include="geodrawer\tesselation\sweep\sweep.h" />
-    <ClInclude Include="geodrawer\tesselation\sweep\sweep_context.h" />
     <CustomBuild Include="geodrawer\geodrawer_plugin.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB -DNDEBUG -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\..\IlwisCore\core\ilwisobjects" "-I.\..\IlwisCore\core\ilwisobjects\geometry" "-I.\..\IlwisCore\core\util" "-I.\..\IlwisCore\core\geos\include" "-I.\..\IlwisCore\core\ilwisobjects\geometry\geodeticdatum" "-I.\..\IlwisCore\core\ilwisobjects\geometry\projection" "-I.\..\IlwisCore\core\ilwisobjects\geometry\coordinatesystem" "-I.\..\IlwisCore\core\ilwisobjects\geometry\georeference" "-I.\..\IlwisCore\core\ilwisobjects\coverage" "-I.\..\IlwisCore\core\ilwisobjects\table" "-I.\..\IlwisCore\core\ilwisobjects\operation" "-I.\..\IlwisCore\core\ilwisobjects\representation" "-I.\..\IlwisCore\core\catalog" "-I.\..\IlwisCore\core\ilwisobjects\domain" "-I.\..\IlwisCore\ilwiscoreui\models" "-I.\..\IlwisCore\ilwiscoreui\drawers" "-I.\..\IlwisCore" "-I.\..\external" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtQuick" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtOpenGL" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtWidgets" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtGui" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtANGLE" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtQml" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtNetwork" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtSql" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\include\QtCore" "-I.\release" "-I.\..\..\..\..\QT\QT57MSVC\5.7\MSVC2015_64\mkspecs\win32-msvc2015" "-I.\geodrawer"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing geodrawer_plugin.h...</Message>
@@ -257,9 +259,6 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
-    <ClInclude Include="geodrawer\tesselation\clip2tri.h" />
-    <ClInclude Include="geodrawer\tesselation\clipper.hpp" />
-    <ClInclude Include="geodrawer\tesselation\ilwistesselator.h" />
     <ClInclude Include="geodrawer\operations\layermanagement.h" />
     <ClInclude Include="geodrawer\openglhelper.h" />
     <ClInclude Include="geodrawer\operations\removedrawer.h" />
