@@ -51,6 +51,7 @@ bool AddDrawer::execute(ExecutionContext *ctx, SymbolTable &symTable)
 		ldrawer->coverage(_coverage);
 
         QVariant var = qVariantFromValue((void *)ldrawer);
+        ldrawer->setActiveAttribute(0);
         ctx->addOutput(symTable,var,"layerdrawer",_coverage->ilwisType(), Resource());
 		ldrawer->updateGeometry(true);
     }else if ( _drawerCode != ""){
