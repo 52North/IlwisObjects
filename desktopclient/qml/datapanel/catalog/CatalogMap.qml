@@ -48,6 +48,17 @@ Rectangle {
     }
 
     Action {
+        id : normalClicked
+        onTriggered : {
+            if ( renderer.layermanager){
+                renderer.layermanager.zoomInMode = false
+                renderer.layermanager.zoomOutMode = false
+                renderer.layermanager.panningMode = false
+            }
+        }
+    }
+
+    Action {
         id : entireClicked
         onTriggered : {
           var envelope = renderer.rootLayer().vproperty("rootdrawer","coverageenvelope");
@@ -82,6 +93,11 @@ Rectangle {
         Component.onCompleted: {
             if (! layermanager){
                 layermanager = uicontext.createLayerManager(catalogMapView,renderer)
+                var cmd = uicontext.worldmapCommand(layermanager.viewid)
+                renderer.addCommand(cmd)
+                renderer.addCommand("setlinecolor(" + layermanager.viewid + ", 1,darkblue)");
+                renderer.addCommand("setbackgroundcolor(" + layermanager.viewid + "," + catalogMapView.color + ")")
+                renderer.update()
             }
         }
     }
