@@ -32,7 +32,6 @@ Rectangle {
 
     function updateView() {
 		if ( layermanager){
-            //layersView.source = uicontext.ilwisFolder + "/extensions/ui/LayersView/qml/SpatialView.qml"
             layersView.source = "qrc:/qml/SpatialView.qml"
 			state = "visible"
 		}
