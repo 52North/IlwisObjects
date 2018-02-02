@@ -187,8 +187,7 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
             if ( activeAttIndex == 0){ // this is the pseudo attribute representing the whole layer, not wanted here
                 activeAttIndex = 1;
             }
-            QVariant activeAttr =  vmap[visualVPropertyByIndex(activeAttIndex)];
-            txt = value2string(activeAttr, visualVPropertyByIndex(activeAttIndex));
+            txt = vmap[_activeAttribute].toString();
             auto end = vmap.end();
             for(auto item = vmap.begin(); item != end; ++item){
                 if ( item.value().isValid()){
