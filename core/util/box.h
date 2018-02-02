@@ -542,6 +542,8 @@ public:
         mp["miny"] = _min_corner.y;
         mp["maxx"] = _max_corner.x;
         mp["maxy"] = _max_corner.y;
+        mp["width"] = _max_corner.x - _min_corner.x;
+        mp["height"] = _max_corner.y - _min_corner.y;
         return mp;
     }
 
