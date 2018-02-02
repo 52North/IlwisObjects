@@ -96,7 +96,7 @@ ITable CoverageConnector::prepareAttributeTable(const QString& file, const QStri
     else {
         // prevent coverage_key and/or primary key columns from being added multiple times
         QString primaryKey = attTable->constConnector(IlwisObject::cmINPUT)->getProperty("primaryKey").toString();
-        if (primaryKey != sUNDEF) {
+        if (primaryKey != sUNDEF && primaryKey != "") {
             if ( attTable->columnIndex(primaryKey) == iUNDEF) { // external tables might already have these
                 DataDefinition def = determineDataDefinition(_odf, options);
                 if ( !def.isValid())
