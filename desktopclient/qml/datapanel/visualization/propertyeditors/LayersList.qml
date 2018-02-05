@@ -36,9 +36,9 @@ Item {
 
 	function setTreeIndex(index){
 		var idx = manager.layerTree.nodeid(index)
-		console.debug(index, idx)
 		if ( idx >= 0){
 			currentNodeId = idx
+            
 			attributeListColumn.currentCoverage = manager.findLayer(idx)
 		}
 	}
