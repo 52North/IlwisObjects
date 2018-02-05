@@ -68,6 +68,14 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
 	currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
 }
 
+VisualAttribute * Ilwis::Ui::PolygonLayerModel::activeAttribute()
+{
+    if (_featureLayer) {
+        return _featureLayer->activeAttribute();
+    }
+    return 0;
+}
+
 int PolygonLayerModel::numberOfBuffers(const QString& type) const
 {
 	if ( type == "polygoncoverage")
