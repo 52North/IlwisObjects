@@ -232,6 +232,15 @@ VisualAttribute *LayerModel::visualAttribute(const QString &attrName) const
     return 0;
 }
 
+void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
+{
+}
+
+VisualAttribute * Ilwis::Ui::LayerModel::activeAttribute()
+{
+    return nullptr;
+}
+
 void Ilwis::Ui::LayerModel::isSupportLayer(bool yesno)
 {
 	_isSupportLayer = yesno;
@@ -293,6 +302,22 @@ LayerModel * Ilwis::Ui::LayerModel::findLayerByName(const QString & name)
 		}
 	}
 	return 0;
+}
+
+const LayerModel * Ilwis::Ui::LayerModel::findLayerByName(const QString & name) const
+{
+    for (auto *node : children()) {
+        auto lyr = node->as<LayerModel>();
+        if (lyr->name() == name) {
+            return lyr;
+        }
+        else {
+            LayerModel *child = lyr->findLayerByName(name);
+            if (child)
+                return child;
+        }
+    }
+    return 0;
 }
 
 void LayerModel::moveLayer(LayerModel *lyr, int type)

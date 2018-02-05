@@ -91,6 +91,7 @@ public:
     void clearLayers();
     int layerCount() const;
 	LayerModel *findLayerByName(const QString& name);
+    const LayerModel * findLayerByName(const QString & name) const;
     void moveLayer(LayerModel *lyr, int type);
     virtual QString url() const;
 	virtual void fillAttributes();
@@ -114,13 +115,15 @@ public:
 	bool isSupportLayer() const;
 	virtual bool usesColorData() const;
     void fillData();
+    const LayerManager *layersManager() const;
+    LayerManager *layersManager();
+    virtual void activeAttributeName(const QString& pName);
+    virtual VisualAttribute *activeAttribute();
+    virtual VisualAttribute *visualAttribute(const QString &attrName) const;
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
-    const LayerManager *layersManager() const;
-	LayerManager *layersManager() ;
-    virtual VisualAttribute *visualAttribute(const QString &attrName) const;
-	void isSupportLayer(bool yesno);
+    void isSupportLayer(bool yesno);
 
 signals:
        void onActiveChanged();
