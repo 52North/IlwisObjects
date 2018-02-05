@@ -189,7 +189,7 @@ LayerAttributeModel::LayerAttributeModel(LayerModel *parentLayer, const IIlwisOb
 
 //----------------------------------------------------------------------------
 GlobalAttributeModel::GlobalAttributeModel(const QString &label, const QString& associatedEditor, RootLayerModel *parentLayer) :
-    VisualAttribute(parentLayer, DataDefinition(), "Global Layer"),
+    VisualAttribute(parentLayer, DataDefinition(), label),
     _label(label)
 {
 	_vproperties.append(uicontext()->propertyEditors(this, IIlwisObject(), associatedEditor));
