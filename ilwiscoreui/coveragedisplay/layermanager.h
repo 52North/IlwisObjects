@@ -114,7 +114,7 @@ signals:
 
 private:
     RootLayerModel *_globalLayer = 0;
-	IntermediateLayerModel *_rootNode = 0;
+	IntermediateLayerModel *_dummyRootNode = 0; // this is a dummy root as every tree has to have a root but this root is not actually used it exist to prevent a visible root in the layer tree which serves no purpose
     TreeModel  *_tree = 0;
 	QList<LayerModel *> _layerList;
     static std::map<QString, CreateLayer> _createLayers;

@@ -33,11 +33,11 @@ LayerManager::LayerManager()
 
 LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject(parent)
 {
-	_rootNode = new IntermediateLayerModel(this,this, "root","",IOOptions());
-	_rootNode->nodeId(0); // by defintion
-    _globalLayer =  new RootLayerModel(this, _rootNode);
-	_rootNode->appendChild(_globalLayer);
-    _tree = new TreeModel(_rootNode,this);
+	_dummyRootNode = new IntermediateLayerModel(this,this, "root","",IOOptions());
+	_dummyRootNode->nodeId(iUNDEF); // by defintion. the rootnode
+    _globalLayer =  new RootLayerModel(this, _dummyRootNode);
+	_dummyRootNode->appendChild(_globalLayer);
+    _tree = new TreeModel(_dummyRootNode,this);
      _viewid = _baseViewId++;
 	 _viewContainer = viewContainer;
 	 // for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
@@ -143,7 +143,7 @@ void buildList(QList<LayerModel *>& list, LayerModel *parentItem) {
 QQmlListProperty<Ilwis::Ui::LayerModel> LayerManager::layerList()
 {
 	_layerList = QList<LayerModel *>();
-	buildList(_layerList, _rootNode);
+	buildList(_layerList, _dummyRootNode);
 	return QQmlListProperty<LayerModel>(this, _layerList);
 }
 
@@ -158,7 +158,7 @@ QList<Ilwis::Ui::LayerModel*> Ilwis::Ui::LayerManager::layerList2()
 QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrName, QVariantList & items) const
 {
 	QString result;
-	for (auto *TreeNode : _rootNode->children()) {
+	for (auto *TreeNode : _dummyRootNode->children()) {
 		LayerModel *layer = TreeNode->as<LayerModel>();
 		if (layer->isValid()) {
 			if (result != "")
