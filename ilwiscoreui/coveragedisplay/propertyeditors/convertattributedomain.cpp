@@ -48,7 +48,7 @@ void ConvertAttributeDomain::prepare( const IIlwisObject &obj, const DataDefinit
 bool ConvertAttributeDomain::execute(const QString& colorScheme, const QString& viewerId)
 {
     try {
-        CoverageLayerModel *clmodel = static_cast<CoverageLayerModel *>(vpmodel()->layer());
+        LayerModel *clmodel = vpmodel()->layer();
 
         IDomain dom = clmodel->activeAttribute()->domain();
         if (dom.isValid()) {
