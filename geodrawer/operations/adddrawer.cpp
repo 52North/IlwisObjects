@@ -96,7 +96,7 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
         }
 	}
 	else
-		_parentLayer = layerManager()->findLayer(0); 
+		_parentLayer = layerManager()->findLayer(iUNDEF); 
 
 
 	if (source != "") {
