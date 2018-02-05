@@ -27,7 +27,7 @@ public:
     void opacity( double v);
     QColor lineColor() const;
     void lineColor(const QColor& clr);
-    void isActive(bool yesno);
+    virtual void isActive(bool yesno) = 0 ;
 
 signals:
     void distanceChanged();
@@ -40,28 +40,6 @@ protected:
 
 };
 
-class PrimaryGridEditor : public SubGridPropertyEditor{
-    Q_OBJECT
-public:
-    PrimaryGridEditor(VisualAttribute *p);
-    PrimaryGridEditor();
-
-    NEW_PROPERTYEDITOR(PrimaryGridEditor)
-
-    Q_PROPERTY(double distance READ distance WRITE distance NOTIFY distanceChanged)
-
-    double distance() const;
-    void distance(double v);
-
-    QString gridDrawerName() const;
-
-    static VisualPropertyEditor *create(VisualAttribute *p);
-    void prepare(const Ilwis::IIlwisObject &bj, const DataDefinition &datadef);
-signals:
-    void distanceChanged();
-
-};
-
 class SecondaryGridEditor : public SubGridPropertyEditor{
     Q_OBJECT
 public:
@@ -71,17 +49,51 @@ public:
     NEW_PROPERTYEDITOR(SecondaryGridEditor)
 
     Q_PROPERTY(int distance READ noOfCells WRITE noOfCells NOTIFY noOfCellsChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE isActive NOTIFY activeChanged)
 
     int noOfCells() const;
     void noOfCells(int v);
 
     QString gridDrawerName() const;
+    void isActive(bool yesno);
+    bool isActive() const;
 
     static VisualPropertyEditor *create(VisualAttribute *p);
     void prepare(const Ilwis::IIlwisObject &bj, const DataDefinition &datadef);
 
 signals:
     void noOfCellsChanged();
+    void activeChanged();
+
+};
+
+class PrimaryGridEditor : public SubGridPropertyEditor {
+    Q_OBJECT
+public:
+    PrimaryGridEditor(VisualAttribute *p);
+    PrimaryGridEditor();
+
+    NEW_PROPERTYEDITOR(PrimaryGridEditor)
+
+        Q_PROPERTY(double distance READ distance WRITE distance NOTIFY distanceChanged)
+        Q_PROPERTY(bool isActive READ isActive WRITE isActive NOTIFY activeChanged)
+
+        double distance() const;
+    void distance(double v);
+
+    QString gridDrawerName() const;
+
+    bool isActive() const;
+    void isActive(bool yesno);
+
+    static VisualPropertyEditor *create(VisualAttribute *p);
+    void prepare(const Ilwis::IIlwisObject &bj, const DataDefinition &datadef);
+signals:
+    void distanceChanged();
+    void activeChanged();
+
+private:
+    std::unique_ptr<SecondaryGridEditor> _secondaryGridEditor;
 
 };
 }

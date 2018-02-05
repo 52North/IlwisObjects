@@ -54,6 +54,8 @@ void SubGridPropertyEditor::lineColor(const QColor &clr)
         vpmodel()->layer()->redraw();
 }
 
+
+
 //-----------------------------------------
 
 PrimaryGridEditor::PrimaryGridEditor(VisualAttribute *p) : SubGridPropertyEditor(p,"primarygridpropertyeditor",TR("Primary Grid"),QUrl("GridPropertyEditor.qml"))
@@ -91,6 +93,29 @@ void PrimaryGridEditor::prepare(const Ilwis::IIlwisObject& bj, const DataDefinit
     displayName(TR("Primary Grid"));
 
 }
+
+bool PrimaryGridEditor::isActive() const {
+    const RootLayerModel *globalLayer = vpmodel()->layer()->layersManager()->rootLayer();
+    if (globalLayer) {
+        const LayerModel *gridLayer = globalLayer->findLayerByName("PrimaryGridDrawer");
+        if ( gridLayer)
+            return gridLayer->active();
+    }
+    return false;
+}
+
+void PrimaryGridEditor::isActive(bool yesno)
+{
+    RootLayerModel *globalLayer = vpmodel()->layer()->layersManager()->rootLayer();
+    if (globalLayer) {
+        LayerModel *gridLayer = globalLayer->findLayerByName("PrimaryGridDrawer");
+        if (gridLayer) {
+            gridLayer->active(yesno);
+            gridLayer->redraw();
+        }
+    }
+}
+
 
 VisualPropertyEditor *PrimaryGridEditor::create(VisualAttribute *p){
     return new PrimaryGridEditor(p);
@@ -137,6 +162,32 @@ void SecondaryGridEditor::prepare(const Ilwis::IIlwisObject& bj, const DataDefin
     name("secondarygridpropertyeditor");
     displayName(TR("Secondary Grid"));
 
+}
+
+void SecondaryGridEditor::isActive(bool yesno) {
+    RootLayerModel *globalLayer = vpmodel()->layer()->layersManager()->rootLayer();
+    if (globalLayer) {
+        LayerModel *gridLayer = globalLayer->findLayerByName("SecondaryGridDrawer");
+        if (gridLayer) {
+            gridLayer->vproperty("active", yesno);
+            gridLayer->redraw();
+        }
+    }
+}
+
+bool Ilwis::Ui::SecondaryGridEditor::isActive() const
+{
+    RootLayerModel *globalLayer = vpmodel()->layer()->layersManager()->rootLayer();
+    if (globalLayer) {
+        LayerModel *primaryGridLayer = globalLayer->findLayerByName("PrimaryGridDrawer");
+        if (primaryGridLayer) {
+            LayerModel *secondaryGridLayer = globalLayer->findLayerByName("SecondaryGridDrawer");
+            if (secondaryGridLayer) {
+                return secondaryGridLayer->active() && primaryGridLayer->active();
+            }
+       }
+    }
+    return false;
 }
 
 
