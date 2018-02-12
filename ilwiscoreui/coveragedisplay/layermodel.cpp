@@ -54,7 +54,9 @@ QVariant LayerModel::vproperty(const QString &key) const
 	} if (key == "active") {
 		bool pv = parentValue.isValid() ? parentValue.toBool() : true;
 		var = pv && _active;
-	}
+    } if (key == "color") {
+        return "0x000000"; // default color is black, other layers may overrule this
+    }
 
     if ( key.indexOf("visualattribute") == 0){
         QStringList parts = key.split("|");
@@ -161,7 +163,7 @@ QString Ilwis::Ui::LayerModel::drawType() const
 	return sUNDEF;
 }
 
-Q_INVOKABLE int LayerModel::numberOfBuffers(const QString&) const
+int LayerModel::numberOfBuffers(const QString&) const
 {
 	return 0;
 }
@@ -182,12 +184,12 @@ QVector<qreal> LayerModel::colors(qint32 index, const QString& tp) const
 	return QVector<qreal>();
 }
 
-const LayerManager *LayerModel::layersManager() const
+const LayerManager *LayerModel::layerManager() const
 {
     return _layerManager;
 }
 
-LayerManager * Ilwis::Ui::LayerModel::layersManager()
+LayerManager * Ilwis::Ui::LayerModel::layerManager()
 {
 	return _layerManager;
 }
@@ -230,6 +232,21 @@ VisualAttribute *LayerModel::visualAttribute(const QString &attrName) const
             return attr;
     }
     return 0;
+}
+
+void Ilwis::Ui::LayerModel::order(qint32 n)
+{
+    _order = n;
+}
+
+qint32 Ilwis::Ui::LayerModel::order() const
+{
+    return _order;
+}
+
+bool Ilwis::Ui::LayerModel::isCoverageBased() const
+{
+    return false;
 }
 
 void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
@@ -451,6 +468,11 @@ bool LayerModel::prepare(int) {
 bool LayerModel::isPrepared(quint32 type) const
 {
 	return hasType(_prepared, type);
+}
+
+void Ilwis::Ui::LayerModel::setActiveAttribute(int idx)
+{
+    // needs overrule in relevant derivatives
 }
 
 void LayerModel::fillAttributes()
