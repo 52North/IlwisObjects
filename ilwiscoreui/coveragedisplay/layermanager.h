@@ -97,8 +97,7 @@ public:
 
 	void needUpdate(bool yesno);
 	bool needUpdate() const;
-
-
+    int nextId();
 
 signals:
     void removeLayer(const Ilwis::Resource& resource);
@@ -123,7 +122,6 @@ private:
     bool _zoomOutMode = false;
 	bool _panningMode = false;
     QString _layerListName = sUNDEF;
-	int nextId();
     quint32 _viewid = iUNDEF;
 	QQuickItem *_viewContainer = 0;
 	int _nodeCounter = 0;
