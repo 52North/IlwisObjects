@@ -5,7 +5,7 @@
 namespace Ilwis {
 
 	namespace Ui {
-		class IntermediateLayerModel : public LayerModel
+		class ILWISCOREUISHARED_EXPORT IntermediateLayerModel : public LayerModel
 		{
 			Q_OBJECT
 
