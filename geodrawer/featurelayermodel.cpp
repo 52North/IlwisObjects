@@ -50,12 +50,12 @@ void FeatureLayerModel::coverage(const ICoverage &cov)
     _features = CoverageLayerModel::coverage().as<FeatureCoverage>();
 	_icon = ResourceModel::iconPath(_features->ilwisType());
 	if ( _features->featureCount(itPOINT) > 0)
-		layersManager()->create(this, "pointlayer", layersManager(), "points of " + cov->name(), cov->description());
+		layerManager()->create(this, "pointlayer", layerManager(), "points of " + cov->name(), cov->description());
 	if (_features->featureCount(itLINE) > 0)
-		layersManager()->create(this, "linelayer", layersManager(), "lines of " + cov->name(), cov->description());
+		layerManager()->create(this, "linelayer", layerManager(), "lines of " + cov->name(), cov->description());
 	if (_features->featureCount(itPOLYGON) > 0) {
-		layersManager()->create(this, "arealayer", layersManager(), "areas of " + cov->name(), cov->description());
-		layersManager()->create(this, "linelayer", layersManager(), "boundaries of " + cov->name(), cov->description(), { "boundaries", true });
+		layerManager()->create(this, "arealayer", layerManager(), "areas of " + cov->name(), cov->description());
+		layerManager()->create(this, "linelayer", layerManager(), "boundaries of " + cov->name(), cov->description(), { "support", true });
 	}
 		
     fillAttributes();
