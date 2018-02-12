@@ -21,6 +21,7 @@ GridLayer::GridLayer(LayerManager *manager, QObject *parent, const IOOptions& op
     _isValid = true;
     _icon = "vector.png";
     _layerType = itGRIDLAYER;
+    active(false);
 
     PrimaryGridLayer *primaryGrid = new PrimaryGridLayer(manager, this, options);
     primaryGrid->nodeId(manager->nextId());
@@ -72,6 +73,7 @@ SubGridLayer::SubGridLayer(LayerManager *manager, QObject *parent, const QString
     _isValid = true;
     _icon = "vector.png";
     _layerType = itGRIDLAYER;
+    active(false);
 
 }
 
