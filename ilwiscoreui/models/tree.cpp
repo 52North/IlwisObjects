@@ -261,11 +261,24 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 		return QModelIndex();
 }
 
+QModelIndex TreeModel::index(int row, int column, TreeNode *parentItem) const
+{
+    if (parentItem == 0 || !parentItem->isValid())
+        return QModelIndex();
+
+
+    TreeNode *childItem = parentItem->child(row);
+    if (childItem)
+        return createIndex(row, column, childItem);
+    else
+        return QModelIndex();
+}
+
 void TreeModel::appendChild(TreeNode *parentItem, TreeNode *child) {
 	parentItem->appendChild(child);
 	_lastAddedNode = child->nodeId();
-	emit dataChanged(createIndex(parentItem->row(), 0, parentItem), createIndex(parentItem->row(), 0, parentItem));
-	//emit dataChanged(QModelIndex(), QModelIndex());
+	//emit dataChanged(createIndex(parentItem->row(), 0, parentItem), createIndex(parentItem->row(), 0, parentItem));
+    emit dataChanged(index(parentItem->row(), 0, parentItem), index(parentItem->row(), 0, parentItem));
 }
 
 void TreeModel::changed(const QModelIndex& index) {
@@ -314,6 +327,7 @@ QModelIndex TreeModel::findIndex(int nodeid, int column) {
 int TreeModel::nodeid(const QModelIndex & index)
 {
 	if (index.isValid()) {
+        TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
 		QMap<int, QVariant> data = itemData(index);
 		if (data.size() >= 0) {
 			QVariantMap mp = data.begin().value().toMap();
