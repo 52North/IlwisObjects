@@ -25,6 +25,7 @@ namespace Ilwis {
 			void activeAttributeName(const QString & pName);
 			virtual void addFeature(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value, int& currentBuffer);
 			virtual int numberOfBuffers(const QString&) const;
+            bool isCoverageBased() const;
 
 			void setActiveFeatureColors(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value);
 		signals:
