@@ -12,9 +12,9 @@ class SubGridPropertyEditor : public VisualPropertyEditor
 {
     Q_OBJECT
 
-
     Q_PROPERTY(double opacity READ opacity WRITE opacity NOTIFY opacityChanged)
     Q_PROPERTY(QColor lineColor READ lineColor WRITE lineColor NOTIFY lineColorChanged)
+    Q_PROPERTY(bool isActive READ isActive WRITE isActive NOTIFY activeChanged)
 
 public:
     SubGridPropertyEditor();
@@ -27,12 +27,13 @@ public:
     void opacity( double v);
     QColor lineColor() const;
     void lineColor(const QColor& clr);
-    virtual void isActive(bool yesno) = 0 ;
+    bool isActive() const;
+    virtual void isActive(bool yesno);
 
 signals:
-    void distanceChanged();
     void opacityChanged();
     void lineColorChanged();
+    void activeChanged();
 
 
 protected:
@@ -40,62 +41,87 @@ protected:
 
 };
 
-class SecondaryGridEditor : public SubGridPropertyEditor{
+class GridLineColorEditor : public SubGridPropertyEditor {
+
+public:
+    GridLineColorEditor(VisualAttribute *p);
+    GridLineColorEditor();
+    QString gridDrawerName() const;
+
+    static VisualPropertyEditor *create(VisualAttribute *p);
+
+    NEW_PROPERTYEDITOR(GridLineColorEditor)
+
+
+};
+
+class GridOpacityEditor : public SubGridPropertyEditor {
+
+public:
+    GridOpacityEditor(VisualAttribute *p);
+    GridOpacityEditor();
+    QString gridDrawerName() const;
+
+    static VisualPropertyEditor *create(VisualAttribute *p);
+
+    NEW_PROPERTYEDITOR(GridOpacityEditor)
+
+
+};
+
+class PrimaryGridCellDistanceEditor : public SubGridPropertyEditor {
     Q_OBJECT
 public:
-    SecondaryGridEditor(VisualAttribute *p);
-    SecondaryGridEditor();
+    Q_PROPERTY(double distance READ distance WRITE distance NOTIFY distanceChanged)
 
-    NEW_PROPERTYEDITOR(SecondaryGridEditor)
+    PrimaryGridCellDistanceEditor(VisualAttribute *p);
+    PrimaryGridCellDistanceEditor();
+    bool canUse(const IIlwisObject &obj, const QString &name) const;
+    QString gridDrawerName() const;
 
-    Q_PROPERTY(int distance READ noOfCells WRITE noOfCells NOTIFY noOfCellsChanged)
-    Q_PROPERTY(bool isActive READ isActive WRITE isActive NOTIFY activeChanged)
+    static VisualPropertyEditor *create(VisualAttribute *p);
+
+    NEW_PROPERTYEDITOR(PrimaryGridCellDistanceEditor)
+
+    double distance() const;
+    void distance(double v);
+
+signals:
+    void distanceChanged();
+
+
+private:
+        
+
+
+};
+
+class SecondaryGridCellCountEditor : public SubGridPropertyEditor {
+    Q_OBJECT
+public:
+    Q_PROPERTY(double cellCount READ noOfCells WRITE noOfCells NOTIFY noOfCellsChanged)
+
+    SecondaryGridCellCountEditor(VisualAttribute *p);
+    SecondaryGridCellCountEditor();
+    bool canUse(const IIlwisObject &obj, const QString &name) const;
+    QString gridDrawerName() const;
+
+    static VisualPropertyEditor *create(VisualAttribute *p);
+
+    NEW_PROPERTYEDITOR(SecondaryGridCellCountEditor)
 
     int noOfCells() const;
     void noOfCells(int v);
 
-    QString gridDrawerName() const;
-    void isActive(bool yesno);
-    bool isActive() const;
-
-    static VisualPropertyEditor *create(VisualAttribute *p);
-    void prepare(const Ilwis::IIlwisObject &bj, const DataDefinition &datadef);
-
 signals:
     void noOfCellsChanged();
-    void activeChanged();
-
-};
-
-class PrimaryGridEditor : public SubGridPropertyEditor {
-    Q_OBJECT
-public:
-    PrimaryGridEditor(VisualAttribute *p);
-    PrimaryGridEditor();
-
-    NEW_PROPERTYEDITOR(PrimaryGridEditor)
-
-        Q_PROPERTY(double distance READ distance WRITE distance NOTIFY distanceChanged)
-        Q_PROPERTY(bool isActive READ isActive WRITE isActive NOTIFY activeChanged)
-
-        double distance() const;
-    void distance(double v);
-
-    QString gridDrawerName() const;
-
-    bool isActive() const;
-    void isActive(bool yesno);
-
-    static VisualPropertyEditor *create(VisualAttribute *p);
-    void prepare(const Ilwis::IIlwisObject &bj, const DataDefinition &datadef);
-signals:
-    void distanceChanged();
-    void activeChanged();
 
 private:
-    std::unique_ptr<SecondaryGridEditor> _secondaryGridEditor;
+
+
 
 };
+
 }
 }
 
