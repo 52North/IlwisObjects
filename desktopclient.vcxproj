@@ -399,6 +399,8 @@
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridPropertyEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ItemRepresentation.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerDelegate.qml" />
@@ -945,6 +947,9 @@
     <Image Include="desktopclient\qml\images\zoomout20.png" />
     <Image Include="desktopclient\qml\images\zoomout20A.png" />
     <Image Include="desktopclient\qml\images\zoomout20B.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
