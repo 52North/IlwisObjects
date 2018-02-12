@@ -78,9 +78,9 @@ public:
     LayerAttributeModel(LayerModel *parentLayer, const Ilwis::IIlwisObject &obj, const DataDefinition& def);
 };
 
-class GlobalAttributeModel : public VisualAttribute{
+class ILWISCOREUISHARED_EXPORT GlobalAttributeModel : public VisualAttribute{
 public:
-    GlobalAttributeModel(const QString &label, const QString &associatedEditor,  RootLayerModel *parentLayer);
+    GlobalAttributeModel(const QString &label, const QString &associatedEditor,  LayerModel *parentLayer);
 
 private:
     QString _label;

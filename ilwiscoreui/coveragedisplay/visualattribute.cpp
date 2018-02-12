@@ -188,7 +188,7 @@ LayerAttributeModel::LayerAttributeModel(LayerModel *parentLayer, const IIlwisOb
 }
 
 //----------------------------------------------------------------------------
-GlobalAttributeModel::GlobalAttributeModel(const QString &label, const QString& associatedEditor, RootLayerModel *parentLayer) :
+GlobalAttributeModel::GlobalAttributeModel(const QString &label, const QString& associatedEditor, LayerModel *parentLayer) :
     VisualAttribute(parentLayer, DataDefinition(), label),
     _label(label)
 {
