@@ -44,6 +44,7 @@ public:
      Q_INVOKABLE QVariant vproperty(const QString& attrName) const;
      Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
 	 Q_INVOKABLE void initSizes(int newwidth, int newheight, bool initial);
+     Q_INVOKABLE void setActiveAttribute(int idx);
 
 	 //void setEnvelopeView(const BoundingBox& pixelArea);
 
@@ -87,6 +88,7 @@ public:
      void showLayerInfo(bool showLayerInfo);
 	 void scrollInfo(const QVariantMap& si);
 	 QVariantMap scrollInfo() const;
+     bool prepare(int prepType);
 
 
 signals:
@@ -105,6 +107,8 @@ signals:
 	 void zoomChanged();
 	 void cameraPositionChanged();
 	 void scrollInfoChanged();
+     void activeAttributeChanged();
+
 private:
     QColor _backgroundColor;
     IGeoReference _screenGrf;
@@ -122,6 +126,7 @@ private:
 	Coordinate _cameraPosition;
 	double _zoomFactor = 1.0;
 	Coordinate _currentCoordinate;
+    QString _activeAttribute; // pseudo attributes as they represent things like grids, geometry, 3d etc.. global properties for the whole MapPane
 
     QVariantList layerInfoItems() ;
     QVariantMap viewEnvelopePrivate() const;

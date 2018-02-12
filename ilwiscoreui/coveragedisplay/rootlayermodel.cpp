@@ -27,16 +27,22 @@ RootLayerModel::RootLayerModel(LayerManager *lm, LayerModel *parent) :
     LayerModel(lm, parent, TR("Global Properties"),"", IOOptions())
 {
 	_layerType = itROOTLAYER;
-    addVisualAttribute( new GlobalAttributeModel(TR("Grid"), "gridpropertyeditor", this));
-    addVisualAttribute( new GlobalAttributeModel(TR("Geometry"), "", this));
-    addVisualAttribute( new GlobalAttributeModel(TR("Background"), "backgroundlayereditor", this));
-    addVisualAttribute( new GlobalAttributeModel(TR("3D"), "", this));
+ 
 	_cameraPosition = { 0,0,0 };
 	_isValid = true;
 	readonly(true);
 	_icon = "settings_green.png";
 
 	fillData();
+}
+
+void RootLayerModel::setActiveAttribute(int idx)
+{
+    if (idx < _visualAttributes.size()) {
+        _activeAttribute = _visualAttributes[idx]->attributename();
+        add2ChangedProperties("buffers", true);
+        emit activeAttributeChanged();
+    }
 }
 
 QVariant RootLayerModel::vproperty(const QString &attrName) const
@@ -110,7 +116,7 @@ void RootLayerModel::scrollInfo(const QVariantMap & si)
 		}
 		_cameraPosition.x = center.x - _viewEnvelope.center().x;
 		_cameraPosition.y = center.y - _viewEnvelope.center().y;
-		layersManager()->refresh();
+		layerManager()->refresh();
 	}
 }
 
@@ -137,6 +143,17 @@ QVariantMap RootLayerModel::scrollInfo() const
 	data["ysizeperc"] = std::abs(yPercT - yPercB);
 
 	return data;
+}
+
+bool Ilwis::Ui::RootLayerModel::prepare(int prepType)
+{
+    addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), "", this));
+    addVisualAttribute(new GlobalAttributeModel(TR("Background"), "backgroundlayereditor", this));
+    addVisualAttribute(new GlobalAttributeModel(TR("3D"), "", this));
+
+    LayerManager::create(this, "gridlayer", layerManager(), sUNDEF, sUNDEF);
+
+    return true;
 }
 
 QVariantMap RootLayerModel::latlonEnvelope() const
@@ -358,12 +375,12 @@ QString RootLayerModel::layerInfo(const QString& pixelpair)
         if ( zoomInMode() || panningMode()) // when zooming we dont don' give info. costs too much performance
             return "";
 
-        if ( layersManager()){
+        if ( layerManager()){
 			_layerInfoItems.clear();
             QStringList parts = pixelpair.split("|");
             if ( parts.size() == 2 ){
                 Ilwis::Coordinate crd = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
-               QString ret = layersManager()->layerData(crd,"", _layerInfoItems);
+               QString ret = layerManager()->layerData(crd,"", _layerInfoItems);
 			   emit layerInfoItemsChanged();
 			   return ret;
             }
