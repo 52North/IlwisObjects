@@ -50,6 +50,7 @@ public:
     QColor color(const IRepresentation &rpr, const QString& propName, double value, LayerModel::ColorValueMeaning cvm);
     virtual QString value2string(const QVariant& value, const QString& attrName="") const;
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
+    bool isCoverageBased() const;
 
 signals:
     void activeAttributeChanged();
