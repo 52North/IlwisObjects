@@ -75,7 +75,7 @@ void Ilwis::Ui::PointLayerModel::finishAddingPoints()
 
 int PointLayerModel::numberOfBuffers(const QString& type) const
 {
-	if ( type == "pointcoverage")
+	if ( type == "points")
 		return 1;
 	return 0;
 }

@@ -34,7 +34,7 @@ LineLayerModel::LineLayerModel(LayerManager * manager, QObject * parent, const Q
 	if (_linesetter) {
 		_linesetter->sourceCsySystem(_featureLayer->coverage()->coordinateSystem());
 	}
-	isSupportLayer(options.contains("boundaries"));
+	isSupportLayer(options.contains("support"));
 	_isValid = _featureLayer->coverage().as<FeatureCoverage>()->featureCount(isSupportLayer() ? itPOLYGON :  itLINE) > 0;
 	_icon = "vector_line.png";
 	_isDrawable = true;
@@ -87,7 +87,7 @@ QVector<qreal> LineLayerModel::colors(qint32 bufferIndex, const QString& ) const
 
 int LineLayerModel::numberOfBuffers(const QString& type) const
 {
-	if (type == "linecoverage")
+	if (type == "lines")
 		return _buffer.bufferCount();
 	return 0;
 }

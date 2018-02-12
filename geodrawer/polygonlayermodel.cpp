@@ -78,7 +78,7 @@ VisualAttribute * Ilwis::Ui::PolygonLayerModel::activeAttribute()
 
 int PolygonLayerModel::numberOfBuffers(const QString& type) const
 {
-	if ( type == "polygoncoverage")
+	if ( type == "polygons")
 		return _buffer.bufferCount();
 	return 0;
 }
