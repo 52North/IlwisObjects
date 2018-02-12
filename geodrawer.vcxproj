@@ -170,6 +170,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="geodrawer\featurelayermodel.cpp" />
+    <ClCompile Include="geodrawer\gridlayer.cpp" />
     <ClCompile Include="geodrawer\linelayermodel.cpp" />
     <ClCompile Include="geodrawer\operations\adddrawer.cpp" />
     <ClCompile Include="geodrawer\drawerattributesetters\basespatialattributesetter.cpp" />
@@ -211,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geodrawer\featurelayermodel.h" />
+    <ClInclude Include="geodrawer\gridlayer.h" />
     <ClInclude Include="geodrawer\linelayermodel.h" />
     <ClInclude Include="geodrawer\operations\adddrawer.h" />
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h" />
