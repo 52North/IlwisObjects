@@ -7,7 +7,7 @@ import "../../../controls" as Controls
 import "../../.." as Base
 
 Item {
-    width: parent ? parent.width : 0
+    //width: parent ? parent.width : 0
     height: parent ? parent.height - 10 : 0
     property var editor
     x : 5
@@ -28,25 +28,27 @@ Item {
             }
         }
         Row {
-            width : 150
+            width : parent.width
             height : 20
             enabled : primaryGridEnabled.checked
             spacing : 4
             Text {
-                width : 60
+                width : Math.min(parent.width*  0.30, 60)
                 height : 20
                 text : qsTr("Cell size")
+                elide : Text.ElideRight
+                anchors.verticalCenter : parent.verticalCenter
             }
             TextField{
                 id : distanceValue
-                width : 60
+                width : Math.min(60,parent.width * 0.20)
                 height : 20
                 text : editor.distance
             }
 
             Button{
                 height : 18
-                width : 60
+                width :  Math.min(parent.width * 0.55, 60)
                 text : qsTr("Apply")
                 onClicked: {
                     editor.distance = parseFloat(distanceValue.text)
@@ -55,7 +57,7 @@ Item {
         }
 
         Item {
-            width : 200
+            width : parent.width
             height : Global.rowHeight + 20
             property var editor
 
@@ -81,7 +83,7 @@ Item {
                     id: transparencySlider
                     Layout.row: 2
                     value: editor.opacity
-                    implicitWidth: parent.width - 40
+                    implicitWidth: Math.min(parent.width - 40,200)
                     style: SliderStyle { }
                     onValueChanged: {
                         if ( transparencyValue.text !== value){
@@ -100,6 +102,7 @@ Item {
         }
 
         Controls.ColorPicker2{
+            width : parent.width 
             onSelectedColorChanged: {
                 editor.lineColor = selectedColor
             }
