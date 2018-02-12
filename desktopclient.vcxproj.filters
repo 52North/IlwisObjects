@@ -1104,6 +1104,12 @@
     <None Include="desktopclient\qml\workbench\preferences\PreferencesButton.qml">
       <Filter>Distribution Files\qml\workbench\preferences</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
@@ -2303,5 +2309,10 @@
     <Image Include="desktopclient\qml\images\zoomout20B.png">
       <Filter>Distribution Files\qml\images</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </Text>
   </ItemGroup>
 </Project>
