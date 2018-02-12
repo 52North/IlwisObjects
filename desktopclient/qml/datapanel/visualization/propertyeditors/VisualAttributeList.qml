@@ -59,11 +59,11 @@ Rectangle {
             model : attributeListModel
 
 			onModelChanged :  {
-                currentIndex = currentCoverage ? (currentCoverage.nodeId === 0 ? 0 : 1) : 0
+                currentIndex = currentCoverage ? (currentCoverage.isCoverageBased ? 1 : 0) : 0
 			}
 
             onCurrentIndexChanged: {
-				if ( currentCoverage) {
+				if ( currentCoverage && currentIndex < attributesList.model.length ) {
 					currentCoverage.setActiveAttribute(currentIndex)
 					if ( attributesList.model ){
 						editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
