@@ -181,12 +181,12 @@ IlwisObjectModel *RootLayerModel::screenGrfPrivate()
 
 double Ilwis::Ui::RootLayerModel::width() const
 {
-	return _viewEnvelope.xlength();
+	return _viewEnvelope.xlength() - 1;
 }
 
 double Ilwis::Ui::RootLayerModel::height() const
 {
-	return _viewEnvelope.ylength();
+	return _viewEnvelope.ylength() - 1;
 }
 
 QVariantMap RootLayerModel::viewEnvelopePrivate() const
@@ -408,11 +408,11 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	Size<> sz = (initial || !_screenGrf.isValid()) ? Size<>() : _screenGrf->size();
 
 	double aspectRatioView = (double)newwidth / (double)newheight;
-	double aspectRatioCoverage = (_coverageEnvelope.xlength() - 1) / (_coverageEnvelope.ylength() - 1);
-
 	double deltaX = 0, deltaY = 0;
 	double cwidth = _coverageEnvelope.xlength() - 1;
 	double cheight = _coverageEnvelope.ylength() - 1;
+    double aspectRatioCoverage = cwidth / cheight;
+
 	if (aspectRatioCoverage < 1) {
 		deltaX = CalcNewSize(cwidth, cheight, aspectRatioView);
 	}
