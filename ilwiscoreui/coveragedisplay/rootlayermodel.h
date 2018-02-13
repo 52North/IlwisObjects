@@ -81,6 +81,8 @@ public:
 	 void zoomFactor(double zf);
 	 QVariantMap cameraPosition() const;
 	 void cameraPosition(const QVariantMap& coord);
+     void active(bool yesno);
+     bool active() const;
 
      Envelope zoomEnvelope() const;
      void zoomEnvelope(const Envelope &zoomEnvelope);

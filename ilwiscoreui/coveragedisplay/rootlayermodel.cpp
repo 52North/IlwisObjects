@@ -488,6 +488,16 @@ void RootLayerModel::cameraPosition(const QVariantMap & coord)
 
 }
 
+void Ilwis::Ui::RootLayerModel::active(bool yesno)
+{
+    // you can not set this state of the root, always true
+}
+
+bool Ilwis::Ui::RootLayerModel::active() const
+{
+    return true;
+}
+
 
 
 
