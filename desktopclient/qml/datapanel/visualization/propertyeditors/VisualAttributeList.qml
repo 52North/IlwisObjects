@@ -72,7 +72,10 @@ Rectangle {
 						else
 							editorColumn.currentEditor = null
 					}
-				}
+				}else {
+                    editorListColumn.displayEditorModel = null
+                    editorColumn.currentEditor = null
+                }
             }
 
             Component {
