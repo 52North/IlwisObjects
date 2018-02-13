@@ -399,6 +399,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridCellCountEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridPropertyEditor.qml" />

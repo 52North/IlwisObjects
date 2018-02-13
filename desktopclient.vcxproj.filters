@@ -1110,6 +1110,9 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridCellCountEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
