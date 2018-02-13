@@ -186,7 +186,7 @@ SecondaryGridCellCountEditor::SecondaryGridCellCountEditor() : SubGridPropertyEd
 
 }
 
-SecondaryGridCellCountEditor::SecondaryGridCellCountEditor(VisualAttribute * p) : SubGridPropertyEditor(p, "secondarycellcountpropertyeditor", TR("Cell Count"), QUrl("GridPropertyEditor.qml"))
+SecondaryGridCellCountEditor::SecondaryGridCellCountEditor(VisualAttribute * p) : SubGridPropertyEditor(p, "secondarycellcountpropertyeditor", TR("Cell Count"), QUrl("GridCellCountEditor.qml"))
 {
 }
 
