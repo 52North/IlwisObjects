@@ -82,7 +82,7 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
        opacity(value.toFloat());
 	if (key == "active") {
 		active(value.toBool());
-		for (auto *node : children()) {
+   		for (auto *node : children()) {
 			auto lyr = node->as<LayerModel>();
 			lyr->vproperty(key, value);
 		}
@@ -159,6 +159,8 @@ QString Ilwis::Ui::LayerModel::drawType() const
 		return "polygon";
 	case itRASTERLAYER:
 		return "raster";
+    case itGRIDLAYER:
+        return "line";
 	}
 	return sUNDEF;
 }
@@ -390,11 +392,27 @@ bool LayerModel::active() const
 
 void LayerModel::active(bool yesno)
 {
-	if (yesno != _active) {
-		_active = yesno;
-		add2ChangedProperties("layer", childCount() > 0);
-		emit onActiveChanged();
-	}
+    _active = yesno;
+    if (_active) {
+        LayerModel *parentLayer = parentItem()->as<LayerModel>();
+        if (parentLayer) {
+            parentLayer->active(yesno);
+        }
+    } else {
+        LayerModel *parentLayer = parentItem()->as<LayerModel>();
+        if (parentLayer->active() ) {
+            bool someActive = false;
+            for (auto *node : parentLayer->children()) {
+                auto lyr = node->as<LayerModel>();
+                someActive |= lyr->active();
+            }
+            if (!someActive) {
+                parentLayer->active(yesno);
+            }
+        }
+    }
+    add2ChangedProperties("layer", childCount() > 0);
+	emit onActiveChanged();
 }
 
 quint32 Ilwis::Ui::LayerModel::meshCount() const

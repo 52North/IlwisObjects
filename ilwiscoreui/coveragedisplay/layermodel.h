@@ -105,8 +105,8 @@ public:
 	QString drawType() const;
     double opacity() const;
     void opacity(double opacity);
-    bool active() const;
-    void active(bool yesno);
+    virtual bool active() const;
+    virtual void active(bool yesno);
     QStringList changedProperties() const;
 	void add2ChangedProperties(const QString& prop, bool propagate = false);
 	bool updateGeometry() const;
