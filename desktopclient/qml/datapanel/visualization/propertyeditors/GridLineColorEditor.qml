@@ -17,12 +17,9 @@ Column {
     }
 
    Controls.ColorPicker2{
-        width : parent.width - 20 
+        width : Math.min(235, parent.width - 20)
         onSelectedColorChanged: {
            editor.lineColor = selectedColor
-       }
-       Component.onCompleted : {
-           console.debug("cp width", width)
        }
    }
 }
