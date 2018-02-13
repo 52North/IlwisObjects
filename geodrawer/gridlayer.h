@@ -43,6 +43,7 @@ namespace Ilwis {
             Q_INVOKABLE int numberOfBuffers(const QString&) const;
             Q_INVOKABLE QVariant vproperty(const QString& attrName) const;
             Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
+            void setSecondaryGrid(SubGridLayer *sec);
 
 
         protected:
@@ -51,9 +52,9 @@ namespace Ilwis {
             OGLBuffer _buffer;
             double _cellDistance = rUNDEF;
             QColor _lineColor;
-            double _opacity = rUNDEF;
             float _linewidth = 1.0;
             ICoordinateSystem _latlon;
+            SubGridLayer *_secondaryGrid=0;
 
 
         };
@@ -62,6 +63,8 @@ namespace Ilwis {
         public:
             PrimaryGridLayer(LayerManager *manager, QObject *parent, const IOOptions& options);
             bool prepare(int dummy);
+            void active(bool yesno);
+            bool active() const;
         };
 
         class SecondaryGridLayer : public SubGridLayer {
@@ -71,6 +74,7 @@ namespace Ilwis {
             Q_INVOKABLE QVariant vproperty(const QString& attrName) const;
             Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
             bool prepare(int dummy);
+            void active(bool yesno);
 
         private:
             int _cellCount = 4;

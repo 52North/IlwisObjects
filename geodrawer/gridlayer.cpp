@@ -36,6 +36,8 @@ GridLayer::GridLayer(LayerManager *manager, QObject *parent, const IOOptions& op
     secondaryGrid->fillData();
     fillData();
 
+    primaryGrid->setSecondaryGrid(secondaryGrid);
+
     add2ChangedProperties("buffers", true); // forces the calculation of the points through the prepare
 }
 
@@ -53,13 +55,16 @@ bool GridLayer::prepare(int prepTypes)
     return false;
 }
 
-QVariant GridLayer::vproperty(const QString & attrName) const
+QVariant GridLayer::vproperty(const QString & key) const
 {
-    return QVariant();
+    QVariant v =  IntermediateLayerModel::vproperty(key);
+
+    return v;
 }
 
-void GridLayer::vproperty(const QString & attrName, const QVariant & value)
+void GridLayer::vproperty(const QString & key, const QVariant & value)
 {
+    IntermediateLayerModel::vproperty(key, value);
 }
 
 LayerModel *GridLayer::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
@@ -90,8 +95,22 @@ QVariant SubGridLayer::vproperty(const QString& key) const {
     }
     return QVariant();
 }
-void SubGridLayer::vproperty(const QString& attrName, const QVariant& value) {
+void SubGridLayer::vproperty(const QString& key, const QVariant& value) {
+    LayerModel::vproperty(key, value);
+    if (key == "fixedlinecolor") {
+        _lineColor = value.value<QColor>();
+    }
+    if (key == "celldistance") {
+        bool ok = true;
+        double v = value.toDouble(&ok);
+        if ( ok && _cellDistance > 0)
+            _cellDistance = v;
+    }
+}
 
+void Ilwis::Ui::SubGridLayer::setSecondaryGrid(SubGridLayer * sec)
+{
+    _secondaryGrid = sec;
 }
 
 QVector<qreal> SubGridLayer::vertices(qint32 bufferIndex, const QString&) const {
@@ -149,13 +168,13 @@ void SubGridLayer::calcEnvelope(Coordinate& cmin, Coordinate& cmax) {
 //------------------------------------------------------------
 PrimaryGridLayer::PrimaryGridLayer(LayerManager *manager, QObject *parent, const IOOptions& options) : SubGridLayer(manager, parent,"Primary Grid", "Main lines in the grid", options){
     order(-20);
+    _layerType = itGRIDLAYER;
 }
 
 bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
 {
     if (hasType(prepType, LayerModel::ptGEOMETRY) && !isPrepared(LayerModel::ptGEOMETRY)) {
-        if (_opacity == rUNDEF)
-            _opacity = 0.8;
+        opacity(0.3);
         _lineColor = QColor("black");
 
         auto PushPoints = [](double x, double y, double z, const Coordinate& center, std::vector<qreal>& vector, std::vector<int>& indices)->void {
@@ -204,6 +223,21 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
     return true;
 }
 
+void PrimaryGridLayer::active(bool yesno)
+{
+    if (_secondaryGrid){
+        if (!yesno) {
+            _secondaryGrid->active(yesno);
+        }
+    }
+    SubGridLayer::active(yesno);
+}
+
+bool Ilwis::Ui::PrimaryGridLayer::active() const
+{
+    return SubGridLayer::active();
+}
+
 //-----------------------------------------------------------------
 SecondaryGridLayer::SecondaryGridLayer(LayerManager *manager, QObject *parent, PrimaryGridLayer *primaryGrid, const IOOptions& options) : 
     SubGridLayer(manager, parent, "Secondary Grid", "sub division of the main grid cells", options),
@@ -241,10 +275,9 @@ bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
         std::vector<qreal> vertices;
         std::vector<int> indices;
 
-        if (_opacity == rUNDEF)
-            _opacity = 0.5;
+        opacity(0.15);
         _linewidth = 0.5;
-        _lineColor = QColor("red");
+        _lineColor = QColor("grey");
 
         double xstart = ceil(cmin.x / dist) * dist - dist;
         for (double x = xstart; x < cmax.x; x += dist)
@@ -274,4 +307,11 @@ bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
         addVisualAttribute(new GlobalAttributeModel(TR("Secondary Grid"), "secondarygridpropertyeditor", this));
     }
     return true;
+}
+
+void Ilwis::Ui::SecondaryGridLayer::active(bool yesno)
+{
+    if (_primaryGrid->active()) {
+        SubGridLayer::active(yesno);
+    }
 }
