@@ -99,12 +99,16 @@ void SubGridLayer::vproperty(const QString& key, const QVariant& value) {
     LayerModel::vproperty(key, value);
     if (key == "fixedlinecolor") {
         _lineColor = value.value<QColor>();
+        add2ChangedProperties(isSupportLayer() ? "material" : "layer", childCount() > 0);
     }
     if (key == "celldistance") {
         bool ok = true;
         double v = value.toDouble(&ok);
-        if ( ok && _cellDistance > 0)
+        if (ok && _cellDistance > 0) {
             _cellDistance = v;
+            add2ChangedProperties("buffers", childCount() > 0);
+            updateGeometry(true);
+        }
     }
 }
 
@@ -247,10 +251,26 @@ SecondaryGridLayer::SecondaryGridLayer(LayerManager *manager, QObject *parent, P
 }
 
 QVariant SecondaryGridLayer::vproperty(const QString& key) const {
-    return SubGridLayer::vproperty(key);
+    QVariant v =  SubGridLayer::vproperty(key);
+    if (v.isValid())
+        return v;
+
+    if (key == "cellcount") {
+        return _cellCount;
+    }
+    return QVariant();
 }
 void SecondaryGridLayer::vproperty(const QString& key, const QVariant& value) {
     SubGridLayer::vproperty(key, value);
+    if (key == "cellcount") {
+        bool ok;
+        int count = value.toUInt(&ok);
+        if (ok && count < 20) {
+            _cellCount = count;
+            updateGeometry(true);
+            add2ChangedProperties("buffers", false);
+        }
+    }
 }
 
 bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)

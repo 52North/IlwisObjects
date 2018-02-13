@@ -28,7 +28,6 @@ namespace Ilwis {
             void vproperty(const QString& attrName, const QVariant& value);
             static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 
-
             NEW_LAYERMODEL(GridLayer);
 
         };
