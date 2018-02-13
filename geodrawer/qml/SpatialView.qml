@@ -3,7 +3,7 @@ import QtCanvas3D 1.0
 import "three.js" as GL
 
 
-Rectangle {
+Item {
 	id : mapdrawer
 	anchors.fill : parent
 	anchors.margins :1
@@ -19,6 +19,10 @@ Rectangle {
         id : canvas
 
         anchors.fill: parent
+
+        Component.onCompleted : {
+            console.debug("canvas", width, height)
+        }
 
 		onWidthChanged :{
 			updateAfterSizeChange()
@@ -261,12 +265,12 @@ Rectangle {
 			} else if ( propertyType == "material") {
 				for(var i=0; i < layer.meshCount(); ++i){
 					var mesh =  getMesh(layer.meshIndex(i)) 
-					if ( mesh && layer.drawType == "line"){
+					if ( mesh && (layer.drawType == "line")){
 						var clr = layer.vproperty("fixedlinecolor")
 						var linecolor = new GL.THREE.Color(clr.r, clr.g, clr.b)
-						var linewidth = layer.vproperty("linewidth")
+						var linew = layer.vproperty("linewidth")
 						var lineopacity = layer.vproperty("opacity")
-						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor,linewidth: 1, transparent : true,opacity : lineopacity})
+						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor,linewidth: linew, transparent : true,opacity : lineopacity})
 					}
 					mesh.material.needsUpdate = true;
 				}
@@ -328,4 +332,5 @@ Rectangle {
 			canvas.setBackgroundColor(backgroundColor);
 		}
     }
+
 }
