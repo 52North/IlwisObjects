@@ -210,6 +210,9 @@
     <ClCompile Include="geodrawer\gridlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="geodrawer\backgroundlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h">
@@ -329,6 +332,9 @@
     <ClInclude Include="geodrawer\gridlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="geodrawer\backgroundlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
@@ -346,12 +352,11 @@
     <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
+    <None Include="geodrawer\qml\SpatialView.qml" />
+    <None Include="geodrawer\qml\three.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
-      <Filter>Distribution Files</Filter>
-    </None>
-    <None Include="geodrawer\qml\draw.js">
       <Filter>Distribution Files</Filter>
     </None>
     <None Include="geodrawer\qml\three.js">

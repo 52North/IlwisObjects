@@ -169,6 +169,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_vectorlayermodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="geodrawer\backgroundlayer.cpp" />
     <ClCompile Include="geodrawer\featurelayermodel.cpp" />
     <ClCompile Include="geodrawer\gridlayer.cpp" />
     <ClCompile Include="geodrawer\linelayermodel.cpp" />
@@ -211,6 +212,7 @@
     <ClCompile Include="geodrawer\vectorlayermodel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="geodrawer\backgroundlayer.h" />
     <ClInclude Include="geodrawer\featurelayermodel.h" />
     <ClInclude Include="geodrawer\gridlayer.h" />
     <ClInclude Include="geodrawer\linelayermodel.h" />
