@@ -148,10 +148,10 @@ QVariantMap RootLayerModel::scrollInfo() const
 bool Ilwis::Ui::RootLayerModel::prepare(int prepType)
 {
     addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), "", this));
-    addVisualAttribute(new GlobalAttributeModel(TR("Background"), "backgroundlayereditor", this));
     addVisualAttribute(new GlobalAttributeModel(TR("3D"), "", this));
 
     LayerManager::create(this, "gridlayer", layerManager(), sUNDEF, sUNDEF);
+    LayerManager::create(layerManager()->findLayer(iUNDEF) , "backgroundlayer", layerManager(), sUNDEF, sUNDEF);
 
     return true;
 }
