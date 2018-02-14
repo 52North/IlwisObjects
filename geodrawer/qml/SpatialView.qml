@@ -270,7 +270,7 @@ Item {
 						var linecolor = new GL.THREE.Color(clr.r, clr.g, clr.b)
 						var linew = layer.vproperty("linewidth")
 						var lineopacity = layer.vproperty("opacity")
-						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor,linewidth: linew, transparent : true,opacity : lineopacity})
+						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor, transparent : true,opacity : lineopacity})
 					}
 					mesh.material.needsUpdate = true;
 				}
