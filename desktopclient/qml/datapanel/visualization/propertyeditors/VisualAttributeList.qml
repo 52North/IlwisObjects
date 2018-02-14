@@ -85,7 +85,7 @@ Rectangle {
                     width: attributesList.width - 6; height: 14
                     x : 3
                     color: Global.selectedColor; radius: 2
-                    y: (attributesList && attributesList.currentItem) ? attributesList.currentItem.y : 0
+                    y: (attributesList && attributesList.currentItem) ? attributesList.currentItem.y  : 0
                 }
             }
             anchors.fill: parent
@@ -107,6 +107,7 @@ Rectangle {
 
                             Text {
                                 x : 4
+                                y : 3
                                 text: attributename
                                 anchors.left : domicon.right
                                 anchors.leftMargin: 2
