@@ -65,20 +65,32 @@ void TreeNode::appendChild(TreeNode *item)
 	_childItems.append(item);
 }
 
+bool TreeNode::insertChild(int position, TreeNode *child) {
+    if ((position < 0 || position > _childItems.size()) && position != iUNDEF)
+        return false;
+    if (position == iUNDEF) {
+        appendChild(child);
+    }
+    else {
+        _childItems.insert(position, child);
+    }
+    return true;
+
+}
 bool TreeNode::insertChildren(int position, int count, int columns)
 {
 	if ((position < 0 || position > _childItems.size()) && position != iUNDEF)
 		return false;
 	if (position == iUNDEF) {
 		QList<QVariant> data;
-		//TreeNode *item = new TreeNode(data, this);
-		//appendChild(item);
+		TreeNode *item = new TreeNode(data, this);
+		appendChild(item);
 	}
 	else {
 		for (int row = 0; row < count; ++row) {
 			QList<QVariant> data;
-			//TreeNode *item = new TreeNode(data, this);
-			//_childItems.insert(position, item);
+			TreeNode *item = new TreeNode(data, this);
+			_childItems.insert(position, item);
 		}
 	}
 
@@ -281,9 +293,24 @@ void TreeModel::appendChild(TreeNode *parentItem, TreeNode *child) {
     emit dataChanged(index(parentItem->row(), 0, parentItem), index(parentItem->row(), 0, parentItem));
 }
 
+
+
 void TreeModel::changed(const QModelIndex& index) {
 	emit dataChanged(QModelIndex(), QModelIndex());
 	//emit dataChanged(index, index);
+}
+
+bool  TreeModel::insertChild(int position, const QModelIndex &parent, TreeNode *child) {
+    bool success;
+    TreeNode *parentItem = getItem(parent);
+
+    beginInsertRows(parent, position, position );
+    success = parentItem->insertChild(position, child);
+
+    endInsertRows();
+    emit layoutChanged();
+
+    return success;
 }
 
 bool TreeModel::insertRows(int position, int rows, const QModelIndex &parent)
@@ -295,6 +322,7 @@ bool TreeModel::insertRows(int position, int rows, const QModelIndex &parent)
 	success = parentItem->insertChildren(position, rows, _rootItem->columnCount());
 
 	endInsertRows();
+    emit layoutChanged();
 
 	return success;
 }
@@ -327,7 +355,7 @@ QModelIndex TreeModel::findIndex(int nodeid, int column) {
 int TreeModel::nodeid(const QModelIndex & index)
 {
 	if (index.isValid()) {
-        TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
+       // TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
 		QMap<int, QVariant> data = itemData(index);
 		if (data.size() >= 0) {
 			QVariantMap mp = data.begin().value().toMap();

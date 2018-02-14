@@ -44,6 +44,7 @@ public:
 	bool setData(int column, const QVariant &value);
 
 	void appendChild(TreeNode *child);
+    bool insertChild(int position, TreeNode * child);
 	bool insertChildren(int position, int count, int columns);
 	bool removeChildren(int position, int count);
 	TreeNode * findNode(int id) ;
@@ -100,6 +101,7 @@ public:
     QModelIndex index(int row, int column, TreeNode * parentItem) const;
 	void appendChild(TreeNode * parentItem, TreeNode * child);
 	void changed(const QModelIndex& index);
+    bool insertChild(int position, const QModelIndex &parent, TreeNode * child);
 	QModelIndex parent(const QModelIndex &index) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
