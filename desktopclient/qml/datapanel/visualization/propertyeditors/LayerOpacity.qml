@@ -32,7 +32,7 @@ Item {
             id: transparencySlider
             Layout.row: 2
             value: editor.opacity
-            implicitWidth: parent.width - 40
+            implicitWidth: Math.min(parent.width - 50,200)
             style: SliderStyle { }
             onValueChanged: {
                 if ( transparencyValue.text !== value){
