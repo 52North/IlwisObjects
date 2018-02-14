@@ -215,13 +215,36 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 		}
 		layer->nodeId(lm->nextId());
 		layer->fillData();
-		lm->layerTree()->appendChild(parentLayer, layer);
+        addLayer(parentLayer, layer, lm);
+        auto childeren = parentLayer->children();
+      
+
 		lm->lastAddedCoverageLayer(layer);
 
     
         return layer;
     }
     return 0;
+
+}
+
+void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerManager *lm) {
+    auto childeren = parentLayer->children();
+    bool added = false;
+    for (TreeNode * child : childeren) {
+        if (layer->order() == iUNDEF) {
+            if (child->as<LayerModel>()->order() != iUNDEF) {
+                added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
+            }
+        }
+        else {
+            if (child->as<LayerModel>()->order() < layer->order()) {
+                added = lm->layerTree()->insertRow(child->row(), parentLayer->index(lm->layerTree()));
+            }
+        }
+    }
+    if (!added)
+        lm->layerTree()->appendChild(parentLayer, layer);
 
 }
 
@@ -239,8 +262,8 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const QString &type, L
             auto createFunc   = (*iter).second;
             LayerModel *layer = createFunc(lm, parentLayer,layername, description, options);
 			layer->nodeId(lm->nextId());
-			layer->fillData();
-			lm->layerTree()->appendChild(parentLayer, layer);
+            layer->fillData(); 
+            addLayer(parentLayer, layer, lm);
             return layer;
         }
     }

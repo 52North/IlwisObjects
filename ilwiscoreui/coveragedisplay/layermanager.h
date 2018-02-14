@@ -84,6 +84,8 @@ public:
 
     static LayerModel *create(LayerModel *parentLayer,  const ICoverage& cov, LayerManager *lm, const IOOptions& options = IOOptions());
 
+   
+
     static LayerModel *create(LayerModel *parentLayer,  const QString& type, LayerManager *lm, const QString& layername, const QString& description="", const IOOptions& options= IOOptions());
     static int registerLayerModel(const QString& modelname, CreateLayer);
 
@@ -128,6 +130,8 @@ private:
     static quint32 _baseViewId;
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
+
+    static void addLayer(LayerModel * parentLayer, LayerModel * layer, LayerManager * lm);
 
 
 
