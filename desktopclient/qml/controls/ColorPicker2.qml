@@ -194,10 +194,10 @@ Rectangle {
                 }
                 Rectangle {
                     id : disk
-                    property int diskRadius : Math.min(width/2 -15, height/2 - 15) //Math.min(72, comboBox.width / 3)
+                    property int diskRadius : Math.min(width/2, height/2 ) //Math.min(72, comboBox.width / 3)
                     property var radii : []
                     y : 2
-                    width : parent.width - diskselection.width
+                    width : parent.width - diskselection.width - 2
                     height : colorPicker.height - 15 //159
 
                     function getColor(mouseX, mouseY, clicked){
@@ -232,8 +232,8 @@ Rectangle {
 
                             ctx.reset();
 
-                            var cx = disk.width / 2 + 4;
-                            var cy = disk.height / 2 - 15 ;
+                            var cx = disk.width / 2;
+                            var cy = disk.height / 2 ;
                             var gap = 0//2.0 * Math.PI / 137.8
 
                             var cellsize = radius / colorPicker.numberOfCircles
