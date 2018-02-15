@@ -62,6 +62,9 @@ void VisualAttribute::representation(const IRepresentation &rpr)
         return;
     if ( rpr->isCompatible(datadefinition().domain())){
         _representation = rpr;
+        for (VisualPropertyEditor *editor : _vproperties) {
+            editor->representationChanged(rpr);
+        }
     }
 }
 
