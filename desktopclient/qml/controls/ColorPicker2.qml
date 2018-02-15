@@ -13,6 +13,7 @@ Rectangle {
     z: 100;
     smooth:true;
     color : "transparent"
+    property int dropdownheight : 180
 
     Rectangle {
         id:chosenItem
@@ -64,13 +65,14 @@ Rectangle {
 
     Rectangle {
         id:dropDown
-        width:comboBox.width;
-        height:0;
-        clip:true;
-        radius:4;
-        anchors.top: chosenItem.bottom;
-        anchors.margins: 1;
+        width:comboBox.width
+        height:0
+        clip:true
+        radius:4
+        anchors.top: chosenItem.bottom
+        anchors.margins: 1
         color: uicontext.workbenchBGColor
+
         border.width: 1
         border.color: "#B0B0B0"
 
@@ -86,23 +88,23 @@ Rectangle {
             onNumberOfCirclesChanged: {
                 diskcanvas.requestPaint()
             }
-
-            width : 190
-            height : 210
-            anchors.centerIn: parent
-//            border.width: 1
-//            border.color: Global.edgecolor
+            y : 2
+            x : 2
+            width : Math.min(190, comboBox.width )
+            height : dropdownheight  - 10
             ExclusiveGroup { id: colordbuttongroup }
 
             function drawSegment(ctx, cx,cy,cellsize,radius,angle1, angle2, clr){
+                if ( radius <= 0)
+                    return
                 var ax = cx + radius * Math.cos(angle1);
                 var ay = cy + radius * Math.sin(angle1);
                 ctx.beginPath();
                 ctx.strokeStyle =  clr
-                ctx.moveTo(ax, ay);
-                ctx.beginPath();
+                ctx.moveTo(ax, ay)
+                ctx.beginPath()
                 ctx.lineWidth = cellsize;
-                ctx.arc(cx, cy, radius, angle1, angle2);
+                ctx.arc(cx, cy, radius, angle1, angle2)
                 ctx.stroke()
             }
 
@@ -135,14 +137,14 @@ Rectangle {
                 width : 70
                 text :  "white"
                 anchors.top : parent.top
-                anchors.topMargin: 2
+                anchors.topMargin: 4
             }
             Rectangle{
                 id : lastSelected
                 anchors.right : parent.right
                 anchors.rightMargin: 3
                 anchors.top : colorInfo.top
-                width : 50
+                width : 30
                 height : colorInfo.height
                 color : colorPicker.lastSelectedColor ? colorPicker.lastSelectedColor : "white"
                 border.width: 1
@@ -154,7 +156,7 @@ Rectangle {
                 anchors.right : lastSelected.left
                 anchors.leftMargin: 3
                 anchors.top : colorInfo.top
-                width : 50
+                width : 30
                 height : colorInfo.height
                 color : colorInfo.text
                 border.width: 1
@@ -162,59 +164,83 @@ Rectangle {
 
             }
 
-            Item {
+            Row {
                 anchors.top : colorInfo.bottom
                 width : parent.width
-                height : colorPicker.height
-
-                Item {
-                    anchors.fill: parent
-                    Item {
-                        id : disk
-                        property int diskRadius : 76
-                        property var radii : []
-                        width : parent.width
-                        function getColor(mouseX, mouseY, clicked){
-                            var dx = mouseX - disk.width / 2
-                            var dy = mouseY - (disk.height / 2)
-                            var r = Math.sqrt(dx*dx + dy*dy)
-                            var cellsize = (disk.diskRadius / colorPicker.numberOfCircles)
-                            var circle = cellsize > 0 ? Math.floor(r / (cellsize  )) : 0
-
-                            var nc = 6 * circle
-                            var tan = dx != 0 ? dy / dx : 100000.0
-                            var an = Math.atan(tan) * 180/ Math.PI
-                            var id = nc !== 0 ? Math.floor(nc * (an + 360/(nc *2)) / 360.0 ) : 0
-                            if ( dx < 0 && dy >= 0){
-                                id = nc / 4 + (nc/4 + id)
-                            } else if ( dx < 0 && dy < 0)
-                                id = nc/2 + id
-                            else if ( dy < 0 && dx >= 0)
-                                id = 3*nc / 4 + (nc/4 + id)
-                            id = id >= (nc-1) ? 0 : id
-                            return colorPicker.color(diskselection.currentIndex, circle, id)
+                height : colorPicker.height - 5
+                Column {
+                    id : diskselection
+                    property int currentIndex : 0
+                    width : 30
+                    height : parent.height
+                    ExclusiveGroup { id: colordiskgroup }
+                    Repeater {
+                        model : colorPicker.maxDisks
+                        RadioButton {
+                            x : 2
+                            width : 30 //parent.width / (colorPicker.maxDisks + 0.2)
+                            height : 18
+                            exclusiveGroup: colordiskgroup
+                            text : index + 1
+                            onClicked: {
+                                colorPicker.numberOfCircles = colorPicker.maxDisks - index
+                                diskselection.currentIndex = index
+                            }
+                            Component.onCompleted: {
+                                checked = (index == 0)
+                            }
                         }
+                    }
+                }
+                Rectangle {
+                    id : disk
+                    property int diskRadius : Math.min(width/2 -15, height/2 - 15) //Math.min(72, comboBox.width / 3)
+                    property var radii : []
+                    y : 2
+                    width : parent.width - diskselection.width
+                    height : colorPicker.height - 15 //159
 
-                        height : 159
-                        Canvas {
-                            id : diskcanvas
-                            anchors.fill: parent
-                            onPaint: {
-                                var ctx = getContext("2d");
-                                var radius = disk.diskRadius
+                    function getColor(mouseX, mouseY, clicked){
+                        var dx = mouseX - disk.width / 2
+                        var dy = mouseY - (disk.height / 2)
+                        var r = Math.sqrt(dx*dx + dy*dy)
+                        var cellsize = (disk.diskRadius / colorPicker.numberOfCircles)
+                        var circle = cellsize > 0 ? Math.floor(r / (cellsize  )) : 0
 
-                                var outerCircleSize = (colorPicker.numberOfCircles - 1) * 6
+                        var nc = 6 * circle
+                        var tan = dx != 0 ? dy / dx : 100000.0
+                        var an = Math.atan(tan) * 180/ Math.PI
+                        var id = nc !== 0 ? Math.floor(nc * (an + 360/(nc *2)) / 360.0 ) : 0
+                        if ( dx < 0 && dy >= 0){
+                            id = nc / 4 + (nc/4 + id)
+                        } else if ( dx < 0 && dy < 0)
+                            id = nc/2 + id
+                        else if ( dy < 0 && dx >= 0)
+                            id = 3*nc / 4 + (nc/4 + id)
+                        id = id >= (nc-1) ? 0 : id
+                        return colorPicker.color(diskselection.currentIndex, circle, id)
+                    }
 
-                                ctx.reset();
+                    Canvas {
+                        id : diskcanvas
+                        anchors.fill: parent
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            var radius = disk.diskRadius
 
-                                var cx = disk.width / 2;
-                                var cy = disk.height / 2 ;
-                                var gap = 0//2.0 * Math.PI / 137.8
+                            var outerCircleSize = (colorPicker.numberOfCircles - 1) * 6
 
-                                var cellsize = radius / colorPicker.numberOfCircles
-                                var numberOfCells = outerCircleSize
-                                radius -= cellsize / 2
-                                disk.radii = []
+                            ctx.reset();
+
+                            var cx = disk.width / 2 + 4;
+                            var cy = disk.height / 2 - 15 ;
+                            var gap = 0//2.0 * Math.PI / 137.8
+
+                            var cellsize = radius / colorPicker.numberOfCircles
+                            var numberOfCells = outerCircleSize
+                            radius -= cellsize / 2
+                            disk.radii = []
+                            if ( radius > 0){
                                 for(var circle = colorPicker.numberOfCircles; circle > 0; --circle ){
                                     for(var i = 0; i < numberOfCells; ++i){
                                         var clr = colorPicker.color(diskselection.currentIndex, circle-1,i)
@@ -230,63 +256,38 @@ Rectangle {
                                     radius =  radius - cellsize
                                     numberOfCells -= 6
                                 }
-
-                                ctx.beginPath();
-                                ctx.lineWidth = 1
-                                ctx.strokeStyle =  "grey"
-                                var clrCenter = colorPicker.color(diskselection.currentIndex,0,0)
-                                ctx.fillStyle = clrCenter
-                                ctx.fillRect(cx - cellsize/2 , cy-cellsize / 2, cellsize,cellsize);
-                                ctx.stroke()
                             }
-                            MouseArea {
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                onClicked: {
-                                    colorPicker.lastSelectedColor = disk.getColor(mouseX, mouseY,true)
-                                }
-                                onPositionChanged: {
-                                    var clr = disk.getColor(mouseX, mouseY,false)
-                                    colorInfo.text = clr.toString()
-                                }
+
+                            ctx.beginPath();
+                            ctx.lineWidth = 1
+                            ctx.strokeStyle =  "grey"
+                            var clrCenter = colorPicker.color(diskselection.currentIndex,0,0)
+                            ctx.fillStyle = clrCenter
+                            ctx.fillRect(cx - cellsize/2 , cy-cellsize / 2, cellsize,cellsize);
+                            ctx.stroke()
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: {
+                                colorPicker.lastSelectedColor = disk.getColor(mouseX, mouseY,true)
+                            }
+                            onPositionChanged: {
+                                var clr = disk.getColor(mouseX, mouseY,false)
+                                colorInfo.text = clr.toString()
                             }
                         }
                     }
 
 
-                    Row {
-                        id : diskselection
-                        property int currentIndex : 0
-                        width : parent.width
-                        height : 18
-                        anchors.top: disk.bottom
-                        x : 3
-                        ExclusiveGroup { id: colordiskgroup }
-                        Repeater {
-                            model : colorPicker.maxDisks
-                            x : 2
-                            RadioButton {
-                                width : parent.width / (colorPicker.maxDisks + 0.2)
-                                height : 18
-                                exclusiveGroup: colordiskgroup
-                                text : index + 1
-                                onClicked: {
-                                    colorPicker.numberOfCircles = colorPicker.maxDisks - index
-                                    diskselection.currentIndex = index
-                                }
-                                Component.onCompleted: {
-                                    checked = (index == 0)
-                                }
-                            }
-                        }
-                    }
+      
                 }
             }
         }
     }
     states: State {
         name: "dropDown";
-        PropertyChanges { target: dropDown; height:215 }
+        PropertyChanges { target: dropDown; height:dropdownheight }
     }
 
     transitions: Transition {
