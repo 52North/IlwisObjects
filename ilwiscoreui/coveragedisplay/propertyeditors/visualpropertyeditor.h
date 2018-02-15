@@ -53,7 +53,6 @@ signals:
     void rprNameChanged();
 private:
 
-    quint32 _layerIndex = 0;
     QString _displayName;
     QString qmlUrl() const;
 

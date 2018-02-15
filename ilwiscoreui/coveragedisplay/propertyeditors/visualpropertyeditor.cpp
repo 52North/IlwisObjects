@@ -67,7 +67,11 @@ void VisualPropertyEditor::prepare(const IIlwisObject &, const DataDefinition &)
 
 int VisualPropertyEditor::layerIndex() const
 {
-    return _layerIndex;
+    if (vpmodel() && vpmodel()->layer()) {
+        return vpmodel()->layer()->nodeId();
+
+    }
+    return iUNDEF;
 }
 
 QString VisualPropertyEditor::displayName() const
