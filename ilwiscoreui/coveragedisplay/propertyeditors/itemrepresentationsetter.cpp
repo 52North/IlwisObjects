@@ -86,6 +86,7 @@ void ItemRepresentationSetter::representationChanged(const IRepresentation& rpr)
         }
 
         emit rprNameChanged();
+        emit itemsChanged();
     }
 }
 
