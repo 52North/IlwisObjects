@@ -13,13 +13,12 @@ Column {
             grid.model[grid.currentIndex].ecolor = clr
             var expr = "attributefillcolor(" + manager.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[grid.currentIndex].label + "," + clr +")"
             manager.addCommand(expr)
-            manager.update()
         }
     }
 
     Controls.ColorPicker2{
         id : rprName
-        width : Math.min(250, parent.width / 2)
+        width : Math.min(250, parent.width * 0.8)
         x : 14
         y : 4
 
@@ -101,8 +100,10 @@ Column {
                                 legend.state = "invisible"
                                 grid.currentIndex = -1
                             }
-                            else
+                            else{
                                 legend.state = "visible"
+                                rprName.initialColor = ecolor
+                            }
                         }
                     }
                 }
