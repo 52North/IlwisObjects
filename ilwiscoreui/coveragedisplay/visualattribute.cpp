@@ -33,7 +33,10 @@ VisualAttribute::VisualAttribute(LayerModel *layer, const DataDefinition &def, c
             _representation = rpr;
         else
             _representation = Representation::defaultRepresentation(def.domain());
-        _representation->domain(def.domain());
+        if (_representation->isSystemObject())
+            _representation = _representation->copyWith(def.domain());
+        else
+            _representation->domain(def.domain());
 		if (hasType(def.domain()->ilwisType(), itNUMERICDOMAIN)) {
 			_actualRange = *(def.range()->as<NumericRange>());
 		}
