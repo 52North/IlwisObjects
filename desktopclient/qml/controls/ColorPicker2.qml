@@ -8,6 +8,13 @@ import "../Global.js" as Global
 Rectangle {
     id:comboBox
     property alias selectedColor : colorPicker.lastSelectedColor
+    property var initialColor
+
+    onInitialColorChanged : {
+        choosenItemColor.color = initialColor  
+        chosenItemText.text = initialColor  
+    }
+
     width : 235
     height : Global.rowHeight + dropDown.height
     z: 100;
@@ -25,6 +32,7 @@ Rectangle {
         border.color: "#9494B8"
         smooth:true;
         Rectangle {
+            id : choosenItemColor
             anchors.left: parent.left
             anchors.leftMargin: 5
             height: parent.height - 4
