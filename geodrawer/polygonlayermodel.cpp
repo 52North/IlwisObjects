@@ -61,11 +61,13 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
 {
 	std::vector<qreal> vertices, colors;
 	std::vector<int> indices;
-	_polygonsetter->getVertices(feature, vertices, indices);
-	colors.resize(vertices.size());
-	int start = std::max((int)0, (int)(colors.size() - 3));
-	_polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), start, colors);
-	currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+    if (attr->value2opacity(value) == 1 ) {
+        _polygonsetter->getVertices(feature, vertices, indices);
+        colors.resize(vertices.size());
+        int start = std::max((int)0, (int)(colors.size() - 3));
+        _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), start, colors);
+        currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+    }
 }
 
 VisualAttribute * Ilwis::Ui::PolygonLayerModel::activeAttribute()
