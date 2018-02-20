@@ -1,7 +1,7 @@
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "representation.h"
-#include "representationelement.h"
+#include "representationelementmodel.h"
 #include "attributemodel.h"
 #include "visualattribute.h"
 #include "visualpropertyeditor.h"
