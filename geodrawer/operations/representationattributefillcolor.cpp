@@ -45,7 +45,7 @@ bool RepresentationAttributeFillColor::execute(ExecutionContext *ctx, SymbolTabl
             if ( raw != rUNDEF){
                 rpr->colors()->setColor(raw,_color);
             }
-            _layer->redraw();
+            _layer->add2ChangedProperties("buffers", true);
         }
     }
     return true;
