@@ -464,17 +464,40 @@ void LayerModel::add2ChangedProperties(const QString & prop, bool propagate)
 	}
 }
 
-bool Ilwis::Ui::LayerModel::updateGeometry() const
+bool LayerModel::updateGeometry() const
 {
 	return _geometryChanged;
 }
 
-void Ilwis::Ui::LayerModel::updateGeometry(bool yesno)
+void LayerModel::updateGeometry(bool yesno)
 {
+    if (_geometryChanged != yesno) {
+        if (yesno)
+            _prepared = ptNONE;
+        else
+            _prepared |= ptGEOMETRY;
+    }
 	_geometryChanged = yesno;
 }
 
-bool Ilwis::Ui::LayerModel::isValid() const
+void LayerModel::updateGeometry(bool yesno, bool propagate)
+{
+    if (_geometryChanged != yesno) {
+        if (yesno)
+            _prepared = ptNONE;
+        else
+            _prepared |= ptGEOMETRY;
+    }
+    _geometryChanged = yesno;
+    if (propagate) {
+        for (auto *node : children()) {
+            auto childLayer = node->as<LayerModel>();
+            childLayer->updateGeometry(yesno, propagate);
+        }
+    }
+}
+
+bool LayerModel::isValid() const
 {
 	return _isValid;
 }

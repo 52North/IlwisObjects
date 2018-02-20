@@ -111,6 +111,7 @@ public:
 	void add2ChangedProperties(const QString& prop, bool propagate = false);
 	bool updateGeometry() const;
 	void updateGeometry(bool yesno);
+    void updateGeometry(bool yesno, bool propagate);
 	bool isValid() const;
 	bool isDrawable() const;
 	bool isVectorLayer() const;
