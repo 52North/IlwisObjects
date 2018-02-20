@@ -48,6 +48,9 @@ IlwisData<Representation> Representation::copyWith(const IDomain &dom) const
     if ( shapes().get() == 0){
         rpr->shapes(shapes()->clone());
     }
+    if (opacities()) {
+        rpr->opacities(opacities()->clone());
+    }
     return rpr;
 
 }
@@ -85,6 +88,19 @@ IDomain Representation::domain() const
     return _domain;
 }
 
+const UOpacityLookUp& Representation::opacities() const {
+    return _opacities;
+}
+
+void Representation::opacities(OpacityLookup *lookup)
+{
+    if (isReadOnly())
+        return;
+    changed(true);
+
+    _opacities.reset(lookup);
+}
+
 void Representation::domain(const IDomain &domain)
 {
     if (isReadOnly())
@@ -95,6 +111,17 @@ void Representation::domain(const IDomain &domain)
     }
 
     _domain = domain;
+}
+
+void Ilwis::Representation::opacities(const SPRange & actualRange)
+{
+    if (isReadOnly())
+        return;
+    changed(true);
+    if ( !actualRange.isNull() && _domain.isValid()) {
+        _opacities.reset(OpacityLookup::create(_domain->ilwisType(), actualRange));
+    }
+
 }
 
 bool Representation::isCompatible(const IDomain &otherDomain)

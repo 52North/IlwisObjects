@@ -3,12 +3,14 @@
 
 #include "colorlookup.h"
 #include "shapelookup.h"
+#include "opacitylookup.h"
 
 namespace Ilwis {
 
 class ShapeLookup;
 typedef std::unique_ptr<ColorLookUp> UPColorLookUp;
 typedef std::unique_ptr<ShapeLookUp> UPShapeLookUp;
+typedef std::unique_ptr<OpacityLookup> UOpacityLookUp;
 
 class Domain;
 typedef IlwisData<Domain> IDomain;
@@ -24,9 +26,13 @@ public:
     void colors(ColorLookUp *lookup);
     void shapes(ShapeLookUp* lookup);
     const UPShapeLookUp& shapes() const;
+    const UOpacityLookUp& opacities() const;
+    void opacities(OpacityLookup *lookup);
 
     IDomain domain() const;
     void domain(const IDomain& domain);
+
+    void opacities(const SPRange& actualRange);
 
     bool isCompatible(const IDomain& otherDomain);
     IlwisTypes ilwisType() const;
@@ -36,6 +42,7 @@ public:
 private:
     UPColorLookUp _colors;
     UPShapeLookUp _shapes;
+    UOpacityLookUp _opacities;
     IDomain _domain;
 };
 
