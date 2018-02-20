@@ -16,11 +16,20 @@ Column {
         }
     }
 
+    function setOpacity(index, opacity){
+        if ( grid.currentIndex != -1){
+            var expr = "attributeopacity(" + manager.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[index].label + "," + opacity +")"
+            manager.addCommand(expr)
+        }
+    }
+
+
     Controls.ColorPicker2{
         id : rprName
         width : Math.min(250, parent.width * 0.8)
         x : 14
         y : 4
+        visible : grid.currentIndex != -1
 
         onSelectedColorChanged: {
             legendGrid.setColor(selectedColor)
@@ -70,6 +79,10 @@ Column {
                             height : 20
                             checked : true
                             style: Base.CheckBoxStyle1{}
+
+                            onCheckedChanged : {
+                                setOpacity(index, checked ? 1 : 0)
+                            }
                         }
                         Rectangle{
                             id : colorrect
@@ -92,7 +105,9 @@ Column {
 
                     }
                     MouseArea{
-                        anchors.fill: parent
+                        x : 20
+                        width : parent.width - 20
+                        height : parent.height
                         onClicked: {
                             var isChanged = index != grid.currentIndex
                             grid.currentIndex = index
