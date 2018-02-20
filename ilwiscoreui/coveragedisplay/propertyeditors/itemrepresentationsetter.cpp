@@ -3,7 +3,7 @@
 #include "datadefinition.h"
 #include "columndefinition.h"
 #include "representation.h"
-#include "representationelement.h"
+#include "representationelementmodel.h"
 #include "colorlookup.h"
 #include "palettecolorlookup.h"
 #include "attributemodel.h"
@@ -36,7 +36,7 @@ void ItemRepresentationSetter::prepare(const IIlwisObject &obj, const DataDefini
         for(auto item : itemdom){
             if (vpmodel()->representation().isValid()){
                 QColor clr = vpmodel()->representation()->colors()->value2color(item->raw());
-                _rprElements.push_back(new RepresentationElement(item->raw(), item->name(), clr,this));
+                _rprElements.push_back(new RepresentationElementModel(item->raw(), item->name(), clr,this));
             }
 
         }
@@ -61,9 +61,9 @@ VisualPropertyEditor *ItemRepresentationSetter::create(VisualAttribute *p)
     return new ItemRepresentationSetter(p);
 }
 
-QQmlListProperty<RepresentationElement> ItemRepresentationSetter::representationElements()
+QQmlListProperty<RepresentationElementModel> ItemRepresentationSetter::representationElements()
 {
-    return  QQmlListProperty<RepresentationElement>(this, _rprElements);
+    return  QQmlListProperty<RepresentationElementModel>(this, _rprElements);
 }
 
 void ItemRepresentationSetter::attributesChanged(Raw index, const QVariantMap& values){
@@ -81,7 +81,7 @@ void ItemRepresentationSetter::representationChanged(const IRepresentation& rpr)
         _rprElements.clear();
         for(auto item : itemdom){
             QColor clr = rpr->colors()->value2color(item->raw());
-            _rprElements.push_back(new RepresentationElement(item->raw(), item->name(), clr,this));
+            _rprElements.push_back(new RepresentationElementModel(item->raw(), item->name(), clr,this));
 
         }
 

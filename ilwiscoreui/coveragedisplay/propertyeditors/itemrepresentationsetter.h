@@ -7,14 +7,14 @@
 
 namespace Ilwis {
 namespace Ui{
-class RepresentationElement;
+class RepresentationElementModel;
 
 class ILWISCOREUISHARED_EXPORT ItemRepresentationSetter : public VisualPropertyEditor
 {
     Q_OBJECT
 
 
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::RepresentationElement> representationElements READ representationElements NOTIFY itemsChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::RepresentationElementModel> representationElements READ representationElements NOTIFY itemsChanged)
 public:
     ItemRepresentationSetter();
     ItemRepresentationSetter(VisualAttribute *p);
@@ -23,7 +23,7 @@ public:
     bool canUse(const IIlwisObject &obj, const DataDefinition &) const;
     static VisualPropertyEditor *create(VisualAttribute *p);
 
-    QQmlListProperty<RepresentationElement> representationElements();
+    QQmlListProperty<RepresentationElementModel> representationElements();
     void attributesChanged(Raw index, const QVariantMap &values);
      void representationChanged(const IRepresentation& rpr);
 
