@@ -40,6 +40,7 @@ VisualAttribute::VisualAttribute(LayerModel *layer, const DataDefinition &def, c
 		if (hasType(def.domain()->ilwisType(), itNUMERICDOMAIN)) {
 			_actualRange = *(def.range()->as<NumericRange>());
 		}
+        _representation->opacities(def.range());
     }
 }
 
@@ -173,6 +174,11 @@ QColor VisualAttribute::value2color(const QVariant &var) const
 		return _representation->colors()->value2color(v, _actualRange, _stretchRange);
 	}
 	return QColor();
+}
+
+double Ilwis::Ui::VisualAttribute::value2opacity(const QVariant & var) const
+{
+    return _representation->opacities()->value2opacity(var.toDouble());
 }
 
 NumericRange VisualAttribute::actualRange() const
