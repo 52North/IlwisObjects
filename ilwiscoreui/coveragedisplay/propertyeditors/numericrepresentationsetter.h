@@ -4,14 +4,14 @@
 #include <QObject>
 #include <QQmlListProperty>
 #include "coveragedisplay/propertyeditors/visualpropertyeditor.h"
-#include "representationelement.h"
+#include "representationelementmodel.h"
 namespace Ilwis {
 namespace Ui{
 class ILWISCOREUISHARED_EXPORT NumericRepresentationSetter : public VisualPropertyEditor
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQmlListProperty<RepresentationElement> representationElements READ representationElements NOTIFY itemsChanged)
+    Q_PROPERTY(QQmlListProperty<RepresentationElementModel> representationElements READ representationElements NOTIFY itemsChanged)
 public:
     NumericRepresentationSetter(VisualAttribute *p);
     NumericRepresentationSetter();
@@ -24,7 +24,7 @@ public:
     Q_INVOKABLE QColor color(const QString &property, double frac);
     Q_INVOKABLE bool canUse(const QString& id) const;
     Q_INVOKABLE void setRepresentation(const QString& name)    ;
-    QQmlListProperty<RepresentationElement> representationElements();
+    QQmlListProperty<RepresentationElementModel> representationElements();
 
     NEW_PROPERTYEDITOR(NumericRepresentationSetter)
 
