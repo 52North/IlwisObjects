@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;BASEOPERATIONS_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\baseoperations</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\baseoperations\* /s /y /i</Command>
       <Message>Copy baseoperations.dll to ..\output\win32release\bin\extensions\baseoperations</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -144,7 +144,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;BASEOPERATIONS_LIBRARY;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\baseoperations</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\baseoperations\* /s /y /i</Command>
       <Message>Copy baseoperations.dll to ..\output\win32debug\bin\extensions\baseoperations</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -302,7 +302,7 @@
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT 5.7" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

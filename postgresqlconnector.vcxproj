@@ -52,7 +52,7 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PostBuildEventUseInBuild>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libraries\win32debug\extensions\postgresqlconnector\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\potgresqlconnector\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\postgresqlconnector\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">postgresqlconnector</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PostBuildEventUseInBuild>
@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;POSTGRESSQLCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\postgresqlconnector</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\postgresqlconnector\* /s /y /i</Command>
       <Message>Copy postgresqlconnector.dll to ..\output\win32release\bin\extensions\postgresqlconnector</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -144,7 +144,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;POSTGRESSQLCONNECTOR_LIBRARY;QT_PLUGIN;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\postgresqlconnector</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\postgresqlconnector\* /s /y /i</Command>
       <Message>Copy postgresqlconnector.dll to ..\output\win32debug\bin\extensions\postgresqlconnector</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -197,7 +197,7 @@
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT 5.7" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
