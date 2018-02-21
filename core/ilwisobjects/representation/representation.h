@@ -39,6 +39,8 @@ public:
 
     static IlwisData<Representation> defaultRepresentation(const Ilwis::IDomain &dom);
 
+    bool isValid() const;
+
 private:
     UPColorLookUp _colors;
     UPShapeLookUp _shapes;

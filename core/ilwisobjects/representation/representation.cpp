@@ -28,20 +28,27 @@ Representation::Representation(const Resource &resource) : IlwisObject(resource)
 IlwisData<Representation> Representation::copyWith(const IDomain &dom) const
 {
     IRepresentation rpr;
-    QString rprurl = INTERNAL_CATALOG + "/" + dom->name();
+    QString name = dom->name();
+    if (name.indexOf(".") != -1)
+        name = name.left(name.indexOf("."));
+
+    QString rprurl = INTERNAL_CATALOG + "/" + name;
     quint64 id = i64UNDEF;
     int count = 0;
+    // we don't want to reuse an 'old' copy but a new one so we search until we find an available new name
     while((id = mastercatalog()->name2id(rprurl, itREPRESENTATION))!= i64UNDEF){
         rpr.prepare(id);
-        if (id != dom->id()){
+        if (rpr.isValid()){
             rprurl = rprurl + "_" + QString::number(++count);
         }else
             break;
     }
-    if ( rpr.isValid())
+
+    if ( rpr.isValid() && rpr->isValid())
         return rpr;
 
-    rpr.prepare(rprurl, itREPRESENTATION);
+    if ( !rpr.isValid())
+        rpr.prepare(rprurl, itREPRESENTATION);
     rpr->domain(dom);
     if ( colors())
         rpr->colors(colors()->clone());
@@ -99,6 +106,7 @@ void Representation::opacities(OpacityLookup *lookup)
     changed(true);
 
     _opacities.reset(lookup);
+    //valid(Representation::isValid());
 }
 
 void Representation::domain(const IDomain &domain)
@@ -168,4 +176,8 @@ IlwisData<Representation> Representation::defaultRepresentation(const IDomain &d
     }
 
     return IRepresentation(code);
+}
+
+bool Representation::isValid() const {
+    return _colors && _opacities && _domain.isValid();
 }
