@@ -178,7 +178,10 @@ QColor VisualAttribute::value2color(const QVariant &var) const
 
 double Ilwis::Ui::VisualAttribute::value2opacity(const QVariant & var) const
 {
-    return _representation->opacities()->value2opacity(var.toDouble());
+	if (_representation->opacities())
+		return _representation->opacities()->value2opacity(var.toDouble());
+	else
+		return 1;	// handle empty opacity (text domain)
 }
 
 NumericRange VisualAttribute::actualRange() const
