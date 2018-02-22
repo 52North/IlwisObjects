@@ -60,11 +60,13 @@ void LineLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *att
 {
 	std::vector<qreal> vertices, colors;
 	std::vector<int> indices;
-	_linesetter->getVertices(feature, vertices, indices);
-	colors.resize(vertices.size());
-	int start = std::max((int)0, (int)(colors.size() - 3));
-	_linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
-	currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itLINE, feature->featureid());
+    if (attr->value2opacity(value) == 1) {
+        _linesetter->getVertices(feature, vertices, indices);
+        colors.resize(vertices.size());
+        int start = std::max((int)0, (int)(colors.size() - 3));
+        _linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
+        currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itLINE, feature->featureid());
+    }
 }
 
 QVector<qreal> LineLayerModel::vertices(qint32 bufferIndex, const QString& ) const {
