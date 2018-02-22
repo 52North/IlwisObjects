@@ -36,7 +36,11 @@ void ItemRepresentationSetter::prepare(const IIlwisObject &obj, const DataDefini
         for(auto item : itemdom){
             if (vpmodel()->representation().isValid()){
                 QColor clr = vpmodel()->representation()->colors()->value2color(item->raw());
-                _rprElements.push_back(new RepresentationElementModel(item->raw(), item->name(), clr,this));
+                auto *elem = new RepresentationElementModel(item->raw(), item->name(), this);
+                elem->color(vpmodel()->representation()->colors()->value2color(item->raw()));
+                elem->opacity(vpmodel()->representation()->opacities()->value2opacity(item->raw()));
+                _rprElements.push_back(elem);
+
             }
 
         }
@@ -80,8 +84,9 @@ void ItemRepresentationSetter::representationChanged(const IRepresentation& rpr)
         IlwisData<ItemDomain<DomainItem>> itemdom = rpr->domain().as<ItemDomain<DomainItem>>();
         _rprElements.clear();
         for(auto item : itemdom){
-            QColor clr = rpr->colors()->value2color(item->raw());
-            _rprElements.push_back(new RepresentationElementModel(item->raw(), item->name(), clr,this));
+            auto *elem = new RepresentationElementModel(item->raw(), item->name(), this);
+            elem->color(rpr->colors()->value2color(item->raw()));
+            _rprElements.push_back(elem);
 
         }
 
