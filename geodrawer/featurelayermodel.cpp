@@ -122,6 +122,11 @@ bool FeatureLayerModel::prepare(int prepType)
 		_features->loadData();
 		_featureDrawings.resize(_features->featureCount());
 		int currentBuffer[5] = { 0,0,0,0,0 };
+        for (auto layer : layers) {
+            if (layer) {
+                layer->resetBuffer(); // constructing a new vertices/indices so the internal buffers must be emptied
+            }
+        }
 	
 		PointLayerModel *points = 0;
 		for (const SPFeatureI& feature : _features) {
