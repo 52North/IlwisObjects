@@ -482,12 +482,12 @@ void LayerModel::updateGeometry(bool yesno)
 
 void LayerModel::updateGeometry(bool yesno, bool propagate)
 {
-    if (_geometryChanged != yesno) {
+   // if (_geometryChanged != yesno) {
         if (yesno)
             _prepared = ptNONE;
         else
             _prepared |= ptGEOMETRY;
-    }
+  //  }
     _geometryChanged = yesno;
     if (propagate) {
         for (auto *node : children()) {
