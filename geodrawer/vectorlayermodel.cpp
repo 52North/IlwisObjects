@@ -95,6 +95,11 @@ bool Ilwis::Ui::VectorLayerModel::isCoverageBased() const
     return true;
 }
 
+void Ilwis::Ui::VectorLayerModel::resetBuffer()
+{
+    _buffer.clear();
+}
+
 void VectorLayerModel::setActiveAttribute(int idx)
 {
 	if (idx < _visualAttributes.size()) {
