@@ -75,12 +75,13 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing : 3
                         CheckBox {
+                            id : cb
                             width : 20
                             height : 20
-                            checked : true
+                            checked : eopacity == 1
                             style: Base.CheckBoxStyle1{}
 
-                            onCheckedChanged : {
+                            onClicked : {
                                 setOpacity(index, checked ? 1 : 0)
                             }
                         }
