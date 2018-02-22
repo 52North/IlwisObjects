@@ -224,7 +224,7 @@ Item {
 				layer.addMeshIndex(lines.id)
 				scene.add( lines );
 			}
-            var n = Date.now()
+           // var n = Date.now()
 		    for(var i=0; i < layer.numberOfBuffers("polygons");++i){
 				var geometry = new GL.THREE.BufferGeometry();
 				canvas.setGeometry(layer, i,"polygons",geometry)
@@ -236,8 +236,8 @@ Item {
 				scene.add( polygons );
 
 			}
-            var n2 = Date.now()
-            console.debug("duration=", n2, n, (n2 - n)/1000.0)
+           // var n2 = Date.now()
+           // console.debug("duration=", n2, n, (n2 - n)/1000.0)
 
 			layer.updateGeometry = false
 		}
