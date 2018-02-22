@@ -205,7 +205,8 @@ Item {
 				var points = new GL.THREE.Points( geometry, material );
 				points.name = layer.layerId
 				points.visible = layer.vproperty("active")
-				scene.add( points );
+                layer.addMeshIndex(points.id)
+                scene.add( points );
 			}
 		    for(var i=0; i < layer.numberOfBuffers("lines");++i){
 				var geometry = new GL.THREE.BufferGeometry();
