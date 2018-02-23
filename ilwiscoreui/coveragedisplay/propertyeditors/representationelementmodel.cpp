@@ -38,11 +38,11 @@ void RepresentationElementModel::color(const QColor &clr)
 }
 
 double RepresentationElementModel::opacity() const {
-    return 1.0 - _color.alphaF();
+    return _color.alphaF();
 }
 void RepresentationElementModel::opacity(double v) {
     if (v >= 0 && v <= 1) {
-        _color.setAlphaF(1.0 - v);
+        _color.setAlphaF(v);
         emit eopacityChanged();
     }
 }

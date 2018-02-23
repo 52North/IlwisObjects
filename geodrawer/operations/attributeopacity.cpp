@@ -44,7 +44,7 @@ bool AttributeOpacity::execute(ExecutionContext *ctx, SymbolTable &symTable)
             Raw raw = item->raw();
             if ( raw != rUNDEF){
                 QColor clr = rpr->colors()->value2color(raw);
-                clr.setAlphaF(1.0 - _opacity);
+                clr.setAlphaF(_opacity);
                 rpr->colors()->setColor(raw,clr);
             }
             _layer->updateGeometry(true, true);
