@@ -104,16 +104,9 @@ void SimpleLineSetter::getColors(const VisualAttribute &attr, const QVariant &va
 	QColor clr = attr.value2color(value);
 	for (int j = start; j < colors.size(); j += 3) {
 		if (value.isValid() && value.toInt() != iUNDEF) {
-			if (defaultColor.isValid()) {
-				colors[j] = defaultColor.redF();
-				colors[j + 1] = defaultColor.greenF();
-				colors[j + 2] = defaultColor.blueF();
-			}
-			else {
 				colors[j] = clr.redF();
 				colors[j + 1] = clr.greenF();
 				colors[j + 2] = clr.blueF();
-			}
 		}
 	}
 }
