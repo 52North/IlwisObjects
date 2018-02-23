@@ -1777,9 +1777,6 @@
     <ClCompile Include="core\ilwisobjects\representation\shapelookup.cpp">
       <Filter>Source Files\ilwisobjects\representation</Filter>
     </ClCompile>
-    <ClCompile Include="core\ilwisobjects\representation\opacitylookup.cpp">
-      <Filter>Source Files\ilwisobjects\representation</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\geos\include\geos\index\strtree\AbstractNode.h">
@@ -3350,9 +3347,6 @@
     </ClInclude>
     <ClInclude Include="core\ilwisobjects\representation\shapelookup.h">
       <Filter>Header Files\ilwisobjects\representation</Filter>
-    </ClInclude>
-    <ClInclude Include="core\ilwisobjects\representation\opacitylookup.h">
-      <Filter>Source Files\ilwisobjects\representation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

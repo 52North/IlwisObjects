@@ -61,7 +61,8 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
 {
 	std::vector<qreal> vertices, colors;
 	std::vector<int> indices;
-    if (attr->value2opacity(value) == 1 ) {
+    QColor clr = attr->value2color(value);
+    if (clr.alphaF() == 1) {
         _polygonsetter->getVertices(feature, vertices, indices);
         colors.resize(vertices.size());
         int start = std::max((int)0, (int)(colors.size() - 3));

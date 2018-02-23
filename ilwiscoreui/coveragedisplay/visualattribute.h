@@ -46,7 +46,6 @@ public:
     NumericRange stretchRange() const;
     void stretchRange(const NumericRange& rng);
     QColor value2color(const QVariant& var) const;
-    double value2opacity(const QVariant& var) const;
     NumericRange actualRange() const;
     void actualRange(const NumericRange& rng);
 

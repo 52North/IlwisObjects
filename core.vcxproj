@@ -498,7 +498,6 @@ Copy ilwiscore.dll to ..\output\win32release\bin</Message>
     <ClCompile Include="core\abstractfactory.cpp" />
     <ClCompile Include="core\ilwisobjects\operation\modeller\analysispattern.cpp" />
     <ClCompile Include="core\ilwisobjects\operation\modeller\applicationmodel.cpp" />
-    <ClCompile Include="core\ilwisobjects\representation\opacitylookup.cpp" />
     <ClCompile Include="core\ilwisobjects\table\attributedefinition.cpp" />
     <ClCompile Include="core\ilwisobjects\table\attributetable.cpp" />
     <ClCompile Include="core\ilwisobjects\table\basetable.cpp" />
@@ -1032,7 +1031,6 @@ Copy ilwiscore.dll to ..\output\win32release\bin</Message>
     <ClInclude Include="core\abstractfactory.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\analysispattern.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\applicationmodel.h" />
-    <ClInclude Include="core\ilwisobjects\representation\opacitylookup.h" />
     <ClInclude Include="core\ilwisobjects\table\attributedefinition.h" />
     <ClInclude Include="core\ilwisobjects\table\attributetable.h" />
     <ClInclude Include="core\ilwisobjects\table\basetable.h" />

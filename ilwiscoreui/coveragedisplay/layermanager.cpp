@@ -238,7 +238,7 @@ void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerMa
             }
         }
         else {
-            if (child->as<LayerModel>()->order() < layer->order()) {
+            if (child->as<LayerModel>()->order() <= layer->order()) {
                 added = lm->layerTree()->insertRow(child->row(), parentLayer->index(lm->layerTree()));
             }
         }

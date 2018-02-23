@@ -38,7 +38,6 @@ void ItemRepresentationSetter::prepare(const IIlwisObject &obj, const DataDefini
                 QColor clr = vpmodel()->representation()->colors()->value2color(item->raw());
                 auto *elem = new RepresentationElementModel(item->raw(), item->name(), this);
                 elem->color(vpmodel()->representation()->colors()->value2color(item->raw()));
-                elem->opacity(vpmodel()->representation()->opacities()->value2opacity(item->raw()));
                 _rprElements.push_back(elem);
 
             }

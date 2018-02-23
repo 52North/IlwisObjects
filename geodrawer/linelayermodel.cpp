@@ -60,7 +60,8 @@ void LineLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *att
 {
 	std::vector<qreal> vertices, colors;
 	std::vector<int> indices;
-    if (attr->value2opacity(value) == 1) {
+    QColor clr = attr->value2color(value);
+    if (clr.alphaF() == 1) {
         _linesetter->getVertices(feature, vertices, indices);
         colors.resize(vertices.size());
         int start = std::max((int)0, (int)(colors.size() - 3));
