@@ -64,7 +64,7 @@ void LineLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *att
     if (clr.alphaF() == 1) {
         _linesetter->getVertices(feature, vertices, indices);
         colors.resize(vertices.size());
-        int start = std::max((int)0, (int)(colors.size() - 3));
+        int start = 0; // std::max((int)0, (int)(colors.size() - 3));
         _linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
         currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itLINE, feature->featureid());
     }

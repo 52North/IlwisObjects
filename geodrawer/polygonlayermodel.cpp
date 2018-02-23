@@ -65,7 +65,7 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
     if (clr.alphaF() == 1) {
         _polygonsetter->getVertices(feature, vertices, indices);
         colors.resize(vertices.size());
-        int start = std::max((int)0, (int)(colors.size() - 3));
+        int start = 0; // std::max((int)0, (int)(colors.size() - 3));
         _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), start, colors);
         currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
     }
