@@ -22,27 +22,38 @@ RepresentationElementModel::RepresentationElementModel(const QString &label, Vis
 {
 }
 
-RepresentationElementModel::RepresentationElementModel(Raw raw, const QString &label, VisualPropertyEditor *parent) : QObject(parent), Identity(label), _raw(raw)
+RepresentationElementModel::RepresentationElementModel(const IRepresentation& rpr, Raw raw, const QString &label, VisualPropertyEditor *parent) : QObject(parent), Identity(label), _rpr(rpr), _raw(raw)
 {
 }
 
 QColor RepresentationElementModel::color() const
 {
-    return _color;
+    if (_rpr.isValid()) {
+        QColor clr =  _rpr->colors()->value2color(_raw);
+        clr.setAlphaF(1);
+        return clr;
+    }
+    return QColor();
 }
 
 void RepresentationElementModel::color(const QColor &clr)
 {
-    _color = clr;
+    if (_rpr.isValid())
+        _rpr->colors()->setColor(_raw, clr);
     emit ecolorChanged();
 }
 
 double RepresentationElementModel::opacity() const {
-    return _color.alphaF();
+    QColor clr;
+    if (_rpr.isValid())
+        clr = _rpr->colors()->value2color(_raw);
+    return clr.alphaF();
 }
 void RepresentationElementModel::opacity(double v) {
     if (v >= 0 && v <= 1) {
-        _color.setAlphaF(v);
+        QColor clr = color();
+        clr.setAlphaF(v);
+        color(clr);
         emit eopacityChanged();
     }
 }

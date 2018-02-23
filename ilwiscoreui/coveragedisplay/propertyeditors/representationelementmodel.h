@@ -5,8 +5,11 @@
 #include <QColor>
 #include "identity.h"
 #include "ilwiscoreui_global.h"
+#include "ilwisdata.h"
+#include "representation.h"
 
 namespace Ilwis {
+
 namespace Ui{
 class VisualPropertyEditor;
 
@@ -17,7 +20,7 @@ public:
     RepresentationElementModel();
     explicit RepresentationElementModel(VisualPropertyEditor *p);
     RepresentationElementModel(const QString& label, VisualPropertyEditor *parent=0);
-    RepresentationElementModel(Raw raw,const QString& label, VisualPropertyEditor *parent=0);
+    RepresentationElementModel(const IRepresentation& rpr, Raw raw,const QString& label, VisualPropertyEditor *parent=0);
     Q_PROPERTY(QColor ecolor READ color WRITE color NOTIFY ecolorChanged)
     Q_PROPERTY(QString label READ name CONSTANT)
     Q_PROPERTY(double eopacity READ opacity NOTIFY eopacityChanged)
@@ -33,9 +36,8 @@ signals:
     void attributeChanged(int index, const QVariantMap& values);
 
 private:
-    QColor _color;
+    IRepresentation _rpr;
     Raw _raw;
-    double _opacity;
 };
 }
 }
