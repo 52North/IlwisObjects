@@ -82,6 +82,7 @@ Column {
                             style: Base.CheckBoxStyle1{}
 
                             onClicked : {
+                                grid.currentIndex = index
                                 setOpacity(index, checked ? 1 : 0)
                             }
                         }
