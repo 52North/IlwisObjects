@@ -233,7 +233,10 @@ void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerMa
     bool added = false;
     for (TreeNode * child : childeren) {
         if (layer->order() == iUNDEF) {
-            if (child->as<LayerModel>()->order() != iUNDEF) {
+            LayerModel *childLayer = child->as<LayerModel>();
+            if (childLayer->order() != iUNDEF) {
+                added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
+            } else if (childLayer->layerType() != itROOTLAYER && childLayer->order() == iUNDEF && layer->order() == iUNDEF) {
                 added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
             }
         }
@@ -242,6 +245,8 @@ void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerMa
                 added = lm->layerTree()->insertRow(child->row(), parentLayer->index(lm->layerTree()));
             }
         }
+        if (added)
+            break;
     }
     if (!added)
         lm->layerTree()->appendChild(parentLayer, layer);
