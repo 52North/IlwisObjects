@@ -90,7 +90,7 @@ void CoverageLayerModel::coverage(const ICoverage &cov)
     fillAttributes();
     _coverage = cov;
     if ( _coverage.isValid()){
-        _coordConversionNeeded = _coverage->coordinateSystem()->isCompatibleWith(layersManager()->rootLayer()->screenCsy().ptr());
+        _coordConversionNeeded = _coverage->coordinateSystem()->isCompatibleWith(layerManager()->rootLayer()->screenCsy().ptr());
     }
 }
 
@@ -163,8 +163,8 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
 {
     Coordinate crd = crdIn;
 
-    if ( coverage()->coordinateSystem() != layersManager()->rootLayer()->screenCsy()){
-        crd = coverage()->coordinateSystem()->coord2coord(layersManager()->rootLayer()->screenCsy(), crd);
+    if ( coverage()->coordinateSystem() != layerManager()->rootLayer()->screenCsy()){
+        crd = coverage()->coordinateSystem()->coord2coord(layerManager()->rootLayer()->screenCsy(), crd);
     }
 
     QVariantMap item;
@@ -219,6 +219,11 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
 
 
     return outtext;
+}
+
+bool Ilwis::Ui::CoverageLayerModel::isCoverageBased() const
+{
+    return true;
 }
 
 QString CoverageLayerModel::v2s(const ColumnDefinition& coldef, const QVariant& value) const

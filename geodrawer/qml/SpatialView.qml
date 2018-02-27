@@ -3,7 +3,7 @@ import QtCanvas3D 1.0
 import "three.js" as GL
 
 
-Rectangle {
+Item {
 	id : mapdrawer
 	anchors.fill : parent
 	anchors.margins :1
@@ -19,6 +19,10 @@ Rectangle {
         id : canvas
 
         anchors.fill: parent
+
+        Component.onCompleted : {
+            console.debug("canvas", width, height)
+        }
 
 		onWidthChanged :{
 			updateAfterSizeChange()
@@ -177,7 +181,7 @@ Rectangle {
 				var colors = new Float32Array(layer.colors(bufferIndex,type))
 				geometry.addAttribute( 'color', new GL.THREE.BufferAttribute( colors, 3 ) );
 			}
-			if (type != "pointcoverage") {
+			if (type != "points") {
 				var indices = new Uint16Array(layer.indices(bufferIndex,type))
 				geometry.setIndex(new GL.THREE.BufferAttribute(indices, 1));
 			}
@@ -194,22 +198,24 @@ Rectangle {
 			}
 			layer.clearMeshIndexes()
 			//construct the meshes
-		    for(var i=0; i < layer.numberOfBuffers("pointcoverage");++i){
+		    for(var i=0; i < layer.numberOfBuffers("points");++i){
 				var geometry = new GL.THREE.BufferGeometry();
-				setGeometry(layer,i,"pointcoverage",geometry)
+				setGeometry(layer,i,"points",geometry)
 				var material = new GL.THREE.PointsMaterial( { size: 5, vertexColors: GL.THREE.VertexColors,sizeAttenuation : false, transparent : true,opacity : layer.vproperty("opacity") } );
 				var points = new GL.THREE.Points( geometry, material );
 				points.name = layer.layerId
 				points.visible = layer.vproperty("active")
-				scene.add( points );
+                layer.addMeshIndex(points.id)
+                scene.add( points );
 			}
-
-		    for(var i=0; i < layer.numberOfBuffers("linecoverage");++i){
+		    for(var i=0; i < layer.numberOfBuffers("lines");++i){
 				var geometry = new GL.THREE.BufferGeometry();
-				canvas.setGeometry(layer, i,"linecoverage",geometry)
+				canvas.setGeometry(layer, i,"lines",geometry)
 				var material
 				if ( layer.isSupportLayer){
-					material = new GL.THREE.LineBasicMaterial( {color: 0x000000,linewidth: 1, transparent : true,opacity : layer.vproperty("opacity")})
+                	var clr = layer.vproperty("fixedlinecolor")
+					var linecolor = new GL.THREE.Color(clr.r, clr.g, clr.b)
+					material = new GL.THREE.LineBasicMaterial( {color: linecolor,linewidth: 1, transparent : true,opacity : layer.vproperty("opacity")})
 				}else {
 					material = new GL.THREE.LineBasicMaterial({  vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
 				}
@@ -219,10 +225,10 @@ Rectangle {
 				layer.addMeshIndex(lines.id)
 				scene.add( lines );
 			}
-            var n = Date.now()
-		    for(var i=0; i < layer.numberOfBuffers("polygoncoverage");++i){
+           // var n = Date.now()
+		    for(var i=0; i < layer.numberOfBuffers("polygons");++i){
 				var geometry = new GL.THREE.BufferGeometry();
-				canvas.setGeometry(layer, i,"polygoncoverage",geometry)
+				canvas.setGeometry(layer, i,"polygons",geometry)
 				var material = new GL.THREE.MeshBasicMaterial({ side : GL.THREE.DoubleSide, vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
 				var polygons = new GL.THREE.Mesh( geometry, material );
 				polygons.name = layer.layerId
@@ -231,8 +237,8 @@ Rectangle {
 				scene.add( polygons );
 
 			}
-            var n2 = Date.now()
-            console.debug("duration=", n2, n, (n2 - n)/1000.0)
+            // var n2 = Date.now()
+            // console.debug("duration=", n2, n, (n2 - n)/1000.0)
             if (layer.drawType == "raster") {
 			    var palette = layer.palette;
 			    var tPalette = new GL.THREE.DataTexture(
@@ -311,12 +317,12 @@ Rectangle {
 			} else if ( propertyType == "material") {
 				for(var i=0; i < layer.meshCount(); ++i){
 					var mesh =  getMesh(layer.meshIndex(i)) 
-					if ( mesh && layer.drawType == "line"){
+					if ( mesh && (layer.drawType == "line")){
 						var clr = layer.vproperty("fixedlinecolor")
 						var linecolor = new GL.THREE.Color(clr.r, clr.g, clr.b)
-						var linewidth = layer.vproperty("linewidth")
+						var linew = layer.vproperty("linewidth")
 						var lineopacity = layer.vproperty("opacity")
-						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor,linewidth: 1, transparent : true,opacity : lineopacity})
+						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor, transparent : true,opacity : lineopacity})
 					}
 					mesh.material.needsUpdate = true;
 				}
@@ -372,10 +378,11 @@ Rectangle {
 			camera.updateProjectionMatrix();
 
 			renderer = new GL.THREE.Canvas3DRenderer(
-				   { canvas: canvas, antialias: true, devicePixelRatio: canvas.devicePixelRatio });
+				   { canvas: canvas, antialias: false, devicePixelRatio: canvas.devicePixelRatio });
 			renderer.setPixelRatio(canvas.devicePixelRatio);
 			renderer.setSize(canvas.width, canvas.height);
 			canvas.setBackgroundColor(backgroundColor);
 		}
     }
+
 }

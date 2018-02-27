@@ -1,7 +1,7 @@
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "representation.h"
-#include "representationelement.h"
+#include "representationelementmodel.h"
 #include "attributemodel.h"
 #include "visualattribute.h"
 #include "visualpropertyeditor.h"
@@ -67,7 +67,11 @@ void VisualPropertyEditor::prepare(const IIlwisObject &, const DataDefinition &)
 
 int VisualPropertyEditor::layerIndex() const
 {
-    return _layerIndex;
+    if (vpmodel() && vpmodel()->layer()) {
+        return vpmodel()->layer()->nodeId();
+
+    }
+    return iUNDEF;
 }
 
 QString VisualPropertyEditor::displayName() const

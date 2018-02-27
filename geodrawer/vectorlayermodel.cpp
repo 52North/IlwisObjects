@@ -90,6 +90,16 @@ int VectorLayerModel::numberOfBuffers(const QString &) const
 	return 0;
 }
 
+bool Ilwis::Ui::VectorLayerModel::isCoverageBased() const
+{
+    return true;
+}
+
+void Ilwis::Ui::VectorLayerModel::resetBuffer()
+{
+    _buffer.clear();
+}
+
 void VectorLayerModel::setActiveAttribute(int idx)
 {
 	if (idx < _visualAttributes.size()) {

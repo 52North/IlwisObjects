@@ -27,16 +27,22 @@ RootLayerModel::RootLayerModel(LayerManager *lm, LayerModel *parent) :
     LayerModel(lm, parent, TR("Global Properties"),"", IOOptions())
 {
 	_layerType = itROOTLAYER;
-    addVisualAttribute( new GlobalAttributeModel(TR("Grid"), "gridpropertyeditor", this));
-    addVisualAttribute( new GlobalAttributeModel(TR("Geometry"), "", this));
-    addVisualAttribute( new GlobalAttributeModel(TR("Background"), "backgroundlayereditor", this));
-    addVisualAttribute( new GlobalAttributeModel(TR("3D"), "", this));
+ 
 	_cameraPosition = { 0,0,0 };
 	_isValid = true;
 	readonly(true);
 	_icon = "settings_green.png";
 
 	fillData();
+}
+
+void RootLayerModel::setActiveAttribute(int idx)
+{
+    if (idx < _visualAttributes.size()) {
+        _activeAttribute = _visualAttributes[idx]->attributename();
+        add2ChangedProperties("buffers", true);
+        emit activeAttributeChanged();
+    }
 }
 
 QVariant RootLayerModel::vproperty(const QString &attrName) const
@@ -110,7 +116,7 @@ void RootLayerModel::scrollInfo(const QVariantMap & si)
 		}
 		_cameraPosition.x = center.x - _viewEnvelope.center().x;
 		_cameraPosition.y = center.y - _viewEnvelope.center().y;
-		layersManager()->refresh();
+		layerManager()->refresh();
 	}
 }
 
@@ -139,6 +145,17 @@ QVariantMap RootLayerModel::scrollInfo() const
 	return data;
 }
 
+bool Ilwis::Ui::RootLayerModel::prepare(int prepType)
+{
+    addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), "", this));
+    addVisualAttribute(new GlobalAttributeModel(TR("3D"), "", this));
+
+    LayerManager::create(this, "gridlayer", layerManager(), sUNDEF, sUNDEF);
+    LayerManager::create(layerManager()->findLayer(iUNDEF) , "backgroundlayer", layerManager(), sUNDEF, sUNDEF);
+
+    return true;
+}
+
 QVariantMap RootLayerModel::latlonEnvelope() const
 {
     QVariant var;
@@ -164,12 +181,12 @@ IlwisObjectModel *RootLayerModel::screenGrfPrivate()
 
 double Ilwis::Ui::RootLayerModel::width() const
 {
-	return _viewEnvelope.xlength();
+	return _viewEnvelope.xlength() - 1;
 }
 
 double Ilwis::Ui::RootLayerModel::height() const
 {
-	return _viewEnvelope.ylength();
+	return _viewEnvelope.ylength() - 1;
 }
 
 QVariantMap RootLayerModel::viewEnvelopePrivate() const
@@ -358,12 +375,12 @@ QString RootLayerModel::layerInfo(const QString& pixelpair)
         if ( zoomInMode() || panningMode()) // when zooming we dont don' give info. costs too much performance
             return "";
 
-        if ( layersManager()){
+        if ( layerManager()){
 			_layerInfoItems.clear();
             QStringList parts = pixelpair.split("|");
             if ( parts.size() == 2 ){
                 Ilwis::Coordinate crd = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
-               QString ret = layersManager()->layerData(crd,"", _layerInfoItems);
+               QString ret = layerManager()->layerData(crd,"", _layerInfoItems);
 			   emit layerInfoItemsChanged();
 			   return ret;
             }
@@ -391,11 +408,11 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	Size<> sz = (initial || !_screenGrf.isValid()) ? Size<>() : _screenGrf->size();
 
 	double aspectRatioView = (double)newwidth / (double)newheight;
-	double aspectRatioCoverage = (_coverageEnvelope.xlength() - 1) / (_coverageEnvelope.ylength() - 1);
-
 	double deltaX = 0, deltaY = 0;
 	double cwidth = _coverageEnvelope.xlength() - 1;
 	double cheight = _coverageEnvelope.ylength() - 1;
+    double aspectRatioCoverage = cwidth / cheight;
+
 	if (aspectRatioCoverage < 1) {
 		deltaX = CalcNewSize(cwidth, cheight, aspectRatioView);
 	}
@@ -469,6 +486,16 @@ void RootLayerModel::cameraPosition(const QVariantMap & coord)
 			_cameraPosition.z = v;
 	}
 
+}
+
+void Ilwis::Ui::RootLayerModel::active(bool yesno)
+{
+    // you can not set this state of the root, always true
+}
+
+bool Ilwis::Ui::RootLayerModel::active() const
+{
+    return true;
 }
 
 

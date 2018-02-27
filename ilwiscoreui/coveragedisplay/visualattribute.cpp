@@ -33,7 +33,10 @@ VisualAttribute::VisualAttribute(LayerModel *layer, const DataDefinition &def, c
             _representation = rpr;
         else
             _representation = Representation::defaultRepresentation(def.domain());
-        _representation->domain(def.domain());
+        if (_representation->isSystemObject())
+            _representation = _representation->copyWith(def.domain());
+        else
+            _representation->domain(def.domain());
 		if (hasType(def.domain()->ilwisType(), itNUMERICDOMAIN)) {
 			_actualRange = *(def.range()->as<NumericRange>());
 		}
@@ -62,6 +65,9 @@ void VisualAttribute::representation(const IRepresentation &rpr)
         return;
     if ( rpr->isCompatible(datadefinition().domain())){
         _representation = rpr;
+        for (VisualPropertyEditor *editor : _vproperties) {
+            editor->representationChanged(rpr);
+        }
     }
 }
 
@@ -188,7 +194,7 @@ LayerAttributeModel::LayerAttributeModel(LayerModel *parentLayer, const IIlwisOb
 }
 
 //----------------------------------------------------------------------------
-GlobalAttributeModel::GlobalAttributeModel(const QString &label, const QString& associatedEditor, RootLayerModel *parentLayer) :
+GlobalAttributeModel::GlobalAttributeModel(const QString &label, const QString& associatedEditor, LayerModel *parentLayer) :
     VisualAttribute(parentLayer, DataDefinition(), label),
     _label(label)
 {

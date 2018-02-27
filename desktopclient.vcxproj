@@ -138,7 +138,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy  desktopclient\qml ..\output\win32debug\bin\qml /S /Y</Command>
+      <Command>xcopy  desktopclient\qml ..\output\win32debug\bin\qml\* /S /Y /I</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -399,6 +399,9 @@
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridCellCountEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridPropertyEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ItemRepresentation.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerDelegate.qml" />
@@ -946,11 +949,14 @@
     <Image Include="desktopclient\qml\images\zoomout20A.png" />
     <Image Include="desktopclient\qml\images\zoomout20B.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT5MSVC_64" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

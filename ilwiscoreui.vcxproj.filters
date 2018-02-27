@@ -386,12 +386,6 @@
     <ClCompile Include="Release\moc_resourcemanager.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_representationelement.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_representationelement.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_projectionparametermodel.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -569,9 +563,6 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\polygonattributesetter.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
-    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelement.cpp">
-      <Filter>Source Files\spatialdrawing\editors</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\coveragelayermodel.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
@@ -676,6 +667,15 @@
     </ClCompile>
     <ClCompile Include="Release\moc_layermanager.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_representationelementmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_representationelementmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelementmodel.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -868,14 +868,14 @@
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\polygonattributesetter.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelement.h">
-      <Filter>Header Files\spatialdrawing\editors</Filter>
-    </CustomBuild>
     <CustomBuild Include="ilwiscoreui\coveragedisplay\rootlayermodel.h">
       <Filter>Header Files\spatialdrawing</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\coveragedisplay\intermediatelayermodel.h">
       <Filter>Header Files\spatialdrawing</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelementmodel.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

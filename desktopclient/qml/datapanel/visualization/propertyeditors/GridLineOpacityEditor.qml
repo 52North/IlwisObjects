@@ -17,45 +17,6 @@ Item {
         width : parent.width - 5
         height :240
         spacing : 4
-        CheckBox{
-            id : primaryGridEnabled
-            text : qsTr("Enabled")
-            checked : editor.isActive
-            style: Base.CheckBoxStyle1{}
-
-            onCheckedChanged: {
-                editor.isActive = checked
-            }
-        }
-        Row {
-            width : parent.width
-            height : 20
-            enabled : primaryGridEnabled.checked
-            spacing : 4
-            Text {
-                width : Math.min(parent.width*  0.30, 60)
-                height : 20
-                text : qsTr("Cell size")
-                elide : Text.ElideRight
-                anchors.verticalCenter : parent.verticalCenter
-            }
-            TextField{
-                id : distanceValue
-                width : Math.min(60,parent.width * 0.20)
-                height : 20
-                text : editor.distance
-            }
-
-            Button{
-                height : 18
-                width :  Math.min(parent.width * 0.55, 60)
-                text : qsTr("Apply")
-                onClicked: {
-                    editor.distance = parseFloat(distanceValue.text)
-                }
-            }
-        }
-
         Item {
             width : parent.width
             height : Global.rowHeight + 20
@@ -93,20 +54,6 @@ Item {
                     }
                 }
             }
-        }
-
-        Text{
-            id : label
-            text : qsTr("Grid Color")
-            enabled: primaryGridEnabled.checked
-        }
-
-        Controls.ColorPicker2{
-            width : parent.width 
-            onSelectedColorChanged: {
-                editor.lineColor = selectedColor
-            }
-            enabled: primaryGridEnabled.checked
         }
     }
 

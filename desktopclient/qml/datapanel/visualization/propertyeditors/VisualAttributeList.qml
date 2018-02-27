@@ -59,11 +59,11 @@ Rectangle {
             model : attributeListModel
 
 			onModelChanged :  {
-                currentIndex = currentCoverage ? (currentCoverage.nodeId === 0 ? 0 : 1) : 0
+                currentIndex = currentCoverage ? (currentCoverage.isCoverageBased ? 1 : 0) : 0
 			}
 
             onCurrentIndexChanged: {
-				if ( currentCoverage) {
+				if ( currentCoverage && currentIndex < attributesList.model.length ) {
 					currentCoverage.setActiveAttribute(currentIndex)
 					if ( attributesList.model ){
 						editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
@@ -72,7 +72,10 @@ Rectangle {
 						else
 							editorColumn.currentEditor = null
 					}
-				}
+				}else {
+                    editorListColumn.displayEditorModel = null
+                    editorColumn.currentEditor = null
+                }
             }
 
             Component {
@@ -82,7 +85,7 @@ Rectangle {
                     width: attributesList.width - 6; height: 14
                     x : 3
                     color: Global.selectedColor; radius: 2
-                    y: (attributesList && attributesList.currentItem) ? attributesList.currentItem.y : 0
+                    y: (attributesList && attributesList.currentItem) ? attributesList.currentItem.y  : 0
                 }
             }
             anchors.fill: parent
@@ -104,6 +107,7 @@ Rectangle {
 
                             Text {
                                 x : 4
+                                y : 3
                                 text: attributename
                                 anchors.left : domicon.right
                                 anchors.leftMargin: 2

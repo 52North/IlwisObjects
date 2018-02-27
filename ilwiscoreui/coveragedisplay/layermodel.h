@@ -59,6 +59,7 @@ public:
     Q_PROPERTY(bool isValid READ isValid NOTIFY validChanged)
 	Q_PROPERTY(bool isSupportLayer READ isSupportLayer CONSTANT)
 	Q_PROPERTY(QString drawType READ drawType CONSTANT)
+    Q_PROPERTY(bool isCoverageBased READ isCoverageBased CONSTANT)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
@@ -74,6 +75,7 @@ public:
 	Q_INVOKABLE void addMeshIndex(quint32 idx);
 	Q_INVOKABLE void clearMeshIndexes();
 	Q_INVOKABLE bool isPrepared(quint32 type) const;
+    Q_INVOKABLE virtual void setActiveAttribute(int idx);
 
 	LayerModel();
     explicit LayerModel(TreeNode *parent);
@@ -103,23 +105,28 @@ public:
 	QString drawType() const;
     double opacity() const;
     void opacity(double opacity);
-    bool active() const;
-    void active(bool yesno);
+    virtual bool active() const;
+    virtual void active(bool yesno);
     QStringList changedProperties() const;
 	void add2ChangedProperties(const QString& prop, bool propagate = false);
 	bool updateGeometry() const;
 	void updateGeometry(bool yesno);
+    void updateGeometry(bool yesno, bool propagate);
 	bool isValid() const;
 	bool isDrawable() const;
 	bool isVectorLayer() const;
 	bool isSupportLayer() const;
 	virtual bool usesColorData() const;
     void fillData();
-    const LayerManager *layersManager() const;
-    LayerManager *layersManager();
+    const LayerManager *layerManager() const;
+    LayerManager *layerManager();
     virtual void activeAttributeName(const QString& pName);
     virtual VisualAttribute *activeAttribute();
     virtual VisualAttribute *visualAttribute(const QString &attrName) const;
+    void order(qint32 n);
+    qint32 order() const;
+    virtual bool isCoverageBased() const;
+
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
@@ -159,6 +166,7 @@ private:
     static quint64 _layerId;
 	std::vector<quint32> _meshes;
 	bool _geometryChanged = false;
+    qint32 _order = iUNDEF;
 
 	std::set<QString> _changedProperties;
 	bool _isSupportLayer = false;

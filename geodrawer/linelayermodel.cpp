@@ -34,7 +34,7 @@ LineLayerModel::LineLayerModel(LayerManager * manager, QObject * parent, const Q
 	if (_linesetter) {
 		_linesetter->sourceCsySystem(_featureLayer->coverage()->coordinateSystem());
 	}
-	isSupportLayer(options.contains("boundaries"));
+	isSupportLayer(options.contains("support"));
 	_isValid = _featureLayer->coverage().as<FeatureCoverage>()->featureCount(isSupportLayer() ? itPOLYGON :  itLINE) > 0;
 	_icon = "vector_line.png";
 	_isDrawable = true;
@@ -60,11 +60,14 @@ void LineLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *att
 {
 	std::vector<qreal> vertices, colors;
 	std::vector<int> indices;
-	_linesetter->getVertices(feature, vertices, indices);
-	colors.resize(vertices.size());
-	int start = std::max((int)0, (int)(colors.size() - 3));
-	_linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
-	currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itLINE, feature->featureid());
+    QColor clr = attr->value2color(value);
+    if (clr.alphaF() == 1) {
+        _linesetter->getVertices(feature, vertices, indices);
+        colors.resize(vertices.size());
+        int start = 0; // std::max((int)0, (int)(colors.size() - 3));
+        _linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
+        currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itLINE, feature->featureid());
+    }
 }
 
 QVector<qreal> LineLayerModel::vertices(qint32 bufferIndex, const QString& ) const {
@@ -87,7 +90,7 @@ QVector<qreal> LineLayerModel::colors(qint32 bufferIndex, const QString& ) const
 
 int LineLayerModel::numberOfBuffers(const QString& type) const
 {
-	if (type == "linecoverage")
+	if (type == "lines")
 		return _buffer.bufferCount();
 	return 0;
 }

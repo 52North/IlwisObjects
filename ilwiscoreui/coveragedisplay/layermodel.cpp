@@ -54,7 +54,9 @@ QVariant LayerModel::vproperty(const QString &key) const
 	} if (key == "active") {
 		bool pv = parentValue.isValid() ? parentValue.toBool() : true;
 		var = pv && _active;
-	}
+    } if (key == "color") {
+        return "0x000000"; // default color is black, other layers may overrule this
+    }
 
     if ( key.indexOf("visualattribute") == 0){
         QStringList parts = key.split("|");
@@ -80,7 +82,7 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
        opacity(value.toFloat());
 	if (key == "active") {
 		active(value.toBool());
-		for (auto *node : children()) {
+   		for (auto *node : children()) {
 			auto lyr = node->as<LayerModel>();
 			lyr->vproperty(key, value);
 		}
@@ -157,11 +159,13 @@ QString Ilwis::Ui::LayerModel::drawType() const
 		return "polygon";
 	case itRASTERLAYER:
 		return "raster";
+    case itGRIDLAYER:
+        return "line";
 	}
 	return sUNDEF;
 }
 
-Q_INVOKABLE int LayerModel::numberOfBuffers(const QString&) const
+int LayerModel::numberOfBuffers(const QString&) const
 {
 	return 0;
 }
@@ -182,12 +186,12 @@ QVector<qreal> LayerModel::colors(qint32 index, const QString& tp) const
 	return QVector<qreal>();
 }
 
-const LayerManager *LayerModel::layersManager() const
+const LayerManager *LayerModel::layerManager() const
 {
     return _layerManager;
 }
 
-LayerManager * Ilwis::Ui::LayerModel::layersManager()
+LayerManager * Ilwis::Ui::LayerModel::layerManager()
 {
 	return _layerManager;
 }
@@ -230,6 +234,21 @@ VisualAttribute *LayerModel::visualAttribute(const QString &attrName) const
             return attr;
     }
     return 0;
+}
+
+void Ilwis::Ui::LayerModel::order(qint32 n)
+{
+    _order = n;
+}
+
+qint32 Ilwis::Ui::LayerModel::order() const
+{
+    return _order;
+}
+
+bool Ilwis::Ui::LayerModel::isCoverageBased() const
+{
+    return false;
 }
 
 void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
@@ -373,11 +392,27 @@ bool LayerModel::active() const
 
 void LayerModel::active(bool yesno)
 {
-	if (yesno != _active) {
-		_active = yesno;
-		add2ChangedProperties("layer", childCount() > 0);
-		emit onActiveChanged();
-	}
+    _active = yesno;
+    if (_active) {
+        LayerModel *parentLayer = parentItem()->as<LayerModel>();
+        if (parentLayer) {
+            parentLayer->active(yesno);
+        }
+    } else {
+        LayerModel *parentLayer = parentItem()->as<LayerModel>();
+        if (parentLayer->active() ) {
+            bool someActive = false;
+            for (auto *node : parentLayer->children()) {
+                auto lyr = node->as<LayerModel>();
+                someActive |= lyr->active();
+            }
+            if (!someActive) {
+                parentLayer->active(yesno);
+            }
+        }
+    }
+    add2ChangedProperties("layer", childCount() > 0);
+	emit onActiveChanged();
 }
 
 quint32 Ilwis::Ui::LayerModel::meshCount() const
@@ -429,17 +464,40 @@ void LayerModel::add2ChangedProperties(const QString & prop, bool propagate)
 	}
 }
 
-bool Ilwis::Ui::LayerModel::updateGeometry() const
+bool LayerModel::updateGeometry() const
 {
 	return _geometryChanged;
 }
 
-void Ilwis::Ui::LayerModel::updateGeometry(bool yesno)
+void LayerModel::updateGeometry(bool yesno)
 {
+    if (_geometryChanged != yesno) {
+        if (yesno)
+            _prepared = ptNONE;
+        else
+            _prepared |= ptGEOMETRY;
+    }
 	_geometryChanged = yesno;
 }
 
-bool Ilwis::Ui::LayerModel::isValid() const
+void LayerModel::updateGeometry(bool yesno, bool propagate)
+{
+   // if (_geometryChanged != yesno) {
+        if (yesno)
+            _prepared = ptNONE;
+        else
+            _prepared |= ptGEOMETRY;
+  //  }
+    _geometryChanged = yesno;
+    if (propagate) {
+        for (auto *node : children()) {
+            auto childLayer = node->as<LayerModel>();
+            childLayer->updateGeometry(yesno, propagate);
+        }
+    }
+}
+
+bool LayerModel::isValid() const
 {
 	return _isValid;
 }
@@ -451,6 +509,11 @@ bool LayerModel::prepare(int) {
 bool LayerModel::isPrepared(quint32 type) const
 {
 	return hasType(_prepared, type);
+}
+
+void Ilwis::Ui::LayerModel::setActiveAttribute(int idx)
+{
+    // needs overrule in relevant derivatives
 }
 
 void LayerModel::fillAttributes()

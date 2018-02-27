@@ -5,36 +5,51 @@ import QtQuick.Controls.Styles 1.0
 import RepresentationElement 1.0
 import "../../../Global.js" as Global
 import "../../../controls" as Controls
+import "../../.." as Base
 
-Item {
+Column {
     function setColor(clr){
         if ( grid.currentIndex != -1){
             grid.model[grid.currentIndex].ecolor = clr
-            var expr = "attributefillcolor(" + renderer.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[grid.currentIndex].label + "," + clr +")"
-            renderer.addCommand(expr)
-            renderer.update()
+            var expr = "attributefillcolor(" + manager.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[grid.currentIndex].label + "," + clr +")"
+            manager.addCommand(expr)
         }
     }
 
-    Controls.TextEditLabelPair{
-        id : rprName
-        content : editor.representationName
-        labelText: qsTr("Name")
-        labelWidth: 100
+    function setOpacity(index, opacity){
+        if ( grid.currentIndex != -1){
+            var expr = "attributeopacity(" + manager.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[index].label + "," + opacity +")"
+            manager.addCommand(expr)
+        }
     }
+
+
+    Controls.ColorPicker2{
+        id : rprName
+        width : Math.min(250, parent.width * 0.8)
+        x : 14
+        y : 4
+        visible : grid.currentIndex != -1
+
+        onSelectedColorChanged: {
+            legendGrid.setColor(selectedColor)
+        }
+        z : 100
+    }
+
     ScrollView {
         id : scroller
-        width : parent.width - 5
-        height : parent.height - rprName.height - 4
-        anchors.top : rprName.bottom
+        width : parent.width  - 5
+        height : parent.height - 20
+        z : 0
+
         x : 5
-
-
 
         GridView{
             id : grid
             anchors.fill: parent
             anchors.topMargin: 4
+            anchors.leftMargin : 2
             property int maxChar : 15
 
             model : editor.representationElements
@@ -46,7 +61,7 @@ Item {
                 maxChar = maxl
             }
 
-            cellWidth: 45 + Math.max(30, maxChar * 6)
+            cellWidth: 85 + Math.max(30, maxChar * 6)
             cellHeight: 23
             flow: GridView.FlowTopToBottom
             highlight: Rectangle { color: Global.selectedColor; radius: 2 }
@@ -58,10 +73,22 @@ Item {
                         width : parent.width
                         height : 20
                         anchors.verticalCenter: parent.verticalCenter
-                        spacing : 5
+                        spacing : 3
+                        CheckBox {
+                            id : cb
+                            width : 20
+                            height : 20
+                            checked : eopacity == 1
+                            style: Base.CheckBoxStyle1{}
+
+                            onClicked : {
+                                grid.currentIndex = index
+                                setOpacity(index, checked ? 1 : 0)
+                            }
+                        }
                         Rectangle{
                             id : colorrect
-                            width : 40
+                            width : 30
                             height : 20
                             color : ecolor
                             border.width: 1
@@ -70,7 +97,7 @@ Item {
                         }
 
                         Text{
-                            height : 20
+                            height : 50
                             width : parent.width - colorrect.width - 10
                             text : label
                             y : 4
@@ -80,7 +107,9 @@ Item {
 
                     }
                     MouseArea{
-                        anchors.fill: parent
+                        x : 20
+                        width : parent.width - 20
+                        height : parent.height
                         onClicked: {
                             var isChanged = index != grid.currentIndex
                             grid.currentIndex = index
@@ -88,8 +117,10 @@ Item {
                                 legend.state = "invisible"
                                 grid.currentIndex = -1
                             }
-                            else
+                            else{
                                 legend.state = "visible"
+                                rprName.initialColor = ecolor
+                            }
                         }
                     }
                 }
@@ -99,5 +130,7 @@ Item {
             }
         }
     }
+    
+
 }
 

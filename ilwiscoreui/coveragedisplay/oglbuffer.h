@@ -25,6 +25,7 @@ public:
 	void addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors);
 	const OGLBufferChunck* buffer(int bufferIndex) const;
 	int bufferCount() const;
+    void clear();
 
 private:
 	std::vector<OGLBufferChunck> _buffers;

@@ -14,7 +14,7 @@ typedef IlwisData<Representation> IRepresentation;
 
 namespace Ui{
 class CoverageLayerModel;
-class RepresentationElement;
+class RepresentationElementModel;
 
 
 class ILWISCOREUISHARED_EXPORT VisualPropertyEditor : public QObject, public Ilwis::Identity
@@ -53,7 +53,6 @@ signals:
     void rprNameChanged();
 private:
 
-    quint32 _layerIndex = 0;
     QString _displayName;
     QString qmlUrl() const;
 
@@ -62,7 +61,7 @@ public slots:
 
 protected:
     void displayName(const QString& newname);
-    QList<RepresentationElement *> _rprElements;
+    QList<RepresentationElementModel *> _rprElements;
     VisualAttribute *_visualAttribute = 0;
 
 };

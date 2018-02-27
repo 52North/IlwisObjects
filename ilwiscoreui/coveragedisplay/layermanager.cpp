@@ -40,6 +40,7 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
     _tree = new TreeModel(_dummyRootNode,this);
      _viewid = _baseViewId++;
 	 _viewContainer = viewContainer;
+     _globalLayer->prepare(0);
 	 // for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
 	 if (_createLayers.find("compositelayer") == _createLayers.end()) {
 		 //_createLayers["globallayermodel"] = RootLayerModel::create;
@@ -128,14 +129,21 @@ void Ilwis::Ui::LayerManager::lastAddedCoverageLayer(LayerModel * lyr)
 	_lastAddedCoverageLayer = lyr;
 }
 
-void buildList(QList<LayerModel *>& list, LayerModel *parentItem) {
+void buildList(QList<LayerModel *>& list, LayerModel *parentItem, std::map<int, LayerModel *>& priorityLayers) {
 
 	if ( parentItem->isDrawable())
 		list.push_back(parentItem);
 	for (auto *TreeNode : parentItem->children()) {
 		LayerModel *lm = TreeNode->as<LayerModel>();
-		if (lm->isValid() )
-			buildList(list, lm);
+        if (lm->isValid()) {
+            if (lm->order() == iUNDEF) {
+                buildList(list, lm, priorityLayers);
+            }
+            else {
+                priorityLayers[lm->order()] = lm;
+            }
+        }
+
 	}
 }
 
@@ -143,7 +151,16 @@ void buildList(QList<LayerModel *>& list, LayerModel *parentItem) {
 QQmlListProperty<Ilwis::Ui::LayerModel> LayerManager::layerList()
 {
 	_layerList = QList<LayerModel *>();
-	buildList(_layerList, _dummyRootNode);
+    std::map<int, LayerModel *> priorityLayers;
+	buildList(_layerList, _dummyRootNode, priorityLayers);
+    for (auto iter = priorityLayers.begin(); iter != priorityLayers.end(); ++iter) {
+        if (iter->first > _layerList.size()) {
+            _layerList.push_front(iter->second);
+        }
+        else {
+            _layerList.push_back(iter->second);
+        }
+    }
 	return QQmlListProperty<LayerModel>(this, _layerList);
 }
 
@@ -198,13 +215,41 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 		}
 		layer->nodeId(lm->nextId());
 		layer->fillData();
-		lm->layerTree()->appendChild(parentLayer, layer);
+        addLayer(parentLayer, layer, lm);
+        auto childeren = parentLayer->children();
+      
+
 		lm->lastAddedCoverageLayer(layer);
 
     
         return layer;
     }
     return 0;
+
+}
+
+void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerManager *lm) {
+    auto childeren = parentLayer->children();
+    bool added = false;
+    for (TreeNode * child : childeren) {
+        if (layer->order() == iUNDEF) {
+            LayerModel *childLayer = child->as<LayerModel>();
+            if (childLayer->order() != iUNDEF) {
+                added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
+            } else if (childLayer->layerType() != itROOTLAYER && childLayer->order() == iUNDEF && layer->order() == iUNDEF) {
+                added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
+            }
+        }
+        else {
+            if (child->as<LayerModel>()->order() <= layer->order()) {
+                added = lm->layerTree()->insertRow(child->row(), parentLayer->index(lm->layerTree()));
+            }
+        }
+        if (added)
+            break;
+    }
+    if (!added)
+        lm->layerTree()->appendChild(parentLayer, layer);
 
 }
 
@@ -222,8 +267,8 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const QString &type, L
             auto createFunc   = (*iter).second;
             LayerModel *layer = createFunc(lm, parentLayer,layername, description, options);
 			layer->nodeId(lm->nextId());
-			layer->fillData();
-			lm->layerTree()->appendChild(parentLayer, layer);
+            layer->fillData(); 
+            addLayer(parentLayer, layer, lm);
             return layer;
         }
     }

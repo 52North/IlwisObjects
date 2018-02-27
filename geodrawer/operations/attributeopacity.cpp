@@ -12,24 +12,24 @@
 #include "coveragedisplay/draweroperation.h"
 #include "coveragedisplay/layermodel.h"
 #include "coveragedisplay/layermanager.h"
-#include "representationattributefillcolor.h"
+#include "attributeopacity.h"
 
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_OPERATION(RepresentationAttributeFillColor)
+REGISTER_OPERATION(AttributeOpacity)
 
-RepresentationAttributeFillColor::RepresentationAttributeFillColor()
+AttributeOpacity::AttributeOpacity()
 {
 
 }
 
-RepresentationAttributeFillColor::RepresentationAttributeFillColor(quint64 metaid, const Ilwis::OperationExpression &expr): DrawerOperation(metaid, expr)
+AttributeOpacity::AttributeOpacity(quint64 metaid, const Ilwis::OperationExpression &expr): DrawerOperation(metaid, expr)
 {
 
 }
 
-bool RepresentationAttributeFillColor::execute(ExecutionContext *ctx, SymbolTable &symTable)
+bool AttributeOpacity::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {
     if (_prepState == sNOTPREPARED)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
@@ -43,20 +43,23 @@ bool RepresentationAttributeFillColor::execute(ExecutionContext *ctx, SymbolTabl
         if ( item) {
             Raw raw = item->raw();
             if ( raw != rUNDEF){
-                rpr->colors()->setColor(raw,_color);
+                QColor clr = rpr->colors()->value2color(raw);
+                clr.setAlphaF(_opacity);
+                rpr->colors()->setColor(raw,clr);
             }
+            _layer->updateGeometry(true, true);
             _layer->add2ChangedProperties("buffers", true);
         }
     }
     return true;
 }
 
-OperationImplementation *RepresentationAttributeFillColor::create(quint64 metaid, const Ilwis::OperationExpression &expr)
+OperationImplementation *AttributeOpacity::create(quint64 metaid, const Ilwis::OperationExpression &expr)
 {
-    return new RepresentationAttributeFillColor(metaid, expr);
+    return new AttributeOpacity(metaid, expr);
 }
 
-OperationImplementation::State RepresentationAttributeFillColor::prepare(ExecutionContext *ctx, const SymbolTable &)
+OperationImplementation::State AttributeOpacity::prepare(ExecutionContext *ctx, const SymbolTable &)
 {
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
@@ -91,18 +94,18 @@ OperationImplementation::State RepresentationAttributeFillColor::prepare(Executi
         }
     }
     if ( _attribute == sUNDEF){
-        kernel()->issues()->log(QString(TR("attributefillcolor operation: Not a valid attribute : %1 (wrong domain?)").arg(attr)));
+        kernel()->issues()->log(QString(TR("attributeopacity operation: Not a valid attribute : %1 (wrong domain?)").arg(attr)));
         return sPREPAREFAILED;
     }
 
     if ( _item == sUNDEF){
-        kernel()->issues()->log(QString(TR("attributefillcolor operation: Not a valid item : %1 (wrong value?)").arg(attr)));
+        kernel()->issues()->log(QString(TR("attributeopacity operation: Not a valid item : %1 (wrong value?)").arg(attr)));
         return sPREPAREFAILED;
     }
-
-    _color = QColor(_expression.input<QString>(4));
-    if ( !_color.isValid()){
-        kernel()->issues()->log(QString(TR("attributefillcolor operation : Not a valid (%1) hexadecimal color code")).arg(_expression.input<QString>(3)));
+    bool ok;
+    _opacity = _expression.input<QString>(4).toDouble(&ok);
+    if (!ok || !(_opacity >=0  && _opacity <=1)){
+        kernel()->issues()->log(QString(TR("attributeopacity operation : Not a valid opacity value, must be 0 .. 1")).arg(_expression.input<QString>(3)));
         return sPREPAREFAILED;
     }
 
@@ -110,17 +113,17 @@ OperationImplementation::State RepresentationAttributeFillColor::prepare(Executi
 
 }
 
-quint64 RepresentationAttributeFillColor::createMetadata()
+quint64 AttributeOpacity::createMetadata()
 {
-    OperationResource operation({"ilwis://operations/attributefillcolor"});
-    operation.setSyntax("attributefillcolor(viewid, layerindex,attribute,itemname, color)");
-    operation.setDescription(TR("changes the fill color of an representation item of an attribute"));
+    OperationResource operation({"ilwis://operations/attributeopacity"});
+    operation.setSyntax("attributeopacity(viewid, layerindex,attribute,itemname, opacity)");
+    operation.setDescription(TR("changes the opacity of an representation item of an attribute"));
     operation.setInParameterCount({5});
     operation.addInParameter(0,itINTEGER , TR("view id"),TR("id of the view to which this drawer has to be added"));
     operation.addInParameter(1,itSTRING, TR("layer code"),TR("The name of the drawer or the type of drawer will be selected based on this parameter"));
-    operation.addInParameter(2,itSTRING , TR("attribute name"),TR("The attribute whose representation color needs to be changed"));
+    operation.addInParameter(2,itSTRING , TR("attribute name"),TR("The attribute whose representation opacity needs to be changed"));
     operation.addInParameter(3,itSTRING , TR("item name"),TR("the item to be changed"));
-    operation.addInParameter(4,itSTRING , TR("color"),TR("the new color of the representation item"));
+    operation.addInParameter(4,itDOUBLE , TR("opacity"),TR("the new color of the representation item"));
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization");
 

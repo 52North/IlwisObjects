@@ -26,7 +26,7 @@ ConvertAttributeDomain::ConvertAttributeDomain()
 
 }
 
-ConvertAttributeDomain::ConvertAttributeDomain(VisualAttribute *attr) : VisualPropertyEditor(attr, "convertattributedomain",TR("Convert domain"),QUrl("ConvertAttributeDomain.qml"))
+ConvertAttributeDomain::ConvertAttributeDomain(VisualAttribute *attr) : VisualPropertyEditor(attr, "convertattributedomain",TR("Change Color Scheme"),QUrl("ConvertAttributeDomain.qml"))
 {
 }
 

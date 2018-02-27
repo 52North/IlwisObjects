@@ -57,10 +57,10 @@ void NumericRepresentationSetter::prepare( const IIlwisObject &obj, const DataDe
         NumericRange roundedRange = MathHelper::roundRange(numrange.min(), numrange.max());
         double tickValue = roundedRange.min();
         while(tickValue <= numrange.max()){
-            _rprElements.push_back(new RepresentationElement(QString::number(tickValue),this));
+            _rprElements.push_back(new RepresentationElementModel(QString::number(tickValue),this));
             tickValue += roundedRange.resolution();
         }
-        _rprElements.push_back(new RepresentationElement(QString::number(tickValue),this));
+        _rprElements.push_back(new RepresentationElementModel(QString::number(tickValue),this));
 
         emit rprNameChanged();
     }
@@ -114,8 +114,8 @@ void NumericRepresentationSetter::setRepresentation(const QString &name)
 
 }
 
-QQmlListProperty<RepresentationElement> NumericRepresentationSetter::representationElements()
+QQmlListProperty<RepresentationElementModel> NumericRepresentationSetter::representationElements()
 {
-    return  QQmlListProperty<RepresentationElement>(this, _rprElements);
+    return  QQmlListProperty<RepresentationElementModel>(this, _rprElements);
 }
 

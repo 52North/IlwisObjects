@@ -84,6 +84,8 @@ public:
 
     static LayerModel *create(LayerModel *parentLayer,  const ICoverage& cov, LayerManager *lm, const IOOptions& options = IOOptions());
 
+   
+
     static LayerModel *create(LayerModel *parentLayer,  const QString& type, LayerManager *lm, const QString& layername, const QString& description="", const IOOptions& options= IOOptions());
     static int registerLayerModel(const QString& modelname, CreateLayer);
 
@@ -97,8 +99,7 @@ public:
 
 	void needUpdate(bool yesno);
 	bool needUpdate() const;
-
-
+    int nextId();
 
 signals:
     void removeLayer(const Ilwis::Resource& resource);
@@ -123,13 +124,14 @@ private:
     bool _zoomOutMode = false;
 	bool _panningMode = false;
     QString _layerListName = sUNDEF;
-	int nextId();
     quint32 _viewid = iUNDEF;
 	QQuickItem *_viewContainer = 0;
 	int _nodeCounter = 0;
     static quint32 _baseViewId;
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
+
+    static void addLayer(LayerModel * parentLayer, LayerModel * layer, LayerManager * lm);
 
 
 

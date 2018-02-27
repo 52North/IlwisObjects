@@ -10,13 +10,5 @@ Rectangle {
     width: parent.width
     height: 10
 
-    Controls.ColorPicker2{
-        x : 4
-        y : 4
-
-        onSelectedColorChanged: {
-            legendGrid.setColor(selectedColor)
-        }
-    }
 }
 

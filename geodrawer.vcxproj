@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\ui\LayersView</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\ui\LayersView\* /s /y /i</Command>
       <Message>Copy LayersView.dll to ..\output\win32release\bin\extensions\ui\LayersView</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -145,9 +145,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\ui\LayersView
-copy /Y geodrawer\qml\*.qml ..\output\win32debug\bin\extensions\ui\LayersView\qml
-copy /Y geodrawer\qml\*.js ..\output\win32debug\bin\extensions\ui\LayersView\qml</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\ui\LayersView\* /s /y /i</Command>
       <Message>Copy LayersView.dll to ..\output\win32debug\bin\extensions\ui\LayersView</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -177,10 +175,13 @@ copy /Y geodrawer\qml\*.js ..\output\win32debug\bin\extensions\ui\LayersView\qml
     <ClCompile Include="GeneratedFiles\Release\moc_vectorlayermodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="geodrawer\backgroundlayer.cpp" />
     <ClCompile Include="geodrawer\featurelayermodel.cpp" />
+    <ClCompile Include="geodrawer\gridlayer.cpp" />
     <ClCompile Include="geodrawer\linelayermodel.cpp" />
     <ClCompile Include="geodrawer\operations\adddrawer.cpp" />
     <ClCompile Include="geodrawer\drawerattributesetters\basespatialattributesetter.cpp" />
+    <ClCompile Include="geodrawer\operations\attributeopacity.cpp" />
     <ClCompile Include="geodrawer\pointlayermodel.cpp" />
     <ClCompile Include="geodrawer\polygonlayermodel.cpp" />
     <ClCompile Include="geodrawer\rasterlayermodel.cpp" />
@@ -219,10 +220,13 @@ copy /Y geodrawer\qml\*.js ..\output\win32debug\bin\extensions\ui\LayersView\qml
     <ClCompile Include="geodrawer\vectorlayermodel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="geodrawer\backgroundlayer.h" />
     <ClInclude Include="geodrawer\featurelayermodel.h" />
+    <ClInclude Include="geodrawer\gridlayer.h" />
     <ClInclude Include="geodrawer\linelayermodel.h" />
     <ClInclude Include="geodrawer\operations\adddrawer.h" />
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h" />
+    <ClInclude Include="geodrawer\operations\attributeopacity.h" />
     <ClInclude Include="geodrawer\tesselation\bucketalloc.h" />
     <ClInclude Include="geodrawer\tesselation\dict.h" />
     <ClInclude Include="geodrawer\tesselation\geom.h" />
@@ -326,7 +330,7 @@ copy /Y geodrawer\qml\*.js ..\output\win32debug\bin\extensions\ui\LayersView\qml
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT5MSVC_64" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

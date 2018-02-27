@@ -99,8 +99,8 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\gdalconnector</Command>
-      <Message>Copy gdalconnector.dll to ..\output\win32release\bin\extensions\gdalconnector</Message>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\gdalconnector\* /S /Y /I</Command>
+      <Message>xCopy gdalconnector.dll to ..\output\win32release\bin\extensions\gdalconnector</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -144,8 +144,8 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\gdalconnector</Command>
-      <Message>Copy gdalconnector.dll to ..\output\win32debug\bin\extensions\gdalconnector</Message>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\gdalconnector\* /S /Y /I</Command>
+      <Message>xCopy gdalconnector.dll to ..\output\win32debug\bin\extensions\gdalconnector</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -202,7 +202,7 @@
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT5MSVC_64" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

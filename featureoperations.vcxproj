@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;FEATUREOPERATIONS_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\featureoperations</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\featureoperations\* /s /y /i</Command>
       <Message>Copy featureoperations.dll to ..\output\win32release\bin\extensions\featureoperations</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -144,7 +144,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;FEATUREOPERATIONS_LIBRARY;QT_PLUGIN;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\featureoperations</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\featureoperations\* /s /y /i</Command>
       <Message>Copy featureoperations.dll to ..\output\win32debug\bin\extensions\featureoperations</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -187,7 +187,7 @@
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT5MSVC_64" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

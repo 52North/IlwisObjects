@@ -12,20 +12,13 @@ Item {
     height: parent ? parent.height : 0
     property var editor
 
-    SplitView{
-        anchors.fill: parent
-        orientation: Qt.Vertical
-        LegendGrid{
-            id : legendGrid
-            height : parent.height
-        }
 
-        LegendItemEditor{
-
-            id : itemEditor
-        }
-
+    LegendGrid{
+            anchors.fill: parent
+        id : legendGrid
+        //height : parent.height
     }
+
     states: [
         State { name: "visible"
 

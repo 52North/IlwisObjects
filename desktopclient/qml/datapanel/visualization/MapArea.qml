@@ -48,7 +48,7 @@ DropArea {
 
     Rectangle {
         anchors.fill: parent
-        anchors.margins: 30
+        anchors.margins: 20
 
         Controls.DummySpatial{
             id: renderer

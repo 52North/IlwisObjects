@@ -84,9 +84,6 @@
     <ClCompile Include="geodrawer\openglhelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="geodrawer\operations\representationattributefillcolor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="geodrawer\drawerattributesetters\simplelinesetter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -216,6 +213,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_textureheap.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="geodrawer\gridlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\backgroundlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\operations\representationattributefillcolor.cpp">
+      <Filter>Source Files\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\operations\attributeopacity.cpp">
+      <Filter>Source Files\operations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h">
@@ -234,9 +243,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="geodrawer\operations\removedrawer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="geodrawer\operations\representationattributefillcolor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="geodrawer\drawerattributesetters\simplelinesetter.h">
@@ -332,6 +338,18 @@
     <ClInclude Include="geodrawer\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="geodrawer\gridlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\backgroundlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\operations\representationattributefillcolor.h">
+      <Filter>Header Files\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\operations\attributeopacity.h">
+      <Filter>Header Files\operations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
@@ -343,12 +361,6 @@
     <None Include="geodrawer\qml\three.js">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\three.js" />
-    <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
   </ItemGroup>

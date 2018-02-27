@@ -99,12 +99,12 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin\extensions\ui\SMCE
-copy /Y smce\qmldir ..\output\win32release\bin\extensions\ui\SMCE
-copy /Y smce\*.qml ..\output\win32release\bin\extensions\ui\SMCE
-xcopy  /S /Y /I smce\table ..\output\win32release\bin\extensions\ui\SMCE\table
-xcopy  /S /Y /I smce\tree ..\output\win32release\bin\extensions\ui\SMCE\tree
-xcopy  /S /Y /I smce\controls ..\output\win32release\bin\extensions\ui\SMCE\controls</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\ui\SMCE\* /s /y /i
+xcopy  smce\qmldir ..\output\win32release\bin\extensions\ui\SMCE\* /s /y /i
+xcopy  smce\*.qml ..\output\win32release\bin\extensions\ui\SMCE\* /s /y /i
+xcopy  /S /Y /I smce\table ..\output\win32release\bin\extensions\ui\SMCE\table\*
+xcopy  /S /Y /I smce\tree ..\output\win32release\bin\extensions\ui\SMCE\tree\*
+xcopy  /S /Y /I smce\controls ..\output\win32release\bin\extensions\ui\SMCE\controls\*</Command>
       <Message>Copy SMCE.dll to ..\output\win32release\bin\extensions\ui\SMCE</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -149,12 +149,12 @@ xcopy  /S /Y /I smce\controls ..\output\win32release\bin\extensions\ui\SMCE\cont
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;QT_QUICK_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_QML_LIB;QT_NETWORK_LIB;QT_SQL_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin\extensions\ui\SMCE
-copy /Y smce\qmldir ..\output\win32debug\bin\extensions\ui\SMCE
-copy /Y smce\*.qml ..\output\win32debug\bin\extensions\ui\SMCE
-xcopy  /S /Y /I smce\table ..\output\win32debug\bin\extensions\ui\SMCE\table
-xcopy  /S /Y /I smce\tree ..\output\win32debug\bin\extensions\ui\SMCE\tree
-xcopy  /S /Y /I smce\controls ..\output\win32debug\bin\extensions\ui\SMCE\controls</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\ui\SMCE\* /s /y /i
+xcopy smce\qmldir ..\output\win32debug\bin\extensions\ui\SMCE\* /s /y /i
+xcopy smce\*.qml ..\output\win32debug\bin\extensions\ui\SMCE\* /s /y /i
+xcopy  /S /Y /I smce\table ..\output\win32debug\bin\extensions\ui\SMCE\table\*
+xcopy  /S /Y /I smce\tree ..\output\win32debug\bin\extensions\ui\SMCE\tree\*
+xcopy  /S /Y /I smce\controls ..\output\win32debug\bin\extensions\ui\SMCE\controls\*</Command>
       <Message>Copy SMCE.dll to ..\output\win32debug\bin\extensions\ui\SMCE</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -251,7 +251,7 @@ xcopy  /S /Y /I smce\controls ..\output\win32debug\bin\extensions\ui\SMCE\contro
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="$(DefaultQtVersion)" />
+      <UserProperties UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" Qt5Version_x0020_x64="QT5MSVC_64" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

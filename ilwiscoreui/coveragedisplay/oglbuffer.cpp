@@ -92,5 +92,12 @@ int OGLBuffer::bufferCount() const
 	return _buffers.size();
 }
 
+void OGLBuffer::clear() {
+    _buffers = std::vector<OGLBufferChunck>();
+    _features = std::unordered_map<quint64, FeatureMarker>();
+    _currentActiveBuffer = 0;
+
+}
+
 
 

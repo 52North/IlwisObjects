@@ -116,7 +116,7 @@ void StartIlwis::init() {
         qmlRegisterType<VisualPropertyEditor>("VisualPropertyEditor", 1,0, "VisualPropertyEditor");
         qmlRegisterType<NumericRepresentationSetter>("NumericRepresentationSetter", 1,0, "NumericRepresentationSetter");
         qmlRegisterType<ItemRepresentationSetter>("ItemRepresentationSetter", 1,0, "ItemRepresentationSetter");
-        qmlRegisterType<RepresentationElement>("RepresentationElement", 1,0, "RepresentationElement");
+        qmlRegisterType<RepresentationElementModel>("RepresentationElement", 1,0, "RepresentationElement");
         qmlRegisterType<ProjectionParameterModel>("ProjectionParameterModel", 1,0, "ProjectionParameterModel");
         qmlRegisterType<WorkflowModel>("WorkflowModel", 1,0, "WorkflowModel");
        
