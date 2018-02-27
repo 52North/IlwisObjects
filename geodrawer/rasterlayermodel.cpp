@@ -204,7 +204,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 
         const IGeoReference & gr = _raster->georeference();
         bool grLinear = gr->grfType<CornersGeoReference>(); // nasty
-        const ICoordinateSystem & rootCsy = layersManager()->rootLayer()->screenCsy();
+        const ICoordinateSystem & rootCsy = layerManager()->rootLayer()->screenCsy();
         const ICoordinateSystem & rasterCsy = _raster->coordinateSystem();
         bool convNeeded = rootCsy.isValid() && rasterCsy.isValid() && !rootCsy->isEqual(rasterCsy.ptr()) && !rootCsy->isUnknown() && !rasterCsy->isUnknown();
         _linear = grLinear && !convNeeded;
@@ -267,19 +267,19 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
     Coordinate b2 = gr->pixel2Coord(Pixel(imageOffsetX + imageSizeX, imageOffsetY)); // maxx, miny
     Coordinate b3 = gr->pixel2Coord(Pixel(imageOffsetX + imageSizeX, imageOffsetY + imageSizeY)); // maxx, maxy
     Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY + imageSizeY)); // minx, maxy
-    Coordinate c1 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
-    Coordinate c2 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
-    Coordinate c3 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
-    Coordinate c4 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
+    Coordinate c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
+    Coordinate c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
+    Coordinate c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
+    Coordinate c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
     if (!(c1.isValid() && c2.isValid() && c3.isValid() && c4.isValid()))
         return;
 
-    Size<> viewport = layersManager()->rootLayer()->screenGrf()->size();
+    Size<> viewport = layerManager()->rootLayer()->screenGrf()->size();
 
-    Pixel win1 = layersManager()->rootLayer()->screenGrf()->coord2Pixel(c1);
-    Pixel win2 = layersManager()->rootLayer()->screenGrf()->coord2Pixel(c2);
-    Pixel win3 = layersManager()->rootLayer()->screenGrf()->coord2Pixel(c3);
-    Pixel win4 = layersManager()->rootLayer()->screenGrf()->coord2Pixel(c4);
+    Pixel win1 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c1);
+    Pixel win2 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c2);
+    Pixel win3 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c3);
+    Pixel win4 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c4);
     bool containswin1 = win1.x >= 0 && win1.y >= 0 && viewport.contains(win1.x, win1.y);
     bool containswin2 = win2.x >= 0 && win2.y >= 0 && viewport.contains(win2.x, win2.y);
     bool containswin3 = win3.x >= 0 && win3.y >= 0 && viewport.contains(win3.x, win3.y);
@@ -351,7 +351,7 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
 void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor)
 {
     const IGeoReference & gr = _raster->georeference();
-    Coordinate center = layersManager()->rootLayer()->viewEnvelope().center();
+    Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
     if (_linear) {
         // quad bounds (the absolute texture coordinates of the current quad, assuming the entire image is [0,1])
         double s1 = imageOffsetX / (double)_width;
@@ -363,10 +363,10 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
         Coordinate b2 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), imageOffsetY)); // maxx, miny
         Coordinate b3 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), min(imageOffsetY + imageSizeY, _imageHeight))); // maxx, maxy
         Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, min(imageOffsetY + imageSizeY, _imageHeight))); // minx, maxy
-        c1 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
-        c2 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
-        c3 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
-        c4 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
+        c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
+        c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
+        c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
+        c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
 
         c1 -= center;
         c2 -= center;
@@ -388,16 +388,16 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
             double t1 = imageOffsetY / (double)_height;
             Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY));
             Coordinate b2 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY));
-            c1 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
-            c2 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
+            c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
+            c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
             c1 -= center;
             c2 -= center;
             for (int y = 1; y <= iSize ; ++y) {
                 double t2 = t1 + rowStep / (double)_height;
                 Coordinate b3 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY + rowStep * y));
                 Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY + rowStep * y));
-                c3 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
-                c4 = layersManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
+                c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
+                c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
                 c3 -= center;
                 c4 -= center;
                 quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
