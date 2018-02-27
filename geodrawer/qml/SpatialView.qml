@@ -173,7 +173,7 @@ Rectangle {
 			var vertices = new Float32Array(layer.vertices(bufferIndex, type))
 
 			geometry.addAttribute( 'position', new GL.THREE.BufferAttribute( vertices, 3 ) );
-			if ( !layer.isSupportLayer){
+			if ( !layer.isSupportLayer && type != "rastercoverage"){
 				var colors = new Float32Array(layer.colors(bufferIndex,type))
 				geometry.addAttribute( 'color', new GL.THREE.BufferAttribute( colors, 3 ) );
 			}
@@ -233,7 +233,58 @@ Rectangle {
 			}
             var n2 = Date.now()
             console.debug("duration=", n2, n, (n2 - n)/1000.0)
-
+            if (layer.drawType == "raster") {
+			    var palette = layer.palette;
+			    var tPalette = new GL.THREE.DataTexture(
+				    new Uint8Array(palette.data),
+				    palette.width,
+				    palette.height,
+				    GL.THREE.RGBAFormat,
+				    GL.THREE.UnsignedByteType);
+			    tPalette.needsUpdate = true
+                var quads = layer.numberOfBuffers("rastercoverage");
+                for (var i=0; i < quads;++i){
+                    var geometry = new GL.THREE.BufferGeometry();
+                    canvas.setGeometry(layer, i,"rastercoverage",geometry);
+                    var uvs = new Float32Array(layer.uvs(i))
+                    geometry.addAttribute('uv', new GL.THREE.BufferAttribute( uvs, 2 ) );
+                    var material;
+                    var texture = layer.texture(i);
+                    if (texture.valid) {
+				        var tTexture = new GL.THREE.DataTexture(
+					        new Uint8Array(texture.data),
+					        texture.width,
+					        texture.height,
+					        GL.THREE.AlphaFormat,
+					        GL.THREE.UnsignedByteType,
+					        GL.THREE.UVMapping);
+				        tTexture.needsUpdate = true
+				        var uniforms = {
+					        texture1: { type: "t", value: tTexture },
+                            uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
+					        palette: { type: "t", value: tPalette }
+				        };
+                        material = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
+				        material.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
+				        material.fragmentShader =
+					        'varying vec2 vUv;' +
+					        'uniform sampler2D texture1;uniform sampler2D palette;' +
+					        'void main() { ' +
+						        'float x = texture2D(texture1,vUv).a;' +
+						        'float y = 0.5;'+
+						        'gl_FragColor = texture2D(palette,vec2(x,y));' +
+					        '}'
+				        material.uniforms = uniforms
+				        material.needsUpdate = true
+                    } else
+                        material = new GL.THREE.MeshBasicMaterial({ side : GL.THREE.DoubleSide, color: 0x00FF00, transparent : false, opacity : 1.0 });
+                    var quad = new GL.THREE.Mesh( geometry, material );
+                    quad.name = layer.layerId;
+                    quad.visible = layer.vproperty("active");
+                    layer.addMeshIndex(quad.id);
+                    scene.add(quad);
+                }
+            }
 			layer.updateGeometry = false
 		}
 
@@ -250,9 +301,9 @@ Rectangle {
 			var ok = true
 			if ( propertyType == "buffers"){
 	            if ( layer.updateGeometry){
-                    ok = layer.prepare(2)
+                    ok = layer.prepare(2) // ptGEOMETRY = 2
                 }else{
-					ok = layer.prepare(1)
+					ok = layer.prepare(1) // ptRENDER = 1
 				}
 				if ( ok){
 					setScene(layer)
