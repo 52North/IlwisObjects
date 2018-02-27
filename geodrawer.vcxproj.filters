@@ -156,15 +156,6 @@
     <ClCompile Include="geodrawer\rasterlayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="geodrawer\rasterimage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_rasterimage.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_rasterimage.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="geodrawer\pointlayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -206,6 +197,24 @@
     </ClCompile>
     <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp">
       <Filter>Source Files\tesselation</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_rasterlayermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_rasterlayermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\textureheap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_textureheap.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_textureheap.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +293,6 @@
     <ClInclude Include="geodrawer\featurelayermodel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="geodrawer\rasterlayermodel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="geodrawer\pointlayermodel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -323,6 +329,9 @@
     <ClInclude Include="geodrawer\tesselation\tesselator.h">
       <Filter>Header Files\tesselation</Filter>
     </ClInclude>
+    <ClInclude Include="geodrawer\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
@@ -335,7 +344,10 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="geodrawer\qml\SpatialView.qml" />
-    <None Include="geodrawer\qml\draw.js" />
+    <None Include="geodrawer\qml\three.js" />
+    <None Include="geodrawer\qml\SpatialView.qml" />
+    <None Include="geodrawer\qml\three.js" />
+    <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
@@ -344,18 +356,18 @@
     <None Include="geodrawer\qml\SpatialView.qml">
       <Filter>Distribution Files</Filter>
     </None>
-    <None Include="geodrawer\qml\draw.js">
-      <Filter>Distribution Files</Filter>
-    </None>
     <None Include="geodrawer\qml\three.js">
       <Filter>Distribution Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="geodrawer\rasterimage.h">
+    <CustomBuild Include="geodrawer\vectorlayermodel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="geodrawer\vectorlayermodel.h">
+    <CustomBuild Include="geodrawer\rasterlayermodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="geodrawer\textureheap.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
