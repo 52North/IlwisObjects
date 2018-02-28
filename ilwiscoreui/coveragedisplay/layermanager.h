@@ -131,7 +131,7 @@ private:
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
 
-    static void addLayer(LayerModel * parentLayer, LayerModel * layer, LayerManager * lm);
+    static void addLayer(LayerModel * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
 
 
 
