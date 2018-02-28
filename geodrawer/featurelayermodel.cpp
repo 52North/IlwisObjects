@@ -40,6 +40,7 @@ FeatureLayerModel::FeatureLayerModel(LayerManager *manager, QObject *parent, con
 	_isValid = true;
 	_icon = "vector.png";
 	_layerType = itFEATURELAYER;
+    _hasFixedStructure = true;
 
 	fillData();
 }
@@ -54,8 +55,8 @@ void FeatureLayerModel::coverage(const ICoverage &cov)
 	if (_features->featureCount(itLINE) > 0)
 		layerManager()->create(this, "linelayer", layerManager(), "lines of " + cov->name(), cov->description());
 	if (_features->featureCount(itPOLYGON) > 0) {
+        layerManager()->create(this, "linelayer", layerManager(), "boundaries of " + cov->name(), cov->description(), { "support", true });
 		layerManager()->create(this, "arealayer", layerManager(), "areas of " + cov->name(), cov->description());
-		layerManager()->create(this, "linelayer", layerManager(), "boundaries of " + cov->name(), cov->description(), { "support", true });
 	}
 		
     fillAttributes();
