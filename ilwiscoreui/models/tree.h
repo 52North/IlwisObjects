@@ -55,6 +55,7 @@ public:
 	int childCount() const;
 	TreeNode *parentItem();
 	virtual bool isValid() const;
+ 
 	
 
 signals:
@@ -100,7 +101,7 @@ public:
 	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
     QModelIndex index(int row, int column, TreeNode * parentItem) const;
 	void appendChild(TreeNode * parentItem, TreeNode * child);
-	void changed(const QModelIndex& index);
+	void updateRow(const QModelIndex& rowIndex);
     bool insertChild(int position, const QModelIndex &parent, TreeNode * child);
 	QModelIndex parent(const QModelIndex &index) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
