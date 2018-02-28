@@ -77,6 +77,7 @@ public:
 	Q_INVOKABLE bool isPrepared(quint32 type) const;
     Q_INVOKABLE virtual void setActiveAttribute(int idx);
 
+
 	LayerModel();
     explicit LayerModel(TreeNode *parent);
     LayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
@@ -126,6 +127,7 @@ public:
     void order(qint32 n);
     qint32 order() const;
     virtual bool isCoverageBased() const;
+    bool hasFixedStructure() const;
 
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
@@ -156,6 +158,7 @@ protected:
 	   int _prepared = 0;
 	   IlwisTypes _layerType = itUNKNOWN;
 	   bool _isValid = false;
+       bool _hasFixedStructure = false;
 
 private:
     LayerManager *_layerManager;
