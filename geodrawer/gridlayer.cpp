@@ -22,6 +22,7 @@ GridLayer::GridLayer(LayerManager *manager, QObject *parent, const IOOptions& op
     _icon = "vector.png";
     _layerType = itGRIDLAYER;
     active(false);
+    _hasFixedStructure = true;
 
     PrimaryGridLayer *primaryGrid = new PrimaryGridLayer(manager, this, options);
     primaryGrid->nodeId(manager->nextId());
