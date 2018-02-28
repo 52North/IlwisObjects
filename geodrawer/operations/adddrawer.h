@@ -22,10 +22,12 @@ public:
 
 protected:
 	QString _layername;
+    IOOptions _options;
+
 private:
     ICoverage _coverage;
     QString _drawerCode;
-    IOOptions _options;
+
 
 
     NEW_OPERATION(AddDrawer);
@@ -48,10 +50,30 @@ public:
 private:
 	ICoverage _coverage;
 	QString _drawerCode;
-	IOOptions _options;
 
 
 	NEW_OPERATION(AddDrawerWithName);
+};
+
+class AddDrawerWithNameAndTreePlace : public AddDrawerWithName
+{
+public:
+
+    AddDrawerWithNameAndTreePlace(quint64 metaid, const Ilwis::OperationExpression &expr);
+
+    bool execute(ExecutionContext *ctx, SymbolTable& symTable);
+    static Ilwis::OperationImplementation *create(quint64 metaid, const Ilwis::OperationExpression& expr);
+    Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
+
+    static quint64 createMetadata();
+
+
+
+private:
+    ICoverage _coverage;
+    QString _drawerCode;
+
+    NEW_OPERATION(AddDrawerWithNameAndTreePlace);
 };
 }
 }
