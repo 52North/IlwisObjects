@@ -19,6 +19,9 @@
 #include "georefimplementation.h"
 #include "simpelgeoreference.h"
 #include "cornersgeoreference.h"
+#include "geos/geom/CoordinateArraySequence.h"
+#include "geos/geom/LinearRing.h"
+#include "geos/geom/Polygon.h"
 #include <QVector3D>
 #include <QVector4D>
 #include <QOpenGLShaderProgram>
@@ -34,7 +37,15 @@ Quad::Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, con
 , imageSizeX(imageSizeX)
 , imageSizeY(imageSizeY)
 , zoomFactor(zoomFactor)
+, id(-1)
+, active(true)
+, readRasterData(true)
 {
+}
+
+bool Quad::operator ==(const Ilwis::Ui::Quad &_quad)
+{
+    return imageOffsetX == _quad.imageOffsetX && imageOffsetY == _quad.imageOffsetY && imageSizeX == _quad.imageSizeX && imageSizeY == _quad.imageSizeY && zoomFactor == _quad.zoomFactor;
 }
 
 void Quad::addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinate & c3, const Coordinate & c4, const double s1, const double t1, const double s2, const double t2)
@@ -71,6 +82,10 @@ void Quad::addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinat
     indices.push_back(2 + offset);
     indices.push_back(1 + offset);
     indices.push_back(3 + offset);
+}
+
+void Quad::setId(quint32 id) {
+    this->id = id;
 }
 
 RasterLayerModel::RasterLayerModel()
@@ -208,9 +223,9 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         const ICoordinateSystem & rasterCsy = _raster->coordinateSystem();
         bool convNeeded = rootCsy.isValid() && rasterCsy.isValid() && !rootCsy->isEqual(rasterCsy.ptr()) && !rootCsy->isUnknown() && !rasterCsy->isUnknown();
         _linear = grLinear && !convNeeded;
-
+        for (std::vector<Quad>::iterator quad = _quads.begin(); quad != _quads.end(); ++quad)
+            quad->active = false;
         DivideImage(0, 0, _width, _height);
-
         _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 	}
     if (hasType(prepType, LayerModel::ptRENDER)) {
@@ -241,6 +256,7 @@ void RasterLayerModel::init()
     _height = pow(2, log2height);
 
     refreshPalette();
+    connect(layerManager(), &LayerManager::needUpdateChanged, this, &RasterLayerModel::requestRedraw);
 }
 
 #ifndef sqr
@@ -280,11 +296,29 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
     Pixel win2 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c2);
     Pixel win3 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c3);
     Pixel win4 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c4);
-    bool containswin1 = win1.x >= 0 && win1.y >= 0 && viewport.contains(win1.x, win1.y);
-    bool containswin2 = win2.x >= 0 && win2.y >= 0 && viewport.contains(win2.x, win2.y);
-    bool containswin3 = win3.x >= 0 && win3.y >= 0 && viewport.contains(win3.x, win3.y);
-    bool containswin4 = win4.x >= 0 && win4.y >= 0 && viewport.contains(win4.x, win4.y);
-    bool fContains = containswin1 || containswin2 || containswin3 || containswin4;
+    geos::geom::GeometryFactory factory;
+    const std::vector<geos::geom::Geometry *> holes;
+    geos::geom::CoordinateArraySequence * coordsTile = new geos::geom::CoordinateArraySequence();
+    coordsTile->add(Coordinate(win1.x, win1.y));
+    coordsTile->add(Coordinate(win2.x, win2.y));
+    coordsTile->add(Coordinate(win3.x, win3.y));
+    coordsTile->add(Coordinate(win4.x, win4.y));
+    coordsTile->add(Coordinate(win1.x, win1.y));
+    const geos::geom::LinearRing ringTile(coordsTile, &factory);
+    geos::geom::Polygon * polyTile(factory.createPolygon(ringTile, holes));
+
+    geos::geom::CoordinateArraySequence * coordsViewport = new geos::geom::CoordinateArraySequence();
+    coordsViewport->add(Coordinate(0, 0));
+    coordsViewport->add(Coordinate(viewport.xsize(), 0));
+    coordsViewport->add(Coordinate(viewport.xsize(), viewport.ysize()));
+    coordsViewport->add(Coordinate(0, viewport.ysize()));
+    coordsViewport->add(Coordinate(0, 0));
+    const geos::geom::LinearRing ringViewport(coordsViewport, &factory);
+    geos::geom::Polygon * polyViewport(factory.createPolygon(ringViewport, holes));
+
+    bool fContains = !polyViewport->disjoint(polyTile);
+    delete polyTile;
+    delete polyViewport;
     if (!fContains)
         return;
 
@@ -352,60 +386,64 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
 {
     const IGeoReference & gr = _raster->georeference();
     Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
-    if (_linear) {
-        // quad bounds (the absolute texture coordinates of the current quad, assuming the entire image is [0,1])
-        double s1 = imageOffsetX / (double)_width;
-        double t1 = imageOffsetY / (double)_height;
-        double s2 = min(imageOffsetX + imageSizeX, _imageWidth) / (double)_width;
-        double t2 = min(imageOffsetY + imageSizeY, _imageHeight) / (double)_height;
-
-        Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY)); // minx, miny
-        Coordinate b2 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), imageOffsetY)); // maxx, miny
-        Coordinate b3 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), min(imageOffsetY + imageSizeY, _imageHeight))); // maxx, maxy
-        Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, min(imageOffsetY + imageSizeY, _imageHeight))); // minx, maxy
-        c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
-        c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
-        c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
-        c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
-
-        c1 -= center;
-        c2 -= center;
-        c3 -= center;
-        c4 -= center;
-
-        Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
-        quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
-        _quads.push_back(quad);
+    Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
+    std::vector<Quad>::iterator & _quad = std::find(_quads.begin(), _quads.end(), quad);
+    if (_quad != _quads.end()) {
+        _quad->active = true;
     } else {
-        const unsigned int iSize = 10; // this makes 100 quads, thus 200 triangles per texture
-        // avoid plotting the "added" portion of the map that was there to make the texture size a power of 2
-        double colStep = min(imageSizeX, _imageWidth - imageOffsetX) / (double)iSize;
-        double rowStep = min(imageSizeY, _imageHeight - imageOffsetY) / (double)iSize;
-        Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
-        double s1 = imageOffsetX / (double)_width;
-        for (int x = 0; x < iSize; ++x) {
-            double s2 = s1 + colStep / (double)_width;
+        if (_linear) {
+            // quad bounds (the absolute texture coordinates of the current quad, assuming the entire image is [0,1])
+            double s1 = imageOffsetX / (double)_width;
             double t1 = imageOffsetY / (double)_height;
-            Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY));
-            Coordinate b2 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY));
+            double s2 = min(imageOffsetX + imageSizeX, _imageWidth) / (double)_width;
+            double t2 = min(imageOffsetY + imageSizeY, _imageHeight) / (double)_height;
+
+            Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY)); // minx, miny
+            Coordinate b2 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), imageOffsetY)); // maxx, miny
+            Coordinate b3 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), min(imageOffsetY + imageSizeY, _imageHeight))); // maxx, maxy
+            Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, min(imageOffsetY + imageSizeY, _imageHeight))); // minx, maxy
             c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
             c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
+            c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
+            c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
+
             c1 -= center;
             c2 -= center;
-            for (int y = 1; y <= iSize ; ++y) {
-                double t2 = t1 + rowStep / (double)_height;
-                Coordinate b3 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY + rowStep * y));
-                Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY + rowStep * y));
-                c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
-                c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
-                c3 -= center;
-                c4 -= center;
-                quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
-                t1 = t2;
-                c1 = c4;
-                c2 = c3;
+            c3 -= center;
+            c4 -= center;
+
+            quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
+        } else {
+            const unsigned int iSize = 10; // this makes 100 quads, thus 200 triangles per texture
+            // avoid plotting the "added" portion of the map that was there to make the texture size a power of 2
+            double colStep = min(imageSizeX, _imageWidth - imageOffsetX) / (double)iSize;
+            double rowStep = min(imageSizeY, _imageHeight - imageOffsetY) / (double)iSize;
+            Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
+            double s1 = imageOffsetX / (double)_width;
+            for (int x = 0; x < iSize; ++x) {
+                double s2 = s1 + colStep / (double)_width;
+                double t1 = imageOffsetY / (double)_height;
+                Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY));
+                Coordinate b2 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY));
+                c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
+                c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
+                c1 -= center;
+                c2 -= center;
+                for (int y = 1; y <= iSize; ++y) {
+                    double t2 = t1 + rowStep / (double)_height;
+                    Coordinate b3 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY + rowStep * y));
+                    Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY + rowStep * y));
+                    c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
+                    c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
+                    c3 -= center;
+                    c4 -= center;
+                    quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
+                    t1 = t2;
+                    c1 = c4;
+                    c2 = c3;
+                }
+                s1 = s2;
             }
-            s1 = s2;
         }
         _quads.push_back(quad);
     }
@@ -465,6 +503,8 @@ QVariantMap RasterLayerModel::texture(qint32 textureNr) {
             result["height"] = sizeY / zoomFactor;
             result["uvmap"] = uvmap;
             result["valid"] = true;
+            if (zoomFactor == quad.zoomFactor)
+                quad.readRasterData = false;
         }
         else
             result["valid"] = false;
@@ -501,6 +541,43 @@ void RasterLayerModel::refreshPalette() {
 
 QVariantMap RasterLayerModel::palette() {
     return _palette;
+}
+
+quint32 RasterLayerModel::quadId(qint32 bufferIndex)
+{
+    if (bufferIndex < _quads.size())
+        return _quads[bufferIndex].id;
+    else
+        return -1;
+}
+
+void RasterLayerModel::setQuadId(qint32 bufferIndex, quint32 id) {
+    if (bufferIndex < _quads.size())
+        _quads[bufferIndex].setId(id);
+}
+
+bool RasterLayerModel::quadActive(qint32 bufferIndex) {
+    if (bufferIndex < _quads.size())
+        return _quads[bufferIndex].active;
+    else
+        return false;
+
+}
+
+bool RasterLayerModel::quadNeedsUpdate(qint32 bufferIndex) {
+    if (bufferIndex < _quads.size())
+        return _quads[bufferIndex].readRasterData;
+    else
+        return false;
+}
+
+void RasterLayerModel::cleanupInactiveQuads() {
+    for (qint32 i = _quads.size() - 1; i >= 0; --i) {
+        if (!_quads[i].active) {
+            _quads[i] = _quads.back();
+            _quads.pop_back();
+        }
+    }
 }
 
 void RasterLayerModel::requestRedraw() {
