@@ -112,8 +112,8 @@ void RootLayerModel::scrollInfo(const QVariantMap & si)
 			double dy = yold - _zoomEnvelope.max_corner().y;
 			_zoomEnvelope.min_corner().y -= dy; // keep the height the same
 			center = _zoomEnvelope.center();
-
 		}
+		zoomEnvelope(_zoomEnvelope);
 		_cameraPosition.x = center.x - _viewEnvelope.center().x;
 		_cameraPosition.y = center.y - _viewEnvelope.center().y;
 		layerManager()->refresh();
