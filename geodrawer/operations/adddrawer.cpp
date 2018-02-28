@@ -198,3 +198,64 @@ Ilwis::OperationImplementation::State AddDrawerWithName::prepare(ExecutionContex
 	return sPREPARED;
 
 }
+
+//-----------------------------------------------------------------------------------------------------
+REGISTER_OPERATION(AddDrawerWithNameAndTreePlace)
+
+quint64 AddDrawerWithNameAndTreePlace::createMetadata()
+{
+    OperationResource operation({ "ilwis://operations/adddrawer" });
+    operation.setSyntax("adddrawer(viewid, parent,datasource,typename,layername,aboveLayer)");
+    operation.setLongName(TR("Add Layer with Name"));
+    operation.setDescription(TR("adds a new drawer to the layerview identified by viewid"));
+    operation.setInParameterCount({ 7 });
+    operation.addInParameter(0, itINTEGER, TR("view id"), TR("id of the view to which this drawer has to be added"));
+    operation.addInParameter(1, itSTRING, TR("parent"), TR("indicates the parent of the layer. If it is empty it will be added under the global layer. Parent is a '|' delimited string of layer names"));
+    operation.addInParameter(2, itSTRING, TR("Data source"), TR("The url that is used to retrieve the data for this layer. It may be empty in the case oof layers that are not based on a data source"));
+    operation.addInParameter(3, itSTRING, TR("Typename"), TR("which data type is represented by this url or the type of drawer that should be created in case of layers that are not based on a datasource"));
+    operation.addInParameter(4, itBOOL, TR("Visible"), TR("Should the layer initially be visible"));
+    operation.addInParameter(5, itSTRING, TR("Layer Name"), TR("The name of the layer as displayed in the UI"));
+    operation.addInParameter(6, itINT32, TR("Above Layer"), TR("The node id above which the layer will be placed"));
+
+    operation.setOutParameterCount({ 0 });
+    operation.setKeywords("visualization");
+
+    mastercatalog()->addItems({ operation });
+    return operation.id();
+}
+
+AddDrawerWithNameAndTreePlace::AddDrawerWithNameAndTreePlace(quint64 metaid, const Ilwis::OperationExpression &expr) : AddDrawerWithName(metaid, expr)
+{
+
+}
+
+OperationImplementation *AddDrawerWithNameAndTreePlace::create(quint64 metaid, const OperationExpression &expr)
+{
+    return new AddDrawerWithNameAndTreePlace(metaid, expr);
+}
+
+bool AddDrawerWithNameAndTreePlace::execute(ExecutionContext *ctx, SymbolTable &symTable)
+{
+    if (_prepState == sNOTPREPARED)
+        if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
+            return false;
+
+    return AddDrawerWithName::execute(ctx, symTable);
+}
+
+
+Ilwis::OperationImplementation::State AddDrawerWithNameAndTreePlace::prepare(ExecutionContext *ctx, const SymbolTable &tbl)
+{
+    if (AddDrawer::prepare(ctx, tbl) == sPREPAREFAILED) {
+        return sPREPAREFAILED;
+    }
+    _layername = _expression.input<QString>(5);
+    bool ok;
+    auto lnid = _expression.input<qint32>(6, ok);
+    if ( lnid  != iUNDEF)
+        _options.addOption("lowernodeid", lnid);
+
+
+    return sPREPARED;
+
+}

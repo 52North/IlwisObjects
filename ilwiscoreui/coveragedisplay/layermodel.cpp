@@ -251,6 +251,11 @@ bool Ilwis::Ui::LayerModel::isCoverageBased() const
     return false;
 }
 
+bool Ilwis::Ui::LayerModel::hasFixedStructure() const
+{
+    return _hasFixedStructure;
+}
+
 void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
 {
 }
@@ -412,6 +417,7 @@ void LayerModel::active(bool yesno)
         }
     }
     add2ChangedProperties("layer", childCount() > 0);
+    fillData();
 	emit onActiveChanged();
 }
 
@@ -527,6 +533,7 @@ void LayerModel::fillData() {
 	vmap["name"] = name();
 	vmap["icon"] = icon();
 	vmap["readonly"] = readonly();
+    vmap["parenthasfixedstructure"] = parentLayer() ? parentLayer()->hasFixedStructure() : false;
 	vmap["nodeid"] = nodeId();
 	vmap["active"] = active();
 	setData(0, vmap);

@@ -51,8 +51,6 @@ Rectangle {
 				return width - layerColumn.width - attributeListColumn.width - editorColumn.width
 			}
 			if ( name == "editorcolumn"){
-//				console.debug("uuuu",viewmanager.width, layerProperties.width, layerColumn.width,  attributeListColumn.width,editorListColumn.width)
-
 				return layerProperties.width - layerColumn.width - attributeListColumn.width - editorListColumn.width
 			}
 			return 0

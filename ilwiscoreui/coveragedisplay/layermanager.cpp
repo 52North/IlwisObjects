@@ -213,9 +213,10 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 			lm->rootLayer()->viewEnvelope(cov->envelope());
 			lm->rootLayer()->zoomEnvelope(cov->envelope());
 		}
+        qint32 lowernodeid = options.contains("lowernodeid") ? options["lowernodeid"].toInt() : iUNDEF;
 		layer->nodeId(lm->nextId());
 		layer->fillData();
-        addLayer(parentLayer, layer, lm);
+        addLayer(parentLayer, layer, lm, lowernodeid);
         auto childeren = parentLayer->children();
       
 
@@ -228,13 +229,16 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 
 }
 
-void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerManager *lm) {
+void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerManager *lm, int lowernodid) {
     auto childeren = parentLayer->children();
     bool added = false;
     for (TreeNode * child : childeren) {
         if (layer->order() == iUNDEF) {
             LayerModel *childLayer = child->as<LayerModel>();
-            if (childLayer->order() != iUNDEF) {
+            if (lowernodid != iUNDEF ) {
+                if (child->nodeId() == lowernodid)
+                    added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
+            } else if (childLayer->order() != iUNDEF) {
                 added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
             } else if (childLayer->layerType() != itROOTLAYER && childLayer->order() == iUNDEF && layer->order() == iUNDEF) {
                 added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
@@ -268,7 +272,8 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const QString &type, L
             LayerModel *layer = createFunc(lm, parentLayer,layername, description, options);
 			layer->nodeId(lm->nextId());
             layer->fillData(); 
-            addLayer(parentLayer, layer, lm);
+            qint32 lowernodeid = options.contains("lowernodeid") ? options["lowernodid"].toInt() : iUNDEF;
+            addLayer(parentLayer, layer, lm,lowernodeid);
             return layer;
         }
     }

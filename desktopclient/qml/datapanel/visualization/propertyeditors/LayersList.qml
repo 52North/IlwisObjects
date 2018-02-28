@@ -23,6 +23,8 @@ Item {
 	function setModel(){
 		tree.model = null
 		tree.model = manager.layerTree
+        tree.hoveredRow = -1
+        tree.dropHandled = true
 		var layer = manager.findLayer(currentNodeId)
 		if ( layer){
 			var index = layer.index(manager.layerTree)
@@ -159,6 +161,8 @@ Item {
                 focus: true
                 clip : true
                 height :  200
+                property bool dropHandled : false
+                property var hoveredRow : -1
 				selection: ItemSelectionModel {
 					model: tree.model
 				}
@@ -168,11 +172,23 @@ Item {
 					setTreeIndex(index)
 				}
 
-				rowDelegate : Rectangle {
-					width : 200
-					height : 20
-					color : styleData.selected ? Global.selectedColor : "white"
-				}
+				rowDelegate : Column {
+                    width : 200
+                    height : 22
+                    Rectangle {
+                        width : 200
+                        height : 2
+                        border.width : 1
+                        border.color : Global.edgecolor
+                        opacity : tree.hoveredRow == styleData.row ? 1 : 0 
+                    }
+                     Rectangle {
+                        y : 2
+					    width : 200
+					    height : 19
+					    color : styleData.selected ? Global.selectedColor : "white"
+				    }
+                }
 				itemDelegate: LayerDelegate {
 				}
 				
@@ -182,16 +198,24 @@ Item {
                     resizable: true
               
                 }
+                Component.onCompleted : {
+                    if ( flickableItem ) {
+                        console.debug("zzzzz",flickableItem, flickableItem.interactive)
+                        flickableItem.interactive = false
+                    }
+                }
             }
             
 			onDropped : {
-				var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
-				console.debug("dropped", drag.source.ilwisobjectid, resource.name)
-				if ( resource){
-					layerview.addDataSource(resource.url, resource.name, resource.typeName) 
+                if (!tree.dropHandled){
+				    var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
+				    if ( resource){
+					    layerview.addDataSource(resource.url, resource.name, resource.typeName) 
 
-					setModel()
-				} 
+					    setModel()
+				    }
+                } 
+                tree.dropHandled = false
 			}
         }
 

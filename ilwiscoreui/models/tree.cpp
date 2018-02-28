@@ -52,6 +52,7 @@ bool TreeNode::setData(int column, const QVariant &value)
 		return false;
 
 	_itemData[column] = value;
+    changed();
 	return true;
 }
 
@@ -195,7 +196,7 @@ void TreeNode::changed()
 	TreeModel *tm = tree();
 	if (tm) {
 		QModelIndex idx = index(tm);
-		tm->changed(idx);
+		tm->updateRow(idx);
 	}
 }
 
@@ -295,9 +296,9 @@ void TreeModel::appendChild(TreeNode *parentItem, TreeNode *child) {
 
 
 
-void TreeModel::changed(const QModelIndex& index) {
-	emit dataChanged(QModelIndex(), QModelIndex());
-	//emit dataChanged(index, index);
+void TreeModel::updateRow(const QModelIndex& rowIndex) {
+
+	emit dataChanged(rowIndex, rowIndex);
 }
 
 bool  TreeModel::insertChild(int position, const QModelIndex &parent, TreeNode *child) {
