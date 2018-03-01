@@ -17,14 +17,14 @@ class Quad {
 public:
     Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, const unsigned int imageSizeX, const unsigned int imageSizeY, const unsigned int zoomFactor);
     void addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinate & c3, const Coordinate & c4, const double s1, const double t1, const double s2, const double t2);
-    void setId(quint32 id);
+    void setId(qint32 id);
     bool operator ==(const Ilwis::Ui::Quad &_quad);
     unsigned int imageOffsetX;
     unsigned int imageOffsetY;
     unsigned int imageSizeX;
     unsigned int imageSizeY;
     unsigned int zoomFactor;
-    quint32 id;
+    qint32 id;
 	QVector<qreal> vertices;
     QVector<qreal> uvs;
 	QVector<int> indices;
@@ -57,8 +57,8 @@ public:
     Q_INVOKABLE virtual QVector<qreal> uvs(qint32 bufferIndex) const;
     Q_INVOKABLE virtual QVector<int> indices(qint32 bufferIndex, const QString& ) const;
     Q_INVOKABLE virtual QVariantMap texture(qint32 textureNr);
-    Q_INVOKABLE void setQuadId(qint32 bufferIndex, quint32 id);
-    Q_INVOKABLE quint32 quadId(qint32 bufferIndex);
+    Q_INVOKABLE void setQuadId(qint32 bufferIndex, qint32 id);
+    Q_INVOKABLE qint32 quadId(qint32 bufferIndex);
     Q_INVOKABLE bool quadActive(qint32 bufferIndex);
     Q_INVOKABLE bool quadNeedsUpdate(qint32 bufferIndex);
     Q_INVOKABLE void cleanupInactiveQuads();

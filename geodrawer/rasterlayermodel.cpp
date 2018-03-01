@@ -84,7 +84,7 @@ void Quad::addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinat
     indices.push_back(3 + offset);
 }
 
-void Quad::setId(quint32 id) {
+void Quad::setId(qint32 id) {
     this->id = id;
 }
 
@@ -543,7 +543,7 @@ QVariantMap RasterLayerModel::palette() {
     return _palette;
 }
 
-quint32 RasterLayerModel::quadId(qint32 bufferIndex)
+qint32 RasterLayerModel::quadId(qint32 bufferIndex)
 {
     if (bufferIndex < _quads.size())
         return _quads[bufferIndex].id;
@@ -551,7 +551,7 @@ quint32 RasterLayerModel::quadId(qint32 bufferIndex)
         return -1;
 }
 
-void RasterLayerModel::setQuadId(qint32 bufferIndex, quint32 id) {
+void RasterLayerModel::setQuadId(qint32 bufferIndex, qint32 id) {
     if (bufferIndex < _quads.size())
         _quads[bufferIndex].setId(id);
 }
