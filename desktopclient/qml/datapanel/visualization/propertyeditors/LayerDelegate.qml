@@ -18,6 +18,7 @@ DropArea {
 	    width : 250
 	    height : 22
 	    spacing : 3
+        opacity : styleData.row == tree.rowBeingMoved ? 0.5 : 1
 
 	    function cactive() {
 		    var nodeid = styleData.value.nodeid
@@ -29,7 +30,7 @@ DropArea {
 		    id : visibilityCheck
 		    width : 17
 		    height: 17
-		    checked : layerline.cactive() // styleData.value.active
+		    checked :  styleData.value.active // layerline.cactive() 
 		    opacity : 0.6
 		    visible : styleData.value && styleData.value.nodeid != 0
 
@@ -61,18 +62,20 @@ DropArea {
     }
     MouseArea{
         id : mouseArea
-        anchors.fill : parent
+        width : parent.width - visibilityCheck.width
+        height : parent.height
+        x :   visibilityCheck.width + 3
         drag.target: img
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         hoverEnabled: true
 
         onPressed : {
-                    layerline.opacity = 0.5
                     img = Qt.createQmlObject('import QtQuick 2.0; Image{
                     id : image
                     width : 20; height : 20
                     source : styleData.value.icon ? uicontext.ilwisFolder + "/qml/images/" + styleData.value.icon : ""
                     fillMode: Image.PreserveAspectFit
+                    
 
                     Drag.keys: "layer"
                     Drag.active: mouseArea.drag.active
@@ -86,13 +89,14 @@ DropArea {
                         AnchorChanges { target: img; anchors.verticalCenter: undefined; anchors.horizontalCenter: undefined }
                     }
                 }', mouseArea, "dynamicImage");
+
+                tree.rowBeingMoved = styleData.row
         }
     }
     onDropped : {
-        layerline.opacity = 1
+            console.debug("llllll", tree.rowBeingMoved)
         if(!styleData.value.parenthasfixedstructure){
 		    var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
-		    console.debug("dropped2",styleData.value.nodeid, drag.source.ilwisobjectid, resource.name)
             tree.dropHandled = true
             var nodeid = styleData.value.nodeid
 		    var cmd = "adddrawer(" + manager.viewid + ",\"\"," + resource.url + "," + resource.typeName + ",true," + resource.name + "," + nodeid + ")"
@@ -100,6 +104,8 @@ DropArea {
             setModel()
             layerview.manager.refresh()
         }
+
+        tree.rowBeingMoved = -1
 	}
 
     onEntered : {
