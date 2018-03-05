@@ -39,7 +39,7 @@ Quad::Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, con
 , zoomFactor(zoomFactor)
 , id(-1)
 , active(true)
-, readRasterData(true)
+, refresh(false)
 {
 }
 
@@ -207,6 +207,7 @@ void RasterLayerModel::fillAttributes()
 
 bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 {
+	bool fChanges = true;
 	if (hasType(prepType, LayerModel::ptGEOMETRY) && !isPrepared(LayerModel::ptGEOMETRY)) {
 		if (!_raster.isValid()) {
 			return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "RasterCoverage", TR("Visualization"));
@@ -223,14 +224,38 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         const ICoordinateSystem & rasterCsy = _raster->coordinateSystem();
         bool convNeeded = rootCsy.isValid() && rasterCsy.isValid() && !rootCsy->isEqual(rasterCsy.ptr()) && !rootCsy->isUnknown() && !rasterCsy->isUnknown();
         _linear = grLinear && !convNeeded;
+
+        // stop generating textures
+        textureHeap->ClearQueuedTextures();
+        // remove inactive quads from the list
+        for (qint32 i = _quads.size() - 1; i >= 0; --i) {
+            if (!_quads[i].active) {
+                _quads[i] = _quads.back();
+                _quads.pop_back();
+            }
+        }
+        // mark remaining quads as inactive
         for (std::vector<Quad>::iterator quad = _quads.begin(); quad != _quads.end(); ++quad)
             quad->active = false;
+        // check which quads are in the viewport
         DivideImage(0, 0, _width, _height);
+        // generate "addQuads" and "removeQuads" queues
+        _addQuads.clear();
+        _removeQuads.clear();
+        for (int i = 0; i < _quads.size(); ++i) {
+            if ((_quads[i].id > -1) && (!_quads[i].active || _quads[i].refresh))
+                _removeQuads.push_back(_quads[i].id);
+            if ((_quads[i].active) && ((_quads[i].id == -1) || _quads[i].refresh)) {
+                _addQuads.push_back(i);
+                _quads[i].refresh = false; // by adding it to _addQuads, it is refreshed in the next cycle
+            }
+        }
+        fChanges = (_removeQuads.size() > 0) || (_addQuads.size() > 0);
         _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 	}
     if (hasType(prepType, LayerModel::ptRENDER)) {
     }
-	return true;
+	return fChanges;
 }
 
 void RasterLayerModel::init()
@@ -292,10 +317,10 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
 
     Size<> viewport = layerManager()->rootLayer()->screenGrf()->size();
 
-    Pixel win1 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c1);
-    Pixel win2 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c2);
-    Pixel win3 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c3);
-    Pixel win4 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c4);
+    Pixeld win1 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c1);
+    Pixeld win2 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c2);
+    Pixeld win3 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c3);
+    Pixeld win4 = layerManager()->rootLayer()->screenGrf()->coord2Pixel(c4);
     geos::geom::GeometryFactory factory;
     const std::vector<geos::geom::Geometry *> holes;
     geos::geom::CoordinateArraySequence * coordsTile = new geos::geom::CoordinateArraySequence();
@@ -452,33 +477,33 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
 int RasterLayerModel::numberOfBuffers(const QString& type) const
 {
 	if ( type == "rastercoverage")
-		return _quads.size();
+		return _addQuads.size();
 	return 0;
 }
 
 QVector<qreal> RasterLayerModel::vertices(qint32 bufferIndex, const QString& ) const {
-    if (bufferIndex < _quads.size())
-		return _quads[bufferIndex].vertices;
+    if (bufferIndex < _addQuads.size())
+		return _quads[_addQuads[bufferIndex]].vertices;
 	return QVector < qreal >();
 }
 
 QVector<qreal> RasterLayerModel::uvs(qint32 bufferIndex) const {
-    if (bufferIndex < _quads.size())
-        return _quads[bufferIndex].uvs;
+    if (bufferIndex < _addQuads.size())
+        return _quads[_addQuads[bufferIndex]].uvs;
     return QVector < qreal >();
 }
 
 QVector<int> RasterLayerModel::indices(qint32 bufferIndex, const QString& ) const {
-	if (bufferIndex < _quads.size())
-		return _quads[bufferIndex].indices;
+	if (bufferIndex < _addQuads.size())
+		return _quads[_addQuads[bufferIndex]].indices;
 	return QVector<int>();
 }
 
-QVariantMap RasterLayerModel::texture(qint32 textureNr) {
+QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
     QVariantMap result;
-    if (textureNr < _quads.size()) {
-        Quad & quad = _quads[textureNr];
-        Texture * tex = textureHeap->GetTexture(quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, true);
+    if (bufferIndex < _addQuads.size()) {
+        Quad & quad = _quads[_addQuads[bufferIndex]];
+        Texture * tex = textureHeap->GetTexture(&quad, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, true);
         if (tex != 0) {
             const QVector<int> & pixelData = tex->data();
             double s = tex->getOffsetX() / (double)_width;
@@ -503,8 +528,6 @@ QVariantMap RasterLayerModel::texture(qint32 textureNr) {
             result["height"] = sizeY / zoomFactor;
             result["uvmap"] = uvmap;
             result["valid"] = true;
-            if (zoomFactor == quad.zoomFactor)
-                quad.readRasterData = false;
         }
         else
             result["valid"] = false;
@@ -543,45 +566,19 @@ QVariantMap RasterLayerModel::palette() {
     return _palette;
 }
 
-qint32 RasterLayerModel::quadId(qint32 bufferIndex)
-{
-    if (bufferIndex < _quads.size())
-        return _quads[bufferIndex].id;
-    else
-        return -1;
-}
-
 void RasterLayerModel::setQuadId(qint32 bufferIndex, qint32 id) {
-    if (bufferIndex < _quads.size())
-        _quads[bufferIndex].setId(id);
-}
-
-bool RasterLayerModel::quadActive(qint32 bufferIndex) {
-    if (bufferIndex < _quads.size())
-        return _quads[bufferIndex].active;
-    else
-        return false;
-
-}
-
-bool RasterLayerModel::quadNeedsUpdate(qint32 bufferIndex) {
-    if (bufferIndex < _quads.size())
-        return _quads[bufferIndex].readRasterData;
-    else
-        return false;
-}
-
-void RasterLayerModel::cleanupInactiveQuads() {
-    for (qint32 i = _quads.size() - 1; i >= 0; --i) {
-        if (!_quads[i].active) {
-            _quads[i] = _quads.back();
-            _quads.pop_back();
-        }
+    if (bufferIndex < _addQuads.size()) {
+        _quads[_addQuads[bufferIndex]].setId(id);
     }
 }
 
 void RasterLayerModel::requestRedraw() {
     // without requestAnimationFrame, this is the way to force a redraw for now
+    _prepared = ptNONE;
     updateGeometry(true);
     add2ChangedProperties("buffers");
+}
+
+QVector<qint32> RasterLayerModel::removeQuads() {
+    return _removeQuads;
 }

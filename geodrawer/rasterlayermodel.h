@@ -29,7 +29,7 @@ public:
     QVector<qreal> uvs;
 	QVector<int> indices;
     bool active;
-    bool readRasterData;
+    bool refresh;
 };
 
 class TextureHeap;
@@ -42,6 +42,7 @@ public:
     RasterLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
     ~RasterLayerModel();
     Q_PROPERTY(QVariantMap palette READ palette NOTIFY paletteChanged);
+    Q_PROPERTY(QVector<qint32> removeQuads READ removeQuads)
 
 	void coverage(const ICoverage& cov);
     QVariant vproperty(const QString& attrName) const ;
@@ -56,12 +57,8 @@ public:
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
     Q_INVOKABLE virtual QVector<qreal> uvs(qint32 bufferIndex) const;
     Q_INVOKABLE virtual QVector<int> indices(qint32 bufferIndex, const QString& ) const;
-    Q_INVOKABLE virtual QVariantMap texture(qint32 textureNr);
+    Q_INVOKABLE virtual QVariantMap texture(qint32 bufferIndex);
     Q_INVOKABLE void setQuadId(qint32 bufferIndex, qint32 id);
-    Q_INVOKABLE qint32 quadId(qint32 bufferIndex);
-    Q_INVOKABLE bool quadActive(qint32 bufferIndex);
-    Q_INVOKABLE bool quadNeedsUpdate(qint32 bufferIndex);
-    Q_INVOKABLE void cleanupInactiveQuads();
 
 protected:
     TextureHeap * textureHeap;
@@ -74,6 +71,9 @@ private:
     void refreshPalette();
     IRasterCoverage _raster;
     std::vector<Quad> _quads;
+    std::vector<qint32> _addQuads;
+    QVector<qint32> _removeQuads;
+    QVector<qint32> removeQuads();
     int _maxTextureSize;
     int _paletteSize;
     QVariantMap _palette;
