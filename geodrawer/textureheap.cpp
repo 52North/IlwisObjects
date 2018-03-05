@@ -55,12 +55,12 @@ void TextureHeap::ReGenerateAllTextures()
 		textures[i]->SetDirty();
 }
 
-Texture * TextureHeap::GetTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
+Texture * TextureHeap::GetTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
 {
 	Texture * tex = 0;
 	if (fInThread) { // call Invalidate when done, to redraw the mapwindow
 		for (int i = 0; i < textures.size(); ++i) {
-			if (textures[i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
+			if (textures[i]->equals(quad, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
 				if (textures[i]->fDirty())
 					ReGenerateTexture(textures[i], fInThread);
 				return textures[i];
@@ -74,21 +74,21 @@ Texture * TextureHeap::GetTexture(const unsigned int offsetX, const unsigned int
 		}
 		// if it is queued already, don't add it again, just be patient as it will come
 		csChangeTexCreatorList.lock();
-		bool fQueued = workingTexture && workingTexture->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
+		bool fQueued = workingTexture && workingTexture->equals(quad, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
 		if (!fQueued) {
 			for (std::vector<Texture*>::iterator it = textureRequest.begin(); it != textureRequest.end() && !fQueued; ++it)
-				fQueued = (*it)->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
+				fQueued = (*it)->equals(quad, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
 		}
 		csChangeTexCreatorList.unlock();
 		if (!fQueued)
-			GenerateTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
+			GenerateTexture(quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
 	} else { // caller is waiting for the Texture*
 		for (int i = 0; i < textures.size(); ++i) {
-			if (textures[i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor))
+			if (textures[i]->equals(quad, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor))
 				tex = textures[i];
 		}
 		if (0 == tex)
-			tex = GenerateTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
+			tex = GenerateTexture(quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
 		else if (tex->fDirty())
 			ReGenerateTexture(tex, fInThread);
 	}
@@ -96,11 +96,11 @@ Texture * TextureHeap::GetTexture(const unsigned int offsetX, const unsigned int
 	return tex;
 }
 
-Texture * TextureHeap::GenerateTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
+Texture * TextureHeap::GenerateTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
 {
 	csChangeTexCreatorList.lock();
 	if ( raster.isValid())
-		textureRequest.push_back(new Texture(raster, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
+		textureRequest.push_back(new Texture(raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
 	csChangeTexCreatorList.unlock();
 	if (fInThread) {
         if (!textureThread) {

@@ -3,12 +3,14 @@
 #include "coveragedisplay/coveragelayermodel.h"
 #include "texture.h"
 #include "pixeliterator.h"
+#include "rasterlayermodel.h"
 
 using namespace Ilwis;
 using namespace Ui;
 
-Texture::Texture(const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
+Texture::Texture(const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
 : _raster(raster)
+, _quad(quad)
 , offsetX(offsetX)
 , offsetY(offsetY)
 , sizeX(sizeX)
@@ -18,6 +20,7 @@ Texture::Texture(const IRasterCoverage & raster, const long offsetX, const long 
 , valid(false)
 , dirty(false)
 {
+    quad->refresh = true;
 }
 
 Texture::~Texture()
@@ -27,16 +30,22 @@ Texture::~Texture()
 void Texture::CreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
     valid = DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    _quad->refresh = valid;
 }
 
 void Texture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
     dirty = !DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    _quad->refresh = !dirty;
 }
 
-bool Texture::equals(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor)
+bool Texture::equals(Quad * quad, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor)
 {
-	return this->offsetX == offsetX1 && this->offsetY == offsetY1 && this->offsetX + this->sizeX == offsetX2 && this->offsetY + sizeY == offsetY2 && this->zoomFactor == zoomFactor;
+    if (this->offsetX == offsetX1 && this->offsetY == offsetY1 && this->offsetX + this->sizeX == offsetX2 && this->offsetY + sizeY == offsetY2 && this->zoomFactor == zoomFactor) {
+        _quad = quad;
+        return true;
+    } else
+	    return false;
 }
 
 bool Texture::contains(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2)
@@ -100,14 +109,24 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
     texSizeX /= zoomFactor; // the actual size of the texture (commonly 256 or maxtexturesize, but smaller texture sizes may be allocated for the rightmost or bottommost textures)
     texSizeY /= zoomFactor;
 
+    if (*fDrawStop)
+        return false;
+
     BoundingBox bb(Pixel(offsetX, offsetY), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1));
     quint32 size = texSizeX * texSizeY;
     texture_data.resize(size);
     PixelIterator pixIter(_raster, bb); // This iterator runs through bb. The corners of bb are "inclusive".
 
+    if (*fDrawStop)
+        return false;
+
     SPNumericRange numrange = _raster->datadef().range<NumericRange>();
     if (!numrange->isValid())
         _raster->statistics(NumericStatistics::pBASIC);
+
+    if (*fDrawStop)
+        return false;
+
     auto end = pixIter.end();
     quint32 position = 0;
     while(pixIter != end){
@@ -116,6 +135,9 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
         texture_data[position] = index; // int32 to quint8 conversion (do we want this?)
         pixIter += zoomFactor;
         if ( pixIter.ychanged()) {
+            if (*fDrawStop)
+                return false;
+
             position += (texSizeX - xSizeOut);
             if (zoomFactor > 1)
                 pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);

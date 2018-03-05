@@ -8,19 +8,20 @@ namespace Ilwis {
 	namespace Ui {
         class RasterLayerModel;
         class Texture;
-	    class TextureHeap
+        class Quad;
+        class TextureHeap
 	    {
 	    public:
             friend class TextureGenerator;
 		    TextureHeap(const RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize);
 		    virtual ~TextureHeap();
 
-		    Texture * GetTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
+		    Texture * GetTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
 		    void ClearQueuedTextures();
 		    void ReGenerateAllTextures();
 
 	    protected:
-		    Texture * GenerateTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
+		    Texture * GenerateTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
 		    void ReGenerateTexture(Texture * texture, bool fInThread);
 		    Texture * GenerateNextTexture(bool fInThread);
 		    std::vector<Texture*> textures;
