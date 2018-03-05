@@ -24,6 +24,7 @@ Item {
 		tree.model = null
 		tree.model = manager.layerTree
         tree.hoveredRow = -1
+        tree.rowBeingMoved = -1
         tree.dropHandled = true
 		var layer = manager.findLayer(currentNodeId)
 		if ( layer){
@@ -163,6 +164,7 @@ Item {
                 height :  200
                 property bool dropHandled : false
                 property var hoveredRow : -1
+                property var rowBeingMoved : -1
 				selection: ItemSelectionModel {
 					model: tree.model
 				}
@@ -175,6 +177,7 @@ Item {
 				rowDelegate : Column {
                     width : 200
                     height : 22
+                    
                     Rectangle {
                         width : 200
                         height : 2
@@ -200,13 +203,13 @@ Item {
                 }
                 Component.onCompleted : {
                     if ( flickableItem ) {
-                        console.debug("zzzzz",flickableItem, flickableItem.interactive)
                         flickableItem.interactive = false
                     }
                 }
             }
             
 			onDropped : {
+            console.debug("xxxxxxxxxxx")
                 if (!tree.dropHandled){
 				    var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
 				    if ( resource){
