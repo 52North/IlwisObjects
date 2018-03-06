@@ -8,7 +8,7 @@
 using namespace Ilwis;
 using namespace Ui;
 
-TextureHeap::TextureHeap(const RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize)
+TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize)
 : textureThread(0)
 , fAbortTexGen(false)
 , fStopThread(false)
@@ -100,7 +100,7 @@ Texture * TextureHeap::GenerateTexture(Quad * quad, const unsigned int offsetX, 
 {
 	csChangeTexCreatorList.lock();
 	if ( raster.isValid())
-		textureRequest.push_back(new Texture(raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
+		textureRequest.push_back(new Texture(rasterLayerModel, raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
 	csChangeTexCreatorList.unlock();
 	if (fInThread) {
         if (!textureThread) {

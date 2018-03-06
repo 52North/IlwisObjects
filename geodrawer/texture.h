@@ -6,10 +6,11 @@ namespace Ilwis {
 
 	namespace Ui {
 	    class Quad;
+        class RasterLayerModel;
 	    class Texture
 	    {
 	    public:
-            Texture(const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize);
+            Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize);
             virtual ~Texture();
             virtual void CreateTexture(bool fInThread, volatile bool * fDrawStop);
             virtual void ReCreateTexture(bool fInThread, volatile bool * fDrawStop);
@@ -25,15 +26,18 @@ namespace Ilwis {
             const unsigned long getSizeY() const;
             const QVector<int> & data() const;
         protected:
-            bool DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);
+            bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);
+            bool DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);            
             QVector<int> texture_data;
             const unsigned long sizeX, sizeY;
             const long offsetX, offsetY;
             const unsigned int zoomFactor;
             const unsigned int iPaletteSize;
+            const quint64 domain;
             bool valid;
             bool dirty;
             const IRasterCoverage & _raster;
+            RasterLayerModel * _rasterLayerModel;
             Quad * _quad;
 	    };
 	}

@@ -13,7 +13,7 @@ namespace Ilwis {
 	    {
 	    public:
             friend class TextureGenerator;
-		    TextureHeap(const RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize);
+		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize);
 		    virtual ~TextureHeap();
 
 		    Texture * GetTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
@@ -35,7 +35,7 @@ namespace Ilwis {
             QMutex csThread;
             QWaitCondition pauseThread;
 		    Texture * workingTexture;
-            const RasterLayerModel * rasterLayerModel;
+            RasterLayerModel * rasterLayerModel;
 	    };
 
         class TextureGenerator : public QThread

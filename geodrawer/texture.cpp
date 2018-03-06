@@ -4,12 +4,16 @@
 #include "texture.h"
 #include "pixeliterator.h"
 #include "rasterlayermodel.h"
+#include "core/ilwisobjects/domain/itemrange.h"
+#include "core/ilwisobjects/domain/colorrange.h"
+#include "ilwiscoreui/coveragedisplay/visualattribute.h"
 
 using namespace Ilwis;
 using namespace Ui;
 
-Texture::Texture(const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
-: _raster(raster)
+Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
+: _rasterLayerModel(rasterLayerModel)
+, _raster(raster)
 , _quad(quad)
 , offsetX(offsetX)
 , offsetY(offsetY)
@@ -19,6 +23,7 @@ Texture::Texture(const IRasterCoverage & raster, Quad * quad, const long offsetX
 , iPaletteSize(iPaletteSize)
 , valid(false)
 , dirty(false)
+, domain(raster->datadef().domain()->ilwisType())
 {
     quad->refresh = true;
 }
@@ -29,13 +34,19 @@ Texture::~Texture()
 
 void Texture::CreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
-    valid = DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    if (hasType(domain, itCOLORDOMAIN))
+        valid = DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    else
+        valid = DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
     _quad->refresh = valid;
 }
 
 void Texture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
-    dirty = !DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    if (hasType(domain, itCOLORDOMAIN))
+        dirty = !DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    else
+        dirty = !DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
     _quad->refresh = !dirty;
 }
 
@@ -93,6 +104,76 @@ const QVector<int> & Texture::data() const {
     return texture_data;
 }
 
+bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
+{
+    long imageWidth = _raster->size().xsize();
+    long imageHeight = _raster->size().ysize();
+    long sizeX = texSizeX; // the size of the input (pixeliterator)
+    long sizeY = texSizeY;
+    if (offsetX + sizeX > imageWidth)
+        sizeX = imageWidth - offsetX;
+    if (offsetY + sizeY > imageHeight)
+        sizeY = imageHeight - offsetY;
+    if (sizeX == 0 || sizeY == 0)
+        return false;
+    const long xSizeOut = (long)ceil((double)sizeX / ((double)zoomFactor)); // the size until which the pixels vector will be filled (this is commonly the same as texSizeX, except the rightmost / bottommost textures, as raster-images seldom have as size of ^2)
+    texSizeX /= zoomFactor; // the actual size of the texture (commonly 256 or maxtexturesize, but smaller texture sizes may be allocated for the rightmost or bottommost textures)
+    texSizeY /= zoomFactor;
+
+    if (*fDrawStop)
+        return false;
+
+    BoundingBox bb(Pixel(offsetX, offsetY), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1));
+    quint32 size = texSizeX * texSizeY * 4; // r,g,b,a
+    texture_data.resize(size);
+    PixelIterator pixIter(_raster, bb); // This iterator runs through bb. The corners of bb are "inclusive".
+
+    if (*fDrawStop)
+        return false;
+
+    auto end = pixIter.end();
+    quint32 position = 0;
+    VisualAttribute * attr = _rasterLayerModel->activeAttribute();
+    if (attr != 0) {
+        while (pixIter != end) {
+            double value = *pixIter;
+            QColor color = attr->value2color(value);
+            texture_data[position++] = color.red();
+            texture_data[position++] = color.green();
+            texture_data[position++] = color.blue();
+            texture_data[position++] = color.alpha();
+            pixIter += zoomFactor;
+            if (pixIter.ychanged()) {
+                if (*fDrawStop)
+                    return false;
+
+                position += 4 * (texSizeX - xSizeOut);
+                if (zoomFactor > 1)
+                    pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+            }
+        }
+    } else {
+        while (pixIter != end) {
+            double value = *pixIter;
+            Ilwis::LocalColor *localcolor = reinterpret_cast<Ilwis::LocalColor *>(&value);
+            texture_data[position++] = localcolor->_component3;
+            texture_data[position++] = localcolor->_component2;
+            texture_data[position++] = localcolor->_component1;
+            texture_data[position++] = localcolor->_component4;
+            pixIter += zoomFactor;
+            if (pixIter.ychanged()) {
+                if (*fDrawStop)
+                    return false;
+
+                position += 4 * (texSizeX - xSizeOut);
+                if (zoomFactor > 1)
+                    pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+            }
+        }
+    }
+	return true;
+}
+
 bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
 {
     long imageWidth = _raster->size().xsize();
@@ -120,29 +201,49 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
     if (*fDrawStop)
         return false;
 
-    SPNumericRange numrange = _raster->datadef().range<NumericRange>();
-    if (!numrange->isValid())
-        _raster->statistics(NumericStatistics::pBASIC);
+    if (hasType(domain, itNUMERICDOMAIN)) {
+        SPNumericRange numrange = _raster->datadef().range<NumericRange>();
+        if (!numrange->isValid())
+            _raster->statistics(NumericStatistics::pBASIC);
 
-    if (*fDrawStop)
-        return false;
+        if (*fDrawStop)
+            return false;
 
-    auto end = pixIter.end();
-    quint32 position = 0;
-    while(pixIter != end){
-        double value = *pixIter;
-        int index = isNumericalUndef2(value,_raster) ? 0 : 1 + (iPaletteSize - 2) * (value - numrange->min()) / numrange->distance();
-        texture_data[position] = index; // int32 to quint8 conversion (do we want this?)
-        pixIter += zoomFactor;
-        if ( pixIter.ychanged()) {
-            if (*fDrawStop)
-                return false;
+        auto end = pixIter.end();
+        quint32 position = 0;
+        while (pixIter != end) {
+            double value = *pixIter;
+            int index = isNumericalUndef2(value, _raster) ? 0 : 1 + (iPaletteSize - 2) * (value - numrange->min()) / numrange->distance();
+            texture_data[position] = index; // int32 to quint8 conversion (do we want this?)
+            pixIter += zoomFactor;
+            if (pixIter.ychanged()) {
+                if (*fDrawStop)
+                    return false;
 
-            position += (texSizeX - xSizeOut);
-            if (zoomFactor > 1)
-                pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+                position += (texSizeX - xSizeOut);
+                if (zoomFactor > 1)
+                    pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+            }
+            ++position;
         }
-        ++position;
+    }
+    else if (hasType(domain, itITEMDOMAIN)) {
+        auto end = pixIter.end();
+        quint32 position = 0;
+        while (pixIter != end) {
+            double value = *pixIter;
+            texture_data[position] = value == rUNDEF ? 0 : (quint8)value + 1;
+            pixIter += zoomFactor;
+            if (pixIter.ychanged()) {
+                if (*fDrawStop)
+                    return false;
+
+                position += (texSizeX - xSizeOut);
+                if (zoomFactor > 1)
+                    pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+            }
+            ++position;
+        }
     }
 	return true;
 }

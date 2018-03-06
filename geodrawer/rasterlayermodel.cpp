@@ -120,7 +120,7 @@ LayerModel *RasterLayerModel::create(LayerManager *manager, LayerModel *layer, c
 bool Ilwis::Ui::RasterLayerModel::usesColorData() const
 {
 	if (_raster.isValid()) {
-		return _raster->datadef().domain()->ilwisType() == itCOLORDOMAIN;
+		return hasType(_raster->datadef().domain()->ilwisType(), itCOLORDOMAIN);
 	}
 	return false;
 }
@@ -261,7 +261,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 void RasterLayerModel::init()
 {
     _maxTextureSize = 256; // = min(512, getMaxTextureSize());
-    _paletteSize = 256;
+    _paletteSize = usesColorData() ? 0 : 256; // itCOLORDOMAIN ? itNUMERICDOMAIN + itITEMDOMAIN
 
     textureHeap = new TextureHeap(this, _raster, _paletteSize);
 
@@ -539,7 +539,7 @@ QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
 void RasterLayerModel::refreshPalette() {
     QVector<qreal> palette;
     QVariant vpalette;
-        auto setPalette = [&palette](int r, int g, int b, int a)->void {
+        auto addPaletteColor = [&palette](int r, int g, int b, int a)->void {
 		palette.push_back(r);
 		palette.push_back(g);
 		palette.push_back(b);
@@ -548,12 +548,30 @@ void RasterLayerModel::refreshPalette() {
 
     VisualAttribute * attr = activeAttribute();
     if (attr != 0) {
-        std::vector<QColor> colors = attr->colors(_paletteSize);
+        if (hasType(_raster->datadef().domain()->ilwisType(), itNUMERICDOMAIN)) {
+            std::vector<QColor> colors = attr->colors(_paletteSize);
+            for (int i = 0; i < _paletteSize; ++i)
+                addPaletteColor(colors[i].red(), colors[i].green(), colors[i].blue(), colors[i].alpha());
+        } else if (hasType(_raster->datadef().domain()->ilwisType(), itITEMDOMAIN)) {
+            VisualAttribute * attr = activeAttribute();
+            IDomain dom = attr->datadefinition().domain();
+            IlwisData<ItemDomain<DomainItem>> itemdom = dom.as<ItemDomain<DomainItem>>();
+            quint32 count = min(_paletteSize, (itemdom->count() + 1));
+            if (count > 0)
+                addPaletteColor(0, 0, 0, 0); // first index: undef --> first color: transparent
+            for (int i = 1; i < count; ++i) {
+                QColor color = attr->value2color(i);
+                addPaletteColor(color.red(), color.green(), color.blue(), color.alpha());
+            }
+        }
+        else {
+            for (int i = 0; i < _paletteSize; ++i)
+                addPaletteColor(i, i, i, 255);
+        }
+    }
+    else {
         for (int i = 0; i < _paletteSize; ++i)
-            setPalette(colors[i].red(), colors[i].green(), colors[i].blue(), colors[i].alpha());
-    } else {
-        for (int i = 0; i < _paletteSize; ++i)
-            setPalette(i, i, i, 255);
+            addPaletteColor(i, i, i, 255);
     }
 
     vpalette.setValue(palette);
