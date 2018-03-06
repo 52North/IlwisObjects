@@ -82,6 +82,7 @@ Item {
 						    'gl_FragColor = texture2D(texture1,vUv);' +
 					    '}'
 				    material.uniforms = uniforms
+				    material.tTexture = tTexture; // keep a copy
 				    material.needsUpdate = true
                     var geometry = new GL.THREE.BufferGeometry();
                     canvas.setGeometry(layer, i,"rastercoverage",geometry);
