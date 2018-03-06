@@ -138,9 +138,9 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
         while (pixIter != end) {
             double value = *pixIter;
             QColor color = attr->value2color(value);
-            texture_data[position++] = color.red();
-            texture_data[position++] = color.green();
             texture_data[position++] = color.blue();
+            texture_data[position++] = color.green();
+            texture_data[position++] = color.red();
             texture_data[position++] = color.alpha();
             pixIter += zoomFactor;
             if (pixIter.ychanged()) {
@@ -154,11 +154,11 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
         }
     } else {
         while (pixIter != end) {
-            double value = *pixIter;
-            Ilwis::LocalColor *localcolor = reinterpret_cast<Ilwis::LocalColor *>(&value);
-            texture_data[position++] = localcolor->_component3;
-            texture_data[position++] = localcolor->_component2;
+            quint64 value = *pixIter;
+            LocalColor *localcolor = reinterpret_cast<LocalColor *>(&value);
             texture_data[position++] = localcolor->_component1;
+            texture_data[position++] = localcolor->_component2;
+            texture_data[position++] = localcolor->_component3;
             texture_data[position++] = localcolor->_component4;
             pixIter += zoomFactor;
             if (pixIter.ychanged()) {
