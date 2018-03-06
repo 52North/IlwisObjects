@@ -1,6 +1,7 @@
 *.user
 *.opendb
 *.db
+*.bak
 /x64/
 /Debug/
 /GeneratedFiles/
