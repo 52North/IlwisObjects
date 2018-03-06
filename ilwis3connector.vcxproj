@@ -144,7 +144,8 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;ILWIS3CONNECTOR_LIBRARY;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\ilwis3connector\* /s /y /i</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\ilwis3connector\* /s /y /i
+xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32debug\bin\extensions\ilwis3connector\resources\* /s /y /i</Command>
       <Message>Copy ilwis3connector.dll to ..\output\win32debug\bin\extensions\ilwis3connector</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
