@@ -37,13 +37,10 @@ Item {
 		function updateAfterSizeChange(){
 			if ( camera && renderer){
 				layermanager.rootLayer.initSizes(canvas.width, canvas.height, false)
-				var aspect = canvas.width / canvas.height; 
-				var f = aspect >= 0 ? layermanager.rootLayer.height : layermanager.rootLayer.width
-				camera.left = f * aspect/-2
-				camera.right = f * aspect/2
-				camera.top = f /2  
-				camera.bottom =f /-2
-				camera.aspect = aspect
+				camera.left = -layermanager.rootLayer.width/2.0
+				camera.right = layermanager.rootLayer.width/2.0
+				camera.top = layermanager.rootLayer.height/2.0
+				camera.bottom = -layermanager.rootLayer.height/2.0
 				camera.updateProjectionMatrix();
 				renderer.setSize( canvas.width, canvas.height );
 			}			
@@ -157,10 +154,8 @@ Item {
 
 		function updatePositions() {
 			if ( camera){
-				var aspect = canvas.width / canvas.height
-				var frustumSize = aspect >= 0 ? layermanager.rootLayer.height : layermanager.rootLayer.width
 				var cameraPosition = layermanager.rootLayer.cameraPosition
-				camera.position.set(cameraPosition.x,cameraPosition.y, frustumSize);
+				camera.position.set(cameraPosition.x,cameraPosition.y, 1);
 				camera.zoom = layermanager.rootLayer.zoomFactor
 				var pp = new GL.THREE.Vector3(cameraPosition.x,cameraPosition.y,0)
 				camera.lookAt(pp);
@@ -322,15 +317,12 @@ Item {
 
 		onInitializeGL: {
 			layermanager.rootLayer.initSizes(canvas.width, canvas.height,true)
-			var aspect = canvas.width / canvas.height
-			var frustumSize = aspect >= 0 ? layermanager.rootLayer.height : layermanager.rootLayer.width
-			var f = 2.0
-			camera = new GL.THREE.OrthographicCamera( -frustumSize*aspect/f, frustumSize*aspect/f, frustumSize/f, -frustumSize/f , -frustumSize, frustumSize );
-			var cameraPosition = layermanager.rootLayer.cameraPosition
-			camera.position.set(cameraPosition.x, cameraPosition.y, frustumSize);
+			camera = new GL.THREE.OrthographicCamera( -layermanager.rootLayer.width/2.0, layermanager.rootLayer.width/2.0, layermanager.rootLayer.height/2.0, -layermanager.rootLayer.height/2.0, 0, 1 );
+			var cameraPosition = layermanager.rootLayer.cameraPosition;
+			camera.position.set(cameraPosition.x, cameraPosition.y, 1);
 			camera.zoom = layermanager.rootLayer.zoomFactor
 			scene = new GL.THREE.Scene();
-			var pp = new GL.THREE.Vector3(cameraPosition.x, cameraPosition.y,0)
+			var pp = new GL.THREE.Vector3(cameraPosition.x, cameraPosition.y, 0);
 			camera.lookAt(pp);
 			camera.updateProjectionMatrix();
 

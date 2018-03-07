@@ -413,11 +413,11 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	double cheight = _coverageEnvelope.ylength() - 1;
     double aspectRatioCoverage = cwidth / cheight;
 
-	if (aspectRatioCoverage < 1) {
+	if (aspectRatioCoverage < aspectRatioView) {
 		deltaX = CalcNewSize(cwidth, cheight, aspectRatioView);
 	}
 	else {
-		deltaY = CalcNewSize(cheight, cwidth, aspectRatioView);
+		deltaY = CalcNewSize(cheight, cwidth, 1.0 / aspectRatioView);
 	}
 	Coordinate pmin = _coverageEnvelope.min_corner();
 	Coordinate pmax = _coverageEnvelope.max_corner();
