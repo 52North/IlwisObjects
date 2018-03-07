@@ -15,7 +15,8 @@ Item {
 	property int zorder : 0
 	property bool drawing : false
 	property int mi : -1
-	property var paletteMaterial
+	property var colorShaderMaterialTemplate
+	property var paletteShaderMaterialTemplate
 
  	Canvas3D {
         id : canvas
@@ -73,14 +74,7 @@ Item {
 					    texture1: { type: "t", value: tTexture },
                         uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 				    };
-                    var material = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
-				    material.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
-				    material.fragmentShader =
-					    'varying vec2 vUv;' +
-					    'uniform sampler2D texture1;' +
-					    'void main() { ' +
-						    'gl_FragColor = texture2D(texture1,vUv);' +
-					    '}'
+				    var material = colorShaderMaterialTemplate.clone();
 				    material.uniforms = uniforms
 				    material.tTexture = tTexture; // keep a copy
 				    material.needsUpdate = true
@@ -135,7 +129,7 @@ Item {
                         uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 					    palette: { type: "t", value: layer.tPalette }
 				    };
-                    var material = paletteMaterial.clone();
+                    var material = paletteShaderMaterialTemplate.clone();
 				    material.uniforms = uniforms
                     material.tTexture = tTexture; // keep a copy
 				    material.needsUpdate = true
@@ -346,10 +340,17 @@ Item {
 			renderer.setSize(canvas.width, canvas.height);
 			canvas.setBackgroundColor(backgroundColor);
 
-            paletteMaterial = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
-            //paletteMaterial.wireframe = true;
-			paletteMaterial.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
-			paletteMaterial.fragmentShader =
+            colorShaderMaterialTemplate = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
+			colorShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
+			colorShaderMaterialTemplate.fragmentShader =
+				'varying vec2 vUv;' +
+				'uniform sampler2D texture1;' +
+				'void main() { ' +
+					'gl_FragColor = texture2D(texture1,vUv);' +
+				'}'
+            paletteShaderMaterialTemplate = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
+			paletteShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
+			paletteShaderMaterialTemplate.fragmentShader =
 				'varying vec2 vUv;' +
 				'uniform sampler2D texture1;uniform sampler2D palette;' +
 				'void main() { ' +
