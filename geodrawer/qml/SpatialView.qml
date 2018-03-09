@@ -57,50 +57,34 @@ Item {
             }
             var quads = layer.numberOfBuffers("rastercoverage");
             for (var i=0; i < quads;++i){
-                if (!layer.quadActive(i)) {
-                    var quadId = layer.quadId(i);
-                    if (quadId > -1)
-                        sceneObject.remove(sceneObject.getObjectById(quadId));
-                } else if (layer.quadNeedsUpdate(i)) {
-                    var quadId = layer.quadId(i);
-                    if (quadId > -1)
-                        sceneObject.remove(sceneObject.getObjectById(quadId));
-                    var texture = layer.texture(i);
-                    if (texture.valid) {
-				        var tTexture = new GL.THREE.DataTexture(
-					        new Uint8Array(texture.data),
-					        texture.width,
-					        texture.height,
-					        GL.THREE.RGBAFormat,
-					        GL.THREE.UnsignedByteType,
-					        GL.THREE.UVMapping);
-				        tTexture.needsUpdate = true
-				        var uniforms = {
-					        texture1: { type: "t", value: tTexture },
-                            uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
-				        };
-                        var material = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
-				        material.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
-				        material.fragmentShader =
-					        'varying vec2 vUv;' +
-					        'uniform sampler2D texture1;' +
-					        'void main() { ' +
-						        'gl_FragColor = texture2D(texture1,vUv);' +
-					        '}'
-				        material.uniforms = uniforms
-				        material.needsUpdate = true
-                        var geometry = new GL.THREE.BufferGeometry();
-                        canvas.setGeometry(layer, i,"rastercoverage",geometry);
-                        var uvs = new Float32Array(layer.uvs(i))
-                        geometry.addAttribute('uv', new GL.THREE.BufferAttribute( uvs, 2 ) );
-                        var quad = new GL.THREE.Mesh( geometry, material );
-                        quad.name = layer.nodeId;
-                        quad.visible = layer.vproperty("active");
-                        layer.setQuadId(i, quad.id);
-                        // layer.addMeshIndex(quad.id);
-                        quad.renderOrder = sceneObject.renderOrder;
-                        sceneObject.add(quad);
-                    }
+                var texture = layer.texture(i);
+                if (texture.valid) {
+				    var tTexture = new GL.THREE.DataTexture(
+					    new Uint8Array(texture.data),
+					    texture.width,
+					    texture.height,
+					    GL.THREE.RGBAFormat,
+					    GL.THREE.UnsignedByteType,
+					    GL.THREE.UVMapping);
+				    tTexture.needsUpdate = true
+				    var uniforms = {
+					    texture1: { type: "t", value: tTexture },
+                        uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
+				    };
+				    var material = colorShaderMaterialTemplate.clone();
+				    material.uniforms = uniforms
+				    material.tTexture = tTexture; // keep a copy
+				    material.needsUpdate = true
+                    var geometry = new GL.THREE.BufferGeometry();
+                    canvas.setGeometry(layer, i,"rastercoverage",geometry);
+                    var uvs = new Float32Array(layer.uvs(i))
+                    geometry.addAttribute('uv', new GL.THREE.BufferAttribute( uvs, 2 ) );
+                    var quad = new GL.THREE.Mesh( geometry, material );
+                    quad.name = layer.layerId;
+                    quad.visible = layer.vproperty("active");
+                    layer.setQuadId(i, quad.id);
+                    quad.renderOrder = sceneObject.renderOrder;
+                    sceneObject.add(quad);
                 }
             }
 		}
@@ -126,54 +110,35 @@ Item {
             }
             var quads = layer.numberOfBuffers("rastercoverage");
             for (var i=0; i < quads;++i) {
-                if (!layer.quadActive(i)) {
-                    var quadId = layer.quadId(i);
-                    if (quadId > -1)
-                        sceneObject.remove(sceneObject.getObjectById(quadId));
-                } else if (layer.quadNeedsUpdate(i)) {
-                    var quadId = layer.quadId(i);
-                    if (quadId > -1)
-                        sceneObject.remove(sceneObject.getObjectById(quadId));
-                    var texture = layer.texture(i);
-                    if (texture.valid) {
-				        var tTexture = new GL.THREE.DataTexture(
-					        new Uint8Array(texture.data),
-					        texture.width,
-					        texture.height,
-					        GL.THREE.AlphaFormat,
-					        GL.THREE.UnsignedByteType,
-					        GL.THREE.UVMapping);
-				        tTexture.needsUpdate = true
-				        var uniforms = {
-					        texture1: { type: "t", value: tTexture },
-                            uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
-					        palette: { type: "t", value: tPalette }
-				        };
-                        var material = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
-				        material.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
-				        material.fragmentShader =
-					        'varying vec2 vUv;' +
-					        'uniform sampler2D texture1;uniform sampler2D palette;' +
-					        'void main() { ' +
-						        'float x = texture2D(texture1,vUv).a;' +
-						        'float y = 0.5;'+
-						        'gl_FragColor = texture2D(palette,vec2(x,y));' +
-					        '}'
-				        material.uniforms = uniforms
-				        material.needsUpdate = true
-                        var geometry = new GL.THREE.BufferGeometry();
-                        canvas.setGeometry(layer, i,"rastercoverage",geometry);
-                        var uvs = new Float32Array(layer.uvs(i))
-                        geometry.addAttribute('uv', new GL.THREE.BufferAttribute( uvs, 2 ) );
-                        var quad = new GL.THREE.Mesh( geometry, material );
-                        quad.name = layer.nodeId;
-                        quad.visible = layer.vproperty("active");
-                        layer.setQuadId(i, quad.id);
-                        // layer.addMeshIndex(quad.id);
-                        quad.renderOrder = sceneObject.renderOrder;
-                        sceneObject.add(quad);
-                    }
->>>>>>> Stashed changes
+                var texture = layer.texture(i);
+                if (texture.valid) {
+				    var tTexture = new GL.THREE.DataTexture(
+					    new Uint8Array(texture.data),
+					    texture.width,
+					    texture.height,
+					    GL.THREE.AlphaFormat,
+					    GL.THREE.UnsignedByteType,
+					    GL.THREE.UVMapping);
+				    tTexture.needsUpdate = true
+				    var uniforms = {
+					    texture1: { type: "t", value: tTexture },
+                        uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
+					    palette: { type: "t", value: layer.tPalette }
+				    };
+                    var material = paletteShaderMaterialTemplate.clone();
+				    material.uniforms = uniforms
+                    material.tTexture = tTexture; // keep a copy
+				    material.needsUpdate = true
+                    var geometry = new GL.THREE.BufferGeometry();
+                    canvas.setGeometry(layer, i,"rastercoverage",geometry);
+                    var uvs = new Float32Array(layer.uvs(i))
+                    geometry.addAttribute('uv', new GL.THREE.BufferAttribute( uvs, 2 ) );
+                    var quad = new GL.THREE.Mesh( geometry, material );
+                    quad.name = layer.layerId;
+                    quad.visible = layer.vproperty("active");
+                    layer.setQuadId(i, quad.id);
+                    quad.renderOrder = sceneObject.renderOrder;
+                    sceneObject.add(quad);
                 }
             }
 		}
@@ -335,7 +300,6 @@ Item {
                     setProperties(layerList[i])
                 }
             }
-
         }
         
 		onPaintGL : {
