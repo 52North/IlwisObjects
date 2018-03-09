@@ -26,7 +26,7 @@ PointLayerModel::PointLayerModel()
 {
 }
 
-PointLayerModel::PointLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions& options) : VectorLayerModel(manager, parent, name, desc, options)
+PointLayerModel::PointLayerModel(LayerManager * manager, QStandardItem * parent, const QString & name, const QString & desc, const IOOptions& options) : VectorLayerModel(manager, parent, name, desc, options)
 {
 	_featureLayer = static_cast<FeatureLayerModel*>(parent);
 	if (options["setter"].toString() == "")
@@ -101,9 +101,9 @@ QVector<qreal> PointLayerModel::colors(qint32 bufferIndex, const QString& ) cons
 	return QVector < qreal >();
 }
 
-LayerModel * Ilwis::Ui::PointLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel * Ilwis::Ui::PointLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-	return new PointLayerModel(manager,layer,name,desc, options);
+	return new PointLayerModel(manager,parentLayer,name,desc, options);
 }
 
 

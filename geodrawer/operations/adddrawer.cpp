@@ -1,3 +1,4 @@
+#include <QStandardItem>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "coverage.h"
@@ -90,13 +91,13 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
     }
     if ( parent != ""){
 		LayerIndex idx = parent.toInt();
-        if ( !(_parentLayer = layerManager()->findLayer(idx))){
+        if ( !(_parentLayer = dynamic_cast<QStandardItem *>(layerManager()->findLayer(idx)))){
             kernel()->issues()->log(TR("The parent of the to be added layer doesnt exist:") + parent);
             return sPREPAREFAILED;
         }
 	}
 	else
-		_parentLayer = layerManager()->findLayer(iUNDEF); 
+		_parentLayer = layerManager()->layerTree()->invisibleRootItem(); 
 
 
 	if (source != "") {

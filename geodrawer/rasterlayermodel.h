@@ -39,7 +39,7 @@ class RasterLayerModel : public CoverageLayerModel
     Q_OBJECT
 public:
 	RasterLayerModel();
-    RasterLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
+    RasterLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
     ~RasterLayerModel();
     Q_PROPERTY(QVariantMap palette READ palette NOTIFY paletteChanged);
     Q_PROPERTY(QVector<qint32> removeQuads READ removeQuads)
@@ -51,7 +51,7 @@ public:
 	bool prepare(int);
     QString value2string(const QVariant &value, const QString &attrName) const;
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
-    static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
+    static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 	bool usesColorData() const;
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;

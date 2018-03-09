@@ -586,12 +586,12 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
 QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                                                             bool showoutputformat,
                                                             bool showEmptyOptionInList,
-                                                            QStringList hiddenFields,
-                                                            QVariantList operationNames,
+                                                            QStringList hiddenFields, 
+                                                            QVariantList operationNames,  
                                                             QStringList constantValues,
-                                                            const std::vector<FormParameter>& parameters)
+                                                            const std::vector<FormParameter>& parameters)     
 {
-        Resource resource = mastercatalog()->id2Resource(metaid);
+        Resource resource = mastercatalog()->id2Resource(metaid);         
          std::vector<FormParameter> outparameters = getOutputParameters(resource);
         QString results;
         QString mid = QString::number(metaid);
@@ -602,52 +602,52 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
         QString columnStart = "import QtQuick 2.2; import QtQuick.Controls 1.1;import QtQuick.Layouts 1.1;import QtQuick.Controls.Styles 1.0;import UIContextModel 1.0;import MasterCatalogModel 1.0;import \"../controls\" as Controls;";
         columnStart += "Column { " + validation + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
         QString exclusiveGroup = "ExclusiveGroup { id : sourceFilterGroup; onCurrentChanged: {}}";
-        columnStart += exclusiveGroup;
-        int width = 0;
+        columnStart += exclusiveGroup;    
+        int width = 0; 
         for(int i = 0; i < parameters.size(); ++i){
-            width = std::max(parameters[i]._label.size(), width);
-        }
-        width *= 10;
-        width = std::min(100, width);
+            width = std::max(parameters[i]._label.size(), width);   
+        } 
+        width *= 10;   
+        width = std::min(100, width);   
 
         QString inputpart = makeFormPart(mid, width, parameters, true, results, showEmptyOptionInList, hiddenFields, operationNames, constantValues);
 
         QString outputPart;
         QString seperator;
-        if ( showoutputformat){
-            if ( outparameters.size() > 0){
+        if ( showoutputformat){ 
+            if ( outparameters.size() > 0){       
                 for(int i = 0; i < outparameters.size(); ++i){
-                    width = std::max(outparameters[i]._label.size(), width);
-                }
-                width = std::max(100, width);
+                    width = std::max(outparameters[i]._label.size(), width); 
+                } 
+                width = std::max(100, width);  
             }
             outputPart = makeFormPart(mid, width, outparameters, false, results, showEmptyOptionInList,QStringList(), operationNames);
 
-            if (results.size() > 0) results = ": " + results;
-            results = "property var outputFormats;property string formresult" + results;
+            if (results.size() > 0) results = ": " + results; 
+            results = "property var outputFormats;property string formresult" + results; 
 
             for(int i = 0; i < outparameters.size(); ++i){
                 results += QString(";property string outputfield_%1").arg(i);
                 if ( hasType(outparameters[i]._dataType, itCOVERAGE | itTABLE | itCOLUMN)){
                     results += QString(";property alias format_%1 :  pout_format_%1").arg(i);
                 }
-            }
+            } 
             results += ";";
-            if(operationNames.isEmpty()){
+            if(operationNames.isEmpty()){ 
                 seperator = "Rectangle{width : parent.width - 12; x: 6; height:2;color : \"#B3B3B3\"}";
             }else{
                 seperator = "Rectangle{width : parent.width - 12; x: 6; height:5;color : \"#B3B3B3\"}";
             }
-
-        }else
-            results = "property string formresult : " + results + ";";
+              
+        }else                                                     
+            results = "property string formresult : " + results + ";";     
         columnStart = QString(columnStart).arg(results);
-        QString component = columnStart + inputpart + seperator + outputPart + "}";
-
+        QString component = columnStart + inputpart + seperator + outputPart + "}";  
+         
 
         //for debugging, check if the qml is ok; can be retrieved from teh log file
        // kernel()->issues()->log(component);
-        return component;
+        return component;   
 }
 
 QString ApplicationFormExpressionParser::index2Form(quint64 metaid, const QVariantMap& node)  {
@@ -668,24 +668,24 @@ QString ApplicationFormExpressionParser::index2Form(quint64 metaid, const QVaria
 }
 
 QString ApplicationFormExpressionParser::index2Form(quint64 metaid, bool showoutputformat, bool showEmptyOptionInList, QStringList hiddenFields, QVariantList operationNames, QStringList constantValues)  {
-    try {
+    try { 
         uicontext()->showLastGeneratedResult("");
         Resource resource = mastercatalog()->id2Resource(metaid);
         std::vector<FormParameter> parameters = getParameters(resource,false);
 
         return index2FormInternal(metaid, showoutputformat, showEmptyOptionInList, hiddenFields, operationNames, constantValues,parameters);
 
-    }catch(const ErrorObject&){
+    }catch(const ErrorObject&){  
 
     } catch(const std::exception& ex){
         kernel()->issues()->log(ex.what());
     }
-    return "";
+    return "";           
 }
 
-std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::createWorkflowMetadata(quint64 metaid) const
+std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::createWorkflowMetadata(quint64 metaid) const 
 {
-    std::vector<FormParameter> parameters;
+    std::vector<FormParameter> parameters;  
 
     FormParameter metadataname;
     metadataname._label = "Name";
@@ -697,20 +697,20 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
     metadatadescription._label = "Description";
     metadatadescription._dataType = itTEXTDOMAIN;
     metadatadescription._fieldType = ftTEXTAREA;
-    parameters.push_back(metadatadescription);
+    parameters.push_back(metadatadescription); 
 
-    return parameters;
+    return parameters;  
 }
 
 QString ApplicationFormExpressionParser::formats(const QString& query, quint64 ilwtype) const
 {
     if ( hasType(ilwtype,itFEATURE )){
-        ilwtype = itFEATURE;
+        ilwtype = itFEATURE;    
     }
 
     std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
     QString formatList;
-    for(auto &format : formats)    {
+    for(auto &format : formats)    { 
         if ( formatList != ""){
             formatList += ",";
         }

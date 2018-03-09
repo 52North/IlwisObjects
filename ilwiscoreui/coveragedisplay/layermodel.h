@@ -4,9 +4,9 @@
 #include <QObject>
 #include <QQmlListProperty>
 #include <QVector>
+#include <QStandardItemModel>
 #include <set>
 #include "identity.h"
-#include "tree.h"
 #include "ilwiscoreui_global.h"
 
 #define NEW_LAYERMODEL(name) \
@@ -35,7 +35,7 @@ class VisualAttribute;
 class LayerManager;
 
 
-class ILWISCOREUISHARED_EXPORT LayerModel : public TreeNode, public Ilwis::Identity
+class ILWISCOREUISHARED_EXPORT LayerModel : public QObject, public QStandardItem
 {
     Q_OBJECT
 public:
@@ -45,21 +45,21 @@ public:
 	Q_ENUMS(PreparationType)
     Q_PROPERTY(bool active READ active WRITE active NOTIFY onActiveChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::VisualAttribute> visualAttributes READ vattributes NOTIFY visualAttributesChanged)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::TreeNode> layers READ layersPrivate NOTIFY layerChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> childLayers READ childLayersPrivate NOTIFY layerChanged)
     Q_PROPERTY(QString icon READ icon CONSTANT)
-    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
-	Q_PROPERTY(QString layerId READ layerId CONSTANT)
+    Q_PROPERTY(QString name READ text NOTIFY nameChanged)
     Q_PROPERTY(bool isDrawable READ isDrawable CONSTANT)
     Q_PROPERTY(bool isVectorLayer READ isVectorLayer CONSTANT)
 	Q_PROPERTY(bool usesColorData READ usesColorData CONSTANT)
 	Q_PROPERTY(double opacity READ opacity WRITE opacity NOTIFY opacityChanged)
 	Q_PROPERTY(QStringList changedProperties READ changedProperties CONSTANT)
 	Q_PROPERTY(bool updateGeometry READ updateGeometry WRITE updateGeometry NOTIFY geometryChanged)
-	Q_PROPERTY(int layerCount READ layerCount NOTIFY layerCountChanged)
     Q_PROPERTY(bool isValid READ isValid NOTIFY validChanged)
 	Q_PROPERTY(bool isSupportLayer READ isSupportLayer CONSTANT)
 	Q_PROPERTY(QString drawType READ drawType CONSTANT)
     Q_PROPERTY(bool isCoverageBased READ isCoverageBased CONSTANT)
+    Q_PROPERTY(int nodeId READ nodeId CONSTANT)
+    Q_PROPERTY(QModelIndex index READ index CONSTANT)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
@@ -79,8 +79,8 @@ public:
 
 
 	LayerModel();
-    explicit LayerModel(TreeNode *parent);
-    LayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
+    LayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
+    ~LayerModel();
 
     virtual void redraw() const;
     int activeVProperty() const;
@@ -90,18 +90,17 @@ public:
 
 
     void addLayer(LayerModel *layer);
-    LayerModel *parentLayer() const;
+    const LayerModel *parentLayer() const;
+    LayerModel *parentLayer();
     void clearLayers();
-    int layerCount() const;
 	LayerModel *findLayerByName(const QString& name);
     const LayerModel * findLayerByName(const QString & name) const;
-    void moveLayer(LayerModel *lyr, int type);
+    void moveLayer(int type);
     virtual QString url() const;
 	virtual void fillAttributes();
     void addVisualAttribute(VisualAttribute *attr);
     virtual QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     virtual QString icon() const;
-	virtual QString layerId() const;
 	IlwisTypes layerType() const;
 	QString drawType() const;
     double opacity() const;
@@ -128,6 +127,9 @@ public:
     qint32 order() const;
     virtual bool isCoverageBased() const;
     bool hasFixedStructure() const;
+    LayerModel * findLayer(int nodeid);
+    qint32 nodeId() const;
+    void nodeId(qint32 id);
 
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
@@ -144,7 +146,7 @@ signals:
 	   void indicesChanged();
 	   void opacityChanged();
 	   void geometryChanged();
-	   void layerCountChanged();
+	   void layersChanged();
 	   void validChanged();
 	   void prepareChanged();
 
@@ -164,18 +166,18 @@ private:
     LayerManager *_layerManager;
     bool _active = true;
     double _opacity = 1.0;
-    LayerModel *_parent;
     int _activeVProperty = 0;
-    static quint64 _layerId;
 	std::vector<quint32> _meshes;
+    QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
 	bool _geometryChanged = false;
     qint32 _order = iUNDEF;
+    qint32 _nodeid = 0;
 
 	std::set<QString> _changedProperties;
 	bool _isSupportLayer = false;
 
     QQmlListProperty<VisualAttribute> vattributes();
-    QQmlListProperty<TreeNode> layersPrivate();
+    QQmlListProperty<LayerModel> childLayersPrivate();
 
 
     //NEW_LAYERMODEL(LayerModel)

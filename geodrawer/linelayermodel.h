@@ -17,7 +17,7 @@ namespace Ilwis {
 		{
 		public:
 			LineLayerModel();
-			LineLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
+			LineLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
 
 			bool prepare(int prepType);
 			QString value2string(const QVariant &value, const QString &attrName) const;
@@ -37,7 +37,7 @@ namespace Ilwis {
 			double linewidth() const;
 			void linewidth(double lw);
 
-			static LayerModel *create(LayerManager *, LayerModel *, const QString&, const QString&, const IOOptions&);
+			static LayerModel *create(LayerManager *, QStandardItem *parentLayer, const QString&, const QString&, const IOOptions&);
 
 			NEW_LAYERMODEL(LineLayerModel);
 

@@ -18,7 +18,7 @@ namespace Ilwis {
 			Q_INVOKABLE void setActiveAttribute(int idx);
 
 			VectorLayerModel(QObject *parent = 0);
-			VectorLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions& options);
+			VectorLayerModel(LayerManager * manager, QStandardItem * parent, const QString & name, const QString & desc, const IOOptions& options);
 			QVariant vproperty(const QString & attrName) const;
 			void vproperty(const QString & attrName, const QVariant & value);
 			void fillAttributes();

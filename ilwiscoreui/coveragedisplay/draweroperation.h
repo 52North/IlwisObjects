@@ -3,10 +3,12 @@
 
 #include "ilwiscoreui_global.h"
 
+class QStandardItem;
+
 namespace Ilwis {
 namespace Ui {
 class LayerManager;
-class LayerModel;
+
 
 class ILWISCOREUISHARED_EXPORT DrawerOperation : public OperationImplementation
 {
@@ -17,7 +19,7 @@ public:
 protected:
     quint64 _viewid = i64UNDEF; //uniquely identifies the view
     LayerManager *layerManager();
-    LayerModel *_parentLayer = 0;
+    QStandardItem *_parentLayer = 0;
     bool getViewId(const QString &sview);
 };
 }

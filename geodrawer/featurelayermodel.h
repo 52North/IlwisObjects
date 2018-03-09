@@ -49,7 +49,7 @@ public:
 	enum ChildLayers{clPOINT=0, clLINE=1, clAREA=2, clBOUNDARY=4};
 
 	FeatureLayerModel();
-    FeatureLayerModel( LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
+    FeatureLayerModel( LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
 
     void coverage(const ICoverage& cov);
 	ICoverage coverage() const;
@@ -58,8 +58,9 @@ public:
     void fillAttributes() ;
     QString value2string(const QVariant &value, const QString &attrName) const;
 	bool prepare(int);
+    int numberOfBuffers(const QString&) const;
 
-    static LayerModel *create(LayerManager *,LayerModel *,const QString&, const QString&, const IOOptions&);
+    static LayerModel *create(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&);
 
     NEW_LAYERMODEL(FeatureLayerModel);
 

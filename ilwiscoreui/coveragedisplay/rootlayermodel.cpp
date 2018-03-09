@@ -18,19 +18,18 @@ using namespace Ui;
 
 //REGISTER_LAYERMODEL("globallayermodel",GlobalLayerModel);
 
-RootLayerModel::RootLayerModel() : LayerModel(0)
+RootLayerModel::RootLayerModel() : LayerModel()
 {
 	_layerType = itROOTLAYER;
 }
 
-RootLayerModel::RootLayerModel(LayerManager *lm, LayerModel *parent) :
+RootLayerModel::RootLayerModel(LayerManager *lm, QStandardItem *parent) :
     LayerModel(lm, parent, TR("Global Properties"),"", IOOptions())
 {
 	_layerType = itROOTLAYER;
  
 	_cameraPosition = { 0,0,0 };
 	_isValid = true;
-	readonly(true);
 	_icon = "settings_green.png";
 
 	fillData();
@@ -147,11 +146,15 @@ QVariantMap RootLayerModel::scrollInfo() const
 
 bool Ilwis::Ui::RootLayerModel::prepare(int prepType)
 {
-    addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), "", this));
-    addVisualAttribute(new GlobalAttributeModel(TR("3D"), "", this));
+    if (!hasType(prepType, LayerModel::ptGEOMETRY | LayerModel::ptRENDER)) {
+        addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), "", this));
+        addVisualAttribute(new GlobalAttributeModel(TR("3D"), "", this));
 
-    LayerManager::create(this, "gridlayer", layerManager(), sUNDEF, sUNDEF);
-    LayerManager::create(layerManager()->findLayer(iUNDEF) , "backgroundlayer", layerManager(), sUNDEF, sUNDEF);
+        LayerManager::create(this, "gridlayer", layerManager(), sUNDEF, sUNDEF);
+        LayerManager::create(0, "backgroundlayer", layerManager(), sUNDEF, sUNDEF);
+
+        _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
+    }
 
     return true;
 }
@@ -496,6 +499,10 @@ void Ilwis::Ui::RootLayerModel::active(bool yesno)
 bool Ilwis::Ui::RootLayerModel::active() const
 {
     return true;
+}
+
+int Ilwis::Ui::RootLayerModel::numberOfBuffers(const QString&) const {
+    return 0;
 }
 
 

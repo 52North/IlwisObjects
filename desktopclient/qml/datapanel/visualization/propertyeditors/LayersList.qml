@@ -28,7 +28,7 @@ Item {
         tree.dropHandled = true
 		var layer = manager.findLayer(currentNodeId)
 		if ( layer){
-			var index = layer.index(manager.layerTree)
+			var index = layer.index
 			tree.expand(index)
 		
 			tree.selection.setCurrentIndex(index, ItemSelectionModel.ClearAndSelect)
@@ -38,7 +38,7 @@ Item {
 	}
 
 	function setTreeIndex(index){
-		var idx = manager.layerTree.nodeid(index)
+		var idx = manager.nodeid(index)
 		if ( idx >= 0){
 			currentNodeId = idx
             
@@ -169,13 +169,8 @@ Item {
 					model: tree.model
 				}
 
-				onClicked : {
-					tree.selection.setCurrentIndex(index, ItemSelectionModel.ClearAndSelect)
-					setTreeIndex(index)
-				}
-
 				rowDelegate : Column {
-                    width : 200
+                    width : 250
                     height : 22
                     
                     Rectangle {
@@ -195,12 +190,13 @@ Item {
 				itemDelegate: LayerDelegate {
 				}
 				
-				TableViewColumn {
+			 	TableViewColumn {
                     title: "Name"
                     role: "data"
                     resizable: true
-              
+                    width : 150
                 }
+
                 Component.onCompleted : {
                     if ( flickableItem ) {
                         flickableItem.interactive = false
@@ -209,7 +205,6 @@ Item {
             }
             
 			onDropped : {
-            console.debug("xxxxxxxxxxx")
                 if (!tree.dropHandled){
 				    var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
 				    if ( resource){

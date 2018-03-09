@@ -15,7 +15,7 @@ GridLayer::GridLayer() : IntermediateLayerModel()
 {
 }
 
-GridLayer::GridLayer(LayerManager *manager, QObject *parent, const IOOptions& options) : IntermediateLayerModel(manager, parent, "Grid", "Draws the map primary and seconday grid in the mappane", options)
+GridLayer::GridLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options) : IntermediateLayerModel(manager, parent, "Grid", "Draws the map primary and seconday grid in the mappane", options)
 {
     _isDrawable = false;
     _isValid = true;
@@ -26,12 +26,12 @@ GridLayer::GridLayer(LayerManager *manager, QObject *parent, const IOOptions& op
 
     PrimaryGridLayer *primaryGrid = new PrimaryGridLayer(manager, this, options);
     primaryGrid->nodeId(manager->nextId());
-    manager->layerTree()->appendChild(this, primaryGrid);
+    appendRow(primaryGrid);
     manager->lastAddedCoverageLayer(primaryGrid);
 
     SecondaryGridLayer *secondaryGrid = new SecondaryGridLayer(manager, this, primaryGrid, options);
     secondaryGrid->nodeId(manager->nextId());
-    manager->layerTree()->appendChild(this, secondaryGrid);
+    appendRow(secondaryGrid);
     manager->lastAddedCoverageLayer(secondaryGrid);
     primaryGrid->fillData();
     secondaryGrid->fillData();
@@ -68,18 +68,19 @@ void GridLayer::vproperty(const QString & key, const QVariant & value)
     IntermediateLayerModel::vproperty(key, value);
 }
 
-LayerModel *GridLayer::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel *GridLayer::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-    return new GridLayer(manager, layer, options);
+    return new GridLayer(manager, parentLayer, options);
 }
 //-----------------------------------------------------------------------------
-SubGridLayer::SubGridLayer(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options) : LayerModel(manager, parent, name, desc, options){
+SubGridLayer::SubGridLayer(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options) : LayerModel(manager, parent, name, desc, options){
     isSupportLayer(true);
     _isDrawable = true;
     _isValid = true;
     _icon = "vector.png";
     _layerType = itGRIDLAYER;
     active(false);
+    updateGeometry(true);
 
 }
 
@@ -100,14 +101,14 @@ void SubGridLayer::vproperty(const QString& key, const QVariant& value) {
     LayerModel::vproperty(key, value);
     if (key == "fixedlinecolor") {
         _lineColor = value.value<QColor>();
-        add2ChangedProperties(isSupportLayer() ? "material" : "layer", childCount() > 0);
+        add2ChangedProperties(isSupportLayer() ? "material" : "layer", rowCount() > 0);
     }
     if (key == "celldistance") {
         bool ok = true;
         double v = value.toDouble(&ok);
         if (ok && _cellDistance > 0) {
             _cellDistance = v;
-            add2ChangedProperties("buffers", childCount() > 0);
+            add2ChangedProperties("buffers", rowCount() > 0);
             updateGeometry(true);
         }
     }
@@ -171,7 +172,7 @@ void SubGridLayer::calcEnvelope(Coordinate& cmin, Coordinate& cmax) {
     }
 }
 //------------------------------------------------------------
-PrimaryGridLayer::PrimaryGridLayer(LayerManager *manager, QObject *parent, const IOOptions& options) : SubGridLayer(manager, parent,"Primary Grid", "Main lines in the grid", options){
+PrimaryGridLayer::PrimaryGridLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options) : SubGridLayer(manager, parent,"Primary Grid", "Main lines in the grid", options){
     order(-20);
     _layerType = itGRIDLAYER;
 }
@@ -244,7 +245,7 @@ bool Ilwis::Ui::PrimaryGridLayer::active() const
 }
 
 //-----------------------------------------------------------------
-SecondaryGridLayer::SecondaryGridLayer(LayerManager *manager, QObject *parent, PrimaryGridLayer *primaryGrid, const IOOptions& options) : 
+SecondaryGridLayer::SecondaryGridLayer(LayerManager *manager, QStandardItem *parent, PrimaryGridLayer *primaryGrid, const IOOptions& options) : 
     SubGridLayer(manager, parent, "Secondary Grid", "sub division of the main grid cells", options),
     _primaryGrid(primaryGrid)
 {

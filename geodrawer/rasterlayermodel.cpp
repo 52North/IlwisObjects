@@ -96,7 +96,7 @@ RasterLayerModel::RasterLayerModel()
 
 }
 
-RasterLayerModel::RasterLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options)
+RasterLayerModel::RasterLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options)
 : CoverageLayerModel(manager, parent,name, desc, options)
 , textureHeap(0)
 , _linear(true)
@@ -112,9 +112,9 @@ RasterLayerModel::~RasterLayerModel() {
     delete textureHeap;
 }
 
-LayerModel *RasterLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel *RasterLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-    return new RasterLayerModel(manager, layer, name, desc, options);
+    return new RasterLayerModel(manager, parentLayer, name, desc, options);
 }
 
 bool Ilwis::Ui::RasterLayerModel::usesColorData() const

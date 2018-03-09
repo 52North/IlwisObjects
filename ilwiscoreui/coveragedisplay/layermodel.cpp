@@ -10,30 +10,35 @@
 #include "attributemodel.h"
 #include "visualattribute.h"
 #include "layermodel.h"
+#include "tree.h"
 
 using namespace Ilwis;
 using namespace Ui;
 
 //REGISTER_LAYERMODEL("layermodel",LayerModel)
 
-quint64 LayerModel::_layerId = 0;
 Ilwis::Ui::LayerModel::LayerModel()
 {
 }
 
-LayerModel::LayerModel(TreeNode *parent) : TreeNode(QList<QVariant>(), parent)
-{
-
+LayerModel::LayerModel(LayerManager *manager, QStandardItem *parent, const QString& name, const QString& desc, const IOOptions& opt) : QStandardItem(name), _layerManager(manager){
+    if (parent->index().isValid()) { // the invisiblerootitem has by definition an invalid index, so we can not use it as parent, but this parent is only true for all layers directly under the root. The layermanager can then act as parent
+        setParent(static_cast<LayerModel *>(parent));
+    }
+    else
+        setParent(manager);
+        
 }
 
-LayerModel::LayerModel(LayerManager *manager, QObject *parent, const QString& name, const QString& desc, const IOOptions& opt) : TreeNode({ name }, parent), Identity(name, _layerId++, "", desc), _layerManager(manager), _parent(dynamic_cast<LayerModel *>(parent)), _geometryChanged(true)
+Ilwis::Ui::LayerModel::~LayerModel()
 {
-
 }
 
 LayerModel *LayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
 {
-    return new LayerModel(manager, layer, name, desc, options);
+    //return new LayerModel(manager, layer, name, desc, options);
+
+    return 0;
 }
 
 void LayerModel::redraw() const
@@ -82,8 +87,8 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
        opacity(value.toFloat());
 	if (key == "active") {
 		active(value.toBool());
-   		for (auto *node : children()) {
-			auto lyr = node->as<LayerModel>();
+        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex){
+            LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
 			lyr->vproperty(key, value);
 		}
 	}
@@ -122,8 +127,10 @@ void LayerModel::addVisualAttribute(VisualAttribute *attr)
 QString LayerModel::layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
 {
     QString alltext;
-    for(auto node : children()){
-		auto lyr = node->as<LayerModel>();
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+        if (!lyr)
+            continue;
         QString txt = lyr->layerData(crdIn, attrName, items);
         if ( alltext != "")
             alltext += ";";
@@ -136,11 +143,6 @@ QString LayerModel::layerData(const Coordinate &crdIn, const QString &attrName, 
 QString LayerModel::icon() const
 {
     return _icon;
-}
-
-QString Ilwis::Ui::LayerModel::layerId() const
-{
-	return QString::number(id());
 }
 
 IlwisTypes LayerModel::layerType() const
@@ -224,7 +226,7 @@ QString LayerModel::visualVPropertyByIndex(int index) const
 
 void LayerModel::addLayer(LayerModel *layer)
 {
-    appendChild(layer);
+    appendRow(layer);
 }
 
 VisualAttribute *LayerModel::visualAttribute(const QString &attrName) const
@@ -256,6 +258,34 @@ bool Ilwis::Ui::LayerModel::hasFixedStructure() const
     return _hasFixedStructure;
 }
 
+LayerModel * LayerModel::findLayer(int nodeid)
+{
+   /* for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        QStandardItem *it = child(layerIndex);
+        if (it)
+            qDebug() << "yyyyy" << it->text();
+    }*/
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *layer = static_cast<LayerModel *>(child(layerIndex));
+        if (layer->nodeId() == nodeid)
+            return layer;
+        layer = layer->findLayer(nodeid);
+        if (layer)
+            return layer;
+    }
+    return 0;
+}
+
+qint32 Ilwis::Ui::LayerModel::nodeId() const
+{
+    return _nodeid;
+}
+
+void Ilwis::Ui::LayerModel::nodeId(qint32 id)
+{
+    _nodeid = id;
+}
+
 void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
 {
 }
@@ -280,26 +310,30 @@ void LayerModel::opacity(double opacity)
 	if (opacity >= 0 && opacity <= 1.0) {
 		if (opacity != _opacity) {
 			_opacity = opacity;
-			add2ChangedProperties(isSupportLayer() ? "material" : "layer", childCount() > 0);
+			add2ChangedProperties(isSupportLayer() ? "material" : "layer",rowCount() > 0);
 			emit opacityChanged();
 		}
 	}
 }
 
-LayerModel *LayerModel::layer(int index){
-    if ( index < childCount())
-        return child(index)->as<LayerModel>();
+const LayerModel *LayerModel::parentLayer() const
+{
+    const QStandardItem *lyr = dynamic_cast<const QStandardItem *>(this);
+    if ( lyr->index().isValid())
+        return static_cast<const LayerModel *>(lyr->parent());
     return 0;
 }
 
-LayerModel *LayerModel::parentLayer() const
-{
-    return _parent;
+LayerModel *LayerModel::parentLayer() {
+    QStandardItem *lyr = dynamic_cast<QStandardItem *>(this);
+    if ( lyr->index().isValid())
+        return static_cast<LayerModel *>(lyr->parent());
+    return 0;
 }
 
 void LayerModel::clearLayers()
 {
-	removeChildren(iUNDEF, 0);
+    removeRows(0, rowCount());
     _visualAttributes = QList<VisualAttribute *>();
 	_changedProperties = std::set<QString>();
 	_geometryChanged = true;
@@ -307,16 +341,11 @@ void LayerModel::clearLayers()
 
 }
 
-int LayerModel::layerCount() const
-{
-	return childCount();
-}
-
 LayerModel * Ilwis::Ui::LayerModel::findLayerByName(const QString & name)
 {
-	for (auto *node : children()) {
-		auto lyr = node->as<LayerModel>();
-		if (lyr->name() == name) {
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+		if (lyr->text() == name) {
 			return lyr;
 		}
 		else {
@@ -330,9 +359,9 @@ LayerModel * Ilwis::Ui::LayerModel::findLayerByName(const QString & name)
 
 const LayerModel * Ilwis::Ui::LayerModel::findLayerByName(const QString & name) const
 {
-    for (auto *node : children()) {
-        auto lyr = node->as<LayerModel>();
-        if (lyr->name() == name) {
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+        if (lyr->text() == name) {
             return lyr;
         }
         else {
@@ -344,25 +373,10 @@ const LayerModel * Ilwis::Ui::LayerModel::findLayerByName(const QString & name) 
     return 0;
 }
 
-void LayerModel::moveLayer(LayerModel *lyr, int type)
+void LayerModel::moveLayer(int newPosition)
 {
-    int index = 0;
-    for(;index < layerCount(); ++index){
-        if ( lyr == child(index)->as<LayerModel>())    {
-            break;
-        }
-    }
+   // QStandardItem *item = (QStandardItem*)(this)->parent();
 
-   /* if ( type == lmDOWN){
-        if ( index < layerCount())
-            _layers.swap(index, index + 1);
-    }else if ( type == lmUP ){
-        if ( index > 0  && index < _layers.size())
-            _layers.swap(index, index);
-    } else if ( type == lmREMOVE){
-        if ( index >= 0 && index < _layers.size())
-        _layers.removeAt(index);
-    }*/
 }
 
 QString LayerModel::url() const
@@ -370,10 +384,10 @@ QString LayerModel::url() const
     return "";
 }
 
-QQmlListProperty<TreeNode> LayerModel::layersPrivate()
+/*QQmlListProperty<LayerModel> LayerModel::layersPrivate()
 {
-    return QQmlListProperty<TreeNode>(this, children());
-}
+    return QQmlListProperty<LayerModel>(this, children());
+}*/
 
 bool Ilwis::Ui::LayerModel::isDrawable() const
 {
@@ -399,24 +413,24 @@ void LayerModel::active(bool yesno)
 {
     _active = yesno;
     if (_active) {
-        LayerModel *parentLayer = parentItem()->as<LayerModel>();
-        if (parentLayer) {
-            parentLayer->active(yesno);
+        LayerModel *layer = parentLayer();
+        if (layer) {
+            layer->active(yesno);
         }
     } else {
-        LayerModel *parentLayer = parentItem()->as<LayerModel>();
-        if (parentLayer->active() ) {
+        LayerModel *parentLyr = parentLayer();
+        if (parentLyr && parentLyr->active() ) {
             bool someActive = false;
-            for (auto *node : parentLayer->children()) {
-                auto lyr = node->as<LayerModel>();
+            for (int layerIndex = 0; layerIndex < parentLyr->rowCount(); ++layerIndex) {
+                LayerModel *lyr = static_cast<LayerModel *>(parentLyr->child(layerIndex));
                 someActive |= lyr->active();
             }
             if (!someActive) {
-                parentLayer->active(yesno);
+                parentLyr->active(yesno);
             }
         }
     }
-    add2ChangedProperties("layer", childCount() > 0);
+    add2ChangedProperties("layer", rowCount() > 0);
     fillData();
 	emit onActiveChanged();
 }
@@ -459,13 +473,21 @@ void LayerModel::removeFromChangedProperties(const QString & prop)
 		_changedProperties.erase(iter);
 }
 
+Ilwis::Ui::LayerModel *LayerModel::layer(int idx)
+{
+    if (idx < rowCount())
+        return static_cast<LayerModel *>(child(idx));
+    return 0;
+}
+
 void LayerModel::add2ChangedProperties(const QString & prop, bool propagate)
 {
 	_changedProperties.insert(prop);
 	if (propagate) {
-		for (auto *node : children()) {
-			auto childLayer = node->as<LayerModel>();
-			childLayer->add2ChangedProperties(prop, propagate);
+        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+            LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+            if ( lyr)
+			    lyr->add2ChangedProperties(prop, propagate);
 		}
 	}
 }
@@ -496,9 +518,9 @@ void LayerModel::updateGeometry(bool yesno, bool propagate)
   //  }
     _geometryChanged = yesno;
     if (propagate) {
-        for (auto *node : children()) {
-            auto childLayer = node->as<LayerModel>();
-            childLayer->updateGeometry(yesno, propagate);
+        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+            LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+            lyr->updateGeometry(yesno, propagate);
         }
     }
 }
@@ -529,14 +551,25 @@ void LayerModel::fillAttributes()
 
 void LayerModel::fillData() {
 
-	QVariantMap vmap;
-	vmap["name"] = name();
-	vmap["icon"] = icon();
-	vmap["readonly"] = readonly();
+    QVariantMap vmap;
+    vmap["name"] = text();
+    vmap["icon"] = icon();
+    vmap["readonly"] = isEditable();
     vmap["parenthasfixedstructure"] = parentLayer() ? parentLayer()->hasFixedStructure() : false;
-	vmap["nodeid"] = nodeId();
-	vmap["active"] = active();
-	setData(0, vmap);
+    vmap["fixedstructure"] = hasFixedStructure();
+    vmap["nodeid"] = nodeId();
+    vmap["active"] = active();
+    setData(vmap);
+}
+
+QQmlListProperty<LayerModel> LayerModel::childLayersPrivate()
+{
+    _childeren = QList<LayerModel *>();
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+        _childeren.push_back(lyr);
+    }
+    return QQmlListProperty<LayerModel>(this, _childeren);
 }
 
 bool LayerModel::isSupportLayer() const

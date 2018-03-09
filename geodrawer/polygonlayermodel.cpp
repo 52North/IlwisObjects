@@ -27,7 +27,7 @@ PolygonLayerModel::PolygonLayerModel()
 {
 }
 
-PolygonLayerModel::PolygonLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions& options) : VectorLayerModel(manager, parent, name, desc, options)
+PolygonLayerModel::PolygonLayerModel(LayerManager * manager, QStandardItem * parent, const QString & name, const QString & desc, const IOOptions& options) : VectorLayerModel(manager, parent, name, desc, options)
 {
 	_featureLayer = static_cast<FeatureLayerModel*>(parent);
 	if (options["setter"].toString() == "")
@@ -104,9 +104,9 @@ QVector<qreal> PolygonLayerModel::colors(qint32 bufferIndex, const QString& ) co
 	return QVector < qreal >();
 }
 
-LayerModel * Ilwis::Ui::PolygonLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel * Ilwis::Ui::PolygonLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-	return new PolygonLayerModel(manager, layer, name, desc, options);
+	return new PolygonLayerModel(manager, parentLayer, name, desc, options);
 }
 
 

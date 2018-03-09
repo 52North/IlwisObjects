@@ -15,7 +15,7 @@ BackgroundLayer::BackgroundLayer() : LayerModel()
 {
 }
 
-BackgroundLayer::BackgroundLayer(LayerManager *manager, QObject *parent, const IOOptions& options) : LayerModel(manager, parent, "Background", "determines the properties of the backgeround beneath the layer of maps", options)
+BackgroundLayer::BackgroundLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options) : LayerModel(manager, parent, "Background", "determines the properties of the backgeround beneath the layer of maps", options)
 {
     _isDrawable = true;
     _isValid = true;
@@ -85,9 +85,9 @@ void BackgroundLayer::vproperty(const QString & key, const QVariant & value)
     LayerModel::vproperty(key, value);
 }
 
-LayerModel *BackgroundLayer::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel *BackgroundLayer::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-    return new BackgroundLayer(manager, layer, options);
+    return new BackgroundLayer(manager, parentLayer, options);
 }
 
 QVector<qreal> BackgroundLayer::vertices(qint32 bufferIndex, const QString&) const {

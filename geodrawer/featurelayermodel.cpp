@@ -34,7 +34,7 @@ Ilwis::Ui::FeatureLayerModel::FeatureLayerModel() : CoverageLayerModel()
 {
 }
 
-FeatureLayerModel::FeatureLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options) :CoverageLayerModel( manager, parent,name, desc, options)
+FeatureLayerModel::FeatureLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options) :CoverageLayerModel( manager, parent,name, desc, options)
 {
 	_isDrawable = false;
 	_isValid = true;
@@ -55,8 +55,9 @@ void FeatureLayerModel::coverage(const ICoverage &cov)
 	if (_features->featureCount(itLINE) > 0)
 		layerManager()->create(this, "linelayer", layerManager(), "lines of " + cov->name(), cov->description());
 	if (_features->featureCount(itPOLYGON) > 0) {
+        layerManager()->create(this, "arealayer", layerManager(), "areas of " + cov->name(), cov->description());
         layerManager()->create(this, "linelayer", layerManager(), "boundaries of " + cov->name(), cov->description(), { "support", true });
-		layerManager()->create(this, "arealayer", layerManager(), "areas of " + cov->name(), cov->description());
+
 	}
 		
     fillAttributes();
@@ -97,9 +98,8 @@ QString FeatureLayerModel::value2string(const QVariant &value, const QString &at
 bool FeatureLayerModel::prepare(int prepType)
 {
 	std::vector<VectorLayerModel *> layers(5, 0);
-	auto layersList = children();
-	for (auto *layer : layersList) {
-		auto *vlayer = static_cast<VectorLayerModel *>(layer);
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        VectorLayerModel *vlayer = static_cast<VectorLayerModel *>(child(layerIndex));
 		if (vlayer->layerType() == itPOINTLAYER)
 			layers[itPOINT] = vlayer;
 		if (vlayer->layerType() == itLINELAYER)
@@ -167,9 +167,9 @@ bool FeatureLayerModel::prepare(int prepType)
 	return true;
 }
 
-LayerModel *FeatureLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel *FeatureLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-    return new FeatureLayerModel(manager, layer, name, desc, options);
+    return new FeatureLayerModel(manager, parentLayer, name, desc, options);
 }
 
 void FeatureLayerModel::fillAttributes()
@@ -196,10 +196,15 @@ void FeatureLayerModel::fillAttributes()
 			else
 				activeAttributeName(_visualAttributes[1]->attributename());
 		}
-		auto layers = children();
-		for(auto *layer : layers)
-			layer->as<LayerModel>()->fillAttributes();
+        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+            LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+            lyr->fillAttributes();
+        }
     }
+}
+
+int FeatureLayerModel::numberOfBuffers(const QString&) const {
+    return 0;
 }
 
 

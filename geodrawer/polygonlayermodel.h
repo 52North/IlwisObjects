@@ -17,7 +17,7 @@ namespace Ilwis {
 		{
 		public:
 			PolygonLayerModel();
-			PolygonLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
+			PolygonLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
 
 			bool prepare(int prepType);
 			QString value2string(const QVariant &value, const QString &attrName) const;
@@ -28,7 +28,7 @@ namespace Ilwis {
 			Q_INVOKABLE virtual QVector<int> indices(qint32 bufferIndex, const QString& ) const;
 			Q_INVOKABLE virtual QVector<qreal> colors(qint32 bufferIndex, const QString& ) const;
 
-			static LayerModel *create(LayerManager *, LayerModel *, const QString&, const QString&, const IOOptions&);
+			static LayerModel *create(LayerManager *, QStandardItem *, const QString&, const QString&, const IOOptions&);
 
 			NEW_LAYERMODEL(PolygonLayerModel);
 			NEW_LAYERMODEL2(PolygonLayerModel);

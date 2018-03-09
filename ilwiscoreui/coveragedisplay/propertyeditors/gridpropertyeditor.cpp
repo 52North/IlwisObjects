@@ -57,7 +57,7 @@ void SubGridPropertyEditor::lineColor(const QColor &clr)
 bool SubGridPropertyEditor::isActive() const {
     const RootLayerModel *globalLayer = vpmodel()->layer()->layerManager()->rootLayer();
     if (globalLayer) {
-        QString layername = vpmodel()->layer()->name();
+        QString layername = vpmodel()->layer()->text();
         const LayerModel *gridLayer = globalLayer->findLayerByName(layername);
         if (gridLayer)
             return gridLayer->active();
@@ -69,7 +69,7 @@ void SubGridPropertyEditor::isActive(bool yesno)
 {
     RootLayerModel *globalLayer = vpmodel()->layer()->layerManager()->rootLayer();
     if (globalLayer) {
-        QString layername = vpmodel()->layer()->name();
+        QString layername = vpmodel()->layer()->text();
         LayerModel *gridLayer = globalLayer->findLayerByName(layername);
         if (gridLayer) {
             gridLayer->active(yesno);

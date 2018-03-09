@@ -31,7 +31,7 @@ public:
 	Q_INVOKABLE void setActiveAttribute(int idx);
 
 	CoverageLayerModel();
-    CoverageLayerModel(LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options);
+    CoverageLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
 
     QString activeAttributeName() const;
 	void activeAttributeName(const QString& pName);

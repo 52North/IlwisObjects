@@ -26,7 +26,7 @@ LineLayerModel::LineLayerModel()
 {
 }
 
-LineLayerModel::LineLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions& options) : VectorLayerModel(manager, parent, name, desc, options)
+LineLayerModel::LineLayerModel(LayerManager * manager, QStandardItem * parent, const QString & name, const QString & desc, const IOOptions& options) : VectorLayerModel(manager, parent, name, desc, options)
 {
 	_featureLayer = static_cast<FeatureLayerModel*>(parent);
 	if (options["setter"].toString() == "")
@@ -108,9 +108,10 @@ void LineLayerModel::fillAttributes()
 			else
 				activeAttributeName(_visualAttributes[1]->attributename());
 		}
-		auto layers = children();
-		for (auto *layer : layers)
-			layer->as<LayerModel>()->fillAttributes();
+        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+            LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+            lyr->as<LayerModel>()->fillAttributes();
+        }
 	}
 }
 
@@ -162,9 +163,9 @@ void Ilwis::Ui::LineLayerModel::linewidth(double lw)
 }
 
 
-LayerModel * Ilwis::Ui::LineLayerModel::create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel * Ilwis::Ui::LineLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-	return new LineLayerModel(manager, layer, name, desc, options);
+	return new LineLayerModel(manager, parentLayer, name, desc, options);
 }
 
 

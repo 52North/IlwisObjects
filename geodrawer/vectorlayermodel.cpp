@@ -25,7 +25,7 @@ VectorLayerModel::VectorLayerModel(QObject *parent)
 }
 
 
-VectorLayerModel::VectorLayerModel(LayerManager * manager, QObject * parent, const QString & name, const QString & desc, const IOOptions& options) : LayerModel(manager, parent, name, desc, options) {
+VectorLayerModel::VectorLayerModel(LayerManager * manager, QStandardItem * parent, const QString & name, const QString & desc, const IOOptions& options) : LayerModel(manager, parent, name, desc, options) {
 	_isVector = true;
     _hasFixedStructure = true;
 	add2ChangedProperties("layer");

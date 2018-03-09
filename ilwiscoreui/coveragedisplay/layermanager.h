@@ -29,14 +29,14 @@ class LayerInfoItem;
 class LayerManager;
 class IntermediateLayerModel;
 
-typedef std::function<LayerModel *(LayerManager *,LayerModel *,const QString&, const QString&, const IOOptions&)> CreateLayer;
+typedef std::function<LayerModel *(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&)> CreateLayer;
 
 class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QAbstractItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> layerList READ layerList NOTIFY layerListChanged)
+    Q_PROPERTY(QStandardItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> topLevelLayers READ childLayersPrivate NOTIFY topLevelLayersChanged)
     Q_PROPERTY(quint32 viewid READ viewid CONSTANT)
     Q_PROPERTY(bool hasSelectionDrawer READ hasSelectionDrawer WRITE setHasSelectionDrawer NOTIFY hasSelectionDrawerChanged)
     Q_PROPERTY(bool zoomInMode READ zoomInMode WRITE setZoomInMode NOTIFY zoomInModeChanged)
@@ -44,7 +44,6 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(bool panningMode READ panningMode WRITE setPanningMode NOTIFY panningModeChanged)
     Q_PROPERTY(Ilwis::Ui::RootLayerModel* rootLayer READ rootLayer CONSTANT)
     Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
-    Q_PROPERTY(int layerCount READ layerCount NOTIFY layerCountChanged)
     Q_PROPERTY(bool needUpdate READ needUpdate WRITE needUpdate NOTIFY needUpdateChanged)
     Q_PROPERTY(LayerModel *lastAddedCoverageLayer READ lastAddedCoverageLayer CONSTANT)
 
@@ -61,6 +60,8 @@ public:
 	Q_INVOKABLE void viewArea(QQuickItem *area);
 	Q_INVOKABLE void wholeMap();
 	Q_INVOKABLE  Ilwis::Ui::LayerModel* findLayer(int nodeid);
+    Q_INVOKABLE int nodeid(QModelIndex idx) const;
+    Q_INVOKABLE void move(int nodeId, const QModelIndex& targetLocation);
 
     RootLayerModel *rootLayer() const;
     
@@ -74,25 +75,22 @@ public:
 	void setPanningMode(bool yesno);
 
     QString layerListName() const;
-	TreeModel *layerTree();
+    QStandardItemModel *layerTree();
 	LayerModel *lastAddedCoverageLayer() const;
 	void lastAddedCoverageLayer(LayerModel *lyr);
-	QQmlListProperty<Ilwis::Ui::LayerModel> layerList() ;
-	QList<Ilwis::Ui::LayerModel *> layerList2() ;
-	QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
+	QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items);
 
 
-    static LayerModel *create(LayerModel *parentLayer,  const ICoverage& cov, LayerManager *lm, const IOOptions& options = IOOptions());
+    static LayerModel *create(QStandardItem *parentLayer,  const ICoverage& cov, LayerManager *lm, const IOOptions& options = IOOptions());
 
    
 
-    static LayerModel *create(LayerModel *parentLayer,  const QString& type, LayerManager *lm, const QString& layername, const QString& description="", const IOOptions& options= IOOptions());
+    static LayerModel *create(QStandardItem *parentLayer,  const QString& type, LayerManager *lm, const QString& layername, const QString& description="", const IOOptions& options= IOOptions());
     static int registerLayerModel(const QString& modelname, CreateLayer);
 
     void moveLayer(LayerModel *parentLayer, LayerModel *layer, LayerMovement type);
 
     void clearLayers(LayerModel *parentLayer);
-	int layerCount();
     quint32 viewid() const;
     bool isValid() const;
 	QQuickItem *viewArea() const;
@@ -103,7 +101,6 @@ public:
 
 signals:
     void removeLayer(const Ilwis::Resource& resource);
-    void layerListChanged();
 	void layerTreeChanged();
     void hasSelectionDrawerChanged();
 	void zoomInModeChanged();
@@ -112,12 +109,11 @@ signals:
     void isValidChanged();
 	void layerCountChanged();
 	void needUpdateChanged();
+    void topLevelLayersChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
-	IntermediateLayerModel *_dummyRootNode = 0; // this is a dummy root as every tree has to have a root but this root is not actually used it exist to prevent a visible root in the layer tree which serves no purpose
-    TreeModel  *_tree = 0;
-	QList<LayerModel *> _layerList;
+    QStandardItemModel  *_tree = 0;
     static std::map<QString, CreateLayer> _createLayers;
     bool _hasSelectionDrawer = false;
 	bool _zoomInMode = false;
@@ -130,8 +126,11 @@ private:
     static quint32 _baseViewId;
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
+    QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
 
-    static void addLayer(LayerModel * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
+    static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
+    QQmlListProperty<LayerModel> childLayersPrivate();
+
 
 
 

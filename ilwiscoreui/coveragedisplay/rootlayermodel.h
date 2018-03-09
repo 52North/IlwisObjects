@@ -50,11 +50,12 @@ public:
 
 
     RootLayerModel();
-    RootLayerModel(LayerManager *ln, LayerModel *parent);
+    RootLayerModel(LayerManager *ln, QStandardItem* parent);
 
      QString url() const;
 
      IGeoReference screenGrf() const;
+     int numberOfBuffers(const QString&) const;
      void screenGrf(const IGeoReference &screenGrf);
      ICoordinateSystem screenCsy() const;
      void screenCsy(const ICoordinateSystem &screenCsy);

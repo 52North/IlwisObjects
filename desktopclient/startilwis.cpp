@@ -50,7 +50,6 @@
 #include "models/ilwisobjectcreatormodel.h"
 #include "models/preferencesmodel.h"
 #include "models/internaldatabasemodel.h"
-#include "models/tree.h"
 #include "coveragedisplay/propertyeditors/numericrepresentationsetter.h"
 #include "coveragedisplay/propertyeditors/itemrepresentationsetter.h"
 #include "ilwiscoreui/tableoperations/tableoperation.h"
@@ -106,7 +105,7 @@ void StartIlwis::init() {
         qmlRegisterType<TranquilizerModel>("TranquilizerModel",1,0, "TranquilizerModel");
         qmlRegisterType<LayerManager>("LayerManager",1,0,"LayerManager");
         qmlRegisterType<Ilwis::Ui::LayerModel>("LayerModel",1,0,"LayerModel");
-        qmlRegisterType<RootLayerModel>("GlobalLayerModel",1,0,"GlobalLayerModel");
+        qmlRegisterType<RootLayerModel>("RootLayerModel",1,0,"GlobalLayerModel");
         qmlRegisterType<IlwisObjectModel>("IlwisObjectModel",1,0,"IlwisObjectModel");
         qmlRegisterType<AttributeModel>("AttributeModel",1,0,"AttributeModel");
         qmlRegisterType<VisualAttribute>("VisualAttribute",1,0,"VisualAttribute");
@@ -142,9 +141,7 @@ void StartIlwis::init() {
         qmlRegisterType<ApplicationModelUI>("ApplicationModel",1,0,"ApplicationModel");
         qmlRegisterType<AnalysisModel>("AnalysisModel",1,0,"AnalysisModel");
         qmlRegisterType<ConceptModel>("ConceptModel",1,0,"ConceptModel");
-        qmlRegisterType<TreeNode>("TreeNode",1,0,"TreeNode");
-        qmlRegisterType<TreeModel>("TreeModel",1,0,"TreeModel");
-		qmlRegisterType<CoverageLayerModel>("CoverageLayerModel", 1, 0, "CoverageLayerModel");
+		//qmlRegisterType<CoverageLayerModel>("CoverageLayerModel", 1, 0, "CoverageLayerModel");
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
         _formbuilder = new ApplicationFormExpressionParser();

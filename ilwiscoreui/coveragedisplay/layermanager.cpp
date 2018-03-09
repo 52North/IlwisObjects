@@ -19,6 +19,7 @@
 #include "layermanager.h"
 #include "intermediatelayermodel.h"
 #include "rootlayermodel.h"
+#include "tree.h"
 
 using namespace Ilwis;
 using namespace Ui;
@@ -33,13 +34,12 @@ LayerManager::LayerManager()
 
 LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject(parent)
 {
-	_dummyRootNode = new IntermediateLayerModel(this,this, "root","",IOOptions());
-	_dummyRootNode->nodeId(iUNDEF); // by defintion. the rootnode
-    _globalLayer =  new RootLayerModel(this, _dummyRootNode);
-	_dummyRootNode->appendChild(_globalLayer);
-    _tree = new TreeModel(_dummyRootNode,this);
+    _tree = new TreeModel(this);
+    _globalLayer =  new RootLayerModel(this, _tree->invisibleRootItem());
+    _tree->invisibleRootItem()->appendRow(_globalLayer);
      _viewid = _baseViewId++;
 	 _viewContainer = viewContainer;
+     _globalLayer->nodeId(nextId());
      _globalLayer->prepare(0);
 	 // for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
 	 if (_createLayers.find("compositelayer") == _createLayers.end()) {
@@ -98,9 +98,9 @@ void LayerManager::moveLayer(LayerModel *parentLayer, LayerModel *layer, LayerMo
 {
     if ( parentLayer){
 
-        parentLayer->moveLayer(layer, type);
+        //parentLayer->moveLayer(layer, type);
     }
-    _globalLayer->moveLayer(layer, type);
+   // _globalLayer->moveLayer(layer, type);
 }
 
 
@@ -114,9 +114,9 @@ QString LayerManager::layerListName() const
     return _layerListName;
 }
 
-TreeModel *LayerManager::layerTree()
+QStandardItemModel * Ilwis::Ui::LayerManager::layerTree()
 {
-	return _tree;
+    return _tree;
 }
 
 LayerModel *Ilwis::Ui::LayerManager::lastAddedCoverageLayer() const
@@ -129,54 +129,12 @@ void Ilwis::Ui::LayerManager::lastAddedCoverageLayer(LayerModel * lyr)
 	_lastAddedCoverageLayer = lyr;
 }
 
-void buildList(QList<LayerModel *>& list, LayerModel *parentItem, std::map<int, LayerModel *>& priorityLayers) {
-
-	if ( parentItem->isDrawable())
-		list.push_back(parentItem);
-	for (auto *TreeNode : parentItem->children()) {
-		LayerModel *lm = TreeNode->as<LayerModel>();
-        if (lm->isValid()) {
-            if (lm->order() == iUNDEF) {
-                buildList(list, lm, priorityLayers);
-            }
-            else {
-                priorityLayers[lm->order()] = lm;
-            }
-        }
-
-	}
-}
-
-
-QQmlListProperty<Ilwis::Ui::LayerModel> LayerManager::layerList()
-{
-	_layerList = QList<LayerModel *>();
-    std::map<int, LayerModel *> priorityLayers;
-	buildList(_layerList, _dummyRootNode, priorityLayers);
-    for (auto iter = priorityLayers.begin(); iter != priorityLayers.end(); ++iter) {
-        if (iter->first > _layerList.size()) {
-            _layerList.push_front(iter->second);
-        }
-        else {
-            _layerList.push_back(iter->second);
-        }
-    }
-	return QQmlListProperty<LayerModel>(this, _layerList);
-}
-
-QList<Ilwis::Ui::LayerModel*> Ilwis::Ui::LayerManager::layerList2()
-{
-	if (_layerList.size() == 0)
-		layerList();
-
-	return _layerList;
-}
-
-QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrName, QVariantList & items) const
+QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrName, QVariantList & items) 
 {
 	QString result;
-	for (auto *TreeNode : _dummyRootNode->children()) {
-		LayerModel *layer = TreeNode->as<LayerModel>();
+    QStandardItem *rootItem = _tree->invisibleRootItem();
+    for (int layerIndex = 0; layerIndex < rootItem->rowCount(); ++layerIndex) {
+        LayerModel *layer = static_cast<LayerModel *>(rootItem->child(layerIndex));
 		if (layer->isValid()) {
 			if (result != "")
 				result += ";";
@@ -188,19 +146,56 @@ QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrNa
 
 LayerModel * LayerManager::findLayer(int nodeid)
 {
-	return static_cast<LayerModel *>(_tree->findNode(nodeid));
+    QStandardItem *rootItem = _tree->invisibleRootItem();
+    for (int layerIndex = 0; layerIndex < rootItem->rowCount(); ++layerIndex) {
+        LayerModel *layer = static_cast<LayerModel *>(rootItem->child(layerIndex));
+        if (layer->nodeId() == nodeid)
+            return layer;
+        layer = layer->findLayer(nodeid);
+        if (layer)
+            return layer;
+    }
+    return 0;
+}
+
+int LayerManager::nodeid(QModelIndex idx) const
+{
+   /* if (idx.isValid()) {
+        // TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
+        QMap<int, QVariant> data = _tree->itemData(idx);
+        if (data.contains(TreeModel::rNodeId)) {
+                return data[TreeModel::rNodeId].toInt();
+        }
+    }
+    return iUNDEF;*/
+
+    if (idx.isValid()) {
+        // TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
+        QMap<int, QVariant> data = _tree->itemData(idx);
+        if (data.size() >= 0) {
+            QVariantMap mp = data[Qt::UserRole + 1].toMap();
+            if (mp.contains("nodeid"))
+                return mp["nodeid"].toInt();
+        }
+    }
+    return -1;
+}
+
+void Ilwis::Ui::LayerManager::move(int nodeId, const QModelIndex & targetLocation)
+{
+    
 }
 
 
-LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, LayerManager *lm, const IOOptions &options)
+LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &cov, LayerManager *lm, const IOOptions &options)
 {
     if (cov->coordinateSystem()->isUnknown() && lm->rootLayer()->screenCsy().isValid()){
         QString mes = QString("coordinate system 'unknown' not compatible with coordinate system of the layerview");
         kernel()->issues()->log(mes, IssueObject::itWarning);
         return 0;
     }
-    if ( parentLayer == 0)
-        parentLayer = lm->rootLayer();
+    if (parentLayer == 0)
+        parentLayer = lm->layerTree()->invisibleRootItem();
 
     QString type = TypeHelper::type2name(cov->ilwisType());
     auto iter = _createLayers.find(type);
@@ -217,8 +212,7 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 		layer->nodeId(lm->nextId());
 		layer->fillData();
         addLayer(parentLayer, layer, lm, lowernodeid);
-        auto childeren = parentLayer->children();
-      
+     
 
 		lm->lastAddedCoverageLayer(layer);
 
@@ -229,42 +223,57 @@ LayerModel *LayerManager::create(LayerModel *parentLayer, const ICoverage &cov, 
 
 }
 
-void  LayerManager::addLayer(LayerModel *parentLayer, LayerModel *layer, LayerManager *lm, int lowernodid) {
-    auto childeren = parentLayer->children();
+void  LayerManager::addLayer(QStandardItem *parentLayer, LayerModel *layer, LayerManager *lm, int lowernodid) {
     bool added = false;
-    for (TreeNode * child : childeren) {
-        if (layer->order() == iUNDEF) {
-            LayerModel *childLayer = child->as<LayerModel>();
-            if (lowernodid != iUNDEF ) {
-                if (child->nodeId() == lowernodid)
-                    added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
-            } else if (childLayer->order() != iUNDEF) {
-                added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
-            } else if (childLayer->layerType() != itROOTLAYER && childLayer->order() == iUNDEF && layer->order() == iUNDEF) {
-                added = lm->layerTree()->insertChild(child->row(), parentLayer->index(lm->layerTree()), layer);
-            }
+    for (int childIndex = 0; childIndex < parentLayer->rowCount(); ++childIndex) {
+        LayerModel * childLayer = static_cast<LayerModel *>(parentLayer->child(childIndex)); 
+        if (layer->order() == iUNDEF) { // if the to be added layer has no predefined order, basically a normal data layer
+            if (lowernodid != iUNDEF )  { // if the position to be added has an order
+                if (childLayer->nodeId() == lowernodid) { // see if the to be added layer has the same number
+                    lm->layerTree()->insertRow(childLayer->row(), layer); // if so it will be added above the child; basically an apped below all the data layers
+                    added = true;
+                }
+            } else if (childLayer->order() != iUNDEF) { // if the current child has an order, we already know that the added layer has no order, append the layer below the data layers
+                lm->layerTree()->insertRow(childLayer->row(), layer);
+                added = true;
+            } /*else if (childLayer->layerType() != itROOTLAYER && childLayer->order() == iUNDEF && layer->order() == iUNDEF) { // insert somewhere between the regular data layers
+                lm->layerTree()->insertRow(childLayer->row(), layer);
+                added = true;
+            }*/
         }
         else {
-            if (child->as<LayerModel>()->order() <= layer->order()) {
-                added = lm->layerTree()->insertRow(child->row(), parentLayer->index(lm->layerTree()));
+            if (childLayer->order() <= layer->order()) { // insert at top
+                lm->layerTree()->insertRow(childLayer->row(), layer);
+                added = true;
             }
         }
         if (added)
             break;
     }
-    if (!added)
-        lm->layerTree()->appendChild(parentLayer, layer);
+    if (!added) // insert at bottom
+        parentLayer->appendRow(layer);
 
+}
+
+QQmlListProperty<LayerModel> Ilwis::Ui::LayerManager::childLayersPrivate()
+{
+    _childeren = QList<LayerModel *>();
+    QStandardItem *root = _tree->invisibleRootItem();
+    for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(root->child(layerIndex));
+        _childeren.push_back(lyr);
+    }
+    return QQmlListProperty<LayerModel>(this, _childeren);
 }
 
 int LayerManager::nextId() {
-	return ++_nodeCounter;
+	return _nodeCounter++;
 }
 
-LayerModel *LayerManager::create(LayerModel *parentLayer, const QString &type, LayerManager *lm, const QString& layername, const QString& description, const IOOptions &options)
+LayerModel *LayerManager::create(QStandardItem *parentLayer, const QString &type, LayerManager *lm, const QString& layername, const QString& description, const IOOptions &options)
 {
     if ( parentLayer == 0)
-        parentLayer = lm->rootLayer();
+        parentLayer = lm->layerTree()->invisibleRootItem();
     if ( parentLayer){
         auto iter = _createLayers.find(type);
         if ( iter != _createLayers.end()){
@@ -304,7 +313,6 @@ void LayerManager::wholeMap()
 
 void LayerManager::refresh()
 {
-    emit layerListChanged();
 	emit layerTreeChanged();
 	needUpdate(true);
 }
@@ -338,13 +346,6 @@ void LayerManager::clearLayers(LayerModel *parentLayer)
         _hasSelectionDrawer = false;
     }
     parentLayer->clearLayers();
-}
-
-int Ilwis::Ui::LayerManager::layerCount()
-{
-	if (_layerList.size() == 0)
-		layerList();
-	return _layerList.count();
 }
 
 RootLayerModel *LayerManager::rootLayer() const

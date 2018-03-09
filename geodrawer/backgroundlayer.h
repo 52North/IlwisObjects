@@ -17,7 +17,7 @@ namespace Ilwis {
         class BackgroundLayer : public LayerModel {
         public:
             BackgroundLayer();
-            BackgroundLayer(LayerManager *manager, QObject *parent, const IOOptions& options);
+            BackgroundLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options);
 
             Q_INVOKABLE QVector<qreal> vertices(qint32 bufferIndex, const QString &) const;
             Q_INVOKABLE QVector<int> indices(qint32 bufferIndex, const QString &) const;
@@ -26,7 +26,7 @@ namespace Ilwis {
             Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
             Q_INVOKABLE bool prepare(int);
 
-            static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
+            static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 
             NEW_LAYERMODEL(BackgroundLayer);
 

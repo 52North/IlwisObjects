@@ -29,7 +29,7 @@ Ilwis::Ui::CoverageLayerModel::CoverageLayerModel() : LayerModel()
 {
 }
 
-CoverageLayerModel::CoverageLayerModel( LayerManager *manager, QObject *parent, const QString &name, const QString &desc, const IOOptions& options) :
+CoverageLayerModel::CoverageLayerModel( LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options) :
     LayerModel(manager, parent, name, desc, options)
 {
 	_layerType = itCOVERAGELAYER;
