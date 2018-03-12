@@ -71,16 +71,19 @@ bool GeorefConnector::loadGeoref(const IniFile &odf, IlwisObject *data ) {
     } else if ( type == "GeoRefSubMap") {
         QString name = odf.value("GeoRefSubMap","GeoRef");
         QStringList rcStart = odf.value("GeoRefSubMap", "Start").split(' ');
+        bool ok = rcStart.size() == 2;
+        Pixeld pixStart;
+        bool ok1 = false, ok2 = false;
+        if (ok)
+            pixStart = Pixeld(rcStart[1].toInt(&ok1), rcStart[0].toInt(&ok2)); // Row = [0], Col = [1]
+        if ( !(ok && ok1 & ok2))
+            return ERROR2(ERR_INVALID_PROPERTY_FOR_2,"Missing section Start Lines/Columns","Georeference SubMap");
         QUrl resource = mastercatalog()->name2url(name, itGEOREF);
         IniFile odfParent;
         odfParent.setIniFile(resource.toLocalFile());
-        bool ok = loadGeoref(odfParent,data); // this call "chains" all the way to the "root" georeference, which is either Corners or CTP
+        ok = loadGeoref(odfParent,data); // this call "chains" all the way to the "root" georeference, which is either Corners or CTP
         if (!ok)
             return false;
-        bool ok1, ok2;
-        Pixeld pixStart(rcStart[1].toInt(&ok1), rcStart[0].toInt(&ok2)); // Row = [0], Col = [1]
-        if ( !(ok1 & ok2))
-            return ERROR2(ERR_INVALID_PROPERTY_FOR_2,"Start Lines/Columns","Georeference SubMap");
         if (grf->grfType<CornersGeoReference>()) { // relationship rc/crd is linear: "translate" the envelope of the georeference
             Coordinate crd1 = grf->pixel2Coord(pixStart); // use the "parent" georef to compute
             pixStart += Pixeld(columns, lines);
