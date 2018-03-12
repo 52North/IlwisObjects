@@ -122,7 +122,7 @@ DropArea {
         }
     }
     onDropped : {
-        console.debug("dropped 101", drag.source.message) // no drops on layers with a fixed structure
+        console.debug("dropped 101", drag.source.nodeid,styleData.value.parenthasfixedstructure) // no drops on layers with a fixed structure
         if(!styleData.value.parenthasfixedstructure){
             if ( typeof drag.source.ilwisobjectid !== 'undefined'){
 		        var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
@@ -133,7 +133,8 @@ DropArea {
                 setModel()
                 layerview.manager.refresh()
             }else if(typeof drag.source.nodeid !== 'undefined'){
-               layerview.manager.move(drag.source.nodeid, styleData.index)    
+               layerview.manager.move(drag.source.nodeid, styleData.index)  
+               tree.hoveredRow = -1  
             }
         }
 

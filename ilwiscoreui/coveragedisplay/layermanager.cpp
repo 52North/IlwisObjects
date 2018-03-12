@@ -183,7 +183,9 @@ int LayerManager::nodeid(QModelIndex idx) const
 
 void Ilwis::Ui::LayerManager::move(int nodeId, const QModelIndex & targetLocation)
 {
-    
+    QStandardItem *currentLayer = findLayer(nodeId);
+    QList<QStandardItem *> layers = _tree->takeRow(currentLayer->row());
+    _tree->insertRow(targetLocation.row(), layers);
 }
 
 
@@ -234,12 +236,12 @@ void  LayerManager::addLayer(QStandardItem *parentLayer, LayerModel *layer, Laye
                     added = true;
                 }
             } else if (childLayer->order() != iUNDEF) { // if the current child has an order, we already know that the added layer has no order, append the layer below the data layers
-                lm->layerTree()->insertRow(childLayer->row(), layer);
+                if (parentLayer->index().isValid()) { // the index of the top parent ,invisible root, is by definition invalid. We know that there is always a forground layer at level 0 so we must insert at 1 in that case
+                    parentLayer->insertRow(0, layer);
+                }else
+                    parentLayer->insertRow(1, layer);
                 added = true;
-            } /*else if (childLayer->layerType() != itROOTLAYER && childLayer->order() == iUNDEF && layer->order() == iUNDEF) { // insert somewhere between the regular data layers
-                lm->layerTree()->insertRow(childLayer->row(), layer);
-                added = true;
-            }*/
+            } 
         }
         else {
             if (childLayer->order() <= layer->order()) { // insert at top
