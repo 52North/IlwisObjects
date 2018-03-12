@@ -70,13 +70,33 @@ bool GeorefConnector::loadGeoref(const IniFile &odf, IlwisObject *data ) {
         return loadGeorefCorners(odf, data);
     } else if ( type == "GeoRefSubMap") {
         QString name = odf.value("GeoRefSubMap","GeoRef");
+        QStringList rcStart = odf.value("GeoRefSubMap", "Start").split(' ');
         QUrl resource = mastercatalog()->name2url(name, itGEOREF);
-        IniFile odf;
-        odf.setIniFile(resource.toLocalFile());
-        bool ok = loadGeoref(odf,data);
+        IniFile odfParent;
+        odfParent.setIniFile(resource.toLocalFile());
+        bool ok = loadGeoref(odfParent,data); // this call "chains" all the way to the "root" georeference, which is either Corners or CTP
         if (!ok)
             return false;
-        grf->size(Size<>(columns, lines,1)); // we dont want the size of the parent georef
+        bool ok1, ok2;
+        Pixeld pixStart(rcStart[1].toInt(&ok1), rcStart[0].toInt(&ok2)); // Row = [0], Col = [1]
+        if ( !(ok1 & ok2))
+            return ERROR2(ERR_INVALID_PROPERTY_FOR_2,"Start Lines/Columns","Georeference SubMap");
+        if (grf->grfType<CornersGeoReference>()) { // relationship rc/crd is linear: "translate" the envelope of the georeference
+            Coordinate crd1 = grf->pixel2Coord(pixStart); // use the "parent" georef to compute
+            pixStart += Pixeld(columns, lines);
+            Coordinate crd2 = grf->pixel2Coord(pixStart);
+            Envelope env(crd1, crd2);
+            grf->envelope(env);
+        } else if (grf->grfType<CTPGeoReference>()) { // relationship rc/crd is non-linear: "translate" the raster-location of the controlpoints, instead of translating the coordinates
+            QSharedPointer<PlanarCTPGeoReference> ctpgrf = grf->as<PlanarCTPGeoReference>();
+            quint32 nrOfControlPoints = ctpgrf->nrControlPoints();
+            for (quint32 i = 0; i < nrOfControlPoints; ++i) {
+                Pixeld location = ctpgrf->controlPoint(i).gridLocation();
+                location -= pixStart;
+                ctpgrf->controlPoint(i).gridLocation(location);
+            }
+        }
+        grf->size(Size<>(columns, lines, 1)); // the "loadGeoref" call has "overwritten" these values with the one of the parent-georef
         grf->compute();
         return true;
     } else if ( type == "GeoRefCTP"){
@@ -274,7 +294,7 @@ void GeorefConnector::createGeoreference(const IniFile &odf, GeoReference *grf) 
         grf->create("undetermined");
     }
     else if ( type == "GeoRefSubMap") {
-        auto name = _odf->value("GeoRefSubMap","GeoRef");
+        auto name = odf.value("GeoRefSubMap","GeoRef");
         QUrl resource = mastercatalog()->name2url(name, itGEOREF);
         IniFile odf;
         odf.setIniFile(resource.toLocalFile());
