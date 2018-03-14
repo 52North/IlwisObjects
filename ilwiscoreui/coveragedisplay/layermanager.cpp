@@ -17,7 +17,7 @@
 #include "layerinfoitem.h"
 #include "representation.h"
 #include "layermanager.h"
-#include "intermediatelayermodel.h"
+#include "compositelayermodel.h"
 #include "rootlayermodel.h"
 #include "tree.h"
 
@@ -44,7 +44,7 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
 	 // for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
 	 if (_createLayers.find("compositelayer") == _createLayers.end()) {
 		 //_createLayers["globallayermodel"] = RootLayerModel::create;
-		 _createLayers["compositelayer"] = IntermediateLayerModel::create;
+		 _createLayers["compositelayer"] = CompositeLayerModel::create;
 
 	 }
 }
@@ -184,8 +184,16 @@ int LayerManager::nodeid(QModelIndex idx) const
 void Ilwis::Ui::LayerManager::move(int nodeId, const QModelIndex & targetLocation)
 {
     QStandardItem *currentLayer = findLayer(nodeId);
+    auto startRow = currentLayer->index();
+    int shift = startRow.row()  < targetLocation.row() ? -1 : 0;
+    QStandardItem *targetItem = _tree->itemFromIndex(targetLocation);
+
     QList<QStandardItem *> layers = _tree->takeRow(currentLayer->row());
-    _tree->insertRow(targetLocation.row(), layers);
+
+    //_tree->insertRow(targetLocation.row() + shift, layers);
+    _tree->insertRow(targetItem->row(), layers);
+
+
 }
 
 
@@ -240,7 +248,7 @@ void  LayerManager::addLayer(QStandardItem *parentLayer, LayerModel *layer, Laye
                     parentLayer->insertRow(0, layer);
                 }else
                     parentLayer->insertRow(1, layer);
-                added = true;
+                 added = true;
             } 
         }
         else {

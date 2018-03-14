@@ -27,7 +27,7 @@ class LayerModel;
 class CoverageLayerModel;
 class LayerInfoItem;
 class LayerManager;
-class IntermediateLayerModel;
+class CompositeLayerModel;
 
 typedef std::function<LayerModel *(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&)> CreateLayer;
 
