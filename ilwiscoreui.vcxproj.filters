@@ -653,15 +653,6 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\rootlayermodel.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_intermediatelayermodel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_intermediatelayermodel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="ilwiscoreui\coveragedisplay\intermediatelayermodel.cpp">
-      <Filter>Source Files\spatialdrawing</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_layermanager.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -676,6 +667,15 @@
     </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelementmodel.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_compositelayermodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_compositelayermodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\compositelayermodel.cpp">
+      <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -871,11 +871,11 @@
     <CustomBuild Include="ilwiscoreui\coveragedisplay\rootlayermodel.h">
       <Filter>Header Files\spatialdrawing</Filter>
     </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\coveragedisplay\intermediatelayermodel.h">
-      <Filter>Header Files\spatialdrawing</Filter>
-    </CustomBuild>
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelementmodel.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\compositelayermodel.h">
+      <Filter>Header Files\spatialdrawing</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
