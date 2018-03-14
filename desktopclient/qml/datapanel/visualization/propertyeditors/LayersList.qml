@@ -85,7 +85,17 @@ Item {
 					width : parent.width / 2 - 4
 					height : buttonbar.height - 2
 					onClicked : {
-						dropContainer.state = dropContainer.state == "invisible" ? "visible" : "invisible"
+                        var lyr = manager.findLayer(currentNodeId)
+                        if ( lyr ){
+                            var fixed = false // you can't create composite layers in a fixed layer
+                            if ( lyr.parentLayer)
+                                fixed = lyr.parentLayer.hasFixedStructure
+                            if ( fixed) // if fixed the drop container never shows
+                                dropContainer.state = "invisible"
+                            else
+                                dropContainer.state = dropContainer.state == "invisible" ? "visible" : "invisible"
+                                
+                        }
 
 					}
 				}
@@ -137,7 +147,9 @@ Item {
 								dropContainer.state = "invisible"
 								var lyr = manager.findLayer(currentNodeId)
 								if ( lyr) {
-									var cmd = 'adddrawer(' + manager.viewid + ',\"' + lyr.nodeid + '\",,compositelayer,true, \"' + newname.content + '\")'
+                                    var parentLayer = lyr.parentLayer ? lyr.parentLayer.nodeid : ""
+									var cmd = 'adddrawer(' + manager.viewid + ',\"' + parentLayer + '\",,compositelayer,true, \"' + newname.content + '\",' + currentNodeId + ')'
+                                    console.debug("xxxxxx", cmd)
 									layerview.manager.addCommand(cmd)
 									manager.refresh()
 									setModel()
