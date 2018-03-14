@@ -10,7 +10,7 @@
 #include "ilwisdata.h"
 #include "coveragedisplay\layermodel.h"
 #include "coveragedisplay\oglbuffer.h"
-#include "coveragedisplay\intermediatelayermodel.h"
+#include "coveragedisplay\compositelayermodel.h"
 
 namespace Ilwis {
     class CoordinateSystem;
@@ -18,7 +18,7 @@ namespace Ilwis {
 
     namespace Ui {
 
-        class GridLayer : public IntermediateLayerModel {
+        class GridLayer : public CompositeLayerModel {
         public:
             GridLayer();
             GridLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options);
