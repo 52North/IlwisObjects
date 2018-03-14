@@ -95,6 +95,11 @@ DropArea {
             }            
         }
 
+        onPositionChanged : {
+            if ( tree.hoveredRow != -1)
+                console.debug("aaaaa", mouseY/22)
+        }
+
         onPressAndHold : {
                     if (!styleData.value.parenthasfixedstructure){ // no movements of layers from a fixed layer (e.g. featurecoverage)
                         img = Qt.createQmlObject('import QtQuick 2.0; Image{
@@ -122,7 +127,6 @@ DropArea {
         }
     }
     onDropped : {
-        console.debug("dropped 101", drag.source.nodeid,styleData.value.parenthasfixedstructure) // no drops on layers with a fixed structure
         if(!styleData.value.parenthasfixedstructure){
             if ( typeof drag.source.ilwisobjectid !== 'undefined'){
 		        var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
@@ -133,17 +137,20 @@ DropArea {
                 setModel()
                 layerview.manager.refresh()
             }else if(typeof drag.source.nodeid !== 'undefined'){
-               layerview.manager.move(drag.source.nodeid, styleData.index)  
-               tree.hoveredRow = -1  
+                if ( styleData.value.nodeid != 0 ){ // nodeid = 0 is foreground layer, you can't insert layers before that
+                    layerview.manager.move(drag.source.nodeid, styleData.index)  
+                  } 
             }
+            tree.hoveredRow = -1
         }
 
         tree.rowBeingMoved = -1
 	}
 
     onEntered : {
-        if(!styleData.value.parenthasfixedstructure) // if the parent is readonly no layers can be added to the childeren
+        if(!styleData.value.parenthasfixedstructure && styleData.value.nodeid != 0) {// if the parent is readonly no layers can be added to the childeren, neither are inserts possible before the foreground
             tree.hoveredRow = styleData.row
+        }
     }
     onExited : {
        tree.hoveredRow = -1

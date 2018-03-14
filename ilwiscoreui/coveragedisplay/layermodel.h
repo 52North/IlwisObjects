@@ -60,6 +60,8 @@ public:
     Q_PROPERTY(bool isCoverageBased READ isCoverageBased CONSTANT)
     Q_PROPERTY(int nodeId READ nodeId CONSTANT)
     Q_PROPERTY(QModelIndex index READ index CONSTANT)
+    Q_PROPERTY(LayerModel * parentLayer READ parentLayer CONSTANT)
+    Q_PROPERTY(bool hasFixedStructure READ hasFixedStructure CONSTANT)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
@@ -130,7 +132,6 @@ public:
     LayerModel * findLayer(int nodeid);
     qint32 nodeId() const;
     void nodeId(qint32 id);
-
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:

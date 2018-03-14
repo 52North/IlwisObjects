@@ -11,11 +11,11 @@ using namespace Ui;
 
 REGISTER_LAYERMODEL("gridlayer", GridLayer)
 
-GridLayer::GridLayer() : IntermediateLayerModel()
+GridLayer::GridLayer() : CompositeLayerModel()
 {
 }
 
-GridLayer::GridLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options) : IntermediateLayerModel(manager, parent, "Grid", "Draws the map primary and seconday grid in the mappane", options)
+GridLayer::GridLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options) : CompositeLayerModel(manager, parent, "Grid", "Draws the map primary and seconday grid in the mappane", options)
 {
     _isDrawable = false;
     _isValid = true;
@@ -58,14 +58,14 @@ bool GridLayer::prepare(int prepTypes)
 
 QVariant GridLayer::vproperty(const QString & key) const
 {
-    QVariant v =  IntermediateLayerModel::vproperty(key);
+    QVariant v =  CompositeLayerModel::vproperty(key);
 
     return v;
 }
 
 void GridLayer::vproperty(const QString & key, const QVariant & value)
 {
-    IntermediateLayerModel::vproperty(key, value);
+    CompositeLayerModel::vproperty(key, value);
 }
 
 LayerModel *GridLayer::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
