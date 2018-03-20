@@ -79,6 +79,7 @@ Column {
             labelText: qsTr("Domain")
             labelWidth: 100
             width : parent.width
+            keys : ['domain','numericdomain','itemdomain','colordomain','textdomain']
 
             onContentChanged : {
                if ( ilwisobjectid){
