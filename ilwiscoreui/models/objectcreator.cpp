@@ -53,7 +53,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["boundsonlycoordinatesystem" ] = new IlwisObjectCreatorModel("boundsonlycoordinatesystem", TR("Bounds only Coordinate System"),itBOUNDSONLYCSY,"CreateBoundsOnlyCsy.qml", 250, this);
     _creators["rastercoverage" ] = new IlwisObjectCreatorModel("rastercoverage", TR("Raster Coverage"),itRASTER,"CreateRasterCoverage.qml", 390, this);
     _creators["featurecoverage" ] = new IlwisObjectCreatorModel("featurecoverage", TR("Feature Coverage"),itFEATURE,"UnderDevelopment.qml", 200, this);
-    _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"UnderDevelopment.qml", 200, this);
+    _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"CreateTable.qml", 520, this);
     _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation"),itREPRESENTATION,"UnderDevelopment.qml", 250, this);
     _creators["domain" ] = new IlwisObjectCreatorModel("domain",TR("Domain"),itDOMAIN,"CreateDomain.qml", 250, this);
     _creators["combinationmatrix" ] = new IlwisObjectCreatorModel("combinationmatrix",TR("Combinationmatrix"),itCOMBINATIONMATRIX,"CreateCombinationMatrix.qml", 600, this);
@@ -533,6 +533,21 @@ QString ObjectCreator::createModel(const QVariantMap &parms){
     return QString::number(model->id());
 }
 
+QString ObjectCreator::createTable(const QVariantMap &parms) {
+        QString name = parms["name"].toString();
+        if (name == "")
+            return sUNDEF;
+
+        QString expr = "createtable('" + parms["columns"].toString() + "')";
+
+        QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
+        expr = output + expr;
+        executeoperation(expr);
+
+        return sUNDEF;
+
+}
+
 QString ObjectCreator::createObject(const QVariantMap &parms)
 {
     try {
@@ -558,6 +573,9 @@ QString ObjectCreator::createObject(const QVariantMap &parms)
         return createModel(parms);
     } else if ( type == "combinationmatrix"){
         return createCombinationMatrix(parms);
+    }
+    else if (type == "table") {
+        return createTable(parms);
     }
 
 
@@ -676,8 +694,6 @@ void ObjectCreator::executeoperation(const QString& expr) {
             thread->connect(worker, &OperationWorker::finished, worker, &OperationWorker::deleteLater);
             thread->connect(thread, &QThread::finished, thread, &QThread::deleteLater);
             thread->start();
-
-
         }
     } catch (const ErrorObject& err){
         emit error(err.message());
