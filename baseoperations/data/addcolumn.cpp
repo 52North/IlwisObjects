@@ -56,8 +56,18 @@ Ilwis::OperationImplementation *AddColumn::create(quint64 metaid, const Ilwis::O
 Ilwis::OperationImplementation::State AddColumn::prepare(ExecutionContext *ctx, const SymbolTable &st)
 {
     OperationImplementation::prepare(ctx,st);
-    OperationHelper::check([&] ()->bool { return _inputTable.prepare(_expression.input<QString>(0), itTABLE); },
-    {ERR_COULD_NOT_LOAD_2,_expression.input<QString>(0), "" } );
+    bool ok;
+    quint64 ilwisid = _expression.parm(0).value().toULongLong(&ok);
+    if (ok) {
+        _inputTable.prepare(ilwisid);
+    }
+    else {
+        _inputTable.prepare(_expression.input<QString>(0), itTABLE);
+    }
+    if (!_inputTable.isValid()) {
+        kernel()->issues()->log(QString(ERR_COULD_NOT_LOAD_2) + _expression.input<QString>(0));
+        return  sPREPAREFAILED;
+    }
 
     _columnName = _expression.input<QString>(1);
     for(int c = 0; c < _inputTable->columnCount(); ++c){
@@ -84,7 +94,7 @@ quint64 AddColumn::createMetadata()
     resource.setLongName("Add Column to Table");
     resource.setSyntax("addcolumn(table,columnname, domain))");
     resource.setInParameterCount({3});
-    resource.addInParameter(0, itTABLE,TR("base table"), TR("Table to which a new column will be added"));
+    resource.addInParameter(0, itTABLE|itINT64,TR("base table"), TR("Table to which a new column will be added, can be table or id of an existing table"));
     resource.addInParameter(1, itSTRING,TR("column name"), TR("Name of the column to be added"));
     resource.addInParameter(2, itDOMAIN,TR("column domain"), TR("Domain of the column to be added"));
     resource.setOutParameterCount({1});
@@ -95,3 +105,4 @@ quint64 AddColumn::createMetadata()
     mastercatalog()->addItems({resource});
     return resource.id();
 }
+

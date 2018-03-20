@@ -24,6 +24,7 @@ private:
     QString _columnName;
     IDomain _columnDomain;
 };
+
 }
 }
 
