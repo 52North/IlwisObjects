@@ -1,3 +1,4 @@
+#include "operationcatalogmodel.h"
 #include <future>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -478,6 +479,26 @@ QString OperationCatalogModel::executeoperation(quint64 operationid, const QStri
 
     return sUNDEF;
 }
+
+ void Ilwis::Ui::OperationCatalogModel::executeoperation(const QString & expression, bool multithreaed)
+ {
+     OperationExpression opExpr(expression);
+     if (multithreaed) {
+         QThread* thread = new QThread;
+         OperationWorker* worker = new OperationWorker(opExpr);
+         worker->moveToThread(thread);
+         thread->setProperty("workingcatalog", qVariantFromValue(context()->workingCatalog()));
+         thread->connect(thread, &QThread::started, worker, &OperationWorker::process);
+         thread->connect(worker, &OperationWorker::finished, thread, &QThread::quit);
+         thread->connect(worker, &OperationWorker::finished, worker, &OperationWorker::deleteLater);
+         thread->connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+         thread->connect(worker, &OperationWorker::finished, this, &OperationCatalogModel::workerFinished);
+         thread->start();
+     }
+     else {
+         OperationWorker::run(opExpr);
+     }
+ }
 
 OperationModel *OperationCatalogModel::operation(const QString &id)
 {

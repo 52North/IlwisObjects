@@ -43,6 +43,7 @@ public:
    Q_INVOKABLE quint64 serviceId(quint32 index) const;
    Q_INVOKABLE QStringList serviceNames() const;
    Q_INVOKABLE QString executeoperation(quint64 operationid, const QString &parameters, QVariant stepMode=QVariant());
+   Q_INVOKABLE void executeoperation(const QString &expression, bool multithreaded);
    Q_INVOKABLE Ilwis::Ui::OperationModel *operation(const QString& id);
    Q_INVOKABLE Ilwis::Ui::WorkflowModel *createWorkFlow(const QString& filter);
    Q_INVOKABLE void refresh();
