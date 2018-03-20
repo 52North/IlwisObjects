@@ -57,6 +57,7 @@ private:
     QString createModel(const QVariantMap &parms);
     QString createCombinationMatrix(const QVariantMap &parms);
     QString createBoundsOnlyCoordinateSystem(const QVariantMap &parms);
+    QString createTable(const QVariantMap &parms);
     void executeoperation(const QString &expr);
     QString createOperationScriptHeader(const QVariantMap &parms);
     Ilwis::OperationResource createOperationResource(const QString &url, const QVariantMap &parms);
