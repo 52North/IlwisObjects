@@ -96,10 +96,10 @@ DropArea {
     }
 
     onDropped : {
-        content = drag.source.message
         if ( 'ilwisobjectid' in drag.source){
             ilwisobjectid = drag.source.ilwisobjectid
         }
+        content = drag.source.message
     }
 }
 
