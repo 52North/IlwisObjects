@@ -66,6 +66,8 @@ IIlwisObject AssignmentNode::getObject(const Symbol& sym) const {
         return sym._var.value<Ilwis::IRasterCoverage>().as<IlwisObject>();
     if ( tp & itFEATURE)
         return sym._var.value<Ilwis::IFeatureCoverage>().as<IlwisObject>();
+    if (hasType(tp, itFLATTABLE))
+        return sym._var.value<Ilwis::IFlatTable>().as<IlwisObject>();
     if ( hasType(tp , itTABLE|itCOLUMN))
         return sym._var.value<Ilwis::ITable>().as<IlwisObject>();
     if ( hasType(tp , itDOMAIN))
@@ -221,9 +223,9 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                         ok &= copyObject<GeoReference>(sym, result,symbols);
                     } else if (hasType(tp, itTABLE | itCOLUMN)){
                         if ( tp == itTABLE)
-                            ok &= copyObject<Table>(sym, result,symbols,true);
+                            ok &= copyObject<Table>(sym, result,symbols,false);
                         else if ( tp == itFLATTABLE)
-                            ok &= copyObject<FlatTable>(sym, result,symbols,true);
+                            ok &= copyObject<FlatTable>(sym, result,symbols,false);
                         QSharedPointer<Selector> selector = _outParms->selector(result);
                         if (!selector.isNull()){
                             QString varName = selector->variable();
