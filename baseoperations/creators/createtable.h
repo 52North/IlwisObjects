@@ -21,6 +21,7 @@ public:
 
 private:
     QString _outputName;
+    std::map<QString, IDomain> _columns;
 };
 }
 }

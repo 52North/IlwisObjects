@@ -12,6 +12,8 @@
 #include "selectabletable.h"
 #include "basetable.h"
 #include "flattable.h"
+#include "datadefinition.h"
+#include "columndefinition.h"
 #include "createtable.h"
 
 using namespace Ilwis;
@@ -35,9 +37,13 @@ bool CreateTable::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    ITable tbl;
-    IOOptions options({"create", true}) ;
-    tbl.prepare(_outputName, options);
+    IFlatTable tbl;
+    Resource res = Resource(itFLATTABLE);
+    res.prepare();
+    //IOOptions options({"create", true}) ;
+    tbl.prepare(res); //, options);
+    for (auto item : _columns)
+        tbl->addColumn(ColumnDefinition(item.first, item.second));
     ctx->_additionalInfo["outputisinput"] = true;
     if ( tbl.isValid()){
         setOutput(tbl,ctx, symTable);
@@ -55,19 +61,18 @@ Ilwis::OperationImplementation *CreateTable::create(quint64 metaid, const Ilwis:
 Ilwis::OperationImplementation::State CreateTable::prepare(ExecutionContext *ctx, const SymbolTable &st)
 {
     OperationImplementation::prepare(ctx,st);
-    _outputName = _expression.input<QString>(0);
-    if ( _outputName.indexOf("file://") == -1){
-        QString workingfolder = context()->workingCatalog()->resource().url().toString();
-        if ( workingfolder.indexOf("file://") != -1){
-            _outputName = workingfolder + "/" + _outputName;
-        }else {
-            _outputName = INTERNAL_CATALOG + "/" + _outputName;
+    
+
+    QStringList columns = _expression.input<QString>(0).split("|");
+    for (int i = 0; i < columns.size(); i += 2) {
+        QString name = columns[i];
+        QString sdomain = columns[i + 1];
+        IDomain domain;
+        if (!domain.prepare(sdomain)) {
+            kernel()->issues()->log(TR("could not find ") + sdomain);
+            return sPREPAREFAILED;
         }
-        int index = _outputName.lastIndexOf("/");
-        QString namePart = _outputName.mid(index+1);
-        index = namePart.lastIndexOf(".");
-        if ( index == -1)
-            _outputName += ".ilwis";
+        _columns[name] = domain;
     }
 
     return sPREPARED;
@@ -77,9 +82,10 @@ quint64 CreateTable::createMetadata()
 {
     OperationResource resource({"ilwis://operations/createtable"});
     resource.setLongName("Create Table");
-    resource.setSyntax("createtable())");
-    resource.setInParameterCount({1});
-    resource.addInParameter(0, itSTRING,TR("Table name"), TR("New tables name. This will overrule any name given in the output field"));
+    resource.setSyntax("createtable(columns))");
+    resource.setInParameterCount({ 1 });
+    resource.addInParameter(0, itSTRING, TR("column definitions"), TR("strings that define a column in name/domain pairs. String are seperated by a '|'"));
+    resource.parameterNeedsQuotes(0);
     resource.setOutParameterCount({1});
     resource.addOutParameter(0, itTABLE, TR("new table"), TR("The newly created empty table"));
     resource.setKeywords("create, table, workflow");
