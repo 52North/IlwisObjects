@@ -358,7 +358,7 @@ void WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, con
         bool quotes;
         _stream >> quotes;
         wp.needsQuotes(quotes);
-        size_t sz;
+        qint32 sz;
         _stream >> sz;
         std::vector<XY> line;
         for(int p=0; p < sz; ++p){
