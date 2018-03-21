@@ -13,17 +13,15 @@ Rectangle {
     width : 27
     color : Global.alternatecolor1
 
+    property alias zoomoutButton: zoomoutButton
+    property alias zoominButton: zoominButton
+
     Action {
         id : zoomClicked
         onTriggered : {
             if ( worldmapcontainer.manager){
-                if (!zoominButton1.checked ){
-                    worldmap.addCommand("removedrawer(" + worldmap.viewid + ",selectiondrawer,post)");
-                    worldmap.update()
-                }
-
-                zoominButton1.checked = zoominButton1.checked ? false : true
-                worldmapcontainer.manager.zoomInMode = zoominButton1.checked
+                zoominButton.checked = zoominButton.checked ? false : true
+                worldmapcontainer.manager.zoomInMode = zoominButton.checked
             }
         }
     }
@@ -32,7 +30,7 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( worldmapcontainer.manager){
-                var envelope = worldmap.attributeOfDrawer("rootdrawer","zoomenvelope");
+                var envelope = manager.rootLayer.zoomEnvelope
                 Global.calcZoomOutEnvelope(envelope, worldmap, worldmapcontainer.manager,0.707)
             }
         }
@@ -43,7 +41,7 @@ Rectangle {
         width : parent.width
         height : parent.height
         anchors.horizontalCenter: parent.horizontalCenter
-        Controls.MapExtentButton{
+        MapExtentButton{
             id : panButton1
             icon : "entiremap20.png"
             onClicked: {
@@ -54,15 +52,15 @@ Rectangle {
             }
         }
 
-        Controls.MapExtentButton{
-            id : zoominButton1
+        MapExtentButton{
+            id : zoominButton
             icon : checked ? "zoomin20A.png" : "zoomin20.png"
             checkable: true
             checked: false
             action : zoomClicked
         }
-        Controls.MapExtentButton{
-            id : zoomoutButton1
+        MapExtentButton{
+            id : zoomoutButton
             icon :"zoomout20.png"
             action : zoomOutClicked
         }
