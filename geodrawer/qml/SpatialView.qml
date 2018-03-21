@@ -24,7 +24,6 @@ Item {
         anchors.fill: parent
 
         Component.onCompleted : {
-            console.debug("canvas", width, height)
         }
 
 		onWidthChanged :{
