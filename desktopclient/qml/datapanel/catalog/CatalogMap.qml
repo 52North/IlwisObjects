@@ -41,7 +41,7 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( renderer.layermanager){
-                var envelope = renderer.rootLayer().vproperty("rootdrawer","zoomenvelope");
+                var envelope = renderer.layerManager.rootLayer.zoomEnvelope
                 Global.calcZoomOutEnvelope(envelope, renderer, renderer.layerManager,0.707)
             }
         }
