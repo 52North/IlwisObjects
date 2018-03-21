@@ -29,7 +29,7 @@ Rectangle {
             if ( count  % 2 == 0){
                 selected = !selected
                 table.selectColumn(styleData.column, selected)
-                header.color = table.isColumnSelected(styleData.column) ? "#4668F6" : "#C1D5F8"
+                header.color = table.isColumnSelected(styleData.column) ? "#4668F6" : uicontext.darkestColor
                 table.update()
              }
         }
