@@ -51,27 +51,27 @@ Item {
 
     function transfer(datapanel){
         var layers = datapanel.manager.layers;
-        for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
-            var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
-            overview.layermanager.addCommand(expr)
-        }
-        coverage.update()
+      //  for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
+      //      var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
+            //overview.layermanager.addCommand(expr)
+       // }
+       // coverage.update()
     }
 
     function newZoomExtent(newenvelope){
-        var env = {envelope : newenvelope, preserveaspectration : false}
-        overview.setAttribute("selectiondrawer", env )
-        mdspatialinfo.zoomEnvelope(newenvelope)
-        overview.update()
+        //var env = {envelope : newenvelope, preserveaspectration : false}
+       // overview.setAttribute("selectiondrawer", env )
+       // mdspatialinfo.zoomEnvelope(newenvelope)
+        //overview.update()
     }
 
     function rootLayer() {
         if ( metatdata.manager){
-            var envelope = metatdata.manager.rootLayer.vproperty("rootdrawer","coverageenvelope")
-            var env = {envelope : envelope, preserveaspectration : false}
-            overview.setAttribute("selectiondrawer", env )
-            mdspatialinfo.zoomEnvelope(envelope)
-            metatdata.managermanager.refresh()
+           // var envelope = metatdata.manager.rootLayer.vproperty("rootdrawer","coverageenvelope")
+            //var env = {envelope : envelope, preserveaspectration : false}
+            //overview.setAttribute("selectiondrawer", env )
+           // mdspatialinfo.zoomEnvelope(envelope)
+           // metatdata.managermanager.refresh()
         }
     }
 
@@ -156,8 +156,8 @@ Item {
 
                 function entireMap() {
                     //if ( layersmeta.currentIndex == 2){
-                        metatdata.managermanager.addCommand("setviewextent("+ overview.viewid + ",entiremap)");
-                        metatdata.manager.refresh()
+                       // metatdata.managermanager.addCommand("setviewextent("+ overview.viewid + ",entiremap)");
+                       // metatdata.manager.refresh()
                     //}
                 }
 
@@ -228,7 +228,7 @@ Item {
                         }
                     }*/
 
-                    LayerExtentMouseActions{
+                    Controls.LayerExtentMouseActions{
                         id : mouseActions
                         layerManager: manager
 
