@@ -648,9 +648,6 @@
     <None Include="desktopclient\qml\datapanel\table\TablePane.qml">
       <Filter>Distribution Files\qml\datapanel\table</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\visualization\LayerExtentMouseActions.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers.qml">
       <Filter>Distribution Files\qml\datapanel\visualization</Filter>
     </None>
