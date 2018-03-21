@@ -48,7 +48,6 @@ class ILWISCOREUISHARED_EXPORT UIContextModel : public QObject
     friend std::unique_ptr<UIContextModel>& uicontext();
 
     Q_PROPERTY(int activeSplit READ activeSplit WRITE setActiveSplit NOTIFY activeSplitChanged)
-    Q_PROPERTY(int currentKey READ currentKey CONSTANT)
     Q_PROPERTY(QStringList colorNames READ colorNames CONSTANT)
     Q_PROPERTY(WorkSpaceModel * currentWorkSpace READ currentWorkSpace WRITE setCurrentWorkSpace NOTIFY currentWorkSpaceChanged)
     Q_PROPERTY(QString ilwisFolder READ ilwisFolder CONSTANT)
@@ -90,6 +89,7 @@ public:
     Q_INVOKABLE QVariantList debugProperty(const QString& property);
     Q_INVOKABLE QString type2icon(const QString& typeName);
     Q_INVOKABLE void addMessage(const QString& message, const QString& type);
+    Q_INVOKABLE bool keyPressed(int key) const;
 
     int addPropertyEditor(const QString& propertyName, CreatePropertyEditor func);
     QList<VisualPropertyEditor *> propertyEditors(VisualAttribute *vattrib, const IIlwisObject &obj, const DataDefinition& datadef) ;
@@ -105,7 +105,7 @@ public:
     LayerManager *viewer(quint64 viewerid);
     void removeViewer(quint64 viewerid);
     void currentKey(int ev);
-    int currentKey() const;
+
     QStringList colorNames() const;
     void prepare();
     bool abort() const;
@@ -155,7 +155,7 @@ private:
     QQmlContext *_qmlcontext = 0;
     QObject *_rootObject = 0;
     int _activeSplit = 1;
-    int _currentKey = 0;
+    std::set<int> _currentKey;
     std::atomic<quint64> _lastAddedId;
     QStringList _colorNames;
     std::map<QString, QColor> _colorCodes;

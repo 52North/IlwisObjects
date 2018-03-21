@@ -204,15 +204,22 @@ void UIContextModel::setActiveSplit(int index)
 }
 
 
-void UIContextModel::currentKey(int ev)
+void UIContextModel::currentKey(int key)
 {
-    _currentKey += ev;
+    if ( key > 0)
+        _currentKey.insert(key);
+    else {
+        auto iter = _currentKey.find(key);
+        if ( iter != _currentKey.end())
+            _currentKey.erase(iter);
+
+    }
 
 }
 
-int UIContextModel::currentKey() const
+bool UIContextModel::keyPressed(int key) const
 {
-    return _currentKey;
+    return  _currentKey.find(key) != _currentKey.end();
 }
 
 QStringList UIContextModel::colorNames() const

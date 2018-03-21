@@ -120,8 +120,6 @@ Item {
             catalogViews.setSelected(id)
             if (catalogViews && catalogViews.tabmodel && !catalogViews.tabmodel.selected)
                 catalogViews.tabmodel.selectTab()
-            var key = uicontext.currentKey
- //           if ( key !== Qt.Key_Alt){
                 image = Qt.createQmlObject('import QtQuick 2.0; Image{
                 id : image
                 width : 20; height : 20

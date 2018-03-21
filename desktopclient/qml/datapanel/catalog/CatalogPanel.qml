@@ -86,7 +86,7 @@ Item {
         var resources = currentCatalog.resources
         var sz = resources.length
         var selectedIds
-        if ( uicontext.currentKey !== Qt.Key_Control &&  uicontext.currentKey !== Qt.Key_Shift)    {
+        if ( !uicontext.kePressed(Qt.Key_Control) &&  !uicontext.keyPressed(Qt.Key_Shift))    {
             selectedIds = objectid
 
             for(var i = 0; i < sz; ++i){
@@ -94,7 +94,7 @@ Item {
                 if (resource.isSelected && resource.id !== objectid)
                     resource.isSelected=false
             }
-        }else if ( uicontext.currentKey === Qt.Key_Shift){
+        }else if ( uicontext.keyPressed(Qt.Key_Shift)){
             var startRange = false
             for(var j = 0; j < sz; ++j){
                 if ( resources[j].isSelected){
@@ -110,7 +110,7 @@ Item {
                     }
                 }
             }
-        } else if ( uicontext.currentKey === Qt.Key_Control){
+        } else if ( uicontext.keyPressed(Qt.Key_Control)){
           for(var k = 0; k < sz; ++k){
               if ( resources[k].isSelected){
                 selectedIds = selectedIds == "" ? resources[k].id : selectedIds + "|" +resources[k].id
