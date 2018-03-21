@@ -15,36 +15,6 @@ DropArea {
         addDataSource(resource.url, resource.name, resource.typeName)       
     }
 
-	Rectangle {
-		id : zoomRectangle
-		x : 0
-		y : 0
-		width : 0
-		height : 0
-		visible : false
-		border.width : 1
-		border.color : "midnightblue"
-		color : "transparent"
-		z : 100
-
-		function disable() {
-			x = 0
-			y = 0
-			width = 0
-			height = 0
-			visible = false
-		}
-
-	}
-	Rectangle {
-		anchors.fill : zoomRectangle
-		color : "grey"
-		opacity : 0.2
-		z: 101
-	}
-
- 
-
 
     Rectangle {
         anchors.fill: parent
@@ -62,15 +32,40 @@ DropArea {
                 renderer.layermanager = layerview.manager
             }
 
+        
+            Connections {
+                target: mouseActions
+                onSetZoomPanButton :{
+                    layerview.maptools.panButton.enabled = enablePanAndZoomOut
+                    layerview.maptools.zoomoutButton.enabled = enablePanAndZoomOut
+                }
+            }
+            Connections {
+                target: mouseActions
+                onCheckZoomNormalButton :{
+                    layerview.maptools.zoomoutButton.checked = enablePanAndZoomOut
+                    layerview.maptools.normalButton.checked = !enablePanAndZoomOut
+                }
+            }
+
+            Connections {
+                target: mouseActions
+                onSelectTab :{
+                    if ( layerview.tabmodel){
+                        if (!layerview.tabmodel.selected)
+                               layerview.tabmodel.selectTab()
+            }
+                }
+            }
+		    Controls.LayerExtentMouseActions{
+			    id : mouseActions
+			    layerManager: manager
+			    zoomToExtents: true
+			    hasPermanence: true
+			    showInfo: true
+			    selectiondrawerColor: "basic"
+		    } 
         }
-		LayerExtentMouseActions{
-			id : mouseActions
-			layerManager: manager
-			zoomToExtents: true
-			hasPermanence: true
-			showInfo: true
-			selectiondrawerColor: "basic"
-		} 
     }
 
     function entireMap() {
