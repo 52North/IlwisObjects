@@ -33,7 +33,7 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( manager){
-                var envelope = renderer.attributeOfDrawer("rootdrawer","zoomenvelope");
+                var envelope = manager.rootLayer.zoomEnvelope
                 Global.calcZoomOutEnvelope(envelope, layers, viewmanager,0.707)
             }
         }
