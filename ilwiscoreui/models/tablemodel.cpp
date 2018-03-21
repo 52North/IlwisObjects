@@ -43,7 +43,8 @@ TableModel::TableModel(const Ilwis::ITable& tbl, QObject *parent) : QAbstractTab
 }
 TableModel::TableModel(const Ilwis::Resource &resource, QObject *parent): QAbstractTableModel(parent)
 {
-    if ( resource.isValid()){
+
+	if ( resource.isValid()){
         _table = Ilwis::ITable(resource);
         if ( _table.isValid()){
             setColumns();
@@ -142,6 +143,10 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
             _table->setCell(role - baseRole - 1 ,ind, value);
         }
     }
+
+	QVector<int> roles;
+	roles.append(role);
+	emit dataChanged(index, index, roles);
 
     return true;
 }

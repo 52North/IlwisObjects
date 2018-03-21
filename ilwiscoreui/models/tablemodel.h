@@ -11,7 +11,7 @@ typedef IlwisData<Table> ITable;
 
 namespace Ui {
     class TableOperation;
-class ColumnModel;
+	class ColumnModel;
 
 
 class ILWISCOREUISHARED_EXPORT TableModel : public QAbstractTableModel
