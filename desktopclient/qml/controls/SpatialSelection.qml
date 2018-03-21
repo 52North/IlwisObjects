@@ -17,19 +17,17 @@ Item {
 
     onCurrentEnvelopeChanged: {
         if ( currentEnvelope === "entiremap"){
-            worldmap.layermanager.addCommand("setviewextent("+ worldmap.layermanager.viewid + ",entiremap)");
-            worldmap.layermanager.refresh
             if ( filterTarget){
                 if ( "spatialFilter" in filterTarget)
                     filterTarget.spatialFilter = ""
             }
         }else
-            worldmap.layermanager.rootLayer.vproperty("viewextent", currentEnvelope)
+            worldmapcontainer.manager.rootLayer.vproperty("viewextent", currentEnvelope)
     }
 
 
 
-    Rectangle{
+    Row{
         id : worldmapcontainer
         width : parent.width
         height : 250
@@ -37,19 +35,47 @@ Item {
 
         SpatialSelectionToolbar{
             id : buttons
-            anchors.right: worldmap.left
+            //anchors.right: worldmap.left
         }
         Controls.DummySpatial{
              id : worldmap
              height : 240
-             x : 28
-             y : 2
+             width : parent.width - buttons.width
+             layermanager : worldmapcontainer.manager
+
+             //x : 28
+             //y : 2
+
+            Connections{
+                target : mouseActions
+                onZoomEnded : {
+                    var env = envelope.replace(/,/g , " ")
+                    if ( filterTarget){
+                            filterTarget.filter("spatial", env)
+                    }
+                    currentEnvelope = envelope
+                }
+            }
+            LayerExtentMouseActions{
+                id : mouseActions
+                layerManager: worldmapcontainer.manager
+	            zoomToExtents: true
+			    hasPermanence: true
+			    showInfo: false
+			    selectiondrawerColor: "basic"
+            }
         }
 
     }
 
     Component.onCompleted: {
-        worldmap.layermanager = uicontext.createLayerManager(selector,worldmap)
+         if (! worldmapcontainer.manager){
+                worldmapcontainer.manager = uicontext.createLayerManager(worldmapcontainer,worldmap)
+                var cmd = uicontext.worldmapCommand(worldmapcontainer.manager.viewid)
+                worldmapcontainer.manager.addCommand(cmd)
+                worldmapcontainer.manager.addCommand("setlinecolor(" + worldmapcontainer.manager.viewid + ", 1,darkblue)");
+                worldmapcontainer.manager.addCommand("setbackgroundcolor(" + worldmapcontainer.manager.viewid + ",white)")
+            }
     }
     states: [
         State { name: "invisible"
