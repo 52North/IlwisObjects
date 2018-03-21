@@ -37,20 +37,11 @@ function isNumber(n) {
 function calcZoomOutEnvelope(envelope, layers, viewmanager, factor)
 {
     if ( envelope !== ""){
-        var x1,x2,y1,y2
-        var parts = envelope.split(" ")
-        if ( parts.length === 6){
-            x1 = parseFloat(parts[0])
-            y1 = parseFloat(parts[1])
-            x2 = parseFloat(parts[3])
-            y2 = parseFloat(parts[4])
-        } else{
-            x1 = parseFloat(parts[0])
-            y1 = parseFloat(parts[1])
-            x2 = parseFloat(parts[2])
-            y2 = parseFloat(parts[3])
-        }
-
+        var x1 = envelope.minx
+        var x2 = envelope.maxx
+        var y1 = envelope.miny
+        var y2 = envelope.maxy
+                
         var dx = factor * Math.abs(x1 - x2)
         var dy = factor * Math.abs(y1 - y2)
 
