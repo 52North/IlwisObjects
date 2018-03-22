@@ -225,6 +225,9 @@
     <ClCompile Include="geodrawer\operations\attributeopacity.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
+    <ClCompile Include="geodrawer\operations\setactiveattribute.cpp">
+      <Filter>Source Files\operations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h">
@@ -350,6 +353,9 @@
     <ClInclude Include="geodrawer\operations\attributeopacity.h">
       <Filter>Header Files\operations</Filter>
     </ClInclude>
+    <ClInclude Include="geodrawer\operations\setactiveattribute.h">
+      <Filter>Header Files\operations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">
@@ -361,6 +367,8 @@
     <None Include="geodrawer\qml\three.js">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="geodrawer\qml\SpatialView.qml" />
+    <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
   </ItemGroup>
