@@ -34,6 +34,10 @@ Item {
 			var scrollInfo = layerview.manager.rootLayer.scrollInfo	
 			scrollInfo.leftpositionperc = position / 100
 			layerview.manager.rootLayer.scrollInfo = scrollInfo
+             if ( viewmanager){
+                    
+                   viewmanager.newZoomExtent(layerview.manager.rootLayer.zoomEnvelope)
+             }
         }
     }
     Controls.VScrollBar{
@@ -46,6 +50,9 @@ Item {
 				
 			scrollInfo.toppositionperc = position / 100
 			layerview.manager.rootLayer.scrollInfo = scrollInfo
+             if ( viewmanager){
+                   viewmanager.newZoomExtent(layerview.manager.rootLayer.zoomEnvelope)
+             }
         }
     }
 }
