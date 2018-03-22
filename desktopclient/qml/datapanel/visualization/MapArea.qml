@@ -54,14 +54,23 @@ DropArea {
                     if ( layerview.tabmodel){
                         if (!layerview.tabmodel.selected)
                                layerview.tabmodel.selectTab()
+                    }
+                }
             }
+            Connections {
+                target: mouseActions
+                onZoomEnded :{
+                    manager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
+                    if ( viewmanager){
+                        viewmanager.newZoomExtent(envelope)
+                    }
                 }
             }
 		    Controls.LayerExtentMouseActions{
 			    id : mouseActions
 			    layerManager: manager
 			    zoomToExtents: true
-			    hasPermanence: true
+			    hasPermanence: false
 			    showInfo: true
 			    selectiondrawerColor: "basic"
 		    } 
