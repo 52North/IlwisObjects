@@ -54,13 +54,14 @@ Item {
                             filterTarget.filter("spatial", env)
                     }
                     currentEnvelope = envelope
+                    worldmapcontainer.manager.addCommand("setviewextent("+ worldmapcontainer.manager.viewid + "," + envelope + ")");
                 }
             }
             LayerExtentMouseActions{
                 id : mouseActions
                 layerManager: worldmapcontainer.manager
 	            zoomToExtents: true
-			    hasPermanence: true
+			    hasPermanence: false
 			    showInfo: false
 			    selectiondrawerColor: "basic"
             }
