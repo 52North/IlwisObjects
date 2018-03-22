@@ -149,7 +149,6 @@ Item {
 								if ( lyr) {
                                     var parentLayer = lyr.parentLayer ? lyr.parentLayer.nodeid : ""
 									var cmd = 'adddrawer(' + manager.viewid + ',\"' + parentLayer + '\",,compositelayer,true, \"' + newname.content + '\",' + currentNodeId + ')'
-                                    console.debug("xxxxxx", cmd)
 									layerview.manager.addCommand(cmd)
 									manager.refresh()
 									setModel()
