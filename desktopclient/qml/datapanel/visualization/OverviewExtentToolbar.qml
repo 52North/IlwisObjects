@@ -17,11 +17,6 @@ Rectangle {
         id : zoomClicked
         onTriggered : {
             if ( metatdata.manager){
-                if (!zoominButton1.checked ){
-                    overview.addCommand("removedrawer(" + overview.viewid + ",selectiondrawer,post)");
-                    overview.update()
-                }
-
                 zoominButton1.checked = zoominButton1.checked ? false : true
                 metatdata.manager.zoomInMode = zoominButton1.checked
                 panButton1.checked = false
