@@ -86,7 +86,7 @@ Item {
         var resources = currentCatalog.resources
         var sz = resources.length
         var selectedIds
-        if ( !uicontext.kePressed(Qt.Key_Control) &&  !uicontext.keyPressed(Qt.Key_Shift))    {
+        if ( !uicontext.keyPressed(Qt.Key_Control) &&  !uicontext.keyPressed(Qt.Key_Shift))    {
             selectedIds = objectid
 
             for(var i = 0; i < sz; ++i){
