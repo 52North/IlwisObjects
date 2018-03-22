@@ -13,19 +13,12 @@ Item {
     id : metatdata
     width : 210
     height : parent.height
-    //property alias coverage : overview
+    property alias coverage : overview
     property alias mouseActions : mouseActions
-
     property bool drawerActive : false
     property string iconName : "../images/metadata_s"
     property LayerManager manager
     objectName: uicontext.uniqueName() + "_metadata_mappanel"
-
-    property variant subscription
-
-    onDrawerActiveChanged: {
-        overview.active = drawerActive
-    }
 
     signal zoomEnded(string envelope)
 
@@ -38,42 +31,43 @@ Item {
     }
 
     function addDataSource(filter, sourceName, sourceType){
-    /* if ( coverage){
+     if ( coverage){
             if (! metatdata.manager){
                 metatdata.manager = uicontext.createLayerManager(metadata,overview)
                 overview.layermanager = metatdata.manager
             }
-			console.debug("meta")
             metatdata.manager.addCommand("adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)")
+            var layer = manager.topLevelLayers[1];
+            var expr = "setactiveattribute(" + manager.viewid + "," + layer.nodeId + ",1)"
+            console.debug("nnnnn", expr)
+            metatdata.manager.addCommand(expr)
             metatdata.manager.refresh()
-        }*/
+        }
     }
 
     function transfer(datapanel){
         var layers = datapanel.manager.layers;
-      //  for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
-      //      var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
-            //overview.layermanager.addCommand(expr)
-       // }
-       // coverage.update()
+       for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
+            var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
+            overview.layermanager.addCommand(expr)
+       }
     }
 
     function newZoomExtent(newenvelope){
+        mouseActions.setRectangle(newenvelope)
         //var env = {envelope : newenvelope, preserveaspectration : false}
-       // overview.setAttribute("selectiondrawer", env )
-       // mdspatialinfo.zoomEnvelope(newenvelope)
+         //mdspatialinfo.zoomEnvelope(newenvelope)
         //overview.update()
     }
 
-    function rootLayer() {
+    /*function rootLayer() {
         if ( metatdata.manager){
-           // var envelope = metatdata.manager.rootLayer.vproperty("rootdrawer","coverageenvelope")
-            //var env = {envelope : envelope, preserveaspectration : false}
-            //overview.setAttribute("selectiondrawer", env )
-           // mdspatialinfo.zoomEnvelope(envelope)
-           // metatdata.managermanager.refresh()
+           var envelope = metatdata.manager.rootLayer.vproperty("rootdrawer","coverageenvelope")
+           var env = {envelope : envelope, preserveaspectration : false}
+           mdspatialinfo.zoomEnvelope(envelope)
+           metatdata.managermanager.refresh()
         }
-    }
+    }*/
 
     Connections {
         target: mouseActions
@@ -155,10 +149,10 @@ Item {
                 }
 
                 function entireMap() {
-                    //if ( layersmeta.currentIndex == 2){
-                       // metatdata.managermanager.addCommand("setviewextent("+ overview.viewid + ",entiremap)");
-                       // metatdata.manager.refresh()
-                    //}
+                   if ( layersmeta.currentIndex == 2){
+                       metatdata.managermanager.addCommand("setviewextent("+ overview.viewid + ",entiremap)");
+                       metatdata.manager.refresh()
+                    }
                 }
 
                 Rectangle{
@@ -190,15 +184,15 @@ Item {
                     }
 
 
-                    Connections {
-                        target: manager
-                        onLatlonEnvelopeChanged :{
-                            viewcontainer.entireMap()
-                        }
-                    }
+                   // Connections {
+                      //  target: manager
+                        //onLatlonEnvelopeChanged :{
+                        //    viewcontainer.entireMap()
+                        //}
+                  //  }
 
-                    Connections {
-                        target: layers.drawer()
+                   // Connections {
+                   //     target: layers.drawer()
                       /*  onViewEnvelopeChanged :{
                             viewcontainer.entireMap()
                             // the envelope has changed, so the selectiondraw should be repainted according to the new overview envelope
@@ -207,7 +201,30 @@ Item {
                             if (selenvelope !== "")
                                 newZoomExtent(selenvelope)
                         }*/
+                  //  }
+                    Controls.DummySpatial {
+		                id: overview
+                        anchors.fill: parent
+                        objectName : "overview_mainui_"  + uicontext.uniqueName()
+                        layermanager : manager
+
+                        Connections {
+                            target: mouseActions
+                            onZoomEnded :{
+                                layerview.manager.addCommand("setviewextent("+ layerview.manager.viewid + "," + envelope + ")");
+                            }
+                        }
+
+                        Controls.LayerExtentMouseActions{
+                            id : mouseActions
+                            layerManager: manager
+                            zoomToExtents: false
+			                hasPermanence: true
+			                showInfo: false
+			                selectiondrawerColor: "basic"
+                        }
                     }
+
 
 
                    /* OverViewDrawer{
@@ -228,14 +245,7 @@ Item {
                         }
                     }*/
 
-                    Controls.LayerExtentMouseActions{
-                        id : mouseActions
-                        layerManager: manager
 
-                        zoomToExtents: false
-                        hasPermanence: true
-                        selectiondrawerColor: "basic"
-                    }
                 }
             }
         }
