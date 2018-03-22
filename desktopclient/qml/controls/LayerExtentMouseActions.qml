@@ -10,7 +10,6 @@ MouseArea {
     height : parent.height
     hoverEnabled: true
     property LayerManager layerManager
-   // property var targetRectangle
     property bool zoomToExtents : true
     property bool showInfo : true
     property bool hasPermanence : false
@@ -43,6 +42,8 @@ MouseArea {
 	    z : 100
 
 	    function disable() {
+            if (hasPermanence)
+                return
 		    x = 0
 		    y = 0
 		    width = 0
@@ -85,6 +86,26 @@ MouseArea {
           var mposition = mouseX + "|" + mouseY
           floatrect.text = layerManager.rootLayer.layerInfo(mposition)
         }
+    }
+
+    function setRectangle(envelope){
+        var coords = envelope
+        if ( typeof envelope === 'string'){
+            console.debug("in", envelope)
+            var point = envelope.split(",")
+            var pminx = parseFloat(point[0])   
+            var pmaxx = parseFloat(point[2]) 
+            var pminy = parseFloat(point[1]) 
+            var pmaxy = parseFloat(point[3])  
+            var coords = {minx : pminx, maxx : pmaxx, miny : pminy, maxy : pmaxy } 
+        }                   
+        var bb = layerManager.rootLayer.coord2Screen(coords)
+        console.debug("out", bb.minx, bb.maxx, bb.miny, bb.maxy)
+        targetRectangle.x = bb.minx
+        targetRectangle.width = bb.maxx - bb.minx
+        targetRectangle.y = bb.miny
+        targetRectangle.height = bb.maxy - bb.miny
+        targetRectangle.visible = true;
     }
 
     function setRect() {
@@ -136,7 +157,8 @@ MouseArea {
             cbZoom.miny += deltay;
             cbZoom.maxy += deltay;
             var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
-            layerManager.addCommand("setviewextent("+ layerManager.viewid + "," + envelope + ")");
+            console.debug(mouseX, mouseY)
+            zoomEnded(envelope)
         }
 		var mposition = mouseX + "|" + mouseY
 		layerManager.rootLayer.currentCoordinate = mposition
@@ -159,7 +181,6 @@ MouseArea {
                     var w = (cbZoom.maxx - cbZoom.minx) / (2.0 * 1.41); // determine new window size
                     var h = (cbZoom.maxy - cbZoom.miny) / (2.0 * 1.41);
                     var envelope = (posx - w) + "," + (posy - h) + "," + (posx + w) + "," + (posy + h) // determine new bounds
-                    layerManager.addCommand("setviewextent("+ layerManager.viewid + "," + envelope + ")");
                     zoomEnded(envelope)
                 } else if (targetRectangle.width >= 3 && targetRectangle.height >= 3) {
 		            var minPos = {x: targetRectangle.x  , y: targetRectangle.y , z: 0}
@@ -167,7 +188,6 @@ MouseArea {
 			        var minCoord = layerManager.rootLayer.screen2Coord(minPos)
                     var maxCoord = layerManager.rootLayer.screen2Coord(maxPos)
 			        var envelope = minCoord.x + "," + minCoord.y + "," + maxCoord.x + "," + maxCoord.y
-                    layerManager.addCommand("setviewextent("+ layerManager.viewid + "," + envelope + ")");
                     zoomEnded(envelope)
                 } // else if targetRectangle is a horizontal or a vertical strip, do nothing
             }
@@ -188,7 +208,6 @@ MouseArea {
                     var w = (cbZoom.maxx - cbZoom.minx) * 1.41 / 2.0; // determine new window size
                     var h = (cbZoom.maxy - cbZoom.miny) * 1.41 / 2.0;
                     var envelope = (posx - w) + "," + (posy - h) + "," + (posx + w) + "," + (posy + h) // determine new bounds
-                    layerManager.addCommand("setviewextent("+ layerManager.viewid + "," + envelope + ")");
                     zoomEnded(envelope)
                 } else if (targetRectangle.width >= 3 && targetRectangle.height >= 3) {
                     var top = targetRectangle.y 
@@ -204,7 +223,6 @@ MouseArea {
                     var minCoord = layerManager.rootLayer.screen2Coord(minPos)
                     var maxCoord = layerManager.rootLayer.screen2Coord(maxPos)
                     var envelope = minCoord.x + "," + minCoord.y + "," + maxCoord.x + "," + maxCoord.y
-                    layerManager.addCommand("setviewextent("+ layerManager.viewid + "," + envelope + ")");
                     zoomEnded(envelope)
                 } // else if targetRectangle is a horizontal or a vertical strip, do nothing
             }
@@ -230,7 +248,6 @@ MouseArea {
                 cbZoom.miny += deltay;
                 cbZoom.maxy += deltay;
                 var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
-                layerManager.addCommand("setviewextent("+ layerManager.viewid + "," + envelope + ")");
                 zoomEnded(envelope)
             }
             panStarted = false
