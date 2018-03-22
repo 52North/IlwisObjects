@@ -39,6 +39,7 @@ public:
 
 
      Q_INVOKABLE QVariantMap screen2Coord(const QVariantMap &var) const;
+     Q_INVOKABLE QVariantMap coord2Screen(const QVariantMap &var) const;
      Q_INVOKABLE QVariantMap drawEnvelope(const QString &envelope) const;
      Q_INVOKABLE QString layerInfo(const QString &pixelpair) ;
      Q_INVOKABLE QVariant vproperty(const QString& attrName) const;
@@ -63,7 +64,7 @@ public:
      QString currentCoordinate() const;
      void setCurrentCoordinate(const QString& var);
      QString currentLatLon() const;
-     QVariantMap coord2Screen(const QVariantMap &var) const;
+     
     // QString layerInfo(const Coordinate &crdIn, const QString& attrName, QVariantList &items) ;
 
 
