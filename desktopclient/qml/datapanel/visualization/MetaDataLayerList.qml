@@ -14,7 +14,7 @@ ListView {
         }
     }
     id : layersList
-    //model : layerview.manager.layers
+    model : layerview.manager.allCoverages
     delegate: Component{
         Item {
             id : layerRow
@@ -27,7 +27,7 @@ ListView {
                 Image {
                     id : image
                     width : 16; height :16
-                    source : iconSource(iconPath)
+                    source : iconSource(icon)
                     fillMode: Image.PreserveAspectFit
                 }
                 Text{
@@ -38,8 +38,8 @@ ListView {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
-                            layersList.currentIndex = index
-                            mastercatalog.setSelectedObjects(id)
+                            layersList.currentIndex = index.row
+                            mastercatalog.setSelectedObjects(ilwisId)
                             bigthing.getWorkbenchPane("objectproperties","visible");
                         }
                     }

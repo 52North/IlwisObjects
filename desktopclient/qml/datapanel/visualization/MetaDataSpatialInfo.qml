@@ -125,10 +125,8 @@ Column {
     }
 
      function setEnvelope2(env, ismin){
-        console.debug("yyyy2", env)
         if ( !env || !("minx" in env))
             return ""
-        console.debug("yyyy2", env.minx,env.miny)
         if ( ismin)
             return env.minx.toFixed(4) + " " + env.miny.toFixed(4)
         else
