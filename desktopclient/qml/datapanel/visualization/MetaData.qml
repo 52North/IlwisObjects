@@ -22,52 +22,7 @@ Item {
 
     signal zoomEnded(string envelope)
 
-    function iconSource(name) {
-        if ( name === "")
-            name = "redbuttonr.png"
-        var iconP = "../../images/" + name
-        return iconP
-
-    }
-
-    function addDataSource(filter, sourceName, sourceType){
-     if ( coverage){
-            if (! metatdata.manager){
-                metatdata.manager = uicontext.createLayerManager(metadata,overview)
-                overview.layermanager = metatdata.manager
-            }
-            metatdata.manager.addCommand("adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)")
-            var layer = manager.topLevelLayers[1];
-            var expr = "setactiveattribute(" + manager.viewid + "," + layer.nodeId + ",1)"
-            console.debug("nnnnn", expr)
-            metatdata.manager.addCommand(expr)
-            metatdata.manager.refresh()
-        }
-    }
-
-    function transfer(datapanel){
-        var layers = datapanel.manager.layers;
-       for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
-            var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
-            overview.layermanager.addCommand(expr)
-       }
-    }
-
-    function newZoomExtent(newenvelope){
-        mouseActions.setRectangle(newenvelope)
-        //var env = {envelope : newenvelope, preserveaspectration : false}
-         //mdspatialinfo.zoomEnvelope(newenvelope)
-        //overview.update()
-    }
-
-    /*function rootLayer() {
-        if ( metatdata.manager){
-           var envelope = metatdata.manager.rootLayer.vproperty("rootdrawer","coverageenvelope")
-           var env = {envelope : envelope, preserveaspectration : false}
-           mdspatialinfo.zoomEnvelope(envelope)
-           metatdata.managermanager.refresh()
-        }
-    }*/
+  
 
     Connections {
         target: mouseActions
@@ -118,7 +73,7 @@ Item {
             MetaDataSpatialInfo{
                 id : mdspatialinfo
                 anchors.leftMargin: 2
-                width : 250
+                width : 270
                 height : parent.height
             }
             Rectangle {
@@ -184,24 +139,6 @@ Item {
                     }
 
 
-                   // Connections {
-                      //  target: manager
-                        //onLatlonEnvelopeChanged :{
-                        //    viewcontainer.entireMap()
-                        //}
-                  //  }
-
-                   // Connections {
-                   //     target: layers.drawer()
-                      /*  onViewEnvelopeChanged :{
-                            viewcontainer.entireMap()
-                            // the envelope has changed, so the selectiondraw should be repainted according to the new overview envelope
-                            var selenvelope = overview.attributeOfDrawer("selectiondrawer","envelope");
-
-                            if (selenvelope !== "")
-                                newZoomExtent(selenvelope)
-                        }*/
-                  //  }
                     Controls.DummySpatial {
 		                id: overview
                         anchors.fill: parent
@@ -224,30 +161,41 @@ Item {
 			                selectiondrawerColor: "basic"
                         }
                     }
-
-
-
-                   /* OverViewDrawer{
-                        id: overview
-                        anchors.fill: parent
-
-                        function selectionDrawerUpdate (topic, data) {
-                            if (!manager.hasSelectionDrawer)
-                                manager.hasSelectionDrawer = true
-                            newZoomExtent(data.envelope)
-                        }
-
-                        Component.onCompleted: {
-//                            mouseActions.mapScrollers = layers.maparea().parent.mapScrollers
-//                            entireMap()
-//                            subscription = layerview.subscribe(layerview.selectiondrawertopicoverview, selectionDrawerUpdate )
-//                            mouseActions.subscription = layerview.selectiondrawertopic // subscription
-                        }
-                    }*/
-
-
                 }
             }
         }
+    }
+    function iconSource(name) {
+        if ( name === "")
+            name = "redbuttonr.png"
+        var iconP = "../../images/" + name
+        return iconP
+
+    }
+
+    function addDataSource(filter, sourceName, sourceType){
+     if ( coverage){
+            if (! metatdata.manager){
+                metatdata.manager = uicontext.createLayerManager(metadata,overview)
+                overview.layermanager = metatdata.manager
+            }
+            metatdata.manager.addCommand("adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)")
+            var layer = manager.topLevelLayers[1];
+            var expr = "setactiveattribute(" + manager.viewid + "," + layer.nodeId + ",1)"
+            metatdata.manager.addCommand(expr)
+            metatdata.manager.refresh()
+        }
+    }
+
+    function transfer(datapanel){
+        var layers = datapanel.manager.layers;
+       for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
+            var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
+            overview.layermanager.addCommand(expr)
+       }
+    }
+
+    function newZoomExtent(newenvelope){
+        mouseActions.setRectangle(newenvelope)
     }
 }
