@@ -186,6 +186,8 @@ Item {
 
     function entireMap() {
         manager.wholeMap()
+        var env = manager.rootLayer.viewEnvelope
+        viewmanager.newZoomExtent(env)
     }
 
     function transfer(datapanel){
