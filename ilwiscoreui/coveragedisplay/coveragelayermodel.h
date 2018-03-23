@@ -26,6 +26,7 @@ class ILWISCOREUISHARED_EXPORT CoverageLayerModel : public LayerModel
 
 public:
     Q_PROPERTY(QString activeAttribute READ activeAttributeName WRITE activeAttributeName NOTIFY activeAttributeChanged)
+    Q_PROPERTY(QString ilwisId READ ilwisIdPrivate CONSTANT)
 
     Q_INVOKABLE QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> vproperties(const QString& attrName);
 	Q_INVOKABLE void setActiveAttribute(int idx);
@@ -63,6 +64,7 @@ protected:
 private:
     quint32 layerIndex() const;
     VisualPropertyEditor *visualProperty(const QString& attrName, const QString &propertyName);
+    QString ilwisIdPrivate() const;
 
 
     bool _showInfo = true;

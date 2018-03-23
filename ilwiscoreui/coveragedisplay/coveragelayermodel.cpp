@@ -124,6 +124,13 @@ VisualPropertyEditor*CoverageLayerModel::visualProperty(const QString &attrName,
     return 0;
 }
 
+QString Ilwis::Ui::CoverageLayerModel::ilwisIdPrivate() const
+{
+    if (_coverage.isValid())
+        return QString::number(_coverage->id());
+    return "";
+}
+
 QQmlListProperty<VisualPropertyEditor> CoverageLayerModel::vproperties(const QString &attrName)
 {
     VisualAttribute *attr = visualAttribute(attrName);
