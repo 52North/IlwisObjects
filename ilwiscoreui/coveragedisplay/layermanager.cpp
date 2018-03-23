@@ -19,6 +19,7 @@
 #include "layermanager.h"
 #include "compositelayermodel.h"
 #include "rootlayermodel.h"
+#include "coveragelayermodel.h"
 #include "tree.h"
 
 using namespace Ilwis;
@@ -160,15 +161,6 @@ LayerModel * LayerManager::findLayer(int nodeid)
 
 int LayerManager::nodeid(QModelIndex idx) const
 {
-   /* if (idx.isValid()) {
-        // TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
-        QMap<int, QVariant> data = _tree->itemData(idx);
-        if (data.contains(TreeModel::rNodeId)) {
-                return data[TreeModel::rNodeId].toInt();
-        }
-    }
-    return iUNDEF;*/
-
     if (idx.isValid()) {
         // TreeNode *item = static_cast<TreeNode*>(index.internalPointer());
         QMap<int, QVariant> data = _tree->itemData(idx);
@@ -263,6 +255,8 @@ void  LayerManager::addLayer(QStandardItem *parentLayer, LayerModel *layer, Laye
     if (!added) // insert at bottom
         parentLayer->appendRow(layer);
 
+    emit lm->allCoveragesChanged();
+
 }
 
 QQmlListProperty<LayerModel> Ilwis::Ui::LayerManager::childLayersPrivate()
@@ -274,6 +268,26 @@ QQmlListProperty<LayerModel> Ilwis::Ui::LayerManager::childLayersPrivate()
         _childeren.push_back(lyr);
     }
     return QQmlListProperty<LayerModel>(this, _childeren);
+}
+
+void getCoverages(QStandardItem *parent, QList<LayerModel *>& coverages) {
+    for (int layerIndex = 0; layerIndex < parent->rowCount(); ++layerIndex) {
+        LayerModel *layer = static_cast<LayerModel *>(parent->child(layerIndex));
+        CoverageLayerModel *coverageLayer = dynamic_cast<CoverageLayerModel *>(layer);
+        if (coverageLayer) {
+            coverages.push_back(coverageLayer);
+        }
+        getCoverages(layer, coverages);
+    }
+}
+QQmlListProperty<LayerModel> LayerManager::allCoveragesPrivate()
+{
+    _coverages = QList<LayerModel *>();
+    QStandardItem *root = _tree->invisibleRootItem();
+    getCoverages(root, _coverages);
+
+    return QQmlListProperty<LayerModel>(this, _coverages);
+ 
 }
 
 int LayerManager::nextId() {

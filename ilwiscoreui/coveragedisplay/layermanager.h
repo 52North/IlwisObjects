@@ -37,6 +37,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
 
     Q_PROPERTY(QStandardItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> topLevelLayers READ childLayersPrivate NOTIFY topLevelLayersChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> allCoverages READ allCoveragesPrivate NOTIFY allCoveragesChanged)
     Q_PROPERTY(quint32 viewid READ viewid CONSTANT)
     Q_PROPERTY(bool hasSelectionDrawer READ hasSelectionDrawer WRITE setHasSelectionDrawer NOTIFY hasSelectionDrawerChanged)
     Q_PROPERTY(bool zoomInMode READ zoomInMode WRITE setZoomInMode NOTIFY zoomInModeChanged)
@@ -110,6 +111,7 @@ signals:
 	void layerCountChanged();
 	void needUpdateChanged();
     void topLevelLayersChanged();
+    void allCoveragesChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
@@ -127,9 +129,11 @@ private:
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
     QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
+    QList<LayerModel *> _coverages; //this list is filled on the fly in  allCoveragesPrivate, don't rely on it to have contents
 
     static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
     QQmlListProperty<LayerModel> childLayersPrivate();
+    QQmlListProperty<LayerModel> allCoveragesPrivate();
 
 
 
