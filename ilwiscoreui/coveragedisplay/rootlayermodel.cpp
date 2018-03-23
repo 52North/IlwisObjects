@@ -161,15 +161,15 @@ bool Ilwis::Ui::RootLayerModel::prepare(int prepType)
 
 QVariantMap RootLayerModel::latlonEnvelope() const
 {
-    QVariant var;
-    if ( _screenCsy->isLatLon())
-        var = qVariantFromValue(_viewEnvelope);
+    Envelope env;
+    if (_screenCsy->isLatLon()) {
+        env = _viewEnvelope;
+    }
     else {
         ICoordinateSystem csyWgs84("code=epsg:4326");
-        Envelope llEnvelope = csyWgs84->convertEnvelope(_screenCsy, _viewEnvelope);
-        var = qVariantFromValue(llEnvelope);
+        env = csyWgs84->convertEnvelope(_screenCsy, _viewEnvelope);
     }
-    return var.toMap();
+    return env.toMap();
 }
 
 IlwisObjectModel *RootLayerModel::screenCsyPrivate()
@@ -180,6 +180,14 @@ IlwisObjectModel *RootLayerModel::screenCsyPrivate()
 IlwisObjectModel *RootLayerModel::screenGrfPrivate()
 {
     return _grf;
+}
+
+QString Ilwis::Ui::RootLayerModel::projectionInfoPrivate() const
+{
+    if (_csy) {
+        return _csy->projectionInfo();
+    }
+    return "";
 }
 
 double Ilwis::Ui::RootLayerModel::width() const
@@ -194,12 +202,16 @@ double Ilwis::Ui::RootLayerModel::height() const
 
 QVariantMap RootLayerModel::viewEnvelopePrivate() const
 {
-    return _viewEnvelope.toMap();
+    if ( _viewEnvelope.isValid())
+        return _viewEnvelope.toMap();
+    return QVariantMap();
 }
 
 QVariantMap RootLayerModel::zoomEnvelopePrivate() const
 {
-    return _zoomEnvelope.toMap();
+    if ( _zoomEnvelope.isValid())
+        return _zoomEnvelope.toMap();
+    return viewEnvelopePrivate();
 }
 
 void RootLayerModel::viewBox(const BoundingBox& box) {
@@ -235,6 +247,7 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
 		_coverageEnvelope = env;
     _viewEnvelope = env;
     emit viewEnvelopeChanged();
+    emit latlonEnvelopeChanged();
 }
 
 Envelope Ilwis::Ui::RootLayerModel::viewEnvelope() const
@@ -283,6 +296,8 @@ void RootLayerModel::screenGrf(const IGeoReference &screenGrf)
 {
     _screenGrf = screenGrf;
     _csy = new IlwisObjectModel(_screenGrf->resource(),this);
+
+    emit georefChanged();
 }
 
 ICoordinateSystem RootLayerModel::screenCsy() const
@@ -296,6 +311,9 @@ void RootLayerModel::screenCsy(const ICoordinateSystem &screenCsy)
     _csy = new IlwisObjectModel(_screenCsy->resource(),this);
 
     emit coordinateSystemChanged();
+    emit latlonEnvelopeChanged();
+    emit projectionInfoChanged();
+    emit zoomEnvelopeChanged();
 }
 
 void RootLayerModel::setCurrentCoordinate(const QString &var)

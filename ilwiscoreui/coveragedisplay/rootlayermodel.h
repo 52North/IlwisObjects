@@ -27,8 +27,9 @@ public:
     Q_PROPERTY(bool panningMode READ panningMode WRITE setPanningMode NOTIFY panningModeChanged)
     Q_PROPERTY(bool showLayerInfo READ showLayerInfo WRITE showLayerInfo NOTIFY showLayerInfoChanged)
     Q_PROPERTY(QVariantList layerInfoItems READ layerInfoItems NOTIFY layerInfoItemsChanged)
-    Q_PROPERTY(Ilwis::Ui::IlwisObjectModel* screenCsy READ screenCsyPrivate CONSTANT)
-    Q_PROPERTY(Ilwis::Ui::IlwisObjectModel* screenGrf READ screenGrfPrivate CONSTANT)
+    Q_PROPERTY(Ilwis::Ui::IlwisObjectModel* screenCsy READ screenCsyPrivate NOTIFY coordinateSystemChanged)
+    Q_PROPERTY(Ilwis::Ui::IlwisObjectModel* screenGrf READ screenGrfPrivate NOTIFY georefChanged)
+    Q_PROPERTY(QString projectionInfo READ projectionInfoPrivate NOTIFY projectionInfoChanged)
     Q_PROPERTY(QString currentLatLon READ currentLatLon NOTIFY currentLatLonChanged)
     Q_PROPERTY(QString currentCoordinate READ currentCoordinate WRITE setCurrentCoordinate NOTIFY currentcurrentCoordinateChanged)
     Q_PROPERTY(double width READ width NOTIFY extentChanged)
@@ -112,6 +113,8 @@ signals:
 	 void cameraPositionChanged();
 	 void scrollInfoChanged();
      void activeAttributeChanged();
+     void georefChanged();
+     void projectionInfoChanged();
 
 private:
     QColor _backgroundColor;
@@ -138,6 +141,7 @@ private:
     QVariantMap latlonEnvelope() const;
     IlwisObjectModel *screenCsyPrivate();
     IlwisObjectModel *screenGrfPrivate();
+    QString projectionInfoPrivate() const;
 	double width() const;
 	double height() const;
 
