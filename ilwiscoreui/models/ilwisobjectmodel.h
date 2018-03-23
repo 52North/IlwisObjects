@@ -45,7 +45,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
     Q_PROPERTY(bool isCoverage READ isCoverage CONSTANT)
     Q_PROPERTY(QString valuetype READ valuetype CONSTANT)
     Q_PROPERTY(bool isProjected READ isProjectedCoordinateSystem CONSTANT)
-    Q_PROPERTY(QString projectionInfo READ projectionInfo CONSTANT)
+    Q_PROPERTY(QString projectionInfo READ projectionInfo NOTIFY projectionInfoChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::AttributeModel> attributes READ attributes CONSTANT)
     Q_PROPERTY(QQmlListProperty<DomainItemModel> domainitems READ domainitems CONSTANT)
     Q_PROPERTY(QQmlListProperty<ProjectionParameterModel> projectionItems READ projectionItems CONSTANT)
@@ -102,6 +102,7 @@ protected:
 signals:
     void readOnlyChanged();
     void layerInfoChanged();
+    void projectionInfoChanged();
 private slots:
     QString valueType() const;
 private:

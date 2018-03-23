@@ -181,7 +181,7 @@ QString IlwisObjectModel::projectionInfo() const
             }
             return projection + "; ellipsoid=" + ellipsoid;
         }
-        return "";
+        return "Geographic Coordinate System";
     } catch(const ErrorObject& ){
         // no exceptions may escape here
     }
