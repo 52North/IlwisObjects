@@ -11,24 +11,9 @@ import "../.." as Base
 
 Column {
     id : column
-    property int itemHeight : 16
-    property int fSize : 7
+    property int itemHeight : 20
+    property int fSize : 8
 
-    function setEnvelope(env, ismin){
-        if ( !env || !("minx" in env))
-            return ""
-        if ( ismin)
-            return env.minx.toFixed(4) + " " + env.miny.toFixed(4)
-        else
-            return env.maxx.toFixed(4) + " " + env.maxy.toFixed(4)
-
-    }
-
-    function zoomEnvelope(newenvelope){
-        var parts = newenvelope.split(" ")
-        zoomEnvelope1.content =  parseFloat(parts[0]).toFixed(4) + " " + parseFloat(parts[1]).toFixed(4)
-        zoomEnvelope2.content =  parseFloat(parts[2]).toFixed(4) + " " + parseFloat(parts[3]).toFixed(4)
-    }
 
     Rectangle {
         id : layersLabel
@@ -59,7 +44,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.isValid ? layerview.manager.enireMap.screenCsy.projectionInfo : ""
+        content : layerview.manager.rootLayer.screenCsy ? layerview.manager.rootLayer.screenCsy.name : ""
 
         labelText : qsTr("Coordinate System")
 
@@ -69,7 +54,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        //content : layerview.manager.rootLayer.screenCsy ? metatdata.manager.rootLayer.screenCsy.name : ""
+        content : layerview.manager.rootLayer.screenCsy ? layerview.manager.rootLayer.projectionInfo : ""
         labelText : qsTr("Projection")
 
     }
@@ -80,7 +65,7 @@ Column {
         labelWidth: 90
         fontSize: fSize
         labelText : qsTr("View Envelope")
-        //content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.viewEnvelope, true) : ""
+        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.viewEnvelope, true) : ""
 
     }
     Controls.TextEditLabelPair{
@@ -89,7 +74,7 @@ Column {
         labelWidth: 90
         labelText :""
         fontSize: fSize
-        //content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.viewEnvelope, false) : ""
+        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.viewEnvelope, false) : ""
 
     }
     Controls.TextEditLabelPair{
@@ -99,6 +84,7 @@ Column {
         labelWidth: 90
         fontSize: fSize
         labelText : qsTr("Zoom Envelope ")
+        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.zoomEnvelope, true) : ""
 
     }
     Controls.TextEditLabelPair{
@@ -107,7 +93,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        labelText : ""
+        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.zoomEnvelope, false) : ""
     }
 
     Controls.TextEditLabelPair{
@@ -115,7 +101,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        //content : metatdata.manager.coordinateSystem ? column.setEnvelope(metatdata.manager.latlonEnvelope, true) : ""
+        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope2(layerview.manager.rootLayer.latlonEnvelope, true) : ""
         labelText : qsTr("Lat/Lon Envelope")
 
     }
@@ -124,15 +110,43 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        //content : metatdata.manager.coordinateSystem ? column.setEnvelope(metatdata.manager.latlonEnvelope, false) : ""
+        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.latlonEnvelope, false) : ""
     }
-    Controls.TextEditLabelPair{
-        height : column.itemHeight
-        width : parent.width
-        labelWidth: 90
-        fontSize: fSize
-        content : ""
-        labelText : qsTr("Georeference")
+
+    function setEnvelope(env, ismin){
+        if ( !env || !("minx" in env))
+            return ""
+
+        if ( ismin)
+            return env.minx.toFixed(4) + " " + env.miny.toFixed(4)
+        else
+            return env.maxx.toFixed(4) + " " + env.maxy.toFixed(4)
+
+    }
+
+     function setEnvelope2(env, ismin){
+        console.debug("yyyy2", env)
+        if ( !env || !("minx" in env))
+            return ""
+        console.debug("yyyy2", env.minx,env.miny)
+        if ( ismin)
+            return env.minx.toFixed(4) + " " + env.miny.toFixed(4)
+        else
+            return env.maxx.toFixed(4) + " " + env.maxy.toFixed(4)
+
+    }
+
+    function zoomEnvelope(newenvelope){
+        console.debug("xxxx", newenvelope)
+        var parts = newenvelope.split(" ")
+        if ( parts.length >= 4) {
+            zoomEnvelope1.content =  parseFloat(parts[0]).toFixed(4) + " " + parseFloat(parts[1]).toFixed(4)
+            zoomEnvelope2.content =  parseFloat(parts[2]).toFixed(4) + " " + parseFloat(parts[3]).toFixed(4)
+        }
+    }
+
+    Component.onCompleted : {
+        console.debug("csy=", layerview.manager.rootLayer.screenCsy)
     }
 }
 
