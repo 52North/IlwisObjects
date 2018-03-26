@@ -1119,6 +1119,15 @@
     <None Include="desktopclient\qml\controls\ItemDomainSelector.qml">
       <Filter>Distribution Files\qml\controls</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\table\ChartPane.qml">
+      <Filter>Distribution Files\qml\datapanel\table</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\table\ChartProperties.qml">
+      <Filter>Distribution Files\qml\datapanel\table</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateChart.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

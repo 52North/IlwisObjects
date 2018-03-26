@@ -374,6 +374,8 @@
     <None Include="desktopclient\qml\datapanel\script\ScriptPane.qml" />
     <None Include="desktopclient\qml\datapanel\script\ScriptRunOptions.qml" />
     <None Include="desktopclient\qml\datapanel\table\AggregateCell.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ChartPane.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ChartProperties.qml" />
     <None Include="desktopclient\qml\datapanel\table\ChartsPanel.qml" />
     <None Include="desktopclient\qml\datapanel\table\ColumnHeader.qml" />
     <None Include="desktopclient\qml\datapanel\table\ColumnList.qml" />
@@ -451,6 +453,7 @@
     <None Include="desktopclient\qml\workbench\creators\ApplyCreateButtons.qml" />
     <None Include="desktopclient\qml\workbench\creators\ColumnCreator.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateBoundsOnlyCsy.qml" />
+    <None Include="desktopclient\qml\workbench\creators\CreateChart.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateCombinationMatrix.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateContinousColorDomain.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateDomain.qml" />

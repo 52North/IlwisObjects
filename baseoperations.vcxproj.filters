@@ -256,6 +256,9 @@
     <ClCompile Include="baseoperations\conditions\numbercondition.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="baseoperations\creators\createchart.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseoperations\data\addcolumn.h">
@@ -454,6 +457,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baseoperations\util\workingcatalog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createchart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
