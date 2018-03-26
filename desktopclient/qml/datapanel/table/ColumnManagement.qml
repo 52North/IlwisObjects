@@ -81,9 +81,9 @@ Rectangle {
             title : qsTr("Charts")
             id : graphpanel
             active : true
-            ChartsPanel{
-
-            }
+           // ChartsPanel{
+//
+           // }
         }
 
      style: DataPanel.ButtonBarTabViewStyle{}
