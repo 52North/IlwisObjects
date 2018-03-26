@@ -60,6 +60,7 @@ private:
     QString createTable(const QVariantMap &parms);
     void executeoperation(const QString &expr);
     QString createOperationScriptHeader(const QVariantMap &parms);
+    QString createChart(const QVariantMap &parms);
     Ilwis::OperationResource createOperationResource(const QString &url, const QVariantMap &parms);
 
 };

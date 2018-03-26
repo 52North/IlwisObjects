@@ -54,6 +54,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["rastercoverage" ] = new IlwisObjectCreatorModel("rastercoverage", TR("Raster Coverage"),itRASTER,"CreateRasterCoverage.qml", 390, this);
     _creators["featurecoverage" ] = new IlwisObjectCreatorModel("featurecoverage", TR("Feature Coverage"),itFEATURE,"UnderDevelopment.qml", 200, this);
     _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"CreateTable.qml", 520, this);
+    _creators["chart"] = new IlwisObjectCreatorModel("chart", TR("Chart"), itTABLE, "CreateChart.qml", 520, this);
     _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation"),itREPRESENTATION,"UnderDevelopment.qml", 250, this);
     _creators["domain" ] = new IlwisObjectCreatorModel("domain",TR("Domain"),itDOMAIN,"CreateDomain.qml", 250, this);
     _creators["combinationmatrix" ] = new IlwisObjectCreatorModel("combinationmatrix",TR("Combinationmatrix"),itCOMBINATIONMATRIX,"CreateCombinationMatrix.qml", 600, this);
@@ -548,13 +549,30 @@ QString ObjectCreator::createTable(const QVariantMap &parms) {
 
 }
 
+QString ObjectCreator::createChart(const QVariantMap &parms) {
+
+    QString name = parms["name"].toString();
+    if (name == "")
+        return sUNDEF;
+
+    QString expr = "createchart('dummy')";
+
+    QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
+    expr = output + expr;
+    executeoperation(expr);
+
+    return sUNDEF;
+}
+
 QString ObjectCreator::createObject(const QVariantMap &parms)
 {
     try {
     QString type = parms["type"].toString();
-    if (  type == "workflow" ){
+    if (type == "chart") {
+        return createChart(parms);
+    } else if (  type == "workflow" ){
         return createWorkflow(parms);
-    } else     if ( type == "numericdomain"){
+    } else  if ( type == "numericdomain"){
         return createNumericDomain(parms);
     } else if ( type == "itemdomain"){
             return createItemDomain(parms);
