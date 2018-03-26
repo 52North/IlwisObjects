@@ -216,7 +216,10 @@ TabModel *SidePanelModel::createPanel(quint32 index, const QString &filter, cons
 {
     TabModel *tab = 0;
 
-    if ( outputtype == "catalog"){
+    if (outputtype == "chart") {
+        tab = new TabModel(url, "table/ChartsPanel.qml", outputtype, this);
+    }
+    else if ( outputtype == "catalog"){
         context()->configurationRef().addValue("users/" + Ilwis::context()->currentUser() +"/workingcatalog",url);
         if ( filter == "container='ilwis://operations'")
             tab = new TabModel(url,"catalog/OperationPanel.qml", outputtype,this);
