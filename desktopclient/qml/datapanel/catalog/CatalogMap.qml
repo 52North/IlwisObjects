@@ -13,6 +13,14 @@ Rectangle {
     id : catalogMapView
     color : tabmodel && tabmodel.side == "right" ? "white" : "#FFFFF7"
 
+    onWidthChanged : {
+        mapItems.requestPaint();
+    }
+
+    onHeightChanged : {
+        mapItems.requestPaint();
+    }
+
     function closeGrid() {
       grid.setSource("")
     }
@@ -31,7 +39,7 @@ Rectangle {
         id : zoomClicked
         onTriggered : {
             if ( renderer.layermanager){
-                renderer.rootLayer().zoomInMode = !renderer.rootLayer().zoomInMode
+                renderer.layermanager.zoomInMode = !renderer.layermanager.zoomInMode
                 grid.setSource("")
             }
         }
@@ -43,6 +51,7 @@ Rectangle {
             if ( renderer.layermanager){
                 var envelope = renderer.layerManager.rootLayer.zoomEnvelope
                 Global.calcZoomOutEnvelope(envelope, renderer, renderer.layerManager,0.707)
+                grid.setSource("")
             }
         }
     }
@@ -61,26 +70,15 @@ Rectangle {
     Action {
         id : entireClicked
         onTriggered : {
-          var envelope = renderer.rootLayer().vproperty("rootdrawer","coverageenvelope");
-            if ( envelope !== ""){
-                renderer.addCommand("setviewextent("+ renderer.layermanager.viewid + "," + envelope + ")");
-            }
-            renderer.layermanager.refresh()
+                renderer.layermanager.zoomOutMode = false
+                renderer.layermanager.panningMode = false
+                renderer.addCommand("setviewextent("+ renderer.layermanager.viewid + ",\'entiremap\')");
+                renderer.layermanager.refresh()
+                grid.setSource("")
         }
     }
 
-    Action {
-        id : refreshClicked
-        onTriggered: {
-           renderer.rootLayer().viewEnvelope
-            currentCatalog.prepareMapItems(renderer.layermanager, true)
-            mapItems.items = currentCatalog.mapItems
-            mapItems.canvasDirty = true
-            mapItems.requestPaint()
-        }
-    }
-
-    Controls.LayerExtentsToolbar{
+    Controls.LayerExtentsToolbar{ 
         id : maptools
     }
     Controls.DummySpatial{
@@ -95,11 +93,58 @@ Rectangle {
                 layermanager = uicontext.createLayerManager(catalogMapView,renderer)
                 var cmd = uicontext.worldmapCommand(layermanager.viewid)
                 renderer.addCommand(cmd)
+                mouseActions.layerManager = layermanager
+                console.debug(mouseActions.layerManager)
                 renderer.addCommand("setlinecolor(" + layermanager.viewid + ", 1,darkblue)");
                 renderer.addCommand("setbackgroundcolor(" + layermanager.viewid + "," + catalogMapView.color + ")")
                 renderer.update()
             }
         }
+
+        Connections {
+            target: mouseActions
+            onZoomEnded :{
+                renderer.layermanager.addCommand("setviewextent("+ renderer.layermanager.viewid + "," + envelope + ")");
+            }
+        }
+
+        Connections {
+            target : mouseActions
+            onClick :{
+                var maps = []
+                for (var i = 0; i < mapItems.items.length; i++) {
+                    var env = mapItems.items[i].getProperty("latlonenvelope")
+                    if ( env === "?")
+                        continue;
+
+                    var envelope = renderer.rootLayer().drawEnvelope(env)
+                    if ( envelope.minx <=x && (envelope.minx + envelope.width) > x &&
+                            envelope.miny <= y && (envelope.miny + envelope.height) > y ){
+                        maps.push({"name" : mapItems.items[i].name,
+                                      "imagePath" : mapItems.items[i].imagePath,
+                                      "id" : mapItems.items[i].id,
+                                      "iconPath" : mapItems.items[i].iconPath,
+                                      "url" : mapItems.items[i].url,
+                                      "typeName" : mapItems.items[i].typeName })
+                    }
+                }
+                if ( maps.length > 0 && !renderer.layermanager.zoomInMode){
+                    grid.setSource("") // remove old grid
+                    grid.setSource("SelectedSpatialItems.qml",{"x" : x + 20, "y" : y -20, "model" : maps})
+                    grid.active  = true
+                }
+                if (catalogViews && catalogViews.tabmodel && !catalogViews.tabmodel.selected)
+                    catalogViews.tabmodel.selectTab()
+             }
+        }
+
+        Controls.LayerExtentMouseActions{
+		    id : mouseActions
+		    zoomToExtents: true
+		    hasPermanence: false
+		    showInfo: false
+		    selectiondrawerColor: "basic"
+		}
     }
     Canvas{
         id : mapItems
@@ -110,9 +155,13 @@ Rectangle {
         property bool canvasDirty: false
         property var items : currentCatalog ? currentCatalog.coverages : []
         property var ctx
+        property var zoomEnvelope : renderer.layermanager.rootLayer.zoomEnvelope
 
         onItemsChanged: {
             mapItems.requestPaint()
+        }
+        onZoomEnvelopeChanged : {
+            mapItems.requestPaint();
         }
 
         function clear() {
@@ -127,15 +176,15 @@ Rectangle {
 
         onPaint: {
             if ( catalogMapView.height != 0){
+                
                 if (!mapItems.ctx && mapItems.available){
                     mapItems.ctx = mapItems.getContext('2d')
                 }
+
                 if (ctx && renderer.layermanager && items ) {
                     clear(ctx);
                     canvasDirty = false
                     var l = items.length
-
-
 
                     for (var i = 0; i < l; i++) {
                         ctx.save()
