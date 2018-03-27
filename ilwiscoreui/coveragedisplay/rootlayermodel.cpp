@@ -445,9 +445,9 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	pmin = { pmin.x - deltaX, pmin.y - deltaY, 0 };
 	pmax = { pmax.x + deltaX, pmax.y + deltaY, 0 };
 	//qDebug() << "dx="<< deltaX << "dy="<< deltaY << "arv=" << aspectRatioView << "atc=" << aspectRatioCoverage << "minx=" << pmin.x << "miny=" << pmin.y << "maxx=" << pmax.x << "maxyx=" << pmax.y;
-	_viewEnvelope = { pmin, pmax };
-	if (initial)
-		_zoomEnvelope = _viewEnvelope;
+	//_viewEnvelope = { pmin, pmax };
+    viewEnvelope({ pmin, pmax });
+
 
 	if (!_screenGrf.isValid()) {
 		IGeoReference grf;
@@ -457,8 +457,8 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 		screenGrf(grf);
 	}
 	_screenGrf->size(Size<>(newwidth, newheight, 1));
-	_screenGrf->envelope(_zoomEnvelope);
-	_screenGrf->compute();
+    if (initial)
+        zoomEnvelope(_viewEnvelope);
 	
 }
 
