@@ -23,6 +23,7 @@ MouseArea {
     signal zoomEnded(string envelope)
     signal setZoomPanButton(bool enablePanAndZoomOut)
     signal checkZoomNormalButton(bool enablePanAndZoomOut)
+    signal click(int x, int y)
     signal selectTab()
 
     FloatingRectangle{
@@ -60,6 +61,8 @@ MouseArea {
 	}
 
     onPressed:  {
+        if ( !layerManager)
+            return
         selectTab()
         if ( layerManager.zoomInMode || layerManager.zoomOutMode){
 			if (!zoomStarted){
@@ -89,6 +92,8 @@ MouseArea {
     }
 
     function setRectangle(envelope){
+        if ( !layerManager)
+            return
         var coords = envelope
         if ( typeof envelope === 'string'){
             console.debug("in", envelope)
@@ -141,6 +146,8 @@ MouseArea {
     }
 
     onPositionChanged: {
+        if ( !layerManager)
+            return
         if (zoomStarted){
             pEnd = {x : mouseX, y : mouseY }
             setRect()
@@ -170,7 +177,10 @@ MouseArea {
         }
     }
     onReleased: {
-        if ( layerManager.zoomInMode ){
+    
+        if ( !layerManager)
+            return
+        if (layerManager.zoomInMode ){
             pEnd = {x : mouseX , y : mouseY }
             setRect()
             if (zoomStarted) {
@@ -255,7 +265,9 @@ MouseArea {
             panPrevMouseY = -1
             showInfo = true
             cursorShape = Qt.ArrowCursor
-        }
+        }else
+            click(mouseX, mouseY)
+
         floatrect.enabled = false
         floatrect.opacity = 0
         floatrect.x = 0
