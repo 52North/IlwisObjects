@@ -1,11 +1,49 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.3
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.2
+import QtQuick.Controls.Styles 1.4
 import "../../Global.js" as Global
 
 Rectangle {
-    function cellColor(columnIndex, rowIndex, selected){
+	id : rectangle
+
+	property bool editMode: false
+
+    function modelFromItems(rangedef) {
+        if ( rangedef === "")
+            return "";
+
+        var index = rangedef.indexOf(":");
+        var itemstring = rangedef.substring(index + 1);
+        var items = itemstring.split("|");
+
+		itemDomainValueList.clear();
+		for (var v in items) {
+			itemDomainValueList.append({text:items[v]})
+		}
+
+		return itemDomainValueList;
+    }
+
+	// activateComponent selects the appropriate editor / label
+	// It also fills the model list in case of item domains
+	function activateComponent(columnNumber) {
+		var col = table.columns[columnNumber];
+		if (editMode) {
+			if (col.attributeDomainType == "Item Domain") {
+			var list = modelFromItems(col.defaultRangeDefinition);
+				return editCombo;
+			}
+			else {
+				return edit;
+			}
+		}
+		else {
+			return label;
+		}
+	}
+
+    function cellColor(columnIndex, rowIndex, selected) {
 	    if (rowIndex == -1 || columnIndex == -1)
 			return "#fff"
         if ( selected)
@@ -21,11 +59,65 @@ Rectangle {
         return "#fff"
     }
 
-	id : rectangle
     width : defaultWidth(styleData.column)
-//    height : 18
+    height : 22
     color : cellColor( styleData.column,styleData.row, (styleData.selected || table.isColumnSelected(styleData.column)))
-	property bool editMode: false
+
+	Loader {
+		id:  editLoader
+        anchors.fill: parent
+        anchors.margins: 2
+		focus : true
+
+		sourceComponent : activateComponent(styleData.column)	// activate component also reads all domain items
+
+	}
+
+	ListModel {
+		id: itemDomainValueList
+	}
+
+	Component {
+		id: editCombo
+
+		ComboBox {
+			id: combo
+
+			editable: false
+			focus: true
+			model: itemDomainValueList
+			onActivated: {
+				// to handle user changes in not editable mode of combobox; this is the default
+				table.setData(table.index(styleData.row, styleData.column), model.get(index).text, styleData.column + 257)
+				editMode = false;
+			}
+			onAccepted: {
+				// to handle ENTER to accept change in editable mode of comcobox
+				table.setData(table.index(styleData.row, styleData.column), combo.currentText, styleData.column + 257)
+				editMode = false
+			}
+
+			onActiveFocusChanged: {
+				// Ignore any current change (in non-editable mode of combobox)
+                if (!activeFocus) {
+                    editMode = false;
+                }
+            }
+
+			Keys.onEscapePressed: {
+				// Ignore any current change (in editable mode of combobox)
+				editMode = false
+				event.accepted = true;
+			}
+
+			Component.onCompleted: {
+				// Set index to match current value
+				var index = combo.find(styleData.value);
+				if (index != -1) combo.currentIndex = index;
+			}
+
+		}
+	}
 
 	Component {
 		id: label
@@ -45,10 +137,10 @@ Rectangle {
 				anchors.fill: parent
 				hoverEnabled: true
 				onClicked : {
-					txt.forceActiveFocus()
+					txt.forceActiveFocus();
 				}
 				onDoubleClicked: {
-					editMode = true
+					editMode = true;
 				}
 			}
 		}
@@ -97,13 +189,4 @@ Rectangle {
 		}
 	}
 
-	Loader {
-		id:  editLoader
-        anchors.fill: parent
-        anchors.margins: 2
-		focus : true
-
-		sourceComponent: (editMode ? edit : label)
-
-	}
 }
