@@ -27,10 +27,17 @@ public:
 	int bufferCount() const;
     void clear();
 
+    void storeTriangulation(const QUrl & url) ;
+    bool loadTriangulation(const QUrl& url);
+    bool loadTriangulation() const;
+
 private:
+
 	std::vector<OGLBufferChunck> _buffers;
 	std::unordered_map<quint64, FeatureMarker> _features;
 	const int MAX_INDICES_BUFFER = 0xffff;
 	int _currentActiveBuffer = 0;
+    bool _triangulationLoaded = false;
+    bool _triangulationStored = false;
 };
 

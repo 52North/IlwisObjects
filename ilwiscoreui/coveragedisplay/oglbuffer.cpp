@@ -1,5 +1,7 @@
 #include "kernel.h"
+#include "version.h"
 #include <QColor>
+#include <QDir>
 #include "oglbuffer.h"
 
 using namespace Ilwis;
@@ -77,6 +79,7 @@ int OGLBuffer::addObject(int currentBuffer, const std::vector<qreal>& positions,
 		}
 
 	}
+
 	return currentBuffer;
 }
 
@@ -95,9 +98,123 @@ int OGLBuffer::bufferCount() const
 void OGLBuffer::clear() {
     _buffers = std::vector<OGLBufferChunck>();
     _features = std::unordered_map<quint64, FeatureMarker>();
+    _triangulationLoaded = false;
     _currentActiveBuffer = 0;
 
 }
+
+void OGLBuffer::storeTriangulation(const QUrl & url) 
+{
+    if (_triangulationStored)
+        return;
+    if (url.scheme() == "file") {
+        QFileInfo inf(url.toLocalFile());
+        QString baseName = inf.fileName();
+        QString triaPath = inf.absolutePath() + "/.ilwis/triangulations";
+        QDir dir(triaPath);
+        if (!dir.exists()) {
+            dir.mkpath(triaPath);
+        }
+        triaPath += "/" + baseName + ".tria";
+        QFile triaFile(triaPath);
+        if (triaFile.open(QIODevice::WriteOnly)) {
+            QDataStream stream(&triaFile);
+            stream << stream.version();
+            QString version = Version().triangulationVersionNumber();
+            stream << version;
+            quint64 check = inf.lastModified().toMSecsSinceEpoch();
+            stream << check;
+
+            quint32 numberOfBuffers = _buffers.size();
+            stream << numberOfBuffers;
+            for (const OGLBufferChunck& buf : _buffers) {
+                quint32 numberOfVertices = buf._vertices.size();
+                quint32 numberOfIndices = buf._indices.size();
+                quint32 numberOfColors = buf._colors.size();
+                stream << numberOfVertices;
+                stream << numberOfIndices;
+                stream << numberOfColors;
+                stream.writeRawData((char *)buf._vertices.data(), numberOfVertices * sizeof(qreal));
+                stream.writeRawData((char *)buf._indices.data(), numberOfIndices * sizeof(int));
+                stream.writeRawData((char *)buf._colors.data(), numberOfColors * sizeof(qreal));
+            }
+            triaFile.close();
+            _triangulationStored = true;
+        }
+    }
+    else {
+        // :TODO
+    }
+}
+
+bool OGLBuffer::loadTriangulation(const QUrl & url)
+{
+    if (_triangulationLoaded)
+        return true;
+
+    if (url.scheme() == "file") {
+        QFileInfo inf(url.toLocalFile());
+        QString baseName = inf.fileName();
+        QString triaPath = inf.absolutePath() + "/.ilwis/triangulations";
+        triaPath += "/" + baseName + ".tria";
+
+        QFile triaFile(triaPath);
+        if (triaFile.open(QIODevice::ReadOnly)) {
+
+            QDataStream stream(&triaFile);
+
+            int streamversion;
+            stream >> streamversion;
+            stream.setVersion(streamversion);
+
+            QString version;
+            stream >> version;
+            if (version != Version().triangulationVersionNumber())
+                return false;
+            quint64 check;
+            stream >> check;
+            if (inf.lastModified().toMSecsSinceEpoch() != check)
+                return false;
+
+            quint32 numberOfBuffers;
+            stream >> numberOfBuffers;
+            _buffers.resize(numberOfBuffers);
+            for (OGLBufferChunck& buf : _buffers) {
+                quint32 numberOfVertices;
+                quint32 numberOfIndices;
+                quint32 numberOfColors;
+                stream >> numberOfVertices;
+                stream >> numberOfIndices;
+                stream >> numberOfColors;
+                buf._vertices.resize(numberOfVertices);
+                buf._indices.resize(numberOfIndices);
+                buf._colors.resize(numberOfColors);
+                char *p = (char *)buf._vertices.data();
+                stream.readRawData(p, numberOfVertices * sizeof(qreal));
+                p = (char *)buf._indices.data();
+                stream.readRawData(p, numberOfIndices * sizeof(int));
+                p = (char *)buf._colors.data();
+                stream.readRawData(p, numberOfColors * sizeof(qreal));
+            }
+
+            _triangulationLoaded = true;
+            triaFile.close();
+        }
+        else
+            return false;
+    }
+    else {
+        // :TODO
+    }
+
+    return true;
+}
+
+bool OGLBuffer::loadTriangulation() const
+{
+    return _triangulationLoaded;
+}
+
 
 
 
