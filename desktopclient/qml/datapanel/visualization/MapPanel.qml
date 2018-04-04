@@ -177,7 +177,6 @@ Item {
     function addDataSource(sourceUrl, sourceName, sourceType){
         if ( sourceUrl !== ""){
             var id = layers.addDataSource(sourceUrl, sourceName, sourceType)
-            viewmanager.addDataSource(sourceUrl, sourceName, sourceType)
             createParameters = [sourceUrl, sourceName, sourceType]
             return id
         }
