@@ -17,11 +17,11 @@
 #include "adddrawer.h" 
 
 using namespace Ilwis;
-using namespace Ui; 
+using namespace Ui;
 
 REGISTER_OPERATION(AddDrawer)
 
-AddDrawer::AddDrawer()  
+AddDrawer::AddDrawer()
 {
 
 }
@@ -32,40 +32,41 @@ AddDrawer::~AddDrawer()
 }
 
 AddDrawer::AddDrawer(quint64 metaid, const Ilwis::OperationExpression &expr) : DrawerOperation(metaid, expr)
-{ 
+{
 
 }
 
 bool AddDrawer::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {
     if (_prepState == sNOTPREPARED)
-        if((_prepState = prepare(ctx,symTable)) != sPREPARED)
+        if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    if ( _coverage.isValid())    {
-        CoverageLayerModel *ldrawer =  static_cast<CoverageLayerModel *>(LayerManager::create(_parentLayer, _coverage, layerManager(), _options ));
-		if (!ldrawer) {
-			kernel()->issues()->log(TR("Couldn't create layer for :") + _coverage->resource().url().toString());
-			return false;
-		}
+    if (_coverage.isValid()) {
+        CoverageLayerModel *ldrawer = static_cast<CoverageLayerModel *>(LayerManager::create(_parentLayer, _coverage, layerManager(), _options));
+        if (!ldrawer) {
+            kernel()->issues()->log(TR("Couldn't create layer for :") + _coverage->resource().url().toString());
+            return false;
+        }
 
-		ldrawer->coverage(_coverage);
+        ldrawer->coverage(_coverage);
 
         QVariant var = qVariantFromValue((void *)ldrawer);
         ldrawer->setActiveAttribute(0);
-        ctx->addOutput(symTable,var,"layerdrawer",_coverage->ilwisType(), Resource());
-		ldrawer->updateGeometry(true);
-    }else if ( _drawerCode != ""){
-        LayerModel *ldrawer =  LayerManager::create(_parentLayer, _drawerCode, layerManager(), _layername );
-		if (!ldrawer) {
-			return ERROR2(ERR_NO_INITIALIZED_2, "Drawer", _drawerCode);
-		}
+        ctx->addOutput(symTable, var, "layerdrawer", _coverage->ilwisType(), Resource());
+        ldrawer->updateGeometry(true);
+    }
+    else if (_drawerCode != "") {
+        LayerModel *ldrawer = LayerManager::create(_parentLayer, _drawerCode, layerManager(), _layername);
+        if (!ldrawer) {
+            return ERROR2(ERR_NO_INITIALIZED_2, "Drawer", _drawerCode);
+        }
 
         QVariant var = qVariantFromValue((void *)ldrawer);
-        ctx->addOutput(symTable,var,"layerdrawer",itLAYER, Resource());
-		ldrawer->updateGeometry(true);
+        ctx->addOutput(symTable, var, "layerdrawer", itLAYER, Resource());
+        ldrawer->updateGeometry(true);
     }
-	layerManager()->refresh();
+    layerManager()->refresh();
 
     return true;
 }
@@ -77,7 +78,7 @@ OperationImplementation *AddDrawer::create(quint64 metaid, const OperationExpres
 
 Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, const SymbolTable &)
 {
-    if (!getViewId(_expression.input<QString>(0))){
+    if (!getViewId(_expression.input<QString>(0))) {
         return sPREPAREFAILED;
     }
     QString parent = _expression.input<QString>(1);
@@ -85,35 +86,40 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
     _drawerCode = _expression.input<QString>(3);
 
     IlwisTypes tp = IlwisObject::name2Type(_drawerCode);
-    if ( !hasType(tp , itCOVERAGE) && source != ""){
-        ERROR2(ERR_ILLEGAL_VALUE_2,TR("dataype for layer drawer"), _drawerCode)    ;
+    if (!hasType(tp, itCOVERAGE) && source != "") {
+        ERROR2(ERR_ILLEGAL_VALUE_2, TR("dataype for layer drawer"), _drawerCode);
         return sPREPAREFAILED;
     }
-    if ( parent != ""){
-		LayerIndex idx = parent.toInt();
-        if ( !(_parentLayer = dynamic_cast<QStandardItem *>(layerManager()->findLayer(idx)))){
+    if (parent != "") {
+        LayerIndex idx = parent.toInt();
+        if (!(_parentLayer = dynamic_cast<QStandardItem *>(layerManager()->findLayer(idx)))) {
             kernel()->issues()->log(TR("The parent of the to be added layer doesnt exist:") + parent);
             return sPREPAREFAILED;
         }
-	}
-	else
-		_parentLayer = layerManager()->layerTree()->invisibleRootItem(); 
+    }
+    else
+        _parentLayer = layerManager()->layerTree()->invisibleRootItem();
 
 
-	if (source != "") {
-		if (source.indexOf("itemid=") != -1) {
-			if (source[0] == '\"')
-				source = source.mid(1, source.size() - 2);
-			std::vector<Resource> res = mastercatalog()->select(source);
-			if (res.size() != 1) {
-				kernel()->issues()->log(QString("Could not open as %1, %2").arg(_drawerCode).arg(source));
-				return sPREPAREFAILED;
-			}
-			_coverage.prepare(res[0]);
-		}
-		else {
-			_coverage.prepare(source, tp);
-		}
+    if (source != "") {
+        if (source.indexOf("itemid=") != -1) {
+            if (source[0] == '\"')
+                source = source.mid(1, source.size() - 2);
+            std::vector<Resource> res = mastercatalog()->select(source);
+            if (res.size() != 1) {
+                kernel()->issues()->log(QString("Could not open as %1, %2").arg(_drawerCode).arg(source));
+                return sPREPAREFAILED;
+            }
+            _coverage.prepare(res[0]);
+        }
+        else {
+            _coverage.prepare(source, tp);
+        }
+        if (!_coverage.isValid()){
+            kernel()->issues()->log(TR("Failed to load:") + source);
+            return sPREPAREFAILED;
+        }
+
 
 
 		if (_coverage->coordinateSystem()->isUnknown() && layerManager()->rootLayer()->screenCsy().isValid()) {
