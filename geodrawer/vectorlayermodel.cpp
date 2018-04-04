@@ -101,6 +101,15 @@ void Ilwis::Ui::VectorLayerModel::resetBuffer()
     _buffer.clear();
 }
 
+ICoverage VectorLayerModel::coverage() const
+{
+    return _featureLayer->coverage();
+}
+
+void Ilwis::Ui::VectorLayerModel::finish()
+{
+}
+
 void VectorLayerModel::setActiveAttribute(int idx)
 {
 	if (idx < _visualAttributes.size()) {

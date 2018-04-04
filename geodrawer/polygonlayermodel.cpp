@@ -1,4 +1,6 @@
 #include "kernel.h"
+#include <QFileInfo>
+#include <QFile>
 #include "ilwisdata.h"
 #include "geometries.h"
 #include "coverage.h"
@@ -63,11 +65,15 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
 	std::vector<int> indices;
     QColor clr = attr->value2color(value);
     if (clr.alphaF() == 1) {
-        _polygonsetter->getVertices(feature, vertices, indices);
-        colors.resize(vertices.size());
-        int start = 0; // std::max((int)0, (int)(colors.size() - 3));
-        _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), start, colors);
-        currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+
+        if (!_buffer.loadTriangulation()) {
+            _polygonsetter->getVertices(feature, vertices, indices);
+
+            colors.resize(vertices.size(),0.0);
+            
+            _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), 0, colors);
+            currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+        }
     }
 }
 
@@ -77,6 +83,12 @@ VisualAttribute * Ilwis::Ui::PolygonLayerModel::activeAttribute()
         return _featureLayer->activeAttribute();
     }
     return 0;
+}
+
+void Ilwis::Ui::PolygonLayerModel::finish()
+{
+    if ( !_buffer.loadTriangulation()) // if there wasn't a triangulation file
+        _buffer.storeTriangulation(coverage()->resource().url());
 }
 
 int PolygonLayerModel::numberOfBuffers(const QString& type) const
@@ -104,9 +116,15 @@ QVector<qreal> PolygonLayerModel::colors(qint32 bufferIndex, const QString& ) co
 	return QVector < qreal >();
 }
 
-LayerModel * Ilwis::Ui::PolygonLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
+LayerModel * PolygonLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
 	return new PolygonLayerModel(manager, parentLayer, name, desc, options);
+}
+
+void PolygonLayerModel::resetBuffer()
+{
+    VectorLayerModel::resetBuffer();
+    _buffer.loadTriangulation(_featureLayer->coverage()->resource().url());
 }
 
 

@@ -1,9 +1,13 @@
 #pragma once
 #include "coveragedisplay\layermodel.h"
+#include "kernel.h"
+#include "ilwisdata.h"
 #include "coveragedisplay\oglbuffer.h"
 
 namespace Ilwis {
 	class SPFeatureI;
+    class Coverage;
+    typedef IlwisData<Coverage> ICoverage;
 
 
 	namespace Ui {
@@ -26,7 +30,9 @@ namespace Ilwis {
 			virtual void addFeature(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value, int& currentBuffer);
 			virtual int numberOfBuffers(const QString&) const;
             bool isCoverageBased() const;
-            void resetBuffer();
+            virtual void resetBuffer();
+            ICoverage coverage() const;
+            virtual void finish();
 
 			void setActiveFeatureColors(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value);
 		signals:
