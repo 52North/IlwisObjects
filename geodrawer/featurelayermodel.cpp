@@ -144,9 +144,12 @@ bool FeatureLayerModel::prepare(int prepType)
 					points = static_cast<PointLayerModel *>(vlayer);
 			}
 		}
-		if (points) {
-			points->finishAddingPoints();
-		}
+        for (auto layer : layers) {
+            if (layer) {
+                layer->finish();
+            }
+        }
+
 		_prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 
 	} if (hasType(prepType, LayerModel::ptRENDER)) {
