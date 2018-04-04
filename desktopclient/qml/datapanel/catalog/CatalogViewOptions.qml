@@ -18,6 +18,20 @@ Rectangle {
         Controls.DummySpatial{
             id : lyrview
             anchors.fill: parent
+
+            property var resource
+            property var controller
+
+            function setResource(object, res){
+                lyrview.associate(object.objectName,"drawEnded")
+                var cmd = "adddrawer(" + viewerId + "," + res.url +",\"itemid=" + res.id + "\"," + res.typeName + ")"
+                addCommand(cmd)
+                setAttribute("GridDrawer", {"active" : false})
+                res.realizeThumbPath()
+                setAttribute("View",{"saveimage" : res.imagePath})
+                lyrview.update()
+
+            }
         }
     }
     Rectangle {

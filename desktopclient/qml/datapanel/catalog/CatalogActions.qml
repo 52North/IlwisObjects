@@ -20,7 +20,33 @@ TabView {
 
     style: DataPanel.ButtonBarTabViewStyle{}
 
-    function getFormatString(requestedType) {
+  
+    Component {
+        id : filterOptions
+        CatalogFilterOptions{}
+    }
+
+    Component {
+        id : viewOptions
+        CatalogViewOptions{}
+    }
+    Component {
+        id : copyOptions
+        ObjectCopyOptions{}
+    }
+    Component {
+        id : refreshOptions
+        CatalogRefreshOptions{}
+    }
+
+    Component.onCompleted: {
+        addTab(qsTr("Filter"), filterOptions).active = true
+        addTab(qsTr("Selection"), viewOptions).active = true
+        addTab(qsTr("Copy"), copyOptions).active = true
+        addTab(qsTr("Refresh"), refreshOptions).active = true
+    }
+
+  function getFormatString(requestedType) {
         getTab(2).active = true
         return getTab(2).item.getFormatString(requestedType)
     }
@@ -61,30 +87,6 @@ TabView {
             refresh()
 
         currentIndex = index
-    }
-    Component {
-        id : filterOptions
-        CatalogFilterOptions{}
-    }
-
-    Component {
-        id : viewOptions
-        CatalogViewOptions{}
-    }
-    Component {
-        id : copyOptions
-        ObjectCopyOptions{}
-    }
-    Component {
-        id : refreshOptions
-        CatalogRefreshOptions{}
-    }
-
-    Component.onCompleted: {
-        addTab(qsTr("Filter"), filterOptions).active = true
-        addTab(qsTr("Selection"), viewOptions).active = true
-        addTab(qsTr("Copy"), copyOptions).active = true
-        addTab(qsTr("Refresh"), refreshOptions).active = true
     }
 
 
