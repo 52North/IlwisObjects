@@ -25,6 +25,7 @@ public:
     QString buildType() const;
     QString verionNumber() const;
     QString buildNumber() const;
+    QString triangulationVersionNumber() const;
 private:
     static QString binaryVersionNumberToString(Ilwis::Version::BinaryVersion v) ;
     QVector<QString> supportedODFVersions;

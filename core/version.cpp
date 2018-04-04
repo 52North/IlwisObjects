@@ -112,6 +112,11 @@ QString Version::buildNumber() const
     return sUNDEF;
 }
 
+QString Ilwis::Version::triangulationVersionNumber() const
+{
+    return "ilwis triangulation version 1.0";
+}
+
 
 
 
