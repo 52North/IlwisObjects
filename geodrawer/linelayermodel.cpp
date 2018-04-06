@@ -62,7 +62,7 @@ void LineLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *att
 	std::vector<int> indices;
     QColor clr = attr->value2color(value);
     if (clr.alphaF() == 1) {
-        _linesetter->getVertices(feature, vertices, indices);
+        _linesetter->getVertices(feature->geometry().get(), vertices, indices);
         colors.resize(vertices.size());
         int start = 0; // std::max((int)0, (int)(colors.size() - 3));
         _linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
