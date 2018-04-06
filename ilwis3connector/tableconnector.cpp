@@ -320,8 +320,9 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
         ColumnDefinition def = tbl->columndefinition(i);
         IDomain dmColumn = def.datadef().domain<>();
         bool isOldSystem = true;
+        bool tableOnly = options.value("savemode", "") == "tableonly";
         QString domName = getDomainName(dmColumn, isOldSystem);
-        if ( !isOldSystem) {
+        if ( !isOldSystem && !tableOnly) {
             if (domName.indexOf("/domains/") > -1)
                 domName = def.name() + ".dom";
             if (domName.indexOf(ANONYMOUS_PREFIX) != -1) {
@@ -364,7 +365,6 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
         _odf->setKeyValue(colName, "ValueRangeChangeable", "Yes");
         _odf->setKeyValue(colName, "ExpressionChangeable", "Yes");
         _odf->setKeyValue(colName, "ReadOnly", "No");
-        _odf->setKeyValue(colName, "OwnedByTable", "Yes");
         QString domainInfo;
         if ( dmColumn->ilwisType() == itNUMERICDOMAIN) {
             domainInfo = storeNumericColumn(def, colName, domName);
