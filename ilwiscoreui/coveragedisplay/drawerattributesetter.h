@@ -4,13 +4,14 @@
 
 #include <QVector>
 
+
 namespace Ilwis {
 
 class Feature;
 class FeatureCoverage;
 typedef IlwisData<FeatureCoverage> IFeatureCoverage;
 class SPFeatureI;
-
+typedef std::unique_ptr<geos::geom::Geometry> UPGeometry;
 
 namespace Ui {
 
@@ -31,7 +32,7 @@ public:
     DrawerAttributeSetter(const IOOptions &options=IOOptions());
     ~DrawerAttributeSetter();
 
-    virtual void getVertices(const SPFeatureI& feature, std::vector<qreal>& vertices, std::vector<int>& indices) const = 0;
+    virtual void getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& indices) const = 0;
     virtual void getColors(const VisualAttribute&,
                             const QVariant &value,const QColor& defaultColor,int start,
 						     std::vector<qreal>& colors) const = 0;
