@@ -59,7 +59,7 @@ void PointLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *at
 	std::vector<int> indices;
     QColor clr = attr->value2color(value);
     if (clr.alphaF() == 1) {
-        _pointsetter->getVertices(feature, _pointVertices, indices);
+        _pointsetter->getVertices(feature->geometry().get(), _pointVertices, indices);
         _pointColors.resize(_pointVertices.size());
         int start = std::max((int)0, (int)(_pointColors.size() - 3));
         _pointsetter->getColors(*attr, value, uicontext()->defaultColor("coveragepoint"), start, _pointColors);
