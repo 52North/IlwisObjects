@@ -9,6 +9,7 @@ Rectangle {
 
 	property bool editMode: false
 
+	// Extract the domain items (only for ItemDomain)
     function modelFromItems(rangedef) {
         if ( rangedef === "")
             return "";
@@ -29,16 +30,27 @@ Rectangle {
 	// It also fills the model list in case of item domains
 	function activateComponent(columnNumber) {
 		var col = table.columns[columnNumber];
+
+		console.log("Domain="+col.attributeDomain)
+		console.log("parent="+parent)
+		console.log("parent2="+parent.parent)
+//		console.log("parent2_model="+parent.parent.model)
+
 		if (editMode) {
 			if (col.attributeDomainType == "Item Domain") {
-			var list = modelFromItems(col.defaultRangeDefinition);
+				var list = modelFromItems(col.defaultRangeDefinition);
 				return editCombo;
 			}
 			else {
+				if (col.attributeDomainType == "Value Domain") {
+					var range = col.actualRangeDefintion;
+					console.log("Range="+range)
+				}
 				return edit;
 			}
 		}
 		else {
+			// non-editable value (as strings)
 			return label;
 		}
 	}
@@ -180,8 +192,12 @@ Rectangle {
 			}
 
 			onAccepted: {
-//					if (table.isNumericalColumn(styleData.column)) table.setData(table.createIndex(styleData.row, styleData.column), parseDouble(edit.item.text))
-				table.setData(table.index(styleData.row, styleData.column), text, styleData.column + 257)
+				// 257 === Qt::UserRole + 1
+				if  (table.isNumericalColumn(styleData.column)) {
+					table.setData(table.index(styleData.row, styleData.column), parseFloat(text), styleData.column + 257);
+				} else {
+					table.setData(table.index(styleData.row, styleData.column), text, styleData.column + 257);
+				}
 				editMode = false
 			}
 
