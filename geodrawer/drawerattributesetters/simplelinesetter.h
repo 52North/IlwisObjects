@@ -14,13 +14,13 @@ public:
 
 	void getGeometryVertices(const geos::geom::Geometry * geom, std::vector<qreal>& vertices, std::vector<int>& indices);
 
-	void getVertices(const SPFeatureI& feature, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getVertices(const geos::geom::Geometry *subgeom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
 
     void getColors(const VisualAttribute& attr,
                             const QVariant& value,const QColor& defaultColor,int start,
 							std::vector<qreal>& colors) const;
 private : 
-	void getVerticesPolygon(const SPFeatureI & feature, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getVerticesPolygon(const geos::geom::Geometry *geom, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const;
 	void getGeometryVertices(const geos::geom::Geometry * geom, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const;
 
 };

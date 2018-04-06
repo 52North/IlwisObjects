@@ -12,7 +12,7 @@ class SimplePolygonSetter : public BaseSpatialAttributeSetter
 public:
     SimplePolygonSetter(const LayerManager *manager);
 
-	void getVertices(const SPFeatureI& feature, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getVertices(const geos::geom::Geometry *subgeom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
 
     void getColors(const VisualAttribute& attr,
                             const QVariant& value,const QColor& defaultColor,int start,

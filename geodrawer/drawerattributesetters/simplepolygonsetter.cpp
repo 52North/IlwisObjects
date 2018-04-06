@@ -22,10 +22,9 @@ SimplePolygonSetter::SimplePolygonSetter(const LayerManager *manager) : BaseSpat
 
 }
 
-void SimplePolygonSetter::getVertices(const SPFeatureI& feature, std::vector<qreal>& vertices, std::vector<int>& indices) const
+void SimplePolygonSetter::getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& indices) const
 {
     IlwisTesselator tesselator;
-    const UPGeometry& geometry = feature->geometry();
     int n = (int)geometry->getNumGeometries();
 	Coordinate pnt = _layerManager->rootLayer()->viewEnvelope().center();
     for(int  geom = 0; geom < n; ++geom ){
