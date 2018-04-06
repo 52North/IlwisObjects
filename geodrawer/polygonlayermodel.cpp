@@ -61,18 +61,27 @@ QString PolygonLayerModel::value2string(const QVariant & value, const QString & 
 
 void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *attr, const QVariant& value, int & currentBuffer)
 {
-	std::vector<qreal> vertices, colors;
-	std::vector<int> indices;
+
     QColor clr = attr->value2color(value);
     if (clr.alphaF() == 1) {
 
         if (!_buffer.loadTriangulation()) {
-            _polygonsetter->getVertices(feature, vertices, indices);
+            const auto& geometry = feature->geometry();
+            int n = (int)geometry->getNumGeometries();
+            for (int geom = 0; geom < n; ++geom) {
+                std::vector<qreal> vertices, colors;
+                std::vector<int> indices;
 
-            colors.resize(vertices.size(),0.0);
-            
-            _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), 0, colors);
-            currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+                const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
+                if (!subgeom)
+                    continue;
+                _polygonsetter->getVertices(subgeom, vertices, indices);
+
+                colors.resize(vertices.size());
+
+                _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), 0, colors);
+                currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+            }
         }
     }
 }
