@@ -50,7 +50,8 @@ public:
     Q_INVOKABLE void selectColumn(quint32 index, bool yesno);
     Q_INVOKABLE void update();
     Q_INVOKABLE bool isNumericalColumn(int index) const;
-    void updateColumns();
+	Q_INVOKABLE void store(const QString &container, const QString &name);
+	void updateColumns();
 
     ~TableModel();
 

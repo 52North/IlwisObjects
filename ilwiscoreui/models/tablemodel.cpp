@@ -6,6 +6,8 @@
 #include "tablemodel.h"
 #include "columnmodel.h"
 #include "abstractfactory.h"
+#include "oshelper.h"
+#include "iooptions.h"
 #include "../tableoperations/tableoperation.h"
 #include "../tableoperations/tableoperationfactory.h"
 #include "mastercatalog.h"
@@ -216,6 +218,40 @@ void TableModel::selectColumn(quint32 index, bool yesno)
     if ( index < _columns.size())    {
         _columns[index]->selected(yesno);
     }
+}
+
+void TableModel::store(const QString& container, const QString& name)
+{
+	IOOptions options;
+	options << IOOptions::Option("savemode", "tableonly");
+
+	if (container == "" && name == "") {
+		_table->store(options);
+	}
+	else if (container == "" && name != "") {
+		_table->name(name);
+		_table->store(options);
+	}
+	else if (OSHelper::neutralizeFileName(container) == OSHelper::neutralizeFileName(_table->resource().container().toString())) {
+		if (name == "") {
+			_table->store(options);
+		}
+		else {
+			_table->name(name);
+			_table->store(options);
+		}
+	}
+	else {
+		QString cont = container;
+		if (container.indexOf(".ilwis") != 0) { // oops somebody put a file, not a container
+			int index = container.lastIndexOf("/");
+			cont = container.left(index);
+		}
+		QString newName = name == "" ? _table->name() : name;
+		QUrl newUrl = cont + "/" + newName;
+		_table->connectTo(newUrl, "table", "stream", IlwisObject::cmOUTPUT);
+		_table->store(options);
+	}
 }
 
 void TableModel::update()
