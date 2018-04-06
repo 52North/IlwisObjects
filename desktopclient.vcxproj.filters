@@ -1128,6 +1128,9 @@
     <None Include="desktopclient\qml\workbench\creators\CreateChart.qml">
       <Filter>Distribution Files\qml\workbench\creators</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\table\TableTools.qml">
+      <Filter>Distribution Files\qml\datapanel\table</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
