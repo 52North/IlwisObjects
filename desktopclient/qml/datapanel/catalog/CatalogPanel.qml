@@ -47,7 +47,7 @@ Item {
                     newTab = datapanesplit.changePanel(filter, "catalog",resource.url)
                 }else { // object as 'real' data case
                     filter = "itemid=" + resource.id
-                    // try to find a suitable data pane for it
+                    // try to find a suitable data pane for it 
                     if ( newTab && resource.typeName.indexOf("coverage")!== -1){
                         newTab.item.addDataSource(filter,resource.name,resource.typeName)
                     }else {
@@ -67,12 +67,11 @@ Item {
     function addDataSource(filter, sourceName, sourceType){
         var url = sourceName
         if ( currentCatalog)
-            currentCatalog.makeParent(0) // begone though evil creature
+            currentCatalog.makeParent(0) 
 
         currentCatalog = mastercatalog.newCatalog(url,filter)
         if ( currentCatalog){
             currentCatalog.makeParent(catalogViews)
-            mastercatalog.currentCatalog = currentCatalog
             createParameters = [filter, sourceName, sourceType]
             mastercatalog.add2history(url);
             return currentCatalog.id

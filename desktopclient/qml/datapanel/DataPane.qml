@@ -88,7 +88,6 @@ Rectangle {
                     if ( newPanel){
                         var component = Qt.createComponent(newPanel.componentUrl)
                         if (component.status === Component.Ready){
-                            mastercatalog.currentUrl = url
                             var data= newPanel.displayName
                             insertetTab = tabview.insertTab(tabview.currentIndex, data, component)
                             insertetTab.active = true

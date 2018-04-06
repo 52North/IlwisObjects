@@ -469,7 +469,15 @@ bool MasterCatalogModel::hasSelectedObjects() const
     return _selectedObjects.size() != 0;
 }
 
-
+void MasterCatalogModel::setCurrentUrl(const QString &url)
+{
+    _currentUrl = url;
+    ICatalog catalog(url);
+    if (catalog.isValid()) {
+        context()->setWorkingCatalog(catalog);
+    }
+    mastercatalog()->addContainer(QUrl(url));
+}
 
 CatalogModel *MasterCatalogModel::newCatalog(const QString &inpath, const QString& filter)
 {
@@ -514,7 +522,9 @@ CatalogModel *MasterCatalogModel::newCatalog(const QString &inpath, const QStrin
                 model->filter(name,newfilter);
             }
         }
-
+        _currentCatalog = model;
+        ICatalog catalog(model->url());
+        context()->setWorkingCatalog(catalog);
         model->scanContainer(true, false);
         emit currentCatalogChanged();
         return model;
@@ -812,15 +822,7 @@ QString MasterCatalogModel::currentUrl() const
     return _currentUrl;
 }
 
-void MasterCatalogModel::setCurrentUrl(const QString &url)
-{
-    _currentUrl = url;
-    ICatalog catalog(url);
-    if ( catalog.isValid()){
-        context()->setWorkingCatalog(catalog);
-    }
-    mastercatalog()->addContainer(QUrl(url));
-}
+
 
 CatalogModel *MasterCatalogModel::currentCatalog() const
 {
