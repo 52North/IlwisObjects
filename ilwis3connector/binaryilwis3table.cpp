@@ -376,7 +376,6 @@ void BinaryIlwis3Table::storeRecord(std::ofstream& output_file, const std::vecto
                     qint32 val = rec[x].value<qint32>() + 1;
                     if ( isNumericalUndef(val) )
                         val = -1;
-                    val = val + 1;
                     output_file.write((char *)&val, 4);
                 }
                 else if ( conv.storeType() != itDOUBLE)    {
