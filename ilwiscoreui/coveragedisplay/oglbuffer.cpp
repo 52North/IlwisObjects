@@ -27,20 +27,22 @@ void OGLBuffer::addPoints(const std::vector<qreal>& positions, const std::vector
 
 void OGLBuffer::changeColor(quint64 fid, const QColor& clr) {
 	auto iter = _features.find(fid);
-	if (iter != _features.end()) {
-		FeatureMarker marker = (*iter).second;
-		quint32 start = marker._start;
-		quint32 count = 0;
-		for (int chunkIdx = marker._firstChunk; count < marker._count && chunkIdx < _buffers.size(); ++chunkIdx) {
-			OGLBufferChunck& buffer = _buffers[chunkIdx];
-			for (int i = start; count < marker._count && i < buffer._colors.size(); i+=3) {
-				buffer._colors[i] = clr.redF();
-				buffer._colors[i+1] = clr.greenF();
-				buffer._colors[i+2] = clr.blueF();
-				count +=3;
-			}
-			start = 0;
-		}
+    if (iter != _features.end()) {
+        std::vector<FeatureMarker> markers = (*iter).second;
+        for (FeatureMarker marker : markers) {
+            quint32 start = marker._start;
+            quint32 count = 0;
+            for (int chunkIdx = marker._firstChunk; count < marker._count && chunkIdx < _buffers.size(); ++chunkIdx) {
+                OGLBufferChunck& buffer = _buffers[chunkIdx];
+                for (int i = start; count < marker._count && i < buffer._colors.size(); i += 3) {
+                    buffer._colors[i] = clr.redF();
+                    buffer._colors[i + 1] = clr.greenF();
+                    buffer._colors[i + 2] = clr.blueF();
+                    count += 3;
+                }
+                start = 0;
+            }
+        }
 	}
 }
 int OGLBuffer::addObject(int currentBuffer, const std::vector<qreal>& positions, const std::vector<int>& indices, const std::vector<qreal>& colors,IlwisTypes type, quint64 fid)
@@ -63,7 +65,7 @@ int OGLBuffer::addObject(int currentBuffer, const std::vector<qreal>& positions,
 	buffer._vertices.resize(buffer._vertices.size() + positions.size());
 	std::copy(positions.begin(), positions.end(), buffer._vertices.begin() + currentPositionSize);
 	marker._count = positions.size();
-	_features[fid] = marker;
+	_features[fid] .push_back(marker);
 
 	int currentColorSize = buffer._colors.size();
 	buffer._colors.resize(buffer._colors.size() + colors.size());
@@ -97,7 +99,7 @@ int OGLBuffer::bufferCount() const
 
 void OGLBuffer::clear() {
     _buffers = std::vector<OGLBufferChunck>();
-    _features = std::unordered_map<quint64, FeatureMarker>();
+    _features = std::unordered_map<quint64, std::vector<FeatureMarker>>();
     _triangulationLoaded = false;
     _currentActiveBuffer = 0;
 

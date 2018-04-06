@@ -34,7 +34,7 @@ public:
 private:
 
 	std::vector<OGLBufferChunck> _buffers;
-	std::unordered_map<quint64, FeatureMarker> _features;
+	std::unordered_map<quint64, std::vector<FeatureMarker>> _features;
 	const int MAX_INDICES_BUFFER = 0xffff;
 	int _currentActiveBuffer = 0;
     bool _triangulationLoaded = false;
