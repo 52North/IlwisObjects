@@ -57,14 +57,24 @@ Item {
             return table.id
         }
     }
+
+	TableTools {
+		id: tableToolbar
+		z: 10
+	}
+
     SplitView {
-        anchors.fill: parent
+//        anchors.fill: parent
+	    anchors.top:tableToolbar
+		anchors.left: parent.left
+		anchors.right: parent.right
+		anchors.bottom: parent.bottom
         orientation: Qt.Vertical
-        height : parent.height
+        height : parent.height - tableToolbar.height
         TableView {
             id : tableView
             width : parent.width
-            height : parent.height - 270
+            height : parent.height - 270 - tableToolbar.height
             selectionMode : SelectionMode.ExtendedSelection
 
             headerDelegate : ColumnHeader{}
@@ -81,14 +91,14 @@ Item {
 
                     PropertyChanges {
                         target: tableView
-                        height : parent.height - 270
+                        height : parent.height - 270 - tableToolbar.height
                     }
                 },
                 State {
                     name : "invisible"
                     PropertyChanges {
                         target: tableView
-                        height : parent.height  - 24
+                        height : parent.height  - 24 - tableToolbar.height
                     }
                 }
 
