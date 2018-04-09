@@ -220,6 +220,7 @@ bool CatalogConnector::loadDataThreaded(IlwisObject *obj, const IOOptions &optio
     _binaryIsLoaded = true; //  preventing any subsequent scans
     kernel()->issues()->log(QString(TR("Scanning %1")).arg(source().url(true).toString()),IssueObject::itMessage);
     QVector<std::pair<CatalogExplorer *, IOOptions>> explorers;
+
     for(const auto& explorer : _dataProviders){
         QVariant var;
         var.setValue(context()->workingCatalog());
@@ -251,7 +252,8 @@ bool CatalogConnector::loadDataThreaded(IlwisObject *obj, const IOOptions &optio
     if ( updateableItems.size() > 0)
         mastercatalog()->updateItems(updateableItems);
 
-    auto addedItems = mastercatalog()->addContainerContent(source().url().toString(), items);
+    auto &addedItems = items;
+    //auto addedItems = mastercatalog()->addContainerContent(source().url().toString(), items);
     if ( addedItems.size() > 0){
         CalcLatLon::calculatelatLonEnvelopes(addedItems, addedItems[0].container(true).url());
         mastercatalog()->updateItems(addedItems);
