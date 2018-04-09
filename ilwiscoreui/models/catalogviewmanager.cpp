@@ -73,6 +73,7 @@ void CatalogViewManager::registerCatalogModel(CatalogModel *model)
             CatalogViewManager::_catalogViewManager->_timer->start(1500);
         }
         _catalogViews.insert(std::pair<CatalogModel *, bool>(model, false));
+        model->connect(mastercatalog(), &MasterCatalog::contentChanged, model, &CatalogModel::contentChanged2);
     }
 }
 
