@@ -32,7 +32,7 @@ FocusScope {
                     z : 100
                 }
 
-                model : currentCatalog.resources ? currentCatalog.resources : null
+                model : currentCatalog ? currentCatalog.resources : null
                 width : parent.width
                 height : parent.height
 
