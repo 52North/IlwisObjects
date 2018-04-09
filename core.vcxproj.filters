@@ -1777,6 +1777,12 @@
     <ClCompile Include="core\ilwisobjects\representation\shapelookup.cpp">
       <Filter>Source Files\ilwisobjects\representation</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_catalogexplorer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogexplorer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\geos\include\geos\index\strtree\AbstractNode.h">
@@ -2754,9 +2760,6 @@
     <ClInclude Include="core\catalog\catalogconnector.h">
       <Filter>Header Files\catalog</Filter>
     </ClInclude>
-    <ClInclude Include="core\catalog\catalogexplorer.h">
-      <Filter>Header Files\catalog</Filter>
-    </ClInclude>
     <CustomBuild Include="core\catalog\catalogexplorerworker.h">
       <Filter>Header Files\catalog</Filter>
     </CustomBuild>
@@ -3364,6 +3367,9 @@
     </CustomBuild>
     <CustomBuild Include="core\ilwisobjects\ilwisobject.h">
       <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="core\catalog\catalogexplorer.h">
+      <Filter>Header Files\catalog</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
