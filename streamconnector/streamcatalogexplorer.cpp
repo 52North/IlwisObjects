@@ -136,15 +136,7 @@ std::vector<Resource> StreamCatalogExplorer::loadItems(const IOOptions &)
             }
         }
     }
-//    for(auto& item : items){
-//        IWorkflow wf;
-//        if(item.ilwisType() == itWORKFLOW && wf.prepare(item)){
-//           wf->createMetadata();
-//           Resource res = wf->resource();
-//           res.code(item.code());
-//           item = res;
-//        }
-//    }
+    mastercatalog()->addItems(items);
     return items;
 
 }

@@ -207,6 +207,7 @@ std::vector<Resource> PostgresqlCatalogExplorer::loadItems(const IOOptions &opti
             resources.push_back(database);
         }
     }
+    mastercatalog()->addItems(resources);
     return resources;
 }
 

@@ -110,6 +110,7 @@ std::vector<Resource> GdalCatalogExplorer::loadItems(const IOOptions &)
 
         if (items.size() > 0)
             kernel()->issues()->log(QString(TR("Added %1 objects through the gdal connector")).arg( items.size()),IssueObject::itMessage);
+        mastercatalog()->addItems(items);
         return items;
     } catch(const ErrorObject& err){
         kernel()->issues()->silent(false);
