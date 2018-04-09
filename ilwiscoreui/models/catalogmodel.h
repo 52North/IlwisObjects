@@ -81,6 +81,7 @@ private:
     bool _isScanned;
     bool _initNode;
     int _level;
+    mutable std::recursive_mutex _guard;
     QStringList objectCounts();
     void fillSpatialFilter();
     void fillObjectFilter();
@@ -91,6 +92,7 @@ private:
 	bool isFileBased() const;
 
 public slots:
+    void contentChanged2(const UrlSet& locs);
      void containerContentChanged();
 signals:
     void selectionChanged();

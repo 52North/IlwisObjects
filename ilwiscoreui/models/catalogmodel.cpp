@@ -132,6 +132,8 @@ int CatalogModel::level() const
 QQmlListProperty<ResourceModel> CatalogModel::resources() {
 
     try{
+        Locker<std::recursive_mutex> lock(_guard);
+
         gatherItems();
 
         _objectCounts.clear();
@@ -162,6 +164,8 @@ QQmlListProperty<ResourceModel> CatalogModel::resources() {
 
 QQmlListProperty<ResourceModel> CatalogModel::coverages()
 {
+    Locker<std::recursive_mutex> lock(_guard);
+
     _coverages.clear();
     auto& itemlist = _view.filterCount() == 1 ? _allItems : _filteredItems;
     for(auto *resource : itemlist){
@@ -252,12 +256,14 @@ void CatalogModel::makeParent(QObject *obj)
 }
 
 void CatalogModel::filterChanged(const QString& typeIndication, bool state){
+    Locker<std::recursive_mutex> lock(_guard);
     _view.filterChanged(typeIndication, state);
     emit contentChanged();
 }
 
 void CatalogModel::filter(const QString &name, const QString &filter)
 {
+    Locker<std::recursive_mutex> lock(_guard);
     _view.filter(name, filter);
     emit contentChanged();
     emit coveragesChanged();
@@ -265,6 +271,7 @@ void CatalogModel::filter(const QString &name, const QString &filter)
 
 void CatalogModel::addActiveFilter(const QString &filterName)
 {
+    Locker<std::recursive_mutex> lock(_guard);
     _view.addActiveFilter(filterName);
     emit contentChanged();
     emit coveragesChanged();
@@ -272,6 +279,7 @@ void CatalogModel::addActiveFilter(const QString &filterName)
 
 void CatalogModel::removeActiveFilter(const QString &filterName)
 {
+    Locker<std::recursive_mutex> lock(_guard);
     if ( _view.removeActiveFilter(filterName)){
         emit contentChanged();
         emit coveragesChanged();
@@ -369,16 +377,16 @@ MasterCatalogModel *CatalogModel::getMasterCatalogModel()
 }
 
 
-//void CatalogModel::updateWorkingCatalog()
-//{
-//     if ( context()->workingCatalog().isValid()){
-//        context()->workingCatalog()->loadData(context()->workingCatalog().ptr())    ;
-//        containerContentChanged();
-//     }
-//}
+void CatalogModel::contentChanged2(const UrlSet& locs) {
+
+    if (context()->initializationFinished()) {
+        containerContentChanged();
+    }
+}
 
 void CatalogModel::containerContentChanged()
 {
+    Locker<std::recursive_mutex> lock(_guard);
     _refresh = true;
     emit contentChanged();
     emit objectCountsChanged();
