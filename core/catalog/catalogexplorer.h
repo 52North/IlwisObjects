@@ -1,10 +1,15 @@
 #ifndef CATALOGEXPLORER_H
 #define CATALOGEXPLORER_H
 
+#include "kernel_global.h"
+#include "kernel.h"
+#include <QObject>
 
 namespace Ilwis {
-class KERNELSHARED_EXPORT CatalogExplorer
+class KERNELSHARED_EXPORT CatalogExplorer : public QObject
 {
+    Q_OBJECT
+
 public:
     enum ExplorerType{etIMPLICIT, etEXPLICIT};
     CatalogExplorer();
