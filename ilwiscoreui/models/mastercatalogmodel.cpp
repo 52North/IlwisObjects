@@ -490,7 +490,7 @@ CatalogModel *MasterCatalogModel::newCatalog(const QString &inpath, const QStrin
         for(auto workspace : _workspaces){
             if ( workspace->url() == inpath){
                 emit currentCatalogChanged();
-                auto wsm = new WorkSpaceModel(*workspace);
+                WorkSpaceModel *wsm = 0; // new WorkSpaceModel(*workspace);
                 return wsm;
             }
         }
