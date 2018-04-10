@@ -149,6 +149,7 @@ public:
      */
     virtual Record& newRecord() = 0;
     virtual void removeRecord(quint32 rec) = 0;
+    virtual void insertRecord(quint32 lowerRec) = 0;
 
     /*!
      * retrieves a record from a table. A record contains all the fields for one row. This method is implemented in the derivatives<br>
