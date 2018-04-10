@@ -20,6 +20,7 @@ class ILWISCOREUISHARED_EXPORT TableModel : public QAbstractTableModel
 
     Q_PROPERTY(int columnCount READ getColumnCount NOTIFY columnCountChanged)
     Q_PROPERTY(int recordCount READ recordCount NOTIFY recordCountChanged)
+    Q_PROPERTY(bool fixedRecordCount READ fixedRecordCount CONSTANT)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ColumnModel> columns READ columns NOTIFY columnsChanged)
     Q_PROPERTY(QString url READ url CONSTANT)
     Q_PROPERTY(QString  id READ id CONSTANT)
@@ -51,6 +52,10 @@ public:
     Q_INVOKABLE void update();
     Q_INVOKABLE bool isNumericalColumn(int index) const;
 	Q_INVOKABLE void store(const QString &container, const QString &name);
+    Q_INVOKABLE void addRecord(int n);
+    Q_INVOKABLE void removeRecord(int recNr);
+    Q_INVOKABLE void insertRecord(int lowerRecord);
+
 	void updateColumns();
 
     ~TableModel();
@@ -64,6 +69,7 @@ signals:
 
 private:
     QQmlListProperty<ColumnModel> columns();
+    bool fixedRecordCount() const;
     void setColumns();
     Ilwis::ITable _table;
     QList<ColumnModel *> _columns;

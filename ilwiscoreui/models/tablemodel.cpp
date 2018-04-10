@@ -254,6 +254,33 @@ void TableModel::store(const QString& container, const QString& name)
 	}
 }
 
+void Ilwis::Ui::TableModel::addRecord(int n)
+{
+    if (_table.isValid() && _table->ilwisType() != itATTRIBUTETABLE) {
+        for(int i=0; i < n; ++i)
+            _table->newRecord();
+        emit dataChanged(index(rowCount() -2, 0), index(rowCount() - 1, getColumnCount() - 1));
+        emit layoutChanged();
+    }
+}
+
+void TableModel::removeRecord(int recNr)
+{
+    if (_table.isValid() && _table->ilwisType() != itATTRIBUTETABLE && recNr < rowCount() && recNr >= 0) {
+         _table->removeRecord(recNr);
+         emit dataChanged(index(recNr - 2, 0), index(recNr, getColumnCount() - 1));
+         emit layoutChanged();
+    }
+}
+
+void TableModel::insertRecord(int lowerRecord) {
+    if (_table.isValid() && _table->ilwisType() != itATTRIBUTETABLE && lowerRecord < rowCount() && lowerRecord >= 0) {
+         _table->insertRecord(lowerRecord);
+         emit dataChanged(index(lowerRecord - 2, 0), index(lowerRecord, getColumnCount() - 1));
+         emit layoutChanged();
+    }
+}
+
 void TableModel::update()
 {
     QModelIndex topLeft = index(0, 0);
@@ -286,6 +313,11 @@ TableModel::~TableModel()
 QQmlListProperty<ColumnModel> TableModel::columns()
 {
     return QQmlListProperty<ColumnModel>(this, _columns) ;
+}
+
+bool TableModel::fixedRecordCount() const
+{
+    return _table.isValid() && _table->ilwisType() == itATTRIBUTETABLE;
 }
 
 QQmlListProperty<Ilwis::Ui::TableOperation> TableModel::operations()
