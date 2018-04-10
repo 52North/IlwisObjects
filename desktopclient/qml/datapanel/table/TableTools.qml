@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
+import OperationCatalogModel 1.0
 import "../../controls" as Controls
 
 ToolBar {
@@ -19,13 +20,6 @@ ToolBar {
         spacing : 3
         id : editingtools
 
-/*        Loader {
-            id : butLoader
-            source : workflowOnly ? "" : "../GenericTools.qml"
-            height : buttonSize
-            width : workflowOnly ? 0 : 60
-        }*/
-
         Controls.ToolButton{
             height : buttonSize
             width : buttonSize
@@ -34,15 +28,9 @@ ToolBar {
 
             onClicked: {
 			console.log("Saving table");
-//                workflowView.storeRangeDefinitions()
                 var url = mastercatalog.currentCatalog.url;
-				console.log("master="+url);
-				console.log("table="+table)
-				console.log("table_url="+table.url);
-//				console.log("model="+model.rawUrl);
                 if ( url.indexOf("file://") !== 0) {
                     url = table.url;
-				console.log("table="+url);
                     if(url.indexOf("file://") !== 0)
                         return;
                 }
@@ -58,6 +46,42 @@ ToolBar {
 			console.log("Table save as")
 //                workflowView.storeRangeDefinitions()
 //                workarea.dropSaveBox(x)
+            }
+        }
+
+       Controls.ToolButton{
+            height : buttonSize
+            width : buttonSize
+            iconSource: iconsource("plus20.png")
+            tooltip: qsTr("Adds a new record to the end of the records")
+            onClicked: {
+                table.addRecord(1)
+            }
+            visible : table ? !table.fixedRecordCount : false
+            enabled : visible
+        }
+
+       Controls.ToolButton{
+            height : buttonSize
+            width : buttonSize
+            iconSource: iconsource("minus20.png")
+            tooltip: qsTr("deletes the selected record/row")
+            visible : table ? !table.fixedRecordCount : false
+            enabled : visible
+            onClicked: {
+                table.removeRecord(tableView.currentRow)
+            }
+        }
+
+       Controls.ToolButton{
+            height : buttonSize
+            width : buttonSize
+            iconSource: iconsource("insert20.png")
+            tooltip: qsTr("inserts a record above the selected record")
+            visible : table ? !table.fixedRecordCount : false
+            enabled : visible
+            onClicked: {
+                table.insertRecord(tableView.currentRow)
             }
         }
     }
