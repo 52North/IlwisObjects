@@ -289,4 +289,9 @@ void AttributeTable::columndefinition(const ColumnDefinition &)
     WARN2(ERR_OPERATION_NOTSUPPORTED2,TR("setting column definitions"), TR("attributes"));
 }
 
+void AttributeTable::insertRecord(quint32 lowerRec)
+{
+    WARN2(ERR_OPERATION_NOTSUPPORTED2, TR("inserting records"), TR("attributes"));
+}
+
 

@@ -23,6 +23,7 @@ public:
     quint32 recordCount() const;
     quint32 columnCount() const;
     void recordCount(quint32 r);
+    void insertRecord(quint32 lowerRec);
 
     bool createTable();
     bool addColumn(const QString &name, const IDomain &domain, const bool readonly=false);
