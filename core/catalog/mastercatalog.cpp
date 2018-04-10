@@ -210,8 +210,10 @@ void MasterCatalog::addContainerException(const QString &scheme)
 
 bool MasterCatalog::removeItems(const std::vector<Resource> &items){
     Locker<std::recursive_mutex> lock(_guard);
+    UrlSet containers;
 
     for(const Resource &resource : items) {
+        containers.insert(resource.url());
         auto iter = _knownHashes.find(Ilwis::qHash(resource));
         if ( iter != _knownHashes.end()) {
             _knownHashes.erase(iter);
@@ -228,6 +230,8 @@ bool MasterCatalog::removeItems(const std::vector<Resource> &items){
             return false;
         }
     }
+
+    emit contentChanged(containers);
 
     return true;
 }
