@@ -55,7 +55,29 @@ void FlatTable::removeRecord(quint32 rec)
 {
     if ( rec < recordCount()){
         _datagrid.erase(_datagrid.begin() + rec);
+        BaseTable::removeRecord(rec);
     }
+}
+
+void FlatTable::insertRecord(quint32 lowerRec)
+{
+    if (!const_cast<FlatTable *>(this)->initLoad()) {
+        throw ErrorObject(QString(TR("could not load %1")).arg(name()));
+    }
+
+    if (isReadOnly()) {
+        return;
+    }
+
+    changed(true);
+    if (lowerRec < _datagrid.size()) {
+        _datagrid.insert( _datagrid.begin() + lowerRec, std::vector<QVariant>(_attributeDefinition.definitionCount()));
+        recordCount(std::max(recordCount(), (quint32)_datagrid.size()));
+        std::vector<QVariant> values;
+        initRecord(values);
+        record(lowerRec, values);
+    }
+ 
 }
 
 bool FlatTable::prepare(const IOOptions& options)
