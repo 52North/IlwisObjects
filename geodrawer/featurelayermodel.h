@@ -5,6 +5,7 @@
 #include "ilwiscoreui_global.h"
 
 #include <QColor>
+#include <QVariant>
 #include <QVector3D>
 
 
@@ -59,6 +60,7 @@ public:
     QString value2string(const QVariant &value, const QString &attrName) const;
 	bool prepare(int);
     int numberOfBuffers(const QString&) const;
+    QVariantList linkProperties() const;
 
     static LayerModel *create(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&);
 
