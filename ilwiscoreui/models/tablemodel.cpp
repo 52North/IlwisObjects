@@ -8,6 +8,7 @@
 #include "abstractfactory.h"
 #include "oshelper.h"
 #include "iooptions.h"
+#include "modelregistry.h"
 #include "../tableoperations/tableoperation.h"
 #include "../tableoperations/tableoperationfactory.h"
 #include "mastercatalog.h"
@@ -18,6 +19,11 @@ using namespace Ui;
 TableModel::TableModel()
 {
 
+}
+
+TableModel::~TableModel()
+{
+    modelregistry()->unRegisterModel(modelId());
 }
 
 void TableModel::setColumns()
@@ -41,6 +47,8 @@ TableModel::TableModel(const Ilwis::ITable& tbl, QObject *parent) : QAbstractTab
         _operations = factory->selectedOperations(this, parameters);
         for(auto iter = _operations.begin(); iter != _operations.end(); ++iter)
             (*iter)->setParent(this);
+        _modelId = modelregistry()->newModelId();
+        modelregistry()->registerModel(modelId(), "table", this);
     }
 }
 TableModel::TableModel(const Ilwis::Resource &resource, QObject *parent): QAbstractTableModel(parent)
@@ -55,6 +63,8 @@ TableModel::TableModel(const Ilwis::Resource &resource, QObject *parent): QAbstr
             _operations = factory->selectedOperations(this, parameters);
             for(auto iter = _operations.begin(); iter != _operations.end(); ++iter)
                 (*iter)->setParent(this);
+            _modelId = modelregistry()->newModelId();
+            modelregistry()->registerModel(modelId(), "table", this);
         }
 
     }
@@ -191,6 +201,22 @@ QString TableModel::id() const
     return "";
 }
 
+quint32 TableModel::modelId() const
+{
+    return _modelId;
+}
+
+QVariantList TableModel::linkProperties() const
+{
+    QVariantList result;
+    QVariantMap mp;
+    mp["name"] = "record";
+    mp["modelid"] = modelId();
+    result.push_back(mp);
+
+    return result;
+}
+
 QString TableModel::roleName(int index) const
 {
     if ( index >= 0 && index < _columns.size())
@@ -305,10 +331,7 @@ void TableModel::updateColumns()
     update();
 }
 
-TableModel::~TableModel()
-{
 
-}
 
 QQmlListProperty<ColumnModel> TableModel::columns()
 {
@@ -323,4 +346,16 @@ bool TableModel::fixedRecordCount() const
 QQmlListProperty<Ilwis::Ui::TableOperation> TableModel::operations()
 {
     return QQmlListProperty<Ilwis::Ui::TableOperation>(this, _operations);
+}
+
+bool Ilwis::Ui::TableModel::supportsLinkType(const QString& type) const
+{
+    return type ==  "selectionbyraw" ;
+}
+
+void TableModel::linkAcceptMessage(const QVariantMap& parameters) {
+}
+
+void TableModel::linkMessage(const QVariantMap& parms) {
+    emit linkSendMessage(parms);
 }

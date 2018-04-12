@@ -28,8 +28,24 @@ class ILWISCOREUISHARED_EXPORT TableModel : public QAbstractTableModel
 
 public:
     TableModel();
+    ~TableModel();
     TableModel(const Ilwis::Resource& resource, QObject * parent);
     TableModel(const Ilwis::ITable &tbl, QObject *parent);
+
+
+    Q_INVOKABLE QString roleName(int index) const;
+    Q_INVOKABLE int defaultWidth(int index) const;
+    Q_INVOKABLE bool isColumnSelected(quint32 index) const;
+    Q_INVOKABLE void selectColumn(quint32 index, bool yesno);
+    Q_INVOKABLE void update();
+    Q_INVOKABLE bool isNumericalColumn(int index) const;
+    Q_INVOKABLE void store(const QString &container, const QString &name);
+    Q_INVOKABLE void addRecord(int n);
+    Q_INVOKABLE void removeRecord(int recNr);
+    Q_INVOKABLE void insertRecord(int lowerRecord);
+    Q_INVOKABLE quint32 modelId() const;
+    Q_INVOKABLE void linkMessage(const QVariantMap& parms);
+
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     int recordCount() const;
@@ -45,27 +61,24 @@ public:
     QString url() const;
     QString id() const;
 
-    Q_INVOKABLE QString roleName(int index) const;
-    Q_INVOKABLE int defaultWidth(int index) const;
-    Q_INVOKABLE bool isColumnSelected(quint32 index) const;
-    Q_INVOKABLE void selectColumn(quint32 index, bool yesno);
-    Q_INVOKABLE void update();
-    Q_INVOKABLE bool isNumericalColumn(int index) const;
-	Q_INVOKABLE void store(const QString &container, const QString &name);
-    Q_INVOKABLE void addRecord(int n);
-    Q_INVOKABLE void removeRecord(int recNr);
-    Q_INVOKABLE void insertRecord(int lowerRecord);
+    virtual QVariantList linkProperties() const;
+
 
 	void updateColumns();
 
-    ~TableModel();
-
     QQmlListProperty<Ilwis::Ui::TableOperation> operations();
+    bool supportsLinkType(const QString& type) const;
+
+public slots:
+    void linkAcceptMessage(const QVariantMap& parameters);
+
 signals:
   void columnCountChanged();
   void recordCountChanged();
   void columnsChanged();
   void operationsChanged();
+  void linkSendMessage(const QVariantMap& parameters);
+
 
 private:
     QQmlListProperty<ColumnModel> columns();
@@ -75,6 +88,7 @@ private:
     QList<ColumnModel *> _columns;
     std::vector<quint32> _order;
      QList<Ilwis::Ui::TableOperation *> _operations;
+     quint32 _modelId;
 };
 }
 }
