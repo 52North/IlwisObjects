@@ -71,11 +71,18 @@ Item {
 		anchors.bottom: parent.bottom
         orientation: Qt.Vertical
         height : parent.height - tableToolbar.height
+
+
         TableView {
             id : tableView
             width : parent.width
             height : parent.height - 270 - tableToolbar.height
             selectionMode : SelectionMode.ExtendedSelection
+
+        onCurrentRowChanged : {
+            var parms = {sourceid : table.modelId(), record : currentRow}
+            table.linkMessage(parms)
+        }
 
             headerDelegate : ColumnHeader{}
 
