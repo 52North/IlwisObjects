@@ -210,6 +210,18 @@ int FeatureLayerModel::numberOfBuffers(const QString&) const {
     return 0;
 }
 
+QVariantList FeatureLayerModel::linkProperties() const
+{
+    QVariantList result;
+    QVariantMap mp;
+    mp["name"] = "record";
+    mp["modelid"] = modelId();
+    mp["method"] = "selectionbyraw";
+    result.push_back(mp);
+
+    return result;
+}
+
 
 
 
