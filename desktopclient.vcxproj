@@ -385,6 +385,7 @@
     <None Include="desktopclient\qml\datapanel\table\ColumnOperationList.qml" />
     <None Include="desktopclient\qml\datapanel\table\ConvertColumn.qml" />
     <None Include="desktopclient\qml\datapanel\table\FirstColumn.qml" />
+    <None Include="desktopclient\qml\datapanel\table\LinkTable.qml" />
     <None Include="desktopclient\qml\datapanel\table\NormalCell.qml" />
     <None Include="desktopclient\qml\datapanel\table\SortColumn.qml" />
     <None Include="desktopclient\qml\datapanel\table\TableColumn.qml" />

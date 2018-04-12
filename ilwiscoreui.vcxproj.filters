@@ -75,6 +75,12 @@
     <Filter Include="Header Files\spatialdrawing\editors">
       <UniqueIdentifier>{0e1429f9-a236-4fae-91e4-51eb913023be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ilwisobjects\tableoperations">
+      <UniqueIdentifier>{8a2dde25-b82e-41c1-b744-fdd32dd7dcc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ilwisobjects\tableoperations">
+      <UniqueIdentifier>{3fc6571a-96d6-44cb-89c4-8c16ee753f66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwiscoreui\models\workflow\applicationmodelui.cpp">
@@ -533,9 +539,6 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\visualpropertyeditor.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
-    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.cpp">
-      <Filter>Source Files\spatialdrawing\editors</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\itemrepresentationsetter.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
@@ -599,12 +602,6 @@
     <ClCompile Include="ilwiscoreui\models\tablemodel.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
-    <ClCompile Include="ilwiscoreui\tableoperations\tableoperation.cpp">
-      <Filter>Source Files\ilwisobjects</Filter>
-    </ClCompile>
-    <ClCompile Include="ilwiscoreui\tableoperations\tableoperationfactory.cpp">
-      <Filter>Source Files\ilwisobjects</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\models\ilwisobjectcreatormodel.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
@@ -613,15 +610,6 @@
     </ClCompile>
     <ClCompile Include="ilwiscoreui\models\mastercatalogmodel.cpp">
       <Filter>Source Files\catalog</Filter>
-    </ClCompile>
-    <ClCompile Include="ilwiscoreui\tableoperations\columnvisibility.cpp">
-      <Filter>Source Files\spatialdrawing\editors</Filter>
-    </ClCompile>
-    <ClCompile Include="ilwiscoreui\tableoperations\convertcolumndomain.cpp">
-      <Filter>Source Files\spatialdrawing\editors</Filter>
-    </ClCompile>
-    <ClCompile Include="ilwiscoreui\tableoperations\sortcolumn.cpp">
-      <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
     <ClCompile Include="ilwiscoreui\models\objectcreator.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
@@ -677,6 +665,42 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\compositelayermodel.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\columnvisibility.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\convertcolumndomain.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\tableoperation.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\tableoperationfactory.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\sortcolumn.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\tableoperations\linktable.cpp">
+      <Filter>Source Files\ilwisobjects\tableoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_linktable.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_linktable.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\modelregistry.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_modelregistry.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_modelregistry.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -710,9 +734,6 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\preferencesmodel.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\tableoperations\sortcolumn.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\tabmodel.h">
@@ -790,9 +811,6 @@
     <CustomBuild Include="ilwiscoreui\models\tablemodel.h">
       <Filter>Header Files\ilwisobjects</Filter>
     </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\tableoperations\tableoperation.h">
-      <Filter>Header Files\ilwisobjects</Filter>
-    </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\workflow\analysismodel.h">
       <Filter>Header Files\modeller</Filter>
     </CustomBuild>
@@ -835,15 +853,6 @@
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\backgroundlayereditor.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\tableoperations\columnvisibility.h">
-      <Filter>Header Files\spatialdrawing\editors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.h">
-      <Filter>Header Files\spatialdrawing\editors</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\tableoperations\convertcolumndomain.h">
-      <Filter>Header Files\spatialdrawing\editors</Filter>
-    </CustomBuild>
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\gridpropertyeditor.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
@@ -877,6 +886,27 @@
     <CustomBuild Include="ilwiscoreui\coveragedisplay\compositelayermodel.h">
       <Filter>Header Files\spatialdrawing</Filter>
     </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\columnvisibility.h">
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.h">
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\convertcolumndomain.h">
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\tableoperation.h">
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\sortcolumn.h">
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\tableoperations\linktable.h">
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\modelregistry.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwiscoreui\models\.gitignore">
@@ -900,7 +930,7 @@
       <Filter>Header Files\spatialdrawing</Filter>
     </ClInclude>
     <ClInclude Include="ilwiscoreui\tableoperations\tableoperationfactory.h">
-      <Filter>Header Files\ilwisobjects</Filter>
+      <Filter>Header Files\ilwisobjects\tableoperations</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

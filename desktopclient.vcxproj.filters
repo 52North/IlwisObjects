@@ -1131,6 +1131,9 @@
     <None Include="desktopclient\qml\datapanel\table\TableTools.qml">
       <Filter>Distribution Files\qml\datapanel\table</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\table\LinkTable.qml">
+      <Filter>Distribution Files\qml\datapanel\table</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
