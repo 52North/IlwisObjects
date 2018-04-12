@@ -10,6 +10,7 @@
 #include "attributemodel.h"
 #include "visualattribute.h"
 #include "layerinfoitem.h"
+#include "modelregistry.h"
 #include "coveragelayermodel.h"
 #include "rootlayermodel.h"
 
@@ -34,6 +35,12 @@ CoverageLayerModel::CoverageLayerModel( LayerManager *manager, QStandardItem *pa
 {
 	_layerType = itCOVERAGELAYER;
 	_isDrawable = true;
+ 
+}
+
+Ilwis::Ui::CoverageLayerModel::~CoverageLayerModel()
+{
+    modelregistry()->unRegisterModel(modelId());
 }
 
 QString CoverageLayerModel::activeAttributeName() const
@@ -91,6 +98,7 @@ void CoverageLayerModel::coverage(const ICoverage &cov)
     _coverage = cov;
     if ( _coverage.isValid()){
         _coordConversionNeeded = _coverage->coordinateSystem()->isCompatibleWith(layerManager()->rootLayer()->screenCsy().ptr());
+        modelregistry()->registerModel(modelId(), TypeHelper::type2name(_coverage->ilwisType()), this);
     }
 }
 
@@ -253,5 +261,24 @@ QString CoverageLayerModel::v2s(const ColumnDefinition& coldef, const QVariant& 
     if ( value.toDouble() == rUNDEF)
         return sUNDEF;
     return value.toString();
+}
+
+bool CoverageLayerModel::supportsLinkType(const QString& type) const
+{
+    return  type.toLower() ==  "selectionbyraw";
+}
+
+QVariantList CoverageLayerModel::linkProperties() const
+{
+    QVariantList result;
+    QVariantMap mp;
+    mp["name"] = "feature";
+    mp["modelid"] = modelId();
+    result.push_back(mp);
+    return result;
+}
+
+void CoverageLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
+    qDebug() << "gets message";
 }
 

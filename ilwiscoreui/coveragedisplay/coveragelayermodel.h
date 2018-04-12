@@ -33,6 +33,7 @@ public:
 
 	CoverageLayerModel();
     CoverageLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
+    ~CoverageLayerModel();
 
     QString activeAttributeName() const;
 	void activeAttributeName(const QString& pName);
@@ -52,17 +53,23 @@ public:
     virtual QString value2string(const QVariant& value, const QString& attrName="") const;
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     bool isCoverageBased() const;
+    bool supportsLinkType(const QString& type) const;
+    virtual QVariantList linkProperties() const;
+
+public slots:
+    void linkAcceptMessage(const QVariantMap& parameters);
 
 signals:
     void activeAttributeChanged();
     void vpropertiesChanged();
+    void linkSendMessage(const QVariantMap& parameters);
 
 protected:
     void addVisualAttribute(const QString &attrName, const QString& propertyName, VisualPropertyEditor *newProp);
     bool needsCoordConversion() const;
     QString v2s(const ColumnDefinition &coldef, const QVariant &value) const;
 private:
-    quint32 layerIndex() const;
+    //quint32 layerIndex() const;
     VisualPropertyEditor *visualProperty(const QString& attrName, const QString &propertyName);
     QString ilwisIdPrivate() const;
 
@@ -71,6 +78,7 @@ private:
     bool _coordConversionNeeded = false;
     QString _activeAttribute;
     ICoverage _coverage;
+
 };
 }
 }
