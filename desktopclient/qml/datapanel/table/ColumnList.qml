@@ -53,6 +53,7 @@ Item {
         model : columnmodel
         onModelChanged: {
             columnOperationList.currentColumn = null
+            setCurrentIndex(0)
         }
 
         anchors.topMargin: 4
