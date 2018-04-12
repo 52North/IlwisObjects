@@ -31,11 +31,6 @@ Rectangle {
 	function activateComponent(columnNumber) {
 		var col = table.columns[columnNumber];
 
-		console.log("Domain="+col.attributeDomain)
-		console.log("parent="+parent)
-		console.log("parent2="+parent.parent)
-//		console.log("parent2_model="+parent.parent.model)
-
 		if (editMode) {
 			if (col.attributeDomainType == "Item Domain") {
 				var list = modelFromItems(col.defaultRangeDefinition);
