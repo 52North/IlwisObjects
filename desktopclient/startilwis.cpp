@@ -60,6 +60,7 @@
 #include "analysispattern.h"
 #include "modelbuilder.h"
 #include "modeldesigner.h"
+#include "modelregistry.h"
 #include "workflow/analysismodel.h"
 #include "workflow/conceptmodel.h"
 #include "workflow/applicationmodelui.h"
@@ -141,7 +142,7 @@ void StartIlwis::init() {
         qmlRegisterType<ApplicationModelUI>("ApplicationModel",1,0,"ApplicationModel");
         qmlRegisterType<AnalysisModel>("AnalysisModel",1,0,"AnalysisModel");
         qmlRegisterType<ConceptModel>("ConceptModel",1,0,"ConceptModel");
-		//qmlRegisterType<CoverageLayerModel>("CoverageLayerModel", 1, 0, "CoverageLayerModel");
+		qmlRegisterType<ModelRegistry>("ModelRegistry", 1, 0, "ModelRegistry");
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
         _formbuilder = new ApplicationFormExpressionParser();
@@ -166,6 +167,7 @@ void StartIlwis::init() {
         ctx->setContextProperty("preferences",_preferences);
         ctx->setContextProperty("internaldatabase",_database);
         ctx->setContextProperty("uicontext", uicontext().get());
+        ctx->setContextProperty("models", modelregistry().get());
 
         uicontext()->prepare();
         uicontext()->qmlContext(ctx);
