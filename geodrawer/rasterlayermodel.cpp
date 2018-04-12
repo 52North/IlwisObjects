@@ -125,6 +125,17 @@ bool Ilwis::Ui::RasterLayerModel::usesColorData() const
 	return false;
 }
 
+QVariantList Ilwis::Ui::RasterLayerModel::linkProperties() const
+{
+    QVariantList result;
+    QVariantMap mp;
+    mp["name"] = "stretch";
+    mp["modelid"] = modelId();
+    result.push_back(mp);
+
+    return result;
+}
+
 QVariant RasterLayerModel::vproperty(const QString &attrName) const
 {
     return QVariant();

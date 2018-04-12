@@ -53,6 +53,7 @@ public:
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 	bool usesColorData() const;
+    QVariantList linkProperties() const;
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
     Q_INVOKABLE virtual QVector<qreal> uvs(qint32 bufferIndex) const;
