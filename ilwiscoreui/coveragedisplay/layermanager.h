@@ -33,6 +33,7 @@ typedef std::function<LayerModel *(LayerManager *, QStandardItem *,const QString
 
 class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
 {
+   
     Q_OBJECT
 
     Q_PROPERTY(QStandardItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
@@ -50,6 +51,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
 
 public:
 	enum LayerMovement { lmUP, lmDOWN, lmREMOVE };
+    enum ManagerType { mtMAIN, mtOVERVIEW, mtTHUMB, mtUNKNOWN };
 
     explicit LayerManager();
     LayerManager(QObject *parent, QQuickItem *viewContainer);
@@ -63,6 +65,7 @@ public:
 	Q_INVOKABLE  Ilwis::Ui::LayerModel* findLayer(int nodeid);
     Q_INVOKABLE int nodeid(QModelIndex idx) const;
     Q_INVOKABLE void move(int nodeId, const QModelIndex& targetLocation);
+    Q_INVOKABLE quint32 modelId() const;
 
     RootLayerModel *rootLayer() const;
     
@@ -99,7 +102,11 @@ public:
 	void needUpdate(bool yesno);
 	bool needUpdate() const;
     int nextId();
+    QVariantList linkProperties() const;
+    ManagerType managerType() const;
 
+public slots:
+        void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);
 signals:
     void removeLayer(const Ilwis::Resource& resource);
 	void layerTreeChanged();
@@ -112,6 +119,7 @@ signals:
 	void needUpdateChanged();
     void topLevelLayersChanged();
     void allCoveragesChanged();
+    void linkSendMessage(const QVariantMap& parameters);
 
 private:
     RootLayerModel *_globalLayer = 0;
@@ -123,9 +131,12 @@ private:
 	bool _panningMode = false;
     QString _layerListName = sUNDEF;
     quint32 _viewid = iUNDEF;
+    quint32 _modelId = iUNDEF;
 	QQuickItem *_viewContainer = 0;
 	int _nodeCounter = 0;
     static quint32 _baseViewId;
+    ManagerType _managerType = mtUNKNOWN;
+
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
     QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
@@ -134,6 +145,7 @@ private:
     static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
     QQmlListProperty<LayerModel> childLayersPrivate();
     QQmlListProperty<LayerModel> allCoveragesPrivate();
+
 
 
 

@@ -20,6 +20,7 @@
 #include "compositelayermodel.h"
 #include "rootlayermodel.h"
 #include "coveragelayermodel.h"
+#include "modelregistry.h"
 #include "tree.h"
 
 using namespace Ilwis;
@@ -42,6 +43,9 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
 	 _viewContainer = viewContainer;
      _globalLayer->nodeId(nextId());
      _globalLayer->prepare(0);
+     _modelId = modelregistry()->newModelId();
+     _managerType = (viewContainer && viewContainer->objectName().indexOf("overview_mainui_") != -1) ? LayerManager::mtOVERVIEW : LayerManager::mtMAIN;
+     modelregistry()->registerModel(modelId(), "layermanager", this);
 	 // for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
 	 if (_createLayers.find("compositelayer") == _createLayers.end()) {
 		 //_createLayers["globallayermodel"] = RootLayerModel::create;
@@ -52,6 +56,7 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
 
 LayerManager::~LayerManager()
 {
+    modelregistry()->unRegisterModel(modelId());
 }
 
 bool LayerManager::hasSelectionDrawer() const
@@ -294,6 +299,27 @@ int LayerManager::nextId() {
 	return _nodeCounter++;
 }
 
+quint32 Ilwis::Ui::LayerManager::modelId() const
+{
+    return _modelId;
+}
+
+QVariantList Ilwis::Ui::LayerManager::linkProperties() const
+{
+    QVariantList result;
+    QVariantMap mp;
+    mp["name"] = "zoom";
+    mp["modelid"] = modelId();
+    result.push_back(mp);
+
+    return result;
+}
+
+LayerManager::ManagerType LayerManager::managerType() const
+{
+    return _managerType;
+}
+
 LayerModel *LayerManager::create(QStandardItem *parentLayer, const QString &type, LayerManager *lm, const QString& layername, const QString& description, const IOOptions &options)
 {
     if ( parentLayer == 0)
@@ -401,6 +427,9 @@ void LayerManager::viewArea(QQuickItem *area) {
 QQuickItem * LayerManager::viewArea() const
 {
 	return _viewContainer;
+}
+
+void LayerManager::linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters) {
 }
 
 
