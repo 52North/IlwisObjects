@@ -21,6 +21,7 @@
 #include "tableoperations/convertcolumndomain.h"
 #include "tableoperations/columnvisibility.h"
 #include "tableoperations/tableoperationfactory.h"
+#include "tableoperations/linktable.h"
 #include "dataformat.h"
 #include "oshelper.h"
 #include "visualpropertyeditor.h"
@@ -275,6 +276,7 @@ void UIContextModel::prepare()
     factory->registerTableOperation("sortcolumn",SortColumn::create);
     factory->registerTableOperation("convertcolumndomain",ConvertColumnDomain::create);
     factory->registerTableOperation("columnvisibility",ColumnVisibility::create);
+    factory->registerTableOperation("linktable", LinkTable::create);
     Ilwis::kernel()->addFactory(factory);
     QString rawUrlWorldMap = OSHelper::createFileUrlFromParts(ilwisloc, "/resources/country_boundaries.ilwis");
 
