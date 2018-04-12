@@ -78,6 +78,7 @@ public:
 	Q_INVOKABLE void clearMeshIndexes();
 	Q_INVOKABLE bool isPrepared(quint32 type) const;
     Q_INVOKABLE virtual void setActiveAttribute(int idx);
+    Q_INVOKABLE quint32 modelId() const;
 
 
 	LayerModel();
@@ -132,6 +133,7 @@ public:
     LayerModel * findLayer(int nodeid);
     qint32 nodeId() const;
     void nodeId(qint32 id);
+    
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
@@ -173,6 +175,7 @@ private:
 	bool _geometryChanged = false;
     qint32 _order = iUNDEF;
     qint32 _nodeid = 0;
+    quint32 _modelId = iUNDEF;
 
 	std::set<QString> _changedProperties;
 	bool _isSupportLayer = false;

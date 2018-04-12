@@ -10,6 +10,7 @@
 #include "attributemodel.h"
 #include "visualattribute.h"
 #include "layermodel.h"
+#include "modelregistry.h"
 #include "tree.h"
 
 using namespace Ilwis;
@@ -27,6 +28,7 @@ LayerModel::LayerModel(LayerManager *manager, QStandardItem *parent, const QStri
     }
     else
         setParent(manager);
+    _modelId = modelregistry()->newModelId();
         
 }
 
@@ -577,4 +579,8 @@ bool LayerModel::isSupportLayer() const
 	return _isSupportLayer;
 }
 
+quint32 LayerModel::modelId() const
+{
+    return _modelId;
+}
 
