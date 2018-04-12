@@ -274,5 +274,20 @@ QStringList ChartModel::yAttributes() const
     return lst;
 }
 
+QVariantList Ilwis::Ui::ChartModel::linkProperties() const
+{
+    return QVariantList();
+}
+
+quint32 Ilwis::Ui::ChartModel::modelId() const
+{
+    return iUNDEF;
+}
+
+QString Ilwis::Ui::ChartModel::name() const
+{
+    return sUNDEF;
+}
+
 
 

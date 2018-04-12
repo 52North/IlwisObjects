@@ -31,6 +31,7 @@ public:
     Q_INVOKABLE void setXAxis(int columnIndex);
     Q_INVOKABLE QString xAxis() const;
     Q_INVOKABLE void updateChartWidth(int newWidth);
+    Q_INVOKABLE quint32 modelId() const;
 
     QList<QVariant> xvalues();
     void xvalues(const std::vector<QVariant>& xvalues);
@@ -43,7 +44,10 @@ public:
     void setColumnIndex(int ind);
     QStringList yAttributes() const;
 
+    // these functions must go into a redesign of ChartModel
+    QVariantList linkProperties() const;
 
+    QString name() const;
 
 signals:
     void xvaluesChanged();
