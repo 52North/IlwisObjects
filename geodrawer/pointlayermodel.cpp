@@ -70,7 +70,7 @@ void PointLayerModel::setColors(int start, VisualAttribute *attr, const QVariant
 	_pointsetter->getColors(*attr, value, uicontext()->defaultColor("coveragepoint"), start, _pointColors);
 }
 
-void Ilwis::Ui::PointLayerModel::finish()
+void Ilwis::Ui::PointLayerModel::finish(const std::vector<quint64>&)
 {
 	_buffer.addPoints(_pointVertices, _pointColors);
 	_pointColors = _pointVertices = std::vector<qreal>();

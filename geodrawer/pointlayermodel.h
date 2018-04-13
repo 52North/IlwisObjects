@@ -23,7 +23,7 @@ namespace Ilwis {
 			bool prepare(int prepType);
 			void addFeature(const SPFeatureI& feature,VisualAttribute *attr, const QVariant& value, int& currentBuffer);
 			void setColors(int start, VisualAttribute * attr, const QVariant & value);
-			void finish();
+			void finish(const std::vector<quint64>& ids);
 			Q_INVOKABLE virtual int numberOfBuffers(const QString& dummy) const;
 			Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
 			Q_INVOKABLE virtual QVector<int> indices(qint32 bufferIndex, const QString& ) const;
