@@ -94,10 +94,12 @@ VisualAttribute * Ilwis::Ui::PolygonLayerModel::activeAttribute()
     return 0;
 }
 
-void Ilwis::Ui::PolygonLayerModel::finish()
+void Ilwis::Ui::PolygonLayerModel::finish(const std::vector<quint64>& ids)
 {
-    if ( !_buffer.loadTriangulation()) // if there wasn't a triangulation file
+    if (!_buffer.loadTriangulation()) // if there wasn't a triangulation file
         _buffer.storeTriangulation(coverage()->resource().url());
+    else
+        _buffer.map(ids);
 }
 
 int PolygonLayerModel::numberOfBuffers(const QString& type) const
