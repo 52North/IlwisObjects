@@ -357,5 +357,15 @@ void TableModel::linkAcceptMessage(const QVariantMap& parameters) {
 }
 
 void TableModel::linkMessage(const QVariantMap& parms) {
-    emit linkSendMessage(parms);
+    QVariantMap result;
+    result["tableid"] = _table->id();
+    if (parms.contains("record")) {
+        result["record"] = parms["record"];
+        int recIndex = parms["record"].toInt();
+        QVariantList dataList;
+        std::vector<QVariant> data = _table->record(recIndex);
+        std::copy(data.begin(), data.end(), std::back_inserter(dataList));
+        result["data"] = dataList;
+    }
+    emit linkSendMessage(result);
 }
