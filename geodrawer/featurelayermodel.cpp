@@ -130,12 +130,15 @@ bool FeatureLayerModel::prepare(int prepType)
         }
 	
 		PointLayerModel *points = 0;
+
+        std::vector<quint64> ids;
 		for (const SPFeatureI& feature : _features) {
 			QVariant value = feature(columnIndex);
 			IlwisTypes geomtype = feature->geometryType();
 			if (layers[geomtype]) {
 				auto *vlayer = layers[geomtype];
 				vlayer->addFeature(feature, attr, value, currentBuffer[geomtype]);
+                ids.push_back(feature->featureid());
 				if (geomtype == itPOLYGON) {
 					vlayer = layers[itLINE];
 					vlayer->addFeature(feature, attr, value, currentBuffer[itLINE]);
@@ -146,7 +149,7 @@ bool FeatureLayerModel::prepare(int prepType)
 		}
         for (auto layer : layers) {
             if (layer) {
-                layer->finish();
+                layer->finish(ids);
             }
         }
 
@@ -220,6 +223,17 @@ QVariantList FeatureLayerModel::linkProperties() const
     result.push_back(mp);
 
     return result;
+}
+
+void FeatureLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
+    quint32 rec = parameters["record"].toUInt();
+    SPFeatureI feature = _features->feature(rec);
+    if (feature) {
+        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+            VectorLayerModel *vlayer = static_cast<VectorLayerModel *>(child(layerIndex));
+            vlayer->addSelection(feature->featureid(), true);
+        }
+    }
 }
 
 

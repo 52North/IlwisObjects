@@ -62,9 +62,13 @@ public:
     int numberOfBuffers(const QString&) const;
     QVariantList linkProperties() const;
 
+
     static LayerModel *create(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&);
 
     NEW_LAYERMODEL(FeatureLayerModel);
+
+    public slots:
+        void linkAcceptMessage(const QVariantMap& parameters);
 
 private:
     IFeatureCoverage _features;
