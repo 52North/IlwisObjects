@@ -127,6 +127,16 @@ void OGLBuffer::storeTriangulation(const QUrl & url)
             quint64 check = inf.lastModified().toMSecsSinceEpoch();
             stream << check;
 
+            stream << (quint32)_features.size();
+            for (auto item : _features) {
+                stream << (quint32)item.second.size();
+                for (auto marker : item.second) {
+                    stream << marker._count;
+                    stream << marker._start;
+                    stream << marker._firstChunk;
+                }
+            }
+
             quint32 numberOfBuffers = _buffers.size();
             stream << numberOfBuffers;
             for (const OGLBufferChunck& buf : _buffers) {
@@ -178,6 +188,23 @@ bool OGLBuffer::loadTriangulation(const QUrl & url)
             if (inf.lastModified().toMSecsSinceEpoch() != check)
                 return false;
 
+            quint32 fsz;
+            stream >> fsz;
+            for (int i = 0; i < fsz; ++i) {
+                quint32 isz;
+                stream >> isz;
+                std::vector<FeatureMarker> markers;
+                for (int j = 0; j < isz; ++j) {
+                    quint32 cnt, start, first;
+                    FeatureMarker marker;
+                    stream >> marker._count;
+                    stream >> marker._start;
+                    stream >> marker._firstChunk;
+                    markers.push_back(marker);
+                }
+                _features[i] = markers;
+            }
+
             quint32 numberOfBuffers;
             stream >> numberOfBuffers;
             _buffers.resize(numberOfBuffers);
@@ -215,6 +242,16 @@ bool OGLBuffer::loadTriangulation(const QUrl & url)
 bool OGLBuffer::loadTriangulation() const
 {
     return _triangulationLoaded;
+}
+
+void OGLBuffer::map(const std::vector<quint64>& ids)
+{
+    auto temp = _features;
+    int index = 0;
+    _features.clear();
+    for (const auto& item : temp) {
+        _features[ids[index++]] = item.second;
+    }
 }
 
 

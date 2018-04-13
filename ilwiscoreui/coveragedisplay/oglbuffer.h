@@ -13,7 +13,7 @@ struct ILWISCOREUISHARED_EXPORT OGLBufferChunck {
 struct FeatureMarker {
 	quint32 _start = 0;
 	quint32 _count = 0;
-	int _firstChunk = 0;
+	quint32 _firstChunk = 0;
 };
 
 class ILWISCOREUISHARED_EXPORT OGLBuffer
@@ -30,6 +30,7 @@ public:
     void storeTriangulation(const QUrl & url) ;
     bool loadTriangulation(const QUrl& url);
     bool loadTriangulation() const;
+    void map(const std::vector<quint64>& ids);
 
 private:
 
