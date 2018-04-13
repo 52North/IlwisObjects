@@ -47,7 +47,6 @@ Column {
             height : 20
             width : 100
             onClicked: {
-                console.debug()
                 var paramaters = {sourceid: table.modelId(),targetid : currentModelId, linktype : propertyList.itemModel[propertyList.currentIndex].method}
                 operation.execute(paramaters)
             }
