@@ -57,7 +57,7 @@ public:
     virtual QVariantList linkProperties() const;
 
 public slots:
-    void linkAcceptMessage(const QVariantMap& parameters);
+    virtual void linkAcceptMessage(const QVariantMap& parameters);
 
 signals:
     void activeAttributeChanged();
