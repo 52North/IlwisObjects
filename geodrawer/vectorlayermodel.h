@@ -32,7 +32,8 @@ namespace Ilwis {
             bool isCoverageBased() const;
             virtual void resetBuffer();
             ICoverage coverage() const;
-            virtual void finish();
+            virtual void finish(const std::vector<quint64>& ids);
+            void addSelection(quint64 featureid, bool single);
 
 			void setActiveFeatureColors(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value);
 		signals:
@@ -42,6 +43,7 @@ namespace Ilwis {
 			FeatureLayerModel *_featureLayer;
 			OGLBuffer _buffer;
 			QString _activeAttribute;
+            std::vector<quint64> _selectedFeatures;
 		};
 	}
 }

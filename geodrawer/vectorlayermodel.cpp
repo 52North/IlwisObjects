@@ -106,20 +106,43 @@ ICoverage VectorLayerModel::coverage() const
     return _featureLayer->coverage();
 }
 
-void Ilwis::Ui::VectorLayerModel::finish()
+void Ilwis::Ui::VectorLayerModel::finish(const std::vector<quint64>& ids)
 {
+}
+
+void Ilwis::Ui::VectorLayerModel::addSelection(quint64 featureid, bool single)
+{
+    if (single) {
+        _selectedFeatures = std::vector<quint64>();
+        _selectedFeatures.push_back(featureid);
+    }
+    else {
+        auto iter = std::find(_selectedFeatures.begin(), _selectedFeatures.end(), featureid);
+        if (iter == _selectedFeatures.end()) {
+            _selectedFeatures.push_back(featureid);
+        }
+    }
+    add2ChangedProperties("buffers", true);
 }
 
 void VectorLayerModel::setActiveAttribute(int idx)
 {
-	if (idx < _visualAttributes.size()) {
-		_featureLayer->setActiveAttribute(idx);
-	}
+    if (idx < _visualAttributes.size()) {
+        _featureLayer->setActiveAttribute(idx);
+    }
 }
 
 void VectorLayerModel::setActiveFeatureColors(const SPFeatureI & feature, VisualAttribute *attr, const QVariant & value)
 {
-	QColor clr = attr->value2color(value);
+    QColor clr;
+    if (_selectedFeatures.size() > 0) {
+        auto iter = std::find(_selectedFeatures.begin(), _selectedFeatures.end(), feature->featureid());
+        if (iter != _selectedFeatures.end()) {
+            clr = QColor("red");
+        }else
+            clr = attr->value2color(value);
+    }else
+	    clr = attr->value2color(value);
 	_buffer.changeColor(feature->featureid(), clr);
 }
 
