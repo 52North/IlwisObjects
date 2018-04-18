@@ -226,7 +226,7 @@ QVariantList FeatureLayerModel::linkProperties() const
 }
 
 void FeatureLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
-    quint32 rec = parameters["record"].toUInt();
+    quint32 rec = parameters["identity"].toUInt();
     SPFeatureI feature = _features->feature(rec);
     if (feature) {
         for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
@@ -234,6 +234,26 @@ void FeatureLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
             vlayer->addSelection(feature->featureid(), true);
         }
     }
+}
+
+void FeatureLayerModel::linkMessage(const QVariantMap& parms) {
+    QVariantMap result;
+    if (parms.contains("featureid")) {
+        quint64 fid = parms["featureid"].toULongLong();
+        for (const auto& feature : _features) {
+            if (feature->featureid() == fid) {
+                result["identity"] = fid;
+                break;
+            }
+        }
+        if (result.contains("identity")) {
+            result["ilwisobjectid"] = _features->id();
+            result["index"] = _features->index(_features->id());
+            result["ilwisobjecttype"] = _features->ilwisType();
+            emit linkSendMessage(result);
+        }
+    }
+  
 }
 
 

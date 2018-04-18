@@ -52,6 +52,8 @@ public:
 	FeatureLayerModel();
     FeatureLayerModel( LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
 
+    Q_INVOKABLE void linkMessage(const QVariantMap& parms);
+    
     void coverage(const ICoverage& cov);
 	ICoverage coverage() const;
     QVariant vproperty(const QString& attrName) const ;
