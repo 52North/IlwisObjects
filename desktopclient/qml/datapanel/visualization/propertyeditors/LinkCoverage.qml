@@ -20,18 +20,24 @@ Item {
         x : 5
         property var currentModelId : -1
         property bool needsUpdate : models.needsUpdate
-        spacing : 4
+        spacing : 3
 
         onNeedsUpdateChanged : {
             targetList.itemModel = models.modelList(editor.coverage().ilwisId, "all")
         }
+      Text{
+          width : parent.width
+          height : 16
+          text : qsTr("Target objects")
+          font.bold : true
+      }
 
         Controls.ComboxLabelPair {
             id : targetList
-            labelText :  qsTr("Target objects")
-            labelWidth : 160
+            labelText : ""
+            labelWidth : 0
             role : 'name'
-            width : 400
+            width : parent.width - 5
             height : 20
   
             onCurrentIndexChanged : {
@@ -41,12 +47,18 @@ Item {
             }
         }
 
+      Text{
+          width : parent.width
+          height : 16
+          text : qsTr("Target Linked property")
+          font.bold : true
+      }
       Controls.ComboxLabelPair {
         id : propertyList
-            labelText :  qsTr("Linked Target property")
-            labelWidth : 160
+            labelText :  ""
+            labelWidth : 0
             role : 'name'
-            width : 400
+            width : parent.width - 5
             height : 20
             itemModel : itemColumn.currentModelId != -1 ? models.linkedProperties(itemColumn.currentModelId) : null
 
@@ -59,16 +71,19 @@ Item {
             style : Base.CheckBoxStyle1{}
         }
 
-        Button{
-                text : qsTr("Link");
-                height : 20
-                width : 100
-                anchors.leftMargin : 5
-                onClicked: {
-                    console.debug("aaaaa", propertyList.currentIndex, propertyList.itemModel[propertyList.currentIndex],propertyList.itemModel[propertyList.currentIndex].method)
-                    var parameters = {sourceid: editor.coverage().modelId(),targetid : itemColumn.currentModelId, linktype : propertyList.itemModel[propertyList.currentIndex].method}
-                    editor.setLink(parameters)
+        Item {
+            height : 40
+            width : 100
+            Button{
+                    text : qsTr("Link");
+                    height : 20
+                    width : 100
+                    anchors.verticalCenter : parent.verticalCenter
+                    onClicked: {
+                        var parameters = {sourceid: editor.coverage().modelId(),targetid : itemColumn.currentModelId, linktype : propertyList.itemModel[propertyList.currentIndex].method}
+                        editor.setLink(parameters)
+                    }
                 }
-            }
+           }
        }
 }
