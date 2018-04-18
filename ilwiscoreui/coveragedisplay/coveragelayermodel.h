@@ -30,6 +30,8 @@ public:
 
     Q_INVOKABLE QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> vproperties(const QString& attrName);
 	Q_INVOKABLE void setActiveAttribute(int idx);
+    Q_INVOKABLE virtual void linkMessage(const QVariantMap& parms);
+
 
 	CoverageLayerModel();
     CoverageLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
@@ -55,6 +57,7 @@ public:
     bool isCoverageBased() const;
     bool supportsLinkType(const QString& type) const;
     virtual QVariantList linkProperties() const;
+    void sendLink(const QVariantMap& parameters);
 
 public slots:
     virtual void linkAcceptMessage(const QVariantMap& parameters);

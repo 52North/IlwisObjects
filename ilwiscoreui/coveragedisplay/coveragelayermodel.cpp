@@ -26,6 +26,10 @@ void Ilwis::Ui::CoverageLayerModel::setActiveAttribute(int idx)
 	}
 }
 
+void Ilwis::Ui::CoverageLayerModel::linkMessage(const QVariantMap & parms)
+{
+}
+
 Ilwis::Ui::CoverageLayerModel::CoverageLayerModel() : LayerModel()
 {
 }
@@ -276,6 +280,11 @@ QVariantList CoverageLayerModel::linkProperties() const
     mp["modelid"] = modelId();
     result.push_back(mp);
     return result;
+}
+
+void CoverageLayerModel::sendLink(const QVariantMap & parameters)
+{
+    emit linkSendMessage(parameters);
 }
 
 void CoverageLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
