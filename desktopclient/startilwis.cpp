@@ -142,6 +142,7 @@ void StartIlwis::init() {
         qmlRegisterType<ApplicationModelUI>("ApplicationModel",1,0,"ApplicationModel");
         qmlRegisterType<AnalysisModel>("AnalysisModel",1,0,"AnalysisModel");
         qmlRegisterType<ConceptModel>("ConceptModel",1,0,"ConceptModel");
+        qmlRegisterType<CoverageLayerModel>("CoverageLayerModel", 1, 0, "CoverageLayerModel");
 		qmlRegisterType<ModelRegistry>("ModelRegistry", 1, 0, "ModelRegistry");
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
