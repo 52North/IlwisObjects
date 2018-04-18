@@ -66,6 +66,7 @@ public:
     Q_INVOKABLE int nodeid(QModelIndex idx) const;
     Q_INVOKABLE void move(int nodeId, const QModelIndex& targetLocation);
     Q_INVOKABLE quint32 modelId() const;
+    Q_INVOKABLE void setSelection(const QString &pixelpair);
 
     RootLayerModel *rootLayer() const;
     
@@ -145,10 +146,7 @@ private:
     static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
     QQmlListProperty<LayerModel> childLayersPrivate();
     QQmlListProperty<LayerModel> allCoveragesPrivate();
-
-
-
-
+    void setSelectionPrivate(const Coordinate& crd, LayerModel * layer);
 
 };
 

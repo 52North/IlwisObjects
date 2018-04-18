@@ -304,6 +304,50 @@ quint32 Ilwis::Ui::LayerManager::modelId() const
     return _modelId;
 }
 
+void LayerManager::setSelectionPrivate(const Coordinate& crd, LayerModel * layer) {
+    CoverageLayerModel *coverageLayer = dynamic_cast<CoverageLayerModel *>(layer);
+    if (coverageLayer) {
+        Coordinate coord = crd;
+        if (coverageLayer->coverage()->coordinateSystem() != rootLayer()->screenCsy()) {
+            coord = coverageLayer->coverage()->coordinateSystem()->coord2coord(rootLayer()->screenCsy(), crd);
+        }
+        QVariant var = coverageLayer->coverage()->coord2value(coord);
+        QVariantMap mp = var.toMap();
+        if (!mp.isEmpty()) {
+            bool ok;
+            quint64 featureid = mp[FEATUREIDDCOLUMN].toULongLong(&ok);
+            if (ok) {
+                coverageLayer->addSelection(featureid, true);
+                QVariantMap data;
+                data["identity"] = featureid;
+                data["ilwisobjectid"] = coverageLayer->coverage()->id();
+                data["ilwistype"] = coverageLayer->coverage()->ilwisType();
+                data["index"] = mp["index"].toUInt();
+                coverageLayer->sendLink(data);
+            }
+
+        }
+    }
+    for (int layerIndex = 0; layerIndex < layer->rowCount(); ++layerIndex) {
+        LayerModel *childLayer = static_cast<LayerModel *>(layer->child(layerIndex));
+        setSelectionPrivate(crd, childLayer);
+    }
+}
+void LayerManager::setSelection(const QString & pixelpair)
+{
+    QStringList parts = pixelpair.split("|");
+    if (parts.size() == 2) {
+        Ilwis::Coordinate crd = rootLayer()->screenGrf()->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
+        QStandardItem *root = _tree->invisibleRootItem();
+        for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
+            LayerModel *layer = static_cast<LayerModel *>(root->child(layerIndex));
+            setSelectionPrivate(crd, layer);
+
+        }
+
+    }
+}
+
 QVariantList Ilwis::Ui::LayerManager::linkProperties() const
 {
     QVariantList result;
