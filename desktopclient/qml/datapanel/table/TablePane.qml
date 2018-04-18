@@ -78,11 +78,22 @@ Item {
             width : parent.width
             height : parent.height - 270 - tableToolbar.height
             selectionMode : SelectionMode.ExtendedSelection
+            property int currentSelection : table ? table.currentSelection : -1
 
-        onCurrentRowChanged : {
-            var parms = {sourceid : table.modelId(), record : currentRow}
-            table.linkMessage(parms)
-        }
+            onCurrentSelectionChanged : {
+                if ( currentSelection < rowCount && currentSelection >= 0){
+                    selection.deselect(0, rowCount)
+                    selection.select(currentSelection) 
+                } else
+                    selection.select(-1) 
+            }
+
+            onCurrentRowChanged : {
+                if ( currentRow >= 0){
+                    var parms = {sourceid : table.modelId(), records : currentRow}
+                    table.linkMessage(parms)
+                }
+           }
 
             headerDelegate : ColumnHeader{}
 
