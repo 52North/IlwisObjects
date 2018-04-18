@@ -212,9 +212,17 @@ QVariantList TableModel::linkProperties() const
     QVariantMap mp;
     mp["name"] = "record";
     mp["modelid"] = modelId();
+    mp["method"] = "selectionbyraw";
     result.push_back(mp);
 
     return result;
+}
+
+quint32 TableModel::currentSelection() const
+{
+    if (_selectedRecords.size() > 0)
+        return *(_selectedRecords.begin());
+    return iUNDEF;
 }
 
 QString TableModel::roleName(int index) const
@@ -353,19 +361,28 @@ bool Ilwis::Ui::TableModel::supportsLinkType(const QString& type) const
     return type ==  "selectionbyraw" ;
 }
 
-void TableModel::linkAcceptMessage(const QVariantMap& parameters) {
+void TableModel::linkAcceptMessage(const QVariantMap& parms) {
+    if (parms.contains("index")) {
+        if (_selectedRecords.find(parms["index"].toUInt()) == _selectedRecords.end()) {
+            _selectedRecords.clear();
+            _selectedRecords.insert(parms["index"].toUInt());
+            emit currentSelectionChanged();
+        }
+    }
 }
 
 void TableModel::linkMessage(const QVariantMap& parms) {
     QVariantMap result;
-    result["tableid"] = _table->id();
-    if (parms.contains("record")) {
-        result["record"] = parms["record"];
-        int recIndex = parms["record"].toInt();
-        QVariantList dataList;
-        std::vector<QVariant> data = _table->record(recIndex);
-        std::copy(data.begin(), data.end(), std::back_inserter(dataList));
-        result["data"] = dataList;
+    if (parms.contains("records")) {
+        if (currentSelection() == parms["records"].toUInt())
+            return;
+    }
+    _selectedRecords.clear();
+    if (parms.contains("records")) {
+        _selectedRecords.insert(parms["records"].toUInt());
+        result["identity"] = parms["records"];
+        result["ilwisobjectid"] = _table->id();
+        result["ilwistype"] = _table->ilwisType();
     }
     emit linkSendMessage(result);
 }
