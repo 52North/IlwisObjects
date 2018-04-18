@@ -88,6 +88,7 @@ MouseArea {
           floatrect.y = mouseY
           var mposition = mouseX + "|" + mouseY
           floatrect.text = layerManager.rootLayer.layerInfo(mposition)
+          layerManager.setSelection(mposition);
         }
     }
 
