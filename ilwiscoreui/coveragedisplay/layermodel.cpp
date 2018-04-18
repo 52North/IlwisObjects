@@ -278,15 +278,25 @@ LayerModel * LayerModel::findLayer(int nodeid)
     return 0;
 }
 
-qint32 Ilwis::Ui::LayerModel::nodeId() const
+qint32 LayerModel::nodeId() const
 {
     return _nodeid;
 }
 
-void Ilwis::Ui::LayerModel::nodeId(qint32 id)
+void LayerModel::nodeId(qint32 id)
 {
     _nodeid = id;
 }
+
+void LayerModel::addSelection(quint64 featureid, bool single)
+{
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *vlayer = static_cast<LayerModel *>(child(layerIndex));
+        vlayer->addSelection(featureid, true);
+    }
+}
+
+
 
 void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
 {

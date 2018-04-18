@@ -133,7 +133,7 @@ public:
     LayerModel * findLayer(int nodeid);
     qint32 nodeId() const;
     void nodeId(qint32 id);
-    
+    virtual void addSelection(quint64 featureid, bool single);
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
@@ -152,6 +152,7 @@ signals:
 	   void layersChanged();
 	   void validChanged();
 	   void prepareChanged();
+       void linkSendMessage(const QVariantMap& parameters);
 
 public slots:
 
