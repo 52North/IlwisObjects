@@ -110,7 +110,7 @@ void Ilwis::Ui::VectorLayerModel::finish(const std::vector<quint64>& ids)
 {
 }
 
-void Ilwis::Ui::VectorLayerModel::addSelection(quint64 featureid, bool single)
+void VectorLayerModel::addSelection(quint64 featureid, bool single)
 {
     if (single) {
         _selectedFeatures = std::vector<quint64>();
