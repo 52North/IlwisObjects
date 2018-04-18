@@ -80,6 +80,7 @@ QVariant FeatureCoverage::coord2value(const Coordinate &crd, const QString &attr
     boundsDelta *= 0.01;
     QVariant var;
     geos::geom::Point *pnt = geomfactory()->createPoint(crd);
+    quint32 index = 0;
     for(auto feature : fc){
         bool ok = false;
         if ( feature->geometryType() == itPOLYGON ){
@@ -99,10 +100,12 @@ QVariant FeatureCoverage::coord2value(const Coordinate &crd, const QString &attr
                     vmap[attr] = feature(attr);
                 }
                 vmap[FEATUREIDDCOLUMN] = feature->featureid();
+                vmap["index"] = index;
                 var = vmap;
             }
             break;
         }
+        ++index;
     }
     delete pnt;
     return var;
@@ -390,6 +393,18 @@ SPFeatureI FeatureCoverage::feature(int index) const
         return _features[index];
     }
     return SPFeatureI();
+}
+
+quint32 Ilwis::FeatureCoverage::index(quint64 featureid)
+{
+    int idx = iUNDEF;
+    for (int count = 0; count < _features.size(); ++count) {
+        if (_features[count]->featureid() == featureid) {
+            idx = count;
+            break;
+        }
+    }
+    return idx;
 }
 
 IlwisTypes FeatureCoverage::geometryType(const geos::geom::Geometry *geom){

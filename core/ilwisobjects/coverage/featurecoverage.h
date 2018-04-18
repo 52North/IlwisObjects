@@ -151,6 +151,7 @@ public:
      */
     quint32 featureCount(IlwisTypes types=itFEATURE, quint32 level=FeatureInfo::ALLFEATURES) const;
     SPFeatureI feature(int index) const;
+    quint32 index(quint64 featureid);
 
     /**
      * Changes the amount of features for a certain featuretype
