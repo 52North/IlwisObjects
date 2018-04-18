@@ -23,7 +23,8 @@ Item {
         }else if ( newindex === 0){
             columnlist.currentIndex = newindex
             columnOperationList.currentColumn = null
-            columnOperationList.setOperations(table.operations)
+            if (table)
+                columnOperationList.setOperations(table.operations)
         }
     }
 
