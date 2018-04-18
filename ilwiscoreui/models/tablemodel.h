@@ -25,6 +25,7 @@ class ILWISCOREUISHARED_EXPORT TableModel : public QAbstractTableModel
     Q_PROPERTY(QString url READ url CONSTANT)
     Q_PROPERTY(QString  id READ id CONSTANT)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::TableOperation> operations READ operations NOTIFY operationsChanged)
+    Q_PROPERTY(quint32 currentSelection READ currentSelection NOTIFY currentSelectionChanged)
 
 public:
     TableModel();
@@ -62,6 +63,7 @@ public:
     QString id() const;
 
     virtual QVariantList linkProperties() const;
+    quint32 currentSelection() const;
 
 
 	void updateColumns();
@@ -78,6 +80,7 @@ signals:
   void columnsChanged();
   void operationsChanged();
   void linkSendMessage(const QVariantMap& parameters);
+  void currentSelectionChanged();
 
 
 private:
@@ -87,6 +90,7 @@ private:
     Ilwis::ITable _table;
     QList<ColumnModel *> _columns;
     std::vector<quint32> _order;
+    std::set<quint32> _selectedRecords;
      QList<Ilwis::Ui::TableOperation *> _operations;
      quint32 _modelId;
 };
