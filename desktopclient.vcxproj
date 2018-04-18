@@ -419,6 +419,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LegendGrid.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LegendItemEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LineStyleSetter.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LinkCoverage.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MapinfoProperties.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\NumericRepresentation.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PolygonProperties.qml" />

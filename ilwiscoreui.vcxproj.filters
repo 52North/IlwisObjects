@@ -701,6 +701,15 @@
     <ClCompile Include="Release\moc_modelregistry.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_linkcoverage.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_linkcoverage.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\linkcoverage.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -906,6 +915,9 @@
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\modelregistry.h">
       <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\linkcoverage.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
