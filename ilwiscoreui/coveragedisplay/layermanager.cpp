@@ -142,9 +142,10 @@ QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrNa
     for (int layerIndex = 0; layerIndex < rootItem->rowCount(); ++layerIndex) {
         LayerModel *layer = static_cast<LayerModel *>(rootItem->child(layerIndex));
 		if (layer->isValid()) {
-			if (result != "")
+            QString txt = layer->layerData(crdIn, attrName, items);
+			if (result != "" && txt != "")
 				result += ";";
-			result += layer->layerData(crdIn, attrName, items);
+            result += txt;
 		}
 	}
 	return result;
