@@ -308,7 +308,7 @@ Item {
 					layermanager.needUpdate = false
 				}
 				var layerList = layermanager.topLevelLayers
-				for(var i=0; i < layerList.length; ++i){
+				for(var i=layerList.length-1; i >=0; --i){
 					setProperties(layerList[i])
 				}
 				renderer.render(scene, camera);
