@@ -38,7 +38,7 @@ linux{
 DEPLOYMENTFOLDERS = folder_01
 
 
-QT += qml quick sql opengl
+QT += charts qml quick sql opengl
 
 BOOST=../external
 

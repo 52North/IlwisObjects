@@ -1,4 +1,4 @@
-#include <QtGui/QGuiApplication>
+#include <QApplication>
 #include <QtQml>
 #include <QtQuick/QQuickView>
 #include <QJsonDocument>

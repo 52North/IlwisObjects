@@ -1,4 +1,4 @@
-#include <QtGui/QGuiApplication>
+#include <QApplication>
 #include <QGLFormat>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
@@ -8,7 +8,7 @@
    
 int main(int argc, char *argv[])               
 {
-        QGuiApplication app(argc, argv);                                
+        QApplication app(argc, argv);                                
 		   
 #ifdef _WIN32                
 		 
