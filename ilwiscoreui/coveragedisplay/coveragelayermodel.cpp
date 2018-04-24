@@ -288,6 +288,11 @@ void CoverageLayerModel::sendLink(const QVariantMap & parameters)
     emit linkSendMessage(parameters);
 }
 
+QString Ilwis::Ui::CoverageLayerModel::mainPanelUrl() 
+{
+    return "visualization/MapPanel.qml";
+}
+
 void CoverageLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
     qDebug() << "gets message";
 }
