@@ -66,6 +66,7 @@ public:
     Q_INVOKABLE int nodeid(QModelIndex idx) const;
     Q_INVOKABLE void move(int nodeId, const QModelIndex& targetLocation);
     Q_INVOKABLE quint32 modelId() const;
+    Q_INVOKABLE quint32 viewid() const; // modelid == viewid, for historical reasons (viewid is older) it remains in the interface as it is used in qml
     Q_INVOKABLE void setSelection(const QString &pixelpair);
 
     RootLayerModel *rootLayer() const;
@@ -96,7 +97,6 @@ public:
     void moveLayer(LayerModel *parentLayer, LayerModel *layer, LayerMovement type);
 
     void clearLayers(LayerModel *parentLayer);
-    quint32 viewid() const;
     bool isValid() const;
 	QQuickItem *viewArea() const;
 
@@ -131,7 +131,6 @@ private:
     bool _zoomOutMode = false;
 	bool _panningMode = false;
     QString _layerListName = sUNDEF;
-    quint32 _viewid = iUNDEF;
     quint32 _modelId = iUNDEF;
 	QQuickItem *_viewContainer = 0;
 	int _nodeCounter = 0;

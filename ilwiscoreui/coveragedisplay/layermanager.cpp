@@ -39,7 +39,6 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
     _tree = new TreeModel(this);
     _globalLayer =  new RootLayerModel(this, _tree->invisibleRootItem());
     _tree->invisibleRootItem()->appendRow(_globalLayer);
-     _viewid = _baseViewId++;
 	 _viewContainer = viewContainer;
      _globalLayer->nodeId(nextId());
      _globalLayer->prepare(0);
@@ -450,7 +449,7 @@ RootLayerModel *LayerManager::rootLayer() const
 
 quint32 LayerManager::viewid() const
 {
-    return _viewid;
+    return modelId();
 }
 
 bool LayerManager::isValid() const
