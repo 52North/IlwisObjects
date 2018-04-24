@@ -1,3 +1,4 @@
+#include "modelregistry.h"
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "coverage.h"
@@ -5,6 +6,8 @@
 #include "columndefinition.h"
 #include "table.h"
 #include "layermodel.h"
+#include "feature.h"
+#include "raster.h"
 #include "coveragelayermodel.h"
 #include "layermanager.h"
 #include "chartmodel.h"
@@ -49,6 +52,25 @@ std::pair<QString, QObject *> ModelRegistry::getModel(quint32 id)
         return iter->second;
     }
     return std::pair<QString, QObject *>(sUNDEF, 0);
+}
+
+QString Ilwis::Ui::ModelRegistry::mainPanelUrl(const QString & type) const
+{
+    if (type == "coverage" || type == "featurecoverage" || type == "rastercoverage") {
+            return CoverageLayerModel::mainPanelUrl();
+    }
+    if (type == "table" || type == "flattable" || type == "attributetable") {
+        return TableModel::mainPanelUrl();
+    }
+
+    if (type == "layermanager") {
+        return CoverageLayerModel::mainPanelUrl();
+    }
+
+    if (type == "chart") {
+        return ChartModel::mainPanelUrl();
+    }
+    return sUNDEF;
 }
 
 QVariantList ModelRegistry::modelList(quint32 selfId, const QString & types)
@@ -134,6 +156,50 @@ QString ModelRegistry::name(const QString& type, QObject * obj) const
         return cmodel->name();
     }
     return sUNDEF;
+}
+
+LayerManager *ModelRegistry::createLayerManager(QObject *parent, QQuickItem *viewContainer)
+{
+    LayerManager *manager = new LayerManager(parent, viewContainer);
+
+    return manager;
+}
+
+Ilwis::Ui::TableModel *ModelRegistry::createTableModel(QObject *parent, const QString& filter, const QString& type)
+{
+    IlwisTypes tp = IlwisObject::name2Type(type);
+    Resource resource;
+    if (filter.indexOf("itemid=") != -1 || filter.indexOf("resource=") != -1) {
+        std::vector<Resource> res = mastercatalog()->select(filter);
+        if (res.size() != 1)
+            return 0;
+        resource = res[0];
+    }
+    else
+        resource = mastercatalog()->name2Resource(filter, tp);
+    if (resource.isValid()) {
+        if (resource.extendedType() == itRASTER) {
+            bool ok;
+            quint64 rasterid = resource["rasterid"].toULongLong(&ok);
+            if (ok) {
+                IRasterCoverage raster;
+                raster.prepare(rasterid);
+                if (raster.isValid() && raster->attributeTable().isValid())
+                    return new Ilwis::Ui::TableModel(raster->attributeTable(), parent);
+            }
+        }
+        else {
+            return new Ilwis::Ui::TableModel(resource, parent);
+        }
+    }
+    return 0;
+}
+
+ChartModel *ModelRegistry::createChartModel(QObject *parent)
+{
+    ChartModel *chart = new ChartModel( parent);
+
+    return chart;
 }
 
 
