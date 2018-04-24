@@ -89,9 +89,6 @@
     <ClCompile Include="ilwiscoreui\models\attributemodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ilwiscoreui\models\chartmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\models\columnmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ilwiscoreui\models\workflow\errormodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ilwiscoreui\models\graphmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ilwiscoreui\models\internaldatabasemodel.cpp">
@@ -290,12 +284,6 @@
     <ClCompile Include="Release\moc_columnmodel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_chartmodel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_chartmodel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Debug\moc_catalogviewmanager.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -354,12 +342,6 @@
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_gridpropertyeditor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_graphmodel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_graphmodel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="Debug\moc_errormodel.cpp">
@@ -710,15 +692,24 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\linkcoverage.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_chartmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_chartmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\chartmodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\chartoperation.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\attributemodel.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\models\chartmodel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\columnmodel.h">
@@ -731,9 +722,6 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\workflow\errormodel.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ilwiscoreui\models\graphmodel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
     <ClInclude Include="ilwiscoreui\ilwiscoreui_global.h">
@@ -919,6 +907,9 @@
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\linkcoverage.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\chartmodel.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwiscoreui\models\.gitignore">
@@ -943,6 +934,9 @@
     </ClInclude>
     <ClInclude Include="ilwiscoreui\tableoperations\tableoperationfactory.h">
       <Filter>Header Files\ilwisobjects\tableoperations</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\models\chartoperation.h">
+      <Filter>Header Files\ilwisobjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
