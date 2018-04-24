@@ -4,73 +4,47 @@
 #include <QObject>
 #include <QQmlListProperty>
 #include "ilwis.h"
-#include "graphmodel.h"
 #include "ilwiscoreui_global.h"
 
-namespace Ilwis{
-namespace Ui {
+#include <QQmlListProperty>
+#include <QAbstractTableModel>
+#include "ilwisobjectmodel.h"
+#include "table.h"
 
-class TableModel;
+namespace Ilwis {
+    namespace Ui {
+        class TableModel;
 
-class ILWISCOREUISHARED_EXPORT ChartModel : public QObject
-{
-    Q_OBJECT
+        class ILWISCOREUISHARED_EXPORT ChartModel : public QObject
+        {
+            Q_OBJECT
 
-    Q_PROPERTY(QList<QVariant> xvalues READ xvalues WRITE xvalues NOTIFY xvaluesChanged)
-    Q_PROPERTY(QStringList yAttributes READ yAttributes NOTIFY yAttributesChanged)
-    Q_PROPERTY(QString xAxis READ xAxis NOTIFY xAxisChanged)
-    Q_PROPERTY(int columnIndex READ columnIndex WRITE setColumnIndex NOTIFY columnIndexChanged)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::GraphModel> graphs READ graphs NOTIFY graphsChanged)
-public:
-    ChartModel(QObject *parent = 0);
-    ChartModel(TableModel *tbl, QObject *p);
+        public:
+            enum Axis{aXAXIS, aYAXIS, aZAXIS};
 
-    Q_INVOKABLE void setGraphs(int type);
-    Q_INVOKABLE Ilwis::Ui::GraphModel * graph(int index);
-    Q_INVOKABLE QList<QVariant> datasets(int graphType);
-    Q_INVOKABLE void setXAxis(int columnIndex);
-    Q_INVOKABLE QString xAxis() const;
-    Q_INVOKABLE void updateChartWidth(int newWidth);
-    Q_INVOKABLE quint32 modelId() const;
+            Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
 
-    QList<QVariant> xvalues();
-    void xvalues(const std::vector<QVariant>& xvalues);
-    void xvalues(const QList<QVariant>& xvalues);
-    void addGraph(GraphModel * graph);
-    void clearGraphs();
-    QQmlListProperty<GraphModel> graphs();
-    void xAxis(const QString& name);
-    int columnIndex();
-    void setColumnIndex(int ind);
-    QStringList yAttributes() const;
+            ChartModel();
+            ChartModel(QObject *parent);
 
-    // these functions must go into a redesign of ChartModel
-    QVariantList linkProperties() const;
+            quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString& chartType, quint32 xaxis, quint32 yaxis, quint32 zaxis);
 
-    QString name() const;
+            QVariantList ChartModel::linkProperties() const;
+            quint32 ChartModel::modelId() const;
+            QString ChartModel::name() const;
+            static QString mainPanelUrl();
+            void chartType(const QString& tp);
+            QString chartType() const;
 
-signals:
-    void xvaluesChanged();
-    void graphsChanged();
-    void xAxisChanged();
-    void columnIndexChanged();
-    void yAttributesChanged();
-
-private:
-    QList<QVariant> _xvalues;
-    QList<GraphModel *> _graphs;
-    QString _xAxis;
-    int _columnIndex = Ilwis::iUNDEF;
-    IlwisTypes _valueTypeXaxis = itNUMBER;
-    TableModel *_table;
-    int _chartWidth = 0;
-    bool _xAxisIsRecordNr = false;
-    bool _hasXAggregation = false;
-
-
-    void fillXValues();
-    void fillYValues(QList<QVariant> &yvalues, IlwisTypes valueTypeYAxis, int columnIndex);
-};
+        signals:
+            void chartTypeChanged();
+        private:
+            QString _chartType = sUNDEF;
+            Ilwis::ITable _table;
+            quint32 _modelId;
+            QString _name = sUNDEF;
+        };
+    }
 }
-}
+
 #endif // CHARTMODEL_H
