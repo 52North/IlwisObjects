@@ -5,6 +5,7 @@
 #include "datapanemodel.h"
 #include "layermanager.h"
 #include "coveragelayermodel.h"
+#include "modelregistry.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -217,7 +218,7 @@ TabModel *SidePanelModel::createPanel(quint32 index, const QString &filter, cons
     TabModel *tab = 0;
 
     if (outputtype == "chart") {
-        tab = new TabModel(url, "table/ChartsPanel.qml", outputtype, this);
+        tab = new TabModel(url, modelregistry()->mainPanelUrl("chart"), outputtype, this);
     }
     else if ( outputtype == "catalog"){
         context()->configurationRef().addValue("users/" + Ilwis::context()->currentUser() +"/workingcatalog",url);
@@ -231,12 +232,12 @@ TabModel *SidePanelModel::createPanel(quint32 index, const QString &filter, cons
         if ( resources.size() > 0 ){
             if (hasType(resources[0].ilwisType(), itCOVERAGE)) {
 				if (outputtype == "table")
-					tab = new TabModel(url, "table/TablePane.qml", outputtype, this);
+					tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
 				else
-					tab = new TabModel(url,"visualization/MapPanel.qml", outputtype, this);
+					tab = new TabModel(url, modelregistry()->mainPanelUrl("coverage"), outputtype, this);
             }
             else if (hasType(resources[0].ilwisType(), itTABLE)) {
-                tab = new TabModel(url,"table/TablePane.qml", outputtype, this);
+                tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
             } else if (hasType(resources[0].ilwisType(), itWORKFLOW|itMODEL)){
                 tab = new TabModel(url,"modeller/ModellerDataPane.qml", outputtype, this);
             } else if (hasType(resources[0].ilwisType(), itSCRIPT)){
