@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.0
 import UIContextModel 1.0
 import TableModel 1.0
 import TabModel 1.0
+import ModelRegistry 1.0
 import "../../../qml/controls" as Controls
 import "../../../qml/Global.js" as Global
 
@@ -40,7 +41,7 @@ Item {
         console.log("sourceUrl 2: " + sourceUrl)
         console.log("sourceType 2: " + sourceType)
 
-        table = uicontext.createTableModel(tablePane,sourceUrl, sourceType)
+        table = models.createTableModel(tablePane,sourceUrl, sourceType)
         console.log("table 2: " + table)
         if ( table){
             console.log("table 2: table created")
