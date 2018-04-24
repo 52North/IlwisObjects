@@ -31,7 +31,7 @@ bool ClearDrawers::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-    LayerManager *manager = uicontext()->layermanager(_viewid);
+    LayerManager *manager = layerManager();
     manager->clearLayers(_parenttLayer);
     return true;
 }
