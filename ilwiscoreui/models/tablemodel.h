@@ -70,6 +70,7 @@ public:
 
     QQmlListProperty<Ilwis::Ui::TableOperation> operations();
     bool supportsLinkType(const QString& type) const;
+    static QString mainPanelUrl() ;
 
 public slots:
     void linkAcceptMessage(const QVariantMap& parameters);

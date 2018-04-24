@@ -356,9 +356,14 @@ QQmlListProperty<Ilwis::Ui::TableOperation> TableModel::operations()
     return QQmlListProperty<Ilwis::Ui::TableOperation>(this, _operations);
 }
 
-bool Ilwis::Ui::TableModel::supportsLinkType(const QString& type) const
+bool TableModel::supportsLinkType(const QString& type) const
 {
     return type ==  "selectionbyraw" ;
+}
+
+QString TableModel::mainPanelUrl() 
+{
+    return "table/TablePane.qml";
 }
 
 void TableModel::linkAcceptMessage(const QVariantMap& parms) {
