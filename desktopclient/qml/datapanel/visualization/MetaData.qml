@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import UIContextModel 1.0
 import LayerManager 1.0
+import ModelRegistry 1.0
 import "../../workbench/propertyform" as MetaData
 import "../../controls" as Controls
 import "../../Global.js" as Global
@@ -176,7 +177,7 @@ Item {
     function addDataSource(filter, sourceName, sourceType){
      if ( coverage){
             if (! metatdata.manager){
-                metatdata.manager = uicontext.createLayerManager(metadata,overview)
+                metatdata.manager = models.createLayerManager(metadata,overview)
                 overview.layermanager = metatdata.manager
             }
             metatdata.manager.addCommand("adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)")

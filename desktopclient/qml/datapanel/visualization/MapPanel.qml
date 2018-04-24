@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.0
 import UIContextModel 1.0
 import LayerManager 1.0
 import TabModel 1.0
+import ModelRegistry 1.0
 import "./propertyeditors" as LayerManagement
 import "../../controls" as Controls
 import "../../Global.js" as Global
@@ -147,7 +148,8 @@ Item {
     }
 
     Component.onCompleted: {
-        manager = uicontext.createLayerManager(layers,layerview)
+    console.debug("xxxxxxxxxxxxxxxxxx")
+        manager = models.createLayerManager(layers,layerview)
     }
     Component.onDestruction: {
     }
