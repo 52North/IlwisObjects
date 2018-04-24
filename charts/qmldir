@@ -1,0 +1,5 @@
+module Charts
+ChartPane.qml 1.0 qml/ChartPane.qml
+ChartsPanel.qml 1.0 qml/ChartsPanel.qml
+ChartProperties.qml 1.0 qml/ChartProperties.qml
+plugin Charts
