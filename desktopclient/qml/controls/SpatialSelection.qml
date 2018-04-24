@@ -7,6 +7,7 @@ import "../controls" as Controls
 import "../datapanel/visualization" as MapTools
 import UIContextModel 1.0
 import LayerManager 1.0
+import ModelRegistry 1.0
 
 Item {
     id : selector
@@ -71,7 +72,7 @@ Item {
 
     Component.onCompleted: {
          if (! worldmapcontainer.manager){
-                worldmapcontainer.manager = uicontext.createLayerManager(worldmapcontainer,worldmap)
+                worldmapcontainer.manager = models.createLayerManager(worldmapcontainer,worldmap)
                 var cmd = uicontext.worldmapCommand(worldmapcontainer.manager.viewid)
                 worldmapcontainer.manager.addCommand(cmd)
                 worldmapcontainer.manager.addCommand("setlinecolor(" + worldmapcontainer.manager.viewid + ", 1,darkblue)");
