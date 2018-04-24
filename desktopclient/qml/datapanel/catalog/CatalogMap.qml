@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import UIContextModel 1.0
 import LayerManager 1.0
+import ModelRegistry 1.0
 import "../../controls" as Controls
 import "../visualization" as MapTools
 import "../../Global.js" as Global
@@ -90,7 +91,7 @@ Rectangle {
 
         Component.onCompleted: {
             if (! layermanager){
-                layermanager = uicontext.createLayerManager(catalogMapView,renderer)
+                layermanager = models.createLayerManager(catalogMapView,renderer)
                 var cmd = uicontext.worldmapCommand(layermanager.viewid)
                 renderer.addCommand(cmd)
                 mouseActions.layerManager = layermanager
