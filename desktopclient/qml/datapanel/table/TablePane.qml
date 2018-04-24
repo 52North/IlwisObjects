@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.0
 import UIContextModel 1.0
 import TableModel 1.0
 import TabModel 1.0
+import ModelRegistry 1.0
 import "../../controls" as Controls
 import "../../Global.js" as Global
 
@@ -38,7 +39,7 @@ Item {
     }
 
     function addDataSource(sourceUrl, filter, sourceType){
-        table = uicontext.createTableModel(tablePane,sourceUrl, sourceType)
+        table = models.createTableModel(tablePane,sourceUrl, sourceType)
 
         if ( table){
             tableView.model = table
