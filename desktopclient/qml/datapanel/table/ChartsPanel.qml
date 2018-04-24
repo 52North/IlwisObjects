@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import "./charts" as Charts
 import ChartModel 1.0
-import GraphModel 1.0
 import TableModel 1.0
 import TabModel 1.0
 
@@ -17,6 +16,7 @@ Item {
     property string iconName : "../images/graph"
     property TableModel table
     property TabModel tabmodel
+    property ChartModel chart
 
 
     SplitView {
@@ -36,7 +36,7 @@ Item {
     }
 
     function addDataSource(sourceUrl, filter, sourceType){
-       table = uicontext.createTableModel(chartspane,sourceUrl, sourceType)
+       chart = uicontext.createChartModel(chartspane,sourceUrl, sourceType)
     }
 
 }
