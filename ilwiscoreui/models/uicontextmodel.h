@@ -15,7 +15,6 @@
 #include "coveragedisplay/layermanager.h"
 #include "tablemodel.h"
 #include "workspacemodel.h"
-#include "chartmodel.h"
 #include "scriptmodel.h"
 
 
@@ -72,9 +71,6 @@ class ILWISCOREUISHARED_EXPORT UIContextModel : public QObject
 public:
     explicit UIContextModel(QObject *parent = 0);
 
-    Q_INVOKABLE Ilwis::Ui::LayerManager* createLayerManager(QObject *parent, QQuickItem *viewContainer);
-    Q_INVOKABLE Ilwis::Ui::TableModel *createTableModel(QObject *parent,const QString& url, const QString& type);
-    Q_INVOKABLE Ilwis::Ui::ChartModel *chartModel(const QString& objectname, Ilwis::Ui::TableModel *tbl);
     Q_INVOKABLE QString uniqueName();
     Q_INVOKABLE void exitUI();
     Q_INVOKABLE Ilwis::Ui::ScriptModel* scriptModel(const QString& fileorid, QObject *parent);
@@ -101,9 +97,6 @@ public:
     QQmlContext *rootContext() const;
     int activeSplit() const;
     void setActiveSplit(int index);
-    void addViewer(LayerManager *viewer, quint64 vid);
-    LayerManager *viewer(quint64 viewerid);
-    void removeViewer(quint64 viewerid);
     void currentKey(int ev);
 
     QStringList colorNames() const;
@@ -114,7 +107,6 @@ public:
     WorkSpaceModel *currentWorkSpace() const;
     MasterCatalogModel *masterCatalogModel() const;
     OperationCatalogModel *globalOperationCatalog() const;
-    LayerManager *layermanager(quint64 id) const;
     void setCurrentWorkSpace(WorkSpaceModel* cws);
     void initializeDataPane();
     qint64 addMapPanel(const QString &filter, const QString &side, const QString url);
@@ -150,7 +142,6 @@ private:
     int _threadCount = 0;
 
     std::map<QString, CreatePropertyEditor> _propertyEditors;
-    std::map<quint64, LayerManager *> _viewers;
     static quint64 _objectCounter;
     QQmlContext *_qmlcontext = 0;
     QObject *_rootObject = 0;

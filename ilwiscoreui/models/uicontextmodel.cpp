@@ -44,52 +44,6 @@ UIContextModel::UIContextModel(QObject *parent) :
 
 }
 
-LayerManager *UIContextModel::createLayerManager(QObject *parent,QQuickItem *viewContainer)
-{
-    LayerManager *manager =  new LayerManager(parent, viewContainer);
-	_viewers[manager->viewid()] = manager;
-
-    return manager;
-}
-
-Ilwis::Ui::TableModel *UIContextModel::createTableModel(QObject *parent,const QString& filter, const QString& type)
-{
-    IlwisTypes tp = IlwisObject::name2Type(type);
-    Resource resource;
-    if ( filter.indexOf("itemid=") != -1 || filter.indexOf("resource=") != -1){
-        std::vector<Resource> res = mastercatalog()->select(filter);
-        if ( res.size() != 1)
-            return 0;
-        resource = res[0];
-    } else
-        resource = mastercatalog()->name2Resource(filter,tp);
-    if ( resource.isValid()){
-        if ( resource.extendedType() == itRASTER){
-           bool ok;
-            quint64 rasterid = resource["rasterid"].toULongLong(&ok) ;
-            if ( ok){
-                IRasterCoverage raster;
-                raster.prepare(rasterid);
-                if ( raster.isValid() && raster->attributeTable().isValid())
-                    return new Ilwis::Ui::TableModel(raster->attributeTable(), parent);
-            }
-		}
-		else {
-			return new Ilwis::Ui::TableModel(resource, parent);
-		}
-    }
-    return 0;
-}
-
-ChartModel *UIContextModel::chartModel(const QString &objectname, TableModel *tbl)
-{
-    QObject *object =_qmlcontext->findChild<QObject *>(objectname);
-    QObject *newparent = object == 0 ? this : object;
-    ChartModel *chart =  new ChartModel(tbl,newparent);
-
-    return chart;
-}
-
 QString UIContextModel::uniqueName()
 {
     return "ilwis_ui_object_" + QString::number(_objectCounter++);
@@ -358,15 +312,6 @@ OperationCatalogModel *UIContextModel::globalOperationCatalog() const
     return 0;
 }
 
-LayerManager *UIContextModel::layermanager(quint64 id) const
-{
-    auto iter = _viewers.find(id);
-    if ( iter != _viewers.end()){
-        return (*iter).second;
-    }
-    return 0;
-}
-
 void UIContextModel::setCurrentWorkSpace(WorkSpaceModel *cws)
 {
     if ( !_qmlcontext)
@@ -432,30 +377,6 @@ qint64 UIContextModel::addMapPanel(const QString& filter, const QString& side, c
         // the outer lock is now freed and other threads may use the mechanism
     }
     return i64UNDEF;
-}
-
-void UIContextModel::addViewer(LayerManager *viewer, quint64 vid)
-{
-    _viewers[vid] = viewer;
-    _lastAddedId.store(vid);
-    _wait4ViewCreate.wakeAll();
-}
-
-LayerManager *UIContextModel::viewer(quint64 viewerid)
-{
-    auto iter = _viewers.find(viewerid);
-    if ( iter != _viewers.end()){
-        return (*iter).second;
-    }
-    return 0;
-}
-
-void UIContextModel::removeViewer(quint64 viewerid)
-{
-    auto iter= _viewers.find(viewerid)    ;
-    if ( iter != _viewers.end()){
-        _viewers.erase(iter);
-    }
 }
 
 
