@@ -58,6 +58,7 @@ public:
     bool supportsLinkType(const QString& type) const;
     virtual QVariantList linkProperties() const;
     void sendLink(const QVariantMap& parameters);
+    static QString mainPanelUrl() ;
 
 public slots:
     virtual void linkAcceptMessage(const QVariantMap& parameters);
