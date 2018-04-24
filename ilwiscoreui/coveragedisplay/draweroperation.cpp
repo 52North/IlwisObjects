@@ -5,6 +5,8 @@
 #include "operationExpression.h"
 #include "operation.h"
 #include "uicontextmodel.h"
+#include "layermanager.h"
+#include "modelregistry.h"
 #include "draweroperation.h"
 
 using namespace Ilwis;
@@ -18,7 +20,11 @@ DrawerOperation::DrawerOperation(quint64 metaid, const Ilwis::OperationExpressio
 
 LayerManager *DrawerOperation::layerManager()
 {
-    return uicontext()->layermanager(_viewid);
+    std::pair<QString, QObject *> model = modelregistry()->getModel(_viewid);
+    if (model.first != sUNDEF) {
+        return dynamic_cast<LayerManager *>(model.second);
+    }
+    return 0;
 }
 
 bool DrawerOperation::getViewId(const QString& sview){
