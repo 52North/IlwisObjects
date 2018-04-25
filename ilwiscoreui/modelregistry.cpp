@@ -206,4 +206,13 @@ ChartModel *ModelRegistry::createChartModel(QObject *parent)
     return chart;
 }
 
+QObject * Ilwis::Ui::ModelRegistry::model(quint32 id)
+{
+    auto pair = getModel(id);
+    if (pair.first != sUNDEF)
+        return pair.second;
+
+    return nullptr;
+}
+
 

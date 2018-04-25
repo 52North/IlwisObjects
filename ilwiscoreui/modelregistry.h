@@ -25,6 +25,7 @@ namespace Ilwis {
             Q_INVOKABLE Ilwis::Ui::LayerManager* createLayerManager(QObject *parent, QQuickItem *viewContainer);
             Q_INVOKABLE Ilwis::Ui::TableModel *createTableModel(QObject *parent, const QString& url, const QString& type);
             Q_INVOKABLE Ilwis::Ui::ChartModel *createChartModel(QObject *parent);
+            Q_INVOKABLE QObject* model(quint32 id);
 
             ModelRegistry(QObject *parent = 0);
             ~ModelRegistry();
