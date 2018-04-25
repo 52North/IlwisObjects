@@ -570,7 +570,8 @@ QString ObjectCreator::createChart(const QVariantMap &parms) {
     Ilwis::SymbolTable syms;
 
     if (Ilwis::commandhandler()->execute(expr, &ctx, syms)) {
-        quint32 id = syms.getSymbol(ctx._results[0])._var.toUInt();
+        QVariantList v = syms.getSymbol(ctx._results[0])._var.toList();
+        quint32 id = v[0].toUInt();
         return QString::number(id);
     }
 
