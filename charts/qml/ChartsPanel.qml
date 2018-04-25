@@ -33,8 +33,10 @@ Item {
         }
     }
 
-    function addDataSource(sourceUrl, filter, sourceType){
-       chart = uicontext.createChartModel(chartspane,sourceUrl, sourceType)
+    function addDataSource(filter, sourceUrl, sourceType){
+       var parts = filter.split("=")
+        chart = models.model(parts[1])
+        chart.parent = chartspane
     }
 
 }
