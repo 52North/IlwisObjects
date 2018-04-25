@@ -31,6 +31,10 @@ ChartModel *ChartOperation::chartModel()
 bool Ilwis::Ui::ChartOperation::getModel()
 {
     quint32 id = _expression.input<quint32>(0);
+    if (id == iUNDEF) {
+        _chartmodel = modelregistry()->createChartModel(0); // will get a temporary parent
+        return _chartmodel != 0;
+    }
     auto pair = modelregistry()->getModel(id);
     if (pair.first != sUNDEF) {
          return (_chartmodel = dynamic_cast<ChartModel *>(pair.second)) != 0;
