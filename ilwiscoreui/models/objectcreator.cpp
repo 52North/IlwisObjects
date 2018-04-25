@@ -24,6 +24,8 @@
 #include "applicationmodel.h"
 #include "model.h"
 #include "modellerfactory.h"
+#include "chartmodel.h"
+#include "modelregistry.h"
 #include "combinationmatrix.h"
 #include "workflow/modelbuilder.h"
 #include "workflow/analysismodel.h"
@@ -554,12 +556,23 @@ QString ObjectCreator::createChart(const QVariantMap &parms) {
     QString name = parms["name"].toString();
     if (name == "")
         return sUNDEF;
+    QString url = parms["url"].toString();
+    QString ctype = parms["ctype"].toString();
+    QString xaxis = parms["xaxis"].toString();
+    QString yaxis = parms["yaxis"].toString();
+    QString zaxis = parms["zaxis"].toString();
+    QString expr  = QString("createchart(%1,%2,%3,%4,%5,%6,%7)").arg(iUNDEF).arg(name).arg(url).arg(ctype).arg(xaxis).arg(yaxis).arg(zaxis);
 
-    QString expr = "createchart('dummy')";
-
-    QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
+    QString output = QString("script dummy1=");
     expr = output + expr;
-    executeoperation(expr);
+
+    Ilwis::ExecutionContext ctx;
+    Ilwis::SymbolTable syms;
+
+    if (Ilwis::commandhandler()->execute(expr, &ctx, syms)) {
+        quint32 id = syms.getSymbol(ctx._results[0])._var.toUInt();
+        return QString::number(id);
+    }
 
     return sUNDEF;
 }
