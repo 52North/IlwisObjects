@@ -197,7 +197,11 @@ Ilwis::Ui::TableModel *ModelRegistry::createTableModel(QObject *parent, const QS
 
 ChartModel *ModelRegistry::createChartModel(QObject *parent)
 {
-    ChartModel *chart = new ChartModel( parent);
+    ChartModel *chart = 0;
+    if (parent == 0)
+        chart = new ChartModel(this);
+    else
+       chart = new ChartModel( parent);
 
     return chart;
 }
