@@ -57,7 +57,7 @@ Controls.DropableItem{
             width : parent.width - 5
             height : 20
             //role : "attributename"
-            itemModel : ["Line chart", "Spline chart","Bar chart","Pie chart", "Points", "Polar chart", "3D Line chart", "3D Spline chart","3D barchart" ]
+            itemModel : ["Line", "Spline","Bar","Pie", "Points", "Polar", "3DLine", "3DSpline","3DBar" ]
 
         }
 
@@ -105,13 +105,13 @@ Controls.DropableItem{
     function apply(overwrite) {
 
         if ( dataTable) {
-            var turl = tableedit.comboText
+            var turl = tableedit.content
             if ( turl != "" && nameedit.content != ""){
-            var createInfo = {type : "chart", url : turl, name : nameedit.content , xaxis : xaxisCB.comboText, yaxis : yaxisCB.comboText, zaxis : zaxisCB.comboText}
-            objectcreator.createObject(createInfo)
-            var filter = "itemid=" + dataTable.id
-            bigthing.newCatalog(filter, "chart", "","other")
-            return true
+                var createInfo = {type : "chart", url : turl, ctype : charttype.comboText, name : nameedit.content , xaxis : xaxisCB.comboText, yaxis : yaxisCB.comboText, zaxis : zaxisCB.comboText}
+                var modelid = objectcreator.createObject(createInfo)
+                var filter = "itemid=" + modelid
+                bigthing.newCatalog(filter, "chart", "","other")
+                return true
           }
        }
        return false
