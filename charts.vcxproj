@@ -13,8 +13,8 @@
   <ItemGroup>
     <None Include="charts\ChartPane.qml" />
     <None Include="charts\ChartProperties.qml" />
-    <None Include="charts\ChartsPanel.qml" />
     <None Include="charts\qmldir" />
+    <None Include="charts\qml\ChartsPanel.qml" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="charts\ilwischarts_plugin.cpp" />
