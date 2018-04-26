@@ -109,14 +109,14 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Core.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Charts.lib;$(QTDIR)\lib\Qt5Core.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkDLL>true</LinkDLL>
       <LinkIncremental>false</LinkIncremental>
-      <OutputFile>$(OutDir)\ilwischarts.dll</OutputFile>
+      <OutputFile>$(OutDir)\Charts.dll</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
