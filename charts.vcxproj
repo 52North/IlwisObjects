@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="charts\ChartPane.qml" />
-    <None Include="charts\ChartProperties.qml" />
     <None Include="charts\qmldir" />
+    <None Include="charts\qml\ChartPane.qml" />
+    <None Include="charts\qml\ChartProperties.qml" />
     <None Include="charts\qml\ChartsPanel.qml" />
   </ItemGroup>
   <ItemGroup>
@@ -181,8 +181,8 @@ xcopy  /S /Y /I Charts\controls ..\output\win32release\bin\extensions\ui\Charts\
     </ResourceCompile>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\ui\charts\* /s /y /i
-xcopy Charts\qmldir ..\output\win32debug\bin\extensions\ui\charts\* /s /y /i
-xcopy Charts\*.qml ..\output\win32debug\bin\extensions\ui\charts\* /s /y /i
+xcopy charts\qmldir ..\output\win32debug\bin\extensions\ui\charts\* /s /y /i
+xcopy charts\qml\*.qml ..\output\win32debug\bin\extensions\ui\charts\qml\* /s /y /i
 </Command>
       <Message>Copy Charts.dll to ..\output\win32debug\bin\extensions\ui\Charts</Message>
     </PostBuildEvent>

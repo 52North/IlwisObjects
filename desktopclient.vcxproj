@@ -375,7 +375,6 @@
     <None Include="desktopclient\qml\datapanel\script\ScriptRunOptions.qml" />
     <None Include="desktopclient\qml\datapanel\table\AggregateCell.qml" />
     <None Include="desktopclient\qml\datapanel\table\ChartPane.qml" />
-    <None Include="desktopclient\qml\datapanel\table\ChartProperties.qml" />
     <None Include="desktopclient\qml\datapanel\table\ChartsPanel.qml" />
     <None Include="desktopclient\qml\datapanel\table\ColumnHeader.qml" />
     <None Include="desktopclient\qml\datapanel\table\ColumnList.qml" />
