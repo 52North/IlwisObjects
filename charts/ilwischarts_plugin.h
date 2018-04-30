@@ -1,5 +1,5 @@
-#ifndef GEODRAWER_PLUGIN_H
-#define GEODRAWER_PLUGIN_H
+#ifndef ILWISCHARTS_PLUGIN_H
+#define ILWISCHARTS_PLUGIN_H
 
 #include <QQmlExtensionPlugin>
 
@@ -12,5 +12,5 @@ public:
     void registerTypes(const char *uri);
 };
 
-#endif // GEODRAWER_PLUGIN_H
+#endif // ILWISCHARTS_PLUGIN_H
 
