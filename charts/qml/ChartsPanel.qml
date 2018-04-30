@@ -34,9 +34,10 @@ Item {
     }
 
     function addDataSource(filter, sourceUrl, sourceType){
-       var parts = filter.split("=")
-        chart = models.model(parts[1])
-        chart.parent = chartspane
+		var parts = filter.split("=");
+		chart = models.model(parts[1]);
+        chart.parent = chartspane;
+		tabmodel.displayName = chart.name
     }
 
 }
