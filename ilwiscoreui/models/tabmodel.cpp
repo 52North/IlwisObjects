@@ -50,6 +50,7 @@ QString TabModel::displayName() const
 void TabModel::setDisplayName(const QString &nm)
 {
     _displayName = nm;
+	emit displayNameChanged();
 }
 
 bool TabModel::canSeparate() const
