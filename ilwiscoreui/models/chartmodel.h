@@ -23,6 +23,7 @@ namespace Ilwis {
             enum Axis{aXAXIS, aYAXIS, aZAXIS};
 
             Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
+			Q_PROPERTY(QString name READ name NOTIFY nameChanged)
 
             ChartModel();
             ChartModel(QObject *parent);
@@ -38,6 +39,8 @@ namespace Ilwis {
 
         signals:
             void chartTypeChanged();
+			void nameChanged();
+
         private:
             QString _chartType = sUNDEF;
             Ilwis::ITable _table;
