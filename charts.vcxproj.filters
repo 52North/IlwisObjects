@@ -2,13 +2,13 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <None Include="charts\qmldir" />
-    <None Include="charts\ChartPane.qml">
-      <Filter>qml</Filter>
-    </None>
-    <None Include="charts\ChartProperties.qml">
-      <Filter>qml</Filter>
-    </None>
     <None Include="charts\qml\ChartsPanel.qml">
+      <Filter>qml</Filter>
+    </None>
+    <None Include="charts\qml\ChartProperties.qml">
+      <Filter>qml</Filter>
+    </None>
+    <None Include="charts\qml\ChartPane.qml">
       <Filter>qml</Filter>
     </None>
   </ItemGroup>
