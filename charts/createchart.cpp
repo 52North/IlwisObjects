@@ -93,8 +93,8 @@ quint64 CreateChart::createMetadata()
     operation.setSyntax("createchart(modelid, table, charttype=[Line|Spline|Bar|Pie|Points|Polar|3DLine|3DSpline|3Dbar], xaxis,yaxis,zaxis)");
     operation.setDescription(TR("creates a chart of the specified type"));
     operation.setInParameterCount({ 7 });
-    operation.addInParameter(0, itINTEGER, TR("Chart model id"), TR("id of themodel to which this series has to be added"));
-    operation.addInParameter(1, itSTRING, TR("Chart name"), TR("name of the chart"));
+    operation.addInParameter(0, itINTEGER, TR("Chart model id"), TR("ID of the model to which this series has to be added"));
+    operation.addInParameter(1, itSTRING, TR("Chart name"), TR("Name of the chart"));
     operation.addInParameter(2, itTABLE, TR("Table"), TR("Table from which the series will be collected."));
     operation.addInParameter(3, itSTRING, TR("Chart type"), TR("The type of graph"));
     operation.addInParameter(4, itSTRING, TR("Name X axis"), TR("Name of the column used for the xaxis"));
