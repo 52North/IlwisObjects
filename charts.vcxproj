@@ -17,6 +17,8 @@
     <None Include="charts\qml\ChartsPanel.qml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="charts\addChartSeries.cpp" />
+    <ClCompile Include="charts\chartseriescolor.cpp" />
     <ClCompile Include="charts\ilwischarts_plugin.cpp" />
     <ClCompile Include="charts\createchart.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ilwischarts_plugin.cpp">
@@ -39,6 +41,8 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="charts\addChartSeries.h" />
+    <ClInclude Include="charts\chartseriescolor.h" />
     <ClInclude Include="charts\createchart.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
