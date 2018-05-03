@@ -704,6 +704,15 @@
     <ClCompile Include="ilwiscoreui\models\chartoperation.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\dataseriesmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_dataseriesmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_dataseriesmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -909,6 +918,9 @@
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\chartmodel.h">
       <Filter>Header Files\ilwisobjects</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\dataseriesmodel.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

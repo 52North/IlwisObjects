@@ -43,6 +43,7 @@
 #include "models/catalogmapitem.h"
 #include "models/columnmodel.h"
 #include "models/chartmodel.h"
+#include "dataseriesmodel.h"
 #include "models/tabmodel.h"
 #include "models/datapanemodel.h"
 #include "models/objectcreator.h"
@@ -124,7 +125,10 @@ void StartIlwis::init() {
         qmlRegisterType<ColumnModel>("ColumnModel", 1,0,"ColumnModel");
         qmlRegisterType<LayerInfoItem>("LayerInfoItem", 1,0,"LayerInfoItem");
         qmlRegisterType<CatalogMapItem>("CatalogMapItem", 1,0,"CatalogMapItem");
-        qmlRegisterType<ChartModel>("ChartModel", 1, 0, "ChartModel");
+
+		qmlRegisterType<ChartModel>("ChartModel", 1, 0, "ChartModel");
+		qmlRegisterType<DataseriesModel>("DataseriesModel", 1, 0, "DataseriesModel");
+
         qmlRegisterType<CatalogFilterModel>("CatalogFilterModel", 1,0,"CatalogFilterModel");
         qmlRegisterType<DataPaneModel>("DataPaneModel", 1,0,"DataPaneModel");
         qmlRegisterType<TabModel>("TabModel", 1,0,"TabModel");

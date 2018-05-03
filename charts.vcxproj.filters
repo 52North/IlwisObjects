@@ -55,6 +55,12 @@
     <ClCompile Include="charts\createchart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="charts\addChartSeries.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="charts\chartseriescolor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
@@ -63,6 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="charts\createchart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\addChartSeries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\chartseriescolor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
