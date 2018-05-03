@@ -21,7 +21,7 @@ Item {
         anchors.fill: parent
         orientation: Qt.Vertical
         height : parent.height
-        ChartPane{
+        ChartPane {
             id : chartpanel
             height : parent.height - 270
         }
@@ -38,6 +38,7 @@ Item {
 		chart = models.model(parts[1]);
         chart.parent = chartspane;
 		tabmodel.displayName = chart.name
+		chartpanel.chart = chart
     }
 
 }
