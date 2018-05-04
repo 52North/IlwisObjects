@@ -53,8 +53,9 @@ Ilwis::OperationImplementation *SetPolygonBoundaryColor::create(quint64 metaid, 
     return new SetPolygonBoundaryColor(metaid, expr)    ;
 }
 
-Ilwis::OperationImplementation::State SetPolygonBoundaryColor::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State SetPolygonBoundaryColor::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }

@@ -28,6 +28,7 @@ SetBackgroundColor::SetBackgroundColor(quint64 metaid, const Ilwis::OperationExp
 
 bool SetBackgroundColor::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {
+    OperationImplementation::prepare(ctx, symTable);
     if (_prepState == sNOTPREPARED)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;

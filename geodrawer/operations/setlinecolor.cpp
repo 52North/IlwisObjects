@@ -47,8 +47,9 @@ Ilwis::OperationImplementation *SetLineColor::create(quint64 metaid, const Ilwis
     return new SetLineColor(metaid, expr)    ;
 }
 
-Ilwis::OperationImplementation::State SetLineColor::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State SetLineColor::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }

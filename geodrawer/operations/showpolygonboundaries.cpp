@@ -44,8 +44,9 @@ Ilwis::OperationImplementation *ShowPolygonBoundaries::create(quint64 metaid, co
     return new ShowPolygonBoundaries(metaid, expr)    ;
 }
 
-Ilwis::OperationImplementation::State ShowPolygonBoundaries::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State ShowPolygonBoundaries::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }

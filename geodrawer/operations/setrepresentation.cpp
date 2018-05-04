@@ -50,8 +50,9 @@ Ilwis::OperationImplementation *SetRepresentation::create(quint64 metaid, const 
     return new SetRepresentation(metaid, expr);
 }
 
-Ilwis::OperationImplementation::State SetRepresentation::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State SetRepresentation::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }

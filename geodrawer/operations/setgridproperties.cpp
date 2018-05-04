@@ -56,8 +56,9 @@ Ilwis::OperationImplementation *SetGridProperties::create(quint64 metaid, const 
     return new SetGridProperties(metaid,expr)    ;
 }
 
-Ilwis::OperationImplementation::State SetGridProperties::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State SetGridProperties::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }

@@ -44,8 +44,9 @@ Ilwis::OperationImplementation *ShowPolygonAreas::create(quint64 metaid, const I
     return new ShowPolygonAreas(metaid, expr)    ;
 }
 
-Ilwis::OperationImplementation::State ShowPolygonAreas::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State ShowPolygonAreas::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }
