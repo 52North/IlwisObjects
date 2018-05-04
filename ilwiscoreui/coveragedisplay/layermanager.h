@@ -48,6 +48,11 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(bool isValid READ isValid NOTIFY isValidChanged)
     Q_PROPERTY(bool needUpdate READ needUpdate WRITE needUpdate NOTIFY needUpdateChanged)
     Q_PROPERTY(LayerModel *lastAddedCoverageLayer READ lastAddedCoverageLayer CONSTANT)
+    Q_PROPERTY(QVariantList xGridAxisTop READ xGridAxisTop NOTIFY axisValuesChanged)
+    Q_PROPERTY(QVariantList xGridAxisBottom READ xGridAxisBottom NOTIFY axisValuesChanged)
+    Q_PROPERTY(QVariantList yGridAxisLeft READ yGridAxisLeft NOTIFY axisValuesChanged)
+    Q_PROPERTY(QVariantList yGridAxisRight READ yGridAxisRight NOTIFY axisValuesChanged)
+
 
 public:
 	enum LayerMovement { lmUP, lmDOWN, lmREMOVE };
@@ -68,6 +73,7 @@ public:
     Q_INVOKABLE quint32 modelId() const;
     Q_INVOKABLE quint32 viewid() const; // modelid == viewid, for historical reasons (viewid is older) it remains in the interface as it is used in qml
     Q_INVOKABLE void setSelection(const QString &pixelpair);
+    Q_INVOKABLE void updateAxis();
 
     RootLayerModel *rootLayer() const;
     
@@ -105,6 +111,11 @@ public:
     int nextId();
     QVariantList linkProperties() const;
     ManagerType managerType() const;
+    QVariantList xGridAxisTop() const;
+    QVariantList xGridAxisBottom() const;
+    QVariantList yGridAxisRight() const;
+    QVariantList yGridAxisLeft() const;
+
 
 public slots:
         void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);
@@ -121,6 +132,7 @@ signals:
     void topLevelLayersChanged();
     void allCoveragesChanged();
     void linkSendMessage(const QVariantMap& parameters);
+    void axisValuesChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;

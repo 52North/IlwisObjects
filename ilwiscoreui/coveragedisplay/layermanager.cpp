@@ -364,6 +364,11 @@ LayerManager::ManagerType LayerManager::managerType() const
     return _managerType;
 }
 
+void Ilwis::Ui::LayerManager::updateAxis() 
+{
+    emit axisValuesChanged();
+}
+
 LayerModel *LayerManager::create(QStandardItem *parentLayer, const QString &type, LayerManager *lm, const QString& layername, const QString& description, const IOOptions &options)
 {
     if ( parentLayer == 0)
@@ -408,6 +413,7 @@ void LayerManager::wholeMap()
 void LayerManager::refresh()
 {
 	emit layerTreeChanged();
+    emit axisValuesChanged();
 	needUpdate(true);
 }
 
@@ -475,6 +481,45 @@ QQuickItem * LayerManager::viewArea() const
 
 void LayerManager::linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters) {
 }
+
+QVariantList LayerManager::xGridAxisTop() const
+{
+    if (rootLayer()) {
+        return rootLayer()->gridAxis("xaxisvaluestop");
+    }
+
+    return QVariantList();
+}
+
+QVariantList LayerManager::xGridAxisBottom() const
+{
+    if (rootLayer()) {
+        return rootLayer()->gridAxis("xaxisvaluesbottom");
+    }
+
+    return QVariantList();
+}
+
+QVariantList Ilwis::Ui::LayerManager::yGridAxisLeft() const
+{
+    if (rootLayer()) {
+        return rootLayer()->gridAxis("yaxisvaluesleft");
+    }
+
+    return QVariantList();
+}
+
+QVariantList Ilwis::Ui::LayerManager::yGridAxisRight() const
+{
+    if (rootLayer()) {
+        return rootLayer()->gridAxis("yaxisvaluesright");
+    }
+
+    return QVariantList();
+}
+
+
+
 
 
 
