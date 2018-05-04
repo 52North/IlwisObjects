@@ -56,8 +56,9 @@ OperationImplementation *RepresentationAttributeFillColor::create(quint64 metaid
     return new RepresentationAttributeFillColor(metaid, expr);
 }
 
-OperationImplementation::State RepresentationAttributeFillColor::prepare(ExecutionContext *ctx, const SymbolTable &)
+OperationImplementation::State RepresentationAttributeFillColor::prepare(ExecutionContext *ctx, const SymbolTable &t)
 {
+    OperationImplementation::prepare(ctx, t);
     if (!getViewId(_expression.input<QString>(0))){
         return sPREPAREFAILED;
     }
