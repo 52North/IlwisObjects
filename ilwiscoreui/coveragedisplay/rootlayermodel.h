@@ -37,6 +37,7 @@ public:
 	Q_PROPERTY(double zoomFactor READ zoomFactor WRITE zoomFactor NOTIFY zoomChanged)
 	Q_PROPERTY(QVariantMap cameraPosition READ cameraPosition WRITE cameraPosition NOTIFY cameraPositionChanged)
 	Q_PROPERTY(QVariantMap scrollInfo READ scrollInfo WRITE scrollInfo NOTIFY scrollInfoChanged)
+ 
 
 
      Q_INVOKABLE QVariantMap screen2Coord(const QVariantMap &var) const;
@@ -58,6 +59,7 @@ public:
 
      IGeoReference screenGrf() const;
      int numberOfBuffers(const QString&) const;
+     QVariantList calcAxisValues(const QString& axisType, const Coordinate & cmin, const Coordinate & cmax) const;
      void screenGrf(const IGeoReference &screenGrf);
      ICoordinateSystem screenCsy() const;
      void screenCsy(const ICoordinateSystem &screenCsy);
@@ -94,6 +96,7 @@ public:
 	 void scrollInfo(const QVariantMap& si);
 	 QVariantMap scrollInfo() const;
      bool prepare(int prepType);
+     QVariantList gridAxis(const QString& type) const;
 
 
 signals:
@@ -115,6 +118,7 @@ signals:
      void activeAttributeChanged();
      void georefChanged();
      void projectionInfoChanged();
+     
 
 private:
     QColor _backgroundColor;

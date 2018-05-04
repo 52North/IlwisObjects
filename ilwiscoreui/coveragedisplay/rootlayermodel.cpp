@@ -71,6 +71,7 @@ void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
 		_screenGrf->envelope(_zoomEnvelope);
 		_screenGrf->compute();
 		emit zoomEnvelopeChanged();
+        layerManager()->updateAxis();
 	}
 }
 
@@ -248,6 +249,7 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
     _viewEnvelope = env;
     emit viewEnvelopeChanged();
     emit latlonEnvelopeChanged();
+    emit xGridAxisValuesChanged();
 }
 
 Envelope Ilwis::Ui::RootLayerModel::viewEnvelope() const
@@ -440,6 +442,7 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	else {
 		deltaY = CalcNewSize(cheight, cwidth, 1.0 / aspectRatioView);
 	}
+
 	Coordinate pmin = _coverageEnvelope.min_corner();
 	Coordinate pmax = _coverageEnvelope.max_corner();
 	pmin = { pmin.x - deltaX, pmin.y - deltaY, 0 };
@@ -448,6 +451,7 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 	//_viewEnvelope = { pmin, pmax };
     viewEnvelope({ pmin, pmax });
 
+    kernel()->issues()->log(QString("init sizes %1 %2").arg(pmin.x).arg(pmin.y) , IssueObject::itMessage);
 
 	if (!_screenGrf.isValid()) {
 		IGeoReference grf;
@@ -514,14 +518,101 @@ void Ilwis::Ui::RootLayerModel::active(bool yesno)
     // you can not set this state of the root, always true
 }
 
-bool Ilwis::Ui::RootLayerModel::active() const
+bool RootLayerModel::active() const
 {
     return true;
 }
 
-int Ilwis::Ui::RootLayerModel::numberOfBuffers(const QString&) const {
+int RootLayerModel::numberOfBuffers(const QString&) const {
     return 0;
 }
+
+QVariantList Ilwis::Ui::RootLayerModel::gridAxis(const QString & type) const
+{
+    if (!screenCsy().isValid() || !screenGrf().isValid())
+        return QVariantList();
+    
+    return calcAxisValues(type, _zoomEnvelope.min_corner(), _zoomEnvelope.max_corner());
+}
+
+QVariantList RootLayerModel::calcAxisValues(const QString& axisType, const Coordinate& cmin, const Coordinate& cmax) const {
+    QVariantList axisValues; 
+    const LayerModel *grid = findLayerByName("Primary Grid");
+    if (!grid)
+        return QVariantList();
+    double cellDistance = grid->vproperty("celldistance").toDouble();
+    if (cellDistance == rUNDEF)
+        return axisValues;
+
+    auto RoundNumber = [](double num, double prec)->QString {
+        return QString("%1").arg(round(num, prec), 0, 'f', (prec != 0 ? -std::log10(prec) : 0));
+    };
+
+    auto SavePoints = [&](double a, double b, double newValue, double prec) -> void {
+        auto dist = std::abs(a - b);
+        auto data = axisValues.back().toMap();
+        data["size"] = (int)dist;
+        axisValues.back() = data;
+        data["value"] = RoundNumber(newValue, prec);
+        axisValues.push_back(data);
+    };
+
+    double precision = 0;
+    precision = (int)log10(std::abs(cellDistance));
+    precision = precision >= 0 ? 0 : pow(10, precision);
+
+    Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
+
+    QVariantMap data;
+  
+    if (axisType == "xaxisvaluestop") {
+        data["value"] = "";//RoundNumber(cmin.x, 0.001);
+        axisValues.push_back(data);
+        auto pixPrev1 = screenGrf()->coord2Pixel(cmin);
+        for (double x = ceil(cmin.x / cellDistance) * cellDistance; x < cmax.x; x += cellDistance)
+        {
+            auto p = screenGrf()->coord2Pixel(Coordinate(x, cmin.y));
+            SavePoints(p.x, pixPrev1.x, x, precision);
+            pixPrev1 = p;
+        }
+    }else if (axisType == "xaxisvaluesbottom"){
+        data["value"] = ""; // RoundNumber(cmax.x, 0.001);
+        axisValues.push_back(data);
+        auto pixPrev2 = screenGrf()->coord2Pixel(cmin);
+        for (double x = ceil(cmin.x / cellDistance) * cellDistance; x < cmax.x; x += cellDistance)
+        {
+         auto p = screenGrf()->coord2Pixel(Coordinate(x, cmax.y));
+            SavePoints(p.x, pixPrev2.x, x, precision);
+            pixPrev2 = p;
+        }
+        
+    } else if (axisType == "yaxisvaluesleft") {
+        data["value"] = "";  // RoundNumber(cmin.y, 0.001);
+        axisValues.push_back(data);
+        auto pixPrev1 = screenGrf()->coord2Pixel(cmin);
+        for (double y = ceil(cmin.y / cellDistance) * cellDistance; y < cmax.y; y += cellDistance)
+        {
+            auto p = screenGrf()->coord2Pixel(Coordinate(cmin.x, y));
+            SavePoints(p.y, pixPrev1.y, y, precision);
+            pixPrev1 = p;
+        }
+        std::reverse(axisValues.begin(), axisValues.end());
+    }
+    else if (axisType == "yaxisvaluesright") {
+        data["value"] = ""; //RoundNumber(cmax.y, 0.001);
+        axisValues.push_back(data);
+        auto pixPrev2 = screenGrf()->coord2Pixel(cmin);
+        for (double y = ceil(cmin.y / cellDistance) * cellDistance; y < cmax.y; y += cellDistance)
+        {
+            auto p = screenGrf()->coord2Pixel(Coordinate(cmax.x, y));
+            SavePoints(p.y, pixPrev2.y, y, precision);
+            pixPrev2 = p;
+        }
+        std::reverse(axisValues.begin(), axisValues.end());
+    }
+    return axisValues;
+}
+
 
 
 
