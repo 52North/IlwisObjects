@@ -15,11 +15,30 @@ DropArea {
         addDataSource(resource.url, resource.name, resource.typeName)       
     }
 
-
+    Row{
+        anchors.top: parent.top
+        anchors.topMargin : 5
+        id : toprow
+        x : 20
+        height : 20
+        width : parent.width - 40
+        Repeater {
+            id : toprowRep
+            model : layerview.manager.xGridAxisTop
+            width : parent.width
+            height : parent.height
+            Text {
+                height : 15
+                width : modelData.size
+                text : modelData.value
+            }
+        }
+    }
+ 
     Rectangle {
+        id : mapBorder
         anchors.fill: parent
         anchors.margins: 20
-
         Controls.DummySpatial{
             id: renderer
             anchors.top: parent.top
@@ -74,6 +93,66 @@ DropArea {
 			    showInfo: true
 			    selectiondrawerColor: "basic"
 		    } 
+        }
+    }
+
+    Row{
+        anchors.bottom: parent.bottom 
+        id : bottomrow
+        x : 20
+        height : 20
+        width : parent.width - 40
+        Repeater {
+            id : bottomrowRep
+            model : layerview.manager.xGridAxisBottom
+            width : parent.width
+            height : parent.height
+            Text {
+                height : 15
+                width : modelData.size
+                text : modelData.value
+            }
+        }
+    }
+    Column {
+        anchors.left : parent.left 
+        id : leftcolumn
+        y : 40
+        height : parent.height// - 40
+        width :20
+        Repeater {
+            id : leftcolumnRep
+            model : layerview.manager.yGridAxisLeft
+            width : parent.width
+            height : parent.height
+            Text {
+                height : modelData.size
+                width : 15
+                text : modelData.value
+                rotation : 90
+                x : -20
+            }
+        }
+    }
+
+   Column {
+        anchors.right : parent.right 
+        id : righttcolumn
+        y : 40 - 7
+        height : parent.height// - 40
+        width :20
+        Repeater {
+            id : rightcolumnRep
+            model : layerview.manager.yGridAxisRight
+            width : parent.width
+            height : parent.height
+            Text {
+                height : modelData.size
+                width : 15
+                text : modelData.value
+                rotation : -90
+                x: 20 + 7
+            }
         }
     }
 
