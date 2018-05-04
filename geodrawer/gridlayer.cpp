@@ -1,9 +1,11 @@
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "geometries.h"
+#include "georeference.h"
 #include "coveragedisplay\layermanager.h"
 #include "coveragedisplay\layermodel.h"
 #include "coveragedisplay\visualattribute.h"
+#include "coveragedisplay\layermanager.h"
 #include "gridlayer.h"
 
 using namespace Ilwis;
@@ -59,7 +61,6 @@ bool GridLayer::prepare(int prepTypes)
 QVariant GridLayer::vproperty(const QString & key) const
 {
     QVariant v =  CompositeLayerModel::vproperty(key);
-
     return v;
 }
 
@@ -93,9 +94,9 @@ QVariant SubGridLayer::vproperty(const QString& key) const {
         return QVariant(_lineColor);
     }
     if (key == "celldistance") {
-        return QVariant(_cellDistance);
+        return _cellDistance;
     }
-    return QVariant();
+    return v;
 }
 void SubGridLayer::vproperty(const QString& key, const QVariant& value) {
     LayerModel::vproperty(key, value);
@@ -138,10 +139,16 @@ int SubGridLayer::numberOfBuffers(const QString &type) const
     return 0;
 }
 
-void SubGridLayer::calcEnvelope(Coordinate& cmin, Coordinate& cmax) {
+void SubGridLayer::calcEnvelope(Coordinate& cmin, Coordinate& cmax) const {
     cmin = layerManager()->rootLayer()->zoomEnvelope().min_corner();
     cmax = layerManager()->rootLayer()->zoomEnvelope().max_corner();
+    if (!cmin.isValid() || !cmax.isValid())
+        return;
+
     ICoordinateSystem screenCsy = layerManager()->rootLayer()->screenCsy();
+    if (!screenCsy.isValid())
+        return;
+
     if (screenCsy->isUnknown()) // cant do any extra calcs with unknown
         return;
 
@@ -188,10 +195,12 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
             vector.push_back(y - center.y);
             vector.push_back(z);
             indices.push_back(indices.size());
+
         };
 
         Coordinate cmin, cmax;
         calcEnvelope(cmin, cmax);
+        double precision = 0;
         if (_cellDistance == rUNDEF) {
 
             _cellDistance = MathHelper::round((cmax.x - cmin.x) / 7.0);
@@ -212,11 +221,14 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
         {
             PushPoints(x, cmin.y, 0, center, vertices, indices);
             PushPoints(x, cmax.y, 0, center, vertices, indices);
+
         }
+
         for (double y = ceil(cmin.y / _cellDistance) * _cellDistance; y < cmax.y; y += _cellDistance)
         {
             PushPoints(cmin.x, y, 0, center, vertices, indices);
             PushPoints(cmax.x, y, 0, center, vertices, indices);
+
         }
         _buffer.addObject(0, vertices, indices, std::vector<qreal>(), itLINE, 0);
 
@@ -224,6 +236,7 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
         addVisualAttribute(new GlobalAttributeModel(TR("Texts"), "primarygridpropertyeditor", this));
 
         _prepared |= (LayerModel::ptGEOMETRY);
+        layerManager()->updateAxis();
     }
 
     return true;
@@ -253,14 +266,11 @@ SecondaryGridLayer::SecondaryGridLayer(LayerManager *manager, QStandardItem *par
 }
 
 QVariant SecondaryGridLayer::vproperty(const QString& key) const {
-    QVariant v =  SubGridLayer::vproperty(key);
-    if (v.isValid())
-        return v;
 
     if (key == "cellcount") {
         return _cellCount;
     }
-    return QVariant();
+    return SubGridLayer::vproperty(key);
 }
 void SecondaryGridLayer::vproperty(const QString& key, const QVariant& value) {
     SubGridLayer::vproperty(key, value);

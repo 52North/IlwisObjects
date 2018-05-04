@@ -46,7 +46,7 @@ namespace Ilwis {
 
 
         protected:
-            void calcEnvelope(Coordinate &cmin, Coordinate &cmax);
+            void calcEnvelope(Coordinate &cmin, Coordinate &cmax) const;
 
             OGLBuffer _buffer;
             double _cellDistance = rUNDEF;
@@ -64,7 +64,8 @@ namespace Ilwis {
             bool prepare(int dummy);
             void active(bool yesno);
             bool active() const;
-        };
+               
+         };
 
         class SecondaryGridLayer : public SubGridLayer {
         public:
@@ -78,6 +79,7 @@ namespace Ilwis {
         private:
             int _cellCount = 4;
             PrimaryGridLayer *_primaryGrid;
+
 
         };
     }
