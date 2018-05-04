@@ -148,7 +148,6 @@ Item {
     }
 
     Component.onCompleted: {
-    console.debug("xxxxxxxxxxxxxxxxxx")
         manager = models.createLayerManager(layers,layerview)
     }
     Component.onDestruction: {
