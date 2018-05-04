@@ -33,7 +33,7 @@ namespace  Ilwis {
 		public:
 			explicit DataseriesModel();
 			DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis);
-			void setXYData();
+			bool setData();
 
 			QVariantList points() const;
 

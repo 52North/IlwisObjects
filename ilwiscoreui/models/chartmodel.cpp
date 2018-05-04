@@ -88,6 +88,9 @@ bool Ilwis::Ui::ChartModel::isValidSeries(const QString columnName) const
 quint32 Ilwis::Ui::ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis) {
 
 	auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis);
+	if (!newseries->setData())
+		return _series.size();
+
 	_series.push_back(newseries);
 
 	if (_minx == rUNDEF) {		// assume all or none are undef
