@@ -296,8 +296,6 @@ void LayerModel::addSelection(quint64 featureid, bool single)
     }
 }
 
-
-
 void Ilwis::Ui::LayerModel::activeAttributeName(const QString & pName)
 {
 }
@@ -331,15 +329,23 @@ void LayerModel::opacity(double opacity)
 const LayerModel *LayerModel::parentLayer() const
 {
     const QStandardItem *lyr = dynamic_cast<const QStandardItem *>(this);
-    if ( lyr->index().isValid())
-        return static_cast<const LayerModel *>(lyr->parent());
+    if (lyr->index().isValid()) {
+        auto *p1 = lyr->parent();
+        auto *p2 = _layerManager->layerTree()->invisibleRootItem();
+        if ( p1 != p2) // the top of the hierarchy is not a layer but a plain qstandarditem. So we can not return it as a layer
+            return static_cast<const LayerModel *>(p1);
+    }
     return 0;
 }
 
 LayerModel *LayerModel::parentLayer() {
     QStandardItem *lyr = dynamic_cast<QStandardItem *>(this);
-    if ( lyr->index().isValid())
-        return static_cast<LayerModel *>(lyr->parent());
+    if (lyr->index().isValid()) {
+        auto *p1 = lyr->parent();
+        auto *p2 = _layerManager->layerTree()->invisibleRootItem();
+        if (p1 != p2)
+            return static_cast<LayerModel *>(lyr->parent());
+    }
     return 0;
 }
 
