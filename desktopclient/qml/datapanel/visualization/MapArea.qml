@@ -15,26 +15,7 @@ DropArea {
         addDataSource(resource.url, resource.name, resource.typeName)       
     }
 
-    Row{
-        anchors.top: parent.top
-        anchors.topMargin : 5
-        id : toprow
-        x : 20
-        height : 20
-        width : parent.width - 40
-        Repeater {
-            id : toprowRep
-            model : layerview.manager.xGridAxisTop
-            width : parent.width
-            height : parent.height
-            Text {
-                height : 15
-                width : modelData.size
-                text : modelData.value
-            }
-        }
-    }
- 
+
     Rectangle {
         id : mapBorder
         anchors.fill: parent
@@ -97,6 +78,32 @@ DropArea {
     }
 
     Row{
+        anchors.top: parent.top
+        anchors.topMargin : 5
+        id : toprow
+        x : 20
+        height : 20
+        width : parent.width - 40
+        Repeater {
+            id : toprowRep
+            model : layerview.manager.xGridAxisTop
+            width : parent.width
+            height : parent.height
+            Rectangle {
+                height : 15
+                width : modelData.size
+                Text {
+                    height : 15
+                    width : modelData.size
+                    text : modelData.value
+                    x : -contentWidth / 2
+                }
+            }
+        }
+    }
+ 
+
+    Row{
         anchors.bottom: parent.bottom 
         id : bottomrow
         x : 20
@@ -107,51 +114,74 @@ DropArea {
             model : layerview.manager.xGridAxisBottom
             width : parent.width
             height : parent.height
-            Text {
+            Rectangle {
+                y : 3
                 height : 15
                 width : modelData.size
-                text : modelData.value
+               Text {
+                    height : 15
+                    width : modelData.size
+                    text : modelData.value
+                    x : -contentWidth / 2
+                }
             }
+
         }
     }
     Column {
         anchors.left : parent.left 
         id : leftcolumn
-        y : 40
-        height : parent.height// - 40
+        y : 20
+        height : parent.height - 40
         width :20
         Repeater {
             id : leftcolumnRep
             model : layerview.manager.yGridAxisLeft
             width : parent.width
             height : parent.height
-            Text {
+            Rectangle {
                 height : modelData.size
                 width : 15
-                text : modelData.value
-                rotation : 90
-                x : -20
+                x : 3
+                Text {
+                    anchors.left : parent.left
+                    text : modelData.value
+                    width : 15
+                    height : modelData.size
+                    transformOrigin: Item.TopLeft
+                    rotation : -90
+                    y : contentWidth / 2
+                }
             }
         }
     }
 
-   Column {
+    Column {
         anchors.right : parent.right 
-        id : righttcolumn
-        y : 40 - 7
-        height : parent.height// - 40
+        id : rightcolumn
+        y : 20
+        height : parent.height - 40
         width :20
         Repeater {
             id : rightcolumnRep
             model : layerview.manager.yGridAxisRight
             width : parent.width
             height : parent.height
-            Text {
+            Rectangle {
                 height : modelData.size
-                width : 15
-                text : modelData.value
-                rotation : -90
-                x: 20 + 7
+                anchors.right : parent.right
+                width : 20
+
+                Text {
+                    anchors.left : parent.left
+                    anchors.leftMargin : 15
+                    text : modelData.value
+                    width : 15
+                    height : modelData.size
+                    transformOrigin: Item.TopLeft
+                    rotation : 90
+                    y : -contentWidth / 2
+                }
             }
         }
     }

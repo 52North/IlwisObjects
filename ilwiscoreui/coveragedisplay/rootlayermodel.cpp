@@ -548,13 +548,16 @@ QVariantList RootLayerModel::calcAxisValues(const QString& axisType, const Coord
         return QString("%1").arg(round(num, prec), 0, 'f', (prec != 0 ? -std::log10(prec) : 0));
     };
 
-    auto SavePoints = [&](double a, double b, double newValue, double prec) -> void {
-        auto dist = std::abs(a - b);
+    auto SavePoints = [&](double a, double b, double newValue, double prec, double rest) -> double {
+
         auto data = axisValues.back().toMap();
-        data["size"] = (int)dist;
+        auto dist = std::abs(a - b);
+        double nextrest = dist - (int)dist;
+        data["size"] = (int)(dist + rest);
         axisValues.back() = data;
         data["value"] = RoundNumber(newValue, prec);
         axisValues.push_back(data);
+        return nextrest;
     };
 
     double precision = 0;
@@ -564,6 +567,7 @@ QVariantList RootLayerModel::calcAxisValues(const QString& axisType, const Coord
     Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
 
     QVariantMap data;
+    double rest = 0;
   
     if (axisType == "xaxisvaluestop") {
         data["value"] = "";//RoundNumber(cmin.x, 0.001);
@@ -572,43 +576,47 @@ QVariantList RootLayerModel::calcAxisValues(const QString& axisType, const Coord
         for (double x = ceil(cmin.x / cellDistance) * cellDistance; x < cmax.x; x += cellDistance)
         {
             auto p = screenGrf()->coord2Pixel(Coordinate(x, cmin.y));
-            SavePoints(p.x, pixPrev1.x, x, precision);
+            rest = SavePoints(p.x, pixPrev1.x, x, precision, rest);
             pixPrev1 = p;
         }
     }else if (axisType == "xaxisvaluesbottom"){
+        rest = 0;
         data["value"] = ""; // RoundNumber(cmax.x, 0.001);
-        axisValues.push_back(data);
+        axisValues.push_back(data); 
+        rest = 0;
         auto pixPrev2 = screenGrf()->coord2Pixel(cmin);
         for (double x = ceil(cmin.x / cellDistance) * cellDistance; x < cmax.x; x += cellDistance)
         {
          auto p = screenGrf()->coord2Pixel(Coordinate(x, cmax.y));
-            SavePoints(p.x, pixPrev2.x, x, precision);
+            rest = SavePoints(p.x, pixPrev2.x, x, precision, rest);
             pixPrev2 = p;
         }
+        
         
     } else if (axisType == "yaxisvaluesleft") {
         data["value"] = "";  // RoundNumber(cmin.y, 0.001);
         axisValues.push_back(data);
-        auto pixPrev1 = screenGrf()->coord2Pixel(cmin);
-        for (double y = ceil(cmin.y / cellDistance) * cellDistance; y < cmax.y; y += cellDistance)
+        auto pixPrev1 = screenGrf()->coord2Pixel(cmax);
+        rest = 0;
+        for (double y = ceil(cmax.y / cellDistance) * cellDistance - cellDistance; y >= cmin.y; y -= cellDistance)
         {
             auto p = screenGrf()->coord2Pixel(Coordinate(cmin.x, y));
-            SavePoints(p.y, pixPrev1.y, y, precision);
+            rest = SavePoints(p.y, pixPrev1.y, y, precision, rest);
             pixPrev1 = p;
         }
-        std::reverse(axisValues.begin(), axisValues.end());
     }
     else if (axisType == "yaxisvaluesright") {
+
+        rest = 0;
         data["value"] = ""; //RoundNumber(cmax.y, 0.001);
         axisValues.push_back(data);
-        auto pixPrev2 = screenGrf()->coord2Pixel(cmin);
-        for (double y = ceil(cmin.y / cellDistance) * cellDistance; y < cmax.y; y += cellDistance)
+        auto pixPrev2 = screenGrf()->coord2Pixel(cmax);
+        for (double y = ceil(cmax.y / cellDistance) * cellDistance - cellDistance; y >= cmin.y; y -= cellDistance)
         {
             auto p = screenGrf()->coord2Pixel(Coordinate(cmax.x, y));
-            SavePoints(p.y, pixPrev2.y, y, precision);
+            rest = SavePoints(p.y, pixPrev2.y, y, precision, rest);
             pixPrev2 = p;
         }
-        std::reverse(axisValues.begin(), axisValues.end());
     }
     return axisValues;
 }
