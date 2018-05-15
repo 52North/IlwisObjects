@@ -136,16 +136,6 @@ QVariantList Ilwis::Ui::RasterLayerModel::linkProperties() const
     return result;
 }
 
-QVariant RasterLayerModel::vproperty(const QString &attrName) const
-{
-    return QVariant();
-}
-
-void RasterLayerModel::vproperty(const QString &attrName, const QVariant &value)
-{
-
-}
-
 QString RasterLayerModel::value2string(const QVariant &value, const QString &attrName) const
 {
     if ( attrName != "") {

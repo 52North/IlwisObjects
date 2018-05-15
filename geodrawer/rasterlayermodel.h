@@ -45,8 +45,6 @@ public:
     Q_PROPERTY(QVector<qint32> removeQuads READ removeQuads)
 
 	void coverage(const ICoverage& cov);
-    QVariant vproperty(const QString& attrName) const ;
-    void vproperty(const QString& attrName, const QVariant& value);
     void fillAttributes() ;
 	bool prepare(int);
     QString value2string(const QVariant &value, const QString &attrName) const;
