@@ -65,15 +65,16 @@ Item {
 					    GL.THREE.RGBAFormat,
 					    GL.THREE.UnsignedByteType,
 					    GL.THREE.UVMapping);
-				    tTexture.needsUpdate = true
+				    tTexture.needsUpdate = true;
 				    var uniforms = {
-					    texture1: { type: "t", value: tTexture },
+                        alpha: { type: "f", value: layer.vproperty("opacity") },
+                        texture1: { type: "t", value: tTexture },
                         uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 				    };
 				    var material = colorShaderMaterialTemplate.clone();
 				    material.uniforms = uniforms
 				    material.tTexture = tTexture; // keep a copy
-				    material.needsUpdate = true
+				    material.needsUpdate = true;
                     var geometry = new GL.THREE.BufferGeometry();
                     canvas.setGeometry(layer, i,"rastercoverage",geometry);
                     var uvs = new Float32Array(layer.uvs(i))
@@ -97,7 +98,7 @@ Item {
                     palette.height,
                     GL.THREE.RGBAFormat,
                     GL.THREE.UnsignedByteType);
-                layer.tPalette.needsUpdate = true
+                layer.tPalette.needsUpdate = true;
             }
             var removeQuads = layer.removeQuads;
             for (var i=0; i < removeQuads.length; ++i) {
@@ -118,16 +119,17 @@ Item {
 					    GL.THREE.AlphaFormat,
 					    GL.THREE.UnsignedByteType,
 					    GL.THREE.UVMapping);
-				    tTexture.needsUpdate = true
+				    tTexture.needsUpdate = true;
 				    var uniforms = {
+					    alpha: { type: "f", value: layer.vproperty("opacity") },
 					    texture1: { type: "t", value: tTexture },
-                        uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
+					    uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 					    palette: { type: "t", value: layer.tPalette }
 				    };
                     var material = paletteShaderMaterialTemplate.clone();
 				    material.uniforms = uniforms
                     material.tTexture = tTexture; // keep a copy
-				    material.needsUpdate = true
+				    material.needsUpdate = true;
                     var geometry = new GL.THREE.BufferGeometry();
                     canvas.setGeometry(layer, i,"rastercoverage",geometry);
                     var uvs = new Float32Array(layer.uvs(i))
@@ -276,11 +278,18 @@ Item {
 					mesh.material.needsUpdate = true;
 				}
 			} else if ( propertyType == "layer"){
-				for(var i=0; i < layer.meshCount(); ++i){
-					var mesh =  getMesh(layer, layer.meshIndex(i))
-					if ( mesh){
-						mesh.visible = layer.vproperty("active")
-						mesh.material.opacity = layer.vproperty("opacity")
+				var meshes = scene.getObjectByName(layer.nodeId);
+				if (layer.drawType != "raster") {
+					for(var i=0; i < meshes.children.length; ++i) {
+						var mesh = meshes.children[i];
+						mesh.visible = layer.vproperty("active");
+						mesh.material.opacity = layer.vproperty("opacity");
+					}
+				} else {
+					for(var i=0; i < meshes.children.length; ++i) {
+						var mesh = meshes.children[i];
+						mesh.visible = layer.vproperty("active");
+						mesh.material.uniforms.alpha.value = layer.vproperty("opacity");
 					}
 				}
 			}
@@ -338,19 +347,21 @@ Item {
 			colorShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
 			colorShaderMaterialTemplate.fragmentShader =
 				'varying vec2 vUv;' +
-				'uniform sampler2D texture1;' +
+				'uniform sampler2D texture1;uniform float alpha;' +
 				'void main() { ' +
 					'gl_FragColor = texture2D(texture1,vUv);' +
+					'gl_FragColor.a *= alpha;' +
 				'}'
             paletteShaderMaterialTemplate = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
 			paletteShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
 			paletteShaderMaterialTemplate.fragmentShader =
 				'varying vec2 vUv;' +
-				'uniform sampler2D texture1;uniform sampler2D palette;' +
+				'uniform sampler2D texture1;uniform sampler2D palette;uniform float alpha;' +
 				'void main() { ' +
 					'float x = texture2D(texture1,vUv).a;' +
 					'float y = 0.5;'+
 					'gl_FragColor = texture2D(palette,vec2(x,y));' +
+					'gl_FragColor.a *= alpha;' +
 				'}'
 		}
     }
