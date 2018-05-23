@@ -135,16 +135,11 @@ Column {
     }
 
     function zoomEnvelope(newenvelope){
-        console.debug("xxxx", newenvelope)
         var parts = newenvelope.split(" ")
         if ( parts.length >= 4) {
             zoomEnvelope1.content =  parseFloat(parts[0]).toFixed(4) + " " + parseFloat(parts[1]).toFixed(4)
             zoomEnvelope2.content =  parseFloat(parts[2]).toFixed(4) + " " + parseFloat(parts[3]).toFixed(4)
         }
-    }
-
-    Component.onCompleted : {
-        console.debug("csy=", layerview.manager.rootLayer.screenCsy)
     }
 }
 
