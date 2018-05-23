@@ -52,6 +52,7 @@
 #include "models/internaldatabasemodel.h"
 #include "coveragedisplay/propertyeditors/numericrepresentationsetter.h"
 #include "coveragedisplay/propertyeditors/itemrepresentationsetter.h"
+#include "coveragedisplay/propertyeditors/crosssection.h"
 #include "ilwiscoreui/tableoperations/tableoperation.h"
 #include "keyfilter.h"
 #include "startilwis.h"
@@ -146,6 +147,7 @@ void StartIlwis::init() {
         qmlRegisterType<ConceptModel>("ConceptModel",1,0,"ConceptModel");
         qmlRegisterType<CoverageLayerModel>("CoverageLayerModel", 1, 0, "CoverageLayerModel");
 		qmlRegisterType<ModelRegistry>("ModelRegistry", 1, 0, "ModelRegistry");
+        qmlRegisterType<CrossSectionPin>("CrossSectionPin", 1, 0, "CrossSectionPin");
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
         _formbuilder = new ApplicationFormExpressionParser();
