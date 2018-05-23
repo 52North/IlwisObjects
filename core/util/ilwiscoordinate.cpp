@@ -222,6 +222,19 @@ bool Ilwis::Coordinate::operator!=(const Ilwis::Coordinate& pnt){
     return !(operator==(pnt));
 }
 
+bool Ilwis::Coordinate::isEqual(const Ilwis::Coordinate& crd, double delta) {
+    double d = std::abs(x - crd.x);
+    if (delta != rUNDEF && d > delta)
+        return false;
+    d = std::abs(y - crd.y);
+    if (delta != rUNDEF && d > delta)
+        return false;
+    d = std::abs(z - crd.z);
+    if (delta != rUNDEF && d > delta)
+        return false;
+    return true;
+}
+
 QString Coordinate::toString(int decimals, bool use3D) const
 {
     if ( !isValid())
@@ -370,6 +383,8 @@ void LatLon::lat(const Angle& val){
 void LatLon::lon(const Angle& val){
     x = val.degrees();
 }
+
+
 
 QString LatLon::toString(int decimals, bool ) const
 {
