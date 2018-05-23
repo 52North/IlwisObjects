@@ -28,6 +28,7 @@ class CoverageLayerModel;
 class LayerInfoItem;
 class LayerManager;
 class CompositeLayerModel;
+class VisualPropertyEditor;
 
 typedef std::function<LayerModel *(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&)> CreateLayer;
 
@@ -39,6 +40,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(QStandardItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> topLevelLayers READ childLayersPrivate NOTIFY topLevelLayersChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> allCoverages READ allCoveragesPrivate NOTIFY allCoveragesChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> postDrawers READ postDrawers NOTIFY allCoveragesChanged)
     Q_PROPERTY(quint32 viewid READ viewid CONSTANT)
     Q_PROPERTY(bool hasSelectionDrawer READ hasSelectionDrawer WRITE setHasSelectionDrawer NOTIFY hasSelectionDrawerChanged)
     Q_PROPERTY(bool zoomInMode READ zoomInMode WRITE setZoomInMode NOTIFY zoomInModeChanged)
@@ -52,6 +54,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(QVariantList xGridAxisBottom READ xGridAxisBottom NOTIFY axisValuesChanged)
     Q_PROPERTY(QVariantList yGridAxisLeft READ yGridAxisLeft NOTIFY axisValuesChanged)
     Q_PROPERTY(QVariantList yGridAxisRight READ yGridAxisRight NOTIFY axisValuesChanged)
+    Q_PROPERTY(bool updatePostDrawers READ updatePostDrawersPrivate NOTIFY updatePostDrawersChanged)
 
 
 public:
@@ -115,7 +118,9 @@ public:
     QVariantList xGridAxisBottom() const;
     QVariantList yGridAxisRight() const;
     QVariantList yGridAxisLeft() const;
-
+    void addPostDrawer(VisualPropertyEditor *editor);
+    void removePostDrawer(VisualPropertyEditor *editor);
+    void updatePostDrawers();
 
 public slots:
         void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);
@@ -133,6 +138,7 @@ signals:
     void allCoveragesChanged();
     void linkSendMessage(const QVariantMap& parameters);
     void axisValuesChanged();
+    void updatePostDrawersChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
@@ -153,11 +159,15 @@ private:
 	LayerModel *_lastAddedCoverageLayer = 0;
     QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
     QList<LayerModel *> _coverages; //this list is filled on the fly in  allCoveragesPrivate, don't rely on it to have contents
+    QList<VisualPropertyEditor *> _postDrawers;
 
     static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
     QQmlListProperty<LayerModel> childLayersPrivate();
     QQmlListProperty<LayerModel> allCoveragesPrivate();
     void setSelectionPrivate(const Coordinate& crd, LayerModel * layer);
+    QQmlListProperty<VisualPropertyEditor> postDrawers();
+    bool updatePostDrawersPrivate();
+    
 
 };
 

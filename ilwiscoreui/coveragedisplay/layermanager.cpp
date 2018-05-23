@@ -55,6 +55,7 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
 
 LayerManager::~LayerManager()
 {
+    _postDrawers = QList<VisualPropertyEditor *>();
     modelregistry()->unRegisterModel(modelId());
 }
 
@@ -295,6 +296,16 @@ QQmlListProperty<LayerModel> LayerManager::allCoveragesPrivate()
  
 }
 
+QQmlListProperty<VisualPropertyEditor> LayerManager::postDrawers() {
+    return QQmlListProperty<VisualPropertyEditor>(this, _postDrawers);
+
+}
+
+bool LayerManager::updatePostDrawersPrivate()
+{
+    return true;
+}
+
 int LayerManager::nextId() {
 	return _nodeCounter++;
 }
@@ -500,13 +511,34 @@ QVariantList LayerManager::xGridAxisBottom() const
     return QVariantList();
 }
 
-QVariantList Ilwis::Ui::LayerManager::yGridAxisLeft() const
+QVariantList LayerManager::yGridAxisLeft() const
 {
     if (rootLayer()) {
         return rootLayer()->gridAxis("yaxisvaluesleft");
     }
 
     return QVariantList();
+}
+
+void LayerManager::addPostDrawer(VisualPropertyEditor* editor)
+{
+    auto iter = std::find(_postDrawers.begin(), _postDrawers.end(), editor);
+    if (iter == _postDrawers.end()) {
+        _postDrawers.append(editor);
+    }
+}
+
+void Ilwis::Ui::LayerManager::removePostDrawer(VisualPropertyEditor * editor)
+{
+    auto iter = std::find(_postDrawers.begin(), _postDrawers.end(), editor);
+    if (iter != _postDrawers.end()) {
+        _postDrawers.erase(iter);
+    }
+}
+
+void Ilwis::Ui::LayerManager::updatePostDrawers()
+{
+    emit updatePostDrawersChanged();
 }
 
 QVariantList Ilwis::Ui::LayerManager::yGridAxisRight() const
