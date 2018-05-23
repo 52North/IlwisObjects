@@ -95,7 +95,6 @@ Rectangle {
                 var cmd = uicontext.worldmapCommand(layermanager.viewid)
                 renderer.addCommand(cmd)
                 mouseActions.layerManager = layermanager
-                console.debug(mouseActions.layerManager)
                 renderer.addCommand("setlinecolor(" + layermanager.viewid + ", 1,darkblue)");
                 renderer.addCommand("setbackgroundcolor(" + layermanager.viewid + "," + catalogMapView.color + ")")
                 renderer.update()
