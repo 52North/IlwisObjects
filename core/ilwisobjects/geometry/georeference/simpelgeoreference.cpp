@@ -39,6 +39,9 @@ void SimpelGeoReference::clear() {
 
 Coordinate SimpelGeoReference::pixel2Coord(const Pixeld &pix) const
 {
+    if (pix.x == iUNDEF || pix.y == iUNDEF)
+        return Coordinate();
+
     Coordinate c((_a22 * (pix.x - _b1) - _a12 * (pix.y - _b2)) / _det,
                  (-_a21 * (pix.x - _b1) + _a11 * (pix.y - _b2)) / _det );
     return c;
@@ -46,6 +49,9 @@ Coordinate SimpelGeoReference::pixel2Coord(const Pixeld &pix) const
 
 Pixeld SimpelGeoReference::coord2Pixel(const Coordinate &crd) const
 {
+    if (crd.x == rUNDEF || crd.y == rUNDEF)
+        return Pixeld();
+
     double rCol = _a11 * crd.x + _a12 * crd.y + _b1; // - 1;
     double rRow = _a21 * crd.x + _a22 * crd.y + _b2; // - 1;
     Pixeld pix(rCol, rRow);
