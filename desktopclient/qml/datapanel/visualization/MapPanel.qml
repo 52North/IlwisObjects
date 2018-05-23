@@ -20,6 +20,7 @@ Item {
     property TabModel tabmodel
     property string panelType : "mappanel"
     property var createParameters : []
+    property var activeEditor : null
     property alias viewmanager : viewmanager
     property alias maptools: maptools
     property LayerManager manager
@@ -193,6 +194,16 @@ Item {
     function transfer(datapanel){
         layers.transfer(datapanel)
         viewmanager.transfer(datapanel)
+    }
+
+    function mapClicked(mx,my){
+        if ( activeEditor ){
+        var qqq = activeEditor.handleMouseClick
+            if ( typeof activeEditor.handleMouseClick == 'function'){
+                activeEditor.handleMouseClick(mx,my)
+            }
+        
+        }
     }
 
 }
