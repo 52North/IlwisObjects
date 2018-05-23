@@ -109,6 +109,19 @@ public:
         return v;
     }
 
+    bool isEqual(const CrdType& crd, double delta=rUNDEF) {
+        double d = std::abs(x - crd.x);
+        if (delta != rUNDEF && d > delta)
+            return false;
+        d = std::abs(y - crd.y);
+        if (delta != rUNDEF && d > delta)
+            return false;
+        d = std::abs(z - crd.z);
+        if (delta != rUNDEF && d > delta)
+            return false;
+        return true;
+    }
+
     Ilwis::Location<CrdType>& operator=(const Ilwis::Location<CrdType>& p2) {
         this->x = p2.x;
         this->y = p2.y;
