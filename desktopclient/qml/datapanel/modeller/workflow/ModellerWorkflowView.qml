@@ -636,7 +636,6 @@ Modeller.ModellerWorkArea {
                 }
             }else if ( currentItem.type === "flowconnection"){
                 workflow.deleteFlow(currentItem.target.itemid, currentItem.flowPoints.toParameterIndex)
-                console.debug(currentItem, currentItem.source, currentItem.target,currentItem.target.itemid)
                 currentItem.source.removeLinkTo(currentItem.target.itemid)
                 wfCanvas.canvasValid = false
             }
