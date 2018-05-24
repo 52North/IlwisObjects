@@ -136,6 +136,18 @@ void Ilwis::Ui::VisualPropertyEditor::associatedUrl(const QString & url)
     _associatedUrl = url;
 }
 
+bool Ilwis::Ui::VisualPropertyEditor::postDrawerActive() const
+{
+    return _postDrawerActive;
+}
+
+void Ilwis::Ui::VisualPropertyEditor::postDrawerActive(bool yesno)
+{
+    _postDrawerActive = yesno;
+    vpmodel()->layer()->layerManager()->updatePostDrawers();
+
+}
+
 void VisualPropertyEditor::displayName(const QString& newname){
     _displayName = newname;
 }

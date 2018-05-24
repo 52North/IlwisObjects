@@ -28,6 +28,7 @@ class ILWISCOREUISHARED_EXPORT VisualPropertyEditor : public QObject, public Ilw
     Q_PROPERTY(QString attributeName READ attributeName CONSTANT)
     Q_PROPERTY(QString representationName READ representationName NOTIFY rprNameChanged)
     Q_PROPERTY(QString associatedUrl READ associatedUrl CONSTANT)
+    Q_PROPERTY(bool postDrawerActive READ postDrawerActive WRITE postDrawerActive NOTIFY postDrawerActiveChanged)
 
 public:
     VisualPropertyEditor(QObject *parent = 0);
@@ -47,6 +48,8 @@ public:
     virtual void representationChanged(const Ilwis::IRepresentation& rpr);
     QString associatedUrl() const;
     void associatedUrl(const QString& url);
+    bool postDrawerActive() const;
+    void postDrawerActive(bool yesno);
 
 protected:
     VisualAttribute *vpmodel() const;
@@ -56,6 +59,8 @@ protected:
 
 signals:
     void rprNameChanged();
+    void postDrawerActiveChanged();
+
 private:
 
     QString _displayName;
@@ -70,6 +75,7 @@ protected:
     VisualAttribute *_visualAttribute = 0;
     static quint64 _baseId;
     QString _associatedUrl;
+    bool _postDrawerActive = false;
 
 };
 }
