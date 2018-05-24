@@ -40,11 +40,33 @@ namespace Ui{
         QString _label;
         Pixel _pix;
     };
+
+    class ILWISCOREUISHARED_EXPORT PinDataSource : public QObject {
+        Q_OBJECT
+
+    public:
+        PinDataSource();
+        PinDataSource(quint64 objid, QObject *parent);
+
+        Q_PROPERTY(QString source READ sourcePrivate CONSTANT)
+            Q_PROPERTY(QVariantList bands READ bands CONSTANT)
+
+            void active(int index, bool yesno);
+
+        QVariantList bands() const;
+    private:
+        quint64 _objid;
+        QList<QVariant> _actives;
+
+        QString sourcePrivate() const;
+
+    };
 class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
 {
     Q_OBJECT
 
         Q_PROPERTY(QQmlListProperty<Ilwis::Ui::CrossSectionPin> pins READ pins NOTIFY pinsChanged)
+        Q_PROPERTY(QQmlListProperty<Ilwis::Ui::PinDataSource> dataSources READ dataSources NOTIFY dataSourcesChanged)
         Q_PROPERTY(int maxRow READ maxR CONSTANT)
         Q_PROPERTY(int maxColumn READ maxC CONSTANT)
         Q_PROPERTY(int minX READ minX CONSTANT)
@@ -60,6 +82,7 @@ public:
     bool canUse(const IIlwisObject &obj, const QString &name) const;
     static VisualPropertyEditor *create(VisualAttribute *p);
     QQmlListProperty<Ilwis::Ui::CrossSectionPin> pins() ;
+    QQmlListProperty<Ilwis::Ui::PinDataSource> dataSources() ;
 
     Q_INVOKABLE void changeCoords(int index, int x, int y, bool useScreenPixels);
     Q_INVOKABLE void changePixel(int index, double x, double y);
@@ -69,11 +92,14 @@ public:
     Q_INVOKABLE double pinY(int index) const;
     Q_INVOKABLE void deletePin(int index);
     Q_INVOKABLE void addPin();
-
+    Q_INVOKABLE void addDataSource(const QString& id);
+    Q_INVOKABLE QVariantList band(int index);
+    Q_INVOKABLE void setActive(int sourceIndex, int bandIndex, bool yesno);
 
 signals:
     void pinLocation4screenChanged();
     void pinsChanged();
+    void dataSourcesChanged();
 
   NEW_PROPERTYEDITOR(CrosssectionTool)
 
@@ -87,6 +113,8 @@ private:
     QVariantList pinLocation4screen() const;
 
     QList<CrossSectionPin *> _pins;
+    QList<PinDataSource *> _dataSources;
+
     ICoverage _coverage;
 };
 }

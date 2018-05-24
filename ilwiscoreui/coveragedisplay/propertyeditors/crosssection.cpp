@@ -4,6 +4,7 @@
 #include "visualattribute.h"
 #include "visualpropertyeditor.h"
 #include "raster.h"
+#include "attributedefinition.h"
 #include "crosssection.h"
 #include "ilwiscontext.h"
 
@@ -119,6 +120,7 @@ QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
 
    return QQmlListProperty<CrossSectionPin>(this, _pins);
 }
+
 
 void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixels)
 {
@@ -263,6 +265,79 @@ void CrosssectionTool::addPin()
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
     emit pinsChanged();
+}
+
+QQmlListProperty<Ilwis::Ui::PinDataSource> CrosssectionTool::dataSources() 
+{
+    return QQmlListProperty<Ilwis::Ui::PinDataSource>(this, _dataSources);
+}
+
+
+void Ilwis::Ui::CrosssectionTool::addDataSource(const QString & id)
+{
+    bool ok;
+    quint64 objid = id.toULongLong(&ok);
+    if (!ok)
+        return;
+    _dataSources.push_back(new PinDataSource(objid, this));
+    emit dataSourcesChanged();
+}
+
+QVariantList Ilwis::Ui::CrosssectionTool::band(int index)
+{
+    if (index < _dataSources.size()) {
+        return _dataSources[index]->bands();
+    }
+    return QVariantList();
+}
+
+Q_INVOKABLE void Ilwis::Ui::CrosssectionTool::setActive(int sourceIndex, int bandIndex, bool yesno)
+{
+    if (sourceIndex < _dataSources.size()) {
+        _dataSources[sourceIndex]->active(bandIndex, yesno);
+    }
+}
+
+//---------------------------------
+PinDataSource::PinDataSource() {
+
+}
+
+PinDataSource::PinDataSource(quint64 objid, QObject *parent) {
+    IRasterCoverage raster;
+    raster.prepare(objid);
+    if (!raster.isValid())
+        return;
+    _objid = objid;
+    const RasterStackDefinition&  stack = raster->stackDefinition();
+    for (quint32 i = 0; i < stack.count(); ++i) {
+        QString name = stack.index(i);
+        QVariantMap data;
+        data["name"] = name;
+        data["active"] = true;
+        _actives.push_back(data);
+    }
+}
+
+QVariantList PinDataSource::bands() const
+{
+    return _actives;
+}
+
+QString PinDataSource::sourcePrivate() const
+{
+    ICoverage cov;
+    cov.prepare(_objid);
+    if (cov.isValid())
+        return cov->resource().url().toString();
+
+    return QString();
+}
+
+void PinDataSource::active(int index, bool yesno) {
+    if (index < _actives.size()) {
+        _actives[index] = yesno;
+    }
 }
 
 
