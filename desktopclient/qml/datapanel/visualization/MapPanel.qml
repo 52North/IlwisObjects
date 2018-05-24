@@ -154,6 +154,15 @@ Item {
     Component.onDestruction: {
     }
 
+    function setActiveEditor(editor){
+        if (activeEditor){
+            activeEditor.editor.postDrawerActive = false
+        }
+        activeEditor = editor
+        if ( activeEditor){
+            activeEditor.editor.postDrawerActive = true
+        }
+    }
     function subscribe (topic, func) {
         return PubSub.subscribe( topic, func );
     }
