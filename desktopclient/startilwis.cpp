@@ -148,6 +148,7 @@ void StartIlwis::init() {
         qmlRegisterType<CoverageLayerModel>("CoverageLayerModel", 1, 0, "CoverageLayerModel");
 		qmlRegisterType<ModelRegistry>("ModelRegistry", 1, 0, "ModelRegistry");
         qmlRegisterType<CrossSectionPin>("CrossSectionPin", 1, 0, "CrossSectionPin");
+        qmlRegisterType<PinDataSource>("PinDataSource", 1, 0, "PinDataSource");
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
         _formbuilder = new ApplicationFormExpressionParser();
@@ -219,6 +220,7 @@ void StartIlwis::initMainWindow()
         uicontext()->rootObject(topLevel);
         QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
         window->setIcon(QIcon("./qml/images/ilwis4.png"));
+
         window->setTitle(" ");
         if ( !window ) {
             qWarning("Error: Your root item has to be a Window.");
