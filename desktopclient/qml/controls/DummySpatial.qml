@@ -49,8 +49,10 @@ Rectangle {
             ctx.clearRect(0,0,width, height);
             var postDrawersList = layermanager.postDrawers;
             for(var i=0; i < postDrawersList.length; ++i){
-                postDrawers.source = postDrawersList[i].associatedUrl
-                postDrawers.item.draw(ctx, postDrawersList[i])
+                if ( postDrawersList[i].postDrawerActive){
+                    postDrawers.source = postDrawersList[i].associatedUrl
+                    postDrawers.item.draw(ctx, postDrawersList[i])
+                }
             }
         }
      }
