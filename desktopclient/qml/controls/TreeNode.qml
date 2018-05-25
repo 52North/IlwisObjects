@@ -37,7 +37,6 @@ MouseArea {
             tree.dropIndex = index
         }
 		onDropped: {
-			console.debug("dropped")
 			if ( droppedFunction && modelData.extensible)
 				droppedFunction(drag.source.ilwisobjectid)
         }

@@ -11,7 +11,7 @@ Item {
     property bool textEditable : false
     property int fontSize : 8
     property bool readOnly : false;
-    property var itemModel
+    property alias itemModel : textid.model
     property alias comboText : textid.currentText
     property string role
     property alias currentIndex : textid.currentIndex

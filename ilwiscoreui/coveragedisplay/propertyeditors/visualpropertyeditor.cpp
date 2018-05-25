@@ -4,10 +4,13 @@
 #include "representationelementmodel.h"
 #include "attributemodel.h"
 #include "visualattribute.h"
+#include "coveragelayermodel.h"
 #include "visualpropertyeditor.h"
 
 using namespace Ilwis;
 using namespace Ui;
+
+quint64 VisualPropertyEditor::_baseId = 0;
 
 VisualPropertyEditor::VisualPropertyEditor(QObject *parent) : QObject(parent)
 {
@@ -15,17 +18,20 @@ VisualPropertyEditor::VisualPropertyEditor(QObject *parent) : QObject(parent)
 }
 
 VisualPropertyEditor::VisualPropertyEditor(VisualAttribute *attr, const QString& name, const QString& displayNm, const QUrl &url) :
-    QObject(attr), Ilwis::Identity(name),
+    QObject(attr), Ilwis::Identity(name, _baseId++),
     _qmlUrl(url),
     _displayName(displayNm),
     _visualAttribute(attr)
 {
-
 }
 
 VisualPropertyEditor::VisualPropertyEditor(const VisualPropertyEditor& metadata, QObject *parent) : QObject(parent), Ilwis::Identity(metadata.name())
 {
     _qmlUrl = metadata._qmlUrl;
+}
+
+Ilwis::Ui::VisualPropertyEditor::~VisualPropertyEditor()
+{
 }
 
 QString VisualPropertyEditor::qmlUrl() const
@@ -74,6 +80,17 @@ int VisualPropertyEditor::layerIndex() const
     return iUNDEF;
 }
 
+ICoverage VisualPropertyEditor::coverage() const
+{
+    if (vpmodel() && vpmodel()->layer()) {
+        if (vpmodel()->layer()->layerType() == itFEATURELAYER || vpmodel()->layer()->layerType() == itRASTERLAYER) {
+            const CoverageLayerModel *coverageLayer = static_cast<const CoverageLayerModel *>(vpmodel()->layer());
+            return coverageLayer->coverage();
+        }
+    }
+    return ICoverage();
+}
+
 QString VisualPropertyEditor::displayName() const
 {
     return _displayName;
@@ -107,6 +124,28 @@ QString VisualPropertyEditor::representationName() const
 void VisualPropertyEditor::representationChanged(const IRepresentation &rpr)
 {
     // empty implementation
+}
+
+QString Ilwis::Ui::VisualPropertyEditor::associatedUrl() const
+{
+    return _associatedUrl;
+}
+
+void Ilwis::Ui::VisualPropertyEditor::associatedUrl(const QString & url)
+{
+    _associatedUrl = url;
+}
+
+bool Ilwis::Ui::VisualPropertyEditor::postDrawerActive() const
+{
+    return _postDrawerActive;
+}
+
+void Ilwis::Ui::VisualPropertyEditor::postDrawerActive(bool yesno)
+{
+    _postDrawerActive = yesno;
+    vpmodel()->layer()->layerManager()->updatePostDrawers();
+
 }
 
 void VisualPropertyEditor::displayName(const QString& newname){

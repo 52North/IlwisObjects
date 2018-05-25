@@ -23,7 +23,7 @@ MouseArea {
     signal zoomEnded(string envelope)
     signal setZoomPanButton(bool enablePanAndZoomOut)
     signal checkZoomNormalButton(bool enablePanAndZoomOut)
-    signal click(int x, int y)
+    signal click(int mx, int my)
     signal selectTab()
 
     FloatingRectangle{
@@ -88,6 +88,7 @@ MouseArea {
           floatrect.y = mouseY
           var mposition = mouseX + "|" + mouseY
           floatrect.text = layerManager.rootLayer.layerInfo(mposition)
+          console.debug("ooooooo", mposition, floatrect.text)
           layerManager.setSelection(mposition);
         }
     }
@@ -97,7 +98,6 @@ MouseArea {
             return
         var coords = envelope
         if ( typeof envelope === 'string'){
-            console.debug("in", envelope)
             var point = envelope.split(",")
             var pminx = parseFloat(point[0])   
             var pmaxx = parseFloat(point[2]) 
@@ -106,7 +106,6 @@ MouseArea {
             var coords = {minx : pminx, maxx : pmaxx, miny : pminy, maxy : pmaxy } 
         }                   
         var bb = layerManager.rootLayer.coord2Screen(coords)
-        console.debug("out", bb.minx, bb.maxx, bb.miny, bb.maxy)
         targetRectangle.x = bb.minx
         targetRectangle.width = bb.maxx - bb.minx
         targetRectangle.y = bb.miny
@@ -165,7 +164,6 @@ MouseArea {
             cbZoom.miny += deltay;
             cbZoom.maxy += deltay;
             var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
-            console.debug(mouseX, mouseY)
             zoomEnded(envelope)
         }
 		var mposition = mouseX + "|" + mouseY

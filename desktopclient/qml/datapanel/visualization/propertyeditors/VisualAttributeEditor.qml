@@ -56,6 +56,7 @@ Rectangle {
             height : parent.height
 			onLoaded : {
 				item.width = layerProperties.initColumnWidth("editorcolumn")
+                layerview.setActiveEditor(propertyEditor1.item)
 			}
 
         }
@@ -93,6 +94,10 @@ Rectangle {
             id : propertyEditor2
             width : parent.width
             height : parent.height
+
+	        onLoaded : {
+                layerview.setActiveEditor(propertyEditor2.item)
+			}
 
 
         }

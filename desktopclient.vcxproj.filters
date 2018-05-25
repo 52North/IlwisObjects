@@ -615,9 +615,6 @@
     <None Include="desktopclient\qml\datapanel\table\ColumnHeader.qml">
       <Filter>Distribution Files\qml\datapanel\table</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\table\ColumnList.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnManagement.qml">
       <Filter>Distribution Files\qml\datapanel\table</Filter>
     </None>
@@ -1133,6 +1130,24 @@
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LinkCoverage.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrosssectionTool.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionPinManager.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSources.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PostDrawerCrossSection.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\table\ColumnVisibility.qml">
+      <Filter>Distribution Files\qml\datapanel\table</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\table\ColumnList.qml">
+      <Filter>Distribution Files\qml\datapanel\table</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -187,7 +187,7 @@ void VisualAttribute::actualRange(const NumericRange &rng)
 
 //--------------------------------------------------------------------------
 LayerAttributeModel::LayerAttributeModel(LayerModel *parentLayer, const IIlwisObject& obj, const DataDefinition &def) :
-    VisualAttribute(parentLayer,def,"Layer Wide")
+    VisualAttribute(parentLayer,def, LAYER_WIDE_ATTRIBUTE)
 {
    _vproperties = uicontext()->propertyEditors(this, obj, VisualAttribute::LAYER_ONLY);
    _isAbstractAttribute = true;

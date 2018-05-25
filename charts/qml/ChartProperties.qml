@@ -3,17 +3,15 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick 2.5
-import "../../../../qml/Global.js" as Global
+//import "../../../../qml/Global.js" as Global
 import "../../../../qml/controls" as Controls
-import "../../../.." as Base
+//import "../../../.." as Base
 import "../../../../qml/datapanel" as DataPanel
 
 Rectangle {
     id : chartManagement
     width: parent.width
     Layout.minimumHeight: 24
-
-
 
     TabView{
         anchors.fill: parent
@@ -34,13 +32,35 @@ Rectangle {
             currentIndex = index
         }
         Tab {
-            title : qsTr("Data Series")
-           // property string iconName : "../images/info_s"
+            title : qsTr("Operations")
+            SplitView {
+                id : dataseriesview
+	            property string iconName : "../../qml/images/graph"
+
+/*                function setModel(cm){
+                    //columnlist.columnmodel = cm
+                }*/
+                handleDelegate: Controls.SplitHandle{
+                    imageHeight: 15
+                }
+
+                DataseriesList {
+                    id : dataserieslist
+                }
+/*                DataseriesOperationList{
+                    id : dataseriesOperationList
+                }*/
+/*                ColumnOperation{
+                    id : columnOperation
+                    Layout.fillWidth: true
+                }*/
+            }
+
         }
 
        Tab {
             title : qsTr("Meta data")
-            property string iconName : "../images/metadata_s"
+            property string iconName : "../../qml/images/metadata_s"
             id : columnmetadatview
 
         }

@@ -20,6 +20,7 @@ Item {
     property TabModel tabmodel
     property string panelType : "mappanel"
     property var createParameters : []
+    property var activeEditor : null
     property alias viewmanager : viewmanager
     property alias maptools: maptools
     property LayerManager manager
@@ -153,6 +154,15 @@ Item {
     Component.onDestruction: {
     }
 
+    function setActiveEditor(editor){
+        if (activeEditor){
+            activeEditor.editor.postDrawerActive = false
+        }
+        activeEditor = editor
+        if ( activeEditor){
+            activeEditor.editor.postDrawerActive = true
+        }
+    }
     function subscribe (topic, func) {
         return PubSub.subscribe( topic, func );
     }
@@ -193,6 +203,16 @@ Item {
     function transfer(datapanel){
         layers.transfer(datapanel)
         viewmanager.transfer(datapanel)
+    }
+
+    function mapClicked(mx,my){
+        if ( activeEditor ){
+        var qqq = activeEditor.handleMouseClick
+            if ( typeof activeEditor.handleMouseClick == 'function'){
+                activeEditor.handleMouseClick(mx,my)
+            }
+        
+        }
     }
 
 }

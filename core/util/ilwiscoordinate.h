@@ -40,7 +40,9 @@ public:
     bool operator ==(const Ilwis::Coordinate &pnt) const;
     bool operator ==(const geos::geom::Coordinate &pnt) const;
     bool operator !=(const Ilwis::Coordinate &pnt);
+    bool isEqual(const Ilwis::Coordinate& crd, double delta = rUNDEF);
     virtual QString toString(int decimals=2, bool use3D = false) const;
+
 
     QVariantMap toMap() const{
         QVariantMap mp;

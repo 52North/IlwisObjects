@@ -95,10 +95,6 @@ DropArea {
             }            
         }
 
-        onPositionChanged : {
-            if ( tree.hoveredRow != -1)
-                console.debug("aaaaa", mouseY/22)
-        }
 
         onPressAndHold : {
                     if (!styleData.value.parenthasfixedstructure){ // no movements of layers from a fixed layer (e.g. featurecoverage)

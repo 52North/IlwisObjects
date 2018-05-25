@@ -207,7 +207,12 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
                 activeAttIndex = 1;
             }
             //txt = vmap[_activeAttribute].toString();
-            txt = value2string(vmap[_activeAttribute], _activeAttribute);
+            if (_activeAttribute == LAYER_WIDE_ATTRIBUTE) {
+                if (vmap.contains(PIXELVALUE)) {
+                    txt = value2string(vmap[PIXELVALUE], "");
+                }
+            }else
+                txt = value2string(vmap[_activeAttribute], _activeAttribute);
             auto end = vmap.end();
             for(auto item = vmap.begin(); item != end; ++item){
                 if ( item.value().isValid()){
