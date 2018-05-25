@@ -35,15 +35,22 @@ Item {
 
 		function updateAfterSizeChange(){
 			if ( camera && renderer){
-				layermanager.rootLayer.initSizes(canvas.width, canvas.height, false)
-				camera.left = -layermanager.rootLayer.width/2.0
-				camera.right = layermanager.rootLayer.width/2.0
-				camera.top = layermanager.rootLayer.height/2.0
-				camera.bottom = -layermanager.rootLayer.height/2.0
+				layermanager.rootLayer.initSizes(canvas.width, canvas.height, false);
+				camera.left = -layermanager.rootLayer.width/2.0;
+				camera.right = layermanager.rootLayer.width/2.0;
+				camera.top = layermanager.rootLayer.height/2.0;
+				camera.bottom = -layermanager.rootLayer.height/2.0;
 				camera.updateProjectionMatrix();
 				renderer.setSize( canvas.width, canvas.height );
+				var enablePanAndZoomOut = layermanager.rootLayer.scrollInfo.xsizeperc < 1.0 || layermanager.rootLayer.scrollInfo.ysizeperc < 1.0;
+				setZoomPanButton(enablePanAndZoomOut);
 			}			
 		}
+
+        function setZoomPanButton (enablePanAndZoomOut) {
+            layerview.maptools.panButton.enabled = enablePanAndZoomOut
+            layerview.maptools.zoomoutButton.enabled = enablePanAndZoomOut
+        }
 
         function drawRasterAsColor(sceneObject,layer) {
             var removeQuads = layer.removeQuads;
@@ -153,9 +160,12 @@ Item {
 
 		function updatePositions() {
 			if ( camera){
-				var cameraPosition = layermanager.rootLayer.cameraPosition
+				var cameraPosition = layermanager.rootLayer.cameraPosition;
 				camera.position.set(cameraPosition.x,cameraPosition.y, 1);
-				camera.zoom = layermanager.rootLayer.zoomFactor
+				camera.left = -layermanager.rootLayer.width/2.0;
+				camera.right = layermanager.rootLayer.width/2.0;
+				camera.top = layermanager.rootLayer.height/2.0;
+				camera.bottom = -layermanager.rootLayer.height/2.0;
 				var pp = new GL.THREE.Vector3(cameraPosition.x,cameraPosition.y,0)
 				camera.lookAt(pp);
 				camera.updateProjectionMatrix();

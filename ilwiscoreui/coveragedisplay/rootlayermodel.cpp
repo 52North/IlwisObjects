@@ -66,13 +66,30 @@ Envelope RootLayerModel::zoomEnvelope() const
 
 void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
 {
-    _zoomEnvelope = zoomEnvelope;
-	if (_screenGrf.isValid()) {
-		_screenGrf->envelope(_zoomEnvelope);
-		_screenGrf->compute();
-		emit zoomEnvelopeChanged();
-        layerManager()->updateAxis();
-	}
+    Envelope cb = zoomEnvelope;
+    if ( _zoomEnvelope.isValid()) {
+    // zooming never changes the shape of the mapwindow so any incomming zoom rectangle must conform to the shape of the existing mapwindow
+        double factCur = (_zoomEnvelope.xlength() - 1) / (_zoomEnvelope.ylength() - 1);
+        double factIn = (zoomEnvelope.xlength() - 1) / (zoomEnvelope.ylength() - 1);
+        if ( abs(factCur - factIn) > 0.01 ) {
+	        if ( factCur < 1.0) {
+	            double newHeight = (zoomEnvelope.xlength() - 1) / factCur;
+	            cb = Envelope(zoomEnvelope.min_corner(), Coordinate(zoomEnvelope.max_corner().x, zoomEnvelope.max_corner().y + newHeight, zoomEnvelope.max_corner().z));
+	        } else {
+	            double newWidth = (zoomEnvelope.ylength() - 1) * factCur;
+	            cb = Envelope(zoomEnvelope.min_corner(), Coordinate(zoomEnvelope.min_corner().x + newWidth, zoomEnvelope.max_corner().y, zoomEnvelope.max_corner().z));
+	        }
+        }
+    }
+
+    _zoomEnvelope = cb;
+    if (_screenGrf.isValid()) {
+        _screenGrf->envelope(_zoomEnvelope);
+        _screenGrf->compute();
+    }
+    SetCameraPosition();
+	emit zoomEnvelopeChanged();
+    layerManager()->updateAxis();
 }
 
 Envelope RootLayerModel::coverageEnvelope() const
@@ -193,12 +210,12 @@ QString Ilwis::Ui::RootLayerModel::projectionInfoPrivate() const
 
 double Ilwis::Ui::RootLayerModel::width() const
 {
-	return _viewEnvelope.xlength() - 1;
+	return _zoomEnvelope.xlength() - 1;
 }
 
 double Ilwis::Ui::RootLayerModel::height() const
 {
-	return _viewEnvelope.ylength() - 1;
+	return _zoomEnvelope.ylength() - 1;
 }
 
 QVariantMap RootLayerModel::viewEnvelopePrivate() const
@@ -218,6 +235,7 @@ QVariantMap RootLayerModel::zoomEnvelopePrivate() const
 void RootLayerModel::viewBox(const BoundingBox& box) {
 	_viewBox = box;
 }
+
 BoundingBox RootLayerModel::viewBox() const {
 	return _viewBox;
 }
@@ -244,20 +262,52 @@ void RootLayerModel::setPanningMode(bool yesno)
 
 void RootLayerModel::viewEnvelope(const Envelope &env)
 {
-	if (!_viewEnvelope.isValid())
-		_coverageEnvelope = env;
-    _viewEnvelope = env;
-    emit viewEnvelopeChanged();
-    emit latlonEnvelopeChanged();
-    emit xGridAxisValuesChanged();
+    if (_screenGrf.isValid()) {
+        double mapAspectRatio = (_coverageEnvelope.xlength() - 1) / (_coverageEnvelope.ylength() - 1);
+        double w = env.xlength() - 1;
+        double h = env.ylength() - 1;
+        Size<> sz = _screenGrf->size();
+        if ( mapAspectRatio <= 1.0) {
+            double pixwidth = (double)sz.ysize() * mapAspectRatio;
+            double deltay = 0;
+            if ( pixwidth > sz.xsize()) {
+                deltay = (env.ylength() - 1) * ( pixwidth / sz.xsize() - 1.0);
+                pixwidth = sz.xsize();
+            }
+            double fracofWidth = 1.0 - (sz.xsize() - pixwidth) / sz.xsize();
+            double crdWidth = w / fracofWidth;
+            double delta = (crdWidth - w) / 2.0;
+            _viewEnvelope = Envelope(Coordinate(env.min_corner().x - delta,env.min_corner().y - deltay /2.0,0), Coordinate(env.max_corner().x + delta,env.max_corner().y + deltay/ 2.0,0));
+        } else {
+            double pixheight = (double)sz.xsize() / mapAspectRatio;
+            double deltax = 0;
+            if ( pixheight > sz.ysize()) {
+                deltax = (env.xlength() - 1) * ( pixheight / sz.ysize() - 1.0);
+                pixheight = sz.ysize();
+            }
+            double fracofHeight = 1.0 - abs(sz.ysize() - pixheight) / (double)sz.ysize();
+            double crdHeight = h / fracofHeight;
+            double delta = (crdHeight - h) / 2.0;
+            _viewEnvelope = Envelope(Coordinate(env.min_corner().x - deltax /2.0,env.min_corner().y - delta,0), Coordinate(env.max_corner().x + deltax /2.0,env.max_corner().y  + delta,0));
+        }
+        _zoomEnvelope = _viewEnvelope;
+		_screenGrf->envelope(_zoomEnvelope);
+		_screenGrf->compute();
+        SetCameraPosition();
+        emit viewEnvelopeChanged();
+        emit zoomEnvelopeChanged();
+        emit latlonEnvelopeChanged();
+        emit xGridAxisValuesChanged();
+        layerManager()->updateAxis();
+    }
+    else // initial: "remember" this _viewEnvelope until the mapwindow size is known
+        _viewEnvelope = env;
 }
 
 Envelope Ilwis::Ui::RootLayerModel::viewEnvelope() const
 {
 	return _viewEnvelope;
 }
-
-
 
 void RootLayerModel::clearLayers()
 {
@@ -395,7 +445,7 @@ QVariantMap RootLayerModel::drawEnvelope(const QString& envelope) const{
 QString RootLayerModel::layerInfo(const QString& pixelpair)  
 {
     try {
-        if ( zoomInMode() || panningMode()) // when zooming we dont don' give info. costs too much performance
+        if ( zoomInMode() || panningMode()) // when zooming we don't give info. costs too much performance
             return "";
 
         if ( layerManager()){
@@ -422,48 +472,95 @@ QVariantList RootLayerModel::layerInfoItems()
     return _layerInfoItems;
 }
 
+void RootLayerModel::RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap)
+{
+	double zwidth = cbZoom.xlength() - 1;
+	if (zwidth > cbMap.xlength() - 1) {
+		double delta = (zwidth - (cbMap.xlength() - 1)) / 2.0;
+		cbZoom.min_corner().x = cbMap.min_corner().x - delta;
+		cbZoom.max_corner().x = cbMap.max_corner().x + delta;
+	} else {
+		if ( cbZoom.max_corner().x > cbMap.max_corner().x) {
+			cbZoom.max_corner().x = cbMap.max_corner().x;
+			cbZoom.min_corner().x = cbZoom.max_corner().x - zwidth;
+		}
+		if ( cbZoom.min_corner().x < cbMap.min_corner().x) {
+			cbZoom.min_corner().x = cbMap.min_corner().x;
+			cbZoom.max_corner().x = cbZoom.min_corner().x + zwidth;
+		}
+	}
+}
+
+void RootLayerModel::RecenterZoomVert(Envelope & cbZoom, const Envelope & cbMap)
+{
+    double zheight = cbZoom.ylength() - 1;
+	if (zheight > cbMap.ylength() - 1) {
+		double delta = (zheight - (cbMap.ylength() - 1)) / 2.0;
+		cbZoom.min_corner().y = cbMap.min_corner().y - delta;
+		cbZoom.max_corner().y = cbMap.max_corner().y + delta;
+	} else {
+		if ( cbZoom.max_corner().y > cbMap.max_corner().y) {
+			cbZoom.max_corner().y = cbMap.max_corner().y;
+			cbZoom.min_corner().y = cbZoom.max_corner().y - zheight;
+		}
+		if ( cbZoom.min_corner().y < cbMap.min_corner().y) {
+			cbZoom.min_corner().y = cbMap.min_corner().y;
+			cbZoom.max_corner().y = cbZoom.min_corner().y + zheight;
+		}
+	}
+}
+
+void RootLayerModel::modifyZoomX(double rFactor) {
+	double deltazoom = (_zoomEnvelope.xlength() - 1) * rFactor;
+	Coordinate cMiddle = _zoomEnvelope.center();
+	_zoomEnvelope.min_corner().x = cMiddle.x - deltazoom / 2.0;
+	_zoomEnvelope.max_corner().x = cMiddle.x + deltazoom / 2.0;
+	RecenterZoomHorz(_zoomEnvelope, _coverageEnvelope);
+	if (_zoomEnvelope.xlength() >= _coverageEnvelope.xlength()) {
+		_viewEnvelope.min_corner().x = _zoomEnvelope.min_corner().x;
+		_viewEnvelope.max_corner().x = _zoomEnvelope.max_corner().x;
+	}
+}
+
+void RootLayerModel::modifyZoomY(double rFactor) {
+	double deltazoom = (_zoomEnvelope.ylength() - 1) * rFactor;
+	Coordinate cMiddle = _zoomEnvelope.center();
+	_zoomEnvelope.min_corner().y = cMiddle.y - deltazoom / 2.0;
+	_zoomEnvelope.max_corner().y = cMiddle.y + deltazoom / 2.0;
+	RecenterZoomVert(_zoomEnvelope, _coverageEnvelope);
+	if (_zoomEnvelope.ylength() >= _coverageEnvelope.ylength()) {
+		_viewEnvelope.min_corner().y = _zoomEnvelope.min_corner().y;
+		_viewEnvelope.max_corner().y = _zoomEnvelope.max_corner().y;
+	}
+}
+
 void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
-
-	auto CalcNewSize = [](double oldDim1, double dim2, double aspect)->double {
-		double viewdim = dim2 * aspect;
-		return (viewdim - oldDim1) / 2.0;
-	};
-	Size<> sz = (initial || !_screenGrf.isValid()) ? Size<>() : _screenGrf->size();
-
-	double aspectRatioView = (double)newwidth / (double)newheight;
-	double deltaX = 0, deltaY = 0;
-	double cwidth = _coverageEnvelope.xlength() - 1;
-	double cheight = _coverageEnvelope.ylength() - 1;
-    double aspectRatioCoverage = cwidth / cheight;
-
-	if (aspectRatioCoverage < aspectRatioView) {
-		deltaX = CalcNewSize(cwidth, cheight, aspectRatioView);
-	}
-	else {
-		deltaY = CalcNewSize(cheight, cwidth, 1.0 / aspectRatioView);
-	}
-
-	Coordinate pmin = _coverageEnvelope.min_corner();
-	Coordinate pmax = _coverageEnvelope.max_corner();
-	pmin = { pmin.x - deltaX, pmin.y - deltaY, 0 };
-	pmax = { pmax.x + deltaX, pmax.y + deltaY, 0 };
-	//qDebug() << "dx="<< deltaX << "dy="<< deltaY << "arv=" << aspectRatioView << "atc=" << aspectRatioCoverage << "minx=" << pmin.x << "miny=" << pmin.y << "maxx=" << pmax.x << "maxyx=" << pmax.y;
-	//_viewEnvelope = { pmin, pmax };
-    viewEnvelope({ pmin, pmax });
-
-    kernel()->issues()->log(QString("init sizes %1 %2").arg(pmin.x).arg(pmin.y) , IssueObject::itMessage);
-
-	if (!_screenGrf.isValid()) {
+    if (initial) {
 		IGeoReference grf;
 		grf.prepare();
 		grf->create("corners");
 		grf->coordinateSystem(_screenCsy);
 		screenGrf(grf);
-	}
-	_screenGrf->size(Size<>(newwidth, newheight, 1));
-    if (initial)
-        zoomEnvelope(_viewEnvelope);
-	
+        _screenGrf->size(Size<>(newwidth, newheight, 1));
+        viewEnvelope(_viewEnvelope); // compute correct aspect ratio; initialize _zoomEnvelope and compute _screenGrf as well
+    } else {
+        Size<> sz = _screenGrf->size();
+        if (sz.xsize() != newwidth) {
+            modifyZoomX((double)newwidth / sz.xsize());
+        }
+        if (sz.ysize() != newheight) {
+            modifyZoomY((double)newheight / sz.ysize());
+        }
+        _screenGrf->size(Size<>(newwidth, newheight, 1));
+        _screenGrf->envelope(_zoomEnvelope);
+        _screenGrf->compute();
+        SetCameraPosition();
+        emit viewEnvelopeChanged();
+        emit zoomEnvelopeChanged();
+        emit latlonEnvelopeChanged();
+        emit xGridAxisValuesChanged();
+        layerManager()->updateAxis();
+    }
 }
 
 double RootLayerModel::zoomFactor() const
@@ -621,13 +718,8 @@ QVariantList RootLayerModel::calcAxisValues(const QString& axisType, const Coord
     return axisValues;
 }
 
-
-
-
-
-
-
-
-
-
-
+void RootLayerModel::SetCameraPosition() {
+    _cameraPosition.x = _zoomEnvelope.center().x - _viewEnvelope.center().x;
+    _cameraPosition.y = _zoomEnvelope.center().y - _viewEnvelope.center().y;
+    layerManager()->refresh();
+}

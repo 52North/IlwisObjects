@@ -146,8 +146,13 @@ private:
     IlwisObjectModel *screenCsyPrivate();
     IlwisObjectModel *screenGrfPrivate();
     QString projectionInfoPrivate() const;
-	double width() const;
-	double height() const;
+    double width() const;
+    double height() const;
+    void RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap);
+    void RecenterZoomVert(Envelope & cbZoom, const Envelope & cbMap);
+    void modifyZoomX(double rFactor);
+    void modifyZoomY(double rFactor);
+    void SetCameraPosition();
 
     //NEW_LAYERMODEL(GlobalLayerModel);
 

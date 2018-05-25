@@ -28,6 +28,44 @@ SetViewExtent::SetViewExtent(quint64 metaid, const Ilwis::OperationExpression &e
 
 }
 
+void SetViewExtent::RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap)
+{
+	double zwidth = cbZoom.xlength() - 1;
+	if (zwidth > cbMap.xlength() - 1) {
+		double delta = (zwidth - (cbMap.xlength() - 1)) / 2.0;
+		cbZoom.min_corner().x = cbMap.min_corner().x - delta;
+		cbZoom.max_corner().x = cbMap.max_corner().x + delta;
+	} else {
+		if ( cbZoom.max_corner().x > cbMap.max_corner().x) {
+			cbZoom.max_corner().x = cbMap.max_corner().x;
+			cbZoom.min_corner().x = cbZoom.max_corner().x - zwidth;
+		}
+		if ( cbZoom.min_corner().x < cbMap.min_corner().x) {
+			cbZoom.min_corner().x = cbMap.min_corner().x;
+			cbZoom.max_corner().x = cbZoom.min_corner().x + zwidth;
+		}
+	}
+}
+
+void SetViewExtent::RecenterZoomVert(Envelope & cbZoom, const Envelope & cbMap)
+{
+    double zheight = cbZoom.ylength() - 1;
+	if (zheight > cbMap.ylength() - 1) {
+		double delta = (zheight - (cbMap.ylength() - 1)) / 2.0;
+		cbZoom.min_corner().y = cbMap.min_corner().y - delta;
+		cbZoom.max_corner().y = cbMap.max_corner().y + delta;
+	} else {
+		if ( cbZoom.max_corner().y > cbMap.max_corner().y) {
+			cbZoom.max_corner().y = cbMap.max_corner().y;
+			cbZoom.min_corner().y = cbZoom.max_corner().y - zheight;
+		}
+		if ( cbZoom.min_corner().y < cbMap.min_corner().y) {
+			cbZoom.min_corner().y = cbMap.min_corner().y;
+			cbZoom.max_corner().y = cbZoom.min_corner().y + zheight;
+		}
+	}
+}
+
 bool SetViewExtent::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {
     if (_prepState == sNOTPREPARED)
@@ -39,52 +77,14 @@ bool SetViewExtent::execute(ExecutionContext *ctx, SymbolTable &symTable)
     }else{
         double area = _newExtents.area();
         if ( area > 0){
-			 Envelope env = layerManager()->rootLayer()->viewEnvelope();
-			 double zx = env.xlength() / (_newExtents.xlength() - 1.0);
-			 double zy = env.ylength() / (_newExtents.ylength() - 1.0);
-			 double zoom = std::max(zx, zy);
-             if (zoom > 1.0) {
-                 double zwidth = _newExtents.xlength() - 1;
-                 if (zwidth > env.xlength() - 1.0) {
-                     double delta = (zwidth - env.xlength() - 1) / 2.0;
-                     _newExtents.min_corner().x = env.min_corner().x - delta;
-                     _newExtents.max_corner().x = env.max_corner().x + delta;
-                 } else {
-                     if (_newExtents.max_corner().x > env.max_corner().x) {
-                         _newExtents.max_corner().x = env.max_corner().x;
-                         _newExtents.min_corner().x = _newExtents.max_corner().x - zwidth;
-                     }
-                     if (_newExtents.min_corner().x < env.min_corner().x) {
-                         _newExtents.min_corner().x = env.min_corner().x;
-                         _newExtents.max_corner().x = _newExtents.min_corner().x + zwidth;
-                     }
-                 }
-                 double zheight = _newExtents.ylength() - 1;
-                 if (zheight > env.ylength() - 1.0) {
-                     double delta = (zheight - env.ylength() - 1) / 2.0;
-                     _newExtents.min_corner().y = env.min_corner().y - delta;
-                     _newExtents.max_corner().y = env.max_corner().y + delta;
-                 } else {
-                     if (_newExtents.max_corner().y > env.max_corner().y) {
-                         _newExtents.max_corner().y = env.max_corner().y;
-                         _newExtents.min_corner().y = _newExtents.max_corner().y - zheight;
-                     }
-                     if (_newExtents.min_corner().y < env.min_corner().y) {
-                         _newExtents.min_corner().y = env.min_corner().y;
-                         _newExtents.max_corner().y = _newExtents.min_corner().y + zheight;
-                     }
-                 }
-                 QVariantMap vmap;
-                 Coordinate center = _newExtents.center();
-                 vmap["x"] = center.x - env.center().x;
-                 vmap["y"] = center.y - env.center().y;
-                 layerManager()->rootLayer()->cameraPosition(vmap);
-                 layerManager()->rootLayer()->zoomFactor(zoom);
-                 layerManager()->rootLayer()->zoomEnvelope(_newExtents);
-             } else {
-                 _newExtents = env;
-                 layerManager()->wholeMap();
-             }
+            Envelope cbMap = layerManager()->rootLayer()->coverageEnvelope();
+            if (_newExtents.xlength() > cbMap.xlength() && _newExtents.ylength() > cbMap.ylength())
+                layerManager()->wholeMap();
+            else {
+                RecenterZoomHorz(_newExtents, cbMap);
+                RecenterZoomVert(_newExtents, cbMap);
+                layerManager()->rootLayer()->zoomEnvelope(_newExtents);
+            }
         }
     }
 	layerManager()->needUpdate(true);

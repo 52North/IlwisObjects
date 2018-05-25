@@ -212,8 +212,8 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
         LayerModel *layer = createFunc(lm, parentLayer,layername, cov->description(),options);
 		if (!lm->rootLayer()->screenCsy().isValid()) {// first real layer sets the csy
 			lm->rootLayer()->screenCsy(cov->coordinateSystem());
+			lm->rootLayer()->coverageEnvelope(cov->envelope());
 			lm->rootLayer()->viewEnvelope(cov->envelope());
-			lm->rootLayer()->zoomEnvelope(cov->envelope());
 		}
         qint32 lowernodeid = options.contains("lowernodeid") ? options["lowernodeid"].toInt() : iUNDEF;
 		layer->nodeId(lm->nextId());
@@ -399,15 +399,7 @@ int LayerManager::registerLayerModel(const QString &modelname, CreateLayer func)
 
 void LayerManager::wholeMap()
 {
-	_globalLayer->zoomEnvelope(_globalLayer->viewEnvelope());
-	QVariantMap mp;
-	mp["x"] = 0;
-	mp["y"] = 0;
-	mp["z"] = 0;
-	_globalLayer->cameraPosition(mp);
-	_globalLayer->zoomFactor(1.0);
-
-	refresh();
+	_globalLayer->viewEnvelope(_globalLayer->coverageEnvelope());
 }
 
 void LayerManager::refresh()
