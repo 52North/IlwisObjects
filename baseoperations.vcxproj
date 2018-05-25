@@ -149,7 +149,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="baseoperations\creators\createchart.cpp" />
     <ClCompile Include="baseoperations\data\addcolumn.cpp" />
     <ClCompile Include="baseoperations\data\addrasterband.cpp" />
     <ClCompile Include="baseoperations\data\aggregatetable.cpp" />
@@ -223,7 +222,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="baseoperations\creators\createchart.h" />
     <ClInclude Include="baseoperations\data\addcolumn.h" />
     <ClInclude Include="baseoperations\data\addrasterband.h" />
     <ClInclude Include="baseoperations\data\aggregatetable.h" />
