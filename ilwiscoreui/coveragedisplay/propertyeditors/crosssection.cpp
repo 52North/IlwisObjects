@@ -5,6 +5,7 @@
 #include "visualpropertyeditor.h"
 #include "raster.h"
 #include "attributedefinition.h"
+#include "table.h"
 #include "crosssection.h"
 #include "ilwiscontext.h"
 
@@ -27,6 +28,7 @@ _coord(crd.isValid() ? crd : Coordinate(0, 0))
         else
             _pix = Pixel(0, 0);
     }
+ 
 }
 double CrossSectionPin::x() const {
     return _coord.x;
@@ -72,6 +74,7 @@ CrosssectionTool::CrosssectionTool()
 CrosssectionTool::CrosssectionTool(VisualAttribute *p) :
     VisualPropertyEditor(p, "crosssectiontool",TR("Cross Section"),QUrl("CrossSectionTool.qml"))
 {
+    _pinData.prepare();
 }
 
 bool CrosssectionTool::canUse(const IIlwisObject& obj, const QString& name ) const
@@ -122,6 +125,45 @@ QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
 }
 
 
+void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
+    QString ycolumnNameBase = QString("ypin%1").arg(index);
+    if (!_pinData.isValid())
+        return;
+ 
+    _pinData->recordCount(0);
+    for (int i = 0; i < _dataSources.size(); ++i) {
+        IRasterCoverage raster;
+        raster.prepare(_dataSources[i]->coverageId());
+        if (raster.isValid()) {
+            int rec = 0;
+            if (_pinData->columnIndex("bands") == iUNDEF) { // empty table
+                _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
+
+            }
+            for (int z = 0; z < raster->size().zsize(); ++z) {
+                if (_dataSources[i]->active(z))
+                    _pinData->setCell(0, rec++, z);
+            }
+
+            QString ycolName = ycolumnNameBase + "_" + raster->name();
+            ycolName = ycolName.replace(QRegExp("[/ .-,;:'\"]"), "_");
+            Pixel pix = raster->georeference()->coord2Pixel(crd);
+            int col = 0;
+            if ((col = _pinData->columnIndex(ycolName)) == iUNDEF) {
+                _pinData->addColumn(ColumnDefinition(ycolName, raster->datadef(), _pinData->columnCount() - 1));
+                col = _pinData->columnCount() - 1;
+            }
+            rec = 0;
+            for (int z = 0; z < raster->size().zsize(); ++z) {
+                if (_dataSources[i]->active(z)) {
+                    double v = raster->pix2value(Pixel(pix.x, pix.y, z));
+                    _pinData->setCell(col, rec++, v);
+                }
+            }
+        }
+    }
+}
+
 void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixels)
 {
     if (index < _pins.size()) {
@@ -142,8 +184,10 @@ void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixel
                 _pins[index]->row(r);
                 _pins[index]->update();
                 vpmodel()->layer()->layerManager()->updatePostDrawers();
+                changePinData(index, crd);
             }
         }
+        
     }
 }
 
@@ -160,6 +204,7 @@ void CrosssectionTool::changePixel(int index, double x, double y)
                 _pins[index]->row(pix.y);
                 _pins[index]->update();
                 vpmodel()->layer()->layerManager()->updatePostDrawers();
+                changePinData(index, Coordinate(x,y));
             }
         }
     }
@@ -176,6 +221,14 @@ QVariantList CrosssectionTool::pinLocation4screen() const
         result.push_back(pos);
     }
     return result;
+}
+
+QString Ilwis::Ui::CrosssectionTool::tableUrlPrivate()
+{
+    if (_pinData.isValid()) {
+        return _pinData->resource().url().toString();
+    }
+    return QString();
 }
 
 int CrosssectionTool::maxR() const {
@@ -298,6 +351,14 @@ Q_INVOKABLE void Ilwis::Ui::CrosssectionTool::setActive(int sourceIndex, int ban
     }
 }
 
+QString Ilwis::Ui::CrosssectionTool::pinDataColumn(int index) const
+{
+    if (index < _pinData->columnCount()) {
+        return _pinData->columndefinitionRef(index).name();
+    }
+    return QString();
+}
+
 //---------------------------------
 PinDataSource::PinDataSource() {
 
@@ -324,6 +385,11 @@ QVariantList PinDataSource::bands() const
     return _actives;
 }
 
+quint64 Ilwis::Ui::PinDataSource::coverageId() const
+{
+    return _objid;
+}
+
 QString PinDataSource::sourcePrivate() const
 {
     ICoverage cov;
@@ -336,8 +402,20 @@ QString PinDataSource::sourcePrivate() const
 
 void PinDataSource::active(int index, bool yesno) {
     if (index < _actives.size()) {
-        _actives[index] = yesno;
+        QVariantMap mp = _actives[index].toMap();
+        mp["active"] = yesno;
+        _actives[index] = mp;
     }
+}
+
+bool Ilwis::Ui::PinDataSource::active(int index) const
+{
+    if (index < _actives.size()) {
+        QVariant v = _actives[index];
+        QVariantMap mp = v.toMap();
+        return mp["active"].toBool();
+    }
+    return false;
 }
 
 

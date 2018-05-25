@@ -52,8 +52,10 @@ namespace Ui{
             Q_PROPERTY(QVariantList bands READ bands CONSTANT)
 
             void active(int index, bool yesno);
+        bool active(int index) const;
 
         QVariantList bands() const;
+        quint64 coverageId() const;
     private:
         quint64 _objid;
         QList<QVariant> _actives;
@@ -74,6 +76,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
         Q_PROPERTY(int maxX READ maxX CONSTANT)
         Q_PROPERTY(int maxY READ maxY CONSTANT)
         Q_PROPERTY(QVariantList pinLocation4screen READ pinLocation4screen NOTIFY pinLocation4screenChanged)
+        Q_PROPERTY(QString tableUrl READ tableUrlPrivate CONSTANT)
 public:
     CrosssectionTool();
     CrosssectionTool(VisualAttribute *p);
@@ -95,6 +98,7 @@ public:
     Q_INVOKABLE void addDataSource(const QString& id);
     Q_INVOKABLE QVariantList band(int index);
     Q_INVOKABLE void setActive(int sourceIndex, int bandIndex, bool yesno);
+    Q_INVOKABLE QString pinDataColumn(int index) const;
 
 signals:
     void pinLocation4screenChanged();
@@ -111,9 +115,12 @@ private:
     double maxX() const;
     double maxY() const;
     QVariantList pinLocation4screen() const;
+    QString tableUrlPrivate();
+    void changePinData(int index, const Coordinate& crd);
 
     QList<CrossSectionPin *> _pins;
     QList<PinDataSource *> _dataSources;
+    ITable _pinData;
 
     ICoverage _coverage;
 };
