@@ -178,12 +178,15 @@ QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 colum
         if (! dm->contains(actualval))
             actualval = rUNDEF;
         else {
-            SPNumericRange rng = coldef.datadef().range<NumericRange>();
-            if ( !rng.isNull()){
+            SPNumericRange actualRange = coldef.datadef().range<NumericRange>();
+            SPNumericRange theoreticalRange = coldef.datadef().domain()->range<NumericRange>();
+            if ( !actualRange.isNull() ){
                 if ( hasType(valueType,itDATETIME))
-                    rng->add(actualval.value<Ilwis::Time>());
-                else
-                    rng->add(actualval.toDouble());
+                    actualRange->add(actualval.value<Ilwis::Time>());
+                else {
+                    double v = actualval.toDouble();
+                    actualRange->add(v, theoreticalRange->min(), theoreticalRange->max());
+                }
             }
         }
     } else if ( domtype == itTEXTDOMAIN){
