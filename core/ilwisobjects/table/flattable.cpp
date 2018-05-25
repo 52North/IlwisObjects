@@ -404,3 +404,14 @@ bool FlatTable::initLoad(){
     }
     return ok;
 }
+
+void FlatTable::recordCount(quint32 r)
+{
+    BaseTable::recordCount(r);
+    _datagrid.resize(r);
+}
+
+quint32 Ilwis::FlatTable::recordCount() const
+{
+    return BaseTable::recordCount();
+}

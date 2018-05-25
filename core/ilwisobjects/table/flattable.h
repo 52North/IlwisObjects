@@ -35,6 +35,8 @@ public:
     //@override
     Record &recordRef(quint32 n) ;
     const Record &record(quint32 rec) const;
+    void recordCount(quint32 r);
+    quint32 recordCount() const;
 
     //@override
     void record(quint32, const std::vector<QVariant> &vars, quint32 offset=0);
