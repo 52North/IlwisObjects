@@ -382,6 +382,7 @@
     <None Include="desktopclient\qml\datapanel\table\ColumnMetadataList.qml" />
     <None Include="desktopclient\qml\datapanel\table\ColumnOperation.qml" />
     <None Include="desktopclient\qml\datapanel\table\ColumnOperationList.qml" />
+    <None Include="desktopclient\qml\datapanel\table\ColumnVisibility.qml" />
     <None Include="desktopclient\qml\datapanel\table\ConvertColumn.qml" />
     <None Include="desktopclient\qml\datapanel\table\FirstColumn.qml" />
     <None Include="desktopclient\qml\datapanel\table\LinkTable.qml" />

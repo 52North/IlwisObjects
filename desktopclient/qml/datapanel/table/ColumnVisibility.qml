@@ -48,7 +48,7 @@ Column {
                         enabled : false
                         width : 20
                         height : 20
-                        checked : columnlist.vis[styleData.row] //tableView.getColumn(styleData.row).visible
+                        checked : columnlist.vis.length > 0 ? columnlist.vis[styleData.row] : false //tableView.getColumn(styleData.row).visible
                     }
 
                     Text {
