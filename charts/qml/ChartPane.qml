@@ -15,7 +15,6 @@ Rectangle {
 	property ChartModel chart
 
 	function loadGraphs() {
-	console.log("loading")
 		for (var i = 0; i < chart.seriesCount; i++) {
 			var smodel = chart.getSeries(i);
 			var series = visibleGraphs.createSeries(chart.chartType, smodel.name, xas, yas);
@@ -32,10 +31,6 @@ Rectangle {
 
 	onChartChanged : {
 		loadGraphs();
-		console.log("x_min " + xas.min);
-		console.log("x_max " + xas.max);
-		console.log("y_min " + yas.min);
-		console.log("y_max " + yas.max);
 	}
 
 	ValueAxis {
