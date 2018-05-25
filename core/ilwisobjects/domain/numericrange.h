@@ -67,7 +67,7 @@ public:
     double resolution() const ;
 
     NumericRange& operator+=(double v);
-    void add(double v);
+    void add(double v, double theoreticalMin=rUNDEF, double theoreticalMax=rUNDEF);
 
     bool operator==(const NumericRange& vr);
     bool operator<(const NumericRange& vr);
