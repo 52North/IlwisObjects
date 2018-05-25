@@ -18,7 +18,7 @@ namespace Ilwis {
 		private:
 			QString _chartType = sUNDEF;
 			QString _seriesName = sUNDEF;
-
+			QString _newColor = sUNDEF;
 
 			NEW_OPERATION(ChartSeriesColor);
 		};

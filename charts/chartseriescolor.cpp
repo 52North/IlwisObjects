@@ -12,6 +12,7 @@
 #include "uicontextmodel.h"
 #include "modelregistry.h"
 #include "chartmodel.h"
+#include "dataseriesmodel.h"
 #include "chartoperation.h"
 #include "chartseriescolor.h"
 
@@ -45,11 +46,7 @@ Ilwis::OperationImplementation::State ChartSeriesColor::prepare(ExecutionContext
 	}
 
 	_seriesName = _expression.input<QString>(1);
-
-	OperationHelper::check(
-		[&]()->bool { return _chartmodel->isValidSeries(_expression.input<QString>(2)); },
-		{ ERR_ILLEGALE_OPERATION2, _expression.input<QString>(2), "chart" }
-	);
+	_newColor = _expression.input<QString>(2);
 
 	return sPREPARED;
 }
@@ -60,8 +57,8 @@ bool ChartSeriesColor::execute(ExecutionContext *ctx, SymbolTable &symTable)
 		if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
 			return false;
 
-
-
+	auto serie = _chartmodel->getSeriesByName(_seriesName);
+	serie->setColor(_newColor);
 
 	return true;
 }
