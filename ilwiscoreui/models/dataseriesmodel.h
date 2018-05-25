@@ -36,6 +36,9 @@ namespace  Ilwis {
 			bool setData();
 
 			QVariantList points() const;
+            int xColumnIndex() const;
+            int yColumnIndex() const;
+            int zColumnIndex() const;
 
 			double minx() {
 				return _minx;

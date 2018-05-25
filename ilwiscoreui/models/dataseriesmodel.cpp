@@ -77,3 +77,15 @@ void DataseriesModel::setColor(const QColor color) {
 
 	emit onColorChanged();
 }
+
+int DataseriesModel::xColumnIndex() const {
+    return _xaxis;
+}
+
+int DataseriesModel::yColumnIndex() const {
+    return _yaxis;
+}
+
+int DataseriesModel::zColumnIndex() const {
+    return _zaxis;
+}
