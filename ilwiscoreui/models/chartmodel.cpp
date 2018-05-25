@@ -9,6 +9,8 @@
 #include "dataseriesmodel.h"
 #include "mathhelper.h"
 
+QT_CHARTS_USE_NAMESPACE
+
 using namespace Ilwis;
 using namespace Ui;
 
@@ -76,6 +78,16 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
+DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) const
+{
+	auto itr = std::find_if(_series.begin(), _series.end(), [](DataseriesModel* serie) { return serie->name() == "name"; });
+	if (itr != _series.end()) {
+		return *itr;
+	}
+
+	return NULL;
+}
+
 Ilwis::ITable ChartModel::table() const {
 	return _table;
 }
@@ -93,7 +105,7 @@ quint32 Ilwis::Ui::ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint
 
 	_series.push_back(newseries);
 
-	if (_minx == rUNDEF) {		// assume all or none are undef
+	if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
 		_minx = newseries->minx();
 		_maxx = newseries->maxx();
 		_miny = newseries->miny();

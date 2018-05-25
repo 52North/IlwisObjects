@@ -47,6 +47,7 @@ namespace Ilwis {
 
 			int seriesCount() const;
 			Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
+			Ilwis::Ui::DataseriesModel* getSeriesByName(const QString name) const;
 			bool isValidSeries(const QString columnName) const;	// check if column with column name exists
 			quint32 addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis);
 			Ilwis::ITable table() const;
