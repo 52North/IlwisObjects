@@ -61,8 +61,10 @@ void DataDefinition::domain(const IDomain &dom)
         return;
 
     SPRange r = _domain->range<>();
-    if ( r)
+    if (r) {
         _range.reset(r->clone());
+        _range->clear(); // the range(type) is the same but it may not contain values yet 
+    }
 
 }
 

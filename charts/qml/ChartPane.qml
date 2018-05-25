@@ -13,11 +13,18 @@ Rectangle {
     height : parent.height - 270
     color : "lightgrey"
 	property ChartModel chart
+    property var updateChart : chart ? chart.updateSeries : 0
 
+    onUpdateChartChanged : {
+        visibleGraphs.removeAllSeries()
+        loadGraphs()    
+    }
 	function loadGraphs() {
+        if ( !chart)
+            return
 		for (var i = 0; i < chart.seriesCount; i++) {
 			var smodel = chart.getSeries(i);
-			var series = visibleGraphs.createSeries(chart.chartType, smodel.name, xas, yas);
+            var series = createSeries(chart.chartType, smodel.name, xas, yas)
 			series.pointsVisible = false;
 			series.color = Qt.rgba(Math.random(),Math.random(),Math.random(),1);
 //			series.hovered.connect(function(point, state){ console.log(point); }); // connect onHovered signal to a function
@@ -29,6 +36,26 @@ Rectangle {
 		}
 	}
 
+    function createSeries(ctype, name, xas, yas){
+        if ( ctype == "line"){
+            return visibleGraphs.createSeries(ChartView.SeriesTypeLine, name, xas, yas);
+        }
+        if (ctype == "spline"){
+            return visibleGraphs.createSeries(ChartView.SeriesTypeSpline, name, xas, yas);
+        }
+        if (ctype == "bar")
+            return visibleGraphs.createSeries(ChartView.SeriesTypeBar, name, xas, yas);
+        if ( ctype == "pie")
+            return visibleGraphs.createSeries(ChartView.SeriesTypePie, name, xas, yas);
+        if ( ctype == "points")
+            return visibleGraphs.createSeries(ChartView.SeriesTypeScatter, name, xas, yas);
+        if ( ctype == "polar")
+            return visibleGraphs.createSeries(ChartView.SeriesTypeScatter, name, xas, yas);
+        if ( ctype == "area")
+            return visibleGraphs.createSeries(ChartView.SeriesTypeArea, name, xas, yas);
+        return visibleGraphs.createSeries(ChartView.SeriesTypeLine, name, xas, yas);
+    }
+
 	onChartChanged : {
 		loadGraphs();
 	}
@@ -37,39 +64,25 @@ Rectangle {
 		id : xas
 		min : chart != null ? chart.minX : 0
 		max : chart != null  ? chart.maxX : 5
-		tickCount : 5
+		tickCount : chart ? chart.tickCountX : 5
 	}
 
 	ValueAxis {
 		id : yas
 		min : chart != null  ? chart.minY : 0
 		max : chart != null  ? chart.maxY : 5
-		tickCount : 5
+		tickCount : chart ? chart.tickCountY : 5
 	}
 
+    Rectangle {
+    anchors.fill: parent
+    color : "red"
 	ChartView {
 		id : visibleGraphs
 		title: "Line"
 		anchors.fill: parent
 		antialiasing: true
-
-/*		Component.onCompleted: {
-		console.log("Attach the data series")
-		console.log(chartspane)
-		console.log(chartspane.chart)
-//		console.log(chartspane.chart.seriesCount);
-
-//			visibleGraphs.addSeries(myline)
-			var line1 = visibleGraphs.createSeries(ChartView.SeriesTypeLine, "Manual created", xas, yas)
-			line1.append(0,0);
-			line1.append(1.1,2.1);
-			line1.append(1.9,3.3);
-			line1.append(2.1,2.1);
-			line1.append(2.9,4.9);
-			line1.append(3.4,3.0);
-			line1.append(4.1,3.3);
-		}*/
-
-
+        theme : ChartView.ChartThemeBlueIcy
 	}
+    }
 }

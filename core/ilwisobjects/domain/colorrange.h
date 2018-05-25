@@ -67,6 +67,7 @@ public:
     void add(const QVariant& v);
     void store(QDataStream& stream);
     void load(QDataStream& stream);
+    void clear();
 private:
     QColor _limit1;
     QColor _limit2;
@@ -106,6 +107,7 @@ public:
     bool alignWithParent(const IDomain &dom);
     void store(QDataStream& stream);
     void load(QDataStream& stream);
+
 private:
     std::vector<SPColorItem> _colors;
 

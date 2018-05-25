@@ -22,6 +22,7 @@
     <ClCompile Include="charts\chartseriescolor.cpp" />
     <ClCompile Include="charts\ilwischarts_plugin.cpp" />
     <ClCompile Include="charts\createchart.cpp" />
+    <ClCompile Include="charts\updatechart.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ilwischarts_plugin.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -45,6 +46,7 @@
     <ClInclude Include="charts\addChartSeries.h" />
     <ClInclude Include="charts\chartseriescolor.h" />
     <ClInclude Include="charts\createchart.h" />
+    <ClInclude Include="charts\updatechart.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D4BCF555-C0AB-4A28-BCEA-BD0265CC34BB}</ProjectGuid>

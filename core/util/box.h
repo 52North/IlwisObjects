@@ -617,6 +617,11 @@ public:
         return PointType();
     }
 
+    void clear() {
+        _min_corner = PointType();
+        _max_corner = PointType();
+    }
+
 private:
     PointType _min_corner;
     PointType _max_corner;

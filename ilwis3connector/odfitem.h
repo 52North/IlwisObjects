@@ -14,6 +14,8 @@ public:
     std::vector<Resource> resolveNames();
 
     bool isMapList() const;
+    const IniFile _ini;
+
 private:
     /*!
      \brief  tries to find a id for the name found in the catalog
@@ -46,7 +48,7 @@ private:
     QString cleanName(const QString&) const;
     Resource resolveName(const QString &name, IlwisTypes tp);
 
-    const IniFile _odf;
+
     std::unordered_map<QString, IniFile> *_knownOdfs=0;
     QString _grfname;
     QString _domname;

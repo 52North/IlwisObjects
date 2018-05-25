@@ -162,7 +162,6 @@ public:
     ItemRange *merge(const QSharedPointer<Range> &otherRange) const;
 
     virtual bool isOrdered() const;
-    virtual void clear() = 0;
     /**
      * Merges 2 itemranges into a new one
      * Both ranges must be valid, and both ranges must be itemranges for this to work.

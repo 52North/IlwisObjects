@@ -64,6 +64,9 @@
     <ClCompile Include="charts\chartseriescolor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="charts\updatechart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="charts\chartseriescolor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\updatechart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

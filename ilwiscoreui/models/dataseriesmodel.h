@@ -29,6 +29,9 @@ namespace  Ilwis {
 			Q_PROPERTY(double maxX         READ maxx)
 			Q_PROPERTY(double minY         READ miny)
 			Q_PROPERTY(double maxY         READ maxy)
+            Q_PROPERTY(int resolutionX READ resolutionX CONSTANT)
+            Q_PROPERTY(int resolutionY READ resolutionY CONSTANT)
+            Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
 
 		public:
 			explicit DataseriesModel();
@@ -52,6 +55,11 @@ namespace  Ilwis {
 			double maxy() {
 				return _maxy;
 			}
+
+            double resolutionX();
+            double resolutionY();
+            double resolutionZ();
+
 
 		signals:
 			void isNameChanged();

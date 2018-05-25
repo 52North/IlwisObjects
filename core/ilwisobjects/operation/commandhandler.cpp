@@ -220,7 +220,7 @@ quint64 CommandHandler::findOperationId(const OperationExpression& expr) const {
             }
         }
     }
-    kernel()->issues()->log(TR("Could not find correct operation.Do parameters (types) match the expected types for") + expr.name() + " ?");
+    kernel()->issues()->log(TR("Could not find correct operation.Do parameters (types) match the expected types for ") + expr.name() + ": " + expr.toString());
     return i64UNDEF;
 }
 

@@ -507,6 +507,11 @@ void ContinuousColorRange::load(QDataStream &stream)
     loadColor(_limit2, stream);
 }
 
+void Ilwis::ContinuousColorRange::clear()
+{
+    _limit1 = _limit2 = QColor();
+}
+
 //---------------------------------------------------------------
 ColorPalette::ColorPalette() : ColorRangeBase(itPALETTECOLOR,ColorRangeBase::cmRGBA)
 {

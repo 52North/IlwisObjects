@@ -57,6 +57,7 @@ public:
     virtual quint32 count() const = 0;
     virtual void store(QDataStream& stream) = 0;
     virtual void load(QDataStream& stream) = 0;
+    virtual void clear() = 0;
 
     template<typename T> T* as(){
         return (dynamic_cast<T *>(this));

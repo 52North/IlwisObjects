@@ -29,12 +29,13 @@ Item {
         if ( tab1.item.selectedRow >= 0)
             editor.changeCoords(tab1.item.selectedRow, mx, my, true)
             if ( modelid == null){
-                var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis : editor.pinDataColumn(1), zaxis : ''}
+                var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis : editor.pinDataColumn(1), zaxis : ''}
                 modelid = objectcreator.createObject(createInfo)
+                console.debug("modelid", modelid)
                 var filter = "itemid=" + modelid
                 bigthing.newCatalog(filter, "chart", "","other")
              }else {
-                var expr = "updatechartseries(" + modelid + ",0," + (tab1.item.selectedRow + 1) + ")"
+                var expr = "updatechartseries(" + modelid + ","+ editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(tab1.item.selectedRow + 1) + ")"
                 layerview.manager.addCommand(expr);
              }
     }

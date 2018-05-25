@@ -20,7 +20,7 @@ using namespace Ui;
 
 REGISTER_OPERATION(UpdateChartSeries)
 
-UpdateChartSeries::UpdateChartSeries()
+UpdateChartSeries::UpdateChartSeries() 
 {
 
 }
@@ -28,7 +28,7 @@ UpdateChartSeries::UpdateChartSeries()
 UpdateChartSeries::UpdateChartSeries(quint64 metaid, const Ilwis::OperationExpression &expr) : ChartOperation(metaid, expr)
 {
 
-}
+} 
 
 Ilwis::OperationImplementation::State UpdateChartSeries::prepare(ExecutionContext *ctx, const SymbolTable &st)
 {
@@ -38,20 +38,18 @@ Ilwis::OperationImplementation::State UpdateChartSeries::prepare(ExecutionContex
         kernel()->issues()->log(TR("Invalid model id used for chart. Chart can not be added"));
         return sPREPAREFAILED;
     }
-    _name = _expression.input<QString>(1);
-
     OperationHelper::check(
+        [&]()->bool { return _chartmodel->isValidSeries(_expression.input<QString>(1)); },
+        { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(2), "chart" } 
+    );
+
+    OperationHelper::check(  
         [&]()->bool { return _chartmodel->isValidSeries(_expression.input<QString>(2)); },
-        { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(2), "chart" }
-    );
-
-    OperationHelper::check(
-        [&]()->bool { return _chartmodel->isValidSeries(_expression.input<QString>(3)); },
         { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
-    );
+    ); 
 
-    _columnX = _expression.input<QString>(2);
-    _columnY = _expression.input<QString>(3);
+    _columnX = _expression.input<QString>(1);
+    _columnY = _expression.input<QString>(2);
 
     return sPREPARED;
 }
@@ -62,8 +60,8 @@ bool UpdateChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    quint32 xaxis = _table->columnIndex(_columnX);
-    quint32 yaxis = _table->columnIndex(_columnY);
+    quint32 xaxis = _chartmodel->table()->columnIndex(_columnX);
+    quint32 yaxis = _chartmodel->table()->columnIndex(_columnY);
     quint32 zaxis = iUNDEF;
     _chartmodel->updateDataSeries(xaxis, yaxis, zaxis);
 

@@ -97,6 +97,12 @@ void CrosssectionTool::prepare(const Ilwis::IIlwisObject& bj, const DataDefiniti
     auto *lm = vpmodel()->layer()->layerManager();
     QString path = context()->ilwisFolder().absoluteFilePath();
     QUrl url = QUrl::fromLocalFile(path);
+    if (_coverage.isValid() && _coverage->ilwisType() == itRASTER) {
+        IRasterCoverage raster = _coverage.as<RasterCoverage>();
+        if (raster.isValid()) {
+            _dataSources.push_back(new PinDataSource(raster->id(), this));
+        }
+    }
     associatedUrl(url.toString() + "/qml/datapanel/visualization/propertyeditors/PostDrawerCrossSection.qml");
     lm->addPostDrawer(this);
 }
@@ -108,7 +114,7 @@ QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
     if (_coverage.isValid()) {
              if (_coverage->ilwisType() == itRASTER) {
                 IRasterCoverage raster = _coverage.as<RasterCoverage>();
-                if (raster.isValid()) {
+                if (raster.isValid() && raster->size().zsize() > 1) {
                     grf = raster->georeference();
                 }
             }

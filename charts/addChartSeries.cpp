@@ -13,7 +13,7 @@
 #include "modelregistry.h"
 #include "chartmodel.h"
 #include "chartoperation.h"
-#include "AddChartSeries.h"
+#include "AddChartSeries.h" 
 
 using namespace Ilwis;
 using namespace Ui;
@@ -54,7 +54,7 @@ Ilwis::OperationImplementation::State AddChartSeries::prepare(ExecutionContext *
 	_columnY = _expression.input<QString>(3);
 
 	return sPREPARED;
-}
+} 
 
 bool AddChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {

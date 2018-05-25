@@ -185,7 +185,7 @@ QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 colum
                     actualRange->add(actualval.value<Ilwis::Time>());
                 else {
                     double v = actualval.toDouble();
-                    actualRange->add(v, theoreticalRange->min(), theoreticalRange->max());
+                    actualRange->add(v);
                 }
             }
         }

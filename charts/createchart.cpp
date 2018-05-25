@@ -45,10 +45,10 @@ bool CreateChart::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
 Ilwis::OperationImplementation *CreateChart::create(quint64 metaid, const Ilwis::OperationExpression &expr)
 {
-    return new CreateChart(metaid, expr);
-}
+    return new CreateChart(metaid, expr);  
+}  
 
-Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx, const SymbolTable &)
+Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx, const SymbolTable &) 
 {
     auto CheckAxis = [](const ITable& tbl, const QString& name, ChartModel::Axis atype)->quint32 {
         if (atype == ChartModel::aZAXIS && (name == sUNDEF || name == ""))
@@ -69,7 +69,7 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
     { ERR_NO_OBJECT_TYPE_FOR_2,"table", _expression.input<QString>(1)});
 
     QString chartType = _expression.input<QString>(3).toLower();
-    QStringList types = QString("line|spline|bar|pie|points|polar|3dline|3dspline|3dbar").split("|");
+    QStringList types = QString("line|spline|area|bar|pie|points|polar|3dline|3dspline|3dbar").split("|");
     if (!types.contains(chartType)) {
         kernel()->issues()->log(TR("Unknown chart type:") + chartType);
         return sPREPAREFAILED;
@@ -90,7 +90,7 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
 quint64 CreateChart::createMetadata()
 {
     OperationResource operation({ "ilwis://operations/createchart" });
-    operation.setSyntax("createchart(modelid, table, charttype=[Line|Spline|Bar|Pie|Points|Polar|3DLine|3DSpline|3Dbar], xaxis,yaxis,zaxis)");
+    operation.setSyntax("createchart(modelid, table, charttype=[Line|Spline|Area|Bar|Pie|Points|Polar|3DLine|3DSpline|3Dbar], xaxis,yaxis,zaxis)");
     operation.setDescription(TR("creates a chart of the specified type"));
     operation.setInParameterCount({ 7 });
     operation.addInParameter(0, itINTEGER, TR("Chart model id"), TR("ID of the model to which this series has to be added"));

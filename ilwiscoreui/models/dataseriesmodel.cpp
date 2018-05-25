@@ -68,6 +68,42 @@ bool DataseriesModel::setData() {
 	return true;
 }
 
+int tickResolution(const DataDefinition& datadef) {
+    if (datadef.isValid()) {
+        if (datadef.domain()->ilwisType() == itNUMERICDOMAIN)
+            return datadef.domain()->range<NumericRange>()->resolution();
+        if (datadef.domain()->ilwisType() == itITEMDOMAIN)
+            return 1;
+    }
+    return 0;
+}
+double DataseriesModel::resolutionX()
+{
+    if (_xaxis != iUNDEF) {
+        return tickResolution(_table->columndefinition(_xaxis).datadef());
+
+    }
+    return 0;
+}
+
+double DataseriesModel::resolutionY()
+{
+    if (_yaxis != iUNDEF) {
+        return tickResolution(_table->columndefinition(_yaxis).datadef());
+
+    }
+    return 0;
+}
+
+double DataseriesModel::resolutionZ()
+{
+    if (_zaxis != iUNDEF) {
+        return tickResolution(_table->columndefinition(_zaxis).datadef());
+ 
+    }
+    return 0;
+}
+
 QColor DataseriesModel::color() const {
 	return _color;
 }

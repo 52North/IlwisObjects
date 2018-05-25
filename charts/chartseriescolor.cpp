@@ -17,7 +17,7 @@
 #include "chartseriescolor.h"
 
 using namespace Ilwis;
-using namespace Ui;
+using namespace Ui; 
 
 REGISTER_OPERATION(ChartSeriesColor)
 

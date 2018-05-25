@@ -125,19 +125,15 @@ NumericRange& NumericRange::operator+=(double v)
     return *this;
 }
 
-void NumericRange::add(double v, double theoreticalMin, double theoreticalMax)
+void NumericRange::add(double v)
 {
     if ( isNumericalUndef(v))
         return;
 
-    if (v > theoreticalMin) {
-        if (v < min())
-            min(v);
-    }
-    if (v < theoreticalMax) {
-        if ( max() == theoreticalMax  || v > max())
-            max(v);
-    }
+    if (v < min())
+       min(v);
+    if ( v > max())
+       max(v);
 }
 
 bool NumericRange::operator==(const NumericRange& vr) {
