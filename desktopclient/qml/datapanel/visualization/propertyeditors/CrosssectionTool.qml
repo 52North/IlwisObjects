@@ -8,6 +8,7 @@ Item {
     width : Math.min(300,parent ? Math.min(parent.width,500) : 300)
     height : Global.rowHeight + 20
     property var editor
+    property var modelid
 
     TabView {
         anchors.fill : parent
@@ -27,6 +28,15 @@ Item {
     function handleMouseClick(mx,my){
         if ( tab1.item.selectedRow >= 0)
             editor.changeCoords(tab1.item.selectedRow, mx, my, true)
+            if ( modelid == null){
+                var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis : editor.pinDataColumn(1), zaxis : ''}
+                modelid = objectcreator.createObject(createInfo)
+                var filter = "itemid=" + modelid
+                bigthing.newCatalog(filter, "chart", "","other")
+             }else {
+                var expr = "updatechartseries(" + modelid + ",0," + (tab1.item.selectedRow + 1) + ")"
+                layerview.manager.addCommand(expr);
+             }
     }
 }
 
