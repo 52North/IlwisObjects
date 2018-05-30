@@ -31,6 +31,7 @@ Rectangle {
 		min : chart != null ? chart.minX : 0
 		max : chart != null  ? chart.maxX : 5
 		tickCount : chart ? chart.tickCountX : 5
+        labelFormat : chart ? chart.formatXAxis : "%.3f"
 	}
 
 	ValueAxis {
@@ -38,6 +39,7 @@ Rectangle {
 		min : chart != null  ? chart.minY : 0
 		max : chart != null  ? chart.maxY : 5
 		tickCount : chart ? chart.tickCountY : 5
+        labelFormat : chart ? chart.formatYAxis : "%.3f"
 	}
 
   LinearGradient {
@@ -55,6 +57,7 @@ Rectangle {
 		antialiasing: true
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
+        dropShadowEnabled : true
     }
 
   
