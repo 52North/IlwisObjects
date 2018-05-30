@@ -1,11 +1,11 @@
 #include "kernel.h"
-#include "ilwisdata.h"
+#include "ilwisdata.h"  
 #include "symboltable.h"
 #include "operationExpression.h"
 #include "operationmetadata.h"
 #include "domain.h"
-#include "table.h"
-#include "commandhandler.h"
+#include "table.h" 
+#include "commandhandler.h" 
 #include "operation.h"
 #include "mastercatalog.h"
 #include "operationhelper.h"
@@ -65,7 +65,8 @@ bool AddChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
 	quint32 xaxis = _table->columnIndex(_columnX);
 	quint32 yaxis = _table->columnIndex(_columnY);
 	quint32 zaxis = iUNDEF;
-	_chartmodel->addDataSeries(xaxis, yaxis, zaxis);
+    QColor clr = _chartmodel->newColor();
+	_chartmodel->addDataSeries(xaxis, yaxis, zaxis, clr);
 
 	logOperation(_expression);
 
