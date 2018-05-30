@@ -1,3 +1,4 @@
+#include <random>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "datadefinition.h"
@@ -7,6 +8,7 @@
 #include "tablemodel.h"
 #include "chartmodel.h"
 #include "dataseriesmodel.h"
+#include "colorrange.h"
 #include "mathhelper.h"
 
 QT_CHARTS_USE_NAMESPACE
@@ -31,7 +33,8 @@ quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & t
     chartType(cType);
      
 	_series = QList<DataseriesModel *>(); 
-	addDataSeries(xaxis, yaxis, zaxis);		// add the first dataseries
+    QColor clr = newColor();
+	addDataSeries(xaxis, yaxis, zaxis, clr);		// add the first dataseries
 
     return modelId(); 
 }
@@ -78,14 +81,15 @@ DataseriesModel* ChartModel::getSeries(int xColumnIndex, int yColumnIndex, int z
     return 0;
 }
 
-void ChartModel::deleteSerie(int xColumnIndex, int yColumnIndex, int zColumnIndex)  {
+quint32 ChartModel::deleteSerie(int xColumnIndex, int yColumnIndex, int zColumnIndex)  {
     for (int i = 0; i < _series.size(); ++i) {
         auto *series = _series[i];
         if (series->xColumnIndex() == xColumnIndex && series->yColumnIndex() == yColumnIndex && series->zColumnIndex() == zColumnIndex) {
             _series.removeAt(i);
-            break;
+            return i;
         }
     }
+    return iUNDEF;
 }
 
 DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
@@ -120,8 +124,10 @@ bool Ilwis::Ui::ChartModel::isValidSeries(const QString columnName) const
 }
 
 void ChartModel::updateDataSeries(int xaxis, int yaxis, int zaxis) {
-    deleteSerie(xaxis, yaxis, zaxis);
-    addDataSeries(xaxis, yaxis, zaxis);
+    auto *serie = getSeries(xaxis, yaxis, zaxis);
+    QColor currentColor = serie ? serie->color() : newColor(); 
+    quint32 index = deleteSerie(xaxis, yaxis, zaxis);
+    insertDataSeries(index, xaxis, yaxis, zaxis, currentColor);
     emit updateSeriesChanged();
 }
 
@@ -145,9 +151,42 @@ int ChartModel::tickCountY() const {
     return _tickCountY;
 }
 
+QColor Ilwis::Ui::ChartModel::newColor() const
+{
+     for (QColor clr : _graphColors) {
+        bool found = false;
+        for (auto *serie : _series) {
+            if (serie->color() == clr) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return clr;
+    }
+     std::random_device rd; 
+     std::mt19937 gen(rd()); 
+     std::uniform_int_distribution<> dis(0, _graphColors.size() - 1);
+     return  dis(gen);
+}
 
-quint32 Ilwis::Ui::ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis) {
+quint32 ChartModel::insertDataSeries(quint32 index, quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color) {
+    auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis, color);
+    if (!newseries->setData())
+        return _series.size();
+    _series.insert(index,newseries);
 
+    initializeDataSeries(newseries);
+
+    emit xAxisChanged();
+    emit yAxisChanged();
+    emit chartModelChanged();
+
+    return _series.size();
+
+}
+
+void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
     auto IntegerTicks = [](double res, double dist, int& tcount, double& minx, double& maxx)->void {
         tcount = (dist + 1) / res;
         if (tcount > 15) {
@@ -155,24 +194,19 @@ quint32 Ilwis::Ui::ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint
             maxx = minx + tcount * std::ceil(dist / tcount);
         }
     };
-	auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis);
-	if (!newseries->setData())
-		return _series.size();
 
-	_series.push_back(newseries);
-
-	if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
-		_minx = newseries->minx();
-		_maxx = newseries->maxx();
-		_miny = newseries->miny();
-		_maxy = newseries->maxy();
-	}
-	else {
-		_minx = std::min(_minx, newseries->minx());
-		_maxx = std::max(_maxx, newseries->maxx());
-		_miny = std::min(_miny, newseries->miny());
-		_maxy = std::max(_maxy, newseries->maxy());
-	}
+    if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
+        _minx = newseries->minx();
+        _maxx = newseries->maxx();
+        _miny = newseries->miny();
+        _maxy = newseries->maxy();
+    }
+    else {
+        _minx = std::min(_minx, newseries->minx());
+        _maxx = std::max(_maxx, newseries->maxx());
+        _miny = std::min(_miny, newseries->miny());
+        _maxy = std::max(_maxy, newseries->maxy());
+    }
     double res = newseries->resolutionX();
     double dist = std::abs(_minx - _maxx);
 
@@ -184,13 +218,34 @@ quint32 Ilwis::Ui::ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint
     if (std::floor(res) == res) {
         IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
     }
+}
+quint32 ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color) {
 
+
+	auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis, color);
+	if (!newseries->setData())
+		return _series.size();
+
+	_series.push_back(newseries);
+
+    initializeDataSeries(newseries);
 
 	emit xAxisChanged();
 	emit yAxisChanged();
 	emit chartModelChanged();
 
 	return _series.size();
+}
+
+QColor ChartModel::seriesColor(int seriesIndex) {
+    if (seriesIndex < _series.size())
+        return _series[seriesIndex]->color();
+    return QColor();
+}
+
+QColor ChartModel::seriesColorItem(int seriesIndex, double v) {
+ //TODO
+    return QColor("red");
 }
 
 
