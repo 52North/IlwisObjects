@@ -36,6 +36,8 @@ namespace Ilwis {
                 Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
                 Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
                 Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
+                Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
+                Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
 
                 Q_INVOKABLE QColor seriesColor(int seriesIndex);
                 Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
@@ -95,6 +97,8 @@ namespace Ilwis {
 			}
 
             void initializeDataSeries(DataseriesModel *newseries);
+            QString formatXAxis() const;
+            QString formatYAxis() const;
 
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QString _chartType = sUNDEF;

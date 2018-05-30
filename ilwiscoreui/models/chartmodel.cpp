@@ -219,6 +219,36 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
     }
 }
+
+QString formatAxis(double res, const QString& result) {
+    if (res == 0)
+        return "%f";
+    if (res - (quint64)res > 0) {
+        int n = std::abs(log10(res - (quint64)res));
+        return QString("%.%1f").arg(n);
+    }
+    if (res - (quint64)res == 0 && result == "")
+       return "%.0f" ;
+
+    return "";
+}
+QString ChartModel::formatXAxis() const
+{
+    QString result = "";
+    for (auto *serie : _series) {
+        result = formatAxis(serie->resolutionX(), result);
+    }
+    return result;
+}
+
+QString ChartModel::formatYAxis() const
+{
+    QString result = "";
+    for (auto *serie : _series) {
+        result = formatAxis(serie->resolutionY(), result);
+    }
+    return result;
+}
 quint32 ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color) {
 
 
