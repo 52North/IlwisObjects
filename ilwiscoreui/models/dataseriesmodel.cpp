@@ -17,8 +17,8 @@ DataseriesModel::DataseriesModel() {
 
 }
 
-DataseriesModel::DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis)
-	: QObject(chartModel), _table(chartModel->table()), _xaxis(x_index), _yaxis(y_index), _zaxis(z_axis)
+DataseriesModel::DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis, const QColor& color)
+	: QObject(chartModel), _table(chartModel->table()), _xaxis(x_index), _yaxis(y_index), _zaxis(z_axis), _color(color)
 {
 }
 

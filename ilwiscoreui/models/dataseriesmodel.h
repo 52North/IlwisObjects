@@ -35,7 +35,7 @@ namespace  Ilwis {
 
 		public:
 			explicit DataseriesModel();
-			DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis);
+			DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis, const QColor& color);
 			bool setData();
 
 			QVariantList points() const;
@@ -80,7 +80,6 @@ namespace  Ilwis {
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QVariantList _points;
 			Ilwis::ITable _table;
-
 		};
 	}
 }
