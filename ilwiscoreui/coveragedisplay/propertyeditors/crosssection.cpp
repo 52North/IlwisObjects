@@ -46,7 +46,10 @@ void CrossSectionPin::y(double v) {
     _coord.y = v;
 }
 void CrossSectionPin::label(const QString& v) {
-    _label = v;
+    CrosssectionTool *tool = static_cast<CrosssectionTool *>(parent());
+    if (!tool->labelExists(v)) {
+        _label = v;
+    }
 }
 
 int CrossSectionPin::row() const {
@@ -107,32 +110,32 @@ void CrosssectionTool::prepare(const Ilwis::IIlwisObject& bj, const DataDefiniti
     lm->addPostDrawer(this);
 }
 
+bool CrosssectionTool::labelExists(const QString& newlabel) const{
+    for (const auto *pin : _pins) {
+        if (pin->label() == newlabel)
+            return true;
+    }
+    return false;
+}
 QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
 {
     QVariantList result;
     IGeoReference grf = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf();
     if (_coverage.isValid()) {
-             if (_coverage->ilwisType() == itRASTER) {
-                IRasterCoverage raster = _coverage.as<RasterCoverage>();
-                if (raster.isValid() && raster->size().zsize() > 1) {
-                    grf = raster->georeference();
-                }
+            if (_coverage->ilwisType() == itRASTER) {
+            IRasterCoverage raster = _coverage.as<RasterCoverage>();
+            if (raster.isValid() && raster->size().zsize() > 1) {
+                grf = raster->georeference();
             }
         }
-    //demo
-    if (_pins.size() == 0) {
-        _pins.clear();
-        _pins.push_back(new CrossSectionPin("aap", Coordinate(-643990.232514, 400832.502069), grf, this));
-        _pins.push_back(new CrossSectionPin("noot", Coordinate(1160809.7237844, -2043967.470750), grf, this));
     }
-
 
    return QQmlListProperty<CrossSectionPin>(this, _pins);
 }
 
 
 void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
-    QString ycolumnNameBase = QString("ypin%1").arg(index);
+    QString ycolumnNameBase = _pins[index]->label();
     if (!_pinData.isValid())
         return;
  
@@ -320,7 +323,7 @@ void Ilwis::Ui::CrosssectionTool::deletePin(int index)
 
 void CrosssectionTool::addPin()
 {
-    _pins.push_back(new CrossSectionPin("New Pin", Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
+    _pins.push_back(new CrossSectionPin("pin_" + QString::number(_pins.size()), Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
     emit pinsChanged();

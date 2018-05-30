@@ -86,6 +86,7 @@ public:
     static VisualPropertyEditor *create(VisualAttribute *p);
     QQmlListProperty<Ilwis::Ui::CrossSectionPin> pins() ;
     QQmlListProperty<Ilwis::Ui::PinDataSource> dataSources() ;
+    bool labelExists(const QString& newlabel) const;
 
     Q_INVOKABLE void changeCoords(int index, int x, int y, bool useScreenPixels);
     Q_INVOKABLE void changePixel(int index, double x, double y);
