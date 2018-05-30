@@ -160,6 +160,8 @@ Column {
              text : qsTr("Add pin")
              onClicked : {
                  editor.addPin()
+                 selectedRow = editor.pins.length - 1
+                 tableview.currentRow = selectedRow
              }
          }
      }
