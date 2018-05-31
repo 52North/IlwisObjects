@@ -56,10 +56,12 @@ Item {
             var removeQuads = layer.removeQuads;
             for (var i=0; i < removeQuads.length; ++i) {
                 var obj = sceneObject.getObjectById(removeQuads[i])
-                sceneObject.remove(obj);
-                obj.material.tTexture.dispose();
-                obj.material.dispose();
-                obj.geometry.dispose();
+                if ( obj){
+                    sceneObject.remove(obj);
+                    obj.material.tTexture.dispose();
+                    obj.material.dispose();
+                    obj.geometry.dispose();
+                }
             }
             var quads = layer.numberOfBuffers("rastercoverage");
             for (var i=0; i < quads;++i){
@@ -110,10 +112,12 @@ Item {
             var removeQuads = layer.removeQuads;
             for (var i=0; i < removeQuads.length; ++i) {
                 var obj = sceneObject.getObjectById(removeQuads[i])
-                sceneObject.remove(obj);
-                obj.material.tTexture.dispose();
-                obj.material.dispose();
-                obj.geometry.dispose();
+                if ( obj){
+                    sceneObject.remove(obj);
+                    obj.material.tTexture.dispose();
+                    obj.material.dispose();
+                    obj.geometry.dispose();
+                }
             }
             var quads = layer.numberOfBuffers("rastercoverage");
             for (var i=0; i < quads;++i) {
@@ -285,21 +289,26 @@ Item {
 						var lineopacity = layer.vproperty("opacity")
 						mesh.material = new GL.THREE.LineBasicMaterial( {color: linecolor, transparent : true,opacity : lineopacity})
 					}
-					mesh.material.needsUpdate = true;
+                    if ( mesh)
+					    mesh.material.needsUpdate = true;
 				}
 			} else if ( propertyType == "layer"){
 				var meshes = scene.getObjectByName(layer.nodeId);
 				if (layer.drawType != "raster") {
 					for(var i=0; i < meshes.children.length; ++i) {
 						var mesh = meshes.children[i];
-						mesh.visible = layer.vproperty("active");
+                        if (mesh) {
+						        mesh.visible = layer.vproperty("active");
 						mesh.material.opacity = layer.vproperty("opacity");
+                        }
 					}
 				} else {
 					for(var i=0; i < meshes.children.length; ++i) {
 						var mesh = meshes.children[i];
-						mesh.visible = layer.vproperty("active");
-						mesh.material.uniforms.alpha.value = layer.vproperty("opacity");
+                        if ( mesh){
+						    mesh.visible = layer.vproperty("active");
+						    mesh.material.uniforms.alpha.value = layer.vproperty("opacity");
+                         }
 					}
 				}
 			}
