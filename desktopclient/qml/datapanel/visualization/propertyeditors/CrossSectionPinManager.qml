@@ -4,14 +4,34 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import CrossSectionPin 1.0
 import "../../../Global.js" as Global
+import "../../.." as Base
 
 Column { 
     anchors.fill : parent
+    anchors.leftMargin : 4
     property var selectedRow : -1
+    CheckBox {
+        width : 120
+        height : 20
+        checked : editor.contineousMode()
+        style : Base.CheckBoxStyle1{}
+        text : qsTr("ContineousMode")
+
+        onCheckedChanged : {
+            editor.contineousMode(checked)
+            if (checked){
+                crosssectiontool.contineousPin = editor.addContineousPin()
+            }else {
+                editor.deletePin( crosssectiontool.contineousPin)
+                crosssectiontool.contineousPin = -1
+            }
+
+        }
+    }
     TableView {
             id : tableview
             width : parent.width
-            height : parent.height - 30
+            height : parent.height - 60
             selectionMode : SelectionMode.SingleSelection
             property var doUpdate : true
             alternatingRowColors : false
@@ -137,15 +157,13 @@ Column {
                 height : 24
                 color : selectedRow == styleData.row ? Global.selectedColor : (styleData.alternate? uicontext.lightestColor: "white")
             }
- /*           Component.onCompleted : {
-               model =  editor.pins
-            }*/
      }
      Row {
         anchors.right : parent.right
         width : 260
         height : 25
         spacing : 4
+        visible : crosssectiontool.contineousPin == -1
          Button {
              width : 80
              height : 22
