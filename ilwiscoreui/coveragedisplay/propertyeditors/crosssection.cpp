@@ -154,7 +154,7 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
                     _pinData->setCell(0, rec++, z);
             }
 
-            QString ycolName = ycolumnNameBase + "_" + raster->name();
+            QString ycolName = _contineousMode ? "contineous_pin": ycolumnNameBase + "_" + raster->name();
             ycolName = ycolName.replace(QRegExp("[/ .-,;:'\"]"), "_");
             Pixel pix = raster->georeference()->coord2Pixel(crd);
             int col = 0;
@@ -175,7 +175,7 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
 
 void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixels)
 {
-    if (index < _pins.size()) {
+    if (index >= 0 && index < _pins.size()) {
         if (_coverage->ilwisType() == itRASTER) {
             IRasterCoverage raster = _coverage.as<RasterCoverage>();
             if (raster.isValid()) {
@@ -202,7 +202,7 @@ void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixel
 
 void CrosssectionTool::changePixel(int index, double x, double y)
 {
-    if (index < _pins.size()) {
+    if (index >= 0 && index < _pins.size()) {
         if (_coverage->ilwisType() == itRASTER) {
             IRasterCoverage raster = _coverage.as<RasterCoverage>();
             if (raster.isValid()) {
@@ -316,6 +316,7 @@ double CrosssectionTool::pinY(int index) const {
 void Ilwis::Ui::CrosssectionTool::deletePin(int index)
 {
     if (index < _pins.size() && index >= 0) {
+        _pins.removeAt(index);
         vpmodel()->layer()->layerManager()->updatePostDrawers();
         emit pinsChanged();
     }
@@ -366,6 +367,21 @@ QString Ilwis::Ui::CrosssectionTool::pinDataColumn(int index) const
         return _pinData->columndefinitionRef(index).name();
     }
     return QString();
+}
+
+bool CrosssectionTool::contineousMode() const {
+    return _contineousMode;
+}
+void CrosssectionTool::contineousMode(bool yesno) {
+    _contineousMode = yesno;
+}
+
+int CrosssectionTool::addContineousPin() {
+    _pins.push_back(new CrossSectionPin("contineous_pin", Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
+    _pins.back()->update();
+    vpmodel()->layer()->layerManager()->updatePostDrawers();
+    emit pinsChanged();
+    return _pins.size() - 1;
 }
 
 //---------------------------------

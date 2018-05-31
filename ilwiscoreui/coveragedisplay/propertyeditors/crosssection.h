@@ -77,6 +77,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
         Q_PROPERTY(int maxY READ maxY CONSTANT)
         Q_PROPERTY(QVariantList pinLocation4screen READ pinLocation4screen NOTIFY pinLocation4screenChanged)
         Q_PROPERTY(QString tableUrl READ tableUrlPrivate CONSTANT)
+
 public:
     CrosssectionTool();
     CrosssectionTool(VisualAttribute *p);
@@ -100,11 +101,15 @@ public:
     Q_INVOKABLE QVariantList band(int index);
     Q_INVOKABLE void setActive(int sourceIndex, int bandIndex, bool yesno);
     Q_INVOKABLE QString pinDataColumn(int index) const;
+    Q_INVOKABLE bool contineousMode() const;
+    Q_INVOKABLE void contineousMode(bool yesno);
+    Q_INVOKABLE int addContineousPin();
 
 signals:
     void pinLocation4screenChanged();
     void pinsChanged();
     void dataSourcesChanged();
+    void contineousModeChanged();
 
   NEW_PROPERTYEDITOR(CrosssectionTool)
 
@@ -119,9 +124,11 @@ private:
     QString tableUrlPrivate();
     void changePinData(int index, const Coordinate& crd);
 
+
     QList<CrossSectionPin *> _pins;
     QList<PinDataSource *> _dataSources;
     ITable _pinData;
+    bool _contineousMode = false;
 
     ICoverage _coverage;
 };
