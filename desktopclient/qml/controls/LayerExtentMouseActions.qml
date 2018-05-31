@@ -24,6 +24,9 @@ MouseArea {
     signal setZoomPanButton(bool enablePanAndZoomOut)
     signal checkZoomNormalButton(bool enablePanAndZoomOut)
     signal click(int mx, int my)
+    signal mousePressed(int mx, int my)
+    signal mouseMoved(int mx, int my)
+    signal mouseReleased(int mx, int my)
     signal selectTab()
 
     FloatingRectangle{
@@ -89,6 +92,7 @@ MouseArea {
           var mposition = mouseX + "|" + mouseY
           floatrect.text = layerManager.rootLayer.layerInfo(mposition)
           layerManager.setSelection(mposition);
+          mousePressed(mouseX, mouseY)
         }
     }
 
@@ -171,7 +175,7 @@ MouseArea {
             floatrect.x = mouseX
             floatrect.y = mouseY
             floatrect.text = layerManager.rootLayer.layerInfo(mposition)
-		//console.debug(floatrect.x, floatrect.y, floatrect.width, floatrect.height, floatrect.text)
+            mouseMoved(mouseX, mouseY)
         }
     }
     onReleased: {
@@ -263,8 +267,10 @@ MouseArea {
             panPrevMouseY = -1
             showInfo = true
             cursorShape = Qt.ArrowCursor
-        }else
+        }else{
             click(mouseX, mouseY)
+            mouseReleased(mouseX, mouseY)
+        }
 
         floatrect.enabled = false
         floatrect.opacity = 0

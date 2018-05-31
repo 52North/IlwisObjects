@@ -65,6 +65,25 @@ DropArea {
             }
             Connections {
                 target: mouseActions
+                onMouseMoved :{
+                    layerview.mouseMoved(mx,my)   
+                }
+            }
+
+            Connections {
+                target: mouseActions
+                onMouseReleased :{
+                    layerview.mouseReleased(mx,my)   
+                }
+            }
+            Connections {
+                target: mouseActions
+                onMousePressed :{
+                    layerview.mousePressed(mx,my)   
+                }
+            }
+            Connections {
+                target: mouseActions
                 onZoomEnded :{
                     manager.addCommand("setviewextent("+ manager.viewid + "," + envelope + ")");
                     if ( viewmanager){

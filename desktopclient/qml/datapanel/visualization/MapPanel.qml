@@ -207,9 +207,35 @@ Item {
 
     function mapClicked(mx,my){
         if ( activeEditor ){
-        var qqq = activeEditor.handleMouseClick
             if ( typeof activeEditor.handleMouseClick == 'function'){
                 activeEditor.handleMouseClick(mx,my)
+            }
+        
+        }
+    }
+
+   function mousePressed(mx,my){
+        if ( activeEditor ){
+            if ( typeof activeEditor.handleMousePressed == 'function'){
+                activeEditor.handleMousePressed(mx,my)
+            }
+        
+        }
+    }
+
+    function mouseMoved(mx,my){
+        if ( activeEditor ){
+            if ( typeof activeEditor.handleMouseMoved == 'function'){
+                activeEditor.handleMouseMoved(mx,my)
+            }
+        
+        }
+    }
+
+  function mouseReleased(mx,my){
+        if ( activeEditor ){
+            if ( typeof activeEditor.mouseReleased == 'function'){
+                activeEditor.mouseReleased(mx,my)
             }
         
         }
