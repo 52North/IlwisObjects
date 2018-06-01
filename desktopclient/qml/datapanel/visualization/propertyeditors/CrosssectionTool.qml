@@ -10,7 +10,7 @@ Item {
     width : Math.min(300,parent ? Math.min(parent.width,500) : 300)
     height : Global.rowHeight + 20
     property var editor
-    property var modelid
+    property var modelid : null
     property int contineousPin : -1
     property bool contineousMode : false
 
@@ -30,20 +30,22 @@ Item {
     }
 
     function handleMousePressed(mx,my){
-        if (editor.contineousPin != -1){    
+        if (crosssectiontool.contineousPin != -1){ 
             contineousMode = true
             editor.changeCoords(contineousPin, mx, my, true)
             if ( modelid == null){
                 var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis :'contineous_pin', zaxis : ''}
                 modelid = objectcreator.createObject(createInfo)
-                console.debug("modelid", modelid)
                 var filter = "itemid=" + modelid
                 bigthing.newCatalog(filter, "chart", "","other")
             }else {
                 var expr = "updatechartseries(" + modelid + ","+ editor.pinDataColumn(0)+ ",contineous_pin)"
                 layerview.manager.addCommand(expr);
             }
-        }
+        }/*else{
+            handleMouseClick(mx,my)
+        }*/
+
     }
 
     function  handleMouseMoved(mx,my){
@@ -60,13 +62,12 @@ Item {
     }
 
     function handleMouseClick(mx,my){
-        if (!editor.contineousMode){
+        if (!editor.contineousMode()){
             if ( tab1.item.selectedRow >= 0){
                 editor.changeCoords(tab1.item.selectedRow, mx, my, true)
                 if ( modelid == null){
                     var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis : editor.pinDataColumn(1), zaxis : ''}
                     modelid = objectcreator.createObject(createInfo)
-                    console.debug("modelid", modelid)
                     var filter = "itemid=" + modelid
                     bigthing.newCatalog(filter, "chart", "","other")
                  }else {
