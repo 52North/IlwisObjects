@@ -6,6 +6,7 @@ import "." as Charts
 import ChartModel 1.0
 import TableModel 1.0
 import TabModel 1.0
+import "../../../../qml" as Base
 
 Item {
     id : chartspane
@@ -17,19 +18,32 @@ Item {
     property TabModel tabmodel
 
 
-    SplitView {
-        anchors.fill: parent
-        orientation: Qt.Vertical
-        height : parent.height
-        ChartPane {
-            id : chartpanel
-            height : parent.height - 270
-        }
+    TabView {
+        id : chartarea
+        anchors.fill : parent
+        Tab{
+            id : charttab
+            title: "Chart"
+            active : true
+            SplitView {
+                anchors.fill: parent
+                orientation: Qt.Vertical
+                height : parent.height
+                ChartPane {
+                    id : chartpanel
+                    height : parent.height - 270
+                }
 
-        ChartProperties {
-            id : propertiespanel
-            height : 270
-            width : parent.height
+                ChartProperties {
+                    id : propertiespanel
+                    height : 270
+                    width : parent.height
+                }
+            }
+        }
+        Tab {
+            id : datatab
+            title : "Data"
         }
     }
 
@@ -38,7 +52,8 @@ Item {
 		chart = models.model(parts[1]);
         chart.parent = chartspane;
 		tabmodel.displayName = chart.name
-		chartpanel.chart = chart
+        //console.debug(chartarea.getTab(0), chartarea.getTab(0).title)
+        //chartarea.getTab(0).item.chart = chart
     }
 
 }
