@@ -34,9 +34,12 @@ namespace  Ilwis {
             Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
 
 		public:
-			explicit DataseriesModel();
+
 			DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color);
 			bool setData(const ITable& inputTable);
+			explicit DataseriesModel(const QString name = "");
+
+			void setColor(const QColor color);
 
 			QVariantList points() const;
             QString xColumn() const;
@@ -70,7 +73,6 @@ namespace  Ilwis {
 		public slots:
 			QString name() const;
 			QColor color() const;
-			void setColor(const QColor color);
 
 		private:
 			QString _name = sUNDEF;

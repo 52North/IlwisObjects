@@ -13,7 +13,7 @@ using namespace Ui;
 
 QT_CHARTS_USE_NAMESPACE
 
-DataseriesModel::DataseriesModel() {
+DataseriesModel::DataseriesModel(const QString name) : _name(name) {
 
 }
 
