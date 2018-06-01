@@ -90,6 +90,7 @@ void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
     SetCameraPosition();
 	emit zoomEnvelopeChanged();
     layerManager()->updateAxis();
+    layerManager()->updatePostDrawers();
 }
 
 Envelope RootLayerModel::coverageEnvelope() const
@@ -299,6 +300,7 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
         emit latlonEnvelopeChanged();
         emit xGridAxisValuesChanged();
         layerManager()->updateAxis();
+        layerManager()->updatePostDrawers();
     }
     else // initial: "remember" this _viewEnvelope until the mapwindow size is known
         _viewEnvelope = env;
