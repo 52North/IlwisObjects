@@ -13,7 +13,7 @@ Rectangle {
     width : parent.width
     height : parent.height - 270
     color : "blue"
-	property ChartModel chart
+	property ChartModel chart : chartspane.chart
     property var updateChart : chart ? chart.updateSeries : 0
 
     onUpdateChartChanged : {
