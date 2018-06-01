@@ -9,14 +9,13 @@ import TabModel 1.0
 import "../../../../qml" as Base
 
 Item {
-    id : chartspane
+    id : chartspanel
     anchors.fill : parent
     anchors.topMargin: 4
     objectName:  uicontext.uniqueName()
     property ChartModel chart
     property string iconName : "../images/graph"
     property TabModel tabmodel
-
 
     TabView {
         id : chartarea
@@ -30,7 +29,7 @@ Item {
                 orientation: Qt.Vertical
                 height : parent.height
                 ChartPane {
-                    id : chartpanel
+                    id : chartpane
                     height : parent.height - 270
                 }
 
@@ -50,10 +49,9 @@ Item {
     function addDataSource(filter, sourceUrl, sourceType){
 		var parts = filter.split("=");
 		chart = models.model(parts[1]);
-        chart.parent = chartspane;
+        chart.parent = chartspanel;
 		tabmodel.displayName = chart.name
-        //console.debug(chartarea.getTab(0), chartarea.getTab(0).title)
-        //chartarea.getTab(0).item.chart = chart
+		chartpane.chart = chart
     }
 
 }

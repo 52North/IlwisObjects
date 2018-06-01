@@ -21,11 +21,11 @@ Rectangle {
         function tabClicked(index){
             if ( currentIndex === index){
                 if ( chartManagement.height <= 60){
-                    chartpanel.state = "visible"
+                    chartpane.state = "visible"
                 }
                 else{
-                    chartpanel.state = ""
-                    chartpanel.state = "invisible"
+                    chartpane.state = ""
+                    chartpane.state = "invisible"
                 }
             }
 
@@ -40,18 +40,18 @@ Rectangle {
 /*                function setModel(cm){
                     //columnlist.columnmodel = cm
                 }*/
-                handleDelegate: Controls.SplitHandle{
+                handleDelegate: Controls.SplitHandle {
                     imageHeight: 15
                 }
 
                 DataseriesList {
                     id : dataserieslist
                 }
-/*                DataseriesOperationList{
+/*                DataseriesOperationList {
                     id : dataseriesOperationList
                 }*/
-/*                ColumnOperation{
-                    id : columnOperation
+/*                DataseriesOperation{
+                    id : dataseriesOperation
                     Layout.fillWidth: true
                 }*/
             }
