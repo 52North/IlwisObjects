@@ -43,7 +43,12 @@ QVariantList ChartModel::linkProperties() const
     return QVariantList();
 }
 
-quint32 ChartModel::modelId() const  
+void Ilwis::Ui::ChartModel::updateSeries()
+{
+	emit chartModelChanged();
+}
+
+quint32 ChartModel::modelId() const
 {
     return _modelId;
 }
@@ -89,6 +94,22 @@ quint32 ChartModel::deleteSerie(const QString& xcolumn, const QString& ycolumn, 
         }
     }
     return iUNDEF;
+}
+
+QQmlListProperty<DataseriesModel> ChartModel::series()
+{
+	DataseriesModel* dummy = new DataseriesModel("Chart");	// only for use in QML chart properties
+	//QList<DataseriesModel*> qml;
+	//qml.append(dummy);
+	//qml.append(_series);
+	QList<DataseriesModel *> locseries;
+//	DataseriesModel* dummy = nullptr;
+	locseries.push_back(dummy);
+	for (auto p : _series) locseries.push_back(p);
+	return QQmlListProperty<DataseriesModel>(this, locseries);
+
+
+//	return QQmlListProperty<DataseriesModel>(this, _series);
 }
 
 DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
