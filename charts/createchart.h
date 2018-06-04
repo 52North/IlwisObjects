@@ -16,9 +16,9 @@ namespace Ilwis {
             static quint64 createMetadata();
 
         private:
-            quint32 _xaxis = iUNDEF;
-            quint32 _yaxis = iUNDEF;
-            quint32 _zaxis = iUNDEF;
+            QString _xaxis = sUNDEF;
+            QString _yaxis = sUNDEF;
+            QString _zaxis = sUNDEF;
             QString _chartType = sUNDEF;
             QString _name = sUNDEF;
       

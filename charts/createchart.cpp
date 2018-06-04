@@ -50,7 +50,7 @@ Ilwis::OperationImplementation *CreateChart::create(quint64 metaid, const Ilwis:
 
 Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx, const SymbolTable &) 
 {
-    auto CheckAxis = [](const ITable& tbl, const QString& name, ChartModel::Axis atype)->quint32 {
+    auto CheckAxis = [](const ITable& tbl, const QString& name, ChartModel::Axis atype)->QString {
         if (atype == ChartModel::aZAXIS && (name == sUNDEF || name == ""))
             return iUNDEF;
 
@@ -58,7 +58,7 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
         if (index == iUNDEF) {
             return iUNDEF;
         }
-        return index; 
+        return name; 
     };
     if (!getModel()) {
         kernel()->issues()->log(TR("Invalid model id used for chart. Chart can not be added"));
@@ -76,10 +76,10 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
     }
     _chartType = chartType;
 
-    OperationHelper::check([&]()->bool { return (_xaxis = CheckAxis(_table, _expression.input<QString>(4), ChartModel::aXAXIS)) != iUNDEF; },
+    OperationHelper::check([&]()->bool { return (_xaxis = CheckAxis(_table, _expression.input<QString>(4), ChartModel::aXAXIS)) != sUNDEF; },
     { ERR_NO_OBJECT_TYPE_FOR_2,"column", _expression.input<QString>(4) });
 
-    OperationHelper::check([&]()->bool { return (_yaxis = CheckAxis(_table, _expression.input<QString>(5), ChartModel::aYAXIS)) != iUNDEF; },
+    OperationHelper::check([&]()->bool { return (_yaxis = CheckAxis(_table, _expression.input<QString>(5), ChartModel::aYAXIS)) != sUNDEF; },
     { ERR_NO_OBJECT_TYPE_FOR_2,"column", _expression.input<QString>(5) });
 
     _zaxis = CheckAxis(_table, _expression.input<QString>(6), ChartModel::aXAXIS);
