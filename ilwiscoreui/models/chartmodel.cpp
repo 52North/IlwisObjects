@@ -26,15 +26,14 @@ ChartModel::ChartModel(QObject *parent) : QObject(parent)
     modelregistry()->registerModel(modelId(), "chart", this);
 }
 
-quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, quint32 xaxis, quint32 yaxis, quint32 zaxis)
+quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis)
 {
-    _table = tbl;
     _name = name;
     chartType(cType);
      
 	_series = QList<DataseriesModel *>(); 
     QColor clr = newColor();
-	addDataSeries(xaxis, yaxis, zaxis, clr);		// add the first dataseries
+	addDataSeries(tbl, xaxis, yaxis, zaxis, clr);		// add the first dataseries
 
     return modelId(); 
 }
@@ -73,18 +72,18 @@ QString ChartModel::chartType() const
 int ChartModel::seriesCount() const {
 	return _series.size();
 }
-DataseriesModel* ChartModel::getSeries(int xColumnIndex, int yColumnIndex, int zColumnIndex) const {
+DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const {
     for (auto *series : _series) {
-        if (series->xColumnIndex() == xColumnIndex && series->yColumnIndex() == yColumnIndex && series->zColumnIndex() == zColumnIndex)
+        if (series->xColumn() == xcolumn && series->yColumn() == ycolumn && series->zColumn() == zcolumn)
             return series;
     }
     return 0;
 }
 
-quint32 ChartModel::deleteSerie(int xColumnIndex, int yColumnIndex, int zColumnIndex)  {
+quint32 ChartModel::deleteSerie(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn)  {
     for (int i = 0; i < _series.size(); ++i) {
         auto *series = _series[i];
-        if (series->xColumnIndex() == xColumnIndex && series->yColumnIndex() == yColumnIndex && series->zColumnIndex() == zColumnIndex) {
+        if (series->xColumn() == xcolumn && series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
             _series.removeAt(i);
             return i;
         }
@@ -109,25 +108,21 @@ DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) cons
 	return NULL;
 }
 
-Ilwis::ITable ChartModel::table() const {
-	return _table;
-}
-
 bool Ilwis::Ui::ChartModel::updateSeries() const
 {
     return true;
 }
 
-bool Ilwis::Ui::ChartModel::isValidSeries(const QString columnName) const
+bool Ilwis::Ui::ChartModel::isValidSeries(const ITable& inputTable, const QString columnName) const
 {
-	return _table->columndefinitionRef(columnName).isValid();
+	return inputTable->columndefinitionRef(columnName).isValid();
 }
 
-void ChartModel::updateDataSeries(int xaxis, int yaxis, int zaxis) {
-    auto *serie = getSeries(xaxis, yaxis, zaxis);
+void ChartModel::updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) {
+    auto *serie = getSeries(xcolumn, ycolumn, zcolumn);
     QColor currentColor = serie ? serie->color() : newColor(); 
-    quint32 index = deleteSerie(xaxis, yaxis, zaxis);
-    insertDataSeries(index, xaxis, yaxis, zaxis, currentColor);
+    quint32 index = deleteSerie(xcolumn, ycolumn, zcolumn);
+    insertDataSeries(inputTable, index, xcolumn, ycolumn, zcolumn, currentColor);
     emit updateSeriesChanged();
 }
 
@@ -170,9 +165,9 @@ QColor Ilwis::Ui::ChartModel::newColor() const
      return  dis(gen);
 }
 
-quint32 ChartModel::insertDataSeries(quint32 index, quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color) {
-    auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis, color);
-    if (!newseries->setData())
+quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QColor& color) {
+    auto newseries = new DataseriesModel(this, xcolumn, ycolumn, zcolumn, color);
+    if (!newseries->setData(inputTable))
         return _series.size();
     _series.insert(index,newseries);
 
@@ -249,11 +244,11 @@ QString ChartModel::formatYAxis() const
     }
     return result;
 }
-quint32 ChartModel::addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color) {
+quint32 ChartModel::addDataSeries(const ITable& inputTable, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color) {
 
 
 	auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis, color);
-	if (!newseries->setData())
+	if (!newseries->setData(inputTable))
 		return _series.size();
 
 	_series.push_back(newseries);

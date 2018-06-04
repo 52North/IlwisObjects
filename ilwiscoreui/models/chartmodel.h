@@ -41,11 +41,12 @@ namespace Ilwis {
 
                 Q_INVOKABLE QColor seriesColor(int seriesIndex);
                 Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
+                Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
 
             ChartModel();
             ChartModel(QObject *parent);
 
-            quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString& chartType, quint32 xaxis, quint32 yaxis, quint32 zaxis);
+            quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis);
 
             QVariantList ChartModel::linkProperties() const;
             quint32 ChartModel::modelId() const;
@@ -55,15 +56,13 @@ namespace Ilwis {
             QString chartType() const;
 
 			int seriesCount() const;
-			Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
 			Ilwis::Ui::DataseriesModel* getSeriesByName(const QString name) const;
-            DataseriesModel* ChartModel::getSeries(int xColumnIndex, int yColumnIndex, int zColumnIndex) const;
-            quint32 deleteSerie(int xColumnIndex, int yColumnIndex, int zColumnIndex);
-			bool isValidSeries(const QString columnName) const;	// check if column with column name exists
-			quint32 addDataSeries(quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color);
-            quint32 insertDataSeries(quint32 index, quint32 xaxis, quint32 yaxis, quint32 zaxis, const QColor& color);
-            void updateDataSeries(int xaxis, int yaxis, int zaxis);
-			Ilwis::ITable table() const;
+            DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const;
+            quint32 deleteSerie(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
+			bool isValidSeries(const ITable& inputTable, const QString columnName) const;	// check if column with column name exists
+			quint32 addDataSeries(const ITable& inputTable, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color);
+            quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QColor& color);
+            void updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
             bool updateSeries() const;
             void tickCountX(int tc);
             int tickCountX() const;
@@ -104,7 +103,6 @@ namespace Ilwis {
 			QString _chartType = sUNDEF;
             int _tickCountX = 5;
             int _tickCountY = 5;
-            Ilwis::ITable _table;
             quint32 _modelId;
             QString _name = sUNDEF;
 			QList<DataseriesModel *> _series;
