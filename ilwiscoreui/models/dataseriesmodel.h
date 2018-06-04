@@ -35,13 +35,13 @@ namespace  Ilwis {
 
 		public:
 			explicit DataseriesModel();
-			DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis, const QColor& color);
-			bool setData();
+			DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color);
+			bool setData(const ITable& inputTable);
 
 			QVariantList points() const;
-            int xColumnIndex() const;
-            int yColumnIndex() const;
-            int zColumnIndex() const;
+            QString xColumn() const;
+            QString yColumn() const;
+            QString zColumn() const;
 
 			double minx() {
 				return _minx;
@@ -76,10 +76,10 @@ namespace  Ilwis {
 			QColor _color = QColor();
 			bool _selected = false;
 			quint32 _columnIndex;
-			quint32 _xaxis, _yaxis, _zaxis;
+			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
+            DataDefinition _dataDefinitions[3];
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QVariantList _points;
-			Ilwis::ITable _table;
 		};
 	}
 }

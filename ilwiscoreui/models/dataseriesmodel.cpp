@@ -17,8 +17,8 @@ DataseriesModel::DataseriesModel() {
 
 }
 
-DataseriesModel::DataseriesModel(ChartModel *chartModel, quint32 x_index, quint32 y_index, quint32 z_axis, const QColor& color)
-	: QObject(chartModel), _table(chartModel->table()), _xaxis(x_index), _yaxis(y_index), _zaxis(z_axis), _color(color)
+DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color)
+	: QObject(chartModel), _xaxis(xaxis), _yaxis(yaxis), _zaxis(zaxis), _color(color)
 {
 }
 
@@ -30,34 +30,38 @@ QVariantList DataseriesModel::points() const {
 	return _points;
 }
 
-bool DataseriesModel::setData() {
+bool DataseriesModel::setData(const ITable& inputTable) {
 	_points.clear();
-	_name = _table->columndefinition(_yaxis).name();	// use Y-axis for the name
+	_name = inputTable->columndefinition(_yaxis).name();	// use Y-axis for the name
+    _dataDefinitions[0] = inputTable->columndefinition(_xaxis).datadef();
+    _dataDefinitions[1] = inputTable->columndefinition(_yaxis).datadef();
+    _dataDefinitions[2] = inputTable->columndefinition(_zaxis).datadef();
+    if (!_dataDefinitions[0].isValid() || !_dataDefinitions[1].isValid()) {
+        return false;
+    }
 
-	auto datadefX = _table->columndefinition(_xaxis).datadef();
-	auto datadefY = _table->columndefinition(_yaxis).datadef();
-	if (datadefX.domain()->ilwisType() != itNUMERICDOMAIN)
+	if (_dataDefinitions[0].domain()->ilwisType() != itNUMERICDOMAIN)
 		return false;		// TODO: deal with categorical data later
-	if (datadefY.domain()->ilwisType() != itNUMERICDOMAIN)
+	if (_dataDefinitions[1].domain()->ilwisType() != itNUMERICDOMAIN)
 		return false;		// TODO: deal with categorical data later
 
-	auto actualRange = datadefX.range();
-	auto totalRange = _table->columndefinition(_xaxis).datadef().domain()->range();
+	auto actualRange = _dataDefinitions[0].range();
+	auto totalRange = _dataDefinitions[0].domain()->range();
 	_minx = actualRange->as<NumericRange>()->min();
 	_maxx = actualRange->as<NumericRange>()->max();
 
-	actualRange = datadefY.range();
-	totalRange = _table->columndefinition(_xaxis).datadef().domain()->range();
+	actualRange = _dataDefinitions[1].range();
+	totalRange = _dataDefinitions[1].domain()->range();
 	_miny = actualRange->as<NumericRange>()->min();
 	_maxy = actualRange->as<NumericRange>()->max();
 
 	QVariant v;
 	double vx = 0.0, vy = 0.0;
-	for (int row = 0; row < _table->recordCount(); row++) {
-		v = _table->cell(_xaxis, row, false);
+	for (int row = 0; row < inputTable->recordCount(); row++) {
+		v = inputTable->cell(_xaxis, row, false);
 		if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vx = v.toDouble();
-		v = _table->cell(_yaxis, row, false);
+		v = inputTable->cell(_yaxis, row, false);
 		if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vy = v.toDouble();
 
@@ -79,8 +83,8 @@ int tickResolution(const DataDefinition& datadef) {
 }
 double DataseriesModel::resolutionX()
 {
-    if (_xaxis != iUNDEF) {
-        return tickResolution(_table->columndefinition(_xaxis).datadef());
+    if (_xaxis != sUNDEF) {
+        return tickResolution(_dataDefinitions[0]);
 
     }
     return 0;
@@ -88,8 +92,8 @@ double DataseriesModel::resolutionX()
 
 double DataseriesModel::resolutionY()
 {
-    if (_yaxis != iUNDEF) {
-        return tickResolution(_table->columndefinition(_yaxis).datadef());
+    if (_yaxis != sUNDEF) {
+        return tickResolution(_dataDefinitions[1]);
 
     }
     return 0;
@@ -97,8 +101,8 @@ double DataseriesModel::resolutionY()
 
 double DataseriesModel::resolutionZ()
 {
-    if (_zaxis != iUNDEF) {
-        return tickResolution(_table->columndefinition(_zaxis).datadef());
+    if (_zaxis != sUNDEF) {
+        return tickResolution(_dataDefinitions[2]);
  
     }
     return 0;
@@ -114,14 +118,14 @@ void DataseriesModel::setColor(const QColor color) {
 	emit onColorChanged();
 }
 
-int DataseriesModel::xColumnIndex() const {
+QString DataseriesModel::xColumn() const {
     return _xaxis;
 }
 
-int DataseriesModel::yColumnIndex() const {
+QString DataseriesModel::yColumn() const {
     return _yaxis;
 }
 
-int DataseriesModel::zColumnIndex() const {
+QString DataseriesModel::zColumn() const {
     return _zaxis;
 }
