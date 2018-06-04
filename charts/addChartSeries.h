@@ -19,6 +19,7 @@ namespace Ilwis {
 			QString _name = sUNDEF;
 			QString _columnX = sUNDEF;
 			QString _columnY = sUNDEF;
+            ITable _inputTable;
 
 			NEW_OPERATION(AddChartSeries);
 		};

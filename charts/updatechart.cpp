@@ -38,13 +38,17 @@ Ilwis::OperationImplementation::State UpdateChartSeries::prepare(ExecutionContex
         kernel()->issues()->log(TR("Invalid model id used for chart. Chart can not be added"));
         return sPREPAREFAILED;
     }
+
+    OperationHelper::check([&]()->bool { return _inputTable.prepare(_expression.input<QString>(1), itTABLE); },
+    { ERR_COULD_NOT_LOAD_2,_expression.input<QString>(1), "" });
+
     OperationHelper::check(
-        [&]()->bool { return _chartmodel->isValidSeries(_expression.input<QString>(1)); },
-        { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(2), "chart" } 
+        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(1)); },
+        { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(1), "chart" } 
     );
 
     OperationHelper::check(  
-        [&]()->bool { return _chartmodel->isValidSeries(_expression.input<QString>(2)); },
+        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(2)); },
         { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
     ); 
 
@@ -60,10 +64,7 @@ bool UpdateChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    quint32 xaxis = _chartmodel->table()->columnIndex(_columnX);
-    quint32 yaxis = _chartmodel->table()->columnIndex(_columnY);
-    quint32 zaxis = iUNDEF;
-    _chartmodel->updateDataSeries(xaxis, yaxis, zaxis);
+    _chartmodel->updateDataSeries(_inputTable,_columnX,  _columnY, sUNDEF);
 
     logOperation(_expression);
 
@@ -80,10 +81,11 @@ quint64 UpdateChartSeries::createMetadata()
     OperationResource resource({ "ilwis://operations/updatechartseries" });
     resource.setLongName("Add Chart Series");
     resource.setSyntax("updatechartseries(chartid, xcolumn,ycolumn))");
-    resource.setInParameterCount({ 3 });
+    resource.setInParameterCount({ 4 });
     resource.addInParameter(0, itINT32, TR("Chart ID"), TR("The ID identifying the chart to which the series needs to be updated. "));
-    resource.addInParameter(1, itSTRING, TR("X Column"), TR("The column to use for the X-axis"));
-    resource.addInParameter(2, itSTRING, TR("Y Column"), TR("The column to use for the Y-axis"));
+    resource.addInParameter(1, itTABLE, TR("Input table"), TR("Table from which the data comes"));
+    resource.addInParameter(2, itSTRING, TR("X Column"), TR("The column to use for the X-axis"));
+    resource.addInParameter(3, itSTRING, TR("Y Column"), TR("The column to use for the Y-axis"));
     resource.setKeywords("chart series, table, chart");
 
     mastercatalog()->addItems({ resource });
