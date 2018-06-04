@@ -39,7 +39,7 @@ Item {
                 var filter = "itemid=" + modelid
                 bigthing.newCatalog(filter, "chart", "","other")
             }else {
-                var expr = "updatechartseries(" + modelid + ","+ editor.pinDataColumn(0)+ ",contineous_pin)"
+                var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",contineous_pin)"
                 layerview.manager.addCommand(expr);
             }
         }/*else{
@@ -51,7 +51,7 @@ Item {
     function  handleMouseMoved(mx,my){
         if ( contineousMode == true && modelid != null && contineousPin != -1) {
                 editor.changeCoords(contineousPin, mx, my, true)
-                var expr = "updatechartseries(" + modelid + ","+ editor.pinDataColumn(0)+ ",contineous_pin)"
+                var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",contineous_pin)"
                 layerview.manager.addCommand(expr);        
         }
     }
@@ -71,7 +71,7 @@ Item {
                     var filter = "itemid=" + modelid
                     bigthing.newCatalog(filter, "chart", "","other")
                  }else {
-                    var expr = "updatechartseries(" + modelid + ","+ editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(tab1.item.selectedRow + 1) + ")"
+                    var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(tab1.item.selectedRow + 1) + ")"
                     layerview.manager.addCommand(expr);
                  }
              }
