@@ -58,7 +58,16 @@ Rectangle {
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
+
+        DropArea {
+            anchors.fill: parent
+
+            onDropped: {
+                    chart.addDataTable(drag.source.ilwisobjectid);
+            }
+        }
     }
+
 
   
 	function loadGraphs() {
