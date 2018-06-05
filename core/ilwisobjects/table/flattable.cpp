@@ -32,8 +32,12 @@ bool FlatTable::createTable()
     if(!BaseTable::createTable()) {
         return false;
     }
+    if (_datagrid.size() != recordCount())
+        _datagrid.resize(recordCount());
+
     for(unsigned int i=0; i < recordCount(); ++i) {
-        _datagrid.push_back(std::vector<QVariant>(_attributeDefinition.definitionCount()));
+        Record rec(std::vector<QVariant>(_attributeDefinition.definitionCount()));
+        _datagrid[i] = rec;
     }
     return true;
 }
