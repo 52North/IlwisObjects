@@ -3,9 +3,9 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick 2.5
-//import "../../../../qml/Global.js" as Global
+import "../../../../qml/Global.js" as Global
 import "../../../../qml/controls" as Controls
-//import "../../../.." as Base
+import "../../../.." as Base
 import "../../../../qml/datapanel" as DataPanel
 
 Rectangle {
@@ -21,11 +21,11 @@ Rectangle {
         function tabClicked(index){
             if ( currentIndex === index){
                 if ( chartManagement.height <= 60){
-                    chartpane.state = "visible"
+                    chartspanel.state = "visible"
                 }
                 else{
-                    chartpane.state = ""
-                    chartpane.state = "invisible"
+                    chartspanel.state = ""
+                    chartspanel.state = "invisible"
                 }
             }
 
@@ -47,9 +47,9 @@ Rectangle {
                 DataseriesList {
                     id : dataserieslist
                 }
-/*                DataseriesOperationList {
+                DataseriesOperationList {
                     id : dataseriesOperationList
-                }*/
+                }
 /*                DataseriesOperation{
                     id : dataseriesOperation
                     Layout.fillWidth: true
