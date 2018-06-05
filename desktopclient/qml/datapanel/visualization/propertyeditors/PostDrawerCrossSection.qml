@@ -7,12 +7,15 @@ Item {
     anchors.fill : parent
 
     function draw(ctx, editor){
+        antialiasing = false
         ctx.strokeStyle = Qt.rgba(255, 0, 0, 1);
         ctx.lineWidth = 1;
+        ctx.font = '12px sans-serif'
         var points = editor.pinLocation4screen
         for(var i=0; i < points.length; ++i){
             var p = points[i]
             ctx.ellipse(p.x - 5, p.y-5, 10,10)
+            ctx.text(p.label, p.x + 7, p.y + 7)
         }
         ctx.stroke();
     }

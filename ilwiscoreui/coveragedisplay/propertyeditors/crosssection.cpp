@@ -227,6 +227,7 @@ QVariantList CrosssectionTool::pinLocation4screen() const
         Pixel pix = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->coord2Pixel(Coordinate(pin->x(), pin->y()));
         pos["x"] = pix.x;
         pos["y"] = pix.y;
+        pos["label"] = pin->label();
         result.push_back(pos);
     }
     return result;
