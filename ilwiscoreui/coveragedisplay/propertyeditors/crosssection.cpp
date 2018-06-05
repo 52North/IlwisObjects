@@ -133,40 +133,40 @@ QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
    return QQmlListProperty<CrossSectionPin>(this, _pins);
 }
 
+QString CrosssectionTool::columnName(int index, const QString& coverageName) const {
+    if (index < 0 || index >= _pins.size())
+        return sUNDEF;
+    QString ycolName = _pins[index]->label();
+    if (_contineousMode)
+        ycolName = "contineous_pin";
+    if (_dataSources.size() > 1) {
+        ycolName += coverageName;
+    }
+    ycolName = ycolName.replace(QRegExp("[/ .-,;:'\"]"), "_");
 
+    return ycolName;
+}
 void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
-    QString ycolumnNameBase = _pins[index]->label();
     if (!_pinData.isValid())
         return;
  
-    _pinData->recordCount(0);
+
+    std::vector<QVariant> empty(_pinData->recordCount());
+    _pinData->column(index+1, empty);  // index == 0 is the band value which we dont want to change
     for (int i = 0; i < _dataSources.size(); ++i) {
         IRasterCoverage raster;
         raster.prepare(_dataSources[i]->coverageId());
         if (raster.isValid()) {
-            int rec = 0;
-            if (_pinData->columnIndex("bands") == iUNDEF) { // empty table
-                _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
-
-            }
-            for (int z = 0; z < raster->size().zsize(); ++z) {
-                if (_dataSources[i]->active(z))
-                    _pinData->setCell(0, rec++, z);
-            }
-
-            QString ycolName = _contineousMode ? "contineous_pin": ycolumnNameBase + "_" + raster->name();
-            ycolName = ycolName.replace(QRegExp("[/ .-,;:'\"]"), "_");
+            QString ycolName = columnName(index, raster->name());
             Pixel pix = raster->georeference()->coord2Pixel(crd);
             int col = 0;
-            if ((col = _pinData->columnIndex(ycolName)) == iUNDEF) {
-                _pinData->addColumn(ColumnDefinition(ycolName, raster->datadef(), _pinData->columnCount() - 1));
-                col = _pinData->columnCount() - 1;
-            }
-            rec = 0;
-            for (int z = 0; z < raster->size().zsize(); ++z) {
-                if (_dataSources[i]->active(z)) {
-                    double v = raster->pix2value(Pixel(pix.x, pix.y, z));
-                    _pinData->setCell(col, rec++, v);
+            if ((col = _pinData->columnIndex(ycolName)) != iUNDEF) {
+                int rec = 0;
+                for (int z = 0; z < raster->size().zsize(); ++z) {
+                    if (_dataSources[i]->active(z)) {
+                        double v = raster->pix2value(Pixel(pix.x, pix.y, z));
+                        _pinData->setCell(col, rec++, v);
+                    }
                 }
             }
         }
@@ -193,7 +193,7 @@ void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixel
                 _pins[index]->row(r);
                 _pins[index]->update();
                 vpmodel()->layer()->layerManager()->updatePostDrawers();
-                changePinData(index, crd);
+                changePinData(index, crd); 
             }
         }
         
@@ -213,7 +213,7 @@ void CrosssectionTool::changePixel(int index, double x, double y)
                 _pins[index]->row(pix.y);
                 _pins[index]->update();
                 vpmodel()->layer()->layerManager()->updatePostDrawers();
-                changePinData(index, Coordinate(x,y));
+                changePinData(index, Coordinate(x,y)); 
             }
         }
     }
@@ -322,12 +322,33 @@ void Ilwis::Ui::CrosssectionTool::deletePin(int index)
     }
 }
 
-void CrosssectionTool::addPin()
-{
-    _pins.push_back(new CrossSectionPin("pin_" + QString::number(_pins.size()), Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
+void CrosssectionTool::addPinPrivate() {
+    IRasterCoverage raster;
+    raster.prepare(_dataSources[0]->coverageId()); //TODO: multiple datasources
+    if (!raster.isValid())
+        return;
+
+    if (_pinData->columnIndex("bands") == iUNDEF) { // empty table
+        _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
+        for (int z = 0; z < raster->size().zsize(); ++z) {
+            if (_dataSources[0]->active(z))
+                _pinData->setCell(0, z, z);
+        }
+    }
+    for (int i = 0; i < _dataSources.size(); ++i) {
+        QString ycolName = columnName(_pins.size() - 1, raster->name());
+        if (_pinData->columnIndex(ycolName) == iUNDEF) {
+            _pinData->addColumn(ColumnDefinition(ycolName, raster->datadef(), _pinData->columnCount() - 1));
+        }
+    }
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
     emit pinsChanged();
+}
+void CrosssectionTool::addPin()
+{
+    _pins.push_back(new CrossSectionPin("pin_" + QString::number(_pins.size()), Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
+    addPinPrivate();
 }
 
 QQmlListProperty<Ilwis::Ui::PinDataSource> CrosssectionTool::dataSources() 
@@ -378,9 +399,9 @@ void CrosssectionTool::contineousMode(bool yesno) {
 
 int CrosssectionTool::addContineousPin() {
     _pins.push_back(new CrossSectionPin("contineous_pin", Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
+    addPinPrivate();
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
-    emit pinsChanged();
     return _pins.size() - 1;
 }
 

@@ -123,6 +123,8 @@ private:
     QVariantList pinLocation4screen() const;
     QString tableUrlPrivate();
     void changePinData(int index, const Coordinate& crd);
+    void addPinPrivate();
+    QString columnName(int index, const QString& coverageName) const;
 
 
     QList<CrossSectionPin *> _pins;
