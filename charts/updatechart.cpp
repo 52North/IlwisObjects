@@ -43,17 +43,17 @@ Ilwis::OperationImplementation::State UpdateChartSeries::prepare(ExecutionContex
     { ERR_COULD_NOT_LOAD_2,_expression.input<QString>(1), "" });
 
     OperationHelper::check(
-        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(1)); },
+        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(2)); },
         { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(1), "chart" } 
     );
 
     OperationHelper::check(  
-        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(2)); },
+        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(3)); },
         { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
     ); 
 
-    _columnX = _expression.input<QString>(1);
-    _columnY = _expression.input<QString>(2);
+    _columnX = _expression.input<QString>(2);
+    _columnY = _expression.input<QString>(3);
 
     return sPREPARED;
 }
@@ -62,7 +62,7 @@ bool UpdateChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {
     if (_prepState == sNOTPREPARED)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
-            return false;
+            return false; 
 
     _chartmodel->updateDataSeries(_inputTable,_columnX,  _columnY, sUNDEF);
 
