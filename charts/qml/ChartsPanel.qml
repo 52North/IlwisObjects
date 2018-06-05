@@ -33,7 +33,7 @@ Item {
                     height : parent.height - 270
                 }
 
-                ChartProperties {
+                ChartManagement {
                     id : propertiespanel
                     height : 270
                     width : parent.height
@@ -51,7 +51,7 @@ Item {
 		chart = models.model(parts[1]);
         chart.parent = chartspanel;
 		tabmodel.displayName = chart.name
-		chartpane.chart = chart
+//		chartpane.chart = chart
     }
 
 }

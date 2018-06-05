@@ -13,9 +13,10 @@
   <ItemGroup>
     <None Include="charts\qmldir" />
     <None Include="charts\qml\ChartPane.qml" />
-    <None Include="charts\qml\ChartProperties.qml" />
+    <None Include="charts\qml\ChartManagement.qml" />
     <None Include="charts\qml\ChartsPanel.qml" />
     <None Include="charts\qml\DataseriesList.qml" />
+    <None Include="charts\qml\DataseriesOperationList.qml" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="charts\addChartSeries.cpp" />

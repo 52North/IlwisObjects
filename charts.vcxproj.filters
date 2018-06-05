@@ -5,13 +5,16 @@
     <None Include="charts\qml\ChartsPanel.qml">
       <Filter>qml</Filter>
     </None>
-    <None Include="charts\qml\ChartProperties.qml">
-      <Filter>qml</Filter>
-    </None>
     <None Include="charts\qml\ChartPane.qml">
       <Filter>qml</Filter>
     </None>
     <None Include="charts\qml\DataseriesList.qml">
+      <Filter>qml</Filter>
+    </None>
+    <None Include="charts\qml\DataseriesOperationList.qml">
+      <Filter>qml</Filter>
+    </None>
+    <None Include="charts\qml\ChartManagement.qml">
       <Filter>qml</Filter>
     </None>
   </ItemGroup>
