@@ -42,6 +42,7 @@ namespace Ilwis {
                 Q_INVOKABLE QColor seriesColor(int seriesIndex);
                 Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
                 Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
+                Q_INVOKABLE bool addDataTable(const QString& objid);
 
             ChartModel();
             ChartModel(QObject *parent);
@@ -98,6 +99,7 @@ namespace Ilwis {
             void initializeDataSeries(DataseriesModel *newseries);
             QString formatXAxis() const;
             QString formatYAxis() const;
+            bool axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck=true);
 
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QString _chartType = sUNDEF;

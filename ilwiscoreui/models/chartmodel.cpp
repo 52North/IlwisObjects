@@ -98,6 +98,34 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
+bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
+{
+    bool ok;
+    quint64 id = objid.toULongLong(&ok);
+    if (!ok) {
+        kernel()->issues()->log(TR("Not a valid identifier for a table. Table could not be opened: ") + objid);
+        return false;
+    }
+    ITable tbl;
+    if (!tbl.prepare(id)) {
+        kernel()->issues()->log(TR("Table could not be opened: ") + objid);
+        return false;
+    }
+    if (tbl->columnCount() < 2) {
+        kernel()->issues()->log(TR("Not enough column for adding a datasereis. At least 2 is needed: ") + objid);
+        return false;
+    }
+    if (axisCompatible(tbl->columndefinition(0).datadef(), ChartModel::aXAXIS)) {
+        for (int c = 1; c < tbl->columnCount(); ++c) {
+            if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::aYAXIS)) {
+                addDataSeries(tbl, tbl->columndefinition(0).name(), tbl->columndefinition(c).name(), sUNDEF, sUNDEF);
+            }
+        }
+            emit updateSeriesChanged();
+    }
+    return true;
+}
+
 DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) const
 {
 	auto itr = std::find_if(_series.begin(), _series.end(), [](DataseriesModel* serie) { return serie->name() == "name"; });
@@ -115,7 +143,7 @@ bool Ilwis::Ui::ChartModel::updateSeries() const
 
 bool Ilwis::Ui::ChartModel::isValidSeries(const ITable& inputTable, const QString columnName) const
 {
-	return inputTable->columndefinitionRef(columnName).isValid();
+	return inputTable->columndefinition(columnName).isValid();
 }
 
 void ChartModel::updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) {
@@ -243,6 +271,30 @@ QString ChartModel::formatYAxis() const
         result = formatAxis(serie->resolutionY(), result);
     }
     return result;
+}
+bool Ilwis::Ui::ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)
+{
+    if (basicCheck) {
+        // in the basic check we only check if it fits the first dataseries (axis)
+        DataseriesModel *serie = _series[0];
+        DataDefinition datadef = serie->datadefinition(axis);
+        if (inputDef.domain()->isCompatibleWith(datadef.domain().ptr())) {
+            if (datadef.domain()->ilwisType() == itNUMERICDOMAIN) {
+                double deltaMin = datadef.range<NumericRange>()->min() - inputDef.range<NumericRange>()->min();
+                double deltaMax = datadef.range<NumericRange>()->max() - inputDef.range<NumericRange>()->max();
+                double deltaMinMax = datadef.range<NumericRange>()->max() - datadef.range<NumericRange>()->min();
+                if (deltaMin <= 0 && deltaMax >= 0)
+                    return true;
+                if (deltaMin > 0 && deltaMinMax * 0.25 < std::abs(deltaMin))
+                    return true;
+                if (deltaMax < 0 && std::abs(deltaMax) < deltaMinMax * 0.25)
+                    return true;
+
+            }else
+                return true;
+        }
+    }
+    return false;
 }
 quint32 ChartModel::addDataSeries(const ITable& inputTable, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color) {
 
