@@ -52,11 +52,11 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
 {
     auto CheckAxis = [](const ITable& tbl, const QString& name, ChartModel::Axis atype)->QString {
         if (atype == ChartModel::aZAXIS && (name == sUNDEF || name == ""))
-            return iUNDEF;
+            return sUNDEF;
 
         quint32 index = tbl->columnIndex(name);
         if (index == iUNDEF) {
-            return iUNDEF;
+            return sUNDEF;
         }
         return name; 
     };
