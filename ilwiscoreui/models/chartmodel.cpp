@@ -43,11 +43,6 @@ QVariantList ChartModel::linkProperties() const
     return QVariantList();
 }
 
-void Ilwis::Ui::ChartModel::updateSeries()
-{
-	emit chartModelChanged();
-}
-
 quint32 ChartModel::modelId() const
 {
     return _modelId;

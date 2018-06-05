@@ -51,7 +51,6 @@ namespace Ilwis {
             quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis);
 
             QVariantList ChartModel::linkProperties() const;
-			void updateSeries();
             quint32 ChartModel::modelId() const;
             QString ChartModel::name() const;
             static QString mainPanelUrl();
