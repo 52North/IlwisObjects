@@ -108,6 +108,18 @@ double DataseriesModel::resolutionZ()
     return 0;
 }
 
+DataDefinition Ilwis::Ui::DataseriesModel::datadefinition(ChartModel::Axis axis)
+{
+    if (axis == ChartModel::aXAXIS)
+        return _dataDefinitions[0];
+    if (axis == ChartModel::aYAXIS)
+        return _dataDefinitions[1];
+    if (axis == ChartModel::aXAXIS)
+        return _dataDefinitions[2];
+
+    return DataDefinition();
+}
+
 QColor DataseriesModel::color() const {
 	return _color;
 }

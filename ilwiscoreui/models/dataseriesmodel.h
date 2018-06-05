@@ -59,6 +59,7 @@ namespace  Ilwis {
             double resolutionX();
             double resolutionY();
             double resolutionZ();
+            DataDefinition datadefinition(ChartModel::Axis axis);
 
 
 		signals:
