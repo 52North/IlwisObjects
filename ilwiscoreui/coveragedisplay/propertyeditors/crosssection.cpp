@@ -146,6 +146,12 @@ QString CrosssectionTool::columnName(int index, const QString& coverageName) con
 
     return ycolName;
 }
+int Ilwis::Ui::CrosssectionTool::decimalsCrds() const
+{
+    if (!_coverage.isValid())
+        return 0;
+    return _coverage->coordinateSystem()->isLatLon() ? 7 : 3;
+}
 void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
     if (!_pinData.isValid())
         return;
@@ -207,7 +213,7 @@ void CrosssectionTool::changePixel(int index, double x, double y)
             IRasterCoverage raster = _coverage.as<RasterCoverage>();
             if (raster.isValid()) {
                 Pixel pix = raster->georeference()->coord2Pixel(Coordinate(x, y));
-                _pins[index]->x(x);
+                _pins[index]->x(x) ;
                 _pins[index]->y(y);
                 _pins[index]->column(pix.x);
                 _pins[index]->row(pix.y);
@@ -225,6 +231,7 @@ QVariantList CrosssectionTool::pinLocation4screen() const
     for (auto *pin : _pins) {
         QVariantMap pos;
         Pixel pix = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->coord2Pixel(Coordinate(pin->x(), pin->y()));
+        
         pos["x"] = pix.x;
         pos["y"] = pix.y;
         pos["label"] = pin->label();

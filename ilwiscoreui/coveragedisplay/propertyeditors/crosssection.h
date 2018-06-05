@@ -31,6 +31,7 @@ namespace Ui{
         void row(int r);
         void column(int c);
         void update();
+ 
     signals:
         void updatePin();
 
@@ -77,6 +78,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
         Q_PROPERTY(int maxY READ maxY CONSTANT)
         Q_PROPERTY(QVariantList pinLocation4screen READ pinLocation4screen NOTIFY pinLocation4screenChanged)
         Q_PROPERTY(QString tableUrl READ tableUrlPrivate CONSTANT)
+        Q_PROPERTY(int decimalsCrds READ decimalsCrds CONSTANT)
 
 public:
     CrosssectionTool();
@@ -125,6 +127,7 @@ private:
     void changePinData(int index, const Coordinate& crd);
     void addPinPrivate();
     QString columnName(int index, const QString& coverageName) const;
+    int decimalsCrds() const;
 
 
     QList<CrossSectionPin *> _pins;

@@ -110,7 +110,7 @@ Column {
                 title : qsTr("X")
                 width : 75
                 delegate :  TextField {
-                    text: styleData.value
+                    text: styleData.value.toFixed(editor.decimalsCrds)
                     verticalAlignment:Text.AlignVCenter
                     //validator : DoubleValidator{bottom : editor.minX; top : editor.maxX;}
                     cursorPosition : 0
@@ -132,7 +132,7 @@ Column {
                 title : qsTr("Y")
                 width : 75
                 delegate :  TextField {
-                    text: styleData.value
+                    text: styleData.value.toFixed(editor.decimalsCrds)
                     verticalAlignment:Text.AlignVCenter
                     //validator : DoubleValidator{bottom : editor.minY; top : editor.maxY;}
                     cursorPosition : 0
@@ -160,7 +160,7 @@ Column {
      }
      Row {
         anchors.right : parent.right
-        width : 260
+        width : 170
         height : 25
         spacing : 4
         visible : crosssectiontool.contineousPin == -1
