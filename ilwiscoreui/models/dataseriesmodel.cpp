@@ -108,6 +108,7 @@ double DataseriesModel::resolutionZ()
     return 0;
 }
 
+
 DataDefinition Ilwis::Ui::DataseriesModel::datadefinition(ChartModel::Axis axis)
 {
     if (axis == ChartModel::aXAXIS)
@@ -118,6 +119,15 @@ DataDefinition Ilwis::Ui::DataseriesModel::datadefinition(ChartModel::Axis axis)
         return _dataDefinitions[2];
 
     return DataDefinition();
+
+QQmlListProperty<ChartOperation> Ilwis::Ui::DataseriesModel::operations()
+{
+    return QQmlListProperty<ChartOperation>();
+}
+
+Q_INVOKABLE Ilwis::Ui::ChartOperation * Ilwis::Ui::DataseriesModel::operation(quint32 index)
+{
+    return nullptr;
 }
 
 QColor DataseriesModel::color() const {
