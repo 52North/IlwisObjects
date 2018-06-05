@@ -21,7 +21,7 @@ Item {
             dataserieslist.currentIndex = newindex
 //            dataseriesOperationList.currentColumn = dataserieslist.model[newindex]
 //            dataseriesOperationList.setOperation(0)
-        }else if ( newindex === 0){
+        } else if ( newindex === 0){
             dataserieslist.currentIndex = newindex
 //            dataseriesOperationList.currentColumn = null
 //            if (table)
@@ -47,15 +47,35 @@ Item {
         }
     }
 
+    Rectangle {
+        id : chartlabel
+        width : parent.width - 2
+        height : 18
+        anchors.top : title.bottom
+        clip : true
+        color : uicontext.paleColor
+        Text {
+            text : qsTr("Chart")
+            width : parent.width
+//            font.bold: true
+            x : 5
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        Controls.ToolTip {
+            target : chartlabel
+            text : qsTr("Global properties of the chart")
+        }
+    }
+
     ListView {
         id : dataserieslist
         width : parent.width - 3
         height :    parent.height - title.height
-        anchors.top : title.bottom
+        anchors.top : chartlabel.bottom
         model : chartspanel.chart ? chartspanel.chart.series : null
         onModelChanged: {
 			console.log("chart=" + chartspanel.chart)
-			console.log("series=" + chartspanel.chart.seriesCount)
+//			console.log("series=" + chartspanel.chart.seriesCount)
             //dataseriesOperationList.currentSeries = null
             setCurrentIndex(0)
         }
@@ -96,7 +116,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                 }*/
                 Text {
-                    text :  index == 0 ? qsTr("Chart") : modelData.name
+                    text :  modelData.name
                     anchors.verticalCenter: parent.verticalCenter
                     MouseArea{
                         anchors.fill: parent
