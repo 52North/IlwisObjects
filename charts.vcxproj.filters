@@ -16,6 +16,7 @@
     </None>
     <None Include="charts\qml\ChartManagement.qml">
       <Filter>qml</Filter>
+    </None>
     <None Include="charts\qml\SetSeriesColor.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
@@ -80,6 +81,7 @@
     </ClCompile>
     <ClCompile Include="charts\updatechart.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="charts\SetSeriesColor.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
