@@ -16,6 +16,8 @@
     </None>
     <None Include="charts\qml\ChartManagement.qml">
       <Filter>qml</Filter>
+    <None Include="charts\qml\SetSeriesColor.qml">
+      <Filter>qml\PropertForms</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +49,15 @@
     <Filter Include="qml">
       <UniqueIdentifier>{ec659994-af9c-4491-ad63-28fb8e6ac780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PropertyForms">
+      <UniqueIdentifier>{b86ac3f3-a14b-4c94-9af4-9f8e44ec8a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PropertyForms">
+      <UniqueIdentifier>{1644ea06-aaf2-49d7-84c1-80f9b899434c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qml\PropertForms">
+      <UniqueIdentifier>{2520d37d-6569-421b-a088-ef60c1df135a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_ilwischarts_plugin.cpp">
@@ -69,11 +80,34 @@
     </ClCompile>
     <ClCompile Include="charts\updatechart.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="charts\SetSeriesColor.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SetSeriesColor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SetSeriesColor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_chartoperationform.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_chartoperationform.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="charts\chartoperationform.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="charts\SetSeriesColor.h">
+      <Filter>Header Files\PropertyForms</Filter>
+    </CustomBuild>
+    <CustomBuild Include="charts\chartoperationform.h">
+      <Filter>Header Files\PropertyForms</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
