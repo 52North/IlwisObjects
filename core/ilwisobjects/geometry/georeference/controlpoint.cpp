@@ -35,6 +35,11 @@ Pixeld ControlPoint::gridLocation() const
     return _gridLocation;
 }
 
+Pixeld& ControlPoint::gridLocationRef() 
+{
+    return _gridLocation;
+}
+
 void ControlPoint::gridLocation(const Pixeld &pix)
 {
     _gridLocation = pix;
@@ -53,4 +58,18 @@ void ControlPoint::active(bool yesno)
 bool ControlPoint::isValid() const
 {
     return !_neverValid && Coordinate::isValid() && _gridLocation.isValid();
+}
+
+double ControlPoint::errorRow() const {
+    return _errorRow;
+}
+double ControlPoint::errorColumn() const {
+    return _errorColumn;
+}
+
+void ControlPoint::errorRow(double err) {
+    _errorRow = err;
+}
+void ControlPoint::errorColumn(double err) {
+    _errorColumn = err;
 }
