@@ -10,7 +10,7 @@ import "../.." as Base
 
 Controls.DropableItem{
     id : dropItem
-    width : 250
+    width : 270
     height : 0
     x : 4
     clip:true
@@ -23,7 +23,7 @@ Controls.DropableItem{
         }
 
         width : parent.width - 5
-        height : 280
+        height : 410
         spacing : 4
         EditorHeader{}
         IlwisObjectCommon{
@@ -61,15 +61,25 @@ Controls.DropableItem{
                 }
             }
         }
-        CheckBox{
-            id : cbsubpixel
-            text : qsTr("Sub pixel precision")
-            style : Base.CheckBoxStyle1{}
+   
+        Controls.TextEditLabelPair {
+            labelText : qsTr("Reference raster")
+            labelWidth : 120
+            width : parent.width - 10
+            height : 20
         }
 
-        Button{
-            id : createeditor
-            text : qsTr("Open tie point editor")
+        Controls.ComboxLabelPair {
+            labelText : qsTr("Transformation")
+            labelWidth :120
+            height : 20
+            width : parent.width - 10
+            itemModel : ['Affine', 'Conformal', 'Second Order Bilinear', 'Full Second Order', 'Third order', 'Projective']
+        }
+
+        TiePointsTable {
+             width : parent.width
+             height : 120
         }
 
     }
