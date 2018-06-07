@@ -62,6 +62,8 @@
 #include "modelbuilder.h"
 #include "modeldesigner.h"
 #include "modelregistry.h"
+#include "controlpointmodel.h"
+#include "controlpointslistmodel.h"
 #include "workflow/analysismodel.h"
 #include "workflow/conceptmodel.h"
 #include "workflow/applicationmodelui.h"
@@ -149,6 +151,9 @@ void StartIlwis::init() {
 		qmlRegisterType<ModelRegistry>("ModelRegistry", 1, 0, "ModelRegistry");
         qmlRegisterType<CrossSectionPin>("CrossSectionPin", 1, 0, "CrossSectionPin");
         qmlRegisterType<PinDataSource>("PinDataSource", 1, 0, "PinDataSource");
+        qmlRegisterType<ControlPointModel>("ControlPointModel", 1, 0, "ControlPointModel");
+        qmlRegisterType<ControlPointsListModel>("ControlPointsListModel", 1, 0, "ControlPointsListModel");
+
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
         _formbuilder = new ApplicationFormExpressionParser();
