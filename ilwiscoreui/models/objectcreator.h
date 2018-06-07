@@ -17,6 +17,7 @@ class OperationResource;
 namespace Ui {
 class IlwisObjectCreatorModel;
 class CatalogModel;
+class ControlPointsListModel;
 
 class ILWISCOREUISHARED_EXPORT ObjectCreator : public QObject
 {
@@ -32,6 +33,7 @@ public:
     Q_INVOKABLE QString createObject(const QVariantMap& parms);
     Q_INVOKABLE QVariantMap creatorInfo(const QString &name)  const;
     Q_INVOKABLE QObject * createModellerObject(const QVariantMap& parms, QObject *parent);
+    Q_INVOKABLE Ilwis::Ui::ControlPointsListModel *createControlPointsList(QObject *parent);
 
     QStringList createableObjects() const;
 
