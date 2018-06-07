@@ -62,6 +62,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external;core;..\external\Python36\include;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -161,6 +164,13 @@ if errorlevel 1 goto VCEnd
  move /y ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\win32release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
 </Message>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>cd pythonapi
+"C:\Program Files (x86)\swigwin\swig.exe" -python -c++ ilwisobjects.i</Command>
+      <Message>Performing Custom Build Step SWIG</Message>
+      <Outputs>ilwisobjects.py;ilwisobjects_wrap.cxx</Outputs>
+      <Inputs>ilwisobjects.i</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
