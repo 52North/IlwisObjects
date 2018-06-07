@@ -26,8 +26,9 @@ namespace Ilwis {
             enum Axis{aXAXIS, aYAXIS, aZAXIS};
 
             Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
-                Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
-                Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
+            Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
+            Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
+            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series NOTIFY chartModelChanged)
 
                 Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
                 Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
@@ -83,6 +84,7 @@ namespace Ilwis {
             void tickCountYChanged();
 
         private:
+			QQmlListProperty<DataseriesModel> series();
 			double minx() {
 				return _minx;
 			}

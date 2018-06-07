@@ -43,7 +43,7 @@ QVariantList ChartModel::linkProperties() const
     return QVariantList();
 }
 
-quint32 ChartModel::modelId() const  
+quint32 ChartModel::modelId() const
 {
     return _modelId;
 }
@@ -89,6 +89,11 @@ quint32 ChartModel::deleteSerie(const QString& xcolumn, const QString& ycolumn, 
         }
     }
     return iUNDEF;
+}
+
+QQmlListProperty<DataseriesModel> ChartModel::series()
+{
+	return QQmlListProperty<DataseriesModel>(this, _series);
 }
 
 DataseriesModel* ChartModel::getSeries(int seriesIndex) const {

@@ -13,7 +13,7 @@ using namespace Ui;
 
 QT_CHARTS_USE_NAMESPACE
 
-DataseriesModel::DataseriesModel() {
+DataseriesModel::DataseriesModel(const QString name) : _name(name) {
 
 }
 
@@ -108,7 +108,8 @@ double DataseriesModel::resolutionZ()
     return 0;
 }
 
-DataDefinition Ilwis::Ui::DataseriesModel::datadefinition(ChartModel::Axis axis)
+
+DataDefinition DataseriesModel::datadefinition(ChartModel::Axis axis)
 {
     if (axis == ChartModel::aXAXIS)
         return _dataDefinitions[0];
@@ -118,6 +119,16 @@ DataDefinition Ilwis::Ui::DataseriesModel::datadefinition(ChartModel::Axis axis)
         return _dataDefinitions[2];
 
     return DataDefinition();
+}
+
+QQmlListProperty<ChartOperation> DataseriesModel::operations()
+{
+    return QQmlListProperty<ChartOperation>();
+}
+
+Ilwis::Ui::ChartOperation * DataseriesModel::operation(quint32 index)
+{
+    return nullptr;
 }
 
 QColor DataseriesModel::color() const {

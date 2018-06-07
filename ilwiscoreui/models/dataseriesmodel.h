@@ -8,8 +8,14 @@
 #include <QQmlListProperty>
 #include "kernel.h"
 #include "ilwisdata.h"
+#include "ilwisobject.h"
+#include "operationmetadata.h"
+#include "symboltable.h"
+#include "operationExpression.h"
+#include "operation.h"
 #include "attributemodel.h"
 #include "chartmodel.h"
+#include "chartoperation.h"
 
 namespace  Ilwis {
 	class Table;
@@ -32,11 +38,15 @@ namespace  Ilwis {
             Q_PROPERTY(int resolutionX READ resolutionX CONSTANT)
             Q_PROPERTY(int resolutionY READ resolutionY CONSTANT)
             Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
+            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperation> operations READ operations NOTIFY operationsChanged)
 
 		public:
-			explicit DataseriesModel();
+
 			DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color);
 			bool setData(const ITable& inputTable);
+			explicit DataseriesModel(const QString name = "");
+
+			void setColor(const QColor color);
 
 			QVariantList points() const;
             QString xColumn() const;
@@ -61,16 +71,19 @@ namespace  Ilwis {
             double resolutionZ();
             DataDefinition datadefinition(ChartModel::Axis axis);
 
+            QQmlListProperty<ChartOperation> operations();
+            Q_INVOKABLE Ilwis::Ui::ChartOperation* operation(quint32 index);
+
 
 		signals:
 			void isNameChanged();
 			void onColorChanged();
 			void onPointsChanged();
+            void operationsChanged();
 
 		public slots:
 			QString name() const;
 			QColor color() const;
-			void setColor(const QColor color);
 
 		private:
 			QString _name = sUNDEF;
@@ -81,6 +94,7 @@ namespace  Ilwis {
             DataDefinition _dataDefinitions[3];
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QVariantList _points;
+            QList<ChartOperation *> _operations;
 		};
 	}
 }
