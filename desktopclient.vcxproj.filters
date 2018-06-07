@@ -1149,6 +1149,12 @@
     <None Include="desktopclient\qml\datapanel\table\ColumnList.qml">
       <Filter>Distribution Files\qml\datapanel\table</Filter>
     </None>
+    <None Include="desktopclient\qml\workbench\creators\TiePointsTable.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\TextFieldStyleTiePoints.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
