@@ -24,8 +24,8 @@ public:
 private:
     Pixeld _gridLocation;
     LatLon  _llLocation;
-    bool _active;
-    bool _neverValid;
+    bool _active = true;
+    bool _neverValid = false;
     double _errorRow = rUNDEF;
     double _errorColumn = rUNDEF;
 

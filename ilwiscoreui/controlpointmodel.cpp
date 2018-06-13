@@ -69,3 +69,4 @@ bool ControlPointModel::active() const {
 void ControlPointModel::active(bool yesno) {
     _controlPoint.active(yesno);
 }
+

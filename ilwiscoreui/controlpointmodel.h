@@ -40,6 +40,8 @@ namespace Ilwis {
             void columnError(double value);
             bool active() const;
             void active(bool yesno);
+            ControlPoint controlPoint();
+            void update();
 
         signals:
             void updateControlPoint();
@@ -47,6 +49,7 @@ namespace Ilwis {
 
         private:
             ControlPoint _controlPoint;
+
         };
     }
 }
