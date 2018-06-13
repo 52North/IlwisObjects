@@ -13,7 +13,7 @@ public:
     CornersGeoReference();
     CornersGeoReference(const Resource& resource);
     void envelope(const Envelope& env);
-    bool compute();
+    int compute();
     QSize computeGridSize() const;
     bool isCornersOfCorners() const;
     Envelope envelope() const;

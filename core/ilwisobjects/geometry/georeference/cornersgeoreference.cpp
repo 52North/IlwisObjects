@@ -31,12 +31,12 @@ void CornersGeoReference::envelope(const Envelope &env)
     _envelope = env;
 }
 
-bool CornersGeoReference::compute()
+int CornersGeoReference::compute()
 {
     bool a = size().isNull();
     bool b = _envelope.isValid();
     if (a || !b)
-        return false;
+        return 0;
 
     _a12 = _a21 = 0;
     std::vector<double> vec = _envelope.max_corner() - _envelope.min_corner();
@@ -44,7 +44,7 @@ bool CornersGeoReference::compute()
     bool deltaxSmall = (std::abs(vec[0]) < 0.0000001);
     bool deltaySmall = (std::abs(vec[1]) < 0.0000001);
     if ( deltaxSmall || deltaySmall) {
-        return false;
+        return 0;
     }
     if (!_centerOfPixel) { // corners of corner pixels
         _a11  = size().xsize() / vec[0];
@@ -65,7 +65,7 @@ bool CornersGeoReference::compute()
     _det = _a11 * _a22;
 
 
-    return true;
+    return 1;
 }
 
 Envelope CornersGeoReference::envelope() const
