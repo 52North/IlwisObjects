@@ -71,8 +71,8 @@ int MathHelper::findPolynom(int iTerms, int iPoints, const std::vector<Coordinat
 
     MaxPower = PowerY[iTerms-1];
 
-    std::vector<double> DX(MaxPower);
-    std::vector<double> DY(MaxPower);
+    std::vector<double> DX(4);
+    std::vector<double> DY(4);
 
     //  Initialize Matrix and Dependent Vectors to Zero
     //  and Create Identity Matrix for Inversion
