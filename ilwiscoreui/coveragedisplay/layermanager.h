@@ -40,7 +40,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(QStandardItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> topLevelLayers READ childLayersPrivate NOTIFY topLevelLayersChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> allCoverages READ allCoveragesPrivate NOTIFY allCoveragesChanged)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> postDrawers READ postDrawers NOTIFY allCoveragesChanged)
+    Q_PROPERTY(QQmlListProperty<QObject> postDrawers READ postDrawers NOTIFY allCoveragesChanged)
     Q_PROPERTY(quint32 viewid READ viewid CONSTANT)
     Q_PROPERTY(bool hasSelectionDrawer READ hasSelectionDrawer WRITE setHasSelectionDrawer NOTIFY hasSelectionDrawerChanged)
     Q_PROPERTY(bool zoomInMode READ zoomInMode WRITE setZoomInMode NOTIFY zoomInModeChanged)
@@ -77,6 +77,9 @@ public:
     Q_INVOKABLE quint32 viewid() const; // modelid == viewid, for historical reasons (viewid is older) it remains in the interface as it is used in qml
     Q_INVOKABLE void setSelection(const QString &pixelpair);
     Q_INVOKABLE void updateAxis();
+    Q_INVOKABLE void addPostDrawer(QObject *editor);
+    Q_INVOKABLE void removePostDrawer(QObject *editor);
+    Q_INVOKABLE void broadCast(const QVariantMap& parameters);
 
     RootLayerModel *rootLayer() const;
     
@@ -118,8 +121,7 @@ public:
     QVariantList xGridAxisBottom() const;
     QVariantList yGridAxisRight() const;
     QVariantList yGridAxisLeft() const;
-    void addPostDrawer(VisualPropertyEditor *editor);
-    void removePostDrawer(VisualPropertyEditor *editor);
+
     void updatePostDrawers();
 
 public slots:
@@ -159,13 +161,13 @@ private:
 	LayerModel *_lastAddedCoverageLayer = 0;
     QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
     QList<LayerModel *> _coverages; //this list is filled on the fly in  allCoveragesPrivate, don't rely on it to have contents
-    QList<VisualPropertyEditor *> _postDrawers;
+    QList<QObject *> _postDrawers;
 
     static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
     QQmlListProperty<LayerModel> childLayersPrivate();
     QQmlListProperty<LayerModel> allCoveragesPrivate();
     void setSelectionPrivate(const Coordinate& crd, LayerModel * layer);
-    QQmlListProperty<VisualPropertyEditor> postDrawers();
+    QQmlListProperty<QObject> postDrawers();
     bool updatePostDrawersPrivate();
     
 
