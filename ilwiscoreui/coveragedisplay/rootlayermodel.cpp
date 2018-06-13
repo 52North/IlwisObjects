@@ -349,8 +349,7 @@ IGeoReference RootLayerModel::screenGrf() const
 void RootLayerModel::screenGrf(const IGeoReference &screenGrf)
 {
     _screenGrf = screenGrf;
-    _csy = new IlwisObjectModel(_screenGrf->resource(),this);
-
+    _grf = new IlwisObjectModel(_screenGrf->resource(),this);
     emit georefChanged();
 }
 
