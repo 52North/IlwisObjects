@@ -215,7 +215,7 @@ Rectangle {
     }
 
     function newCatalog(filter,outputtype, url,side){
-        datapanesplit.newPanel(filter, outputtype, url,side)
+        return datapanesplit.newPanel(filter, outputtype, url,side)
     }
 
     function setCatalogByIndex(currentTab, tabindex){
@@ -228,7 +228,7 @@ Rectangle {
     }
 
     function changeCatalog(filter, outputtype, url){
-        datapanesplit.changePanel(filter,outputtype, url)
+        return datapanesplit.changePanel(filter,outputtype, url)
     }
 
 }
