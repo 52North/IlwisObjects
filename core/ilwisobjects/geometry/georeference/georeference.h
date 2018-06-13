@@ -16,7 +16,7 @@ public:
     virtual Coordinate pixel2Coord(const Pixeld&) const = 0;
     virtual Pixeld coord2Pixel(const Coordinate& crd) const = 0;
     virtual double pixelSize() const = 0;
-    virtual bool compute() = 0;
+    virtual int compute() = 0;
     virtual void coordinateSystem(const ICoordinateSystem& csy)=0;
     virtual Size<> size() const=0;
     virtual void size(const Size<>& sz)=0;
@@ -34,7 +34,7 @@ public:
     Coordinate pixel2Coord(const Pixeld& pixel) const;
     Pixeld coord2Pixel(const Coordinate& crd) const;
     double pixelSize() const;
-    bool compute();
+    int compute();
 
     virtual Envelope pixel2Coord(const BoundingBox &box ) const;
     virtual BoundingBox coord2Pixel(const Envelope &box) const;

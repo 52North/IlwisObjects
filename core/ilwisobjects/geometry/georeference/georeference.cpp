@@ -56,7 +56,7 @@ double GeoReference::pixelSize() const
     return _georefImpl->pixelSize();
 }
 
-bool GeoReference::compute()
+int GeoReference::compute()
 {
     if ( isValid())
         return _georefImpl->compute();
