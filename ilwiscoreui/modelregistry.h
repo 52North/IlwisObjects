@@ -20,12 +20,14 @@ namespace Ilwis {
 
         public:
             Q_PROPERTY(bool needsUpdate READ needsUpdate NOTIFY needsUpdateChanged)
+            Q_PROPERTY(quint32 lastAddedId READ lastAddedId NOTIFY lastAddedIdChanged)
             Q_INVOKABLE QVariantList modelList(quint32 selfId, const QString& types);
             Q_INVOKABLE QVariantList linkedProperties(int modelId);
             Q_INVOKABLE Ilwis::Ui::LayerManager* createLayerManager(QObject *parent, QQuickItem *viewContainer);
             Q_INVOKABLE Ilwis::Ui::TableModel *createTableModel(QObject *parent, const QString& url, const QString& type);
             Q_INVOKABLE Ilwis::Ui::ChartModel *createChartModel(QObject *parent);
             Q_INVOKABLE QObject* model(quint32 id);
+
 
             ModelRegistry(QObject *parent = 0);
             ~ModelRegistry();
@@ -37,13 +39,16 @@ namespace Ilwis {
 
             quint32 newModelId();
             bool needsUpdate() const;
+            quint32 lastAddedId() const;
     
         signals:
             void needsUpdateChanged();
+            void lastAddedIdChanged();
 
         private:
             std::map<quint32, std::pair<QString, QObject *>> _models;
             QString name(const QString& type, QObject *obj) const;
+            quint32 _lastAddedId = 0;
 
             static std::unique_ptr<ModelRegistry> _modelregistry;
             static quint32 _baseId;
