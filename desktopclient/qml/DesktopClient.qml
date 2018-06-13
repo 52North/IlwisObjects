@@ -34,11 +34,12 @@ ApplicationWindow {
 
     function newCatalog(filter, outputtype, url, side){
 
-        mainSplit.newCatalog(filter, outputtype, url, side)
+        var a =  mainSplit.newCatalog(filter, outputtype, url, side)
+        return a;
     }
 
     function changeCatalog(filter, outputtype, url){
-        mainSplit.changeCatalog(filter, outputtype, url)
+        return mainSplit.changeCatalog(filter, outputtype, url)
     }
 
     function transitionInfoPane(newpagename, show) {
