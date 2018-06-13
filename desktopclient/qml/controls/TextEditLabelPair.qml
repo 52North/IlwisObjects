@@ -16,6 +16,7 @@ DropArea {
     property bool boldLabel : true
     property int editWidth : Math.max(0,width - label.width - (keys.length > 0 ? 22 * keys.length : 0))
     property string ilwisobjectid // not always set
+    property var checkFunction : null
     height : Global.rowHeight
     width : parent.width
 
@@ -99,7 +100,11 @@ DropArea {
         if ( 'ilwisobjectid' in drag.source){
             ilwisobjectid = drag.source.ilwisobjectid
         }
-        content = drag.source.message
+        if ( checkFunction){
+            if ( checkFunction(ilwisobjectid))
+                content = drag.source.message
+        }else
+            content = drag.source.message
     }
 }
 

@@ -7,41 +7,33 @@ import ControlPointModel 1.0
 import ControlPointsListModel 1.0
 import IlwisObjectCreatorModel 1.0
 import "../../Global.js" as Global
-import "../../controls" as Controls
+import "../../controls" as Controls 
 import "../.." as Base
 
 Column {
   width : parent.width
-    height : 140
-
-  //  Component {
-     //   id : textstyle
+  spacing : 4
+  property var editor
  
-
-    //}
     TableView {
         id : tableview
         width : parent.width
         height : 120
         selectionMode : SelectionMode.SingleSelection
         property var doUpdate : true
-        property var tiePointList
+        model : editor ? editor.controlPoints : null
         alternatingRowColors : false
-        property int dummy : 0
-        property var selectedRow : -1
+
         property bool ignore : false
-        model : tableview.tiePointList ? tableview.tiePointList.controlPoints : null
+        
 
         function setSelection(row){
-            tableview.dummy = tableview.dummy + 1
-            console.debug("before", tableview.dummy , ":", row, focus, activeFocus, tableview.selectedRow, tableview.ignore)
-            if ( row != tableview.selectedRow && !ignore){
+            if ( row != editor.selectedRow && !ignore){
                 tableview.selection.clear()
             
                 tableview.selection.select(row)
                 tableview.ignore = true
-                tableview.selectedRow  = row
-                console.debug("after", tableview.dummy , ":", row, tableview.selectedRow, tableview.ignore)
+                editor.selectedRow = row
                 return
             }
             ignore = false 
@@ -70,10 +62,13 @@ Column {
                     text: styleData.value
                     height : 20
                     verticalAlignment:Text.AlignVCenter
-                    textColor : tableview.selectedRow == styleData.row  ? "blue" : "black"
+                    textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+                    }
+                    onEditingFinished : {
+                        editor.changeTiePointCoord(styleData.row, text, editor.tiePointY(styleData.row))
                     }
                 }
         }
@@ -88,10 +83,13 @@ Column {
                     text: styleData.value
                     height : 20
                     verticalAlignment:Text.AlignVCenter
-                    textColor : tableview.selectedRow == styleData.row  ? "blue" : "black"
+                    textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+                    }
+                    onEditingFinished : {
+                        editor.changeTiePointCoord(styleData.row, editor.tiePointX(styleData.row), text)
                     }
              }
         }
@@ -107,10 +105,13 @@ Column {
                     height : 20
                     verticalAlignment:Text.AlignVCenter
 
-                    textColor : tableview.selectedRow == styleData.row  ? "blue" : "black"
+                    textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+                    }
+                    onEditingFinished : {
+                        editor.changeTiePointPixel(styleData.row, text, editor.tiePointRow(styleData.row))
                     }
              }
         }
@@ -126,10 +127,13 @@ Column {
                     height : 20
                     verticalAlignment:Text.AlignVCenter
 
-                    textColor : tableview.selectedRow == styleData.row  ? "blue" : "black"
+                    textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+                    }
+                    onEditingFinished : {
+                        editor.changeTiePointPixel(styleData.row, editor.tiePointColumn(styleData.row), text)
                     }
              }
         }
@@ -139,16 +143,12 @@ Column {
             title : qsTr("dColumn")
             role : "columnError"
             delegate : 
-                TextField {
+                Text {
                     text: styleData.value
                     height : 20
                     verticalAlignment:Text.AlignVCenter
 
-                    textColor : tableview.selectedRow == styleData.row  ? "blue" : "black"
-
-                    onActiveFocusChanged : {
-                        tableview.setSelection(styleData.row )
-                    }
+                    color : editor.selectedRow == styleData.row  ? "blue" : "black"
              }
         }
         TableViewColumn{
@@ -157,34 +157,35 @@ Column {
             title : qsTr("dRow")
             role : "rowError"
            delegate : 
-                TextField {
+                Text {
                     text: styleData.value
                     height : 20
                     verticalAlignment:Text.AlignVCenter
+                    color : editor.selectedRow == styleData.row  ? "blue" : "black"
 
-                    textColor : tableview.selectedRow == styleData.row  ? "blue" : "black"
-
-                    onActiveFocusChanged : {
-                        tableview.setSelection(styleData.row )
-                    }
              }
         }
 
            rowDelegate: Rectangle {
                 id : rowdelegate
                 height : 24
-                color : tableview.selectedRow == styleData.row ? Global.selectedColor : (styleData.alternate? uicontext.lightestColor: "white")
+                color : editor.selectedRow == styleData.row ? Global.selectedColor : (styleData.alternate? uicontext.lightestColor: "white")
             }
             itemDelegate: Rectangle {
                 height : 24
-                color : tableview.selectedRow == styleData.row ? Global.selectedColor : (styleData.alternate? uicontext.lightestColor: "white")
+                color : editor.selectedRow == styleData.row ? Global.selectedColor : (styleData.alternate? uicontext.lightestColor: "white")
             }
 
         Component.onCompleted : {
-            tableview.tiePointList = objectcreator.createControlPointsList(tableview)
+            editor = objectcreator.createControlPointsList(tableview)
+         }
   
-        }
-  
+    }
+    TextArea {
+        id : errors
+        width : parent.width 
+        height : 40
+        text : editor.errors
     }
     Row {
         anchors.right : parent.right
@@ -201,8 +202,18 @@ Column {
              height : 22
              text : qsTr("Add Add tiepoint")
              onClicked : {
-                 tableview.tiePointList.addTiepoint()
+                 editor.addTiepoint()
+                 editor.selectedRow = editor.controlPoints.length - 1
+                 tableview.currentRow = editor.selectedRow
              }
          }
+    }
+
+       function handleMouseClick(mx,my){
+         console.debug("clicked", mx, my)
+        if ( editor.selectedRow >= 0){
+       
+           editor.changeTiePointPixel(editor.selectedRow, mx, my)
+        }
     }
 }
