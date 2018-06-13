@@ -155,12 +155,14 @@ Item {
     }
 
     function setActiveEditor(editor){
+    console.debug("ooooooo", editor)
         if (activeEditor){
             activeEditor.editor.postDrawerActive = false
         }
         activeEditor = editor
         if ( activeEditor){
-            activeEditor.editor.postDrawerActive = true
+            if ( activeEditor.editor)
+                activeEditor.editor.postDrawerActive = true
         }
     }
     function subscribe (topic, func) {
@@ -206,6 +208,8 @@ Item {
     }
 
     function mapClicked(mx,my){
+        var parms = {linktype : 'pixelposition', mouseevent : 'clicked', 'column' : mx, 'row' : my, 'georefid' : manager.rootLayer.screenGrf.id}
+        manager.broadCast(parms)
         if ( activeEditor ){
             if ( typeof activeEditor.handleMouseClick == 'function'){
                 activeEditor.handleMouseClick(mx,my)
@@ -215,6 +219,7 @@ Item {
     }
 
    function mousePressed(mx,my){
+     
         if ( activeEditor ){
             if ( typeof activeEditor.handleMousePressed == 'function'){
                 activeEditor.handleMousePressed(mx,my)

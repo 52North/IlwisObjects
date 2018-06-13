@@ -18,11 +18,12 @@ Rectangle {
     id : mainSplit
 
     function newCatalog(filter, outputtype, url,side){
-         dataPanel.newCatalog(filter, outputtype, url,side)
+         var a =  dataPanel.newCatalog(filter, outputtype, url,side)
+         return a
     }
 
     function changeCatalog(filter, outputtype, url){
-        dataPanel.changeCatalog(filter, outputtype, url)
+        return dataPanel.changeCatalog(filter, outputtype, url)
     }
 
     function transitionInfoPane(newpane,visstate) {
