@@ -62,9 +62,9 @@ void GeoRefImplementation::centerOfPixel(bool yesno)
     _centerOfPixel = yesno;
 }
 
-bool GeoRefImplementation::compute()
+int GeoRefImplementation::compute()
 {
-    return true;
+    return 1;
 }
 
 

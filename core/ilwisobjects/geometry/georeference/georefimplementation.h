@@ -15,7 +15,7 @@ public:
     virtual void envelope(const Envelope&);
     bool centerOfPixel() const;
     void centerOfPixel(bool yesno);
-    bool compute();
+    int compute();
     virtual GeoRefImplementation *clone() = 0;
 
     virtual bool isCompatible(const IGeoReference &georefOther) const;
