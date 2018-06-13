@@ -201,7 +201,7 @@ Coordinate PlanarCTPGeoReference::crdInverseOfHigherOrder(const Pixeld& pix)
     Coordinate crdGap(gapStart,gapStart);
     Coordinate crd0(0,0);
     int iCount = 0;
-    while ( !crdGap.distance(crd0) < gapStart * 2 && iCount < 10) {
+    while ( !(crdGap.distance(crd0) < gapStart * 2) && iCount < 10) {
         makeJacobianMatrix(crdNext, _jacobian);
         detJ = _jacobian.determinant();
         if (std::abs(detJ) < EPS10)
@@ -271,12 +271,12 @@ void PlanarCTPGeoReference::makeJacobianMatrix(const Coordinate &crdIn , Eigen::
     }
 }
 
-bool PlanarCTPGeoReference::compute()
+int PlanarCTPGeoReference::compute()
 {
   int i, iNr;
   int iRecs = nrControlPoints();
   if (iRecs == 0)
-      return false;
+      return -1;
   int iRes = 0;
   std::vector<Coordinate> crdXY(iRecs);
   std::vector<Coordinate> pixColRow(iRecs);
@@ -325,7 +325,7 @@ bool PlanarCTPGeoReference::compute()
   }
   if (iNr == 0)
     iRes = -1;
-  else if (iNr < minnr())
+  else if (iNr < minimumPointsNeeded())
     iRes = -2;
   if (0 == iRes) {
     _avgCrd._x = rSumX / iNr;
@@ -381,14 +381,14 @@ bool PlanarCTPGeoReference::compute()
         iRes = MathHelper::findOblique(iNr, crdXY, pixColRow, _colrowCoef, false);
     }
     else {
-      int iTerms = minnr();
+      int iTerms = minimumPointsNeeded();
       iRes = MathHelper::findPolynom(iTerms, iNr, crdXY, pixColRow, _colrowCoef);
       if (iRes == 0)
         iRes = MathHelper::findPolynom(iTerms, iNr, pixColRow, crdXY, _xyCoef);
 
     }
   }
-  return isValid();
+  return iRes;
 }
 
 void PlanarCTPGeoReference::transformation(PlanarCTPGeoReference::Transformation tr)
@@ -413,24 +413,24 @@ QString PlanarCTPGeoReference::typeName()
     return "planartiepoints";
 }
 
-quint32 PlanarCTPGeoReference::minnr() const
+int PlanarCTPGeoReference::minimumPointsNeeded() const
 {
-  switch (_transformation) {
+    switch (_transformation) {
     case tCONFORM:
-      return 2;
+        return 2;
     case tAFFINE:
-      return 3;
+        return 3;
     case tSECONDORDER:
-      return 4;
+        return 4;
     case tFULLSECONDORDER:
-      return 6;
+        return 6;
     case tTHIRDORDER:
-      return 10;
+        return 10;
     case tPROJECTIVE:
-      return 4;
+        return 4;
     default:
-      return 0;
-  };
+        return 0;
+    };
 }
 
 void PlanarCTPGeoReference::copyTo(GeoRefImplementation *impl)
@@ -449,8 +449,15 @@ void PlanarCTPGeoReference::copyTo(GeoRefImplementation *impl)
 
 bool PlanarCTPGeoReference::isValid() const
 {
-    return CTPGeoReference::isValid() && nrControlPoints() >= minnr();
+    return CTPGeoReference::isValid() && nrControlPoints() >= minimumPointsNeeded();
 
+}
+
+double PlanarCTPGeoReference::sigma() const {
+    return _sigma;
+}
+void PlanarCTPGeoReference::sigma(double s) {
+    _sigma = s;
 }
 
 double PlanarCTPGeoReference::pixelSize() const

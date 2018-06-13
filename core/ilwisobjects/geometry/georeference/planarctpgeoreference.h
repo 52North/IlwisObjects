@@ -18,17 +18,20 @@ public:
     virtual Pixeld coord2Pixel(const Coordinate& crd) const;
     bool isValid() const;
     virtual double pixelSize() const;
-    virtual bool compute();
+    virtual int compute();
     void transformation(Transformation tr);
     Transformation transformation() const;
     GeoRefImplementation *clone();
     static QString typeName();
+    int minimumPointsNeeded() const;
+    double sigma() const;
+    void sigma(double s);
 
     static GeoRefImplementation *create();
 private:
     Eigen::Matrix2d _jacobian;
-    double _sigma;
-    Transformation _transformation;
+    double _sigma = rUNDEF;
+    Transformation _transformation = tAFFINE;
     std::vector<Coefficient> _colrowCoef;
     std::vector<Coefficient> _xyCoef;
     Coefficient _avgCrd;
@@ -38,7 +41,6 @@ private:
     Coordinate crdInverseOfProjective(const Pixeld &pix) const;
     Coordinate crdInverseOfHigherOrder(const Pixeld &pix);
     void makeJacobianMatrix(const Coordinate &crdIn, Eigen::Matrix2d &rmJ);
-    quint32 minnr() const;
     void copyTo(GeoRefImplementation *impl);
 
 
