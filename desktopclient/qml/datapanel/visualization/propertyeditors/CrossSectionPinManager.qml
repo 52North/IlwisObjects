@@ -33,7 +33,6 @@ Column {
             width : parent.width
             height : parent.height - 60
             selectionMode : SelectionMode.SingleSelection
-            property var doUpdate : true
             alternatingRowColors : false
             model :  editor ? editor.pins : 0
 

@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import ObjectCreator 1.0
 import IlwisObjectCreatorModel 1.0
+import LayerManager 1.0
+import ModelRegistry 1.0
 import "../../Global.js" as Global
 import "../../controls" as Controls
 import "../.." as Base
@@ -32,22 +34,17 @@ Controls.DropableItem{
         Row {
             width : parent.width
             height : Global.rowHeight
-            Text{
-                id : csyLabel
-                width : 120
+            Controls.TextEditLabelPair {
+                labelText : qsTr("Coordinate System")
+                labelWidth : 120
+                width : parent.width - 20
                 height : 20
-                text : qsTr("Coordinate System")
-                font.bold: true
-            }
+                checkFunction : testDropCsy
+                onDropped : {
+                    ilwisobjectid = drag.source.ilwisobjectid
+                    editor.setCoordinateSystem(ilwisobjectid)    
 
-            Controls.TextFieldDropArea{
-                id : csypart
-                width : parent.width - csyLabel.width - 23
-                height: Global.rowHeight
-
-                canUse: dataarea.isCsy
-                readOnly: false
-                asName: false
+                }
             }
             Button {
                 height : 20
@@ -61,12 +58,56 @@ Controls.DropableItem{
                 }
             }
         }
-   
-        Controls.TextEditLabelPair {
-            labelText : qsTr("Reference raster")
-            labelWidth : 120
-            width : parent.width - 10
+        Row {
+            width : parent.width
             height : 20
+            Controls.TextEditLabelPair {
+                labelText : qsTr("Background Raster")
+                labelWidth : 120
+                width : parent.width - 20
+                height : 20
+                checkFunction : testDrop
+                onDropped : {
+                    ilwisobjectid = drag.source.ilwisobjectid
+                    var filter = "itemid=" + ilwisobjectid
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
+                    models.lastAddedId
+                    if ( "manager" in tab.item){
+                        tiepointstable.editor.associatedBackgroundMap(tab.item.manager)
+                        tab.item.setActiveEditor(tiepointstable)
+                        tab.item.manager.addPostDrawer(tiepointstable.editor)
+
+                    }
+
+                }
+            }
+            Button {
+                width : 20
+                height : 20
+                iconSource : "../../images/view.png"
+            }
+        }
+        Row {
+            width : parent.width
+            height : 20
+            Controls.TextEditLabelPair {
+                labelText : qsTr("Reference Raster")
+                labelWidth : 120
+                width : parent.width - 20
+                height : 20
+                checkFunction : testDrop
+                onDropped : {
+                    ilwisobjectid = drag.source.ilwisobjectid
+                    var filter = "itemid=" + ilwisobjectid
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "right")
+                    tiepointstable.editor.linkModels(tab.item.manager)
+                }
+            }
+            Button {
+                width : 20
+                height : 20
+                iconSource : "../../images/view.png"
+            }
         }
 
         Controls.ComboxLabelPair {
@@ -75,11 +116,19 @@ Controls.DropableItem{
             height : 20
             width : parent.width - 10
             itemModel : ['Affine', 'Conformal', 'Second Order Bilinear', 'Full Second Order', 'Third order', 'Projective']
+
+            onCurrentIndexChanged : {
+            if ( currentIndex >= 0 && comboText != ""){
+                tiepointstable.editor.transformation = comboText
+            }
+        }
+
         }
 
         TiePointsTable {
-             width : parent.width
-             height : 120
+            id : tiepointstable
+            width : parent.width
+             height : 180
         }
 
     }
@@ -117,6 +166,27 @@ Controls.DropableItem{
             }
         }
     }
+
+    function testDrop(id){
+        if (!id)
+            return false
+        var obj = mastercatalog.id2object(id, dropItem)
+        if ( obj && obj.typeName === "rastercoverage"){
+            return true
+        }
+        return false
+    }
+
+    function testDropCsy(id){
+        if (!id)
+            return false
+        var obj = mastercatalog.id2object(id, dropItem)
+        if ( obj && obj.typeName === "coordinatesystem"){
+            return true
+        }
+        return false
+    }
+
 }
 
 
