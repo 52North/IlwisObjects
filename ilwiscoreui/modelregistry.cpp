@@ -33,7 +33,9 @@ ModelRegistry::~ModelRegistry()
 void ModelRegistry::registerModel(quint32 id, const QString& type, QObject * model)
 {
     _models[id] = std::pair<QString, QObject *>(type, model);
+    _lastAddedId = id;
     emit needsUpdateChanged();
+    emit lastAddedIdChanged();
 }
 
 void ModelRegistry::unRegisterModel(quint32 id)
@@ -41,6 +43,10 @@ void ModelRegistry::unRegisterModel(quint32 id)
     auto iter = _models.find(id);
     if (iter != _models.end()) {
         _models.erase(iter);
+        if (id == _lastAddedId) {
+            _lastAddedId = iUNDEF;
+            emit lastAddedIdChanged();
+        }
         emit needsUpdateChanged();
     }
 }
@@ -130,6 +136,11 @@ quint32 Ilwis::Ui::ModelRegistry::newModelId()
 bool Ilwis::Ui::ModelRegistry::needsUpdate() const
 {
     return true;
+}
+
+quint32 Ilwis::Ui::ModelRegistry::lastAddedId() const
+{
+    return _lastAddedId;
 }
 
 QString ModelRegistry::name(const QString& type, QObject * obj) const
