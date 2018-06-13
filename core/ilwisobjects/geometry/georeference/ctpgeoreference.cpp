@@ -68,9 +68,9 @@ qint32 CTPGeoReference::setControlPoint(const ControlPoint &pnt)
     return rec;
 }
 
-bool CTPGeoReference::compute()
+int CTPGeoReference::compute()
 {
-    return true;
+    return 1;
 }
 
 QString CTPGeoReference::typeName()
@@ -85,6 +85,13 @@ void CTPGeoReference::copyTo(GeoRefImplementation *impl){
 
     ctpgrf->_controlPoints = _controlPoints;
     ctpgrf->_invalidCP = _invalidCP;
+}
+
+void CTPGeoReference::subPixelPrecision(bool yesno) {
+    _subPixelPrecision = yesno;
+}
+bool CTPGeoReference::subPixelPrecision() const {
+    return _subPixelPrecision;
 }
 
 
