@@ -19,6 +19,7 @@
 #include "georefimplementation.h"
 #include "simpelgeoreference.h"
 #include "cornersgeoreference.h"
+#include "undeterminedgeoreference.h"
 #include "geos/geom/CoordinateArraySequence.h"
 #include "geos/geom/LinearRing.h"
 #include "geos/geom/Polygon.h"
@@ -220,7 +221,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         }
 
         const IGeoReference & gr = _raster->georeference();
-        bool grLinear = gr->grfType<CornersGeoReference>(); // nasty
+        bool grLinear = gr->grfType<CornersGeoReference>() || gr->grfType<UndeterminedGeoReference>(); // nasty
         const ICoordinateSystem & rootCsy = layerManager()->rootLayer()->screenCsy();
         const ICoordinateSystem & rasterCsy = _raster->coordinateSystem();
         bool convNeeded = rootCsy.isValid() && rasterCsy.isValid() && !rootCsy->isEqual(rasterCsy.ptr()) && !rootCsy->isUnknown() && !rasterCsy->isUnknown();
