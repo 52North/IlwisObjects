@@ -27,8 +27,8 @@ Coordinate UndeterminedGeoReference::pixel2Coord(const Pixeld &pix) const
     if ( !pix.isValid())
         return Coordinate();
     if (pix.is3D())
-        return Coordinate(pix.x, pix.y, pix.z);
-    return Coordinate(pix.x, pix.y);
+        return Coordinate(pix.x,  size().ysize() - pix.y, pix.z);
+    return Coordinate(pix.x, size().ysize() - pix.y);
 }
 
 Pixeld UndeterminedGeoReference::coord2Pixel(const Coordinate &crd) const
@@ -36,8 +36,8 @@ Pixeld UndeterminedGeoReference::coord2Pixel(const Coordinate &crd) const
     if ( !crd.isValid())
         return Pixeld();
     if ( crd.is3D())
-        return Pixeld(crd.x, crd.y, crd.z);
-    return Pixeld(crd.x, crd.y);
+        return Pixeld(crd.x, size().ysize() - crd.y, crd.z);
+    return Pixeld(crd.x, size().ysize() - crd.y);
 }
 
 double UndeterminedGeoReference::pixelSize() const
