@@ -19,6 +19,8 @@
 #include "layermanager.h"
 #include "compositelayermodel.h"
 #include "rootlayermodel.h"
+#include "georefimplementation.h"
+#include "undeterminedgeoreference.h"
 #include "coveragelayermodel.h"
 #include "modelregistry.h"
 #include "tree.h"
@@ -213,8 +215,16 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
         LayerModel *layer = createFunc(lm, parentLayer,layername, cov->description(),options);
 		if (!lm->rootLayer()->screenCsy().isValid()) {// first real layer sets the csy
 			lm->rootLayer()->screenCsy(cov->coordinateSystem());
-			lm->rootLayer()->coverageEnvelope(cov->envelope());
-			lm->rootLayer()->viewEnvelope(cov->envelope());
+            lm->rootLayer()->coverageEnvelope(cov->envelope());
+            lm->rootLayer()->viewEnvelope(cov->envelope());
+            if (cov->ilwisType() == itRASTER) {
+                IRasterCoverage rc = cov.as<RasterCoverage>();
+                if (rc->georeference()->grfType<UndeterminedGeoReference>()) {
+                    Envelope envUndetermned(Coordinate(0, 0), Coordinate(rc->size().xsize(), rc->size().ysize())); // none.grf bounds
+                    lm->rootLayer()->coverageEnvelope(envUndetermned);
+                    lm->rootLayer()->viewEnvelope(envUndetermned);
+                }
+            }
 		}
         qint32 lowernodeid = options.contains("lowernodeid") ? options["lowernodeid"].toInt() : iUNDEF;
 		layer->nodeId(lm->nextId());
