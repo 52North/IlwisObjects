@@ -181,7 +181,6 @@ Controls.DropableItem{
         if (!id)
             return false
         var obj = mastercatalog.id2object(id, dropItem)
-        console.debug("zzzzzz", obj.typeName)
         if ( obj && obj.typeName.indexOf("coordinatesystem") != -1){
             return true
         }
