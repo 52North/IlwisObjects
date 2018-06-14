@@ -404,8 +404,11 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
     auto setExtended = [](quint64 objectid, const QString &attribute, const QVariant &var)->QString{
         QString statement;
         Resource res = mastercatalog()->id2Resource(objectid);
-        if ( res.isValid() && res.hasProperty(attribute))
-            statement = QString("update catalogitemproperties set propertyname='%1', propertyvalue='%2' where itemid=%3").arg(attribute).arg(var.toString()).arg(objectid);
+        if (res.isValid() && res.hasProperty(attribute)) {
+            if (var != res[attribute]){
+                statement = QString("update catalogitemproperties set propertyname='%1', propertyvalue='%2' where itemid=%3").arg(attribute).arg(var.toString()).arg(objectid);
+            }
+        }
         else
             statement = QString("insert into catalogitemproperties (propertyvalue,propertyname,itemid) values('%1','%2',%3)").arg(var.toString()).arg(attribute).arg(objectid);
         return statement;
@@ -429,11 +432,13 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
     if ( extended){
         statement = setExtended(objectid, attribute,var);
     }
-    InternalDatabaseConnection sqlPublic;
-    bool ok = sqlPublic.exec(statement);
-    if (!ok) {
-        kernel()->issues()->logSql(sqlPublic.lastError());
-        return false;
+    if (statement != "") {
+        InternalDatabaseConnection sqlPublic;
+        bool ok = sqlPublic.exec(statement);
+        if (!ok) {
+            kernel()->issues()->logSql(sqlPublic.lastError());
+            return false;
+        }
     }
     return true;
 }
