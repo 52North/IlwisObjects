@@ -316,42 +316,46 @@ QQmlListProperty<DomainItemModel> IlwisObjectModel::domainitems()
 
 QQmlListProperty<ProjectionParameterModel> IlwisObjectModel::projectionItems()
 {
-    IlwisTypes objectype = _ilwisobject->ilwisType();
-    if ( hasType( objectype, itPROJECTION | itCONVENTIONALCOORDSYSTEM)){
-        IProjection proj;
-        _projectionParmItems.clear();
-        if ( hasType(objectype, itCONVENTIONALCOORDSYSTEM)){
-            IConventionalCoordinateSystem csyProj = _ilwisobject.as<ConventionalCoordinateSystem>();
-            if ( csyProj.isValid()){
-                proj = csyProj->projection();
+    try {
+        IlwisTypes objectype = _ilwisobject->ilwisType();
+        if (hasType(objectype, itPROJECTION | itCONVENTIONALCOORDSYSTEM)) {
+            IProjection proj;
+            _projectionParmItems.clear();
+            if (hasType(objectype, itCONVENTIONALCOORDSYSTEM)) {
+                IConventionalCoordinateSystem csyProj = _ilwisobject.as<ConventionalCoordinateSystem>();
+                if (csyProj.isValid()) {
+                    proj = csyProj->projection();
+                }
             }
-        }else
-            proj = _ilwisobject.as<Projection>();
+            else
+                proj = _ilwisobject.as<Projection>();
 
-        if ( proj.isValid()){
-            if ( proj->isUsed(Projection::pvFALSEEASTING))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvFALSEEASTING, this));
-            if ( proj->isUsed(Projection::pvFALSENORTHING))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvFALSENORTHING, this));
-            if ( proj->isUsed(Projection::pvCENTRALMERIDIAN))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvCENTRALMERIDIAN, this));
-            if ( proj->isUsed(Projection::pvCENTRALPARALLEL))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvCENTRALPARALLEL, this));
-            if ( proj->isUsed(Projection::pvSTANDARDPARALLEL1))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvSTANDARDPARALLEL1, this));
-            if ( proj->isUsed(Projection::pvSTANDARDPARALLEL2))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvSTANDARDPARALLEL2, this));
-            if ( proj->isUsed(Projection::pvLATITUDEOFTRUESCALE))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvLATITUDEOFTRUESCALE, this));
-            if ( proj->isUsed(Projection::pvSCALE))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvSCALE, this));
-            if ( proj->isUsed(Projection::pvZONE))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvZONE, this));
-            if ( proj->isUsed(Projection::pvHEIGHT))
-                _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvHEIGHT, this));
+            if (proj.isValid()) {
+                if (proj->isUsed(Projection::pvFALSEEASTING))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvFALSEEASTING, this));
+                if (proj->isUsed(Projection::pvFALSENORTHING))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvFALSENORTHING, this));
+                if (proj->isUsed(Projection::pvCENTRALMERIDIAN))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvCENTRALMERIDIAN, this));
+                if (proj->isUsed(Projection::pvCENTRALPARALLEL))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvCENTRALPARALLEL, this));
+                if (proj->isUsed(Projection::pvSTANDARDPARALLEL1))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvSTANDARDPARALLEL1, this));
+                if (proj->isUsed(Projection::pvSTANDARDPARALLEL2))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvSTANDARDPARALLEL2, this));
+                if (proj->isUsed(Projection::pvLATITUDEOFTRUESCALE))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvLATITUDEOFTRUESCALE, this));
+                if (proj->isUsed(Projection::pvSCALE))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvSCALE, this));
+                if (proj->isUsed(Projection::pvZONE))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvZONE, this));
+                if (proj->isUsed(Projection::pvHEIGHT))
+                    _projectionParmItems.append(new ProjectionParameterModel(proj, Projection::pvHEIGHT, this));
+            }
+            return QQmlListProperty<ProjectionParameterModel>(this, _projectionParmItems);
         }
-        return QQmlListProperty<ProjectionParameterModel>(this, _projectionParmItems);
     }
+    catch (const ErrorObject&) {}
 
     return QQmlListProperty<ProjectionParameterModel>();
 }
