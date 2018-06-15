@@ -127,6 +127,13 @@ void CatalogView::filterChanged(const QString& typeIndication, bool state){
 
     addActiveFilter("object");
 }
+QStringList CatalogView::filters() const {
+    QStringList result;
+    for (auto filter : _filters) {
+        result.append(filter.second._filter.toString());
+    }
+    return result;
+}
 
 int CatalogView::filterCount() const
 {
