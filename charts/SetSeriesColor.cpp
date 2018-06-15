@@ -4,7 +4,7 @@
 #include "columndefinition.h"
 #include "table.h"
 #include "models/tablemodel.h"
-#include "chartoperationform.h"
+#include "chartoperationeditor.h"
 #include "symboltable.h"
 #include "operationmetadata.h"
 #include "commandhandler.h"
@@ -15,7 +15,7 @@
 using namespace Ilwis;
 using namespace Ui;
 
-SetSeriesColor::SetSeriesColor() : ChartOperationForm("Set dataseries color", QUrl("SetSeriesColor.qml"), TR("Changes the color of the selected dataseries in the chart"))
+SetSeriesColor::SetSeriesColor() : ChartOperationEditor("Set dataseries color", QUrl("SetSeriesColor.qml"), TR("Changes the color of the selected dataseries in the chart"))
 {
 }
 
