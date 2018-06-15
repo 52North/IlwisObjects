@@ -54,6 +54,7 @@ public:
     void filter(const QString& filterName, const QString& filterString);
     bool hasFilter(const QString& name) const;
     QVariant filter(const QString &name) const;
+    QStringList filters() const;
     void addActiveFilter(const QString& filterName);
     bool removeActiveFilter(const QString& filterName);
     void filterChanged(const QString &typeIndication, bool state);
