@@ -168,6 +168,7 @@ Rectangle {
             Item {
                 height : 20
                 width : parent.width
+                visible : currentCatalog ? checkCatalogType(currentCatalog.filters(), "filebased") : false
                 Controls.TextEditLabelPair{
                     id : label2
                     labelText: qsTr("Time filter")
@@ -182,6 +183,22 @@ Rectangle {
                     width : 40
                     height : label2.height
                     text : qsTr("Apply")
+                }
+            }
+            Item {
+                height : 20
+                width : parent.width
+                visible : currentCatalog ? checkCatalogType(currentCatalog.filters(), "coordinatesystems") : false
+                Controls.TextEditLabelPair{
+                    id : epsglbl
+                    labelText: qsTr("EPSG number")
+                    labelWidth: 100
+                    width : parent.width - 47
+                    fontSize: 8
+                    transparentBackgrond : false
+                      onContentChanged: {
+                        currentCatalog.filter("epsg", content)
+                    }
                 }
             }
 
@@ -210,6 +227,20 @@ Rectangle {
         height : parent.height
         width : 370
         filterTarget: currentCatalog
+    }
+
+    function checkCatalogType(filterList, type){
+        for(var i=0; i < filterList.length; ++i){
+            var filter = filterList[i]
+            if ( type == "system")
+                return filter.indexOf("ilwis://system") >= 0
+            if ( type == "filebased"){
+                return filter.indexOf("file://") >= 0
+            }
+            if ( type == "coordinatesystems")
+                return filter.indexOf("ilwis://system/coordinatesystems") >= 0
+        }
+        return true
     }
 }
 
