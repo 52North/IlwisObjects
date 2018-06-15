@@ -71,7 +71,7 @@ quint64 ChartSeriesColor::createMetadata()
 	resource.setInParameterCount({ 2 });
 	resource.addInParameter(0, itINT32, TR("Chart ID"), TR("The ID identifying the chart containing the series."));
 	resource.addInParameter(1, itSTRING, TR("Series Name"), TR(""));
-	resource.addInParameter(2, itSTRING, TR("Color"), TR("String describing the new color"));
+	resource.addInParameter(2, itSTRING, TR("Color"), TR("either an svg color name or a hex based color code (e.g #ff1145)"));
 	resource.setKeywords("chart series, table, chart, color");
 
 	mastercatalog()->addItems({ resource });

@@ -740,6 +740,18 @@
     <ClCompile Include="ilwiscoreui\controlpointslistmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\chartoperationfactory.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_chartoperationeditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_chartoperationeditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\chartoperationeditor.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -958,6 +970,9 @@
     <CustomBuild Include="ilwiscoreui\controlpointslistmodel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\models\chartoperationeditor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwiscoreui\models\.gitignore">
@@ -984,6 +999,9 @@
       <Filter>Header Files\ilwisobjects\tableoperations</Filter>
     </ClInclude>
     <ClInclude Include="ilwiscoreui\models\chartoperation.h">
+      <Filter>Header Files\ilwisobjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\models\chartoperationfactory.h">
       <Filter>Header Files\ilwisobjects</Filter>
     </ClInclude>
   </ItemGroup>
