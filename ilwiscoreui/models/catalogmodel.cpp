@@ -106,6 +106,14 @@ void CatalogModel::scanContainer(bool threading, bool forceScan)
 
 }
 
+QStringList Ilwis::Ui::CatalogModel::filters() const
+{
+    if (_view.isValid()) {
+        return _view.filters();
+    }
+    return QStringList();
+}
+
 void CatalogModel::setView(const CatalogView &view){
     _view = view;
 }
@@ -154,6 +162,9 @@ QQmlListProperty<ResourceModel> CatalogModel::resources() {
         if ( _view.isActiveFilter("name")){
             fillNameFilter();
         }
+        if (_view.isActiveFilter("epsg")) {
+            fillEPSGFilter();
+        }
         return QQmlListProperty<ResourceModel>(this, _filteredItems);
     }
     catch(const ErrorObject& ){
@@ -201,6 +212,17 @@ void CatalogModel::fillNameFilter(){
         if( resource->name().indexOf(filter)!= -1){
             tempList.push_back(resource);
         }
+    }
+    _filteredItems = QList<ResourceModel *>(tempList);
+}
+
+void CatalogModel::fillEPSGFilter() {
+    auto &currentList = _filteredItems.size() > 0 ? _filteredItems : _allItems;
+    QList<ResourceModel *> tempList;
+    auto filter = _view.filter("epsg").toString();
+    for (ResourceModel * resource : currentList) {
+       if ( resource->item().code().indexOf(filter) >= 0)
+           tempList.push_back(resource);
     }
     _filteredItems = QList<ResourceModel *>(tempList);
 }

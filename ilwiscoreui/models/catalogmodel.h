@@ -47,6 +47,7 @@ public:
     Q_INVOKABLE void removeActiveFilter(const QString& filterName);
     Q_INVOKABLE virtual void refresh();
     Q_INVOKABLE void scanContainer(bool threaded, bool forceScan);
+    Q_INVOKABLE QStringList filters() const;
 
     bool isScanned() const;
     bool initNode() const;
@@ -87,6 +88,7 @@ private:
     void fillObjectFilter();
     bool isActiveFilter(const QString& name) const;
     void fillNameFilter();
+    void fillEPSGFilter();
     void fillKeywordFilter();
     QStringList dataProviders() const;
 	bool isFileBased() const;
