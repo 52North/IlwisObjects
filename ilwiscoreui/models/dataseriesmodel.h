@@ -15,13 +15,13 @@
 #include "operation.h"
 #include "attributemodel.h"
 #include "chartmodel.h"
-#include "chartoperation.h"
 
 namespace  Ilwis {
 	class Table;
 	typedef IlwisData<Table> ITable;
 
 	namespace Ui {
+        class ChartOperationEditor;
 
 		class ILWISCOREUISHARED_EXPORT DataseriesModel : public QObject
 		{
@@ -38,7 +38,7 @@ namespace  Ilwis {
             Q_PROPERTY(int resolutionX READ resolutionX CONSTANT)
             Q_PROPERTY(int resolutionY READ resolutionY CONSTANT)
             Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
-            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperation> operations READ operations NOTIFY operationsChanged)
+            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
 
 		public:
 
@@ -71,8 +71,8 @@ namespace  Ilwis {
             double resolutionZ();
             DataDefinition datadefinition(ChartModel::Axis axis);
 
-            QQmlListProperty<ChartOperation> operations();
-            Q_INVOKABLE Ilwis::Ui::ChartOperation* operation(quint32 index);
+            QQmlListProperty<ChartOperationEditor> operations();
+            Q_INVOKABLE Ilwis::Ui::ChartOperationEditor* operation(quint32 index);
 
 
 		signals:
@@ -89,12 +89,12 @@ namespace  Ilwis {
 			QString _name = sUNDEF;
 			QColor _color = QColor();
 			bool _selected = false;
-			quint32 _columnIndex;
+			quint32 _seriesIndex;
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
             DataDefinition _dataDefinitions[3];
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QVariantList _points;
-            QList<ChartOperation *> _operations;
+            QList<ChartOperationEditor *> _operations;
 		};
 	}
 }
