@@ -2,9 +2,10 @@
 
 #include <QObject>
 #include <QQmlListProperty>
+#include "kernel.h"
 #include "ilwisdata.h"
 #include "geometries.h"
-#include "georeference.h"
+#include "raster.h"
 #include "controlpoint.h"
 #include "controlpointmodel.h"
 #include "ilwiscoreui_global.h"
@@ -24,6 +25,8 @@ namespace Ilwis {
             Q_PROPERTY(QString associatedUrl READ associatedUrl CONSTANT)
             Q_PROPERTY(bool postDrawerActive READ postDrawerActive WRITE postDrawerActive NOTIFY postDrawerActiveChanged)
             Q_PROPERTY(int selectedRow READ selectedRow WRITE selectedRow NOTIFY selectedRowChanged)
+            Q_PROPERTY(int decimalsCrds READ decimalsCrds CONSTANT)
+            Q_PROPERTY(bool subPixelPrecision READ subPixelPrecision WRITE subPixelPrecision NOTIFY subPixePrecisionChanged)
 
         public:
             ControlPointsListModel(QObject *parent=0);
@@ -31,18 +34,20 @@ namespace Ilwis {
 
             Q_INVOKABLE void addTiepoint();
             Q_INVOKABLE void changeTiePointCoord(int index, double x, double y);
-            Q_INVOKABLE void changeTiePointPixel(int index, double x, double y);
+            Q_INVOKABLE void changeTiePointPixel(int index, double x, double y, bool editFromTable);
             Q_INVOKABLE int tiePointRow(int index) const;
             Q_INVOKABLE int tiePointColumn(int index) const;
             Q_INVOKABLE double tiePointX(int index) const;
             Q_INVOKABLE double tiePointY(int index) const;
-            Q_INVOKABLE void associatedBackgroundMap(Ilwis::Ui::LayerManager *lm);
+            Q_INVOKABLE void associatedBackgroundMap(Ilwis::Ui::LayerManager *lm, const QString& objid);
             Q_INVOKABLE void linkModels(Ilwis::Ui::LayerManager *lm);
             Q_INVOKABLE void setCoordinateSystem(const QString& id);
 
             Q_INVOKABLE QString associatedUrl() const;
             bool postDrawerActive() const;
             void postDrawerActive(bool yesno);
+            void subPixelPrecision(bool yesno);
+            bool subPixelPrecision() const;
 
             signals:
                 void controlPointsChanged();
@@ -50,6 +55,7 @@ namespace Ilwis {
                 void transformationChanged();
                 void postDrawerActiveChanged();
                 void selectedRowChanged();
+                void subPixePrecisionChanged();
 
         public slots:
               void linkAcceptMessage(const QVariantMap& parameters);
@@ -58,10 +64,11 @@ namespace Ilwis {
             QList<Ilwis::Ui::ControlPointModel *> _controlPoints;
             QString _lastError;
             IGeoReference _georef;
-            PlanarCTPGeoReference *_planarCTP;
+            PlanarCTPGeoReference *_planarCTP = 0;
             QString _associatedUrl = sUNDEF;
             bool _postDrawerActive = false;
             Ilwis::Ui::LayerManager *_associatedBackgroundMap = 0;
+            IRasterCoverage _backgroundRaster;
             int _selectedRow = -1;
 
             QQmlListProperty<ControlPointModel> controlPoints();
@@ -71,6 +78,9 @@ namespace Ilwis {
             void handleComputeResult(int res);
             void selectedRow(int r);
             int selectedRow() const;
+            int decimalsCrds() const;
+            void urlCsy(const QString& csy);
+            QString urlCsy() const;
 
         };
     }

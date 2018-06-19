@@ -58,35 +58,7 @@ Controls.DropableItem{
                 }
             }
         }
-        Row {
-            width : parent.width
-            height : 20
-            Controls.TextEditLabelPair {
-                labelText : qsTr("Background Raster")
-                labelWidth : 120
-                width : parent.width - 20
-                height : 20
-                checkFunction : testDrop
-                onDropped : {
-                    ilwisobjectid = drag.source.ilwisobjectid
-                    var filter = "itemid=" + ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
-                    models.lastAddedId
-                    if ( "manager" in tab.item){
-                        tiepointstable.editor.associatedBackgroundMap(tab.item.manager)
-                        tab.item.setActiveEditor(tiepointstable)
-                        tab.item.manager.addPostDrawer(tiepointstable.editor)
-
-                    }
-
-                }
-            }
-            Button {
-                width : 20
-                height : 20
-                iconSource : "../../images/view.png"
-            }
-        }
+ 
         Row {
             width : parent.width
             height : 20
@@ -101,6 +73,35 @@ Controls.DropableItem{
                     var filter = "itemid=" + ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "right")
                     tiepointstable.editor.linkModels(tab.item.manager)
+                }
+            }
+            Button {
+                width : 20
+                height : 20
+                iconSource : "../../images/view.png"
+            }
+        }
+       Row {
+            width : parent.width
+            height : 20
+            Controls.TextEditLabelPair {
+                labelText : qsTr("Background Raster")
+                labelWidth : 120
+                width : parent.width - 20
+                height : 20
+                checkFunction : testDrop
+                onDropped : {
+                    ilwisobjectid = drag.source.ilwisobjectid
+                    var filter = "itemid=" + ilwisobjectid
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
+                    models.lastAddedId
+                    if ( "manager" in tab.item){
+                        tiepointstable.editor.associatedBackgroundMap(tab.item.manager,ilwisobjectid)
+                        tab.item.setActiveEditor(tiepointstable)
+                        tab.item.manager.addPostDrawer(tiepointstable.editor)
+
+                    }
+
                 }
             }
             Button {

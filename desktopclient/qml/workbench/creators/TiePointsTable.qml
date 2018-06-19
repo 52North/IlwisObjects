@@ -59,7 +59,7 @@ Column {
             role : "x"
             delegate :  
                 TextField {
-                    text: styleData.value
+                    text: styleData.value.toFixed(editor.decimalsCrds)
                     height : 20
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -80,7 +80,7 @@ Column {
             title : qsTr("Y")
             delegate : 
                 TextField {
-                    text: styleData.value
+                    text: styleData.value.toFixed(editor.decimalsCrds)
                     height : 20
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -101,7 +101,7 @@ Column {
             role : "column"
             delegate : 
                 TextField {
-                    text: styleData.value
+                    text: styleData.value.toFixed(editor.subPixelPrecision ? 1 : 0)
                     height : 20
                     verticalAlignment:Text.AlignVCenter
 
@@ -111,7 +111,7 @@ Column {
                         tableview.setSelection(styleData.row )
                     }
                     onEditingFinished : {
-                        editor.changeTiePointPixel(styleData.row, text, editor.tiePointRow(styleData.row))
+                        editor.changeTiePointPixel(styleData.row, text, editor.tiePointRow(styleData.row), true)
                     }
              }
         }
@@ -123,7 +123,7 @@ Column {
             role : "row"
             delegate : 
                 TextField {
-                    text: styleData.value
+                    text: styleData.value.toFixed(editor.subPixelPrecision ? 1 : 0)
                     height : 20
                     verticalAlignment:Text.AlignVCenter
 
@@ -133,7 +133,7 @@ Column {
                         tableview.setSelection(styleData.row )
                     }
                     onEditingFinished : {
-                        editor.changeTiePointPixel(styleData.row, editor.tiePointColumn(styleData.row), text)
+                        editor.changeTiePointPixel(styleData.row, editor.tiePointColumn(styleData.row), text, true)
                     }
              }
         }
@@ -213,7 +213,7 @@ Column {
          console.debug("clicked", mx, my)
         if ( editor.selectedRow >= 0){
        
-           editor.changeTiePointPixel(editor.selectedRow, mx, my)
+           editor.changeTiePointPixel(editor.selectedRow, mx, my, false)
         }
     }
 }
