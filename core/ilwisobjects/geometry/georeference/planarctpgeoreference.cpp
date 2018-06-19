@@ -79,7 +79,7 @@ Pixeld PlanarCTPGeoReference::coord2Pixel(const Coordinate &crd) const
     switch (_transformation) {
     case tTHIRDORDER:
         rc += {(_colrowCoef[6]._x * c.x + _colrowCoef[7]._x * c.y) * X2 + (_colrowCoef[8]._x * c.x + _colrowCoef[9]._x * c.y) * Y2,
-                (_colrowCoef[6]._y * c.x + _colrowCoef[7]._y * c.y) * X2 +(_colrowCoef[8]._y * c.x + _colrowCoef[9]._x * c.y) * Y2};
+                (_colrowCoef[6]._y * c.x + _colrowCoef[7]._y * c.y) * X2 +(_colrowCoef[8]._y * c.x + _colrowCoef[9]._y * c.y) * Y2};
     case tFULLSECONDORDER:
         rc += {_colrowCoef[4]._x * X2 + _colrowCoef[5]._x * Y2, _colrowCoef[4]._y * X2 + _colrowCoef[5]._y * Y2};
     case tSECONDORDER:
@@ -91,9 +91,9 @@ Pixeld PlanarCTPGeoReference::coord2Pixel(const Coordinate &crd) const
         break;
     case tPROJECTIVE:
         rc.x = rc.x + (_colrowCoef[0]._x * c.x + _colrowCoef[1]._x * c.y + _colrowCoef[2]._x) /
-                       (_colrowCoef[6]._y * c.x + _colrowCoef[7]._y * c.y + 1);
+                       (_colrowCoef[6]._x * c.x + _colrowCoef[7]._x * c.y + 1);
         rc.y = rc.y + (_colrowCoef[3]._x * c.x + _colrowCoef[4]._x * c.y + _colrowCoef[5]._x) /
-                      (_colrowCoef[6]._y * c.x + _colrowCoef[7]._y * c.y + 1);
+                      (_colrowCoef[6]._x * c.x + _colrowCoef[7]._x * c.y + 1);
         break;
     default:
         return Pixeld();
@@ -115,7 +115,7 @@ Coordinate PlanarCTPGeoReference::crdInverseOfAffine(const Pixeld& pix) const
     //    detY = (Row -h)a - (Col -c)f
     // yields X = detX/det and Y = detY / det  provided  det <> 0
     double a = _colrowCoef[1]._x;
-    double b = _colrowCoef[2]._y;
+    double b = _colrowCoef[2]._x;
     double c = _colrowCoef[0]._x;
     double f = _colrowCoef[1]._y;
     double g = _colrowCoef[2]._y;
@@ -177,15 +177,14 @@ Coordinate PlanarCTPGeoReference::crdInverseOfHigherOrder(const Pixeld& pix)
     // 2nd order if c6 == c7 == c8 == c9 == r6 == r7 == r8 == r9 == 0
     Coordinate crdNext = Coordinate(0,0,0);     // initial crd guess
     std::vector<double> nextPix { _colrowCoef[0]._x, _colrowCoef[0]._y }; // initial column and row
-    Pixeld deltaPix = pix;
-    deltaPix -= nextPix;
+    Pixeld deltaPix = pix - nextPix;
     makeJacobianMatrix(crdNext, _jacobian);// linear appr matrix of Coord2RowCol in (0,0)
 
     double detJ = _jacobian.determinant();
     if (abs(detJ) < EPS10)
         return crdUNDEF;
     else  {
-        _jacobian = _jacobian.inverse();
+        _jacobian = _jacobian.inverse().eval();
     }
     auto addJac = [&]()->std::vector<double>{
             std::vector<double> delta = {_jacobian(0,0) * deltaPix.x + _jacobian(0,1) * deltaPix.y,
@@ -196,25 +195,26 @@ Coordinate PlanarCTPGeoReference::crdInverseOfHigherOrder(const Pixeld& pix)
     crdNext += addJac();
 
     // crdNext is now 1st appr of RowCol2Coord(rRow, rCol,crd)
-    double gapStart = pixelSize() * 2;
+    double pixSize = pixelSize();
+    double gapStart = pixSize * 2;
     Coordinate crdTrue;
     Coordinate crdGap(gapStart,gapStart);
     Coordinate crd0(0,0);
     int iCount = 0;
-    while ( !(crdGap.distance(crd0) < gapStart * 2) && iCount < 10) {
+    while ( !(crdGap.distance(crd0) < pixSize) && iCount < 10) {
         makeJacobianMatrix(crdNext, _jacobian);
         detJ = _jacobian.determinant();
         if (std::abs(detJ) < EPS10)
             return crdUNDEF;
         else  {
-            _jacobian = _jacobian.inverse();
+            _jacobian = _jacobian.inverse().eval();
         }
-        deltaPix -= nextPix;
+        deltaPix = pix - nextPix;
         //improvement of crd found (linear approx) using inverse Jacobian matrix
-        crdNext += addJac();
+        crdGap = addJac();
+        crdNext += crdGap;
         crdTrue = Coordinate(crdNext.x + _avgCrd._x, crdNext.y + _avgCrd._y);
         nextPix = coord2Pixel(crdTrue);
-        crdGap = Coordinate(deltaPix.x, deltaPix.y);
         nextPix[0] -= _avgPix._x;
         nextPix[1] -= _avgPix._y;
 
@@ -334,7 +334,6 @@ int PlanarCTPGeoReference::compute()
     _avgPix._x = rSumCol / iNr;
     for (i = 0; i < iNr; ++i) {
       crdXY[i] -= {_avgCrd._x,_avgCrd._y};
-      Coordinate crd = crdXY[i];
       pixColRow[i] -= {_avgPix._x,_avgPix._y};
     }
     if (_transformation == tCONFORM) {
@@ -362,9 +361,9 @@ int PlanarCTPGeoReference::compute()
         double b = (sxr + syc) / (scc + srr);
         _xyCoef[1]._x =  a;
         _xyCoef[2]._x =  b;
-        _xyCoef[1]._x =  b;
+        _xyCoef[1]._y =  b;
         _xyCoef[2]._y = -a;
-        _xyCoef[0]._y =  0;
+        _xyCoef[0]._x =  0;
         _xyCoef[0]._y =  0;
         double rDet = a * a + b * b;
         _colrowCoef[1]._x =  a / rDet;
@@ -376,9 +375,9 @@ int PlanarCTPGeoReference::compute()
       }
     }
     else if (_transformation == tPROJECTIVE) {
-      iRes = MathHelper::findOblique(iNr, pixColRow, crdXY, _colrowCoef, true);
+      iRes = MathHelper::findOblique(iNr, pixColRow, crdXY, _xyCoef, true);
       if (iRes == 0)
-        iRes = MathHelper::findOblique(iNr, crdXY, pixColRow, _colrowCoef, false);
+        iRes = MathHelper::findOblique(iNr, crdXY, pixColRow, _colrowCoef, true);
     }
     else {
       int iTerms = minimumPointsNeeded();
@@ -462,6 +461,11 @@ void PlanarCTPGeoReference::sigma(double s) {
 
 double PlanarCTPGeoReference::pixelSize() const
 {
-    return 0;
+    if (!isValid() || _xyCoef.size() < 5)
+        return rUNDEF;
+    if (_transformation == tPROJECTIVE)
+        return sqrt(abs(_xyCoef[0]._x * _xyCoef[4]._x - _xyCoef[1]._x * _xyCoef[3]._x));
+    else
+        return sqrt(abs(_xyCoef[1]._x * _xyCoef[2]._y - _xyCoef[2]._x * _xyCoef[1]._y));
 }
 
