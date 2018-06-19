@@ -469,3 +469,7 @@ double PlanarCTPGeoReference::pixelSize() const
         return sqrt(abs(_xyCoef[1]._x * _xyCoef[2]._y - _xyCoef[2]._x * _xyCoef[1]._y));
 }
 
+bool PlanarCTPGeoReference::isLinear() const   // TELLS WHETHER GRID IS RECTILINEAR
+{
+  return (_transformation == tCONFORM) || (_transformation == tAFFINE) || (_transformation == tPROJECTIVE);
+}

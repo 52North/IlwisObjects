@@ -13,10 +13,11 @@ public:
     SimpelGeoReference(const QString &type);
     static GeoRefImplementation * create();
     GeoRefImplementation *clone();
-     virtual Coordinate pixel2Coord(const Pixeld&) const;
+    virtual Coordinate pixel2Coord(const Pixeld&) const;
     virtual Pixeld coord2Pixel(const Coordinate& crd) const;
     virtual double pixelSize() const;
     bool isCompatible(const IGeoReference &georefOther) const;
+    virtual bool isLinear() const;
 
     std::vector<double> matrix() const;
     std::vector<double> support() const;

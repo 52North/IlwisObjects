@@ -93,3 +93,8 @@ void GeoRefImplementation::copyTo(GeoRefImplementation *impl)
     impl->setDescription(description());
     impl->code(code());
 }
+
+bool GeoRefImplementation::isLinear() const
+{
+  return false;
+}

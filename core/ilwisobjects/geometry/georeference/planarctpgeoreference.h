@@ -17,6 +17,7 @@ public:
     virtual Coordinate pixel2Coord(const Pixeld &pix) const;
     virtual Pixeld coord2Pixel(const Coordinate& crd) const;
     bool isValid() const;
+    virtual bool isLinear() const;
     virtual double pixelSize() const;
     virtual int compute();
     void transformation(Transformation tr);

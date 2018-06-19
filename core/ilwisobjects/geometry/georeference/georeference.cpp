@@ -209,6 +209,9 @@ IlwisTypes GeoReference::ilwisType() const
     return itGEOREF;
 }
 
-
-
-
+bool GeoReference::isLinear() const
+{
+    if ( isValid())
+        return _georefImpl->isLinear();
+    return false;
+}

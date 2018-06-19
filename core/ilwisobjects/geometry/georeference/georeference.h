@@ -17,6 +17,7 @@ public:
     virtual Pixeld coord2Pixel(const Coordinate& crd) const = 0;
     virtual double pixelSize() const = 0;
     virtual int compute() = 0;
+    virtual bool isLinear() const = 0;
     virtual void coordinateSystem(const ICoordinateSystem& csy)=0;
     virtual Size<> size() const=0;
     virtual void size(const Size<>& sz)=0;
@@ -50,6 +51,7 @@ public:
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
     void adapter(GeoRefAdapter* adapt);
     bool isValid() const;
+    virtual bool isLinear() const;
     void impl(GeoRefImplementation *impl);
     template<typename GrfT> QSharedPointer<GrfT> as(){
         QSharedPointer<GrfT> sptr = _georefImpl.dynamicCast<GrfT>();

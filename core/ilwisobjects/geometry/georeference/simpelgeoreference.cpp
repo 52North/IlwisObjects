@@ -112,14 +112,9 @@ bool SimpelGeoReference::isCompatible(const IGeoReference &georefOther) const
     ok = std::abs(sup[0] - _b1) < delta && std::abs(sup[1] - _b2) < delta;
 
     return ok;
-
 }
 
-
-
-
-
-
-
-
-
+bool SimpelGeoReference::isLinear() const
+{
+  return true;
+}

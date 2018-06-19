@@ -221,7 +221,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         }
 
         const IGeoReference & gr = _raster->georeference();
-        bool grLinear = gr->grfType<CornersGeoReference>() || gr->grfType<UndeterminedGeoReference>(); // nasty
+        bool grLinear = gr->isLinear();
         const ICoordinateSystem & rootCsy = layerManager()->rootLayer()->screenCsy();
         const ICoordinateSystem & rasterCsy = _raster->coordinateSystem();
         bool convNeeded = rootCsy.isValid() && rasterCsy.isValid() && !rootCsy->isEqual(rasterCsy.ptr()) && !rootCsy->isUnknown() && !rasterCsy->isUnknown();

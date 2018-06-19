@@ -16,6 +16,7 @@ public:
     bool centerOfPixel() const;
     void centerOfPixel(bool yesno);
     int compute();
+    virtual bool isLinear() const;
     virtual GeoRefImplementation *clone() = 0;
 
     virtual bool isCompatible(const IGeoReference &georefOther) const;
