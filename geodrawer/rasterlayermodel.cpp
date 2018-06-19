@@ -445,7 +445,6 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
             // avoid plotting the "added" portion of the map that was there to make the texture size a power of 2
             double colStep = min(imageSizeX, _imageWidth - imageOffsetX) / (double)iSize;
             double rowStep = min(imageSizeY, _imageHeight - imageOffsetY) / (double)iSize;
-            Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
             double s1 = imageOffsetX / (double)_width;
             for (int x = 0; x < iSize; ++x) {
                 double s2 = s1 + colStep / (double)_width;
