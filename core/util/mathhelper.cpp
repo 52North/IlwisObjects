@@ -22,7 +22,7 @@ int MathHelper::findOblique(int iPoints,
     int N = 2 * iPoints;
     int M = 8;
 
-    Eigen::Matrix2d A(N, M);
+    Eigen::MatrixXd A(N, M);
     Eigen::VectorXd b(N);
 
     for (int i = 0; i < iPoints; ++i) {
@@ -51,7 +51,7 @@ int MathHelper::findOblique(int iPoints,
         else
             coef[i]._y = vb;
     }
-    return 1;
+    return 0;
 }
 
 int MathHelper::findPolynom(int iTerms, int iPoints, const std::vector<Coordinate> &independent, const std::vector<Coordinate> &dependent, std::vector<Coefficient> &coef)
