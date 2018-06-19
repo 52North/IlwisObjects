@@ -36,18 +36,31 @@ void ControlPointModel::y(double value) {
     _controlPoint.y = value;
 }
 
-quint32 ControlPointModel::row() const {
+double ControlPointModel::row() const {
     return _controlPoint.gridLocation().y;
 }
-void ControlPointModel::row(quint32 r) {
+void ControlPointModel::row(double r) {
     _controlPoint.gridLocationRef().y = r;
 }
 
-quint32 ControlPointModel::column() const {
+double ControlPointModel::column() const {
     return _controlPoint.gridLocation().x;
 }
-void ControlPointModel::column(quint32 c) {
+void ControlPointModel::column(double c) {
     _controlPoint.gridLocationRef().x = c;
+}
+
+int ControlPointModel::rowScreen() const {
+    return _screenRow;
+}
+void ControlPointModel::rowScreen(double r) {
+    _screenRow = r;
+}
+int ControlPointModel::columnScreen() const {
+    return _screenColumn;
+}
+void ControlPointModel::columnScreen(double c) {
+    _screenColumn = c;
 }
 
 double ControlPointModel::rowError() const {
