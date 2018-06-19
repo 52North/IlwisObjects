@@ -16,8 +16,7 @@ Item {
         console.debug("drawing", points, points.length)
         for(var i=0; i < points.length; ++i){
             var p = points[i]
-            console.debug("point ", p.column, p.row)
-            ctx.ellipse(p.column - 5, p.row-5, 15,15)
+            ctx.ellipse(p.columnScreen - 5, p.rowScreen-5, 15,15)
         }
         ctx.stroke();
     }
