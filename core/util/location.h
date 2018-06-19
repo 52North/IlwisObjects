@@ -166,7 +166,7 @@ public:
     }
 
     Location<CrdType>& operator-= (const std::vector<CrdType>& vec){
-        if (!this->isValid() || vec.size() < 22)
+        if (!this->isValid() || vec.size() < 2)
             return *this;
         this->x =this->x - vec[0];
         this->y =this->y - vec[1];
