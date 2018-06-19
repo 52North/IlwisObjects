@@ -228,7 +228,8 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
             grf->size(sz);
         }
         grf->coordinateSystem(gcoverage->coordinateSystem());
-    }
+    } else
+        gcoverage->envelope(grf->envelope()); // always take over the envelope from the georeference (see ILWIS3, Map.cpp, line 834)
     QString dataFile = filename2FullPath(_odf->value("MapStore","Data"), _resource);
     if ( dataFile != sUNDEF)
          _dataFiles.push_back(dataFile);

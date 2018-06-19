@@ -44,7 +44,18 @@ void GeoRefImplementation::size(const Size<> &sz)
 
 Envelope GeoRefImplementation::envelope() const
 {
-    return Envelope();
+    Envelope env;
+    if (!_size.isValid())
+        return env;
+    Coordinate crd = pixel2Coord(Pixeld(0, 0));
+    env += crd;
+    crd = pixel2Coord(Pixeld(_size.xsize(), 0));
+    env += crd;
+    crd = pixel2Coord(Pixeld(0, _size.ysize()));
+    env += crd;
+    crd = pixel2Coord(Pixeld(_size.xsize(), _size.ysize()));
+    env += crd;
+    return env;
 }
 
 void GeoRefImplementation::envelope(const Envelope &)
