@@ -133,7 +133,7 @@ bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
 
 DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) const
 {
-	auto itr = std::find_if(_series.begin(), _series.end(), [](DataseriesModel* serie) { return serie->name() == "name"; });
+	auto itr = std::find_if(_series.begin(), _series.end(), [name](DataseriesModel* serie) { return serie->name() == name; });
 	if (itr != _series.end()) {
 		return *itr;
 	}
