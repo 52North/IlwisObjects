@@ -15,6 +15,7 @@
 #include "uicontextmodel.h"
 #include "factory.h"
 #include "abstractfactory.h"
+#include "chartoperationfactory.h"
 #include "mastercatalogmodel.h"
 #include "tableoperations/tableoperation.h"
 #include "tableoperations/sortcolumn.h"
@@ -226,6 +227,10 @@ void UIContextModel::prepare()
 
         }
     }
+
+    ChartOperationFactory *cfact = new ChartOperationFactory();
+    Ilwis::kernel()->addFactory(cfact);
+
     TableOperationFactory *factory = new TableOperationFactory();
     factory->registerTableOperation("sortcolumn",SortColumn::create);
     factory->registerTableOperation("convertcolumndomain",ConvertColumnDomain::create);

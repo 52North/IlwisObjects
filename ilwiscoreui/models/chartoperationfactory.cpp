@@ -10,14 +10,15 @@ using namespace Ilwis;
 using namespace Ui;
 
 
-ChartOperationFactory::ChartOperationFactory() : AbstractFactory("ChartOperationFactory", "ilwis", "Generates operation objects for UI accessible chart operations")
+ChartOperationFactory::ChartOperationFactory() : AbstractFactory("chartoperationfactory", "ilwis", "Generates operation objects for UI accessible chart operations")
 {
-
 }
 
-void ChartOperationFactory::registerChartOperation(const QString &name, ChartOperationCreate createFunc)
+int ChartOperationFactory::registerChartOperation(const QString &name, ChartOperationCreate createFunc)
 {
     _creators[name] = createFunc;
+
+    return 42;
 }
 
 QList<ChartOperationEditor *> ChartOperationFactory::selectedOperations(ChartModel *chartModel, const QVariantMap& parameters)

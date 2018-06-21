@@ -8,6 +8,7 @@ namespace Ilwis {
     namespace Ui {
 
         class ChartOperationEditor;
+        class ChartModel;
 
         typedef std::function<ChartOperationEditor *()> ChartOperationCreate;
 
@@ -16,7 +17,7 @@ namespace Ilwis {
         {
         public:
             ChartOperationFactory();
-            void registerChartOperation(const QString& name, ChartOperationCreate);
+            int registerChartOperation(const QString& name, ChartOperationCreate);
             QList<ChartOperationEditor *> selectedOperations(ChartModel *tblModel, const QVariantMap &parameters);
             template<class T = ChartOperationEditor> T *create(const QString& name)
             {
@@ -31,6 +32,15 @@ namespace Ilwis {
             std::map<QString, ChartOperationCreate> _creators;
 
         };
+
+
+#define NEW_CHARTPROPERTYEDITOR(name) \
+    private: \
+static int dummy_propertyeditor;
+
+#define REGISTER_CHARTPROPERTYEDITOR(propertyname, name) \
+    int name::dummy_propertyeditor = Ilwis::kernel()->factory<ChartOperationFactory>("chartoperationfactory", "ilwis")->registerChartOperation(propertyname, name::create);
+
     }
 }
 
