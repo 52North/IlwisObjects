@@ -14,27 +14,23 @@ Item {
     x : 5
     y : 5
     height: parent.height -10
-    property var currentSeries
+    property var currentSeries          // dataseries model
 
      function setOperations(operations) {
         operationlist.model = operations
      }
 
     function setOperation(newindex){
-/*        operationlist.currentIndex = newindex
-         dataseriesOperation.columnIndex = currentSeries ? currentSeries.columnIndex : 0
+        operationlist.currentIndex = newindex
+        dataseriesoperation.seriesIndex = newindex
         if ( operationlist.model && newindex < operationlist.model.length ){
-            dataseriesOperation.currentOperation = operationlist.model[newindex]
-        }*/
+            dataseriesoperation.currentOperation = operationlist.model[newindex]
+        }
     }
 
     onCurrentSeriesChanged: {
-/*        if ( currentSeries)
+        if ( currentSeries)
             operationlist.model = currentSeries.operations
-        else{
-           // operationlist.model = null
-          //  dataseriesOperation.currentOperation = null
-        }*/
     }
 
     Rectangle {
@@ -81,12 +77,12 @@ Item {
                         text: name
                         width : operationlist.width
                         height : 14
-/*                        MouseArea{
+                        MouseArea{
                             anchors.fill: parent
                             onClicked: {
                                 setOperation(index)
                             }
-                        }*/
+                        }
                     }
                 }
             }

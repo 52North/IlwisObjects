@@ -17,15 +17,11 @@ Item {
     property alias currentIndex : dataserieslist.currentIndex
 
     function setCurrentIndex(newindex){
-        if ( newindex) {
+        if (chart) {
             dataserieslist.currentIndex = newindex
-//            dataseriesOperationList.currentColumn = dataserieslist.model[newindex]
-//            dataseriesOperationList.setOperation(0)
-        } else if ( newindex === 0){
-            dataserieslist.currentIndex = newindex
-//            dataseriesOperationList.currentColumn = null
-//            if (table)
-//                dataseriesOperationList.setOperations(table.operations)
+            dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
+
+            dataseriesOperationList.setOperation(0)
         }
     }
 
@@ -74,9 +70,6 @@ Item {
         anchors.top : chartlabel.bottom
         model : chartspanel.chart ? chartspanel.chart.series : null
         onModelChanged: {
-			console.log("chart=" + chartspanel.chart)
-//			console.log("series=" + chartspanel.chart.seriesCount)
-            //dataseriesOperationList.currentSeries = null
             setCurrentIndex(0)
         }
 

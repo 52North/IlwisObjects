@@ -20,6 +20,9 @@
     <None Include="charts\qml\setseriescolor.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\DataseriesOperate.qml">
+      <Filter>qml</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
