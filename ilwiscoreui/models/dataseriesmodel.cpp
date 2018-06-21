@@ -26,7 +26,7 @@ DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, c
 {
     auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
     if (factory) {
-        QVariantMap parameters = { { "columnindex", 0 } };
+        QVariantMap parameters = { { "dataseries", 0 } };
         _operations = factory->selectedOperations(chartModel, parameters);
         for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
             (*iter)->setParent(this);
@@ -135,11 +135,14 @@ DataDefinition DataseriesModel::datadefinition(ChartModel::Axis axis)
 
 QQmlListProperty<ChartOperationEditor> DataseriesModel::operations()
 {
-    return QQmlListProperty<ChartOperationEditor>();
+    return QQmlListProperty<Ilwis::Ui::ChartOperationEditor>(this, _operations);
 }
 
 Ilwis::Ui::ChartOperationEditor * DataseriesModel::operation(quint32 index)
 {
+    if (index < _operations.size())
+        return _operations[index];
+
     return nullptr;
 }
 
