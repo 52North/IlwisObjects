@@ -21,7 +21,6 @@ Rectangle {
         loadGraphs()    
     }
 
-
 	onChartChanged : {
 		loadGraphs();
 	}
@@ -68,7 +67,9 @@ Rectangle {
         }
     }
 
-
+    function dataseriesChanged() {
+        console.log("Via via kleur")
+    }
   
 	function loadGraphs() {
         if ( !chart)
@@ -78,6 +79,7 @@ Rectangle {
             var series = createSeries(chart.chartType, smodel.name, xas, yas)
 			series.pointsVisible = false;
 			series.color = chart.seriesColor(i);
+            series.onColorChanged.connect(dataseriesChanged)    // does not work yet; not sure why
 			var points = smodel.points
 			var pointsCount = points.length;
 			for (var j = 0; j < pointsCount; j++) {
