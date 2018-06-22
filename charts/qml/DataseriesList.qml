@@ -16,7 +16,7 @@ Item {
     height: parent.height -10
     property alias currentIndex : dataserieslist.currentIndex
 
-    function setCurrentIndex(newindex){
+    function setCurrentIndex(newindex) {
         if (chart) {
             dataserieslist.currentIndex = newindex
             dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
@@ -43,13 +43,13 @@ Item {
         }
     }
 
-    Rectangle {
+/*    Rectangle {
         id : chartlabel
         width : parent.width - 2
         height : 18
         anchors.top : title.bottom
         clip : true
-        color : uicontext.paleColor
+        color: uicontext.lightestColor
         Text {
             text : qsTr("Chart")
             width : parent.width
@@ -61,6 +61,69 @@ Item {
             target : chartlabel
             text : qsTr("Global properties of the chart")
         }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+//                setCurrentIndex(index)
+            }
+        }
+    }*/
+
+    ListView {
+        id : chartlabel
+        width : parent.width - 2
+        height : 18
+        anchors.top : title.bottom
+        model : ["Chart"]
+        highlight: charthighlight
+
+        anchors.topMargin: 4
+        x : 3
+        clip : true
+
+        Controls.ToolTip {
+            target : chartlabel
+            text : qsTr("Global properties of the chart")
+        }
+
+        delegate : Component {
+            Row {
+                width : 130
+                height : 18
+/*                spacing : 3
+                Image{
+                    id : domicon
+                    source : dataserieslist.iconsource(icon)
+                    width : 16
+                    height : 16
+                    anchors.verticalCenter: parent.verticalCenter
+                }*/
+                Text {
+                    text :  modelData
+                    anchors.verticalCenter: parent.verticalCenter
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+//                            setCurrentIndex(index)
+                        }
+                    }
+                }
+            }
+        }
+
+        Component.onCompleted : {
+            currentIndex = 0
+        }
+
+        Component {
+            id: charthighlight
+
+            Rectangle {
+                width: dataserieslist.width - 6; height: 14
+                color: Global.selectedColor; radius: 2
+                y: (dataserieslist && dataserieslist.currentItem) ? dataserieslist.currentItem.y : 0
+            }
+        }
     }
 
     ListView {
@@ -71,6 +134,10 @@ Item {
         model : chartspanel.chart ? chartspanel.chart.series : null
         onModelChanged: {
             setCurrentIndex(0)
+        }
+
+        Component.onCompleted : {
+            currentIndex = -1
         }
 
         anchors.topMargin: 4
