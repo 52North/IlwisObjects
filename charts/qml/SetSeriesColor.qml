@@ -18,10 +18,11 @@ Rectangle {
 
     Text {
         id : colorselectorlabel
-        text : "New color"
+        text : "Color"
     }
     Controls.ColorPicker2 {
         id : chartcolorselector
+        initialColor : dataseriesOperationList.currentSeries.color
 
         anchors.top : colorselectorlabel.bottom
         onSelectedColorChanged: {
