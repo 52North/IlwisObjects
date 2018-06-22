@@ -24,14 +24,9 @@ SetSeriesColor::SetSeriesColor() : ChartOperationEditor("setseriescolor", QUrl("
 
 bool SetSeriesColor::canUse(ChartModel *model, const QVariantMap &parameter) const
 {
-	return true;
-/*	bool ok;
-	quint32 colIndex = parameter["columnindex"].toInt(&ok);
-	if (!ok || colIndex >= chartModel()->getColumnCount())
-		return false;
-	IDomain dom = chartModel()->table()->columndefinition(colIndex).datadef().domain();
+    QString parm = parameter["dataseries"].toString();
 
-	return hasType(dom->ilwisType(), itTEXTDOMAIN);*/
+    return parm.length() > 0;
 }
 
 void SetSeriesColor::execute(const QVariantMap &parameters)
