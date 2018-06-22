@@ -68,6 +68,12 @@ qint32 CTPGeoReference::setControlPoint(const ControlPoint &pnt)
     return rec;
 }
 
+void Ilwis::CTPGeoReference::removeControlPoint(int index)
+{
+    if ( index >= 0 && index < _controlPoints.size())
+        _controlPoints.erase(_controlPoints.begin() + index);
+}
+
 int CTPGeoReference::compute()
 {
     return 1;
