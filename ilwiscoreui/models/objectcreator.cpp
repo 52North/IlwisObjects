@@ -50,7 +50,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
 //    _creators[ ] = new IlwisObjectCreatorModel(TR("Color Domain",itCOLORDOMAIN,"CreateNumDom.qml", 200, this);
     _creators["colorpalette" ] = new IlwisObjectCreatorModel("colorpalette", TR("Color Palette Domain"),itPALETTECOLOR | itITEMDOMAIN,"CreatePaletteDomain.qml", 630, this);
     _creators["cornersgeoreferences" ] = new IlwisObjectCreatorModel("cornersgeoreferences", TR("Corners Georeference"),itGEOREF,"CreateGeorefCorners.qml", 330, this);
-    _creators["tiepointgeoreference" ] = new IlwisObjectCreatorModel("tiepointgeoreference",TR("Tiepoints Georeference"),itGEOREF | itLOCATION,"CreateGeorefTiepoints.qml",450, this);
+    _creators["tiepointgeoreference" ] = new IlwisObjectCreatorModel("tiepointgeoreference",TR("Tiepoints Georeference"),itGEOREF | itLOCATION,"CreateGeorefTiepoints.qml",490, this);
     _creators["projectedcoordinatesystem" ] = new IlwisObjectCreatorModel("projectedcoordinatesystem", TR("Projected Coordinate System"),itCONVENTIONALCOORDSYSTEM,"CreateProjectedCoordinateSystem.qml", 530, this);
     _creators["geographiccoordinatesystem" ] = new IlwisObjectCreatorModel("geographiccoordinatesystem", TR("Geographic (LatLon) Coordinate System"),itCONVENTIONALCOORDSYSTEM|itLOCATION,"CreateLatLonCoordinateSystem.qml", 320, this);
     _creators["boundsonlycoordinatesystem" ] = new IlwisObjectCreatorModel("boundsonlycoordinatesystem", TR("Bounds only Coordinate System"),itBOUNDSONLYCSY,"CreateBoundsOnlyCsy.qml", 250, this);
