@@ -155,7 +155,6 @@ Item {
     }
 
     function setActiveEditor(editor){
-    console.debug("ooooooo", editor)
         if (activeEditor){
             activeEditor.editor.postDrawerActive = false
         }
