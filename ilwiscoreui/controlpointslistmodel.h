@@ -33,6 +33,7 @@ namespace Ilwis {
             ~ControlPointsListModel();
 
             Q_INVOKABLE void addTiepoint();
+            Q_INVOKABLE void removeTiepoint(int idnex);
             Q_INVOKABLE void changeTiePointCoord(int index, double x, double y);
             Q_INVOKABLE void changeTiePointPixel(int index, double x, double y, bool editFromTable);
             Q_INVOKABLE int tiePointRow(int index) const;
@@ -42,6 +43,8 @@ namespace Ilwis {
             Q_INVOKABLE void associatedBackgroundMap(Ilwis::Ui::LayerManager *lm, const QString& objid);
             Q_INVOKABLE void linkModels(Ilwis::Ui::LayerManager *lm);
             Q_INVOKABLE void setCoordinateSystem(const QString& id);
+            Q_INVOKABLE QString controlPointLabel(int index);
+            Q_INVOKABLE void controlPointLabel(int index, const QString& newLabel);
 
             Q_INVOKABLE QString associatedUrl() const;
             bool postDrawerActive() const;
@@ -70,6 +73,7 @@ namespace Ilwis {
             Ilwis::Ui::LayerManager *_associatedBackgroundMap = 0;
             IRasterCoverage _backgroundRaster;
             int _selectedRow = -1;
+            const int ILLEGALVALUE = -1000000;
 
             QQmlListProperty<ControlPointModel> controlPoints();
             QString errors() const;

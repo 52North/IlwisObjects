@@ -27,18 +27,18 @@ ControlPointsListModel::ControlPointsListModel(QObject *parent)
 
     _georef.prepare();
 
-GeoRefImplementationFactory *grfFac = kernel()->factory<GeoRefImplementationFactory>("ilwis::georefimplementationfactory");
-GeoRefImplementation *implementation = grfFac->create("tiepoints");
-if (!implementation) {
-    return;
-}
+    GeoRefImplementationFactory *grfFac = kernel()->factory<GeoRefImplementationFactory>("ilwis::georefimplementationfactory");
+    GeoRefImplementation *implementation = grfFac->create("tiepoints");
+    if (!implementation) {
+        return;
+    }
 
-QString path = context()->ilwisFolder().absoluteFilePath();
-QUrl url = QUrl::fromLocalFile(path);
-_associatedUrl = url.toString() + "/qml/workbench/creators/PostDrawerTiepointEditor.qml";
-_georef->impl(implementation);
-_planarCTP = static_cast<PlanarCTPGeoReference *>(implementation);
-_planarCTP->transformation(PlanarCTPGeoReference::tAFFINE);
+    QString path = context()->ilwisFolder().absoluteFilePath();
+    QUrl url = QUrl::fromLocalFile(path);
+    _associatedUrl = url.toString() + "/qml/workbench/creators/PostDrawerTiepointEditor.qml";
+    _georef->impl(implementation);
+    _planarCTP = static_cast<PlanarCTPGeoReference *>(implementation);
+    _planarCTP->transformation(PlanarCTPGeoReference::tAFFINE);
 }
 
 ControlPointsListModel::~ControlPointsListModel()
@@ -50,9 +50,19 @@ QQmlListProperty<ControlPointModel> ControlPointsListModel::controlPoints() {
 }
 
 void ControlPointsListModel::addTiepoint() {
-    _controlPoints.push_back(new ControlPointModel(true, 0, 0, 0, 0, 0, 0, this));
+    _controlPoints.push_back(new ControlPointModel(_associatedBackgroundMap, QString::number(_controlPoints.size() + 1), true, 0, 0, 0, 0, 0, 0, this));
     _planarCTP->setControlPoint(_controlPoints.back()->controlPoint());
     emit controlPointsChanged();
+}
+
+void Ilwis::Ui::ControlPointsListModel::removeTiepoint(int index)
+{
+    if (index >= 0 && index < _controlPoints.size()) {
+        _controlPoints.removeAt(index);
+        int ret = _planarCTP->compute();
+        handleComputeResult(ret);
+        _associatedBackgroundMap->updatePostDrawers();
+    }
 }
 
 void ControlPointsListModel::changeTiePointCoord(int index, double x, double y) {
@@ -76,18 +86,16 @@ void ControlPointsListModel::changeTiePointPixel(int index, double x, double y, 
             pnt->column(x);
             pnt->row(y);
             auto pix = _associatedBackgroundMap->rootLayer()->screenGrf()->coord2Pixel(Coordinate(x, sz.ysize() - y));
-            pnt->columnScreen(pix.x);
-            pnt->rowScreen(pix.y );
+            pnt->screenPosition(pix.x, pix.y);
         }
         else {
             // rowcols in the model are in terms of the screengrf so we need to adapt 5to positions in the background map 
             // which has georefnone. as coords and pixellocation are similar for georefnone we convert
             auto crd = _associatedBackgroundMap->rootLayer()->screenGrf()->pixel2Coord(Pixel(x, y));
 
-            pnt->column(crd.x);
-            pnt->row(sz.ysize() - crd.y);
-            pnt->columnScreen(x);
-            pnt->rowScreen(y);
+            pnt->column((int)(crd.x + 0.5));
+            pnt->row((int)(sz.ysize() - crd.y  + 0.5));
+            pnt->screenPosition(x,y);
         }
         _planarCTP->controlPoint(index) = pnt->controlPoint();
         int ret = _planarCTP->compute();
@@ -127,6 +135,7 @@ void ControlPointsListModel::associatedBackgroundMap(LayerManager * lm, const QS
     _associatedBackgroundMap = lm;
     quint64 id = objid.toULongLong();
     _backgroundRaster.prepare(id);
+    _associatedBackgroundMap->addPostDrawer(this);
 }
 
 void ControlPointsListModel::linkModels(LayerManager *lm)
@@ -233,30 +242,40 @@ void ControlPointsListModel::handleComputeResult(int res) {
         int count = 0;
         double sigma = 0;
         for (auto * ctp : _controlPoints) {
-            Coordinate crd(ctp->x(), ctp->y());
-            Pixeld pix = _georef->coord2Pixel(crd);
-            double col = pix.x;
-            double row = pix.y;
-            if (!_planarCTP->subPixelPrecision())
-            {
-                col -= (int)ctp->column() - 0.5;
-                row -= (int)ctp->row() -0.5;
-            }
-            else
-            {
-                col -= ctp->column() - 0.5;
-                row -= ctp->row() - 0.5;
-            }
-            ctp->columnError(-col);
-            ctp->rowError(-row);
-
-            if (ctp->active()) {
+            if (ctp->active() && ctp->isValid()) {
                 count += 1;
-                sigma += row * row + col * col;
             }
-            ctp->update();
         }
-        if (count >= _planarCTP->minimumPointsNeeded()) {
+        bool enoughPoints = count >= _planarCTP->minimumPointsNeeded();
+        if (enoughPoints) {
+            for (auto * ctp : _controlPoints) {
+
+                if (ctp->active() && ctp->isValid()) {
+
+                    Coordinate crd(ctp->x(), ctp->y());
+                    Pixeld pix = _georef->coord2Pixel(crd);
+                    double col = pix.x;
+                    double row = pix.y;
+                    if (!_planarCTP->subPixelPrecision())
+                    {
+                        col -= (int)ctp->column() - 0.5;
+                        row -= (int)ctp->row() - 0.5;
+                    }
+                    else
+                    {
+                        col -= ctp->column() - 0.5;
+                        row -= ctp->row() - 0.5;
+                    }
+                    ctp->columnError(-col);
+                    ctp->rowError(-row);
+
+                    if (ctp->active() && ctp->isValid()) {
+                        sigma += row * row + col * col;
+                    }
+                    ctp->update();
+                }
+            }
+
             if (count == _planarCTP->minimumPointsNeeded()) {
                 sigma = rUNDEF;
             }
@@ -265,18 +284,31 @@ void ControlPointsListModel::handleComputeResult(int res) {
             }
             _planarCTP->sigma(sigma);
         }
+        for (auto * ctp : _controlPoints) {
+            QColor clr = QColor("red");
+            if (ctp->active() && ctp->isValid() && enoughPoints)
+            {
+                if (sigma <= 0)
+                    clr = QColor("yellow");
+                else {
+                    double rRow = ctp->rowError();
+                    double rCol = ctp->columnError();
+                    double rErr = sqrt(rRow * rRow + rCol * rCol);
+                    if (rErr < 1.2 * sigma)
+                        clr = QColor(0,255,0);
+                    else if (rErr > 2 * sigma)
+                        clr = QColor("red");
+                    else
+                        clr = QColor("yellow");
+                }
+            }
+            if (!ctp->active() && ctp->isValid())
+                clr = "blue";
+            ctp->color(clr);
+        }
     }
 
     emit errorChanged();
-}
-
-ControlPoint ControlPointModel::controlPoint() {
-    return _controlPoint;
-}
-
-void Ilwis::Ui::ControlPointModel::update()
-{
-    emit updateControlPoint();
 }
 
 QString Ilwis::Ui::ControlPointsListModel::associatedUrl() const
@@ -331,4 +363,21 @@ bool ControlPointsListModel::subPixelPrecision() const {
         return _planarCTP->subPixelPrecision();
     }
     return false;
+}
+
+QString ControlPointsListModel::controlPointLabel(int index) {
+    if (index < _controlPoints.size())
+        return _controlPoints[index]->label();
+
+    return sUNDEF;
+}
+void ControlPointsListModel::controlPointLabel(int index, const QString& newLabel) {
+    if (index < _controlPoints.size()) {
+        _controlPoints[index]->label(newLabel);
+        _controlPoints[index]->update();
+        _associatedBackgroundMap->updatePostDrawers();
+    }
+
+
+
 }
