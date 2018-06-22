@@ -12,7 +12,7 @@ import "../.." as Base
 
 Controls.DropableItem{
     id : dropItem
-    width : 270
+    width : 310
     height : 0
     x : 4
     clip:true
@@ -35,6 +35,7 @@ Controls.DropableItem{
             width : parent.width
             height : Global.rowHeight
             Controls.TextEditLabelPair {
+                id : csysystem
                 labelText : qsTr("Coordinate System")
                 labelWidth : 120
                 width : parent.width - 20
@@ -63,6 +64,7 @@ Controls.DropableItem{
             width : parent.width
             height : 20
             Controls.TextEditLabelPair {
+                id : refraster
                 labelText : qsTr("Reference Raster")
                 labelWidth : 120
                 width : parent.width - 20
@@ -73,18 +75,27 @@ Controls.DropableItem{
                     var filter = "itemid=" + ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "right")
                     tiepointstable.editor.linkModels(tab.item.manager)
+                    tab.item.tabmodel.displayName = "Reference Raster"
                 }
             }
             Button {
                 width : 20
                 height : 20
                 iconSource : "../../images/view.png"
+
+                onClicked : {
+                    var filter = "itemid="+ refraster.ilwisobjectid
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
+                    tiepointstable.editor.linkModels(tab.item.manager)
+                    tab.item.tabmodel.displayName = "Reference Raster"
+                }
             }
         }
        Row {
             width : parent.width
             height : 20
             Controls.TextEditLabelPair {
+                id : backraster
                 labelText : qsTr("Background Raster")
                 labelWidth : 120
                 width : parent.width - 20
@@ -94,12 +105,11 @@ Controls.DropableItem{
                     ilwisobjectid = drag.source.ilwisobjectid
                     var filter = "itemid=" + ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
-                    models.lastAddedId
                     if ( "manager" in tab.item){
                         tiepointstable.editor.associatedBackgroundMap(tab.item.manager,ilwisobjectid)
                         tab.item.setActiveEditor(tiepointstable)
                         tab.item.manager.addPostDrawer(tiepointstable.editor)
-
+                        tab.item.tabmodel.displayName = "Background Raster"
                     }
 
                 }
@@ -108,6 +118,13 @@ Controls.DropableItem{
                 width : 20
                 height : 20
                 iconSource : "../../images/view.png"
+
+                onClicked : {
+                    var filter = "itemid="+ refraster.ilwisobjectid
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
+                    tiepointstable.editor.linkModels(tab.item.manager)
+                    tab.item.tabmodel.displayName = "Background Raster"
+                }
             }
         }
 
@@ -129,7 +146,7 @@ Controls.DropableItem{
         TiePointsTable {
             id : tiepointstable
             width : parent.width
-             height : 180
+            height : 220
         }
 
     }
@@ -186,6 +203,10 @@ Controls.DropableItem{
             return true
         }
         return false
+    }
+
+    function allDataSet() {
+        return refraster.content != "" && backraster.content != "" && csysystem.content != ""
     }
 
 }
