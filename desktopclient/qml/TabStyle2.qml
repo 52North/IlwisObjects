@@ -29,7 +29,7 @@ TabViewStyle {
 
         Item {
             id : label
-            width : parent.width - closeButton.width - expandButton.width
+            width : parent.width - closeButton.width
             height : tabHeight - 2
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -40,7 +40,7 @@ TabViewStyle {
                 height : 35
 
                 Text {
-                    width : parent.width - 25
+                    width : parent.width - 10
                     height : 20
                     text: tabmodel ? tabmodel.displayName : "?"
                     color: tabmodel && tabmodel.selected ? "black" : "#403F3F"
@@ -51,7 +51,7 @@ TabViewStyle {
                     anchors.bottomMargin: 2
                 }
 
-                Text {
+                /*Text {
                     width : 20
                     height : 14
                     text: tabmodel ? "[" + tabmodel.id + "]": "?"
@@ -59,7 +59,7 @@ TabViewStyle {
                     font.pointSize: 8
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 8
-                }
+                }*/
             }
             MouseArea  {
                 id : mouseArea2
@@ -149,7 +149,7 @@ TabViewStyle {
             }
         }
 
-        Button {
+        /*Button {
             id : expandButton
             y : 6
             anchors.right : closeButton.left
@@ -167,7 +167,7 @@ TabViewStyle {
                 height : 15
                 source : "images/expand20.png"
             }
-        }
+        }*/
 
     }
     frame: Rectangle { color: "white"; border.width: 1 ; border.color: "lightgrey" }
