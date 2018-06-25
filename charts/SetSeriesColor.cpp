@@ -24,9 +24,9 @@ SetSeriesColor::SetSeriesColor() : ChartOperationEditor("setseriescolor", QUrl("
 
 bool SetSeriesColor::canUse(ChartModel *model, const QVariantMap &parameter) const
 {
-    QString parm = parameter["dataseries"].toString();
-
-    return parm.length() > 0;
+    if (!parameter.empty())
+        return parameter["dataseries"].toBool();
+    return false;
 }
 
 void SetSeriesColor::execute(const QVariantMap &parameters)
@@ -41,9 +41,7 @@ void SetSeriesColor::execute(const QVariantMap &parameters)
 		Ilwis::Operation op(ex);
 		ExecutionContext ctx;
 		SymbolTable tbl;
-		if (op->execute(&ctx, tbl)) {
-			chartModel()->updateSeriesChanged();
-		}
+        op->execute(&ctx, tbl);
 	}
 	catch (const ErrorObject&) {
 

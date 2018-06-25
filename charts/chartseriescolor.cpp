@@ -59,6 +59,8 @@ bool ChartSeriesColor::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
 	auto serie = _chartmodel->getSeriesByName(_seriesName);
 	serie->setColor(_newColor);
+    _chartmodel->updateSeriesChanged();
+
 
 	return true;
 }
