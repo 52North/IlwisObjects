@@ -50,21 +50,6 @@ Item {
 
                 }
             }
-            /*if ( lenrow != 0){
-                if ( lenrow > 0 ) {
-                    console.debug("cccccup", p.label, lenrow)
-                    ctx.moveTo(p.columnScreen, p.rowScreen - 3)
-                    ctx.lineTo(p.columnScreen, p.rowScreen - lenrow - 3)
-                    ctx.moveTo(p.columnScreen - 4, p.rowScreen - lenrow - 3)
-                    ctx.lineTo(p.columnScreen  + 4, p.rowScreen - lenrow - 3)
-                }else{
-                    console.debug("cccccdown", p.label, lenrow)
-                    ctx.moveTo(p.columnScreen, p.rowScreen + 3)
-                    ctx.lineTo(p.columnScreen, p.rowScreen - lenrow + 3)
-                    ctx.moveTo(p.columnScreen  - 4, p.rowScreen - lenrow +3)
-                    ctx.lineTo(p.columnScreen  + 4, p.rowScreen - lenrow + 3)
-                }
-            }*/
             ctx.stroke()
         }
     }
