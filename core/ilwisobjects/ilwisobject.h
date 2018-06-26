@@ -327,6 +327,7 @@ public:
     virtual void unload();
     virtual bool canUse(const IlwisObject *obj, bool strict=false) const;
     virtual bool isCompatibleWith( const IlwisObject* obj, bool strict=false) const;
+    virtual quint64 copy(const QString &newUrl, const QString &format, const QString &provider) ;
 
     template<typename T> static T create(const QString& def){
         T object;
