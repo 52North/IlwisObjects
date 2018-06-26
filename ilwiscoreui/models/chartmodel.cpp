@@ -26,6 +26,11 @@ ChartModel::ChartModel(QObject *parent) : QObject(parent)
     modelregistry()->registerModel(modelId(), "chart", this);
 }
 
+Ilwis::Ui::ChartModel::~ChartModel()
+{
+    modelregistry()->unRegisterModel(modelId());
+}
+
 quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis)
 {
     _name = name;
