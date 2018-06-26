@@ -150,39 +150,26 @@ Controls.DropableItem{
         }
 
     }
-    Item {
+    ApplyCreateButtons {
         width : parent.width
         height : 60
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 8
-        Button {
-            id : applybutton
-            anchors.right: parent.right
-            anchors.rightMargin: 6
-            anchors.bottom: parent.bottom
-            width : 70
-            text : qsTr("Apply")
-            onClicked: {
-                dropItem.state = "invisible"
-                var points
-                var url = applybutton.currentCatalogCorrectUrl() + "/"+ objectcommon.itemname
-                var createinfo = { name : url, type : "georef", subtype : "tiepoints", tiepoints : points, csy : csypart.content,
-                    subpixel : cbsubpixel, description :objectcommon.description}
-                objectcreator.createObject(createinfo)
-            }
+        id : applyBut
+        createObject: dropItem.apply
+        applyVisible : objectcommon.itemname != "" 
 
-        }
-        Button {
-            id : closebutton
-            anchors.right: applybutton.left
-            anchors.rightMargin: 6
-            anchors.bottom: parent.bottom
-            width : 70
-            text : qsTr("Close")
-               onClicked: {
-                dropItem.state = "invisible"
+    }
+    function apply(overwrite) {
+       if (!overwrite){
+            if ( mastercatalog.exists("ilwis://internalcatalog/"+ objectcommon.itemname, "georeference")){
+                return false;
             }
         }
+        var url = applyBut.currentCatalogCorrectUrl() + "/"+ objectcommon.itemname
+        var createinfo = { name : url, type : "georef", subtype : "tiepoints", georefid : tiepointstable.editor.georefid, description :objectcommon.description}
+        objectcreator.createObject(createinfo)
+        return true
     }
 
     function testDrop(id){
