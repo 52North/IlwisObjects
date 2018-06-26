@@ -21,31 +21,33 @@ using namespace Ui;
 
 REGISTER_CHARTPROPERTYEDITOR("setseriestype", SetSeriesType)
 
-SetSeriesType::SetSeriesType() : ChartOperationEditor("setseriestype", QUrl("SetChartType.qml"), TR("Changes the graph type of the chart"))
+SetSeriesType::SetSeriesType() : ChartOperationEditor("setdataseriestype", QUrl("SetChartType.qml"), TR("Changes the graph type of the dataseries"))
 {
 }
 
 
 bool SetSeriesType::canUse(ChartModel *model, const QVariantMap &parameter) const
 {
-    return true;
+    if (!parameter.empty())
+        return parameter["dataseries"].toBool();
+    return false;
 }
 
 void SetSeriesType::execute(const QVariantMap &parameters)
 {
     try {
         QString seriesName = parameters["seriesname"].toString();
-        QString color = parameters["color"].toString();
+        QString type = parameters["charttype"].toString();
+        if (type.length() == 0)
+            return;
         quint32 cid = chartModel()->modelId();
-        QString expr = QString("chartdataseriestype(%1,\"%2\",\"%3\")").arg(cid).arg(seriesName).arg(color);
+        QString expr = QString("chartdataseriestype(%1,\"%2\",\"%3\")").arg(cid).arg(seriesName).arg(type);
 
         Ilwis::OperationExpression ex(expr);
         Ilwis::Operation op(ex);
         ExecutionContext ctx;
         SymbolTable tbl;
-        if (op->execute(&ctx, tbl)) {
-            chartModel()->updateSeriesChanged();
-        }
+        op->execute(&ctx, tbl);
     }
     catch (const ErrorObject&) {
 

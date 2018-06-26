@@ -26,7 +26,7 @@ DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, c
 {
     auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
     if (factory) {
-        QVariantMap parameters = { { "dataseries", 0 } };
+        QVariantMap parameters = { { "dataseries", true } };
         _operations = factory->selectedOperations(chartModel, parameters);
         for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
             (*iter)->setParent(this);
@@ -150,10 +150,21 @@ QColor DataseriesModel::color() const {
 	return _color;
 }
 
+QString DataseriesModel::charttype() const {
+    return _type;
+}
+
 void DataseriesModel::setColor(const QColor color) {
 	_color = color;
 
 	emit onColorChanged();
+}
+
+void Ilwis::Ui::DataseriesModel::setType(const QString type)
+{
+    _type = type;
+
+    emit onTypeChanged();
 }
 
 QString DataseriesModel::xColumn() const {

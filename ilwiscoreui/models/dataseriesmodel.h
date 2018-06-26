@@ -27,9 +27,10 @@ namespace  Ilwis {
 		{
 			Q_OBJECT
 
-			Q_PROPERTY(QString name        READ name                 NOTIFY isNameChanged)
-			Q_PROPERTY(QColor color        READ color WRITE setColor NOTIFY onColorChanged)
-			Q_PROPERTY(QVariantList points READ points               NOTIFY onPointsChanged)
+			Q_PROPERTY(QString name        READ name                      NOTIFY isNameChanged)
+			Q_PROPERTY(QColor color        READ color      WRITE setColor NOTIFY onColorChanged)
+            Q_PROPERTY(QString charttype   READ charttype  WRITE setType  NOTIFY onTypeChanged)
+			Q_PROPERTY(QVariantList points READ points                    NOTIFY onPointsChanged)
 
 			Q_PROPERTY(double minX         READ minx)
 			Q_PROPERTY(double maxX         READ maxx)
@@ -47,6 +48,7 @@ namespace  Ilwis {
 			explicit DataseriesModel(const QString name = "");
 
 			void setColor(const QColor color);
+            void setType(const QString type);
 
 			QVariantList points() const;
             QString xColumn() const;
@@ -78,16 +80,20 @@ namespace  Ilwis {
 		signals:
 			void isNameChanged();
 			void onColorChanged();
+            void onTypeChanged();
+
 			void onPointsChanged();
             void operationsChanged();
 
 		public slots:
 			QString name() const;
 			QColor color() const;
+            QString charttype() const;
 
 		private:
 			QString _name = sUNDEF;
 			QColor _color = QColor();
+            QString _type = "line";
 			bool _selected = false;
 			quint32 _seriesIndex;
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
