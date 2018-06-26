@@ -247,7 +247,11 @@ void ControlPointsListModel::handleComputeResult(int res) {
             }
         }
         bool enoughPoints = count >= _planarCTP->minimumPointsNeeded();
-        if (enoughPoints) {
+        bool allPointsValid = true;
+        for (auto * ctp : _controlPoints) {
+            allPointsValid &= ctp->isValid();
+        }
+        if (enoughPoints && allPointsValid) {
             for (auto * ctp : _controlPoints) {
 
                 if (ctp->active() && ctp->isValid()) {
@@ -285,7 +289,7 @@ void ControlPointsListModel::handleComputeResult(int res) {
             _planarCTP->sigma(sigma);
         }
         for (auto * ctp : _controlPoints) {
-            QColor clr = QColor("red");
+            QColor clr = QColor("blue");
             if (ctp->active() && ctp->isValid() && enoughPoints)
             {
                 if (sigma <= 0)
@@ -343,6 +347,13 @@ int ControlPointsListModel::decimalsCrds() const
     if (!_georef->coordinateSystem().isValid())\
         return 0;
     return _georef->coordinateSystem()->isLatLon() ? 7 : 3;
+}
+
+QString Ilwis::Ui::ControlPointsListModel::georefid() const
+{
+    if ( _georef.isValid())
+        return QString::number(_georef->id());
+    return sUNDEF;
 }
 
 void ControlPointsListModel::setCoordinateSystem(const QString& id) {

@@ -27,6 +27,7 @@ namespace Ilwis {
             Q_PROPERTY(int selectedRow READ selectedRow WRITE selectedRow NOTIFY selectedRowChanged)
             Q_PROPERTY(int decimalsCrds READ decimalsCrds CONSTANT)
             Q_PROPERTY(bool subPixelPrecision READ subPixelPrecision WRITE subPixelPrecision NOTIFY subPixePrecisionChanged)
+            Q_PROPERTY(QString georefid READ georefid CONSTANT)
 
         public:
             ControlPointsListModel(QObject *parent=0);
@@ -85,6 +86,7 @@ namespace Ilwis {
             int decimalsCrds() const;
             void urlCsy(const QString& csy);
             QString urlCsy() const;
+            QString georefid() const;
 
         };
     }
