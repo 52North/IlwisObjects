@@ -40,6 +40,9 @@ void ModelRegistry::registerModel(quint32 id, const QString& type, QObject * mod
 
 void ModelRegistry::unRegisterModel(quint32 id)
 {
+    if (_models.size() == 0)
+        return;
+
     auto iter = _models.find(id);
     if (iter != _models.end()) {
         _models.erase(iter);
