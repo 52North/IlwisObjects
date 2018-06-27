@@ -29,6 +29,10 @@ Rectangle {
         height : 20
         itemModel : ["Line", "Spline", "Bar", "Pie", "Points", "Polar", "3DLine", "3DSpline", "3DBar" ]
 
+        Component.onCompleted : {
+            charttypeselector.initialComboText = dataseriesOperationList.currentSeries.charttype
+        }
+
         onIndexChanged : {
 //            var oldIndex =  dataserieslist.currentIndex
             var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : charttypeselector.comboText}

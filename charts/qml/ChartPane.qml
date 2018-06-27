@@ -90,10 +90,7 @@ Rectangle {
             if (ctype == "bar") {
 			    series.color = chart.seriesColor(i);
 			    var points = smodel.points;
-			    var bar1 = series.append(smodel.name, points);
-                var bar = series.at(i);
-                console.log("Append: " + bar1)
-                console.log("retrieve: " + bar1)
+			    var bar = series.append(smodel.name, points);
                 bar.color = chart.seriesColor(i);
             }
 		}

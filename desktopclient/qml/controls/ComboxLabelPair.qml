@@ -13,6 +13,7 @@ Item {
     property bool readOnly : false;
     property alias itemModel : textid.model
     property alias comboText : textid.currentText
+    property string initialComboText
     property string role
     property alias currentIndex : textid.currentIndex
     height : 20
@@ -22,13 +23,16 @@ Item {
     function select(name){
         var index = -1
         for(var i=0; i < textid.model.length; ++i){
-            if ( textid.model[i] === name)    {
+            if ( Global.compareStrings(textid.model[i], name, true, true))    {
                 index = i
                 break
             }
         }
-
         textid.currentIndex = index
+    }
+    
+    onInitialComboTextChanged : {
+        select(initialComboText)
     }
 
     Text {
