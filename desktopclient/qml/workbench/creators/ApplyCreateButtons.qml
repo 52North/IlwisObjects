@@ -10,6 +10,7 @@ import "../.." as Base
 
 Item {
     property var createObject
+    property var applyVisible : true
 
     function currentCatalogCorrectUrl(){ // must be a file location
         var panel = datapanel.activeItem
@@ -30,10 +31,11 @@ Item {
     Button {
         id : applybutton
         anchors.right: parent.right
+         anchors.rightMargin: 5
         width : 70
         text : qsTr("Apply")
-        y : 10
-        enabled: currentCatalogCorrectUrl() !== ""
+        y : 25
+        enabled: currentCatalogCorrectUrl() !== "" && applyVisible
         onClicked: {
             editorList.pop()
             if (!createObject(false)){
@@ -45,10 +47,10 @@ Item {
     Button {
         id : closebutton
         anchors.right: applybutton.left
-        anchors.rightMargin: 5
+        anchors.leftMargin: 8
         width : 70
         text : qsTr("Close")
-        y : 10
+        y : 25
 
         onClicked: {
             dropItem.state = "invisible"
@@ -56,10 +58,11 @@ Item {
     }
     Text {
         id : wronglocation
-        width :150
-        height : parent.height
+        width :180
+        height : 20
+        y: 4
         text : qsTr("Location can't be used for writing")
-        anchors.right: closebutton.left
+        anchors.right: parent.right
         anchors.rightMargin: 5
         visible : currentCatalogCorrectUrl() === "" ? true : false
         color : "red"

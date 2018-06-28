@@ -16,16 +16,12 @@ Item {
     height: parent.height -10
     property alias currentIndex : dataserieslist.currentIndex
 
-    function setCurrentIndex(newindex){
-        if ( newindex) {
+    function setCurrentIndex(newindex) {
+        if (chart) {
             dataserieslist.currentIndex = newindex
-//            dataseriesOperationList.currentColumn = dataserieslist.model[newindex]
-//            dataseriesOperationList.setOperation(0)
-        } else if ( newindex === 0){
-            dataserieslist.currentIndex = newindex
-//            dataseriesOperationList.currentColumn = null
-//            if (table)
-//                dataseriesOperationList.setOperations(table.operations)
+            dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
+
+            dataseriesOperationList.setOperation(0)
         }
     }
 
@@ -47,13 +43,13 @@ Item {
         }
     }
 
-    Rectangle {
+/*    Rectangle {
         id : chartlabel
         width : parent.width - 2
         height : 18
         anchors.top : title.bottom
         clip : true
-        color : uicontext.paleColor
+        color: uicontext.lightestColor
         Text {
             text : qsTr("Chart")
             width : parent.width
@@ -65,6 +61,69 @@ Item {
             target : chartlabel
             text : qsTr("Global properties of the chart")
         }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+//                setCurrentIndex(index)
+            }
+        }
+    }*/
+
+    ListView {
+        id : chartlabel
+        width : parent.width - 2
+        height : 18
+        anchors.top : title.bottom
+        model : ["Chart"]
+        highlight: charthighlight
+
+        anchors.topMargin: 4
+        x : 3
+        clip : true
+
+        Controls.ToolTip {
+            target : chartlabel
+            text : qsTr("Global properties of the chart")
+        }
+
+        delegate : Component {
+            Row {
+                width : 130
+                height : 18
+/*                spacing : 3
+                Image{
+                    id : domicon
+                    source : dataserieslist.iconsource(icon)
+                    width : 16
+                    height : 16
+                    anchors.verticalCenter: parent.verticalCenter
+                }*/
+                Text {
+                    text :  modelData
+                    anchors.verticalCenter: parent.verticalCenter
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+//                            setCurrentIndex(index)
+                        }
+                    }
+                }
+            }
+        }
+
+        Component.onCompleted : {
+            currentIndex = 0
+        }
+
+        Component {
+            id: charthighlight
+
+            Rectangle {
+                width: dataserieslist.width - 6; height: 14
+                color: Global.selectedColor; radius: 2
+                y: (dataserieslist && dataserieslist.currentItem) ? dataserieslist.currentItem.y : 0
+            }
+        }
     }
 
     ListView {
@@ -74,10 +133,11 @@ Item {
         anchors.top : chartlabel.bottom
         model : chartspanel.chart ? chartspanel.chart.series : null
         onModelChanged: {
-			console.log("chart=" + chartspanel.chart)
-//			console.log("series=" + chartspanel.chart.seriesCount)
-            //dataseriesOperationList.currentSeries = null
             setCurrentIndex(0)
+        }
+
+        Component.onCompleted : {
+            currentIndex = -1
         }
 
         anchors.topMargin: 4

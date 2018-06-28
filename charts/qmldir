@@ -1,5 +1,10 @@
 module Charts
 ChartPane.qml 1.0 qml/ChartPane.qml
 ChartsPanel.qml 1.0 qml/ChartsPanel.qml
-ChartProperties.qml 1.0 qml/ChartProperties.qml
+ChartManagement.qml 1.0 qml/ChartManagement.qml
+DataseriesList.qml 1.0 qml/DataseriesList.qml
+DataseriesOperationList.qml 1.0 DataseriesOperationList.qml
+DataseriesOperate.qml 1.0 DataseriesOperate.qml
+SetSeriesColor.qml 1.0 qml/SetSeriesColor.qml
+
 plugin Charts

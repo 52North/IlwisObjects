@@ -75,7 +75,7 @@ CrosssectionTool::CrosssectionTool()
 }
 
 CrosssectionTool::CrosssectionTool(VisualAttribute *p) :
-    VisualPropertyEditor(p, "crosssectiontool",TR("Cross Section"),QUrl("CrossSectionTool.qml"))
+    VisualPropertyEditor(p, "crosssectiontool",TR("Cross Section"),QUrl("CrosssectionTool.qml"))
 {
     _pinData.prepare();
 }

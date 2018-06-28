@@ -59,19 +59,21 @@ bool ChartSeriesColor::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
 	auto serie = _chartmodel->getSeriesByName(_seriesName);
 	serie->setColor(_newColor);
+    _chartmodel->updateSeriesChanged();
+
 
 	return true;
 }
 
 quint64 ChartSeriesColor::createMetadata()
 {
-	OperationResource resource({ "ilwis://operations/ChartSeriesColor" });
+	OperationResource resource({ "ilwis://operations/chartseriescolor"  });
 	resource.setLongName("Change color of a chart series");
-	resource.setSyntax("ChartSeriesColor(parameters))");
-	resource.setInParameterCount({ 2 });
-	resource.addInParameter(0, itINT32, TR("Chart ID"), TR("The ID identifying the chart containing the series."));
-	resource.addInParameter(1, itSTRING, TR("Series Name"), TR(""));
-	resource.addInParameter(2, itSTRING, TR("Color"), TR("String describing the new color"));
+	resource.setSyntax("chartseriescolor(parameters))");
+	resource.setInParameterCount({ 3 });
+	resource.addInParameter(0, itINT32, TR("chart ID"), TR("the ID identifying the chart containing the series."));
+	resource.addInParameter(1, itSTRING, TR("series name"), TR(""));
+	resource.addInParameter(2, itSTRING, TR("color"), TR("either an svg color name or a hex based color code (e.g #ff1145)"));
 	resource.setKeywords("chart series, table, chart, color");
 
 	mastercatalog()->addItems({ resource });

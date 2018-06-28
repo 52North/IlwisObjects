@@ -13,7 +13,7 @@ namespace Ilwis {
 	namespace Ui {
 		class ChartModel;
 
-		class ChartOperationForm : public QObject, public Ilwis::Identity
+		class ILWISCOREUISHARED_EXPORT ChartOperationEditor : public QObject, public Ilwis::Identity
 		{
 			Q_OBJECT
 
@@ -21,8 +21,8 @@ namespace Ilwis {
 			Q_PROPERTY(QString qmlUrl READ qmlUrl CONSTANT)
 
 		public:
-			ChartOperationForm() {}
-			explicit ChartOperationForm(const QString& name, const QUrl& ur, const QString& description, QObject *parent = 0);
+			ChartOperationEditor() {}
+			explicit ChartOperationEditor(const QString& name, const QUrl& ur, const QString& description, QObject *parent = 0);
 			virtual bool canUse(ChartModel *model, const QVariantMap& parameters) const { return false; }
 			virtual void prepare(ChartModel *model);
 			virtual void execute(const QVariantMap& parameters) {}
@@ -34,7 +34,6 @@ namespace Ilwis {
 		public slots :
 
 		protected:
-//			ITable table() const;
 			ChartModel *chartModel() const;
 		private:
 			QUrl _qmlUrl;

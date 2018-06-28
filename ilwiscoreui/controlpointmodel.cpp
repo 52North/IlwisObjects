@@ -1,4 +1,7 @@
 #include "controlpointmodel.h"
+#include "geometries.h"
+#include "georeference.h"
+#include "layermanager.h"
 
 using namespace Ilwis;
 using namespace Ui;
@@ -8,7 +11,7 @@ ControlPointModel::ControlPointModel(QObject *parent)
 {
 }
 
-ControlPointModel::ControlPointModel(bool act, double px, double py, quint32 pcolumn, quint32 prow, double pcolumnError, double prowError, QObject *parent) {
+ControlPointModel::ControlPointModel(LayerManager *manager, const QString lab, bool act, double px, double py, quint32 pcolumn, quint32 prow, double pcolumnError, double prowError, QObject *parent) {
     active(act);
     x(px);
     y(py);
@@ -16,6 +19,9 @@ ControlPointModel::ControlPointModel(bool act, double px, double py, quint32 pco
     row(prow);
     columnError(pcolumnError);
     rowError(prowError);
+    label(lab);
+    _layerManager = manager;
+
 }
 
 ControlPointModel::~ControlPointModel()
@@ -51,27 +57,34 @@ void ControlPointModel::column(double c) {
 }
 
 int ControlPointModel::rowScreen() const {
-    return _screenRow;
+    Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
+    return pix.y;
 }
-void ControlPointModel::rowScreen(double r) {
-    _screenRow = r;
-}
+
 int ControlPointModel::columnScreen() const {
-    return _screenColumn;
+    Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
+    return pix.x;
 }
-void ControlPointModel::columnScreen(double c) {
-    _screenColumn = c;
+void ControlPointModel::screenPosition(double c, double r) {
+    Coordinate crd = _layerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
+    _screenCrd = crd;
 }
 
 double ControlPointModel::rowError() const {
-    return _controlPoint.errorRow();
+    double v = _controlPoint.errorRow();
+    if (v == rUNDEF)
+        return -1000000;
+    return v;
 }
 void ControlPointModel::rowError(double value) {
     _controlPoint.errorRow(value);
 }
 
 double ControlPointModel::columnError() const {
-    return _controlPoint.errorColumn();
+    double v = _controlPoint.errorColumn();
+    if (v == rUNDEF)
+        return -1000000;
+    return v;
 }
 void ControlPointModel::columnError(double value) {
     _controlPoint.errorColumn(value);
@@ -83,3 +96,31 @@ void ControlPointModel::active(bool yesno) {
     _controlPoint.active(yesno);
 }
 
+QString ControlPointModel::label() const {
+    return _label;
+}
+void ControlPointModel::label(const QString& l) {
+    _label = l;
+    update();
+}
+
+ControlPoint ControlPointModel::controlPoint() {
+    return _controlPoint;
+}
+
+void Ilwis::Ui::ControlPointModel::update()
+{
+    emit updateControlPoint();
+}
+
+QString ControlPointModel::color() const {
+    return _color.name();
+}
+void ControlPointModel::color(const QColor& clr) {
+    _color = clr;
+}
+
+bool Ilwis::Ui::ControlPointModel::isValid() const
+{
+    return x() != 0 && y() != 0 && _screenCrd.isValid();
+}

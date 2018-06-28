@@ -18,7 +18,7 @@ Column {
     TableView {
         id : tableview
         width : parent.width
-        height : 120
+        height : 160
         selectionMode : SelectionMode.SingleSelection
         property var doUpdate : true
         model : editor ? editor.controlPoints : null
@@ -53,8 +53,28 @@ Column {
                 }
         }
         TableViewColumn{
+            id : labelColumn
+            width : 44
+            title : qsTr("Label")
+            role : "label"
+            delegate :  
+                TextField {
+                    text: styleData.value
+                    height : 20
+                    verticalAlignment:Text.AlignVCenter
+                    textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
+
+                    onActiveFocusChanged : {
+                        tableview.setSelection(styleData.row )
+                    }
+                    onEditingFinished : {
+                        editor.controlPointLabel(styleData.row,text)
+                    }
+                }
+        }
+        TableViewColumn{
             id : xColumn
-            width : 75
+            width : 73
             title : qsTr("X")
             role : "x"
             delegate :  
@@ -75,7 +95,7 @@ Column {
 
         TableViewColumn{
             id : yColumn
-            width : 75
+            width : 73
             role : "y"
             title : qsTr("Y")
             delegate : 
@@ -96,7 +116,7 @@ Column {
 
         TableViewColumn{
             id : cColumn
-            width : 45
+            width : 40
             title : qsTr("Column")
             role : "column"
             delegate : 
@@ -118,7 +138,7 @@ Column {
 
         TableViewColumn{
             id : rColumn
-            width : 45
+            width : 40
             title : qsTr("Row")
             role : "row"
             delegate : 
@@ -139,12 +159,12 @@ Column {
         }
         TableViewColumn{
             id : dcColumn
-            width : 50
+            width : 45
             title : qsTr("dColumn")
             role : "columnError"
             delegate : 
                 Text {
-                    text: styleData.value
+                    text: styleData.value != -1000000 ? styleData.value.toFixed(2) : '?'
                     height : 20
                     verticalAlignment:Text.AlignVCenter
 
@@ -153,12 +173,12 @@ Column {
         }
         TableViewColumn{
             id : rcColumn
-            width : 50
+            width : 45
             title : qsTr("dRow")
             role : "rowError"
            delegate : 
                 Text {
-                    text: styleData.value
+                    text: styleData.value != -1000000 ? styleData.value.toFixed(2) : '?'
                     height : 20
                     verticalAlignment:Text.AlignVCenter
                     color : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -192,11 +212,18 @@ Column {
         width : 190
         height : 25
         spacing : 4
+        visible : allDataSet()
          Button {
              width : 90
              height : 22
              text : qsTr("Delete tiepoint")
-                   }
+             onClicked : {
+                 var oldRow = editor.selectedRow
+                 editor.removeTiepoint(editor.selectedRow)
+                 editor.selectedRow = oldRow 
+                 tableview.currentRow = editor.selectedRow
+             }
+         }
          Button {
              width : 90
              height : 22
@@ -210,7 +237,6 @@ Column {
     }
 
        function handleMouseClick(mx,my){
-         console.debug("clicked", mx, my)
         if ( editor.selectedRow >= 0){
        
            editor.changeTiePointPixel(editor.selectedRow, mx, my, false)

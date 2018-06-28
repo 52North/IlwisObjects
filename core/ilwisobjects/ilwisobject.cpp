@@ -527,6 +527,59 @@ void IlwisObject::copyTo(IlwisObject *obj)
     }
 }
 
+quint64 IlwisObject::copy(const QString &newUrl, const QString &format, const QString &provider)
+{
+    try {
+        if (isValid()) {
+
+            quint64 id = mastercatalog()->name2id(newUrl, ilwisType());
+            if (id == i64UNDEF) {
+                QString bareUrl = newUrl;
+                int index = newUrl.lastIndexOf(".");
+                if (index != -1) { // remove extension
+                    QString p = newUrl.mid(index + 1);
+                    if (p.size() < 4 || p == "ilwis") {
+                        bareUrl = newUrl.left(index);
+                    }
+                }
+                connectTo(bareUrl, format.toLower(), provider.toLower(), IlwisObject::cmOUTPUT);
+                QString newUrl = resource(IlwisObject::cmOUTPUT).url(true).toString();
+                QUrl oldUrl = resource().url();
+                QUrl oldUrlraw = resource().url(true);
+                QString syntax = resource()["syntax"].toString();
+                loadData(); // before changing urls the object must be completely loaded
+                resourceRef().setUrl(newUrl, false, false);
+                resourceRef().setUrl(newUrl, true, false);
+                if (ilwisType() == itWORKFLOW) {
+                    int index = syntax.indexOf("(");
+                    int index2 = name().indexOf(".");
+                    QString newname = name().left(index2);
+                    QString newsyntax = newname + syntax.mid(index);
+                    resourceRef()["syntax"] = newsyntax;
+                }
+                store();
+                Resource newResource = resource();
+                newResource.newId();
+                mastercatalog()->addItems({ newResource });
+                // original object must forget about its copy
+                resetOutputConnector();
+                resourceRef().setUrl(oldUrl, false, false);
+                resourceRef().setUrl(oldUrlraw, true, false);
+                if (syntax != sUNDEF)
+                    resourceRef()["syntax"] = syntax;
+                return newResource.id();
+            }
+            else {
+                return i64UNDEF;
+            }
+        }
+        return i64UNDEF;
+    }
+    catch (const ErrorObject&) {}
+
+    return i64UNDEF;
+}
+
 bool IlwisObject::isSystemObject() const {
     if ( code() == sUNDEF)
         return false;

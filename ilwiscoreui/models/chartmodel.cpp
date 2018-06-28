@@ -26,6 +26,11 @@ ChartModel::ChartModel(QObject *parent) : QObject(parent)
     modelregistry()->registerModel(modelId(), "chart", this);
 }
 
+Ilwis::Ui::ChartModel::~ChartModel()
+{
+    modelregistry()->unRegisterModel(modelId());
+}
+
 quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis)
 {
     _name = name;
@@ -133,7 +138,7 @@ bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
 
 DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) const
 {
-	auto itr = std::find_if(_series.begin(), _series.end(), [](DataseriesModel* serie) { return serie->name() == "name"; });
+	auto itr = std::find_if(_series.begin(), _series.end(), [name](DataseriesModel* serie) { return serie->name() == name; });
 	if (itr != _series.end()) {
 		return *itr;
 	}

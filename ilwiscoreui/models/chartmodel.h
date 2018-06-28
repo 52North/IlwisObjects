@@ -47,6 +47,7 @@ namespace Ilwis {
 
             ChartModel();
             ChartModel(QObject *parent);
+            ~ChartModel();
 
             quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis);
 

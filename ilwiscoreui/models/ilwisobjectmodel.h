@@ -57,6 +57,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
 public:
     IlwisObjectModel();
     explicit IlwisObjectModel(const Ilwis::Resource &source, QObject *parent = 0);
+    virtual ~IlwisObjectModel();
 
     QString creationDate() const;
     QString modifiedDate() const;
@@ -91,6 +92,7 @@ public:
     bool isValid() const;
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
+    quint32 modelId() const;
 
 public slots:
     void recalcDone();
@@ -107,6 +109,7 @@ private slots:
     QString valueType() const;
 private:
     mutable Ilwis::IIlwisObject _ilwisobject;
+    quint32 _modelId;
     QList<DomainItemModel *> _domainItems;
     QList<ProjectionParameterModel *> _projectionParmItems;
     QString pixSizeString() const;

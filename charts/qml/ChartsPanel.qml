@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import "." as Charts
 import ChartModel 1.0
-import TableModel 1.0
 import TabModel 1.0
 import "../../../../qml" as Base
 
@@ -51,7 +50,6 @@ Item {
 		chart = models.model(parts[1]);
         chart.parent = chartspanel;
 		tabmodel.displayName = chart.name
-//		chartpane.chart = chart
     }
 
 }

@@ -50,7 +50,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
 //    _creators[ ] = new IlwisObjectCreatorModel(TR("Color Domain",itCOLORDOMAIN,"CreateNumDom.qml", 200, this);
     _creators["colorpalette" ] = new IlwisObjectCreatorModel("colorpalette", TR("Color Palette Domain"),itPALETTECOLOR | itITEMDOMAIN,"CreatePaletteDomain.qml", 630, this);
     _creators["cornersgeoreferences" ] = new IlwisObjectCreatorModel("cornersgeoreferences", TR("Corners Georeference"),itGEOREF,"CreateGeorefCorners.qml", 330, this);
-    _creators["tiepointgeoreference" ] = new IlwisObjectCreatorModel("tiepointgeoreference",TR("Tiepoints Georeference"),itGEOREF | itLOCATION,"CreateGeorefTiepoints.qml",450, this);
+    _creators["tiepointgeoreference" ] = new IlwisObjectCreatorModel("tiepointgeoreference",TR("Tiepoints Georeference"),itGEOREF | itLOCATION,"CreateGeorefTiepoints.qml",490, this);
     _creators["projectedcoordinatesystem" ] = new IlwisObjectCreatorModel("projectedcoordinatesystem", TR("Projected Coordinate System"),itCONVENTIONALCOORDSYSTEM,"CreateProjectedCoordinateSystem.qml", 530, this);
     _creators["geographiccoordinatesystem" ] = new IlwisObjectCreatorModel("geographiccoordinatesystem", TR("Geographic (LatLon) Coordinate System"),itCONVENTIONALCOORDSYSTEM|itLOCATION,"CreateLatLonCoordinateSystem.qml", 320, this);
     _creators["boundsonlycoordinatesystem" ] = new IlwisObjectCreatorModel("boundsonlycoordinatesystem", TR("Bounds only Coordinate System"),itBOUNDSONLYCSY,"CreateBoundsOnlyCsy.qml", 250, this);
@@ -219,24 +219,45 @@ QString ObjectCreator::createBoundsOnlyCoordinateSystem(const QVariantMap &parms
 
 QString ObjectCreator::createGeoreference(const QVariantMap &parms){
     QString expression;
-    if ( parms["subtype"].toString() == "corners")  {
+    if (parms["subtype"].toString() == "corners") {
         expression = QString("script %1{format(stream,\"georeference\")}=createcornersgeoreference(%2,%3,%4,%5,%6,%7,%8,\"%9\")").arg(parms["name"].toString())
-                .arg(parms["minx"].toDouble())
-                .arg(parms["miny"].toDouble())
-                .arg(parms["maxx"].toDouble())
-                .arg(parms["maxy"].toDouble())
-                .arg(parms["pixelsize"].toDouble())
-                .arg(parms["csy"].toString())
-                .arg(parms["centered"].toString())
-                .arg(parms["description"].toString());
-    }
-    Ilwis::ExecutionContext ctx;
-    Ilwis::SymbolTable syms;
-    if(Ilwis::commandhandler()->execute(expression,&ctx,syms) ) {
-        if ( ctx._results.size() > 0){
-            IGeoReference obj = syms.getSymbol(ctx._results[0])._var.value<IGeoReference>();
-            return QString::number(obj->id());
+            .arg(parms["minx"].toDouble())
+            .arg(parms["miny"].toDouble())
+            .arg(parms["maxx"].toDouble())
+            .arg(parms["maxy"].toDouble())
+            .arg(parms["pixelsize"].toDouble())
+            .arg(parms["csy"].toString())
+            .arg(parms["centered"].toString())
+            .arg(parms["description"].toString());
+
+        Ilwis::ExecutionContext ctx;
+        Ilwis::SymbolTable syms;
+        if (Ilwis::commandhandler()->execute(expression, &ctx, syms)) {
+            if (ctx._results.size() > 0) {
+                IGeoReference obj = syms.getSymbol(ctx._results[0])._var.value<IGeoReference>();
+                return QString::number(obj->id());
+            }
         }
+    }
+    if (parms["subtype"].toString() == "tiepoints") {
+        bool ok;
+        quint64 id = parms["georefid"].toULongLong(&ok);
+        if (!ok) {
+            kernel()->issues()->log(TR("Invalid id passed for georef"));
+            return sUNDEF;
+        }
+        IGeoReference grf;
+        if (!grf.prepare(id)) {
+            kernel()->issues()->log(TR("Can not create georeference"));
+            return sUNDEF;
+        }
+        QString url = parms["name"].toString();
+        if (!grf->copy(url, "georeference", "stream")) {
+            kernel()->issues()->log(TR("failed to copy georeference. Is the path correct: ") + url);
+            return sUNDEF;
+        }
+        return QString::number(grf->id());
+
     }
     return sUNDEF;
 }

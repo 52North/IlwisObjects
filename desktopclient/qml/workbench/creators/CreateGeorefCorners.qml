@@ -115,6 +115,8 @@ Controls.DropableItem{
         height : 60
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 8
+        anchors.right : parent.right
+        anchors.rightMargin : 4
         id : applyBut
         createObject: dropItem.apply
 

@@ -21,7 +21,6 @@ Rectangle {
         loadGraphs()    
     }
 
-
 	onChartChanged : {
 		loadGraphs();
 	}
@@ -42,7 +41,11 @@ Rectangle {
         labelFormat : chart ? chart.formatYAxis : "%.3f"
 	}
 
-  LinearGradient {
+    BarCategoryAxis {
+        id : xbar
+    }
+
+    LinearGradient {
         anchors.fill: parent
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#EBF0EC" }
@@ -68,21 +71,28 @@ Rectangle {
         }
     }
 
-
-  
 	function loadGraphs() {
         if ( !chart)
             return
 		for (var i = 0; i < chart.seriesCount; i++) {
 			var smodel = chart.getSeries(i);
-            var series = createSeries(chart.chartType, smodel.name, xas, yas)
-			series.pointsVisible = false;
-			series.color = chart.seriesColor(i);
-			var points = smodel.points
-			var pointsCount = points.length;
-			for (var j = 0; j < pointsCount; j++) {
-				series.append(points[j].x, points[j].y);
-			}
+            var ctype = smodel.charttype
+            var series = createSeries(ctype, smodel.name, xas, yas)
+            if (ctype == "line") {
+			    series.pointsVisible = false;
+			    series.color = chart.seriesColor(i);
+			    var points = smodel.points
+			    var pointsCount = points.length;
+			    for (var j = 0; j < pointsCount; j++) {
+				    series.append(points[j].x, points[j].y);
+			    }
+            }
+            if (ctype == "bar") {
+			    series.color = chart.seriesColor(i);
+			    var points = smodel.points;
+			    var bar = series.append(smodel.name, points);
+                bar.color = chart.seriesColor(i);
+            }
 		}
 	}
 

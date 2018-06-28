@@ -1,11 +1,15 @@
 #include "kernel.h"
 #include "ilwisdata.h"
+#include "factory.h"
+#include "abstractfactory.h"
 #include "datadefinition.h"
 #include "columndefinition.h"
 #include "table.h"
 #include "modelregistry.h"
 #include "tablemodel.h"
 #include "chartmodel.h"
+#include "chartoperationfactory.h"
+#include "chartoperationeditor.h"
 #include "dataseriesmodel.h"
 
 using namespace Ilwis;
@@ -20,6 +24,14 @@ DataseriesModel::DataseriesModel(const QString name) : _name(name) {
 DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color)
 	: QObject(chartModel), _xaxis(xaxis), _yaxis(yaxis), _zaxis(zaxis), _color(color)
 {
+    auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
+    if (factory) {
+        QVariantMap parameters = { { "dataseries", true } };
+        _operations = factory->selectedOperations(chartModel, parameters);
+        for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
+            (*iter)->setParent(this);
+    }
+    _seriesIndex = 0;
 }
 
 QString DataseriesModel::name() const {
@@ -121,13 +133,16 @@ DataDefinition DataseriesModel::datadefinition(ChartModel::Axis axis)
     return DataDefinition();
 }
 
-QQmlListProperty<ChartOperation> DataseriesModel::operations()
+QQmlListProperty<ChartOperationEditor> DataseriesModel::operations()
 {
-    return QQmlListProperty<ChartOperation>();
+    return QQmlListProperty<Ilwis::Ui::ChartOperationEditor>(this, _operations);
 }
 
-Ilwis::Ui::ChartOperation * DataseriesModel::operation(quint32 index)
+Ilwis::Ui::ChartOperationEditor * DataseriesModel::operation(quint32 index)
 {
+    if (index < _operations.size())
+        return _operations[index];
+
     return nullptr;
 }
 
@@ -135,10 +150,21 @@ QColor DataseriesModel::color() const {
 	return _color;
 }
 
+QString DataseriesModel::charttype() const {
+    return _type;
+}
+
 void DataseriesModel::setColor(const QColor color) {
 	_color = color;
 
 	emit onColorChanged();
+}
+
+void Ilwis::Ui::DataseriesModel::setType(const QString type)
+{
+    _type = type;
+
+    emit onTypeChanged();
 }
 
 QString DataseriesModel::xColumn() const {

@@ -15,6 +15,7 @@ public:
     qint32 index(const Pixel& pix) const;
     qint32 index(const Coordinate& crd) const;
     qint32 setControlPoint(const ControlPoint &pnt);
+    void removeControlPoint(int index);
     int compute();
     virtual int minimumPointsNeeded() const = 0;
     void subPixelPrecision(bool yesno);

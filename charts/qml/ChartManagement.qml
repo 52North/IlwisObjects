@@ -37,9 +37,6 @@ Rectangle {
                 id : dataseriesview
 	            property string iconName : "../../qml/images/graph"
 
-/*                function setModel(cm){
-                    //columnlist.columnmodel = cm
-                }*/
                 handleDelegate: Controls.SplitHandle {
                     imageHeight: 15
                 }
@@ -50,10 +47,10 @@ Rectangle {
                 DataseriesOperationList {
                     id : dataseriesOperationList
                 }
-/*                DataseriesOperation{
-                    id : dataseriesOperation
+                DataseriesOperate {
+                    id : dataseriesoperation
                     Layout.fillWidth: true
-                }*/
+                }
             }
 
         }

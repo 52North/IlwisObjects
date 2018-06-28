@@ -15,21 +15,22 @@
 #include "operation.h"
 #include "attributemodel.h"
 #include "chartmodel.h"
-#include "chartoperation.h"
 
 namespace  Ilwis {
 	class Table;
 	typedef IlwisData<Table> ITable;
 
 	namespace Ui {
+        class ChartOperationEditor;
 
 		class ILWISCOREUISHARED_EXPORT DataseriesModel : public QObject
 		{
 			Q_OBJECT
 
-			Q_PROPERTY(QString name        READ name                 NOTIFY isNameChanged)
-			Q_PROPERTY(QColor color        READ color WRITE setColor NOTIFY onColorChanged)
-			Q_PROPERTY(QVariantList points READ points               NOTIFY onPointsChanged)
+			Q_PROPERTY(QString name        READ name                      NOTIFY isNameChanged)
+			Q_PROPERTY(QColor color        READ color      WRITE setColor NOTIFY onColorChanged)
+            Q_PROPERTY(QString charttype   READ charttype  WRITE setType  NOTIFY onTypeChanged)
+			Q_PROPERTY(QVariantList points READ points                    NOTIFY onPointsChanged)
 
 			Q_PROPERTY(double minX         READ minx)
 			Q_PROPERTY(double maxX         READ maxx)
@@ -38,7 +39,7 @@ namespace  Ilwis {
             Q_PROPERTY(int resolutionX READ resolutionX CONSTANT)
             Q_PROPERTY(int resolutionY READ resolutionY CONSTANT)
             Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
-            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperation> operations READ operations NOTIFY operationsChanged)
+            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
 
 		public:
 
@@ -47,6 +48,7 @@ namespace  Ilwis {
 			explicit DataseriesModel(const QString name = "");
 
 			void setColor(const QColor color);
+            void setType(const QString type);
 
 			QVariantList points() const;
             QString xColumn() const;
@@ -71,30 +73,34 @@ namespace  Ilwis {
             double resolutionZ();
             DataDefinition datadefinition(ChartModel::Axis axis);
 
-            QQmlListProperty<ChartOperation> operations();
-            Q_INVOKABLE Ilwis::Ui::ChartOperation* operation(quint32 index);
+            QQmlListProperty<ChartOperationEditor> operations();
+            Q_INVOKABLE Ilwis::Ui::ChartOperationEditor* operation(quint32 index);
 
 
 		signals:
 			void isNameChanged();
 			void onColorChanged();
+            void onTypeChanged();
+
 			void onPointsChanged();
             void operationsChanged();
 
 		public slots:
 			QString name() const;
 			QColor color() const;
+            QString charttype() const;
 
 		private:
 			QString _name = sUNDEF;
 			QColor _color = QColor();
+            QString _type = "line";
 			bool _selected = false;
-			quint32 _columnIndex;
+			quint32 _seriesIndex;
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
             DataDefinition _dataDefinitions[3];
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
 			QVariantList _points;
-            QList<ChartOperation *> _operations;
+            QList<ChartOperationEditor *> _operations;
 		};
 	}
 }

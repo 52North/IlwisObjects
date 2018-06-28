@@ -44,6 +44,7 @@
 #include "models/columnmodel.h"
 #include "models/chartmodel.h"
 #include "dataseriesmodel.h"
+#include "chartoperationeditor.h"
 #include "models/tabmodel.h"
 #include "models/datapanemodel.h"
 #include "models/objectcreator.h"
@@ -131,6 +132,7 @@ void StartIlwis::init() {
 
 		qmlRegisterType<ChartModel>("ChartModel", 1, 0, "ChartModel");
 		qmlRegisterType<DataseriesModel>("DataseriesModel", 1, 0, "DataseriesModel");
+        qmlRegisterType<ChartOperationEditor>("ChartOperationEditor", 1, 0, "ChartOperationEditor");
 
         qmlRegisterType<CatalogFilterModel>("CatalogFilterModel", 1,0,"CatalogFilterModel");
         qmlRegisterType<DataPaneModel>("DataPaneModel", 1,0,"DataPaneModel");

@@ -17,7 +17,13 @@
     <None Include="charts\qml\ChartManagement.qml">
       <Filter>qml</Filter>
     </None>
-    <None Include="charts\qml\SetSeriesColor.qml">
+    <None Include="charts\qml\setseriescolor.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
+    <None Include="charts\qml\DataseriesOperate.qml">
+      <Filter>qml</Filter>
+    </None>
+    <None Include="charts\qml\SetChartType.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
   </ItemGroup>
@@ -73,7 +79,7 @@
     <ClCompile Include="charts\createchart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="charts\addChartSeries.cpp">
+    <ClCompile Include="charts\addchartseries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="charts\chartseriescolor.cpp">
@@ -82,7 +88,7 @@
     <ClCompile Include="charts\updatechart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="charts\SetSeriesColor.cpp">
+    <ClCompile Include="charts\setseriescolor.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SetSeriesColor.cpp">
@@ -91,24 +97,30 @@
     <ClCompile Include="GeneratedFiles\Release\moc_SetSeriesColor.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_chartoperationform.cpp">
+    <ClCompile Include="charts\chartdataseriestype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="charts\setseriestype.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_setseriestype.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_chartoperationform.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_setseriestype.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="charts\chartoperationform.cpp">
-      <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="charts\SetSeriesColor.h">
+    <CustomBuild Include="charts\setseriescolor.h">
       <Filter>Header Files\PropertyForms</Filter>
     </CustomBuild>
-    <CustomBuild Include="charts\chartoperationform.h">
+    <CustomBuild Include="charts\chartdataseriestype.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="charts\setseriestype.h">
       <Filter>Header Files\PropertyForms</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -116,7 +128,7 @@
     <ClInclude Include="charts\createchart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="charts\addChartSeries.h">
+    <ClInclude Include="charts\addchartseries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="charts\chartseriescolor.h">

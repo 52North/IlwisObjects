@@ -21,6 +21,7 @@
 #include "combinationmatrix.h"
 #include "abstractfactory.h"
 #include "tranquilizerfactory.h"
+#include "modelregistry.h"
 #include "script.h"
 
 using namespace Ilwis;
@@ -34,13 +35,21 @@ IlwisObjectModel::IlwisObjectModel(const Ilwis::Resource &source, QObject *paren
 {
     try{
         if ( source.name() != "Global Layer"){ // special case for the dummy object of the global layer
-            _ilwisobject.prepare(source);
+            if (_ilwisobject.prepare(source)) {
+                _modelId = modelregistry()->newModelId();
+                modelregistry()->registerModel(modelId(), "ilwisobject", this);
+            }
         }
     } catch (const ErrorObject& ){
 
     } catch ( std::exception& ex){
         kernel()->issues()->log(ex.what());
     }
+}
+
+Ilwis::Ui::IlwisObjectModel::~IlwisObjectModel()
+{
+    modelregistry()->unRegisterModel(modelId());
 }
 
 QString IlwisObjectModel::creationDate() const
@@ -966,51 +975,16 @@ void IlwisObjectModel::unload()
 QString IlwisObjectModel::copy(const QString &newUrl, const QString &format, const QString &provider)
 {
     try {
-        if ( _ilwisobject.isValid()){
-
-            quint64 id = mastercatalog()->name2id(newUrl, _ilwisobject->ilwisType());
-            if ( id == i64UNDEF){
-                QString bareUrl = newUrl;
-                int index = newUrl.lastIndexOf(".");
-                if ( index != -1){ // remove extension
-                    QString p = newUrl.mid(index + 1);
-                    if (p.size() < 4 || p == "ilwis"){
-                        bareUrl = newUrl.left(index);
-                    }
-                }
-                _ilwisobject->connectTo(bareUrl,format.toLower(), provider.toLower(), IlwisObject::cmOUTPUT);
-                QString newUrl = _ilwisobject->resource(IlwisObject::cmOUTPUT).url(true).toString();
-                QUrl oldUrl = _ilwisobject->resource().url();
-                QUrl oldUrlraw = _ilwisobject->resource().url(true);
-                QString syntax = _ilwisobject->resource()["syntax"].toString();
-                _ilwisobject->loadData(); // before changing urls the object must be completely loaded
-                _ilwisobject->resourceRef().setUrl(newUrl,false,false);
-                _ilwisobject->resourceRef().setUrl(newUrl,true,false);
-               if ( _ilwisobject->ilwisType() == itWORKFLOW){
-                    int index = syntax.indexOf("(");
-                    int index2 = _ilwisobject->name().indexOf(".");
-                    QString newname = _ilwisobject->name().left(index2);
-                    QString newsyntax = newname + syntax.mid(index);
-                    _ilwisobject->resourceRef()["syntax"] = newsyntax;
-                }
-                _ilwisobject->store();
-                Resource newResource = _ilwisobject->resource();
-                newResource.newId();
-                mastercatalog()->addItems({newResource});
-                // original object must forget about its copy
-                _ilwisobject->resetOutputConnector();
-                _ilwisobject->resourceRef().setUrl(oldUrl,false,false);
-                _ilwisobject->resourceRef().setUrl(oldUrlraw,true,false);
-                if ( syntax != sUNDEF)
-                    _ilwisobject->resourceRef()["syntax"] = syntax;
-            }else{
-                return "exists";
-            }
+        if (_ilwisobject.isValid()) {
+            quint64 newid =  _ilwisobject->copy(newUrl, format, provider);
+            if (newid == i64UNDEF)
+                return sUNDEF;
+            return QString::number(newid);
         }
-        return "ok";
+
     } catch(const ErrorObject& ){}
 
-    return "error";
+    return sUNDEF;
 }
 
 void IlwisObjectModel::recalcLayers()
@@ -1079,6 +1053,11 @@ QVariantList IlwisObjectModel::layerInfo() const
     return results;
     }catch(const ErrorObject&){}
     return QVariantList();
+}
+
+quint32 Ilwis::Ui::IlwisObjectModel::modelId() const
+{
+    return _modelId;
 }
 
 QString IlwisObjectModel::value2string(const QVariant &value, const QString &attrName)

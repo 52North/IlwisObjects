@@ -2,13 +2,16 @@
 #define SETSERIESCOLOR_H
 #include "kernel.h"
 #include "ilwisdata.h"
-#include "chartoperationform.h"
+#include "factory.h"
+#include "abstractfactory.h"
+#include "chartoperationfactory.h"
+#include "chartoperationeditor.h"
 
 namespace Ilwis {
 	namespace Ui {
 		class ChartModel;
 
-		class SetSeriesColor : public ChartOperationForm
+		class SetSeriesColor : public ChartOperationEditor
 		{
 			Q_OBJECT
 		public:
@@ -17,9 +20,11 @@ namespace Ilwis {
 			bool canUse(ChartModel *model, const QVariantMap &parameter) const;
 
 			Q_INVOKABLE void execute(const QVariantMap &parameters);
-			static Ilwis::Ui::ChartOperationForm *create() { return new SetSeriesColor(); }
+			static Ilwis::Ui::ChartOperationEditor *create() { return new SetSeriesColor(); }
 
-		};
+            NEW_CHARTPROPERTYEDITOR(SetSeriesColor)
+        };
+
 	}
 }
 
