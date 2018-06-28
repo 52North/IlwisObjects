@@ -78,7 +78,7 @@ Rectangle {
 			var smodel = chart.getSeries(i);
             var ctype = smodel.charttype
             var series = createSeries(ctype, smodel.name, xas, yas)
-            if (ctype == "line") {
+            if (ctype == "line" || ctype == "spline" || ctype == "points") {
 			    series.pointsVisible = false;
 			    series.color = chart.seriesColor(i);
 			    var points = smodel.points
