@@ -75,7 +75,7 @@ quint64 Gridding::createMetadata()
     Resource resource(QUrl(url), itSINGLEOPERATION);
     resource.addProperty("namespace","ilwis");
     resource.addProperty("longname","gridding");
-    resource.addProperty("syntax","gridding(coordinatesyste,top-coordinate,x-cell-size, y-cell-size, horizontal-cells, vertical-cells)");
+    resource.addProperty("syntax","gridding(coordinatesystem,top-coordinate,x-cell-size, y-cell-size, horizontal-cells, vertical-cells)");
     resource.addProperty("description",TR("generates a new featurecoverage(polygons) were the polygons form a rectangular grid"));
     resource.addProperty("inparameters","6");
     resource.addProperty("pin_1_type", itCOORDSYSTEM);

@@ -111,7 +111,7 @@ OperationImplementation::State IffRaster::prepare(ExecutionContext *ctx, const S
 quint64 IffRaster::createMetadata()
 {
     OperationResource operation({"ilwis://operations/iffraster"});
-    operation.setSyntax("iffraster(rastercoverage,outputchoicetrue, outputchoicefalse)");
+    operation.setSyntax("iffraster(rastercoverage,outputchoicetrue,outputchoicefalse)");
     operation.setDescription(TR("constructs a new coverage based on a boolean selection described by the boolean map. The true pixels are taken from the first input map, the false pixels from the second map"));
     operation.setInParameterCount({3});
     operation.addInParameter(0, itRASTER,TR("input rastercoverage"), TR("Input map must have boolean domain"));
