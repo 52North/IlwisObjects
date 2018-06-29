@@ -1158,6 +1158,12 @@
     <None Include="desktopclient\qml\workbench\creators\PostDrawerTiepointEditor.qml">
       <Filter>Distribution Files\qml\workbench</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\StretchLimits.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\MultiPointSlider.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

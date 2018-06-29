@@ -271,6 +271,7 @@
     <None Include="desktopclient\qml\controls\LayerExtentMouseActions.qml" />
     <None Include="desktopclient\qml\controls\LayerExtentsToolbar.qml" />
     <None Include="desktopclient\qml\controls\MapExtentButton.qml" />
+    <None Include="desktopclient\qml\controls\MultiPointSlider.qml" />
     <None Include="desktopclient\qml\controls\ProjectionParametersEditor.qml" />
     <None Include="desktopclient\qml\controls\RotatingArrow.qml" />
     <None Include="desktopclient\qml\controls\SelectProjection.qml" />
@@ -428,6 +429,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PolygonProperties.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PostDrawerCrossSection.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PropertyEditorsList.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\StretchLimits.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\UndefinedValueSetter.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ViewAttributes.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeEditor.qml" />

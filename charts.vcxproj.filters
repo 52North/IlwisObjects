@@ -26,6 +26,9 @@
     <None Include="charts\qml\SetChartType.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\MinimalChartPane.qml">
+      <Filter>qml</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

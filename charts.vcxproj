@@ -18,6 +18,7 @@
     <None Include="charts\qml\DataseriesList.qml" />
     <None Include="charts\qml\DataseriesOperate.qml" />
     <None Include="charts\qml\DataseriesOperationList.qml" />
+    <None Include="charts\qml\MinimalChartPane.qml" />
     <None Include="charts\qml\SetChartType.qml" />
     <None Include="charts\qml\SetSeriesColor.qml" />
   </ItemGroup>
