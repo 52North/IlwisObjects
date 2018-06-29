@@ -29,6 +29,7 @@ class ILWISCOREUISHARED_EXPORT VisualPropertyEditor : public QObject, public Ilw
     Q_PROPERTY(QString representationName READ representationName NOTIFY rprNameChanged)
     Q_PROPERTY(QString associatedUrl READ associatedUrl CONSTANT)
     Q_PROPERTY(bool postDrawerActive READ postDrawerActive WRITE postDrawerActive NOTIFY postDrawerActiveChanged)
+    Q_PROPERTY(QString coverageId READ coverageId CONSTANT)
 
 public:
     VisualPropertyEditor(QObject *parent = 0);
@@ -65,6 +66,7 @@ private:
 
     QString _displayName;
     QString qmlUrl() const;
+    QString coverageId() const;
 
 public slots:
     virtual void attributesChanged(Raw index, const QVariantMap &values);
