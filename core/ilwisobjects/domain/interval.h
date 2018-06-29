@@ -23,7 +23,7 @@ public:
      *
      * @param vr the NumericRange of this item
      */
-    Interval(const QString label, const NumericRange &vr);
+    Interval(const QString& label, const NumericRange &vr);
 
     virtual ~Interval() {}
 
