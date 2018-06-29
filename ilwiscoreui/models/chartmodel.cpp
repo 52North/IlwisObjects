@@ -10,6 +10,8 @@
 #include "dataseriesmodel.h"
 #include "colorrange.h"
 #include "mathhelper.h"
+#include "raster.h"
+#include "ilwiscontext.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -58,9 +60,15 @@ QString ChartModel::name() const
     return _name;
 }
 
-QString Ilwis::Ui::ChartModel::mainPanelUrl()
+QString ChartModel::mainPanelUrl()
 {
     return "../../extensions/ui/Charts/qml/ChartsPanel.qml";
+}
+
+QString ChartModel::minimalPanelUrl() {
+    auto baseLoc = context()->ilwisFolder();
+    QString loc =  baseLoc.absoluteFilePath() + "/extensions/ui/Charts/qml/MinimalChartPane.qml";
+    return QUrl::fromLocalFile(loc).toString();
 }
 
 void Ilwis::Ui::ChartModel::chartType(const QString & tp)
@@ -108,32 +116,70 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
-bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
-{
+bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color) {
     bool ok;
     quint64 id = objid.toULongLong(&ok);
     if (!ok) {
         kernel()->issues()->log(TR("Not a valid identifier for a table. Table could not be opened: ") + objid);
         return false;
     }
-    ITable tbl;
-    if (!tbl.prepare(id)) {
+    IIlwisObject obj;
+    if (!obj.prepare(id)) {
         kernel()->issues()->log(TR("Table could not be opened: ") + objid);
         return false;
     }
+    ITable tbl;
+    if (hasType(obj->ilwisType(), itTABLE)) {
+        tbl = obj.as<Table>();
+    }
+    else if (hasType(obj->ilwisType(), itRASTER)) {
+        IRasterCoverage raster = obj.as<RasterCoverage>();
+        tbl = raster->histogramAsTable();
+    }
+
     if (tbl->columnCount() < 2) {
-        kernel()->issues()->log(TR("Not enough column for adding a datasereis. At least 2 is needed: ") + objid);
+        kernel()->issues()->log(TR("Not enough columns for adding a datasereis. At least 2 is needed: ") + objid);
         return false;
     }
-    if (axisCompatible(tbl->columndefinition(0).datadef(), ChartModel::aXAXIS)) {
-        for (int c = 1; c < tbl->columnCount(); ++c) {
-            if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::aYAXIS)) {
-                addDataSeries(tbl, tbl->columndefinition(0).name(), tbl->columndefinition(c).name(), sUNDEF, sUNDEF);
-            }
+    int xcIndex = 0, ycIndex = 1;
+    if (xcolumn != sUNDEF) {
+        xcIndex = tbl->columnIndex(xcolumn);
+        if (xcIndex == iUNDEF) {
+            kernel()->issues()->log(TR("Column does not exist: ") + xcolumn);
+            return false;
         }
+    }
+    if (ycolumn != sUNDEF) {
+        ycIndex = tbl->columnIndex(ycolumn);
+        if (ycIndex == iUNDEF) {
+            kernel()->issues()->log(TR("Column does not exist: ") + ycolumn);
+            return false;
+        }
+    }
+    if (_series.size() > 0) {
+        if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::aXAXIS)) {
+            if (ycolumn == sUNDEF) {
+                for (int c = 1; c < tbl->columnCount(); ++c) {
+                    if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::aYAXIS)) {
+                        addDataSeries(tbl, tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, color);
+                    }
+                }
+            }
+            else {
+                addDataSeries(tbl, tbl->columndefinition(xcIndex).name(), tbl->columndefinition(ycIndex).name(), sUNDEF, color);
+            }
             emit updateSeriesChanged();
+        }
+    }
+    else {
+        createChart("histogram", tbl, "line", xcolumn, ycolumn, sUNDEF);
+        emit updateSeriesChanged();
     }
     return true;
+}
+bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
+{
+    return addDataTable(objid, sUNDEF, sUNDEF, sUNDEF);
 }
 
 DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) const
@@ -221,10 +267,14 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
 
 void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
     auto IntegerTicks = [](double res, double dist, int& tcount, double& minx, double& maxx)->void {
-        tcount = (dist + 1) / res;
-        if (tcount > 15) {
+        if (res == 0)
             tcount = 5;
-            maxx = minx + tcount * std::ceil(dist / tcount);
+        else {
+            tcount = (dist + 1) / res;
+            if (tcount > 15) {
+                tcount = 5;
+                maxx = minx + tcount * std::ceil(dist / tcount);
+            }
         }
     };
 
@@ -284,7 +334,7 @@ QString ChartModel::formatYAxis() const
 }
 bool Ilwis::Ui::ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)
 {
-    if (basicCheck) {
+    if (basicCheck && _series.size() > 0) {
         // in the basic check we only check if it fits the first dataseries (axis)
         DataseriesModel *serie = _series[0];
         DataDefinition datadef = serie->datadefinition(axis);
