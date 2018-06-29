@@ -209,6 +209,7 @@ public:
     void setPseudoUndef(double v);
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
+    ITable histogramAsTable() ;
 
 protected:
 

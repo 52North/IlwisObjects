@@ -6,6 +6,10 @@
 #include "itemrange.h"
 #include "tranquilizer.h"
 #include "ilwiscontext.h"
+#include "containerstatistics.h"
+#include "itemdomain.h"
+#include "domainitem.h"
+#include "interval.h"
 #include "itemiterator.h"
 
 using namespace Ilwis;
@@ -412,6 +416,30 @@ bool RasterCoverage::canUse(const IlwisObject *obj, bool strict) const
         }
     }
     return false;
+}
+
+ITable RasterCoverage::histogramAsTable() 
+{
+    NumericStatistics& stats = statistics();
+    stats.calculate(begin(), end(), NumericStatistics::pHISTOGRAM);
+    std::vector<NumericStatistics::HistogramBin> hist = stats.histogram();
+    int count = 0;
+    ITable histogram;
+
+    histogram.prepare();
+    histogram->addColumn("min", IDomain("value"), true);
+    histogram->addColumn("max", IDomain("value"), true);
+    histogram->addColumn("counts", IDomain("count"));
+
+    count = 0;
+    double vstart = datadef().range<NumericRange>()->min();
+    for (auto &h : hist) {
+        histogram->record(count, { vstart, h._limit, h._count });
+        vstart = h._limit;
+        ++count;
+    }
+
+    return histogram;
 }
 
 void RasterCoverage::size(const Size<> &sz)
