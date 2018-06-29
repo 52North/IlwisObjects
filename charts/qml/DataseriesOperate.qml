@@ -62,7 +62,7 @@ Item {
         state : "maximized"
         Loader {
             id : operation1
-            width : 160
+            width : 250
             height : parent.height
 
 
@@ -101,7 +101,7 @@ Item {
         anchors.leftMargin: 3
         Loader {
             id : operation2
-            width : 160
+            width : 250
             height : parent.height
 
 
