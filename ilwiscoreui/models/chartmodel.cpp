@@ -308,11 +308,11 @@ bool Ilwis::Ui::ChartModel::axisCompatible(const DataDefinition& inputDef, Axis 
 }
 quint32 ChartModel::addDataSeries(const ITable& inputTable, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color) {
 
-
 	auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis, color);
 	if (!newseries->setData(inputTable))
 		return _series.size();
 
+    newseries->setType(_chartType);
 	_series.push_back(newseries);
 
     initializeDataSeries(newseries);
