@@ -13,7 +13,6 @@ Rectangle {
     id : chartView
     width : parent.width
     height : parent.height - 270
-    border.width : 1
 	property ChartModel chart : models.createChartModel(chartView) 
     property var updateChart : chart ? chart.updateSeries : 0
     property alias margins : visibleGraphs.margins
@@ -45,20 +44,12 @@ Rectangle {
         visible : false
 	}
 
-  LinearGradient {
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#EBF0EC" }
-            GradientStop { position: 1.0; color: "white" }
-        }
-    }
 
 	ChartView {
 		id : visibleGraphs
-		title: "Line"
 		anchors.fill: parent
         anchors.margins : 2
-		antialiasing: true
+		legend.visible: false
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
@@ -84,7 +75,6 @@ Rectangle {
 				series.append(points[j].x, points[j].y);
 			}
 		}
-        console.debug("mmmmm", visibleGraphs.margins.bottom, visibleGraphs.margins.top ,visibleGraphs.margins.right, visibleGraphs.margins.left)
 	}
 
     function createSeries(ctype, name, xas, yas){
