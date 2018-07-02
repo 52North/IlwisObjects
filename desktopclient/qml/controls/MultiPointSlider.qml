@@ -3,9 +3,9 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
-Canvas {
+Item {
     id : slider
-    height : 35
+    height : 50
     width : parent.width
     property var model
     property var selectedMarker : -1
@@ -14,8 +14,23 @@ Canvas {
     property var resolution : 0
     signal markerPositions(var positions)
 
+    Text {
+        width : 20
+        anchors.bottom : bar.top
+        anchors.left : bar.left
+        text : minValue.toFixed(resolution)
+        font.pointSize : 8
+    }
+    Text {
+        width : 20
+        anchors.bottom : bar.top
+        anchors.right : bar.right
+        text : maxValue.toFixed(resolution)
+        font.pointSize : 8
+    }
     Rectangle {
-        height : slider.height - 22
+        y: 15
+        height : slider.height - 37
         width : parent.width
         border.width : 1
         id : bar
@@ -57,11 +72,11 @@ Canvas {
             }
         }
     }
-    
     Canvas {
         id : canvas
         width : bar.width
-        height : slider.height
+        height : bar.height + 30
+        y : 15
         z : 10
         onPaint: {
             if (model){
@@ -72,9 +87,6 @@ Canvas {
                 ctx.lineWidth = 1
                 ctx.strokeStyle = 'rgb(0,0, 0)' 
                 ctx.font = '10px sans-serif'
-                var m = ctx.measureText(maxValue)
-                ctx.text(minValue ,0 , 22)
-                ctx.text(maxValue ,bar.width - m.width, 22)
                 ctx.stroke()
                 for(var i = 0 ; i < model.length; ++i){
                     ctx.beginPath();
@@ -103,11 +115,15 @@ Canvas {
                     var v = (maxValue - minValue) * model[i].position
                     v = v.toFixed(resolution)
                     var m = ctx.measureText(v)
-                    ctx.text(v ,baseX - m.width  /2, baseY + 17)
+                    ctx.text(v ,baseX - m.width  /2, baseY + 15)
                     ctx.stroke()
                 }
             }
         }
+    }
+
+    function paint(){
+        canvas.requestPaint()
     }
 
 }
