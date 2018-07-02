@@ -12,11 +12,15 @@ namespace Ilwis {
 
                 Q_PROPERTY(double min READ min WRITE min NOTIFY rangeChanged)
                 Q_PROPERTY(double max READ max WRITE max NOTIFY rangeChanged)
+                Q_PROPERTY(int resolution READ resolution CONSTANT)
                 Q_PROPERTY(QVariantList markers READ markers NOTIFY markersChanged)
 
         public:
             StretchLimits();
             StretchLimits(VisualAttribute *p);
+
+            Q_INVOKABLE void markersChanged(const QVariantList& marks);
+            Q_INVOKABLE void setStretchLimit(double perc);
 
             bool canUse(const IIlwisObject &obj, const QString &name) const;
 
@@ -34,6 +38,7 @@ namespace Ilwis {
             double max() const;
             void max(double value) const;
             QVariantList markers() const;
+            int resolution() const;
         };
     }
 }

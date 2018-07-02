@@ -59,19 +59,89 @@ void StretchLimits::max(double value) const {
     vpmodel()->layer()->redraw();
 }
 
+int StretchLimits::resolution() const {
+    auto range = vpmodel()->actualRange();
+    if (range.resolution() == 0)
+        return 2;
+
+    if (std::floor(range.resolution()) - range.resolution() == 0 )
+        return 0;
+
+    int n = std::abs(std::log10(range.resolution()));
+
+    return n;
+}
+
+void StretchLimits::markersChanged(const QVariantList& marks) {
+    if (marks.size() == 2) {
+        bool ok;
+        double minv = marks[0].toDouble(&ok);
+        if (!ok)
+            return;
+        double maxv = marks[1].toDouble(&ok);
+        if (!ok)
+            return;
+        if (minv >= maxv)
+            return;
+
+        auto rng = vpmodel()->stretchRange();
+        rng.min(minv);
+        rng.max(maxv);
+        vpmodel()->stretchRange(rng);
+        emit markersChanged();
+    }
+}
+
+void StretchLimits::setStretchLimit(double perc) {
+    ICoverage cov = coverage();
+    IRasterCoverage raster = cov.as<RasterCoverage>();
+    if (raster.isValid()) {
+        double sum2 = 0;
+        double seen = 0;
+        double startV = rUNDEF, endV = rUNDEF;
+        auto hist = raster->statistics().histogram();
+
+        for (int i = 0; i < hist.size() - 1; ++i) {
+            sum2 += (hist[i]._count);
+        }
+        for (int i = 0; i < hist.size() - 1; ++i) {
+            auto& bin = hist[i];
+            seen += bin._count;
+            if (seen >= sum2 * perc && startV == rUNDEF) {
+                startV = bin._limit;
+            }
+            if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
+                endV = bin._limit;
+            }
+        }
+        if (startV != rUNDEF && endV != rUNDEF)
+            markersChanged({ startV, endV });
+    }
+
+}
 
 QVariantList StretchLimits::markers() const {
     QVariantList result;
     auto  range = vpmodel()->stretchRange();
     auto range2 = vpmodel()->actualRange();
     QVariantMap mp;
-    mp["position"] = 0.1; //range.min() / range2.distance();
-    mp["value"] = range.min();
-    mp["color"] = "blue";
+    if (isNumericalUndef(range.min())) {
+        mp["position"] = 0;
+        mp["value"] = 0;
+    }
+    else {
+        mp["position"] = std::abs((range2.min() - range.min())) / range2.distance();
+        mp["value"] = range.min();
+    }
     result.push_back(mp);
-    mp["position"] = 0.8; // range.max() / range2.distance();
-    mp["value"] = range.max();
-    mp["color"] = "green";
+    if (isNumericalUndef(range.max())) {
+        mp["position"] = 1;
+        mp["value"] = 0;
+    }
+    else {
+        mp["position"] = std::abs(range2.min() - range.max()) / range2.distance();
+        mp["value"] = range.max();
+    }
     result.push_back(mp);
 
     return result;
