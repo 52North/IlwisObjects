@@ -10,14 +10,15 @@ Row {
     height: parent ? parent.height - 10 : 0
     property var editor
     Column {
-        width : parent.width - 50
+        width : parent.width - 60
         height: parent ? parent.height - 10 : 0
+        x : 10
 
-        spacing : 5
+        //spacing : 5
 
         Loader {
             id : chartArea
-            width : slider.width
+            width : parent.width
             height : parent.height - slider.height - 10
             source : models.mainPanelUrl("minimalchart")
 
@@ -29,18 +30,75 @@ Row {
                 chartArea.item.margins.bottom = 0
             }
         }
+        Connections {
+            target: slider
+            onMarkerPositions :{
+                editor.markersChanged(positions) 
+            }  
+        }
+            
         Controls.MultiPointSlider {
             id : slider
             model : editor.markers
             minValue : editor.min
             maxValue : editor.max
-            width : parent.width
+            width : parent.width - 20
+            resolution : editor.resolution
+            x : 12
         }
     }
-    Rectangle {
-        width : 30
-        height : chartArea.height
-        border.width : 1
+    Column {
+        width : 50
+        height :110
+
+        Text {
+            width : parent.width
+            height : 24
+            text : "Presets"
+        }
+        Button {
+            width : parent.width
+            height : 20
+            text : "0%"
+            onClicked : {
+                updateMarkerPositions(0)
+            }
+        }
+
+        Button {
+            width : parent.width
+            height : 20
+            text : "1%"
+
+            onClicked : {
+                var limits = []
+                updateMarkerPositions(0.01)
+            }
+        }
+
+        Button {
+            width : parent.width
+            height : 20
+            text : "2%"
+
+            onClicked : {
+                updateMarkerPositions(0.02)
+            }
+        }
+
+        Button {
+            width : parent.width
+            height : 20
+            text : "5%"
+
+            onClicked : {
+                updateMarkerPositions(0.05)
+            }
+        }
+    }
+    function updateMarkerPositions(fraction){
+        editor.setStretchLimit(fraction)
+        slider.paint()
     }
 }
 
