@@ -72,6 +72,11 @@ NumericStatistics &Coverage::statistics(int  )
         return _statistics;
 }
 
+const NumericStatistics &Coverage::statistics(int) const
+{
+    return _statistics;
+}
+
 Resource Coverage::resource(int mode) const
 {
     Resource resource = IlwisObject::resource(mode);
