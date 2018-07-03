@@ -14,8 +14,10 @@ FocusScope {
     anchors.fill: parent
     property color backgroundColor: uicontext.genericBGColor
     Rectangle {
+    id : cont
         anchors.fill :parent
-        color : uicontext.catalogBGColor
+        color : mastercatalog.metadataEditMode ? "#f2f2f2" : uicontext.catalogBGColor
+
 
         ScrollView {
             id : catalogGrid
