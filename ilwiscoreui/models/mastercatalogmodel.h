@@ -32,6 +32,7 @@ class ILWISCOREUISHARED_EXPORT MasterCatalogModel : public QObject
     Q_PROPERTY(QString currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(Ilwis::Ui::CatalogModel* currentCatalog READ currentCatalog WRITE setCurrentCatalog NOTIFY currentCatalogChanged)
     Q_PROPERTY(QStringList history READ history NOTIFY historyChanged)
+    Q_PROPERTY(bool metadataEditMode READ metadataEditMode WRITE metadataEditMode NOTIFY editModeChanged)
 
 
 
@@ -109,6 +110,7 @@ private:
     int _activeTab = 0;
     QString _currentUrl;
     CatalogModel *_currentCatalog = 0;
+    bool _metadataEditMode = false;
 
 
     CatalogModel *addBookmark(const QString &label, const QString &shortName, const QUrl &location, const QString &descr, const QString &query, bool threading = true);
@@ -120,6 +122,8 @@ private:
     void loadWorkSpaces(const QString workspaceList);
     void setDefaultView();
     void addDefaultFilters();
+    void metadataEditMode(bool yesno);
+    bool metadataEditMode() const;
 signals:
     void selectionChanged();
     void activeSplitChanged();
@@ -128,6 +132,7 @@ signals:
     void bookmarksChanged();
     void workspacesChanged();
     void historyChanged();
+    void editModeChanged();
 private slots:
     void initFinished();
  };
