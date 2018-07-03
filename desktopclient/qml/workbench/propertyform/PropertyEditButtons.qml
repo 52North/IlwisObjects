@@ -11,7 +11,10 @@ Row {
             applyBut.enabled = !applyBut.enabled
             checked = !checked
             propertyForm.editable = !propertyForm.editable
+            mastercatalog.metadataEditMode = (text === qsTr("Edit"))
             text = (text === qsTr("Edit")) ? qsTr("Cancel") : qsTr("Edit")
+
+
         }
     }
     Button {
@@ -22,6 +25,7 @@ Row {
             if ( enabled && propertyForm.editable){
                 propertyForm.storeData()
                 enabled = false
+                 mastercatalog.metadataEditMode = false
             }
 
         }
