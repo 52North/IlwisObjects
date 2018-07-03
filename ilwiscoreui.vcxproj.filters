@@ -752,6 +752,15 @@
     <ClCompile Include="ilwiscoreui\models\chartoperationeditor.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_stretchlimits.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_stretchlimits.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -971,6 +980,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\models\chartoperationeditor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

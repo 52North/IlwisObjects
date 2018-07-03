@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.1
 import QtGraphicalEffects 1.0
 import QtQuick 2.5
 import QtCharts 2.0
+import ModelRegistry 1.0
 import ChartModel 1.0
 import DataseriesModel 1.0
 
@@ -12,9 +13,9 @@ Rectangle {
     id : chartView
     width : parent.width
     height : parent.height - 270
-    color : "blue"
-	property ChartModel chart : chartspanel.chart
+	property ChartModel chart : models.createChartModel(chartView) 
     property var updateChart : chart ? chart.updateSeries : 0
+    property alias margins : visibleGraphs.margins
 
     onUpdateChartChanged : {
         visibleGraphs.removeAllSeries()
@@ -29,70 +30,50 @@ Rectangle {
 		id : xas
 		min : chart != null ? chart.minX : 0
 		max : chart != null  ? chart.maxX : 5
-		tickCount : chart ? chart.tickCountX : 5
+		tickCount : 5
         labelFormat : chart ? chart.formatXAxis : "%.3f"
+        visible : false
 	}
 
 	ValueAxis {
 		id : yas
 		min : chart != null  ? chart.minY : 0
 		max : chart != null  ? chart.maxY : 5
-		tickCount : chart ? chart.tickCountY : 5
+		tickCount : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
+        visible : false
 	}
 
-    BarCategoryAxis {
-        id : xbar
-    }
-
-    LinearGradient {
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#EBF0EC" }
-            GradientStop { position: 1.0; color: "white" }
-        }
-    }
 
 	ChartView {
 		id : visibleGraphs
-		title: "Line"
 		anchors.fill: parent
-		antialiasing: true
+        anchors.margins : 2
+		legend.visible: false
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
 
-        DropArea {
-            anchors.fill: parent
-
-            onDropped: {
-                    chart.addDataTable(drag.source.ilwisobjectid);
-            }
-        }
     }
 
+    function dataseriesChanged() {
+        console.log("Via via kleur")
+    }
+  
 	function loadGraphs() {
         if ( !chart)
             return
 		for (var i = 0; i < chart.seriesCount; i++) {
 			var smodel = chart.getSeries(i);
-            var ctype = smodel.charttype
-            var series = createSeries(ctype, smodel.name, xas, yas)
-            if (ctype == "line" || ctype == "spline" || ctype == "points") {
-			    series.pointsVisible = false;
-			    series.color = chart.seriesColor(i);
-			    var points = smodel.points
-			    var pointsCount = points.length;
-			    for (var j = 0; j < pointsCount; j++) {
-				    series.append(points[j].x, points[j].y);
-			    }
-            }
-            if (ctype == "bar") {
-			    series.color = chart.seriesColor(i);
-			    var points = smodel.points;
-			    var bar = series.append(smodel.name, points);
-                bar.color = chart.seriesColor(i);
-            }
+            var series = createSeries(chart.chartType, smodel.name, xas, yas)
+			series.pointsVisible = false;
+			series.color = chart.seriesColor(i);
+            series.onColorChanged.connect(dataseriesChanged)    // does not work yet; not sure why
+			var points = smodel.points
+			var pointsCount = points.length;
+			for (var j = 0; j < pointsCount; j++) {
+				series.append(points[j].x, points[j].y);
+			}
 		}
 	}
 

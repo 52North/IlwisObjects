@@ -110,6 +110,9 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
 
             if(!georeference.prepare(_resource.url().toString()))
                 return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2,"Georeference",raster->name() );
+            if (raster->coordinateSystem().isValid()) {
+                georeference->coordinateSystem(raster->coordinateSystem());
+            }
         } else {
             int iNrTiePoints = gdal()->getGCPCount(_handle->handle());
             if (iNrTiePoints > 0) {

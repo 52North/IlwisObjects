@@ -19,7 +19,7 @@ Interval::Interval()
 {
 }
 
-Interval::Interval(const QString label, const NumericRange &vr) : ThematicItem({label}), _valuerange(vr)
+Interval::Interval(const QString& label, const NumericRange &vr) : ThematicItem({label}), _valuerange(vr)
 {
 }
 

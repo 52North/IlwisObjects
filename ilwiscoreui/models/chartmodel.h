@@ -44,6 +44,7 @@ namespace Ilwis {
                 Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
                 Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
                 Q_INVOKABLE bool addDataTable(const QString& objid);
+                Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color);
 
             ChartModel();
             ChartModel(QObject *parent);
@@ -55,6 +56,7 @@ namespace Ilwis {
             quint32 ChartModel::modelId() const;
             QString ChartModel::name() const;
             static QString mainPanelUrl();
+            static QString minimalPanelUrl();
             void chartType(const QString& tp);
             QString chartType() const;
 

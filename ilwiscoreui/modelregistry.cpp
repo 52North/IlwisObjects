@@ -79,6 +79,10 @@ QString Ilwis::Ui::ModelRegistry::mainPanelUrl(const QString & type) const
     if (type == "chart") {
         return ChartModel::mainPanelUrl();
     }
+
+    if (type == "minimalchart") {
+        return ChartModel::minimalPanelUrl();
+    }
     return sUNDEF;
 }
 

@@ -101,6 +101,7 @@ public:
      */
 
     virtual NumericStatistics& statistics(int mode=0);
+    virtual const NumericStatistics& statistics(int mode = 0) const;
 
 
       //@override

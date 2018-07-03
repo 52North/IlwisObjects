@@ -391,7 +391,6 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
                     OGRErr err =  gdal()->exportToWkt(srshandle, &wkt);
                     if ( err == OGRERR_NONE && wkt){
                         QString swkt = wkt;
-                        gdal()->free(proj4);
                         QStringList parts = swkt.split("[");
                         if ( parts.size()>2){
                             QStringList parts2 = parts[1].split(",");

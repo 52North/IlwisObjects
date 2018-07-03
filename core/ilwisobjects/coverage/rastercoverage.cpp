@@ -6,6 +6,10 @@
 #include "itemrange.h"
 #include "tranquilizer.h"
 #include "ilwiscontext.h"
+#include "containerstatistics.h"
+#include "itemdomain.h"
+#include "domainitem.h"
+#include "interval.h"
 #include "itemiterator.h"
 
 using namespace Ilwis;
@@ -137,14 +141,50 @@ void RasterCoverage::copyBinary(const IRasterCoverage& raster, quint32 inputInde
     });
 }
 
+bool Ilwis::RasterCoverage::histogramCalculated() const
+{
+    const NumericStatistics& stats = Coverage::statistics();
+    std::vector<NumericStatistics::HistogramBin> hist = stats.histogram();
+    return hist.size() != 0;
+}
+
+ITable RasterCoverage::histogramAsTable()
+{
+    std::vector<NumericStatistics::HistogramBin> hist;
+    if ( histogramCalculated())
+        hist = statistics().histogram();
+    else {
+        hist = statistics(ContainerStatistics<double>::pHISTOGRAM).histogram();
+    }
+    
+    int count = 0;
+    ITable histogram;
+
+    histogram.prepare();
+    histogram->addColumn("min", IDomain("value"), true);
+    histogram->addColumn("max", IDomain("value"), true);
+    histogram->addColumn("counts", IDomain("count"));
+
+    count = 0;
+    double vstart = datadef().range<NumericRange>()->min();
+    for (int i = 0; i < hist.size() - 1; ++i) {
+        auto& h = hist[i];
+        histogram->record(count, { vstart, h._limit, h._count });
+        vstart = h._limit;
+        ++count;
+    }
+
+    return histogram;
+}
+
+
 NumericStatistics &RasterCoverage::statistics(int mode, int bins)
 {
     if ( mode == ContainerStatistics<double>::pNONE)
         return Coverage::statistics(mode);
-    IRasterCoverage raster(this);
-    PixelIterator iter(raster);
-    statistics().calculate(iter, iter.end(), (ContainerStatistics<double>::PropertySets)mode, bins);
-    auto rng = raster->datadefRef().range<NumericRange>();
+
+    statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
+    auto rng = datadefRef().range<NumericRange>();
     if ( rng){
         rng->min(statistics().prop(NumericStatistics::pMIN));
         rng->max(statistics().prop(NumericStatistics::pMAX));
@@ -413,6 +453,7 @@ bool RasterCoverage::canUse(const IlwisObject *obj, bool strict) const
     }
     return false;
 }
+
 
 void RasterCoverage::size(const Size<> &sz)
 {

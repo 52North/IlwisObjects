@@ -91,6 +91,15 @@ ICoverage VisualPropertyEditor::coverage() const
     return ICoverage();
 }
 
+QString VisualPropertyEditor::coverageId() const
+{
+    ICoverage cov = coverage();
+    if (cov.isValid()) {
+        return QString::number(cov->id());
+    }
+    return sUNDEF;
+}
+
 QString VisualPropertyEditor::displayName() const
 {
     return _displayName;

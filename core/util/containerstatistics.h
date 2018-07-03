@@ -93,7 +93,7 @@ public:
 
     }
 
-    std::vector<HistogramBin> histogram() {
+    std::vector<HistogramBin> histogram() const {
         return _bins;
     }
 

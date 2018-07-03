@@ -27,6 +27,7 @@ namespace Ilwis {
             Q_INVOKABLE Ilwis::Ui::TableModel *createTableModel(QObject *parent, const QString& url, const QString& type);
             Q_INVOKABLE Ilwis::Ui::ChartModel *createChartModel(QObject *parent);
             Q_INVOKABLE QObject* model(quint32 id);
+            Q_INVOKABLE QString mainPanelUrl(const QString& type) const;
 
 
             ModelRegistry(QObject *parent = 0);
@@ -35,7 +36,7 @@ namespace Ilwis {
             void registerModel(quint32 id, const QString& type, QObject *model);
             void unRegisterModel(quint32 id);
             std::pair<QString, QObject *> getModel(quint32) ;
-            QString mainPanelUrl(const QString& type) const;
+
 
             quint32 newModelId();
             bool needsUpdate() const;
