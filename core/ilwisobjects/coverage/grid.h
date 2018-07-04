@@ -38,7 +38,7 @@ public:
 
     double& at(quint32 index) {
         if ( index < _blockSize){
-            if (!_inMemory) {
+            if (!_dataInMemory) {
                 init();
                 loadDiskDataToMemory();
             }
@@ -51,6 +51,7 @@ public:
     void fill(const std::vector<double>& values);
     quint32 blockSize();
     bool inMemory() const { return _inMemory; }
+    bool dataInMemory() const { return _dataInMemory; }
     inline bool save2Cache() ;
     void dispose();
     void init();
@@ -67,6 +68,7 @@ private:
     quint64 _id;
     quint64 _rasterid;
     bool _inMemory;
+    bool _dataInMemory;
     QString _gridblockFileName = sUNDEF;
     QScopedPointer<QTemporaryFile> _gridblockFile;
     quint64 _blockSize;
@@ -76,8 +78,6 @@ class KERNELSHARED_EXPORT Grid
 
 {
 public:
-    friend class GridInterpolator;
-
     Grid(int maxLines=iUNDEF);
     virtual ~Grid();
 

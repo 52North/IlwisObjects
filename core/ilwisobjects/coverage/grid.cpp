@@ -8,7 +8,7 @@ using namespace Ilwis;
 
 std::vector<GridBlockNrPair> Grid::_cache;
 
-GridBlockInternal::GridBlockInternal(quint32 blocknr, quint64 rasterid,quint32 lines , quint32 width) :  _undef(undef<double>()), _size(Size<>(width, lines,1)), _id(blocknr), _rasterid(rasterid), _inMemory(false)
+GridBlockInternal::GridBlockInternal(quint32 blocknr, quint64 rasterid,quint32 lines , quint32 width) :  _undef(undef<double>()), _size(Size<>(width, lines,1)), _id(blocknr), _rasterid(rasterid), _inMemory(false), _dataInMemory(false)
 {
     _blockSize = _size.xsize()* _size.ysize();
 }
@@ -30,6 +30,7 @@ GridBlockInternal *GridBlockInternal::clone(quint64 newRasterId)
     block->init();
     std::copy(_data.begin(), _data.end(), block->_data.begin());
     block->_inMemory = true;
+    block->_dataInMemory = true;
     block->save2Cache(); // as a result, block->_inMemory becomes false
     return block;
 }
@@ -42,6 +43,7 @@ char *GridBlockInternal::blockAsMemory()
 void GridBlockInternal::fill(const std::vector<double>& values)
 {
     copy(values.begin(), values.end(), _data.begin());
+    _dataInMemory = true;
 }
 
 quint32 GridBlockInternal::blockSize() {
@@ -57,6 +59,9 @@ quint32 GridBlockInternal::blockSize() {
 bool GridBlockInternal::save2Cache() {
     if (!_inMemory) // nothing to do
         return true;
+    Locker<> lock(_mutex);
+    if (!_dataInMemory)
+        return true; // still nothing to do
     if ( _gridblockFileName == sUNDEF) {
         QString name = QString("gridblock_%1").arg(_id);
         QDir localDir(context()->cacheLocation().toLocalFile());
@@ -79,6 +84,7 @@ bool GridBlockInternal::save2Cache() {
         return ERROR1(ERR_COULD_NOT_OPEN_WRITING_1,_gridblockFileName);
     }
     _inMemory = false;
+    _dataInMemory = false;
     _data = std::vector<double>();
 
     return true;
@@ -95,6 +101,7 @@ void GridBlockInternal::loadDiskDataToMemory()
         loadFromCache();
     else
         fetchFromSource();
+    _dataInMemory = true;
 }
 
 quint64 GridBlockInternal::blockNr()
@@ -168,6 +175,7 @@ void GridBlockInternal::dispose()
 {
     _data = std::vector<double>();
     _inMemory = false;
+    _dataInMemory = false;
 }
 
 //----------------------------------------------------------------------
@@ -221,7 +229,7 @@ Grid *Grid::clone(quint64 newRasterId, quint32 index1, quint32 index2)
     quint32 endBlock = std::min(end * _blocksPerBand, (quint32)_blocks.size());
     for(int i=startBlock, j=0; i < endBlock; ++i, ++j) {
 
-        if (!_blocks[i]->inMemory()) {
+        if (!_blocks[i]->dataInMemory()) {
             update(i, true);
         }
         auto b = _blocks[i]->clone(newRasterId);
@@ -266,22 +274,22 @@ double Grid::value(const Pixel &pix) {
 }
 
 double &Grid::value(quint32 block, int offset )  {
-    if ( _blocks[block]->inMemory() ) // no load needed
+    if ( _blocks[block]->dataInMemory() ) // no load needed
         return _blocks[block]->at(offset);
     Locker<> lock(_mutex); // slower case. must prevent other threads to messup admin
-    if ( !_blocks[block]->inMemory())
+    if ( !_blocks[block]->dataInMemory())
       if(!update(block, true))
           throw ErrorObject(TR("Grid block is out of bounds"));
     return _blocks[block]->at(offset); // block is now in memory
 }
 
 void Grid::setValue(quint32 block, int offset, double v ) {
-    if ( _blocks[block]->inMemory() ) {
+    if ( _blocks[block]->dataInMemory() ) {
         _blocks[block]->at(offset) = v;
         return;
     }
     Locker<> lock(_mutex);
-    if ( !_blocks[block]->inMemory())
+    if ( !_blocks[block]->dataInMemory())
         if(!update(block, true))
             return;
     _blocks[block]->at(offset) = v;
@@ -307,7 +315,7 @@ void Grid::setBlockData(quint32 block, const std::vector<double>& data) { // thi
 }
 
 char *Grid::blockAsMemory(quint32 block) {
-    if ( _blocks[block]->inMemory() ) { // no load needed
+    if ( _blocks[block]->dataInMemory() ) { // no load needed
         GridBlockInternal *du = _blocks[block];
         char * p = du->blockAsMemory();
         return p;
@@ -410,7 +418,7 @@ bool Grid::update(quint32 block, bool loadDiskData) {
         auto gbnp = (*iter);
         _cache.erase(iter);
         _cache.insert(_cache.begin(), gbnp);
-        if ( !_blocks[block]->inMemory()){
+        if ( !_blocks[block]->dataInMemory()){
             _blocks[block]->init();
             _blocks[block]->loadDiskDataToMemory();
         }
@@ -492,7 +500,7 @@ qint64 Grid::memUsed() const
 double Grid::findBigger(double v)
 {
     for(int i=0; i < _blocks.size(); ++i){
-        if ( !_blocks[i]->inMemory() )
+        if ( !_blocks[i]->dataInMemory() )
             update(i,true);
         for(int j=0; j < _blocks[i]->blockSize(); ++j){
             double v2 = _blocks[i]->at(j);
