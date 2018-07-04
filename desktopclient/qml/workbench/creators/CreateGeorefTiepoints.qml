@@ -121,7 +121,7 @@ Controls.DropableItem{
 
                 onClicked : {
                     var filter = "itemid="+ refraster.ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left")
                     tiepointstable.editor.linkModels(tab.item.manager)
                     tab.item.tabmodel.displayName = "Background Raster"
                 }
