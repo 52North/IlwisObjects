@@ -759,7 +759,7 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -983,7 +983,7 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
