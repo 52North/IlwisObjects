@@ -139,11 +139,17 @@ void ControlPointsListModel::associatedBackgroundMap(LayerManager * lm, const QS
     quint64 id = objid.toULongLong();
     _backgroundRaster.prepare(id);
     _associatedBackgroundMap->addPostDrawer(this);
+    for (ControlPointModel *cp : _controlPoints) {
+        cp->_layerManager = lm;
+    }
     connect(_associatedBackgroundMap, &QObject::destroyed, this, &ControlPointsListModel::removeBackgroundLayer);
 }
 
 void ControlPointsListModel::removeBackgroundLayer() {
     _associatedBackgroundMap = 0;
+    for (ControlPointModel *cp : _controlPoints) {
+        cp->_layerManager = 0;
+    }
 }
 void ControlPointsListModel::linkModels(LayerManager *lm)
 {
