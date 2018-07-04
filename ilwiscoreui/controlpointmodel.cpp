@@ -57,15 +57,22 @@ void ControlPointModel::column(double c) {
 }
 
 int ControlPointModel::rowScreen() const {
+    if (!_layerManager)
+        return iUNDEF;
+
     Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
     return pix.y;
 }
 
 int ControlPointModel::columnScreen() const {
+    if (!_layerManager)
+        return iUNDEF;
     Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
     return pix.x;
 }
 void ControlPointModel::screenPosition(double c, double r) {
+    if (!_layerManager)
+        return ;
     Coordinate crd = _layerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
     _screenCrd = crd;
 }

@@ -16,6 +16,8 @@ namespace Ilwis {
         {
             Q_OBJECT
 
+                friend class ControlPointsListModel;
+
                 Q_PROPERTY(double x READ x WRITE x NOTIFY updateControlPoint)
                 Q_PROPERTY(double y READ y WRITE y NOTIFY updateControlPoint)
                 Q_PROPERTY(double column READ column WRITE column NOTIFY updateControlPoint)
@@ -64,7 +66,7 @@ namespace Ilwis {
         private:
             ControlPoint _controlPoint;
             Coordinate _screenCrd;
-            LayerManager *_layerManager;
+            LayerManager *_layerManager = 0;
             QString _label;
             QColor _color = QColor("red");
 

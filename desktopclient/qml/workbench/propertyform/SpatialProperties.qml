@@ -8,8 +8,12 @@ Rectangle {
     function storeData() {
         if ( propertyForm.editable){
             csyProps.storeData()
+            if ( rasterProps.item){
+                rasterProps.item.storeData()
+            }
         }
     }
+        anchors.fill : parent
     color : uicontext.lightestColor
     CoordinateSystemProperties{
         id : csyProps

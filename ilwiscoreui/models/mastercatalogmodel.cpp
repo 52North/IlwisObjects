@@ -947,6 +947,14 @@ void MasterCatalogModel::keyReleased(int key)
     }
 }
 
+void MasterCatalogModel::metadataEditMode(bool yesno) {
+    _metadataEditMode = yesno;
+    emit editModeChanged();
+}
+bool MasterCatalogModel::metadataEditMode() const {
+    return _metadataEditMode;
+}
+
 //--------------------
 CatalogWorker::CatalogWorker(QList<CatalogModel *> &models, ICatalog cat) : _models(models)
 {

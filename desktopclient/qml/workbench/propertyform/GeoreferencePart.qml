@@ -1,17 +1,51 @@
-import QtQuick 2.0
+import QtQuick 2.2
+import QtQuick.Controls 1.1
+import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles 1.1
 import "../../Global.js" as Global
+import "../../controls" as Controls
 
 Rectangle {
     width: parent.width
-    height: 150
+    height: 70
     property int lineheight : 19
     color : uicontext.lightestColor
+    function storeData() {
+        if ( propertyForm.editable){
+            setAttribute("georeference", georef.content,"")
+        }
+    }
 
+    Column {
+        width : parent.width
+        height : 60
 
-    Text { y : 5; id : line1; text : qsTr("Georeference"); width: 120; font.bold: true;height : lineheight }
-    Text { y : 5; text : geoReferenceName;  height :40;width: parent.width - line1.width - 2; anchors.left: line1.right}
-    Text { id : line2; text : qsTr("Raster Size"); width: 120; font.bold: true ;anchors.top : line1.bottom; height : lineheight}
-    Text { id : dimText; text : dimensions;  height : lineheight; anchors.left: line1.right;anchors.top : line1.bottom}
-    Text { text : "; pixelsize = " + getProperty("pixelsize");  height : lineheight; anchors.left: dimText.right;anchors.top : line1.bottom}
+        Controls.FilteredTextEditLabelPair{
+            id : line1
+            labelWidth: 120
+            labelText: qsTr("Georeference")
+            filterImage: "../images/georeference.png"
+            filterType: "georeference"
+            width : parent.width
+            content: isAnonymous ? "internal" : geoReferenceName
+            readOnly: !propertyForm.editable
+        }
 
+        Controls.TextEditLabelPair{
+            labelText :qsTr("Raster Size")
+            labelWidth : 120
+            width : parent.width - 20
+            height : 20
+            content : dimensions
+            readOnly : true
+        }
+        Controls.TextEditLabelPair{
+            labelText :qsTr("Pixel Size")
+            labelWidth : 120
+            width : parent.width - 20
+            height : 20
+            content : getProperty("pixelsize")
+            readOnly : true
+        }
+    }
 }

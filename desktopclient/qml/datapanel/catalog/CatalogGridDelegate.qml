@@ -116,8 +116,10 @@ Item {
         }
         onPressed: {
             itemgrid.currentIndex = index;
-            isSelected = !isSelected
-            catalogViews.setSelected(id)
+            if ( !mastercatalog.metadataEditMode){ // no selections in the editmode as this would change the selected item in the property form which you are editing at that moment
+                isSelected = !isSelected
+                catalogViews.setSelected(id)
+            }
             if (catalogViews && catalogViews.tabmodel && !catalogViews.tabmodel.selected)
                 catalogViews.tabmodel.selectTab()
                 image = Qt.createQmlObject('import QtQuick 2.0; Image{

@@ -943,6 +943,16 @@ void IlwisObjectModel::setAttribute(const QString &attrname, const QString &valu
                 }
             }
         }
+        else if (attrname == "georeference"){
+            if (_ilwisobject->ilwisType() == itRASTER) {
+                IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
+                IGeoReference grf;
+                if (grf.prepare(value, itGEOREF)) {
+                    if ( grf->size() == raster->size())
+                        raster->georeference(grf);
+                }
+            }
+        }
     }
 }
 

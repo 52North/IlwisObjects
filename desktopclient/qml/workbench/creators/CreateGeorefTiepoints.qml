@@ -120,9 +120,11 @@ Controls.DropableItem{
                 iconSource : "../../images/view.png"
 
                 onClicked : {
-                    var filter = "itemid="+ refraster.ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
-                    tiepointstable.editor.linkModels(tab.item.manager)
+                    var filter = "itemid="+ backraster.ilwisobjectid
+                    var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left")
+                    tiepointstable.editor.associatedBackgroundMap(tab.item.manager,backraster.ilwisobjectid)
+                    tab.item.setActiveEditor(tiepointstable)
+                    tab.item.manager.addPostDrawer(tiepointstable.editor)
                     tab.item.tabmodel.displayName = "Background Raster"
                 }
             }
