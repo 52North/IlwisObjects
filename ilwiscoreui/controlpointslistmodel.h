@@ -63,6 +63,7 @@ namespace Ilwis {
 
         public slots:
               void linkAcceptMessage(const QVariantMap& parameters);
+              void removeBackgroundLayer();
 
         private:
             QList<Ilwis::Ui::ControlPointModel *> _controlPoints;
