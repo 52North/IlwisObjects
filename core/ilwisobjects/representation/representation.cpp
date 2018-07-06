@@ -28,32 +28,34 @@ Representation::Representation(const Resource &resource) : IlwisObject(resource)
 IlwisData<Representation> Representation::copyWith(const IDomain &dom) const
 {
     IRepresentation rpr;
-    QString name = dom->name();
-    if (name.indexOf(".") != -1)
-        name = name.left(name.indexOf("."));
+    QString rprurl; // we don't want to reuse an 'old' copy but a new one so we search until we find an available new name
+    if (!dom->isAnonymous()) { // loop to find a nice non-existing rprurl
+        QString name = dom->name();
+        if (name.indexOf(".") != -1)
+            name = name.left(name.indexOf("."));
 
-    QString rprurl = INTERNAL_CATALOG + "/" + name;
-    quint64 id = i64UNDEF;
-    int count = 0;
-    // we don't want to reuse an 'old' copy but a new one so we search until we find an available new name
-    while((id = mastercatalog()->name2id(rprurl, itREPRESENTATION))!= i64UNDEF){
-        rpr.prepare(id);
-        if (rpr.isValid()){
-            rprurl = rprurl + "_" + QString::number(++count);
-        }else
-            break;
+        QString rprurl_base = INTERNAL_CATALOG + "/" + name;
+        rprurl = rprurl_base;
+        quint64 id = i64UNDEF;
+        int count = 0;
+        id = mastercatalog()->name2id(rprurl, itREPRESENTATION);
+        while (id != i64UNDEF && mastercatalog()->isRegistered(id)) {
+            rprurl = rprurl_base + "_" + QString::number(++count);
+            id = mastercatalog()->name2id(rprurl, itREPRESENTATION);
+        }
+    } else { // just assign the next available anonymous url
+        rprurl = INTERNAL_CATALOG + "/" + Identity::newAnonymousName();
     }
-
-    if ( rpr.isValid() && rpr->isValid())
-        return rpr;
-
-    if ( !rpr.isValid())
-        rpr.prepare(rprurl, itREPRESENTATION);
-    rpr->domain(dom);
-    if ( colors())
-        rpr->colors(colors()->clone());
-    if ( shapes().get() == 0){
-        rpr->shapes(shapes()->clone());
+    rpr.prepare(rprurl); // prepare a new empty representation with this new url
+    if (rpr.isValid()) {
+        // assign the domain that should go along
+        rpr->domain(dom);
+        // clone the colors and the shapes
+        if (colors())
+            rpr->colors(colors()->clone());
+        if (shapes().get() != 0) {
+            rpr->shapes(shapes()->clone());
+        }
     }
     return rpr;
 
