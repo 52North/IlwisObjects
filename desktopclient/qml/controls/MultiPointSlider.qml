@@ -37,34 +37,48 @@ Item {
 
         MouseArea{
             width: parent.width
-            height:  parent.height
+            height: parent.height + 37
             onPressed: {
+                var bestDelta = 0;
                 for(var i=0; i < model.length; ++i){
                     var item = model[i];
-                    var pos = item.position * bar.width
-                        
-                    if ( pos >= mouseX - 2 && pos <= mouseX + 2){
+                    var pos = item.position * bar.width;
+                    var delta = Math.abs(pos - mouseX)
+                    if (selectedMarker < 0 || delta < bestDelta) {
                         selectedMarker = i;
-                        break;
+                        bestDelta = delta;
                     }
+                }
+                var pos = mouseX / bar.width;
+                var posNext = selectedMarker < model.length - 1 ? model[selectedMarker + 1].position * bar.width : bar.width;
+                var posPrevious = selectedMarker > 0 ? model[selectedMarker -1].position * bar.width : 0;
+                if ( mouseX >= posPrevious && mouseX <= posNext) {
+                    model[selectedMarker].position = pos;
+                    var positions = [];
+                    for(var i=0; i < model.length; ++i) {
+                        var v = minValue + (maxValue - minValue) * model[i].position;
+                        positions.push(v);
+                    }
+                    markerPositions(positions);
+                    canvas.requestPaint();
                 }
             }
             onPositionChanged : {
-                if ( selectedMarker != -1){
-                    var pos = mouseX / bar.width
-                    var posNext = selectedMarker < model.length - 1 ? model[selectedMarker + 1].position * bar.width : bar.width
-                    var posPrevious = selectedMarker > 0 ? model[selectedMarker -1].position * bar.width : 0
-                    if ( mouseX >= posPrevious && mouseX <= posNext) 
+                if ( selectedMarker != -1) {
+                    var pos = mouseX / bar.width;
+                    var posNext = selectedMarker < model.length - 1 ? model[selectedMarker + 1].position * bar.width : bar.width;
+                    var posPrevious = selectedMarker > 0 ? model[selectedMarker -1].position * bar.width : 0;
+                    if ( mouseX >= posPrevious && mouseX <= posNext) {
                         model[selectedMarker].position = pos;
-                    var positions = []
-                    for(var i=0; i < model.length; ++i){
-                        var v = (maxValue - minValue) * model[i].position
-                        positions.push(v)
+                        var positions = [];
+                        for(var i=0; i < model.length; ++i) {
+                            var v = minValue + (maxValue - minValue) * model[i].position;
+                            positions.push(v);
+                        }
+                        markerPositions(positions);
+                        canvas.requestPaint();
                     }
-                    markerPositions(positions)
-                    
-                    canvas.requestPaint()
-                 }
+                }
             }
             onReleased : {
                 selectedMarker = -1
@@ -112,7 +126,7 @@ Item {
                     ctx.beginPath()
                     ctx.lineWidth = 1
                      ctx.strokeStyle = 'rgb(0,0, 0)' 
-                    var v = (maxValue - minValue) * model[i].position
+                    var v = minValue + (maxValue - minValue) * model[i].position
                     v = v.toFixed(resolution)
                     var m = ctx.measureText(v)
                     ctx.text(v ,baseX - m.width  /2, baseY + 15)
