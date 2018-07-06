@@ -197,6 +197,7 @@ public:
                     for(int i=0; i < _binCount; ++i ) {
                         _bins[i] = HistogramBin(prop(pMIN) + i * ( delta / _binCount));
                     }
+                    _bins[_binCount] = HistogramBin(prop(pMAX));
                     std::for_each(begin, end, [&] (const DataType& sample){
                         quint16 index = isNumericalUndef(sample) ? (quint16)_bins.size() - 1 : getOffsetFactorFor(sample);
                         _bins[index]._count++;
