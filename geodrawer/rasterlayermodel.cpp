@@ -259,6 +259,9 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 	}
     if (hasType(prepType, LayerModel::ptRENDER)) {
+        refreshPalette();
+        add2ChangedProperties("palette");
+        _prepared |= LayerModel::ptRENDER;
     }
 	return fChanges;
 }

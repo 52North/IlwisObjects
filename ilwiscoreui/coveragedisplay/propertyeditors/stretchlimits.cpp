@@ -47,6 +47,7 @@ void StretchLimits::min(double value) {
     auto  range = vpmodel()->stretchRange();
     range.min(value);
     vpmodel()->stretchRange(range);
+    vpmodel()->layer()->prepare(LayerModel::ptRENDER);
     vpmodel()->layer()->redraw();
 }
 double StretchLimits::max() const {
@@ -56,6 +57,7 @@ void StretchLimits::max(double value) const {
     auto  range = vpmodel()->stretchRange();
     range.max(value);
     vpmodel()->stretchRange(range);
+    vpmodel()->layer()->prepare(LayerModel::ptRENDER);
     vpmodel()->layer()->redraw();
 }
 
@@ -72,7 +74,7 @@ int StretchLimits::resolution() const {
     return n;
 }
 
-void StretchLimits::markersChanged(const QVariantList& marks) {
+void StretchLimits::setMarkers(const QVariantList& marks) {
     if (marks.size() == 2) {
         bool ok;
         double minv = marks[0].toDouble(&ok);
@@ -88,6 +90,8 @@ void StretchLimits::markersChanged(const QVariantList& marks) {
         rng.min(minv);
         rng.max(maxv);
         vpmodel()->stretchRange(rng);
+        vpmodel()->layer()->prepare(LayerModel::ptRENDER);
+        vpmodel()->layer()->redraw();
         emit markersChanged();
     }
 }
@@ -115,14 +119,14 @@ void StretchLimits::setStretchLimit(double perc) {
             }
         }
         if (startV != rUNDEF && endV != rUNDEF)
-            markersChanged({ startV, endV });
+            setMarkers({ startV, endV });
     }
 
 }
 
 QVariantList StretchLimits::markers() const {
     QVariantList result;
-    auto  range = vpmodel()->stretchRange();
+    auto range  = vpmodel()->stretchRange();
     auto range2 = vpmodel()->actualRange();
     QVariantMap mp;
     if (isNumericalUndef(range.min())) {

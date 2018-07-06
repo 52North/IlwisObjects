@@ -33,7 +33,7 @@ Row {
         Connections {
             target: slider
             onMarkerPositions :{
-                editor.markersChanged(positions) 
+                editor.setMarkers(positions)
             }  
         }
             

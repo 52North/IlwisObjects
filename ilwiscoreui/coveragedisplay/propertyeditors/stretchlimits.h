@@ -19,7 +19,7 @@ namespace Ilwis {
             StretchLimits();
             StretchLimits(VisualAttribute *p);
 
-            Q_INVOKABLE void markersChanged(const QVariantList& marks);
+            Q_INVOKABLE void setMarkers(const QVariantList& marks);
             Q_INVOKABLE void setStretchLimit(double perc);
 
             bool canUse(const IIlwisObject &obj, const QString &name) const;
@@ -33,7 +33,7 @@ namespace Ilwis {
                 void markersChanged();
 
         private:
-            double min() const;;
+            double min() const;
             void min(double value);
             double max() const;
             void max(double value) const;

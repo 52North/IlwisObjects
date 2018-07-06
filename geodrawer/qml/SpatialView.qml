@@ -298,8 +298,8 @@ Item {
 					for(var i=0; i < meshes.children.length; ++i) {
 						var mesh = meshes.children[i];
                         if (mesh) {
-						        mesh.visible = layer.vproperty("active");
-						mesh.material.opacity = layer.vproperty("opacity");
+                            mesh.visible = layer.vproperty("active");
+                            mesh.material.opacity = layer.vproperty("opacity");
                         }
 					}
 				} else {
@@ -311,6 +311,10 @@ Item {
                          }
 					}
 				}
+			} else if ( propertyType == "palette"){
+				var palette = layer.palette;
+				layer.tPalette.image.data.set(palette.data);
+				layer.tPalette.needsUpdate = true;
 			}
 		}
 
