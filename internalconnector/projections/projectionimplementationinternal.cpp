@@ -38,13 +38,13 @@ Coordinate ProjectionImplementationInternal::latlon2coord(const LatLon &ll) cons
 {
     if (_coordinateSystem->projection().isValid() && ll.isValid()) {
         LatLon pl(ll);
-        if (pl.lat() > M_PI_2)
+        if (pl.lat().radians() > M_PI_2)
             pl.lat(Angle(M_PI_2, true));
         else if (pl.lat() < -M_PI_2)
             pl.lat(Angle(-M_PI_2, true));
         pl.lon( pl.lon()-_centralMeridian);
         Coordinate xy = ll2crd(pl);
-        if (xy != crdUNDEF)
+        if (xy == crdUNDEF)
             return crdUNDEF;
         Coordinate crd;
         crd.x = xy.x * _maxis  + _easting;

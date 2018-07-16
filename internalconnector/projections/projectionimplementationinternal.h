@@ -10,7 +10,7 @@ public:
 
     Coordinate latlon2coord(const LatLon&) const;
     LatLon coord2latlon(const Coordinate&) const;
-    void setCoordinateSystem(ConventionalCoordinateSystem *csy);
+    virtual void setCoordinateSystem(ConventionalCoordinateSystem *csy);
     QString toProj4() const;
     bool canConvertToLatLon() const;
     bool canConvertToCoordinate() const;
