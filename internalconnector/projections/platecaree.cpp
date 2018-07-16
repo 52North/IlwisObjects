@@ -35,12 +35,12 @@ PlateCaree::~PlateCaree()
 
 Coordinate PlateCaree::ll2crd(const LatLon &ll) const
 {
-    return Coordinate(ll.lon(), ll.lat());
+    return Coordinate(ll.lon().radians(), ll.lat().radians());
 }
 
 LatLon PlateCaree::crd2ll(const Coordinate &crd) const
 {
-    LatLon ll(crd.y * 180.0 / M_PI, crd.x * 180.0 / M_PI);
+    LatLon ll(Angle(crd.y, true), Angle(crd.x, true));
     return ll;
 }
 

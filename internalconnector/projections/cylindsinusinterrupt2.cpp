@@ -40,16 +40,16 @@ CylindSinusInterrupt2::~CylindSinusInterrupt2()
 Coordinate CylindSinusInterrupt2::ll2crd(const LatLon &pl) const
 {
     Coordinate xy;
-    if (abs(pl.lat())> M_PI/2.0) return xy;
-    if (abs(pl.lon())> M_PI) return xy;
-    if (pl.lon() < - 6 * PI_60)
-     xy.x = (pl.lon() + 33 * PI_60) * cos(pl.lat()) - 33 * PI_60;
-    else if (pl.lon() < 20 * PI_60)
-     xy.x = (pl.lon() - 7 * PI_60) * cos(pl.lat()) + 7 * PI_60;
+    if (abs(pl.lat().radians())> M_PI/2.0) return xy;
+    if (abs(pl.lon().radians())> M_PI) return xy;
+    if (pl.lon().radians() < - 6 * PI_60)
+     xy.x = (pl.lon().radians() + 33 * PI_60) * cos(pl.lat().radians()) - 33 * PI_60;
+    else if (pl.lon().radians() < 20 * PI_60)
+     xy.x = (pl.lon().radians() - 7 * PI_60) * cos(pl.lat().radians()) + 7 * PI_60;
     else
-     xy.x = (pl.lon() - 40 * PI_60) * cos(pl.lat()) + 40 * PI_60;
+     xy.x = (pl.lon().radians() - 40 * PI_60) * cos(pl.lat().radians()) + 40 * PI_60;
 
-    xy.y = pl.lat();
+    xy.y = pl.lat().radians();
     return xy;
 }
 
@@ -60,14 +60,14 @@ LatLon CylindSinusInterrupt2::crd2ll(const Coordinate &xy) const
      if (cosfi < EPS10) return pl;  // latitude beyond poles
 
      if (abs(xy.x + 33 * PI_60)/cosfi <= 27 * PI_60)   // Sector from -180 to -10
-         pl.lon((xy.x + 33 * PI_60) / cosfi - 33 * PI_60);
+         pl.lon(Angle((xy.x + 33 * PI_60) / cosfi - 33 * PI_60, true));
      else if (abs(xy.x - 7 * PI_60)/cosfi <= 13 * PI_60)  // Sector from -10 to 60
-         pl.lon((xy.x - 7 * PI_60) / cosfi + 7 * PI_60);
+         pl.lon(Angle((xy.x - 7 * PI_60) / cosfi + 7 * PI_60, true));
      else if (abs(xy.x - 40 * PI_60)/cosfi <= 20 * PI_60)  // Sector from 60 to 180
-         pl.lon((xy.x - 40 * PI_60) / cosfi + 40 * PI_60);
+         pl.lon(Angle((xy.x - 40 * PI_60) / cosfi + 40 * PI_60, true));
      else return pl;
 
-     pl.lat(xy.y);
+     pl.lat(Angle(xy.y, true));
      return pl;
 }
 
