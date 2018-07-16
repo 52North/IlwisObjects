@@ -135,7 +135,7 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
     quint32 position = 0;
     VisualAttribute * attr = _rasterLayerModel->activeAttribute();
     if (attr != 0) {
-        while (pixIter != end) {
+        while (pixIter != end && position < size) {
             double value = *pixIter;
             QColor color = attr->value2color(value);
             texture_data[position++] = color.blue();
@@ -153,7 +153,7 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
             }
         }
     } else {
-        while (pixIter != end) {
+        while (pixIter != end && position < size) {
             quint64 value = *pixIter;
             LocalColor *localcolor = reinterpret_cast<LocalColor *>(&value);
             texture_data[position++] = localcolor->_component1;
@@ -211,7 +211,7 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
 
         auto end = pixIter.end();
         quint32 position = 0;
-        while (pixIter != end) {
+        while (pixIter != end && position < size) {
             double value = *pixIter;
             int index = isNumericalUndef2(value, _raster) ? 0 : 1 + (iPaletteSize - 2) * (value - numrange->min()) / numrange->distance();
             texture_data[position] = index; // int32 to quint8 conversion (do we want this?)
@@ -230,7 +230,7 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
     else if (hasType(domain, itITEMDOMAIN)) {
         auto end = pixIter.end();
         quint32 position = 0;
-        while (pixIter != end) {
+        while (pixIter != end && position < size) {
             double value = *pixIter;
             texture_data[position] = value == rUNDEF ? 0 : (quint8)value + 1;
             pixIter += zoomFactor;
