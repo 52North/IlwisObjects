@@ -173,6 +173,7 @@
     <ClCompile Include="internalconnector\internalscriptconnector.cpp" />
     <ClCompile Include="internalconnector\internaltableconnector.cpp" />
     <ClCompile Include="internalconnector\operationmetadataconnector.cpp" />
+    <ClCompile Include="internalconnector\projections\dutchrd.cpp" />
     <ClCompile Include="internalconnector\projections\platecaree.cpp" />
     <ClCompile Include="internalconnector\projections\projectionimplementationinternal.cpp" />
     <ClCompile Include="internalconnector\workflowconnector.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="internalconnector\internalscriptconnector.h" />
     <ClInclude Include="internalconnector\internaltableconnector.h" />
     <ClInclude Include="internalconnector\operationmetadataconnector.h" />
+    <ClInclude Include="internalconnector\projections\dutchrd.h" />
     <ClInclude Include="internalconnector\projections\platecaree.h" />
     <ClInclude Include="internalconnector\projections\projectionimplementationinternal.h" />
     <ClInclude Include="internalconnector\workflowconnector.h" />

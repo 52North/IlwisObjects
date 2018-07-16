@@ -19,6 +19,7 @@
 #include "projections/projectionimplementationinternal.h"
 #include "projections/platecaree.h"
 #include "projections/cylindsinusinterrupt2.h"
+#include "projections/dutchrd.h"
 
 using namespace Ilwis;
 using namespace Internal;
@@ -34,6 +35,8 @@ ProjectionImplementation *ProjectionImplFactory::create(const Ilwis::Resource &r
         return new PlateCaree(resource);
     if ( prj == "PRJSINI2")
         return new CylindSinusInterrupt2(resource);
+    if ( prj == "PRJDRD")
+        return new DutchRD(resource);
 
     return 0;
 }
@@ -50,12 +53,13 @@ bool ProjectionImplFactory::canUse(const Ilwis::Resource &resource) const
         return true;
     if ( prj == "PRJSINI2")
         return true;
+    if ( prj == "PRJDRD")
+        return true;
 
     return false;
 }
 
 bool ProjectionImplFactory::prepare()
 {
-
     return true;
 }
