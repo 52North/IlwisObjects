@@ -70,8 +70,11 @@ enum LogicalOperator{loNONE,loAND, loOR, loXOR, loLESS, loLESSEQ, loNEQ, loEQ, l
 #ifndef M_PI
 #define M_PI        3.14159265358979323846
 #endif
-//#define M_PI_2      1.57079632679489661923
-//#define M_PI_4      0.785398163397448309616
+#ifndef M_PI_2
+#define M_PI_2      1.57079632679489661923
+#endif
+#undef M_PI_4 // the qmath.h M_PI_4 is wrong
+#define M_PI_4      0.785398163397448309616
 #define M_1_SQRTPI  0.564189583547756286948
 //#define M_2_SQRTPI  1.12837916709551257390
 //#define M_SQRT2     1.41421356237309504880
