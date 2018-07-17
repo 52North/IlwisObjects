@@ -226,6 +226,10 @@ GeodeticDatum *CoordinateSystemConnector::getDatum(IEllipsoid& ell) {
             double dx = stmt.value(stmt.record().indexOf("dx")).toDouble();
             double dy = stmt.value(stmt.record().indexOf("dy")).toDouble();
             double dz = stmt.value(stmt.record().indexOf("dz")).toDouble();
+            double rx = stmt.value(stmt.record().indexOf("rx")).toDouble();
+            double ry = stmt.value(stmt.record().indexOf("ry")).toDouble();
+            double rz = stmt.value(stmt.record().indexOf("rz")).toDouble();
+            double scale = stmt.value(stmt.record().indexOf("scale")).toDouble();
             gdata->setArea(area);
             gdata->code(code);
             QString ellipsoid = stmt.value(stmt.record().indexOf("ellipsoid")).toString();
@@ -236,7 +240,10 @@ GeodeticDatum *CoordinateSystemConnector::getDatum(IEllipsoid& ell) {
                }
             }
 
-            gdata->set3TransformationParameters(dx, dy, dz, ell);
+            if (rx != 0 || ry != 0 || rz != 0 || scale != 0)
+                gdata->set7TransformationParameters(dx, dy, dz, rx, ry, rz, scale);
+            else
+                gdata->set3TransformationParameters(dx, dy, dz, ell);
 
             return gdata;
 
