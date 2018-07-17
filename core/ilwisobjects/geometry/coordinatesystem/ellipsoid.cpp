@@ -4,7 +4,6 @@
 #include <QSqlField>
 
 #include "kernel.h"
-#include "ilwisangle.h"
 #include "geometries.h"
 #include "ilwisdata.h"
 #include "ilwiscontext.h"
@@ -48,67 +47,63 @@ bool Ellipsoid::isValid() const{
     return false;
 }
 
+// Koesters pag. 12, formules 4 en 5.
 Coordinate Ellipsoid::latlon2Coord(const LatLon& sourceLatLon) const{
     Coordinate result;
-    double phi = sourceLatLon.lon().radians();
-    double lambda = sourceLatLon.lat().radians();
+    double phi = sourceLatLon.Phi();
+    double lambda = sourceLatLon.Lambda();
     double sinPhi = sin(phi);
     double cosPhi = cos(phi);
     double sinLambda = sin(lambda);
     double cosLambda = cos(lambda);
     double e2 = 2 * _flattening - _flattening * _flattening;
     double N = _majorAxis / sqrt(1 - e2 * sinPhi * sinPhi);
-    double h = sourceLatLon.z;
+    double h = sourceLatLon.Height();
     result.x = (N + h) * cosPhi * cosLambda;
     result.y  = (N + h) * cosPhi * sinLambda;
     result.z = (N * (1 - e2) + h) * sinPhi;
     return result;
 }
 
+ //G. Strang v Hees 'Globale en Locale Geod. Systemen
+ //Hfdst 2 Ellipsoidale systemen vergelijking (6) en (7) (iteratief bepalen van phi)
 LatLon Ellipsoid::coord2latlon(const Coordinate& crdSource) const{
-
-    if ( crdSource.z == 0)
-        return LatLon();
     LatLon result;
     double r = sqrt(crdSource.x * crdSource.x + crdSource.y * crdSource.y);
     double phiTry = 0;
-    double e2 = 2 * _flattening - _flattening * _flattening;
-    double phiNext = atan2((crdSource.z + e2*crdSource.z),r);
+    double e2 = excentricity2();
+    double phiNext = atan2((crdSource.z + e2 * crdSource.z),r);
     double N = _majorAxis; // start approximation
     while (abs(phiNext - phiTry) > EPS15 ) {
         phiTry = phiNext; // update trial phi
         N = _majorAxis / sqrt(1 - e2*sin(phiNext)*sin(phiNext));
         phiNext = atan2((crdSource.z + e2*N*sin(phiNext)),r);
     }
-    result.x = Angle(phiNext, true);//set phi back to lat in degrees
-    result.y = Angle(atan2( crdSource.y, crdSource.x), true);// lon in degrees
-    result.z = Angle(r*cos(phiNext) + crdSource.z*sin(phiNext)
-            - _majorAxis*sqrt(1 - e2*sin(phiNext)*sin(phiNext)),true);
+    result.Phi(phiNext);//set phi back to lat in degrees
+    result.Lambda(atan2(crdSource.y, crdSource.x));// lon in degrees
+    result.Height(r*cos(phiNext) + crdSource.z*sin(phiNext)
+        - _majorAxis*sqrt(1 - e2*sin(phiNext)*sin(phiNext)));
     return result;
 }
 
 LatLon Ellipsoid::latlon2Coord(const IEllipsoid &sourceEllipsoid, const LatLon& sourceLatLon) const{
-    if ( sourceLatLon.z == 0)
-        return LatLon();
-
     double mas = sourceEllipsoid->majorAxis();
     double mis = sourceEllipsoid->minorAxis();
     double da = _majorAxis - mas;
     double df = _flattening - sourceEllipsoid->flattening();
 
-    double phi = sourceLatLon.lon().radians();
-    double lam = sourceLatLon.lat().radians();
-    double h = sourceLatLon.z;
+    double phi = sourceLatLon.Phi();
+    double lam = sourceLatLon.Lambda();
+    double h = sourceLatLon.Height();
     double sinPhi = sin(phi);
     double cosPhi = cos(phi);
     double sin2Phi = sinPhi * sinPhi;
-    double e2 = 2 * sourceEllipsoid->flattening() - sourceEllipsoid->flattening() * sourceEllipsoid->flattening();
+    double e2 = sourceEllipsoid->excentricity2();
     // n = radius of curvature in the prime vertical
     double n = mas / sqrt(1 - e2 * sin2Phi);
     // m = radius of curvature in the meridian
     double rTmp = 1 - e2 * sin2Phi;
     double m = mas * (1 - e2) / sqrt(rTmp * rTmp * rTmp);
-
 
     double dPhi = da * (n * e2 * sinPhi * cosPhi) / mas
            + df * (m * mas / mis + n * mis / mas) * sinPhi * cosPhi;
@@ -120,9 +115,9 @@ LatLon Ellipsoid::latlon2Coord(const IEllipsoid &sourceEllipsoid, const LatLon& 
 
     h += dh;
     LatLon result;
-    result.x = Angle(phi,true);
-    result.y = Angle(lam, true);
-    result.z = Angle(h, true);
+    result.Phi(phi);
+    result.Lambda(lam);
+    result.Height(h);
     return result;
 }
 
@@ -135,13 +130,13 @@ LatLon Ellipsoid::latlon2Coord(const IEllipsoid &sourceEllipsoid, const LatLon& 
 */
 double Ellipsoid::distance(const LatLon &begin, const LatLon& end) const{
     double c = rUNDEF;
-    if (abs(begin.lon()) + EPS15 > 90 || abs(end.lon()) + EPS15 > 90 )
+    if (abs(begin.Lon()) + EPS15 > 90 || abs(end.Lon()) + EPS15 > 90 )
         return c; // invalid latitudes for reliable computation
-    double phi1 = begin.lon().radians();
-    double lam1 = begin.lat().radians();
-    double phi2 = end.lon().radians();
-    double lam2 = end.lat().radians();
-    double e2 = 2 * _flattening - _flattening * _flattening;
+    double phi1 = begin.Phi();
+    double lam1 = begin.Lambda();
+    double phi2 = end.Phi();
+    double lam2 = end.Lambda();
+    double e2 = excentricity2();
 
     double N1 = _majorAxis /sqrt(1 - e2 * sin(phi1)*sin(phi1));
     double N = _majorAxis /sqrt(1 - e2 * sin(phi2)*sin(phi2));
@@ -164,19 +159,22 @@ double Ellipsoid::distance(const LatLon &begin, const LatLon& end) const{
 
 double Ellipsoid::azimuth(const LatLon& begin, const LatLon& end) const{
     double azim = rUNDEF;
-    if (abs(begin.lon()) + EPS15 > 90 || abs(end.lon()) + EPS15 > 90 )
+    if (abs(begin.Lon()) + EPS15 > 90 || abs(end.Lon()) + EPS15 > 90 )
         return azim; // invalid latitudes for reliable computation
-    double phi1 = begin.lon().radians();
-    double lam1 = begin.lat().radians();
-    double phi2 = end.lon().radians();
-    double lam2 = end.lat().radians();
-    double e2 = 2 * _flattening - _flattening * _flattening;
+    double phi1 = begin.Phi();
+    double lam1 = begin.Lambda();
+    double phi2 = end.Phi();
+    double lam2 = end.Lambda();
+    double e2 = excentricity2();
     double N1 = _majorAxis /sqrt(1 - e2 * sin(phi1)*sin(phi1));
     double N = _majorAxis /sqrt(1 - e2 * sin(phi2)*sin(phi2));
     double psi = atan((1-e2)*tan(phi2) + e2*N1*sin(phi1)/N/cos(phi2));
     azim = atan2(sin(lam2-lam1),cos(phi1)*tan(psi) - sin(phi1)*cos(lam2-lam1)) * 180.0 / M_PI;
     return azim;
 }
+
+///G. Strang v Hees 'Globale en Lokale Geod. Systemen Delft 3e druk, 1997
+///Hfdsk 4 vergel.(10)
 
 Coordinate Ellipsoid::coord2coord(const Coordinate& ctsIn, const Coordinate& ctsPivot,
                                                         double tx, double ty, double tz,
