@@ -498,7 +498,6 @@
     <ClCompile Include="core\ilwisobjects\domain\identifierrange.cpp" />
     <ClCompile Include="core\identity.cpp" />
     <ClCompile Include="core\identityinterface.cpp" />
-    <ClCompile Include="core\util\ilwisangle.cpp" />
     <ClCompile Include="core\util\ilwisconfiguration.cpp" />
     <ClCompile Include="core\ilwiscontext.cpp" />
     <ClCompile Include="core\util\ilwiscoordinate.cpp" />
@@ -1097,7 +1096,6 @@
     <ClInclude Include="core\identity.h" />
     <ClInclude Include="core\identityinterface.h" />
     <ClInclude Include="core\ilwis.h" />
-    <ClInclude Include="core\util\ilwisangle.h" />
     <ClInclude Include="core\util\ilwisconfiguration.h" />
     <ClInclude Include="core\ilwiscontext.h" />
     <ClInclude Include="core\util\ilwiscoordinate.h" />

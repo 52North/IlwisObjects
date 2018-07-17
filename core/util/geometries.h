@@ -3,7 +3,7 @@
 
 #include <type_traits>
 #include "geos/geom/Coordinate.h"
-#include "ilwisangle.h"
+#include "ilwis.h"
 #include "location.h"
 #include "ilwiscoordinate.h"
 #include "box.h"

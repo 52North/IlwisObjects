@@ -1409,9 +1409,6 @@
     <ClCompile Include="core\identityinterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\util\ilwisangle.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
     <ClCompile Include="core\util\ilwisconfiguration.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
@@ -2939,9 +2936,6 @@
     </ClInclude>
     <ClInclude Include="core\ilwis.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\util\ilwisangle.h">
-      <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="core\util\ilwisconfiguration.h">
       <Filter>Header Files\util</Filter>
