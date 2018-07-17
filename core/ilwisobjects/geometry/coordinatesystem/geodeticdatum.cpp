@@ -15,6 +15,8 @@
 
 using namespace Ilwis;
 
+const double rad2sec = 206264.80624709635515647335733078; //amount of arcseconds per radian
+
 GeodeticDatum::GeodeticDatum(const QString& name) : Identity(name)
 {
     _datumParams.resize(10);
@@ -22,7 +24,7 @@ GeodeticDatum::GeodeticDatum(const QString& name) : Identity(name)
     _datumParams[dmSCALE] = 1;
     _mode = dtMolodensky;
     _isValid = false;
-
+    _ellWGS84.setEllipsoid(6378137.0, 298.257223563);
 }
 
 GeodeticDatum::GeodeticDatum(std::vector<double> &datumParameters, const IEllipsoid &ellips)
@@ -37,6 +39,131 @@ GeodeticDatum::GeodeticDatum(std::vector<double> &datumParameters, const IEllips
                 datumParameters[3], datumParameters[4], datumParameters[5],
                 datumParameters[6], Coordinate(datumParameters[7], datumParameters[8], datumParameters[9]));
     }
+    _ellWGS84.setEllipsoid(6378137.0, 298.257223563);
+}
+
+const bool GeodeticDatum::equal(const GeodeticDatum& datum) const {
+    bool equal = true;
+    switch (_mode) {
+    case dtBadekas:
+        equal = (_datumParams[dmCENTERXR] == datum._datumParams[dmCENTERXR]) && (_datumParams[dmCENTERYR] == datum._datumParams[dmCENTERYR]) && (_datumParams[dmCENTERZR] == datum._datumParams[dmCENTERZR]);
+        // fall through
+    case dtBursaWolf:
+        equal = equal && (_datumParams[dmRX] == datum._datumParams[dmRX]) && (_datumParams[dmRY] == datum._datumParams[dmRY]) && (_datumParams[dmRZ] == datum._datumParams[dmRZ]) && (_datumParams[dmSCALE] == datum._datumParams[dmSCALE]);
+        // fall through
+    case dtMolodensky:
+        equal = equal && (_datumParams[dmDX] == datum._datumParams[dmDX]) && (_datumParams[dmDY] == datum._datumParams[dmDY]) && (_datumParams[dmDZ] == datum._datumParams[dmDZ]);
+    }
+    return equal;
+}
+
+LatLon GeodeticDatum::llToWGS84(const LatLon& ll, const Ellipsoid& ell) const
+{
+    switch (_mode) {
+    case dtMolodensky:
+        return llhMolodensky(ll, ell,
+        _ellWGS84.majorAxis() - ell.majorAxis(), _ellWGS84.flattening() - ell.flattening(),
+            _datumParams[dmDX], _datumParams[dmDY], _datumParams[dmDZ]);
+        break;
+    case dtBursaWolf:
+    {
+        Coordinate ctsIn, ctsOut;
+        Coordinate ctsPivot(0, 0, 0);
+        ctsIn = ell.latlon2Coord(ll);
+        ctsOut = ell.coord2coord(ctsIn, ctsPivot, _datumParams[dmDX], _datumParams[dmDY], _datumParams[dmDZ],
+            _datumParams[dmRX], _datumParams[dmRY], _datumParams[dmRZ], _datumParams[dmSCALE]);
+        return _ellWGS84.coord2latlon(ctsOut);
+        break;
+    }
+    case dtBadekas:
+    {
+        Coordinate ctsIn, ctsOut;
+        Coordinate ctsPivot(_datumParams[dmCENTERXR], _datumParams[dmCENTERYR], _datumParams[dmCENTERZR]);
+        ctsIn = ell.latlon2Coord(ll);
+        ctsOut = ell.coord2coord(ctsIn, ctsPivot, _datumParams[dmDX], _datumParams[dmDY], _datumParams[dmDZ],
+            _datumParams[dmRX], _datumParams[dmRY], _datumParams[dmRZ], _datumParams[dmSCALE]);
+        return _ellWGS84.coord2latlon(ctsOut);
+        break;
+    }
+    }
+}
+
+LatLon GeodeticDatum::llFromWGS84(const LatLon& ll, const Ellipsoid& ell) const
+{
+    switch (_mode) {
+    case dtMolodensky:
+        return llhMolodensky(ll, _ellWGS84,
+        ell.majorAxis() - _ellWGS84.majorAxis(), ell.flattening() - _ellWGS84.flattening(),
+            -_datumParams[dmDX], -_datumParams[dmDY], -_datumParams[dmDZ]);
+        break;
+    case dtBursaWolf:
+    {
+        Coordinate ctsIn, ctsOut;
+        Coordinate ctsPivot(0, 0, 0);
+        ctsIn = _ellWGS84.latlon2Coord(ll);
+        ctsOut = ell.coord2coord(ctsIn, ctsPivot, -_datumParams[dmDX], -_datumParams[dmDY], -_datumParams[dmDZ],
+            -_datumParams[dmRX], -_datumParams[dmRY], -_datumParams[dmRZ], -_datumParams[dmSCALE]);
+        return ell.coord2latlon(ctsOut);
+        break;
+    }
+    case dtBadekas:
+    {
+        Coordinate ctsIn, ctsOut;
+        Coordinate ctsPivot(_datumParams[dmCENTERXR], _datumParams[dmCENTERYR], _datumParams[dmCENTERZR]);
+        ctsIn = _ellWGS84.latlon2Coord(ll);
+        ctsOut = ell.coord2coord(ctsIn, ctsPivot, -_datumParams[dmDX], -_datumParams[dmDY], -_datumParams[dmDZ],
+            -_datumParams[dmRX], -_datumParams[dmRY], -_datumParams[dmRZ], -_datumParams[dmSCALE]);
+        return ell.coord2latlon(ctsOut);
+        break;
+    }
+    }
+}
+
+// Molodensky datum transformation
+// DMA Technical Report
+// Department of Defense
+// World Geodetic System 1984
+// Its definition and relationships with local geodetic systems
+// table 7.2, page 7-8/7-9
+LatLon GeodeticDatum::llhMolodensky(const LatLon& llh,
+											const Ellipsoid& ell,
+											double da, double df,
+											double dx, double dy, double dz) const
+{
+	double phi = llh.Phi();
+	double lam = llh.Lambda();
+	double h = llh.Height();
+	double sinPhi = sin(phi);
+	double cosPhi = cos(phi);
+	double sinLam = sin(lam);
+	double cosLam = cos(lam);
+	double sin2Phi = sinPhi * sinPhi;
+
+	// n = radius of curvature in the prime vertical
+	double n = ell.majorAxis() / sqrt(1 - ell.excentricity2() * sin2Phi);
+	// m = radius of curvature in the meridian
+	double rTmp = 1 - ell.excentricity2() * sin2Phi;
+	double m = ell.majorAxis() * (1 - ell.excentricity2()) / sqrt(rTmp * rTmp * rTmp);
+
+	double dPhi, dLam, dh;
+	dPhi = - dx * sinPhi * cosLam - dy * sinPhi * sinLam + dz * cosPhi
+		+ da * (n * ell.excentricity2() * sinPhi * cosPhi) / ell.majorAxis()
+		+ df * (m * ell.majorAxis() / ell.minorAxis() + n * ell.minorAxis() / ell.majorAxis()) * sinPhi * cosPhi;
+	dPhi /= m + h;
+
+	dLam = (-dx * sinLam + dy * cosLam) / ((n + h) * cosPhi);
+
+	dh =   dx * cosPhi * cosLam + dy * cosPhi * sinLam + dz * sinPhi
+		- da * ell.majorAxis() / n + df * n * sin2Phi * ell.minorAxis() / ell.majorAxis();
+
+	phi += dPhi;
+	lam += dLam;
+	h += dh;
+	LatLon llhRes;
+	llhRes.Phi(phi);
+	llhRes.Lambda(lam);
+    llhRes.Height(h);
+	return llhRes;
 }
 
 void GeodeticDatum::set3TransformationParameters(const double x, const double y, const double z, const IEllipsoid & ellips) {
@@ -53,10 +180,10 @@ void GeodeticDatum::set7TransformationParameters(const double x, const double y,
     _datumParams[dmDX] = x;
     _datumParams[dmDY] = y;
     _datumParams[dmDZ] = z;
-    _datumParams[dmRX] = rx;
-    _datumParams[dmRY] = ry;
-    _datumParams[dmRZ] = rz;
-    _datumParams[dmSCALE] = scale;
+    _datumParams[dmRX] = rx / rad2sec;
+    _datumParams[dmRY] = ry / rad2sec;
+    _datumParams[dmRZ] = rz / rad2sec;
+    _datumParams[dmSCALE] = scale / 1000000;
     _mode = dtBursaWolf;
     code(QString("%1,%2,%3,%4,%5").arg(code()).arg(rx).arg(ry).arg(rz).arg(scale));
     _isValid = true;
@@ -66,13 +193,13 @@ void GeodeticDatum::set10TransformationParameters(const double x, const double y
     _datumParams[dmDX] = x;
     _datumParams[dmDY] = y;
     _datumParams[dmDZ] = z;
-    _datumParams[dmRX] = rx;
-    _datumParams[dmRY] = ry;
-    _datumParams[dmRZ] = rz;
-    _datumParams[dmSCALE] = scale;
+    _datumParams[dmRX] = rx / rad2sec;
+    _datumParams[dmRY] = ry / rad2sec;
+    _datumParams[dmRZ] = rz / rad2sec;
+    _datumParams[dmSCALE] = scale / 1000000;
     _datumParams[dmCENTERXR] = center.x;
-    _datumParams[dmCENTERXR] = center.y;
-    _datumParams[dmCENTERXR] = center.z;
+    _datumParams[dmCENTERYR] = center.y;
+    _datumParams[dmCENTERZR] = center.z;
     _mode = dtBadekas;
     code(QString("%1,%2,%3,%4").arg(code()).arg( center.x).arg( center.y).arg( center.z));
     _isValid = true;

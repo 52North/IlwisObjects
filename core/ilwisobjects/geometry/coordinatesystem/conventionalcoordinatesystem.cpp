@@ -31,20 +31,28 @@ Coordinate ConventionalCoordinateSystem::coord2coord(const ICoordinateSystem &so
     if (sourceCs->id() == id()) //  the 'real'isEqual test is too expensive here, as this method can be called 100000's of times (resample)
         return crdSource;
     LatLon ll = sourceCs->isLatLon() ? LatLon(crdSource.y,crdSource.x) : sourceCs->coord2latlon(crdSource);
-    if ( ll.isValid()) {
+    if (ll.isValid()) {
+        if (hasType(sourceCs->ilwisType(), itCONVENTIONALCOORDSYSTEM)) {
+            const IConventionalCoordinateSystem & srcCs = sourceCs.as<ConventionalCoordinateSystem>();
+            if (!srcCs->datum()->equal(*datum().get())) { // different datums given, datum shift needed
+                ll = srcCs->datum()->llToWGS84(ll, *srcCs->ellipsoid().ptr());
+                ll = datum()->llFromWGS84(ll, *ellipsoid().ptr());
+            }
+        }
         return isLatLon() ? ll : latlon2coord(ll);
     }
+
     return Coordinate();
 }
 
 LatLon ConventionalCoordinateSystem::coord2latlon(const Coordinate &crdSource) const
 {
-    LatLon pl = _projection->coord2latlon(crdSource);
-    if (!pl.isValid())
+    LatLon ll = _projection->coord2latlon(crdSource);
+    if (!ll.isValid())
         return llUNDEF;
-    if (abs(pl.lon()) > 180)
+    if (abs(ll.Lon()) > 180)
         return llUNDEF;
-    return pl;
+    return ll;
 }
 
 Coordinate ConventionalCoordinateSystem::latlon2coord(const LatLon &ll) const

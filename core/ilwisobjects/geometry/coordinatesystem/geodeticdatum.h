@@ -12,6 +12,9 @@ public:
     enum DatumTransformation{dtMolodensky, dtBursaWolf, dtBadekas};
     GeodeticDatum(const QString &name=sUNDEF);
     GeodeticDatum(std::vector<double>& datumParameters, const IEllipsoid &ellips);
+    LatLon llToWGS84(const LatLon& ll, const Ellipsoid& ell) const;
+    LatLon llFromWGS84(const LatLon& ll, const Ellipsoid& ell) const;
+    const bool equal(const GeodeticDatum&) const;
 
     QString area() const;
     void setArea(const QString& v);
@@ -31,6 +34,8 @@ public:
     GeodeticDatum *clone() const;
 private:
     void getFromInternal(const QString & ellips);
+    LatLon llhMolodensky(const LatLon& llh, const Ellipsoid& ell, double da, double df, double dx, double dy, double dz) const;
+    Ellipsoid _ellWGS84;
     QString _area;
     QString _authority;
     std::vector<double> _datumParams;
