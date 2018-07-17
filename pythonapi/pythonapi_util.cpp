@@ -1,7 +1,6 @@
 #include "../../core/kernel.h"
 #include "../../core/ilwisobjects/ilwisdata.h"
 
-#include "../../core/util/ilwisangle.h"
 #include "geos/geom/Point.h"
 #include "geos/geom/LineString.h"
 #include "geos/geom/LinearRing.h"

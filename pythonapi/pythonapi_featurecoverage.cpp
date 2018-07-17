@@ -3,8 +3,6 @@
 #include "../../core/catalog/catalog.h"
 #include "../../core/ilwisobjects/ilwisobject.h"
 
-#include "../../core/util/ilwisangle.h"
-
 #include "../../core/util/geometries.h"
 #include "../../core/util/box.h"
 

@@ -1,8 +1,6 @@
 #include "../../core/kernel.h"
 #include "../../core/ilwisobjects/ilwisobject.h"
 
-#include "../../core/util/ilwisangle.h"
-
 #include "geos/geom/Geometry.h"
 #include "geos/geom/Coordinate.h"
 #include "../../core/util/location.h"

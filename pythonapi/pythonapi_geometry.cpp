@@ -5,7 +5,6 @@
 #include "../../core/ilwisobjects/geometry/coordinatesystem/coordinatesystem.h"
 #include "geos/io/ParseException.h"
 #include "../../core/ilwisobjects/coverage/geometryhelper.h"
-#include "../../core/util/ilwisangle.h"
 
 #include "geos/geom/Geometry.h"
 #include "geos/geom/GeometryFactory.h"

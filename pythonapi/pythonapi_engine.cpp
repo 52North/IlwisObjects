@@ -22,8 +22,6 @@
 
 #include "../../core/ilwisobjects/coverage/rastercoverage.h"
 
-#include "../../core/util/ilwisangle.h"
-
 #include "../../core/util/box.h"
 
 #include "../../core/ilwisobjects/coverage/featurecoverage.h"
