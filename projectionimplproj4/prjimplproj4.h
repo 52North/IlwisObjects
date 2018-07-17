@@ -24,6 +24,8 @@ public:
      virtual void copyTo(ProjectionImplementation *prj);
 private:
     ProjectionImplementationProj4();
+    QString getParam(const QString & proj4def, const QString & parm) const;
+    QString getEllips(const QString & proj4def) const;
     QString _targetDef;
     projPJ  _pjLatlon;
     projPJ  _pjBase;

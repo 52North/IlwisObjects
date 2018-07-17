@@ -92,7 +92,8 @@ ProjectionImplementationProj4::ProjectionImplementationProj4(const Resource &res
     QString cd = resource.code();
     _outputIsLatLon = cd == "latlong" || cd == "longlat";
     _targetDef = QString("+proj=%1").arg(cd);
-    _pjLatlon =  pj_init_plus("+proj=latlong +ellps=WGS84");
+    QString latlon = QString("+proj=latlong %1").arg(getEllips(_targetDef));
+    _pjLatlon =  pj_init_plus(latlon.toLatin1());
     _pjBase = pj_init_plus(_targetDef.toLatin1());
     fillParameters(cd);
 }
@@ -101,7 +102,8 @@ ProjectionImplementationProj4::ProjectionImplementationProj4(const QString &proj
 {
     _outputIsLatLon = proj4def.indexOf("latlong") != -1 || proj4def.indexOf("longlat") != -1;
     _targetDef = proj4def;
-    _pjLatlon =  pj_init_plus("+proj=latlong +ellps=WGS84");
+    QString latlon = QString("+proj=latlong %1").arg(getEllips(_targetDef));
+    _pjLatlon =  pj_init_plus(latlon.toLatin1());
     _pjBase = pj_init_plus(_targetDef.toLatin1());
     fillParameters(proj4def);
 }
@@ -228,6 +230,37 @@ bool ProjectionImplementationProj4::prepare(const QString &parms)
     return ERROR1(ERR_NO_INITIALIZED_1,"Projection");
 }
 
+QString ProjectionImplementationProj4::getParam(const QString & proj4def, const QString & parm) const {
+    QString value = "";
+    int index = proj4def.indexOf("+" + parm + "=");
+    if (index != -1) {
+        index += parm.length() + 2;
+        int index2 = proj4def.indexOf('+', index);
+        if (index2 == -1)
+            index2 = proj4def.length();
+        else
+            --index2;
+        value = proj4def.mid(index, index2 - index);
+    }
+    return value;
+}
+
+QString ProjectionImplementationProj4::getEllips(const QString & proj4def) const {
+    QString value = getParam(proj4def, "ellps");
+    if (value != "")
+        return "+ellps=" + value;
+    value = getParam(proj4def, "a");
+    if (value != "") {
+        QString value2 = getParam(proj4def, "b");
+        if (value2 != "")
+            return "+a=" + value + " +b=" + value2;
+    }
+    value = getParam(proj4def, "datum");
+    if (value != "")
+        return "+datum=" + value;
+    return "+ellps=WGS84";
+}
+
 QString ProjectionImplementationProj4::toProj4() const
 {
     return _targetDef;
@@ -256,7 +289,8 @@ void ProjectionImplementationProj4::copyTo(ProjectionImplementation *prj)
     ProjectionImplementationProj4 *prjimpl = static_cast<ProjectionImplementationProj4 *>(prj);
     prjimpl->_outputIsLatLon = _outputIsLatLon;
     prjimpl->_pjBase = pj_init_plus(_targetDef.toLatin1());
-    prjimpl->_pjLatlon = pj_init_plus("+proj=latlong +ellps=WGS84");
+    QString latlon = QString("+proj=latlong %1").arg(getEllips(_targetDef));
+    prjimpl->_pjLatlon =  pj_init_plus(latlon.toLatin1());
     prjimpl->_targetDef = _targetDef;
 }
 
@@ -267,7 +301,7 @@ ProjectionImplementationProj4::ProjectionImplementationProj4()
 
 Coordinate ProjectionImplementationProj4::latlon2coord(const LatLon &ll) const
 {
-    if ( _pjBase == 0 || _pjLatlon == 0) {
+    if ( _pjBase == 0 || _pjLatlon == 0 ) {
         int *err = pj_get_errno_ref();
         if (*err != 0){
             QString error(pj_strerrno(*err));
@@ -277,8 +311,8 @@ Coordinate ProjectionImplementationProj4::latlon2coord(const LatLon &ll) const
         return Coordinate();
     }
 
-    double x = ll.lon().radians();
-    double y = ll.lat().radians();
+    double y = ll.Phi();
+    double x = ll.Lambda();
     int err = pj_transform(_pjLatlon, _pjBase, 1, 1, &x, &y, NULL );
     if ( err != 0) {
         QString error(pj_strerrno(err));
@@ -300,7 +334,7 @@ LatLon ProjectionImplementationProj4::coord2latlon(const Coordinate &crd) const
     if ( !crd.isValid())
         return LatLon();
 
-    if ( _pjBase == 0 || _pjLatlon == 0){
+    if ( _pjBase == 0 || _pjLatlon == 0 ){
         int *err = pj_get_errno_ref();
         if (err != 0){
             QString error(pj_strerrno(*err));
@@ -320,7 +354,7 @@ LatLon ProjectionImplementationProj4::coord2latlon(const Coordinate &crd) const
         return LatLon();
     }
 
-    return LatLon(Angle(y,true),Angle(x, true));
+    return LatLon(y * 180 / M_PI, x * 180 / M_PI);
 }
 
 
