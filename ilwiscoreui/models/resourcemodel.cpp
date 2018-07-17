@@ -6,7 +6,6 @@
 #include "connectorinterface.h"
 #include "resource.h"
 #include "ilwisdata.h"
-#include "ilwisangle.h"
 #include "geometries.h"
 #include "ellipsoid.h"
 #include "projection.h"

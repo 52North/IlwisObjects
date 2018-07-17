@@ -1,5 +1,4 @@
 #include "kernel.h"
-#include "ilwisangle.h"
 #include "geos/geom/Coordinate.h"
 #include "numericrange.h"
 #include "ilwiscoordinate.h"

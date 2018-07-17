@@ -2,7 +2,6 @@
 #include <QFile>
 
 #include "kernel.h"
-#include "ilwisangle.h"
 #include "geos/geom/Coordinate.h"
 #include "ilwiscoordinate.h"
 #include "connectorinterface.h"
