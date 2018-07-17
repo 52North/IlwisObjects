@@ -8,16 +8,14 @@ class DutchRD : public ProjectionImplementationInternal
 public:
     DutchRD(const Ilwis::Resource &resource);
     ~DutchRD();
-    Coordinate ll2crd(const LatLon&) const;
-    LatLon crd2ll(const Coordinate&) const;
+    Coordinate pl2crd(const PhiLam&) const;
+    PhiLam crd2pl(const Coordinate&) const;
     static bool canUse(const Ilwis::Resource &) ;
     bool prepare(const QString &parms = "");
     virtual void setCoordinateSystem(ConventionalCoordinateSystem *csy);
     ProjectionImplementation* clone();
 private:
     DutchRD();
-    double _phi0;
-    double _lam0;
     double _k0;
     double _rBOLSTRAAL;
     double _rNgauss;

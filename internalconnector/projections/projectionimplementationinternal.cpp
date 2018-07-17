@@ -30,20 +30,23 @@ ProjectionImplementationInternal::ProjectionImplementationInternal(const Resourc
     _easting(0),
     _northing(0),
     _maxis(6371007.180918499800),
-    _centralMeridian(0)
+    _phi0(0),
+    _lam0(0)
 {
 }
 
 Coordinate ProjectionImplementationInternal::latlon2coord(const LatLon &ll) const
 {
     if (_coordinateSystem->projection().isValid() && ll.isValid()) {
-        LatLon pl(ll);
-        if (pl.lat().radians() > M_PI_2)
-            pl.lat(Angle(M_PI_2, true));
-        else if (pl.lat() < -M_PI_2)
-            pl.lat(Angle(-M_PI_2, true));
-        pl.lon( pl.lon()-_centralMeridian);
-        Coordinate xy = ll2crd(pl);
+        PhiLam pl;
+        pl.Phi = ll.Phi();
+        pl.Lam = ll.Lambda();
+        if (pl.Phi > M_PI_2)
+            pl.Phi = M_PI_2;
+        else if (pl.Phi < -M_PI_2)
+            pl.Phi = -M_PI_2;
+        pl.Lam -= _lam0;
+        Coordinate xy = pl2crd(pl);
         if (xy == crdUNDEF)
             return crdUNDEF;
         Coordinate crd;
@@ -60,14 +63,17 @@ LatLon ProjectionImplementationInternal::coord2latlon(const Ilwis::Coordinate &c
 {
     if (_coordinateSystem->projection().isValid() && crdSource != crdUNDEF) {
         Coordinate xy((crdSource.x - _easting) / _maxis, (crdSource.y - _northing) / _maxis);
-
-        LatLon pl = crd2ll(xy);
-        if (!pl.isValid())
+        PhiLam pl = crd2pl(xy);
+        if (pl.fUndef())
             return llUNDEF;
-        if (abs(pl.lat()) > 90)
+        if (abs(pl.Phi) > M_PI_2)
             return llUNDEF;
-        pl.lon( pl.lon() + _centralMeridian);
-        return pl;
+        pl.Lam += _lam0;
+        pl.AdjustLon();
+        LatLon ll;
+        ll.Phi(pl.Phi);
+        ll.Lambda(pl.Lam);
+        return ll;
     }
     else
         return llUNDEF;
@@ -82,16 +88,14 @@ void ProjectionImplementationInternal::setCoordinateSystem(ConventionalCoordinat
         _easting = prj->parameter(Projection::pvFALSEEASTING).toDouble();
         _northing = prj->parameter(Projection::pvFALSENORTHING).toDouble();
         _maxis = _coordinateSystem->ellipsoid()->majorAxis();
-        _centralMeridian = prj->parameter(Projection::pvCENTRALMERIDIAN).toDouble();
+        _phi0 = prj->parameter(Projection::pvCENTRALPARALLEL).toDouble() * M_PI / 180;
+        _lam0 = prj->parameter(Projection::pvCENTRALMERIDIAN).toDouble() * M_PI / 180;
     }
-
-
 }
 
 QString ProjectionImplementationInternal::toProj4() const
 {
-    return sUNDEF; // TODO:
-
+    return sUNDEF; // TODO!
 }
 
 bool ProjectionImplementationInternal::canConvertToLatLon() const
@@ -111,7 +115,8 @@ void ProjectionImplementationInternal::copyTo(ProjectionImplementation *prj)
     impl->_easting = _easting;
     impl->_northing = _northing;
     impl->_maxis = _maxis;
-    impl->_centralMeridian = _centralMeridian;
+    impl->_phi0 = _phi0;
+    impl->_lam0 = _lam0;
 }
 
 ProjectionImplementationInternal::ProjectionImplementationInternal()

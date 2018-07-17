@@ -51,8 +51,7 @@ void DutchRD::setCoordinateSystem(ConventionalCoordinateSystem *csy)
 	_easting = 155000;
 	_northing = 463000;
     _phi0 = _parameters[Projection::pvCENTRALPARALLEL]._value.toDouble() * M_PI / 180;
-    _centralMeridian = _parameters[Projection::pvCENTRALMERIDIAN]._value.toDouble();
-    _lam0 = _centralMeridian * M_PI / 180;
+    _lam0 = _parameters[Projection::pvCENTRALMERIDIAN]._value.toDouble() * M_PI / 180;
     _k0 = _parameters[Projection::pvSCALE]._value.toDouble();
     _rNgauss = 1.00047585668;
     _rMgauss = 0.003773953832;
@@ -89,23 +88,21 @@ void DutchRD::setCoordinateSystem(ConventionalCoordinateSystem *csy)
 // pag 20
 }
 
-Coordinate DutchRD::ll2crd(const LatLon &pl) const
+Coordinate DutchRD::pl2crd(const PhiLam &pl) const
 {
-    // phi -> lat
-    // lam -> lon
 	Coordinate xy;
 	double rQ, rQ1, rDQ, rW, rB, rDL;
 	double ecc = _ell_e;
 	double sinPsi, cosPsi, sinhalfPsi, coshalfPsi, tanhalfPsi;
-    double eccsinPhi = ecc * sin(pl.lat().radians()); //(geodetic) latitude on ellipsoid
-	rQ1 = log(tan(M_PI_4 + pl.lat().radians()/2));
+	double eccsinPhi = ecc * sin(pl.Phi); //(geodetic) latitude on ellipsoid
+	rQ1 = log(tan(M_PI_4 + pl.Phi/2));
 	///rQ1 = atanh(sinPhi);
 	rDQ = 0.5 * ecc * log(( 1 + eccsinPhi)/(1 - eccsinPhi));
 	///rDQ = ecc * atanh( ecc * sinPhi);
 	rQ = rQ1 - rDQ;										// isometric latitude on ellipsoid
 	rW = _rNgauss * rQ + _rMgauss;			// isometric latitude on Schreiber sphere
 	rB = 2 * atan(exp(rW)) - M_PI_2;	//  latitude on sphere
-	rDL =  _rNgauss * pl.lon().radians(); ///rNgauss * (pl.Lam - lam0);
+	rDL =  _rNgauss * pl.Lam; ///rNgauss * (pl.Lam - lam0);
 	double sin2halfPsi = sin((rB - _B0)/2) * sin((rB - _B0)/2) +
 										 sin(rDL/2) * sin(rDL/2) * cos(rB) * cos(_B0);
 	coshalfPsi = sqrt( 1 - sin2halfPsi);
@@ -126,16 +123,14 @@ Coordinate DutchRD::ll2crd(const LatLon &pl) const
 	return xy;
 }
 
-LatLon DutchRD::crd2ll(const Coordinate &xy) const
+PhiLam DutchRD::crd2pl(const Coordinate &xy) const
 {
-    // phi -> lat
-    // lam -> lon
-	LatLon pl;
+	PhiLam pl;
 	double rRho2 = xy.x * xy.x  + xy.y * xy.y;
 	double rRho = sqrt(xy.x * xy.x  + xy.y * xy.y);// Hypoth function better ?
 	if (rRho2 < EPS10) {
-	  pl.lat(Angle(_phi0, true));
-	  pl.lon(Angle(0.0, true));
+	  pl.Phi = _phi0;
+	  pl.Lam = 0.0;
 	  return pl;        // point in projection origin (Amersfoort)
 	}
 	double sinAlpha = xy.x  / rRho;
@@ -160,8 +155,8 @@ LatLon DutchRD::crd2ll(const Coordinate &xy) const
 	  iCount++;
 	  if (iCount > 10) return pl;
 	}
-	pl.lat(Angle(rPhiNext, true));							// (geodetic) latitude on ellipsoid (approximated)
-	pl.lon(Angle(asin(sinDL)/_rNgauss, true)); /// + lam0;
+	pl.Phi = rPhiNext;							// (geodetic) latitude on ellipsoid (approximated)
+	pl.Lam = asin(sinDL)/_rNgauss; /// + lam0;
 	return pl;
 }
 

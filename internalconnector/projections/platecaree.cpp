@@ -33,15 +33,17 @@ PlateCaree::~PlateCaree()
 {
 }
 
-Coordinate PlateCaree::ll2crd(const LatLon &ll) const
+Coordinate PlateCaree::pl2crd(const PhiLam &pl) const
 {
-    return Coordinate(ll.lon().radians(), ll.lat().radians());
+    return Coordinate(pl.Lam, pl.Phi);
 }
 
-LatLon PlateCaree::crd2ll(const Coordinate &crd) const
+PhiLam PlateCaree::crd2pl(const Coordinate &crd) const
 {
-    LatLon ll(Angle(crd.y, true), Angle(crd.x, true));
-    return ll;
+    PhiLam pl;
+    pl.Phi = crd.y;
+    pl.Lam = crd.x;
+    return pl;
 }
 
 bool PlateCaree::canUse(const Ilwis::Resource &resource)

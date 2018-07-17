@@ -8,9 +8,9 @@ class PlateCaree : public ProjectionImplementationInternal
 public:
     PlateCaree(const Ilwis::Resource &resource);
     ~PlateCaree();
-    Coordinate ll2crd(const LatLon&) const;
-    LatLon crd2ll(const Coordinate&) const;
-    static bool canUse(const Ilwis::Resource &) ;
+    Coordinate pl2crd(const PhiLam&) const;
+    PhiLam crd2pl(const Coordinate&) const;
+    static bool canUse(const Ilwis::Resource &);
     bool prepare(const QString &parms = "");
     ProjectionImplementation *clone();
 private:

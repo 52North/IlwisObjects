@@ -324,14 +324,22 @@ Ilwis::Coordinate Ilwis::operator/(const Ilwis::Coordinate& p1, double v) {
 }
 
 //---------------------------------------------------------------------------
-LatLon::LatLon(){
-
+void PhiLam::AdjustLon()
+{
+	Lam = std::fmod(Lam + M_PI, 2 * M_PI) + ((Lam < -M_PI) ? M_PI : -M_PI);
 }
 
-LatLon::LatLon(const Angle &latd, const Angle &lond, double h){
-    lat(latd);
-    lon(lond);
-    z= h;
+//---------------------------------------------------------------------------
+LatLon::LatLon(){
+    x = rUNDEF;
+    y = rUNDEF;
+    z = 0;
+}
+
+LatLon::LatLon(const double latd, const double lond, const double height){
+    y = latd;
+    x = lond;
+    z = height;
 }
 
 LatLon::LatLon(const QString &lat, const QString &lon)
@@ -368,23 +376,6 @@ LatLon::LatLon(const QString &lat, const QString &lon)
     if ( x == rUNDEF || y == rUNDEF)
         x = y = rUNDEF;
 }
-
-Angle LatLon::lat() const{
-    return y;
-}
-Angle LatLon::lon() const{
-    return x;
-}
-
-void LatLon::lat(const Angle& val){
-    y = val.degrees();
-}
-
-void LatLon::lon(const Angle& val){
-    x = val.degrees();
-}
-
-
 
 QString LatLon::toString(int decimals, bool ) const
 {

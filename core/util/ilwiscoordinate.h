@@ -53,17 +53,27 @@ public:
     }
 };
 
-class KERNELSHARED_EXPORT LatLon : public Ilwis::Coordinate {
+struct KERNELSHARED_EXPORT PhiLam  // Phi and Lam in radians; philam is always in radians
+{
+	double Phi, Lam;
+	PhiLam(): Phi(rUNDEF), Lam(rUNDEF) {}
+	bool fUndef() { return Phi == rUNDEF || Lam == rUNDEF; }
+	void AdjustLon();
+};
+
+class KERNELSHARED_EXPORT LatLon : public Ilwis::Coordinate { // lat == y, lon == x; latlon is always in degrees
 public:
     LatLon();
-    LatLon(const Angle& latd, const Angle& lond, double h=0);
+    LatLon(const double latd, const double lond, const double height = 0);
     LatLon(const QString& lat, const QString& lon);
-    Angle lat() const;
-    Angle lon() const;
-
-    void lat(const Angle& lat);
-    void lon(const Angle& lon);
-
+    double Phi() const    { return M_PI / 180 * y; }
+    double Lambda() const { return M_PI / 180 * x; }
+    void Phi(double phi)       { y = phi * 180 / M_PI; }
+    void Lambda(double lambda) { x = lambda * 180 / M_PI; }
+    void Height(double height) { z = height; }
+    double Lat() const { return y; }
+    double Lon() const { return x; }
+    double Height() const { return z; }
     virtual QString toString(int decimals=2, bool use3D = false) const;
 };
 

@@ -167,14 +167,14 @@ void SubGridLayer::calcEnvelope(Coordinate& cmin, Coordinate& cmax) const {
         LatLon llmin = screenCsy->coord2latlon(cmin);
         LatLon llmax = screenCsy->coord2latlon(cmax);
         if (llmin.isValid() && llmax.isValid()) {
-            if (llmin.lat() <= -85)
-                cmin.y = screenCsy->latlon2coord(LatLon(-85, llmin.lon())).y;
-            if (llmin.lon() < -180)
-                cmin.x = screenCsy->latlon2coord(LatLon(llmin.lat(), -180)).x;
-            if (llmax.lat() > 85)
-                cmax.y = screenCsy->latlon2coord(LatLon(85, llmax.lon())).y;
-            if (llmax.lon() > 180)
-                cmax.x = screenCsy->latlon2coord(LatLon(llmax.lat(), 180)).x;
+            if (llmin.Lat() <= -85)
+                cmin.y = screenCsy->latlon2coord(LatLon(-85, llmin.Lon())).y;
+            if (llmin.Lon() < -180)
+                cmin.x = screenCsy->latlon2coord(LatLon(llmin.Lat(), -180)).x;
+            if (llmax.Lat() > 85)
+                cmax.y = screenCsy->latlon2coord(LatLon(85, llmax.Lon())).y;
+            if (llmax.Lon() > 180)
+                cmax.x = screenCsy->latlon2coord(LatLon(llmax.Lat(), 180)).x;
         }
     }
 }

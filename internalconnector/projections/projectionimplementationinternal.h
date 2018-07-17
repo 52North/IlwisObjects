@@ -17,13 +17,16 @@ public:
 protected:
     void copyTo(ProjectionImplementation *prj);
     ProjectionImplementationInternal();
-    virtual Coordinate ll2crd(const LatLon&) const = 0;
-    virtual LatLon crd2ll(const Coordinate&) const = 0;
+    virtual Coordinate pl2crd(const PhiLam&) const = 0;
+    virtual PhiLam crd2pl(const Coordinate&) const = 0;
 
     double _easting;
     double _northing;
     double _maxis;
-    double _centralMeridian;
+    //double _centralMeridian;
+    double _phi0;
+    double _lam0;
+
 };
 }
 }
