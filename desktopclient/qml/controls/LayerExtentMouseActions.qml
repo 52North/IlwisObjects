@@ -23,6 +23,7 @@ MouseArea {
     signal zoomEnded(string envelope)
     signal setZoomPanButton(bool enablePanAndZoomOut)
     signal checkZoomNormalButton(bool enablePanAndZoomOut)
+    signal uncheckPanButton()
     signal click(int mx, int my)
     signal mousePressed(int mx, int my)
     signal mouseMoved(int mx, int my)
@@ -281,7 +282,13 @@ MouseArea {
         if ( layerManager){
             var envelope = layerManager.rootLayer.zoomEnvelope
             Global.calcZoomOutEnvelope(envelope, layers, viewmanager, wheel.angleDelta.y < 0 ? 0.9 : -0.2 )
-            zoomEnded(envelope)
+            var enablePanAndZoomOut = layerManager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerManager.rootLayer.scrollInfo.ysizeperc < 1.0
+            setZoomPanButton(enablePanAndZoomOut)
+            if (!enablePanAndZoomOut && !layerManager.zoomInMode) {
+                checkZoomNormalButton(false)
+                uncheckPanButton()
+                layerManager.zoomOutMode = false
+            }
         }
     }
 }

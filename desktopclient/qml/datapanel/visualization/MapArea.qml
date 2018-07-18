@@ -47,6 +47,12 @@ DropArea {
                     layerview.maptools.normalButton.checked = !enablePanAndZoomOut
                 }
             }
+            Connections {
+                target: mouseActions
+                onUncheckPanButton :{
+                    layerview.maptools.panButton.checked = false
+                }
+            }
 
             Connections {
                 target: mouseActions
