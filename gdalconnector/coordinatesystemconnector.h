@@ -20,6 +20,7 @@ public:
     
 private:
     void setProjectionParameter(OGRSpatialReferenceH handle, const char *wkt, Projection::ProjectionParamValue parmType, IProjection &projection);
+    std::vector<double> getShifts(QString & fileName, QString & datumName) const;
 };
 }
 }

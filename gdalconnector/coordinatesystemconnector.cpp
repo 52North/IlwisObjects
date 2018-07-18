@@ -23,7 +23,7 @@
 #include "dataformat.h"
 #include "gdalconnector.h"
 #include "coordinatesystemconnector.h"
-
+#include "ilwiscontext.h"
 
 using namespace Ilwis;
 using namespace Gdal;
@@ -62,6 +62,45 @@ void CoordinateSystemConnector::extractUserDefinedEllipsoid(ConventionalCoordina
     }
 }
 
+std::vector<double> CoordinateSystemConnector::getShifts(QString & filename, QString & datumName) const {
+    std::vector<double> result;
+    auto basePath = context()->ilwisFolder().absoluteFilePath() + "/extensions/gdalconnector/resources";
+    QFileInfo fileInfo(basePath + "/" + filename);
+    if ( !fileInfo.exists()) {
+        kernel()->issues()->log(TR(ERR_MISSING_SYSTEM_FILE_1).arg(filename), IssueObject::itCritical);
+        return result;
+    }
+
+    QFile file(fileInfo.absoluteFilePath());
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        kernel()->issues()->log(TR(ERR_MISSING_SYSTEM_FILE_1).arg(filename), IssueObject::itCritical);
+        return result;
+    }
+
+    QTextStream txtFile(&file);
+    bool skip = true;
+    while (!txtFile.atEnd()) {
+        QString line = txtFile.readLine();
+        if (skip) { // first line is header
+            skip = false;
+            continue;
+        }
+        QStringList parts = line.split(',');
+        // skip non-applcable lines
+        if (parts.size() < 21) {
+            continue;
+        }
+        if (parts[0].isEmpty() || parts[0].startsWith("#")) {
+            continue;
+        }
+        if (parts[1].trimmed() == datumName || parts[3].trimmed() == datumName) {
+            for (int i = 14; i < 21; ++i)
+                result.push_back(parts[i].trimmed().toDouble());
+        }
+    }
+    return result;
+}
+
 bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
 
     if (!GdalConnector::loadMetaData(data, options))
@@ -73,11 +112,33 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
 
         if ( type() == itCONVENTIONALCOORDSYSTEM) {
             ConventionalCoordinateSystem *csyp = static_cast<ConventionalCoordinateSystem *>(csy);
+            QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
+            char *wkt = new char[10000];
+            gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
+            IEllipsoid ellipsoid;
+            if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
+                ellipsoid.prepare("code=wkt:" + ellipsoidName);
+                if ( ellipsoid.isValid())
+                    csyp->setEllipsoid(ellipsoid);
+                else
+                 extractUserDefinedEllipsoid(csyp, srshandle);
+            }else {
+                extractUserDefinedEllipsoid(csyp, srshandle);
+            }
             QString datumName(gdal()->getAttributeValue(srshandle,"Datum",0));
             if ( datumName == "WGS_1984")
                 csy->prepare("+proj=longlat +ellps=WGS84 +datum=WGS84");
             else {
                 GeodeticDatum *datum = new GeodeticDatum(datumName);
+                std::vector<double> shifts = getShifts(QString("gcs.override.csv"), datumName);
+                if (shifts.size() == 0)
+                    shifts = getShifts(QString("gcs.csv"), datumName);
+                if (shifts.size() >= 3) {
+                    if (shifts.size() >= 7)
+                        datum->set7TransformationParameters(shifts[0], shifts[1], shifts[2], shifts[3], shifts[4], shifts[5], shifts[6]);
+                    else
+                        datum->set3TransformationParameters(shifts[0], shifts[1], shifts[2], ellipsoid);
+                }
                 //datum.prepare("wkt=" + datumName);
                 if ( datum->isValid())
                     csyp->setDatum(datum);
@@ -114,20 +175,6 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
                         csy->prepare(sproj4);
                     }
                 }
-            }
-            QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
-            char *wkt = new char[10000];
-            gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
-            IEllipsoid ellipsoid;
-            if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
-                ellipsoid.prepare("code=wkt:" + ellipsoidName);
-                if ( ellipsoid.isValid())
-                    csyp->setEllipsoid(ellipsoid);
-                else
-                 extractUserDefinedEllipsoid(csyp, srshandle);
-            }else {
-                extractUserDefinedEllipsoid(csyp, srshandle);
-
             }
             Envelope env = gdal()->envelope(_handle, 0);
             if ( env.isValid() && !env.isNull()){
