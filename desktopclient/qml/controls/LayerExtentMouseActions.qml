@@ -10,11 +10,14 @@ MouseArea {
     height : parent.height
     hoverEnabled: true
     property LayerManager layerManager
+    property LayerExtentsToolbar maptools
     property bool zoomToExtents : true
     property bool showInfo : true
     property bool hasPermanence : false
     property bool zoomStarted : false
     property bool panStarted : false
+    property bool zoomOutModeInWheelMode : false
+    property bool panModeInWheelMode : false
     property int panPrevMouseX : -1
     property int panPrevMouseY : -1
     property string selectiondrawerColor : "basic"
@@ -23,12 +26,22 @@ MouseArea {
     signal zoomEnded(string envelope)
     signal setZoomPanButton(bool enablePanAndZoomOut)
     signal checkZoomNormalButton(bool enablePanAndZoomOut)
-    signal uncheckPanButton()
+    signal checkZoomOutButton(bool checked)
+    signal checkNormalButton(bool checked)
+    signal checkPanButton(bool checked)
     signal click(int mx, int my)
     signal mousePressed(int mx, int my)
     signal mouseMoved(int mx, int my)
     signal mouseReleased(int mx, int my)
     signal selectTab()
+
+    Connections {
+        target: maptools
+        onToolbarClicked :{
+            zoomOutModeInWheelMode = false
+            panModeInWheelMode = false
+        }
+    }
 
     FloatingRectangle{
         id : floatrect
@@ -67,6 +80,8 @@ MouseArea {
     onPressed:  {
         if ( !layerManager)
             return
+        zoomOutModeInWheelMode = false
+        panModeInWheelMode = false
         selectTab()
         if ( layerManager.zoomInMode || layerManager.zoomOutMode){
 			if (!zoomStarted){
@@ -284,10 +299,20 @@ MouseArea {
             Global.calcZoomOutEnvelope(envelope, layers, viewmanager, wheel.angleDelta.y < 0 ? 0.9 : -0.2 )
             var enablePanAndZoomOut = layerManager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerManager.rootLayer.scrollInfo.ysizeperc < 1.0
             setZoomPanButton(enablePanAndZoomOut)
-            if (!enablePanAndZoomOut && !layerManager.zoomInMode) {
-                checkZoomNormalButton(false)
-                uncheckPanButton()
+            if (!enablePanAndZoomOut && (layerManager.zoomOutMode || layerManager.panningMode)) {
+                checkZoomOutButton(false)
+                checkPanButton(false)
+                checkNormalButton(true)
+                zoomOutModeInWheelMode = layerManager.zoomOutMode
+                panModeInWheelMode = layerManager.panningMode
                 layerManager.zoomOutMode = false
+                layerManager.panningMode = false
+            } else if (enablePanAndZoomOut && (zoomOutModeInWheelMode || panModeInWheelMode)) {
+                layerManager.zoomOutMode = zoomOutModeInWheelMode
+                layerManager.panningMode = panModeInWheelMode
+                checkZoomOutButton(zoomOutModeInWheelMode)
+                checkPanButton(panModeInWheelMode)
+                checkNormalButton(false)
             }
         }
     }

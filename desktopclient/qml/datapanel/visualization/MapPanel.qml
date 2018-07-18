@@ -56,6 +56,10 @@ Item {
         id : entireClicked
         onTriggered : {
             entireMap()
+            if ( manager){
+                manager.zoomOutMode = false
+                manager.panningMode = false
+            }
         }
     }
     Action {

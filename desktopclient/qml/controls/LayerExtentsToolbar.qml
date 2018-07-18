@@ -15,6 +15,7 @@ ToolBar{
     property alias normalButton: normalButton
     property alias panButton: panButton
     property alias zoomoutButton: zoomoutButton
+    signal toolbarClicked()
     Row {
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
@@ -31,6 +32,7 @@ ToolBar{
                 if (!zoominButton.checked) {
                     normalButton.checked = true
                 }
+                toolbarClicked()
             }
             Controls.ToolTip{
                 target: entireMap
@@ -49,6 +51,7 @@ ToolBar{
                 normalButton.checked = !checked
                 zoominButton.checked = false
                 zoomoutButton.checked = false
+                toolbarClicked()
 
             }
             Controls.ToolTip{
@@ -71,6 +74,7 @@ ToolBar{
                 normalButton.checked = !checked
                 zoomoutButton.checked = false
                 panButton.checked = false
+                toolbarClicked()
             }
             Controls.ToolTip{
                 target: zoominButton
@@ -88,6 +92,7 @@ ToolBar{
                 normalButton.checked = !checked
                 zoominButton.checked = false
                 panButton.checked = false
+                toolbarClicked()
             }
             Controls.ToolTip{
                 target: zoomoutButton
@@ -108,6 +113,7 @@ ToolBar{
                 zoominButton.checked = false
                 zoomoutButton.checked = false
                 panButton.checked = false
+                toolbarClicked()
             }
             Controls.ToolTip{
                 target: normalButton

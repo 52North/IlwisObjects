@@ -49,8 +49,20 @@ DropArea {
             }
             Connections {
                 target: mouseActions
-                onUncheckPanButton :{
-                    layerview.maptools.panButton.checked = false
+                onCheckNormalButton :{
+                    layerview.maptools.normalButton.checked = checked
+                }
+            }
+            Connections {
+                target: mouseActions
+                onCheckZoomOutButton :{
+                    layerview.maptools.zoomoutButton.checked = checked
+                }
+            }
+            Connections {
+                target: mouseActions
+                onCheckPanButton :{
+                    layerview.maptools.panButton.checked = checked
                 }
             }
 
@@ -100,6 +112,7 @@ DropArea {
 		    Controls.LayerExtentMouseActions{
 			    id : mouseActions
 			    layerManager: manager
+			    maptools : layerview.maptools
 			    zoomToExtents: true
 			    hasPermanence: false
 			    showInfo: true
