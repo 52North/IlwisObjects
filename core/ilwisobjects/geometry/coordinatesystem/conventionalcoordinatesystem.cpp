@@ -34,7 +34,7 @@ Coordinate ConventionalCoordinateSystem::coord2coord(const ICoordinateSystem &so
     if (ll.isValid()) {
         if (hasType(sourceCs->ilwisType(), itCONVENTIONALCOORDSYSTEM)) {
             const IConventionalCoordinateSystem & srcCs = sourceCs.as<ConventionalCoordinateSystem>();
-            if (!srcCs->datum()->equal(*datum().get())) { // different datums given, datum shift needed
+            if (srcCs->datum().get() && datum().get() && !srcCs->datum()->equal(*datum().get())) { // different datums given, datum shift needed
                 ll = srcCs->datum()->llToWGS84(ll, *srcCs->ellipsoid().ptr());
                 ll = datum()->llFromWGS84(ll, *ellipsoid().ptr());
             }
