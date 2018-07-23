@@ -82,6 +82,8 @@ private:
     unsigned long _height;
     bool _linear;
     bool _initDone;
+    bool _refreshPaletteAtNextCycle;
+    NumericRange _currentStretchRange;
 
 public slots:
     void requestRedraw();

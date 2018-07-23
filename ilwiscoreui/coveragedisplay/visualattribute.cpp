@@ -113,6 +113,12 @@ std::vector<QColor> VisualAttribute::colors(int size) const{
     return std::vector<QColor>();
 }
 
+std::vector<QColor> VisualAttribute::stretchedColors(int size, NumericRange & displayStretchRange) const{
+    if ( _representation.isValid() &&  _representation->colors())
+        return _representation->colors()->values2colors(displayStretchRange, _stretchRange,size) ;
+    return std::vector<QColor>();
+}
+
 LayerModel *VisualAttribute::layer() const
 {
     return _layer;

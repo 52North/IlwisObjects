@@ -13,6 +13,7 @@ Item {
     property var maxValue : -1
     property var resolution : 0
     signal markerPositions(var positions)
+    signal markerReleased()
 
     Text {
         width : 20
@@ -81,8 +82,9 @@ Item {
                 }
             }
             onReleased : {
-                selectedMarker = -1
-                canvas.requestPaint()
+                selectedMarker = -1;
+                markerReleased();
+                canvas.requestPaint();
             }
         }
     }

@@ -28,6 +28,7 @@ namespace Ilwis {
         protected:
             bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);
             bool DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);            
+            double getStretchedValue(double value, const NumericRange& actualRange, const NumericRange& stretchRange) const;
             QVector<int> texture_data;
             const unsigned long sizeX, sizeY;
             const long offsetX, offsetY;

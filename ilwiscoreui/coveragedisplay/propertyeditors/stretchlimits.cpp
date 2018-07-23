@@ -96,6 +96,11 @@ void StretchLimits::setMarkers(const QVariantList& marks) {
     }
 }
 
+void StretchLimits::markersConfirmed() {
+    vpmodel()->layer()->layerManager()->needUpdate(true); // get prepare(ptGEOMETRY) be called at the next redraw
+    vpmodel()->layer()->redraw();
+}
+
 void StretchLimits::setStretchLimit(double perc) {
     ICoverage cov = coverage();
     IRasterCoverage raster = cov.as<RasterCoverage>();

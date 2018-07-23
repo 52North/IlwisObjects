@@ -36,6 +36,12 @@ Row {
                 editor.setMarkers(positions)
             }  
         }
+        Connections {
+            target: slider
+            onMarkerReleased :{
+                editor.markersConfirmed()
+            }
+        }
             
         Controls.MultiPointSlider {
             id : slider
@@ -97,8 +103,9 @@ Row {
         }
     }
     function updateMarkerPositions(fraction){
-        editor.setStretchLimit(fraction)
-        slider.paint()
+        editor.setStretchLimit(fraction); // calls editor.setMarkers(positions)
+        editor.markersConfirmed();
+        slider.paint();
     }
 }
 

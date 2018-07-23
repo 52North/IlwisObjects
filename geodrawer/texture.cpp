@@ -174,6 +174,30 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
 	return true;
 }
 
+double Texture::getStretchedValue(double value, const NumericRange& actualRange, const NumericRange& stretchRange) const
+{
+    if (value == rUNDEF)
+        return value;
+    bool _linear = true; // must be set along with the same value in VisualAttribute/ContinuousColorLookup, but at the time of writing this, the linear/logarithmic option isn't in place yet
+    if (stretchRange.isValid()) {
+        if (_linear) {
+            if (value < stretchRange.center()) {
+                double stretchFraction = (value - stretchRange.min()) / stretchRange.distance();
+                value = actualRange.min() + stretchFraction * actualRange.distance();
+            }
+            else {
+                if (value >= stretchRange.center()) {
+                    double stretchFraction = (stretchRange.max() - value) / stretchRange.distance();
+                    value = actualRange.max() - stretchFraction * actualRange.distance();
+                }
+            }
+        }
+    }
+
+    value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1
+    return value;
+}
+
 bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
 {
     long imageWidth = _raster->size().xsize();
@@ -195,36 +219,39 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
 
     BoundingBox bb(Pixel(offsetX, offsetY), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1));
     quint32 size = texSizeX * texSizeY;
-    texture_data.resize(size);
+    if (texture_data.size() == 0)
+        texture_data.resize(size); // allowed the first time only; after this the vector will always be in-use by a webGL object
     PixelIterator pixIter(_raster, bb); // This iterator runs through bb. The corners of bb are "inclusive".
 
     if (*fDrawStop)
         return false;
 
     if (hasType(domain, itNUMERICDOMAIN)) {
-        SPNumericRange numrange = _raster->datadef().range<NumericRange>();
-        if (!numrange->isValid())
-            _raster->statistics(NumericStatistics::pBASIC);
+        VisualAttribute * attr = _rasterLayerModel->activeAttribute();
+        if (attr != 0) {
+            NumericRange & actualRange = attr->actualRange();
+            NumericRange & stretchRange = attr->stretchRange();
 
-        if (*fDrawStop)
-            return false;
+            if (*fDrawStop)
+                return false;
 
-        auto end = pixIter.end();
-        quint32 position = 0;
-        while (pixIter != end && position < size) {
-            double value = *pixIter;
-            int index = isNumericalUndef2(value, _raster) ? 0 : 1 + (iPaletteSize - 2) * (value - numrange->min()) / numrange->distance();
-            texture_data[position] = index; // int32 to quint8 conversion (do we want this?)
-            pixIter += zoomFactor;
-            if (pixIter.ychanged()) {
-                if (*fDrawStop)
-                    return false;
+            auto end = pixIter.end();
+            quint32 position = 0;
+            while (pixIter != end && position < size) {
+                double value = *pixIter;
+                int index = isNumericalUndef2(value, _raster) ? 0 : 1 + (iPaletteSize - 2) * getStretchedValue(value, actualRange, stretchRange);
+                texture_data[position] = index; // int32 to quint8 conversion (do we want this?)
+                pixIter += zoomFactor;
+                if (pixIter.ychanged()) {
+                    if (*fDrawStop)
+                        return false;
 
-                position += (texSizeX - xSizeOut);
-                if (zoomFactor > 1)
-                    pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+                    position += (texSizeX - xSizeOut);
+                    if (zoomFactor > 1)
+                        pixIter += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+                }
+                ++position;
             }
-            ++position;
         }
     }
     else if (hasType(domain, itITEMDOMAIN)) {

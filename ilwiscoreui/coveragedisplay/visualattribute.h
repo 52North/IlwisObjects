@@ -56,6 +56,7 @@ public:
     static const QString GLOBAL_ONLY;
 
     std::vector<QColor> colors(int size=256) const;
+    std::vector<QColor> stretchedColors(int size, NumericRange & displayStretchRange) const;
     LayerModel *layer() const;
 	bool isAbstractAttribute() const;
 

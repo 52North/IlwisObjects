@@ -93,6 +93,7 @@ RasterLayerModel::RasterLayerModel()
 : textureHeap(0)
 , _linear(true)
 , _initDone(false)
+, _refreshPaletteAtNextCycle(false)
 {
 
 }
@@ -242,8 +243,22 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         // mark remaining quads as inactive
         for (std::vector<Quad>::iterator quad = _quads.begin(); quad != _quads.end(); ++quad)
             quad->active = false;
-        // check which quads are in the viewport
+        // check which quads are in the viewport, and mark them active
         DivideImage(0, 0, _width, _height);
+        // refresh the pixel content of the textures (for stretch)
+        VisualAttribute * attr = activeAttribute();
+        if (attr != 0) {
+            if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
+                _currentStretchRange = attr->stretchRange(); // refresh the stretch range to be used for the pixel data
+                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are used
+                for (qint32 i = 0; i < _quads.size(); ++i) {
+                    if (_quads[i].active) {
+                        _quads[i].refresh = true; // this ensures the "active" quads are taken out and back into webgl
+                    }
+                }
+                _refreshPaletteAtNextCycle = true;
+            }
+        }
         // generate "addQuads" and "removeQuads" queues
         _addQuads.clear();
         _removeQuads.clear();
@@ -287,6 +302,10 @@ void RasterLayerModel::init()
     double log2height = log((double)_imageHeight)/log(2.0);
     log2height = max(6, ceil(log2height)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
     _height = pow(2, log2height);
+
+    VisualAttribute * attr = activeAttribute();
+    if (attr != 0)
+        _currentStretchRange = attr->stretchRange();
 
     refreshPalette();
     connect(layerManager(), &LayerManager::needUpdateChanged, this, &RasterLayerModel::requestRedraw);
@@ -556,7 +575,7 @@ void RasterLayerModel::refreshPalette() {
     VisualAttribute * attr = activeAttribute();
     if (attr != 0) {
         if (hasType(_raster->datadef().domain()->ilwisType(), itNUMERICDOMAIN)) {
-            std::vector<QColor> colors = attr->colors(_paletteSize);
+            std::vector<QColor> colors = attr->stretchedColors(_paletteSize, _currentStretchRange);
             for (int i = 0; i < _paletteSize; ++i)
                 addPaletteColor(colors[i].red(), colors[i].green(), colors[i].blue(), colors[i].alpha());
         } else if (hasType(_raster->datadef().domain()->ilwisType(), itITEMDOMAIN)) {
@@ -602,6 +621,11 @@ void RasterLayerModel::requestRedraw() {
     _prepared = ptNONE;
     updateGeometry(true);
     add2ChangedProperties("buffers");
+    if (_refreshPaletteAtNextCycle) {
+        refreshPalette();
+        add2ChangedProperties("palette");
+        _refreshPaletteAtNextCycle = false;
+    }
 }
 
 QVector<qint32> RasterLayerModel::removeQuads() {

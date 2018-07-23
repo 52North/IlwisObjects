@@ -21,6 +21,7 @@ namespace Ilwis {
 
             Q_INVOKABLE void setMarkers(const QVariantList& marks);
             Q_INVOKABLE void setStretchLimit(double perc);
+            Q_INVOKABLE void markersConfirmed();
 
             bool canUse(const IIlwisObject &obj, const QString &name) const;
 
