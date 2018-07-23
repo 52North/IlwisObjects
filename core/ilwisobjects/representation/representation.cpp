@@ -140,7 +140,7 @@ IlwisData<Representation> Representation::defaultRepresentation(const IDomain &d
     QString code("code=rpr:monochromeblack"); // default
     if ( hasType(dom->ilwisType(), itNUMERICDOMAIN)){
         NumericRange *numrange = dom->range()->as<NumericRange>();
-        if ( numrange->min() >= 0 && numrange->max() < 256 && numrange->resolution() == 1)
+        if ( numrange->resolution() == 1)
             code = "code=rpr:greyscale";
         else
             code = "code=rpr:pseudo";
