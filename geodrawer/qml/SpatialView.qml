@@ -324,7 +324,7 @@ Item {
                 for(var j=0; j < changedProperties.length; ++j){
 				    var property = changedProperties[j]
 				    changeProperty(property, layer)
-				    layer.removeFromChangedProperties(property)
+				    layer.removeFromChangedProperties(property) // note: the loop as it is here will not handle a list of properties in one go
 				}
                 var layerList = layer.childLayers
                 for ( var i=0; i < layerList.length; ++i){
