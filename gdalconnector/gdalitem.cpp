@@ -353,12 +353,17 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
     if (srshandle != 0){
         const char * projcs_epsg = gdal()->getAuthorityCode(srshandle, "PROJCS");
         const char * geocs_epsg = gdal()->getAuthorityCode(srshandle, "GEOGCS");
-        if (QString(gdal()->getAuthorityName(srshandle, "PROJCS")).compare("EPSG", Qt::CaseInsensitive) == 0 && projcs_epsg) {
+        const char * localcs_epsg = gdal()->getAuthorityCode(srshandle, "LOCAL_CS");
+        if (projcs_epsg && QString(gdal()->getAuthorityName(srshandle, "PROJCS")).compare("EPSG", Qt::CaseInsensitive) == 0) {
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(projcs_epsg), itCONVENTIONALCOORDSYSTEM);
             if ( resource.isValid())
                 ret = resource.id();
-        }else if (QString(gdal()->getAuthorityName(srshandle, "GEOGCS")).compare("EPSG", Qt::CaseInsensitive) == 0 && geocs_epsg){
+        }else if (geocs_epsg && QString(gdal()->getAuthorityName(srshandle, "GEOGCS")).compare("EPSG", Qt::CaseInsensitive) == 0){
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(geocs_epsg), itCONVENTIONALCOORDSYSTEM);
+            if ( resource.isValid())
+                ret = resource.id();
+        }else if (localcs_epsg && QString(gdal()->getAuthorityName(srshandle, "LOCAL_CS")).compare("EPSG", Qt::CaseInsensitive) == 0){
+            Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(localcs_epsg), itCONVENTIONALCOORDSYSTEM);
             if ( resource.isValid())
                 ret = resource.id();
         }else {
