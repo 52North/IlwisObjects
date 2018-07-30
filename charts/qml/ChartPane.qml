@@ -93,6 +93,16 @@ Rectangle {
 			    var bar = series.append(smodel.name, points);
                 bar.color = chart.seriesColor(i);
             }
+            if (ctype == "pie") {
+			    var points = smodel.points;
+                var slice = series.append("pipo", 10)
+                var slice = series.append("mameloe", 15)
+                var slice = series.append("dikkedeur", 7)
+
+//                for (var j = 0; j < points.length; j++) {
+//                    var slice = series.append(smodel.name + (j+1), points[j].y)
+//                }
+            }
 		}
 	}
 
@@ -106,7 +116,7 @@ Rectangle {
         if (ctype == "bar")
             return visibleGraphs.createSeries(ChartView.SeriesTypeBar, name, xas, yas);
         if ( ctype == "pie")
-            return visibleGraphs.createSeries(ChartView.SeriesTypePie, name, xas, yas);
+            return visibleGraphs.createSeries(ChartView.SeriesTypePie, name);
         if ( ctype == "points"){
             var series =  visibleGraphs.createSeries(ChartView.SeriesTypeScatter, name, xas, yas);
             series.markerSize = 10
