@@ -185,12 +185,12 @@ void Ilwis::Ui::LayerManager::move(int nodeId, const QModelIndex & targetLocatio
 {
     QStandardItem *currentLayer = findLayer(nodeId);
     auto startRow = currentLayer->index();
-    int shift = startRow.row()  < targetLocation.row() ? -1 : 0;
+//    int shift = startRow.row()  < targetLocation.row() ? -1 : 0;
     QStandardItem *targetItem = _tree->itemFromIndex(targetLocation);
 
     QList<QStandardItem *> layers = _tree->takeRow(currentLayer->row());
 
-    //_tree->insertRow(targetLocation.row() + shift, layers);
+//    _tree->insertRow(targetLocation.row() + shift, layers);
     _tree->insertRow(targetItem->row(), layers);
 
 
@@ -226,6 +226,33 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
                 }
             }
 		}
+        else {
+            // adjust rootlayer envelop to fit all layers
+            Coordinate crd1_trans;
+            Coordinate crd2_trans;
+            Envelope envelop = cov->envelope();
+            if (!cov->coordinateSystem()->isEqual(lm->rootLayer()->screenCsy().ptr())) {
+                Coordinate crn1 = envelop.min_corner();
+                Coordinate crn2 = envelop.max_corner();
+
+                crd1_trans = lm->rootLayer()->screenCsy()->coord2coord(cov->coordinateSystem(), crn1);
+                crd2_trans = lm->rootLayer()->screenCsy()->coord2coord(cov->coordinateSystem(), crn2);
+            }
+            else {
+                crd1_trans = envelop.min_corner();
+                crd2_trans = envelop.max_corner();
+            }
+            Envelope orgenv = lm->rootLayer()->coverageEnvelope();
+            if (!(orgenv.contains(crd1_trans) && orgenv.contains(crd2_trans))) {
+                orgenv += crd1_trans;
+                orgenv += crd2_trans;
+
+                lm->rootLayer()->coverageEnvelope(orgenv);
+                if (cov->ilwisType() == itRASTER) {
+                    // TODO: check georef none ?
+                }
+            }
+        }
         qint32 lowernodeid = options.contains("lowernodeid") ? options["lowernodeid"].toInt() : iUNDEF;
 		layer->nodeId(lm->nextId());
 		layer->fillData();
