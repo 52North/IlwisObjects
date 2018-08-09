@@ -16,6 +16,8 @@ Rectangle {
 	property ChartModel chart : models.createChartModel(chartView) 
     property var updateChart : chart ? chart.updateSeries : 0
     property alias margins : visibleGraphs.margins
+    property alias xmin : xas.min
+    property alias xmax : xas.max
 
     onUpdateChartChanged : {
         visibleGraphs.removeAllSeries()
