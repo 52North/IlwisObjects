@@ -10,6 +10,7 @@ Row {
     height: parent ? parent.height - 10 : 0
     property var editor
     Column {
+        id : minihist
         width : parent.width - 60
         height: parent ? parent.height - 10 : 0
         x : 10
@@ -28,6 +29,21 @@ Row {
                 chartArea.item.margins.right = 0
                 chartArea.item.margins.top = 0
                 chartArea.item.margins.bottom = 0
+
+console.log("zoom? ", editor.zoomOnPreset);
+console.log("str_max: ", editor.max);
+console.log("chart_max: ", chartArea.item.xmax);
+console.log("slid_max: ", slider.maxValue);
+                 if (editor.zoomOnPreset) {
+                    chartArea.item.xmin = editor.min;
+                    chartArea.item.xmax = editor.max;
+                    slider.minValue = editor.min;
+                    slider.maxValue = editor.max;
+console.log("met zoom")
+console.log("str_max: ", editor.max);
+console.log("chart_max: ", chartArea.item.xmax);
+console.log("slid_max: ", slider.maxValue);
+                }
             }
         }
         Connections {
@@ -54,8 +70,10 @@ Row {
         }
     }
     Column {
-        width : 50
+        width : 70
         height :110
+        anchors.leftMargin : 5
+        anchors.rightMargin : 5
 
         Text {
             width : parent.width
@@ -63,7 +81,7 @@ Row {
             text : "Presets"
         }
         Button {
-            width : parent.width
+            width : parent.width - 20
             height : 20
             text : "0%"
             onClicked : {
@@ -72,7 +90,7 @@ Row {
         }
 
         Button {
-            width : parent.width
+            width : parent.width - 20
             height : 20
             text : "1%"
 
@@ -83,7 +101,7 @@ Row {
         }
 
         Button {
-            width : parent.width
+            width : parent.width - 20
             height : 20
             text : "2%"
 
@@ -93,7 +111,7 @@ Row {
         }
 
         Button {
-            width : parent.width
+            width : parent.width - 20
             height : 20
             text : "5%"
 
@@ -101,10 +119,40 @@ Row {
                 updateMarkerPositions(0.05)
             }
         }
+        Text {
+            width : parent.width
+            height : 24
+            text : "Zoom on preset"
+        }
+        Switch {
+            id : zoomonpreset
+            checked : editor.zoomOnPreset
+
+            onClicked : {
+                editor.zoomOnPreset = checked
+
+                if (!zoomonpreset.checked) {
+                    updateMarkerPositions(editor.zoomLevel);
+                    slider.minValue = editor.min;
+                    slider.maxValue = editor.max;
+                    slider.paint();
+                }
+
+            }
+
+        }
     }
     function updateMarkerPositions(fraction){
         editor.setStretchLimit(fraction); // calls editor.setMarkers(positions)
         editor.markersConfirmed();
+
+        if (zoomonpreset.checked) {
+            chartArea.item.xmin = editor.min;
+            chartArea.item.xmax = editor.max;
+            slider.minValue = editor.min;
+            slider.maxValue = editor.max;
+        }
+
         slider.paint();
     }
 }

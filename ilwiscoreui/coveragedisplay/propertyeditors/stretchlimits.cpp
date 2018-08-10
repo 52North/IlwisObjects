@@ -74,6 +74,16 @@ int StretchLimits::resolution() const {
     return n;
 }
 
+bool StretchLimits::zoomOnPreset() const
+{
+    return _zoomOnPreset;
+}
+
+void StretchLimits::zoomOnPreset(bool onoff)
+{
+    _zoomOnPreset = onoff;
+}
+
 void StretchLimits::setMarkers(const QVariantList& marks) {
     if (marks.size() == 2) {
         bool ok;
@@ -105,10 +115,12 @@ void StretchLimits::setStretchLimit(double perc) {
     ICoverage cov = coverage();
     IRasterCoverage raster = cov.as<RasterCoverage>();
     if (raster.isValid()) {
+        _zoomLevel = perc;  // persist zoomlevel
+
         double sum2 = 0;
         double seen = 0;
         double startV = rUNDEF, endV = rUNDEF;
-        auto hist = raster->statistics().histogram();
+        auto hist = raster->statistics(ContainerStatistics<double>::pHISTOGRAM, 100).histogram();   // make sure we have a reasonable number of bins.
 
         for (int i = 0; i < hist.size() - 1; ++i) {
             sum2 += (hist[i]._count);
