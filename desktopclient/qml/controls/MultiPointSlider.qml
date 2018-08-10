@@ -23,7 +23,7 @@ Item {
         font.pointSize : 8
     }
     Text {
-        width : 20
+        width : 40
         anchors.bottom : bar.top
         anchors.right : bar.right
         text : maxValue.toFixed(resolution)
@@ -95,16 +95,18 @@ Item {
         y : 15
         z : 10
         onPaint: {
-            if (model){
+            if (model) {
                 var ctx = getContext("2d");
                 ctx.reset();
-                ctx.clearRect(0,0,width, height);
+                ctx.clearRect(0, 0, width, height);
+
                 ctx.beginPath()
                 ctx.lineWidth = 1
                 ctx.strokeStyle = 'rgb(0,0, 0)' 
-                ctx.font = '10px sans-serif'
+                ctx.font = '8pt sans-serif'
                 ctx.stroke()
-                for(var i = 0 ; i < model.length; ++i){
+                for(var i = 0 ; i < model.length; ++i) {
+                    // draw the slider pole
                     ctx.beginPath();
                         if ( i == selectedMarker)
                         ctx.strokeStyle = 'rgb(0, 255, 0)'
@@ -115,6 +117,8 @@ Item {
                     ctx.moveTo(baseX, 0)
                     ctx.lineTo(baseX, baseY)
                     ctx.stroke()
+
+                    // draw the slider point
                     ctx.beginPath()
                     if ( i == selectedMarker)
                         ctx.fillStyle = 'rgb(0, 255, 0)'
@@ -125,13 +129,19 @@ Item {
                     ctx.lineTo(baseX + 5, baseY + 5)
                     ctx.lineTo(baseX, baseY)
                     ctx.fill()
+
+                    // draw text of marker
                     ctx.beginPath()
                     ctx.lineWidth = 1
-                     ctx.strokeStyle = 'rgb(0,0, 0)' 
+                    ctx.strokeStyle = 'rgb(0,0, 0)' 
                     var v = minValue + (maxValue - minValue) * model[i].position
                     v = v.toFixed(resolution)
                     var m = ctx.measureText(v)
-                    ctx.text(v ,baseX - m.width  /2, baseY + 15)
+                    var xpos = baseX - m.width / 2
+                    xpos = Math.max(0, xpos)
+                    xpos = Math.min(xpos, width - m.width)
+                    ctx.fillStyle = 'rgb(0,0, 0)' 
+                    ctx.fillText(v, xpos, baseY + 15)
                     ctx.stroke()
                 }
             }
