@@ -41,8 +41,12 @@ VisualPropertyEditor *StretchLimits::create(VisualAttribute *p)
 }
 
 double StretchLimits::min() const {
-    return vpmodel()->stretchRange().min();
+    if (_zoomOnPreset)
+        return vpmodel()->stretchRange().min();
+    else
+        return vpmodel()->actualRange().min();
 }
+
 void StretchLimits::min(double value) {
     auto  range = vpmodel()->stretchRange();
     range.min(value);
@@ -50,9 +54,14 @@ void StretchLimits::min(double value) {
     vpmodel()->layer()->prepare(LayerModel::ptRENDER);
     vpmodel()->layer()->redraw();
 }
+
 double StretchLimits::max() const {
-    return vpmodel()->stretchRange().max();
+    if (_zoomOnPreset)
+        return vpmodel()->stretchRange().max();
+    else
+        return vpmodel()->actualRange().max();
 }
+
 void StretchLimits::max(double value) const {
     auto  range = vpmodel()->stretchRange();
     range.max(value);
@@ -84,6 +93,7 @@ void StretchLimits::zoomOnPreset(bool onoff)
     _zoomOnPreset = onoff;
 }
 
+// update coverage stretch range
 void StretchLimits::setMarkers(const QVariantList& marks) {
     if (marks.size() == 2) {
         bool ok;
@@ -96,7 +106,7 @@ void StretchLimits::setMarkers(const QVariantList& marks) {
         if (minv >= maxv)
             return;
 
-        auto rng = vpmodel()->stretchRange();
+        auto rng = vpmodel()->actualRange();
         rng.min(minv);
         rng.max(maxv);
         vpmodel()->stretchRange(rng);
@@ -143,25 +153,37 @@ void StretchLimits::setStretchLimit(double perc) {
 
 QVariantList StretchLimits::markers() const {
     QVariantList result;
-    auto range  = vpmodel()->stretchRange();
-    auto range2 = vpmodel()->actualRange();
+    auto stretch  = vpmodel()->stretchRange();
+    auto actual = vpmodel()->actualRange();
     QVariantMap mp;
-    if (isNumericalUndef(range.min())) {
+    if (isNumericalUndef(stretch.min())) {
         mp["position"] = 0;
         mp["value"] = 0;
     }
     else {
-        mp["position"] = std::abs((range2.min() - range.min())) / range2.distance();
-        mp["value"] = range.min();
+        if (_zoomOnPreset) {
+            mp["position"] = stretch.min() / stretch.distance();
+            mp["value"] = stretch.min();
+        }
+        else {
+            mp["position"] = std::abs((actual.min() - stretch.min())) / actual.distance();
+            mp["value"] = stretch.min();
+        }
     }
     result.push_back(mp);
-    if (isNumericalUndef(range.max())) {
+    if (isNumericalUndef(stretch.max())) {
         mp["position"] = 1;
         mp["value"] = 0;
     }
     else {
-        mp["position"] = std::abs(range2.min() - range.max()) / range2.distance();
-        mp["value"] = range.max();
+        if (_zoomOnPreset) {
+            mp["position"] = stretch.max() / stretch.distance();
+            mp["value"] = stretch.max();
+        }
+        else {
+            mp["position"] = std::abs(actual.min() - stretch.max()) / actual.distance();
+            mp["value"] = stretch.max();
+        }
     }
     result.push_back(mp);
 

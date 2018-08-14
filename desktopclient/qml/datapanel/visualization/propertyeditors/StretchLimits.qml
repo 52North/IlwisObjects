@@ -30,26 +30,18 @@ Row {
                 chartArea.item.margins.top = 0
                 chartArea.item.margins.bottom = 0
 
-console.log("zoom? ", editor.zoomOnPreset);
-console.log("str_max: ", editor.max);
-console.log("chart_max: ", chartArea.item.xmax);
-console.log("slid_max: ", slider.maxValue);
                  if (editor.zoomOnPreset) {
                     chartArea.item.xmin = editor.min;
                     chartArea.item.xmax = editor.max;
                     slider.minValue = editor.min;
                     slider.maxValue = editor.max;
-console.log("met zoom")
-console.log("str_max: ", editor.max);
-console.log("chart_max: ", chartArea.item.xmax);
-console.log("slid_max: ", slider.maxValue);
                 }
             }
         }
         Connections {
             target: slider
-            onMarkerPositions :{
-                editor.setMarkers(positions)
+            onMarkerPositions : {
+                editor.setMarkers(positions);
             }  
         }
         Connections {
@@ -84,6 +76,7 @@ console.log("slid_max: ", slider.maxValue);
             width : parent.width - 20
             height : 20
             text : "0%"
+
             onClicked : {
                 updateMarkerPositions(0)
             }
@@ -132,9 +125,13 @@ console.log("slid_max: ", slider.maxValue);
                 editor.zoomOnPreset = checked
 
                 if (!zoomonpreset.checked) {
-                    updateMarkerPositions(editor.zoomLevel);
+                    var oldzoom = editor.zoomlevel
+                    updateMarkerPositions(0.0);     // first reset to full scale
                     slider.minValue = editor.min;
                     slider.maxValue = editor.max;
+                    chartArea.item.xmin = editor.min;
+                    chartArea.item.xmax = editor.max;
+//                    updateMarkerPositions(oldzoom);    // put slider in position of selected %
                     slider.paint();
                 }
 
