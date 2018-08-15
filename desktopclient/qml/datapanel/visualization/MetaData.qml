@@ -37,7 +37,7 @@ Item {
         width: parent.width
         height : parent.height
         spacing : 3
-        Rectangle {
+       /* Rectangle {
             id : layerContainer
             width : 180
             height : parent.height
@@ -63,9 +63,9 @@ Item {
             }
 
 
-        }
+        }*/
         Rectangle{
-            width : parent.width - layerContainer.width - 8
+            width : parent.width - 8
             height : metatdata.height
             color : Global.alternatecolor3
 
