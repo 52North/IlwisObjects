@@ -37,7 +37,7 @@ Column {
     GridView{
         width : parent.width
         height : parent.height - header.height - 2
-        model : manager.rootLayer.layerInfoItems //manager ? manager.rootLayer.layerInfoItems : null
+        model : activeLayerManager().rootLayer.layerInfoItems //manager ? manager.rootLayer.layerInfoItems : null
 
         cellWidth : 240
         cellHeight : 15

@@ -13,20 +13,20 @@ Item {
     id : firstColumn
     width : 180
 
-	property var dummy101 : manager.layerTree
+	property var dummy101 : activeLayerManager().layerTree
 
 	onDummy101Changed : {
-		if ( manager.lastAddedCoverageLayer)
-			currentNodeId = manager.lastAddedCoverageLayer.nodeId
+		if ( activeLayerManager().lastAddedCoverageLayer)
+			currentNodeId = activeLayerManager().lastAddedCoverageLayer.nodeId
 	}
 
 	function setModel(){
 		tree.model = null
-		tree.model = manager.layerTree
+		tree.model = activeLayerManager().layerTree
         tree.hoveredRow = -1
         tree.rowBeingMoved = -1
         tree.dropHandled = true
-		var layer = manager.findLayer(currentNodeId)
+		var layer = activeLayerManager().findLayer(currentNodeId)
 		if ( layer){
 			var index = layer.index
 			tree.expand(index)
@@ -38,11 +38,11 @@ Item {
 	}
 
 	function setTreeIndex(index){
-		var idx = manager.nodeid(index)
+		var idx = activeLayerManager().nodeid(index)
 		if ( idx >= 0){
 			currentNodeId = idx
             
-			attributeListColumn.currentCoverage = manager.findLayer(idx)
+			attributeListColumn.currentCoverage = activeLayerManager().findLayer(idx)
 		}
 	}
 	property int currentNodeId : 0
@@ -85,7 +85,7 @@ Item {
 					width : parent.width / 2 - 4
 					height : buttonbar.height - 2
 					onClicked : {
-                        var lyr = manager.findLayer(currentNodeId)
+                        var lyr = activeLayerManager().findLayer(currentNodeId)
                         if ( lyr ){
                             var fixed = false // you can't create composite layers in a fixed layer
                             if ( lyr.parentLayer)
@@ -145,12 +145,12 @@ Item {
 							height : newname.height
 							onClicked: {
 								dropContainer.state = "invisible"
-								var lyr = manager.findLayer(currentNodeId)
+								var lyr = activeLayerManager().findLayer(currentNodeId)
 								if ( lyr) {
                                     var parentLayer = lyr.parentLayer ? lyr.parentLayer.nodeid : ""
-									var cmd = 'adddrawer(' + manager.viewid + ',\"' + parentLayer + '\",,compositelayer,true, \"' + newname.content + '\",' + currentNodeId + ')'
-									layerview.manager.addCommand(cmd)
-									manager.refresh()
+									var cmd = 'adddrawer(' + activeLayerManager().viewid + ',\"' + parentLayer + '\",,compositelayer,true, \"' + newname.content + '\",' + currentNodeId + ')'
+									layerview.activeLayerManager().addCommand(cmd)
+									activeLayerManager().refresh()
 									setModel()
 								}
 							}
