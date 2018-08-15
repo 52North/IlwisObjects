@@ -10,7 +10,6 @@ import "../../../Global.js" as Global
 Rectangle {
     id : propertyEditorBar
 
-    property var renderer
     property int layerIndex : 0
     color : Global.actionItemColor
     property string iconName : "../images/display_options"
@@ -37,9 +36,6 @@ Rectangle {
         y : 2
 		id : layerProperties
 
-//        handleDelegate: Controls.SplitHandle{
-//            imageHeight: 15
-//        }
 		function initColumnWidth(name){
 			if ( name == "layerlist"){
 				return width - attributeListColumn.width - editorListColumn.width - editorColumn.width
