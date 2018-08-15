@@ -15,6 +15,8 @@ ToolBar{
     property alias normalButton: normalButton
     property alias panButton: panButton
     property alias zoomoutButton: zoomoutButton
+    property alias zoominButton : zoominButton
+   
     signal toolbarClicked()
     Row {
         anchors.fill: parent
@@ -25,14 +27,16 @@ ToolBar{
             id : entireMap
             action : entireClicked
             onClicked: {
-                panButton.enabled = false
-                panButton.checked = false
-                zoomoutButton.enabled = false
-                zoomoutButton.checked = false
-                if (!zoominButton.checked) {
-                    normalButton.checked = true
+               if ( enabled){
+                    panButton.enabled = false
+                    panButton.checked = false
+                    zoomoutButton.enabled = false
+                    zoomoutButton.checked = false
+                    if (!zoominButton.checked) {
+                        normalButton.checked = true
+                    }
+                    toolbarClicked()
                 }
-                toolbarClicked()
             }
             Controls.ToolTip{
                 target: entireMap
@@ -47,11 +51,13 @@ ToolBar{
             checkable: true
             checked: false
             onClicked: {
-                checked = !checked
-                normalButton.checked = !checked
-                zoominButton.checked = false
-                zoomoutButton.checked = false
-                toolbarClicked()
+               if ( enabled){
+                    checked = !checked
+                    normalButton.checked = !checked
+                    zoominButton.checked = false
+                    zoomoutButton.checked = false
+                    toolbarClicked()
+                }
 
             }
             Controls.ToolTip{
@@ -70,11 +76,13 @@ ToolBar{
             checkable: true
             checked: false
             onClicked: {
-                checked = !checked
-                normalButton.checked = !checked
-                zoomoutButton.checked = false
-                panButton.checked = false
-                toolbarClicked()
+            if ( enabled){
+                    checked = !checked
+                    normalButton.checked = !checked
+                    zoomoutButton.checked = false
+                    panButton.checked = false
+                    toolbarClicked()
+                }
             }
             Controls.ToolTip{
                 target: zoominButton
@@ -87,12 +95,15 @@ ToolBar{
             action : zoomOutClicked
             checkable: true
             checked: false
+
             onClicked: {
-                checked = !checked
-                normalButton.checked = !checked
-                zoominButton.checked = false
-                panButton.checked = false
-                toolbarClicked()
+               if ( enabled){
+                    checked = !checked
+                    normalButton.checked = !checked
+                    zoominButton.checked = false
+                    panButton.checked = false
+                    toolbarClicked()
+                }
             }
             Controls.ToolTip{
                 target: zoomoutButton
@@ -109,11 +120,13 @@ ToolBar{
             checkable: true
             checked: true
             onClicked: {
-                checked = true
-                zoominButton.checked = false
-                zoomoutButton.checked = false
-                panButton.checked = false
-                toolbarClicked()
+               if ( enabled){
+                    checked = true
+                    zoominButton.checked = false
+                    zoomoutButton.checked = false
+                    panButton.checked = false
+                    toolbarClicked()
+                }
             }
             Controls.ToolTip{
                 target: normalButton
@@ -124,6 +137,8 @@ ToolBar{
             }
         }
     }
+
+
 }
 
 
