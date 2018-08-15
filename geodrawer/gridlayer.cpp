@@ -48,11 +48,18 @@ GridLayer::GridLayer(LayerManager *manager, QStandardItem *parent, const IOOptio
 
 bool GridLayer::prepare(int prepTypes)
 {
+    if (isPrepared(LayerModel::ptGEOMETRY))
+        return true;
+
     LayerModel *lm = findLayerByName("Primary Grid");
     if (lm) {
         if (lm->prepare(prepTypes)) {
             lm = findLayerByName("Secondary Grid");
-            return lm->prepare(prepTypes);
+            bool ok =  lm->prepare(prepTypes);
+            if (ok)
+                _prepared |= (LayerModel::ptGEOMETRY);
+
+            return ok;
         }
     }
     return false;
@@ -200,6 +207,9 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
 
         Coordinate cmin, cmax;
         calcEnvelope(cmin, cmax);
+        if (!cmin.isValid() || !cmax.isValid())
+            return false;
+
         double precision = 0;
         if (_cellDistance == rUNDEF) {
 
