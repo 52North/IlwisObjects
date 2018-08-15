@@ -10,7 +10,6 @@ MouseArea {
     height : parent.height
     hoverEnabled: true
     property LayerManager layerManager
-    property LayerExtentsToolbar maptools
     property bool zoomToExtents : true
     property bool showInfo : true
     property bool hasPermanence : false
@@ -35,13 +34,13 @@ MouseArea {
     signal mouseReleased(int mx, int my)
     signal selectTab()
 
-    Connections {
+   /* Connections {
         target: maptools
         onToolbarClicked :{
             zoomOutModeInWheelMode = false
             panModeInWheelMode = false
         }
-    }
+    }*/
 
     FloatingRectangle{
         id : floatrect
@@ -80,35 +79,38 @@ MouseArea {
     onPressed:  {
         if ( !layerManager)
             return
-        zoomOutModeInWheelMode = false
-        panModeInWheelMode = false
-        selectTab()
-        if ( layerManager.zoomInMode || layerManager.zoomOutMode){
-			if (!zoomStarted){
-				pStart = {x : mouseX, y : mouseY}
-				pEnd = pStart
-				setRect()
-				targetRectangle.visible = true
-				showInfo = false
-			}
-            zoomStarted = true
-        } else if ( layerManager.panningMode ){
-            panStarted = true
-            panPrevMouseX = mouseX
-            panPrevMouseY = mouseY
-            showInfo = false
-            cursorShape = Qt.ClosedHandCursor
+        if(!changeSubPanel()) { // normal press, we can process normall else we only change the subpanel and nothing else
+            zoomOutModeInWheelMode = false
+            panModeInWheelMode = false
 
-        }
-        if ( showInfo && layerManager.rootLayer.showLayerInfo && !zoomStarted && !panStarted){
-          floatrect.enabled = true
-          floatrect.opacity = 1
-          floatrect.x = mouseX
-          floatrect.y = mouseY
-          var mposition = mouseX + "|" + mouseY
-          floatrect.text = layerManager.rootLayer.layerInfo(mposition)
-          layerManager.setSelection(mposition);
-          mousePressed(mouseX, mouseY)
+            selectTab()
+            if ( layerManager.zoomInMode || layerManager.zoomOutMode){
+			    if (!zoomStarted){
+				    pStart = {x : mouseX, y : mouseY}
+				    pEnd = pStart
+				    setRect()
+				    targetRectangle.visible = true
+				    showInfo = false
+			    }
+                zoomStarted = true
+            } else if ( layerManager.panningMode ){
+                panStarted = true
+                panPrevMouseX = mouseX
+                panPrevMouseY = mouseY
+                showInfo = false
+                cursorShape = Qt.ClosedHandCursor
+
+            }
+            if ( showInfo && layerManager.rootLayer.showLayerInfo && !zoomStarted && !panStarted){
+              floatrect.enabled = true
+              floatrect.opacity = 1
+              floatrect.x = mouseX
+              floatrect.y = mouseY
+              var mposition = mouseX + "|" + mouseY
+              floatrect.text = layerManager.rootLayer.layerInfo(mposition)
+              layerManager.setSelection(mposition);
+              mousePressed(mouseX, mouseY)
+            }
         }
     }
 
@@ -133,6 +135,8 @@ MouseArea {
     }
 
     function setRect() {
+        if(!pStart)
+            return
         var x1 = pStart.x;
         var x2 = pEnd.x;
         var y1 = pStart.y;
