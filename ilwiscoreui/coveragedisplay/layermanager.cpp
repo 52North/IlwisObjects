@@ -299,6 +299,7 @@ void  LayerManager::addLayer(QStandardItem *parentLayer, LayerModel *layer, Laye
         parentLayer->appendRow(layer);
 
     emit lm->allCoveragesChanged();
+    emit lm->updateAxis();
 
 }
 
