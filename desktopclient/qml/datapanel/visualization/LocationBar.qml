@@ -17,7 +17,6 @@ Rectangle {
     anchors.verticalCenter: parent.verticalCenter
 
     color : "transparent"
-    property var renderer
 
     TextField{
         id : nativeCoords
@@ -38,7 +37,7 @@ Rectangle {
         anchors.rightMargin: 4
         readOnly: true
         anchors.verticalCenter: parent.verticalCenter
-        text : manager ?  manager.rootLayer.currentCoordinate : ""
+        text : manager ? manager.rootLayer.currentCoordinate : ""
     }
 }
 

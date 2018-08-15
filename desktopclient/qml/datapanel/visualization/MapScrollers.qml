@@ -11,15 +11,17 @@ Item {
     property alias vscroller : vscroller
     property alias hscroller : hscroller
     property string subscription
-	property var needUpdate : layerview.manager.needUpdate
+	property var needUpdate : layerContainer.layerManager() ? layerContainer.layerManager().needUpdate : null
     signal scrolled(string envelope)
 
 	onNeedUpdateChanged : {
-		var scrollInfo = layerview.manager.rootLayer.scrollInfo	
-		hscroller.currentSize = scrollInfo.xsizeperc * 100
-		hscroller.currentPosition = scrollInfo.leftpositionperc * 100
-		vscroller.currentSize = scrollInfo.ysizeperc * 100
-		vscroller.currentPosition = scrollInfo.toppositionperc * 100
+        if ( layerContainer.layerManager()) {
+		    var scrollInfo = layerContainer.layerManager().rootLayer.scrollInfo	
+		    hscroller.currentSize = scrollInfo.xsizeperc * 100
+		    hscroller.currentPosition = scrollInfo.leftpositionperc * 100
+		    vscroller.currentSize = scrollInfo.ysizeperc * 100
+		    vscroller.currentPosition = scrollInfo.toppositionperc * 100
+        }
 	}
 
     Controls.HScrollBar{
@@ -31,12 +33,12 @@ Item {
 		anchors.rightMargin : 30
 
         onScrolled: {
-			var scrollInfo = layerview.manager.rootLayer.scrollInfo	
+			var scrollInfo = layerContainer.layerManager().rootLayer.scrollInfo	
 			scrollInfo.leftpositionperc = position / 100
-			layerview.manager.rootLayer.scrollInfo = scrollInfo
+			layerContainer.layerManager().rootLayer.scrollInfo = scrollInfo
              if ( viewmanager){
                     
-                   viewmanager.newZoomExtent(layerview.manager.rootLayer.zoomEnvelope)
+                   viewmanager.newZoomExtent(layerContainer.layerManager().rootLayer.zoomEnvelope)
              }
         }
     }
@@ -46,12 +48,12 @@ Item {
         objectName: "vscrollbar" + uicontext.uniqueName()
 
         onScrolled: {
-			var scrollInfo = layerview.manager.rootLayer.scrollInfo
+			var scrollInfo = layerContainer.layerManager().rootLayer.scrollInfo
 				
 			scrollInfo.toppositionperc = position / 100
-			layerview.manager.rootLayer.scrollInfo = scrollInfo
+			layerContainer.layerManager().rootLayer.scrollInfo = scrollInfo
              if ( viewmanager){
-                   viewmanager.newZoomExtent(layerview.manager.rootLayer.zoomEnvelope)
+                   viewmanager.newZoomExtent(layerContainer.layerManager().rootLayer.zoomEnvelope)
              }
         }
     }

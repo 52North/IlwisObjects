@@ -11,15 +11,15 @@ Column {
     function setColor(clr){
         if ( grid.currentIndex != -1){
             grid.model[grid.currentIndex].ecolor = clr
-            var expr = "attributefillcolor(" + manager.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[grid.currentIndex].label + "," + clr +")"
-            manager.addCommand(expr)
+            var expr = "attributefillcolor(" + activeLayerManager().viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[grid.currentIndex].label + "," + clr +")"
+            activeLayerManager().addCommand(expr)
         }
     }
 
     function setOpacity(index, opacity){
         if ( grid.currentIndex != -1){
-            var expr = "attributeopacity(" + manager.viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[index].label + "," + opacity +")"
-            manager.addCommand(expr)
+            var expr = "attributeopacity(" + activeLayerManager().viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[index].label + "," + opacity +")"
+            activeLayerManager().addCommand(expr)
         }
     }
 

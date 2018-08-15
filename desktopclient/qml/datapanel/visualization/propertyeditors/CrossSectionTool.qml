@@ -40,7 +40,7 @@ Item {
                 bigthing.newCatalog(filter, "chart", "","other")
             }else {
                 var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",contineous_pin)"
-                layerview.manager.addCommand(expr);
+                layerview.activeLayerManager().addCommand(expr);
             }
         }/*else{
             handleMouseClick(mx,my)
@@ -52,7 +52,7 @@ Item {
         if ( contineousMode == true && modelid != null && contineousPin != -1) {
                 editor.changeCoords(contineousPin, mx, my, true)
                 var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",contineous_pin)"
-                layerview.manager.addCommand(expr);        
+                layerview.activeLayerManager().addCommand(expr);        
         }
     }
 
@@ -72,7 +72,7 @@ Item {
                     bigthing.newCatalog(filter, "chart", "","other")
                  }else {
                     var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(tab1.item.selectedRow + 1) + ")"
-                    layerview.manager.addCommand(expr);
+                    layerview.activeLayerManager().addCommand(expr);
                  }
              }
         }

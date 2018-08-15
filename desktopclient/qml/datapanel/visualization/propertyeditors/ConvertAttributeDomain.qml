@@ -23,7 +23,7 @@ Column {
             onCurrentIndexChanged : {
                 if ( currentScheme != colorscheme.currentText){
                     currentScheme = colorscheme.currentText
-                    editor.execute(currentScheme,layerview.manager.viewid)
+                    editor.execute(currentScheme,layerview.activeLayerManager().viewid)
                 }
             }
     }

@@ -108,7 +108,7 @@ Controls.DropableItem{
                     if ( "manager" in tab.item){
                         tiepointstable.editor.associatedBackgroundMap(tab.item.manager,ilwisobjectid)
                         tab.item.setActiveEditor(tiepointstable)
-                        tab.item.manager.addPostDrawer(tiepointstable.editor)
+                        tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
                         tab.item.tabmodel.displayName = "Background Raster"
                     }
 
@@ -124,7 +124,7 @@ Controls.DropableItem{
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left")
                     tiepointstable.editor.associatedBackgroundMap(tab.item.manager,backraster.ilwisobjectid)
                     tab.item.setActiveEditor(tiepointstable)
-                    tab.item.manager.addPostDrawer(tiepointstable.editor)
+                    tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
                     tab.item.tabmodel.displayName = "Background Raster"
                 }
             }
