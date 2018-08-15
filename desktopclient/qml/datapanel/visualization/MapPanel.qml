@@ -22,21 +22,32 @@ Item {
     property var createParameters : []
     property var activeEditor : null
     property alias viewmanager : viewmanager
-    property alias maptools: maptools
-    property LayerManager manager
+   // property alias maptools: maptools
+    property var layermanagers : []
     property bool canSeparate : true
     property string selectiondrawertopic : "main"
     property string selectiondrawertopicoverview : "overview"
+    property int activeSubPanel : 0
+    property string panelLayout : "1"
+
+    onPanelLayoutChanged : {
+        setLayout()
+    }
+
+    onActiveSubPanelChanged : {
+        viewmanager.activateViewManager(activeSubPanel)
+        activateLayerExtentsToolbar(activeSubPanel)
+    }
 
     objectName: uicontext.uniqueName() + "_mappanel"
 
     Action {
         id : zoomClicked
         onTriggered : {
-            if ( manager){
-                manager.zoomInMode = !manager.zoomInMode
-                manager.zoomOutMode = false
-                manager.panningMode = false
+            if ( activeLayerManager()){
+                activeLayerManager().zoomInMode = !activeLayerManager().zoomInMode
+                activeLayerManager().zoomOutMode = false
+                activeLayerManager().panningMode = false
             }
         }
     }
@@ -44,10 +55,10 @@ Item {
     Action {
         id : panningClicked
         onTriggered : {
-            if ( manager){
-                manager.panningMode = !manager.panningMode
-                manager.zoomInMode = false
-                manager.zoomOutMode = false
+            if ( activeLayerManager()){
+                activeLayerManager().panningMode = !activeLayerManager().panningMode
+                activeLayerManager().zoomInMode = false
+                activeLayerManager().zoomOutMode = false
             }
         }
     }
@@ -56,9 +67,9 @@ Item {
         id : entireClicked
         onTriggered : {
             entireMap()
-            if ( manager){
-                manager.zoomOutMode = false
-                manager.panningMode = false
+            if ( activeLayerManager()){
+                activeLayerManager().zoomOutMode = false
+                activeLayerManager().panningMode = false
             }
         }
     }
@@ -71,39 +82,79 @@ Item {
     Action {
         id : zoomOutClicked
         onTriggered : {
-            if ( manager){
-                manager.zoomOutMode = !manager.zoomOutMode
-                manager.zoomInMode = false
-                manager.panningMode = false
+            if ( activeLayerManager()){
+                activeLayerManager().zoomOutMode = !activeLayerManager().zoomOutMode
+                activeLayerManager().zoomInMode = false
+                activeLayerManager().panningMode = false
             }
         }
     }
     Action {
         id : normalClicked
         onTriggered : {
-            if ( manager){
-                manager.zoomInMode = false
-                manager.zoomOutMode = false
-                manager.panningMode = false
+            if ( activeLayerManager()){
+                activeLayerManager().zoomInMode = false
+                activeLayerManager().zoomOutMode = false
+                activeLayerManager().panningMode = false
             }
         }
     }
-    Controls.LayerExtentsToolbar{
-        id : maptools
+    ComboBox {
+        id : layoutChoices
+        y : 8
+        x : 150
+        width : 100
+        height : 20
+        z : 10
+        model : ["1", "2 vertical","2 horizontal","3 horizontal","3 vertical","3: 2 by 1","4"  ]
 
-        LocationBar{
-            renderer: layers.drawer()
+        onCurrentIndexChanged:{
+            if (currentText != panelLayout) { 
+                setLayout(currentText)
+                panelLayout = currentText
+            }
         }
+    }
+    MapPanelTopToolBar {
+        id : maptools1
+        visible : true
+        enabled : visible
+        bid : "1"
+        y : 4
+    }
+
+     MapPanelTopToolBar {
+        id : maptools2
+        visible : false
+        enabled : visible
+        bid : "2"
+        y : 4
+    }
+
+     MapPanelTopToolBar{
+        id : maptools3
+        visible : false
+        enabled : visible
+        bid : "3"
+        y : 4
+    }
+
+    MapPanelTopToolBar    {
+        id : maptools4
+        visible : false
+        enabled : visible
+        bid : "4"
+        y : 4
     }
 
     SplitView {
-        anchors.top : maptools.bottom
+        anchors.top : activeLayerExtentsToolbar().bottom
         width : parent.width
         orientation: Qt.Vertical
-        height : parent.height - maptools.height
+        height : parent.height - activeLayerExtentsToolbar().height
 
         Connections {
-            target: layers
+            target: layouts.activePanel()
             onZoomEnded :{
                 viewmanager.newZoomExtent(envelope)
             }
@@ -113,33 +164,11 @@ Item {
             height : 6
             color : uicontext.lightColor
         }
-        Layers{
-
+        LayerPanelLayout {
+            id : layouts
             width : parent.width
             height : parent.height - Global.actionBarMaxHeight
-            id : layers
-            states: [
-                State { name: "visible"
 
-                    PropertyChanges {
-                        target: layers
-                        height : parent.height -  Global.actionBarMaxHeight
-                    }
-                },
-                State {
-                    name : "invisible"
-                    PropertyChanges {
-                        target: layers
-                        height : parent.height - maptools.height + 10
-                    }
-                }
-
-            ]
-            transitions: [
-                Transition {
-                    NumberAnimation { properties: "height"; duration : 750 ; easing.type: Easing.InOutCubic }
-                }
-            ]
 
         }
         ViewManager{
@@ -148,14 +177,11 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 5
             anchors.right: parent.right
-            renderer: layers.drawer()
         }
     }
 
     Component.onCompleted: {
-        manager = models.createLayerManager(layers,layerview)
-    }
-    Component.onDestruction: {
+        setLayout(panelLayout)
     }
 
     function setActiveEditor(editor){
@@ -168,17 +194,6 @@ Item {
                 activeEditor.editor.postDrawerActive = true
         }
     }
-    function subscribe (topic, func) {
-        return PubSub.subscribe( topic, func );
-    }
-
-    function publish(topic, data) {
-        return PubSub.publish(topic, data);
-    }
-
-    function unsubscribe(topic, token) {
-        PubSub.unsubscribe( token );
-    }
 
     function iconsource(name) {
         if ( name.indexOf("/") !== -1)
@@ -190,18 +205,25 @@ Item {
         return iconP
     }
 
-    function addDataSource(sourceUrl, sourceName, sourceType){
-        if ( sourceUrl !== ""){
-            var id = layers.addDataSource(sourceUrl, sourceName, sourceType)
-            createParameters = [sourceUrl, sourceName, sourceType]
+
+    function addDataSource(filter, sourceName, sourceType){
+        if ( filter !== ""){
+            if (filter.indexOf("layouttype=")!= -1){
+                var parts = filter.split("and")
+                filter = parts[0].trim()
+                var layouttype = parts.substring(4)
+                panelLayout = layouttype.trim()
+            }
+            var id = layouts.activePanel().addDataSource(filter, sourceName, sourceType)
+           
             return id
         }
         return -1
     }
 
     function entireMap() {
-        manager.wholeMap()
-        var env = manager.rootLayer.viewEnvelope
+        activeLayerManager().wholeMap()
+        var env = activeLayerManager().rootLayer.viewEnvelope
         viewmanager.newZoomExtent(env)
     }
 
@@ -211,8 +233,8 @@ Item {
     }
 
     function mapClicked(mx,my){
-        var parms = {linktype : 'pixelposition', mouseevent : 'clicked', 'column' : mx, 'row' : my, 'georefid' : manager.rootLayer.screenGrf.id}
-        manager.broadCast(parms)
+        var parms = {linktype : 'pixelposition', mouseevent : 'clicked', 'column' : mx, 'row' : my, 'georefid' : activeLayerManager().rootLayer.screenGrf.id}
+        activeLayerManager().broadCast(parms)
         if ( activeEditor ){
             if ( typeof activeEditor.handleMouseClick == 'function'){
                 activeEditor.handleMouseClick(mx,my)
@@ -227,7 +249,6 @@ Item {
             if ( typeof activeEditor.handleMousePressed == 'function'){
                 activeEditor.handleMousePressed(mx,my)
             }
-        
         }
     }
 
@@ -236,7 +257,6 @@ Item {
             if ( typeof activeEditor.handleMouseMoved == 'function'){
                 activeEditor.handleMouseMoved(mx,my)
             }
-        
         }
     }
 
@@ -247,6 +267,107 @@ Item {
             }
         
         }
+    }
+
+  function setLayout(value){
+       if ( value === "1"){
+            createLayerManagers(1)
+            layouts.source = "Layers.qml"
+            maptools1.manager = layermanagers[0] 
+
+       }
+       if ( value ==="2 vertical"){
+            createLayerManagers(2)
+            layouts.source = "Layers2v.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+       }
+       if ( value === "2 horizontal"){
+            createLayerManagers(2)
+            layouts.source = "Layers2h.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+       }
+       if ( value === "3 horizontal"){
+            createLayerManagers(3)
+            layouts.source = "Layers3h.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+            maptools3.manager = layermanagers[2]
+       }
+       if ( value === "3 vertical"){
+            createLayerManagers(3)
+            layouts.source = "Layers3v.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+            maptools3.manager = layermanagers[2]
+       }
+       if ( value === "3: 2 by 1"){
+            createLayerManagers(3)
+            layouts.source = "Layers32b1.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+            maptools3.manager = layermanagers[2]
+       }
+       if ( value === "4"){
+            createLayerManagers(4)
+            layouts.source = "Layers4.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+            maptools3.manager = layermanagers[2]
+            maptools4.manager = layermanagers[3]
+       }    
+    }
+
+    function createLayerManagers(number){
+        if ( number < layermanagers.length){
+            layermanagers = layermanagers.slice(0,number-1)
+            createParameters = createParameters.slice(0,number-1)
+        }else if ( number > layermanagers.length){
+            var start = layermanagers.length
+            
+            for(var i=start; i < number; ++i){
+                layermanagers.push(models.createLayerManager(layouts,layerview))
+                createParameters.push(null)
+            }
+
+         }
+         layerview.activeSubPanel = 0
+    }
+
+    function activeLayerExtentsToolbar() {
+        if ( layerview.activeSubPanel === 0)
+            return maptools1
+        if ( layerview.activeSubPanel === 1)
+            return maptools2
+        if ( layerview.activeSubPanel === 2)
+            return maptools3
+        if ( layerview.activeSubPanel === 3)
+            return maptools4
+        return null
+    }
+
+  function activateLayerExtentsToolbar(index){
+        maptools1.visible = false
+        maptools2.visible = false
+        maptools3.visible = false
+        maptools4.visible = false
+        if ( index == 0)
+            maptools1.visible = true
+        if ( index == 1)
+            maptools2.visible = true
+        if ( index == 2)
+            maptools3.visible = true
+        if ( index == 3)
+            maptools4.visible = true
+    }
+
+    function activeLayerManager(){
+        if ( activeSubPanel < layermanagers.length ){
+            return layermanagers[activeSubPanel]
+
+        }
+        return null
     }
 
 }

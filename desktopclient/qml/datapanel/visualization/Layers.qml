@@ -9,20 +9,30 @@ Item {
     id : layerContainer
     objectName: "layerContainer_ui"  + uicontext.uniqueName()
     property alias layerContainerId : layerContainer
-    property variant subscription
     signal zoomEnded(string envelope) 
+    property var panelSubIndex : 0
+
+   function layerManager() {
+        if ( layerContainer.panelSubIndex < layerview.layermanagers.length){
+            return layerview.layermanagers[layerContainer.panelSubIndex]
+        }
+        return null
+    }
 
     property bool reportExtentsBack : false
 
+ 
     MapArea{
         anchors.fill : parent
         id : maparea
 
  		Component.onCompleted : {
-			layerview.manager.viewArea(maparea)
+            if (layerManager())
+			    layerManager().viewArea(maparea)
 		}
     }
 
+ 
     MapScrollers {
         anchors.fill: parent
         id : mapScrollers
@@ -46,19 +56,40 @@ Item {
 
     function addDataSource(filter, sourceName, sourceType){
         var filter2 = filter
-        if ( filter.indexOf("=") !== -1){
+        if ( filter.indexOf("=") !== -1 && filter[0] != '\"'){
             filter = "\"" + filter + "\""
         }
-		var cmd = "adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)"
-        layerview.manager.addCommand(cmd)
-        layerview.manager.refresh()
+        var cmd = "adddrawer(" + layerManager().viewid + ",\"\"," + filter + "," + sourceType + ",true)"
+
+        layerManager().addCommand(cmd)
+        layerManager().refresh()
         viewmanager.addDataSource(filter2, sourceName, sourceType)
-        return layerview.manager.viewid
+        maparea.initGeoDrawer()
+        layerview.createParameters[layerview.activeSubPanel] = [filter, sourceName, sourceType]
+        return layerManager().viewid
+    }
+
+   function activePanel(){
+        return layerContainer
+    }
+
+    function assignLayerManagers() {
+        maparea.assignLayerManager(layerview.layermanagers[panelSubIndex])
+
+    }
+
+     function assignLayerManager(lm) {
+        maparea.assignLayerManager(lm)
+        if ( layerview.createParameters[panelSubIndex]){
+        var sz = maparea.mapAreaSize()
+            layerview.layermanagers[panelSubIndex].rootLayer.reset(sz.width, sz.height)
+            addDataSource(layerview.createParameters[panelSubIndex][0], layerview.createParameters[panelSubIndex][1], layerview.createParameters[panelSubIndex][2])
+        }
     }
 
     function newExtent(ext){
-        layerview.manager.addCommand("setviewextent("+ layerview.manager.viewid + "," + ext + ")");
-        layerview.manager.refresh()
+        layerManager().addCommand("setviewextent("+ layerManager().viewid + "," + ext + ")");
+        layerManager().refresh()
     }
 
 }
