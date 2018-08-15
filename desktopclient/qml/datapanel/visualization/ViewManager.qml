@@ -14,118 +14,89 @@ import "../.." as Base
 Item {
     id : viewmanager
 
-    property var renderer
+   // property var renderer
 
-    property alias metadata : metadata
+   // property alias metadata : metadata
 
     signal zoomEnded(string envelope)
 
     Layout.minimumHeight: 22
 
+    function activateViewManager(index){
+        vmyab1.visible = false
+        vmyab2.visible = false
+        vmyab3.visible = false
+        vmyab4.visible = false
+        if ( index == 0)
+            vmyab1.visible = true
+        if ( index == 1)
+            vmyab2.visible = true
+        if ( index == 2)
+            vmyab3.visible = true
+        if ( index == 3)
+            vmyab4.visible = true
+    }
+
+    function activeSubPanel(){
+        if ( layerview.activeSubPanel === 0)
+            return vmyab1
+        if ( layerview.activeSubPanel === 1)
+            return vmyab2
+        if ( layerview.activeSubPanel === 2)
+            return vmyab2
+        if ( layerview.activeSubPanel === 3)
+            return vmyab3
+        return null
+    }
+
     function addDataSource(filter, sourceName, sourceType){
-        if ( filter.indexOf("=") !== -1){
+        if ( filter.indexOf("=") !== -1 && filter[0] != '\"'){
             filter = "\"" + filter + "\""
         }
-        var tab = layersmeta.getTab(2)
+        var tab = activeSubPanel().getTab(2)
 
         if ( tab && tab.item ){
             tab.item.addDataSource(filter, sourceName, sourceType)
 
         }
 
-		tab = layersmeta.getTab(0)
+		tab = activeSubPanel().getTab(0)
 		if ( tab && tab.item){
 			tab.item.setModel()
-			manager.refresh()
+			activeLayerManager().refresh()
 		}
     }
 
     function transfer(datapanel){
-        var tab = layersmeta.getTab(2)
+        var tab = activeSubPanel().getTab(2)
         if ( tab){
             tab.item.transfer(datapanel)
         }
     }
 
     function entireMap() {
-    // var tab = layersmeta.getTab(2)
-     //   if ( tab){
-     //       tab.item.rootLayer()
-     //   }
     }
 
      function newZoomExtent(newenvelope){
-         var tab = layersmeta.getTab(2)
+         var tab = activeSubPanel().getTab(2)
          if ( tab){
              tab.item.newZoomExtent(newenvelope)
          }
      }
 
-
-    Component {
-        id : displayOptions
-        DisplayOptions.LayerPropertyManagement{
-			width : parent.width
-			id : layersTree
-		}
-    }
-
-    Component {
-        id : layersinfo
-        LayersInfo{
-        }
-    }
-
-    Component{
-        id : metadata
-        MetaData{
-            id : innermetadata
-        }
-    }
-
-
-
-    TabView{
-        id : layersmeta
-        anchors.fill: parent
-        tabPosition: Qt.BottomEdge
-        onCurrentIndexChanged: {
-            var tab= getTab(2)
-            tab.item.drawerActive = currentIndex == 2
-
-        }
-
-        function tabClicked(index){
-            if ( currentIndex === index){
-                if ( viewmanager.height <= 60){
-                    layers.state = "visible"
-                }
-                else{
-                    layers.state = ""
-                    layers.state = "invisible"
-                }
-            }
-
-            currentIndex = index
-        }
-
-        function endZoom(envelope) {
-            zoomEnded(envelope)
-        }
-
-        Component.onCompleted: {
-            var tab =addTab(qsTr("Display Options"), displayOptions)
-            tab.active = true
-            tab.item.renderer = renderer
-
-
-            tab = addTab(qsTr("Layers Info"), layersinfo)
-            tab.active = true
-            tab = addTab(qsTr("Metadata"), metadata)            
-            tab.active = true // we need to be active as layers may be added to it
-        }
-
-        style: DataPanel.ButtonBarTabViewStyle{}
-    }
+     ViewManagerTabs{
+        id : vmyab1
+        visible : true
+     }
+     ViewManagerTabs{
+        id : vmyab2
+     }
+     ViewManagerTabs{
+       id : vmyab3
+     }
+     ViewManagerTabs{
+        id : vmyab4
+     }
+    
 }
 
