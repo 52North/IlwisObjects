@@ -64,7 +64,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        labelText : qsTr("View Envelope")
+        labelText : qsTr("View Extent")
         content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.viewEnvelope, true) : ""
 
     }
@@ -83,7 +83,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        labelText : qsTr("Zoom Envelope ")
+        labelText : qsTr("Zoom Extent ")
         content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.zoomEnvelope, true) : ""
 
     }
@@ -102,7 +102,7 @@ Column {
         labelWidth: 90
         fontSize: fSize
         content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope2(layerview.activeLayerManager().rootLayer.latlonEnvelope, true) : ""
-        labelText : qsTr("Lat/Lon Envelope")
+        labelText : qsTr("Lat/Lon Extent")
 
     }
     Controls.TextEditLabelPair{

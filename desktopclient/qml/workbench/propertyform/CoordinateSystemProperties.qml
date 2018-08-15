@@ -48,7 +48,7 @@ Rectangle {
         source : isProjected ? "ProjectionProperties.qml" : ""
         anchors.top : line2.bottom
     }
-    Text { id : line3; text : qsTr("LatLon Envelope"); width: 120;anchors.top : projectionInfoLine.bottom; height : lineheight}
+    Text { id : line3; text : qsTr("LatLon Extent"); width: 120;anchors.top : projectionInfoLine.bottom; height : lineheight}
     Envelope {
         id : llenvelope
         envelope : getProperty("latlonenvelope")
@@ -57,7 +57,7 @@ Rectangle {
         anchors.top : line3.bottom
     }
 
-    Text { id : line4; text : qsTr("Envelope"); width: 120;anchors.top : llenvelope.bottom; height : lineheight }
+    Text { id : line4; text : qsTr("Extent"); width: 120;anchors.top : llenvelope.bottom; height : lineheight }
 //   Text { text : getProperty("envelope");  height : lineheight;width: parent.width - line4.width - 2; anchors.left: line4.right;anchors.top : llenvelope.bottom}
     Envelope {
         id : prjenvelope
