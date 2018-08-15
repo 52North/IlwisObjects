@@ -392,7 +392,15 @@
     <None Include="desktopclient\qml\datapanel\table\TableColumn.qml" />
     <None Include="desktopclient\qml\datapanel\table\TablePane.qml" />
     <None Include="desktopclient\qml\datapanel\table\TableTools.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers32b1.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers2h.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers3h.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers3v.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers4.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\MapPanelTopToolBar.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\LayerPanelLayout.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\Layers.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers2v.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\LayersInfo.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\LocationBar.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\MapArea.qml" />
@@ -971,6 +979,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml" />
+    <Text Include="desktopclient\qml\datapanel\visualization\ViewManagerTabs.qml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -1164,6 +1164,30 @@
     <None Include="desktopclient\qml\controls\MultiPointSlider.qml">
       <Filter>Distribution Files\qml\controls</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\LayerPanelLayout.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers2v.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\MapPanelTopToolBar.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers2h.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers3h.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers3v.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers4.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers32b1.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
@@ -2367,6 +2391,9 @@
   <ItemGroup>
     <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </Text>
+    <Text Include="desktopclient\qml\datapanel\visualization\ViewManagerTabs.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
     </Text>
   </ItemGroup>
 </Project>
