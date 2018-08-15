@@ -22,7 +22,7 @@ DropArea {
 
 	    function cactive(data) {
 		    var nodeid = data.nodeid
-		    var layer = layerview.manager.findLayer(nodeid)
+		    var layer = layerview.activeLayerManager().findLayer(nodeid)
 		    return layer.active
 	    }
 	    CheckBox{
@@ -36,7 +36,7 @@ DropArea {
 
 		    onCheckedChanged : {
                 var nodeid = styleData.value.nodeid
-			    var layer = layerview.manager.findLayer(nodeid)
+			    var layer = layerview.activeLayerManager().findLayer(nodeid)
 			    layer.vproperty("active", visibilityCheck.checked)
 		    }
 
@@ -128,13 +128,13 @@ DropArea {
 		        var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
                 tree.dropHandled = true
                 var nodeid = styleData.value.nodeid
-		        var cmd = "adddrawer(" + manager.viewid + ",\"\"," + resource.url + "," + resource.typeName + ",true," + resource.name + "," + nodeid + ")"
-                layerview.manager.addCommand(cmd)
+		        var cmd = "adddrawer(" + activeLayerManager().viewid + ",\"\"," + resource.url + "," + resource.typeName + ",true," + resource.name + "," + nodeid + ")"
+                layerview.activeLayerManager().addCommand(cmd)
                 setModel()
-                layerview.manager.refresh()
+                layerview.activeLayerManager().refresh()
             }else if(typeof drag.source.nodeid !== 'undefined'){
                 if ( styleData.value.nodeid != 0 ){ // nodeid = 0 is foreground layer, you can't insert layers before that
-                    layerview.manager.move(drag.source.nodeid, styleData.index)  
+                    layerview.activeLayerManager().move(drag.source.nodeid, styleData.index)  
                   } 
             }
             tree.hoveredRow = -1
