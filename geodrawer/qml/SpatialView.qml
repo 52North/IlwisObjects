@@ -48,8 +48,10 @@ Item {
 		}
 
         function setZoomPanButton (enablePanAndZoomOut) {
-            layerview.maptools.panButton.enabled = enablePanAndZoomOut
-            layerview.maptools.zoomoutButton.enabled = enablePanAndZoomOut
+            if (layerview.activeLayerExtentsToolbar()){
+                layerview.activeLayerExtentsToolbar().panButton.enabled = enablePanAndZoomOut
+                layerview.activeLayerExtentsToolbar().zoomoutButton.enabled = enablePanAndZoomOut
+            }
         }
 
         function drawRasterAsColor(sceneObject,layer) {
@@ -236,7 +238,6 @@ Item {
 			    }
                // var n = Date.now()
 		        for(var i=0; i < layer.numberOfBuffers("polygons");++i){
-                   
 				    var geometry = new GL.THREE.BufferGeometry();
 				    canvas.setGeometry(layer, i,"polygons",geometry)
 				    var material = new GL.THREE.MeshBasicMaterial({ side : GL.THREE.DoubleSide, vertexColors: GL.THREE.VertexColors, transparent : true,opacity : layer.vproperty("opacity") });
@@ -294,23 +295,25 @@ Item {
 				}
 			} else if ( propertyType == "layer"){
 				var meshes = scene.getObjectByName(layer.nodeId);
-				if (layer.drawType != "raster") {
-					for(var i=0; i < meshes.children.length; ++i) {
-						var mesh = meshes.children[i];
-                        if (mesh) {
-                            mesh.visible = layer.vproperty("active");
-                            mesh.material.opacity = layer.vproperty("opacity");
-                        }
-					}
-				} else {
-					for(var i=0; i < meshes.children.length; ++i) {
-						var mesh = meshes.children[i];
-                        if ( mesh){
-						    mesh.visible = layer.vproperty("active");
-						    mesh.material.uniforms.alpha.value = layer.vproperty("opacity");
-                         }
-					}
-				}
+                if ( meshes) {
+				    if (layer.drawType != "raster") {
+					    for(var i=0; i < meshes.children.length; ++i) {
+						    var mesh = meshes.children[i];
+                            if (mesh) {
+                                mesh.visible = layer.vproperty("active");
+                                mesh.material.opacity = layer.vproperty("opacity");
+                            }
+					    }
+				    } else {
+					    for(var i=0; i < meshes.children.length; ++i) {
+						    var mesh = meshes.children[i];
+                            if ( mesh){
+						        mesh.visible = layer.vproperty("active");
+						        mesh.material.uniforms.alpha.value = layer.vproperty("opacity");
+                             }
+					    }
+				    }
+                }
 			} else if ( propertyType == "palette"){
 				var palette = layer.palette;
 				layer.tPalette.image.data.set(palette.data);
@@ -350,6 +353,7 @@ Item {
 		}
 
 		onInitializeGL: {
+            console.debug("init gl", canvas.width, canvas.height)
 			layermanager.rootLayer.initSizes(canvas.width, canvas.height,true)
 			camera = new GL.THREE.OrthographicCamera( -layermanager.rootLayer.width/2.0, layermanager.rootLayer.width/2.0, layermanager.rootLayer.height/2.0, -layermanager.rootLayer.height/2.0, 0, 1 );
 			var cameraPosition = layermanager.rootLayer.cameraPosition;
