@@ -295,6 +295,12 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
 		_screenGrf->envelope(_zoomEnvelope);
 		_screenGrf->compute();
         SetCameraPosition();
+        LayerModel *layer = findLayerByName("Grid");
+        if (layer && !layer->isPrepared(LayerModel::ptGEOMETRY)) {
+                layer->prepare(LayerModel::ptGEOMETRY);
+        }
+
+
         emit viewEnvelopeChanged();
         emit zoomEnvelopeChanged();
         emit latlonEnvelopeChanged();
@@ -533,6 +539,16 @@ void RootLayerModel::modifyZoomY(double rFactor) {
 		_viewEnvelope.min_corner().y = _zoomEnvelope.min_corner().y;
 		_viewEnvelope.max_corner().y = _zoomEnvelope.max_corner().y;
 	}
+}
+
+void RootLayerModel::reset(int pixwidth, int pixheight) {
+    IGeoReference grf;
+    grf.prepare();
+    grf->create("corners");
+    grf->coordinateSystem(_screenCsy);
+    screenGrf(grf);
+    _screenGrf->size(Size<>(pixwidth, pixheight, 1));
+    viewEnvelope(coverageEnvelope());
 }
 
 void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {

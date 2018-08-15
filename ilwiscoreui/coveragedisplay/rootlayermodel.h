@@ -48,6 +48,7 @@ public:
      Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
 	 Q_INVOKABLE void initSizes(int newwidth, int newheight, bool initial);
      Q_INVOKABLE void setActiveAttribute(int idx);
+     Q_INVOKABLE void reset(int pixwidth, int pixheight);
 
 	 //void setEnvelopeView(const BoundingBox& pixelArea);
 
