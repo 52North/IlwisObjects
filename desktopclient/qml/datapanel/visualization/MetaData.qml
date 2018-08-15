@@ -106,7 +106,7 @@ Item {
 
                 function entireMap() {
                    if ( layersmeta.currentIndex == 2){
-                       metatdata.managermanager.addCommand("setviewextent("+ overview.viewid + ",entiremap)");
+                       metatdata.manager.addCommand("setviewextent("+ overview.viewid + ",entiremap)");
                        metatdata.manager.refresh()
                     }
                 }
@@ -180,7 +180,8 @@ Item {
                 metatdata.manager = models.createLayerManager(metadata,overview)
                 overview.layermanager = metatdata.manager
             }
-            metatdata.manager.addCommand("adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)")
+            var cmd = "adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)"
+            metatdata.manager.addCommand(cmd)
             var layer = manager.topLevelLayers[1];
             var expr = "setactiveattribute(" + manager.viewid + "," + layer.nodeId + ",1)"
             metatdata.manager.addCommand(expr)
@@ -198,5 +199,10 @@ Item {
 
     function newZoomExtent(newenvelope){
         mouseActions.setRectangle(newenvelope)
+    }
+
+    function changeSubPanel() {
+        // dummy function
+        return false
     }
 }
