@@ -33,7 +33,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.viewid
+        content : layerview.activeLayerManager().viewid
 
         labelText : qsTr("Viewer id")
 
@@ -44,7 +44,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.rootLayer.screenCsy ? layerview.manager.rootLayer.screenCsy.name : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? layerview.activeLayerManager().rootLayer.screenCsy.name : ""
 
         labelText : qsTr("Coordinate System")
 
@@ -54,7 +54,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.rootLayer.screenCsy ? layerview.manager.rootLayer.projectionInfo : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? layerview.activeLayerManager().rootLayer.projectionInfo : ""
         labelText : qsTr("Projection")
 
     }
@@ -65,7 +65,7 @@ Column {
         labelWidth: 90
         fontSize: fSize
         labelText : qsTr("View Envelope")
-        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.viewEnvelope, true) : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.viewEnvelope, true) : ""
 
     }
     Controls.TextEditLabelPair{
@@ -74,7 +74,7 @@ Column {
         labelWidth: 90
         labelText :""
         fontSize: fSize
-        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.viewEnvelope, false) : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.viewEnvelope, false) : ""
 
     }
     Controls.TextEditLabelPair{
@@ -84,7 +84,7 @@ Column {
         labelWidth: 90
         fontSize: fSize
         labelText : qsTr("Zoom Envelope ")
-        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.zoomEnvelope, true) : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.zoomEnvelope, true) : ""
 
     }
     Controls.TextEditLabelPair{
@@ -93,7 +93,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.zoomEnvelope, false) : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.zoomEnvelope, false) : ""
     }
 
     Controls.TextEditLabelPair{
@@ -101,7 +101,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope2(layerview.manager.rootLayer.latlonEnvelope, true) : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope2(layerview.activeLayerManager().rootLayer.latlonEnvelope, true) : ""
         labelText : qsTr("Lat/Lon Envelope")
 
     }
@@ -110,7 +110,7 @@ Column {
         width : parent.width
         labelWidth: 90
         fontSize: fSize
-        content : layerview.manager.rootLayer.screenCsy ? column.setEnvelope(layerview.manager.rootLayer.latlonEnvelope, false) : ""
+        content : layerview.activeLayerManager().rootLayer.screenCsy ? column.setEnvelope(layerview.activeLayerManager().rootLayer.latlonEnvelope, false) : ""
     }
 
     function setEnvelope(env, ismin){

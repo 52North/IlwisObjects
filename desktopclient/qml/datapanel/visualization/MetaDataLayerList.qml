@@ -14,7 +14,7 @@ ListView {
         }
     }
     id : layersList
-    model : layerview.manager.allCoverages
+    model : layerview.activeLayerManager().allCoverages
     delegate: Component{
         Item {
             id : layerRow
