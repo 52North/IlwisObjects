@@ -26,6 +26,11 @@ Rectangle {
       grid.setSource("")
     }
 
+    function changeSubPanel() {
+        // dummy function
+        return false
+    }
+
     Action {
         id : panningClicked
         onTriggered : {
