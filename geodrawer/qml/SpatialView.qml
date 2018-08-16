@@ -316,8 +316,10 @@ Item {
                 }
 			} else if ( propertyType == "palette"){
 				var palette = layer.palette;
-				layer.tPalette.image.data.set(palette.data);
-				layer.tPalette.needsUpdate = true;
+                if ( layer.tPalette){
+				    layer.tPalette.image.data.set(palette.data);
+				    layer.tPalette.needsUpdate = true;
+                }
 			}
 		}
 
