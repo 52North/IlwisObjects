@@ -97,20 +97,16 @@ public:
 	LayerModel *lastAddedCoverageLayer() const;
 	void lastAddedCoverageLayer(LayerModel *lyr);
 	QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items);
-
-
+    
     static LayerModel *create(QStandardItem *parentLayer,  const ICoverage& cov, LayerManager *lm, const IOOptions& options = IOOptions());
-
-   
-
     static LayerModel *create(QStandardItem *parentLayer,  const QString& type, LayerManager *lm, const QString& layername, const QString& description="", const IOOptions& options= IOOptions());
     static int registerLayerModel(const QString& modelname, CreateLayer);
 
     void moveLayer(LayerModel *parentLayer, LayerModel *layer, LayerMovement type);
-
     void clearLayers(LayerModel *parentLayer);
     bool isValid() const;
 	QQuickItem *viewArea() const;
+    QList<LayerModel *> topChilderen();
 
 	void needUpdate(bool yesno);
 	bool needUpdate() const;

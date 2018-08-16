@@ -520,6 +520,11 @@ QQuickItem * LayerManager::viewArea() const
 	return _viewContainer;
 }
 
+QList<LayerModel*> Ilwis::Ui::LayerManager::topChilderen()
+{
+    return _childeren;
+}
+
 void LayerManager::linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters) {
 }
 
