@@ -37,7 +37,7 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
                 for(int i = 0; i < count; ++i){
                     auto layerHandle = gdal()->getRasterBand(handle->handle(), i+1);
                     if ( layerHandle){
-                        QString layername = file.baseName() + "_" + QString::number(i);
+                        QString layername = file.baseName() + "_" + QString::number(i + 1);
                         QString containerUrl = url.toString() + "/" + layername;
                         addItem(handle, containerUrl, csyId, grfId, itRASTER,itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM, sz/count, i,false);
                     }
