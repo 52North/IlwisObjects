@@ -74,16 +74,16 @@ Item {
     }
 
     function assignLayerManagers() {
-        maparea.assignLayerManager(layerview.layermanagers[panelSubIndex])
+        assignLayerManager(layerview.layermanagers[panelSubIndex])
 
     }
 
      function assignLayerManager(lm) {
         maparea.assignLayerManager(lm)
         if ( layerview.createParameters[panelSubIndex]){
-        var sz = maparea.mapAreaSize()
+            var sz = maparea.mapAreaSize()
             layerview.layermanagers[panelSubIndex].rootLayer.reset(sz.width, sz.height)
-            addDataSource(layerview.createParameters[panelSubIndex][0], layerview.createParameters[panelSubIndex][1], layerview.createParameters[panelSubIndex][2])
+            maparea.initGeoDrawer()
         }
     }
 
