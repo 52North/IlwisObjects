@@ -321,8 +321,8 @@ Item {
 
     function createLayerManagers(number){
         if ( number < layermanagers.length){
-            layermanagers = layermanagers.slice(0,number-1)
-            createParameters = createParameters.slice(0,number-1)
+            layermanagers = layermanagers.slice(0,number)
+            createParameters = createParameters.slice(0,number)
         }else if ( number > layermanagers.length){
             var start = layermanagers.length
             
