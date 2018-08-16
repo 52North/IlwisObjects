@@ -542,13 +542,11 @@ void RootLayerModel::modifyZoomY(double rFactor) {
 }
 
 void RootLayerModel::reset(int pixwidth, int pixheight) {
-    IGeoReference grf;
-    grf.prepare();
-    grf->create("corners");
-    grf->coordinateSystem(_screenCsy);
-    screenGrf(grf);
-    _screenGrf->size(Size<>(pixwidth, pixheight, 1));
-    viewEnvelope(coverageEnvelope());
+    _viewEnvelope = _coverageEnvelope;
+    auto childeren = layerManager()->topChilderen();
+    for (auto *child : childeren) {
+        child->add2ChangedProperties("buffers", true);
+    }
 }
 
 void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
