@@ -43,9 +43,9 @@ Item {
         if ( layerview.activeSubPanel === 1)
             return vmyab2
         if ( layerview.activeSubPanel === 2)
-            return vmyab2
-        if ( layerview.activeSubPanel === 3)
             return vmyab3
+        if ( layerview.activeSubPanel === 3)
+            return vmyab4
         return null
     }
 
