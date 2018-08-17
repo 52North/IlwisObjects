@@ -113,6 +113,8 @@ DropArea {
                     target: mouseActions
                     onZoomEnded :{
                         layerManager().addCommand("setviewextent("+ layerManager().viewid + "," + envelope + ")");
+                        broadCastNewExtent(layerManager(), envelope)
+
                         if ( viewmanager){
                             viewmanager.newZoomExtent(envelope)
                         }
