@@ -29,6 +29,7 @@ Item {
     property string selectiondrawertopicoverview : "overview"
     property int activeSubPanel : 0
     property string panelLayout : "1"
+    property bool allPanelsLinked : true
 
     onPanelLayoutChanged : {
         setLayout()
@@ -224,6 +225,7 @@ Item {
     function entireMap() {
         activeLayerManager().wholeMap()
         var env = activeLayerManager().rootLayer.viewEnvelope
+        broadCastNewExtent(activeLayerManager(), env)
         viewmanager.newZoomExtent(env)
     }
 
@@ -327,7 +329,11 @@ Item {
             var start = layermanagers.length
             
             for(var i=start; i < number; ++i){
-                layermanagers.push(models.createLayerManager(layouts,layerview))
+                var newLM = models.createLayerManager(layouts,layerview)
+                for(var j=0; j < layermanagers.length; ++j){
+                    newLM.linkTo(layermanagers[j],true, "zoomextent")
+                }
+                layermanagers.push(newLM)
                 createParameters.push(null)
             }
 
@@ -368,6 +374,13 @@ Item {
 
         }
         return null
+    }
+
+    function broadCastNewExtent(sourceLayerManager, envelope){
+        if ( sourceLayerManager){
+            var parameters = {'linktype': 'zoomextent', 'viewid' : sourceLayerManager.viewid, 'csyid': sourceLayerManager.rootLayer.screenCsy.id,'envelope' : envelope}
+            sourceLayerManager.broadCast(parameters)
+        }
     }
 
 }
