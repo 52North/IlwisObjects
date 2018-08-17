@@ -37,7 +37,7 @@ Item {
 			scrollInfo.leftpositionperc = position / 100
 			layerContainer.layerManager().rootLayer.scrollInfo = scrollInfo
              if ( viewmanager){
-                    
+                   broadCastNewExtent(layerContainer.layerManager(), layerContainer.layerManager().rootLayer.zoomEnvelope) 
                    viewmanager.newZoomExtent(layerContainer.layerManager().rootLayer.zoomEnvelope)
              }
         }
@@ -53,6 +53,7 @@ Item {
 			scrollInfo.toppositionperc = position / 100
 			layerContainer.layerManager().rootLayer.scrollInfo = scrollInfo
              if ( viewmanager){
+                   broadCastNewExtent(layerContainer.layerManager(), layerContainer.layerManager().rootLayer.zoomEnvelope)
                    viewmanager.newZoomExtent(layerContainer.layerManager().rootLayer.zoomEnvelope)
              }
         }
