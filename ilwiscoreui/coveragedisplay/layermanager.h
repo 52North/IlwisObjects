@@ -80,6 +80,7 @@ public:
     Q_INVOKABLE void addPostDrawer(QObject *editor);
     Q_INVOKABLE void removePostDrawer(QObject *editor);
     Q_INVOKABLE void broadCast(const QVariantMap& parameters);
+    Q_INVOKABLE void linkTo(QObject *obj, bool bidrectional, const QString& type);
 
     RootLayerModel *rootLayer() const;
     
@@ -121,7 +122,8 @@ public:
     void updatePostDrawers();
 
 public slots:
-        void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);
+        //void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);
+        void linkAcceptMessage(const QVariantMap& parameters);
 signals:
     void removeLayer(const Ilwis::Resource& resource);
 	void layerTreeChanged();
