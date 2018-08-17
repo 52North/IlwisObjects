@@ -275,7 +275,7 @@ QString CoverageLayerModel::v2s(const ColumnDefinition& coldef, const QVariant& 
 
 bool CoverageLayerModel::supportsLinkType(const QString& type) const
 {
-    return  type.toLower() ==  "selectionbyraw";
+    return  type.toLower() ==  "selectionbyraw" || type.toLower() == "zoom";
 }
 
 QVariantList CoverageLayerModel::linkProperties() const
