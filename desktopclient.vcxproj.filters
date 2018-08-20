@@ -1188,6 +1188,12 @@
     <None Include="desktopclient\qml\datapanel\visualization\Layers32b1.qml">
       <Filter>Distribution Files\qml\datapanel\visualization</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\SubPanelBox.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\Layers32v1.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

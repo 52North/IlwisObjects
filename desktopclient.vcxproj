@@ -394,6 +394,7 @@
     <None Include="desktopclient\qml\datapanel\table\TableTools.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\Layers32b1.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\Layers2h.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\Layers32v1.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\Layers3h.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\Layers3v.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\Layers4.qml" />
@@ -444,6 +445,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeEditorList.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeList.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\RepresentationProperties.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\SubPanelBox.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\ViewManager.qml" />
     <None Include="desktopclient\qml\DesktopClient.qml" />
     <None Include="desktopclient\qml\Global.js" />
