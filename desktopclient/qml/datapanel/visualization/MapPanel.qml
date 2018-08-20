@@ -100,22 +100,32 @@ Item {
             }
         }
     }
-    ComboBox {
-        id : layoutChoices
-        y : 8
-        x : 150
-        width : 100
-        height : 20
-        z : 10
-        model : ["1", "2 vertical","2 horizontal","3 horizontal","3 vertical","3: 2 by 1","4"  ]
 
-        onCurrentIndexChanged:{
-            if (currentText != panelLayout) { 
-                setLayout(currentText)
-                panelLayout = currentText
+    Controls.ToolButton{
+            height : 20
+            width : 20
+            x: 150
+            y : 8
+            iconSource: "../../images/mappanels20.png"
+            tooltip: qsTr("Splits the map panels into several sub panels")
+            onClicked: {
+                layoutChoices.x = x
+                layoutChoices.toggle()
             }
-        }
+            z : 30
     }
+
+    SubPanelBox {
+        id : layoutChoices
+        y : 38
+        x : 145
+        height : 20
+        state : "invisible"
+        clip:true
+        z : 1000
+        panelCallBack : switchLayout
+    }
+
     MapPanelTopToolBar {
         id : maptools1
         visible : true
@@ -183,6 +193,13 @@ Item {
 
     Component.onCompleted: {
         setLayout(panelLayout)
+    }
+
+    function switchLayout(type){
+        if (type != panelLayout) { 
+            setLayout(type)
+            panelLayout = type
+        }
     }
 
     function setActiveEditor(editor){
@@ -307,6 +324,14 @@ Item {
        if ( value === "3: 2 by 1"){
             createLayerManagers(3)
             layouts.source = "Layers32b1.qml"
+            maptools1.manager = layermanagers[0]
+            maptools2.manager = layermanagers[1]
+            maptools3.manager = layermanagers[2]
+       }
+
+        if ( value === "3: 2 by 1 v"){
+            createLayerManagers(3)
+            layouts.source = "Layers32v1.qml"
             maptools1.manager = layermanagers[0]
             maptools2.manager = layermanagers[1]
             maptools3.manager = layermanagers[2]
