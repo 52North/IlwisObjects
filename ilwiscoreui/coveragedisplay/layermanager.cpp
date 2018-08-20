@@ -526,55 +526,65 @@ QList<LayerModel*> Ilwis::Ui::LayerManager::topChilderen()
 }
 
 void LayerManager::linkAcceptMessage(const QVariantMap& parameters) {
-    if (parameters.contains("linktype")) {
-        QString linktype = parameters["linktype"].toString();
-        if (linktype == "zoomextent") {
-            bool ok;
+    try {
+        if (parameters.contains("linktype")) {
+            QString linktype = parameters["linktype"].toString();
+            if (linktype == "zoomextent") {
+                bool ok;
 
-            QString env = parameters["envelope"].toString();
-            if (env == "") {
-                QVariantMap extent = parameters["envelope"].toMap();
-                if (extent.contains("maxx")) {
-                    env = QString("%1,%2,%3,%4").arg(extent["minx"].toDouble()).arg(extent["miny"].toDouble()).arg(extent["maxx"].toDouble()).arg(extent["maxy"].toDouble());
+                QString env = parameters["envelope"].toString();
+                if (env == "") {
+                    QVariantMap extent = parameters["envelope"].toMap();
+                    if (extent.contains("maxx")) {
+                        env = QString("%1,%2,%3,%4").arg(extent["minx"].toDouble()).arg(extent["miny"].toDouble()).arg(extent["maxx"].toDouble()).arg(extent["maxy"].toDouble());
+                    }
                 }
-            }
-            quint64 csyid = parameters["csyid"].toULongLong(&ok);
-            if (!ok)
-                return;
-
-            if (rootLayer()->screenCsy()->id() != csyid ) {
-                ICoordinateSystem csy;
-                if (!csy.prepare(csyid))
+                quint64 csyid = parameters["csyid"].toULongLong(&ok);
+                if (!ok)
                     return;
-                QStringList parts = env.split(",");
-                if (parts.size() == 4 || parts.size() == 6) {
-                    bool ok1, ok2;
-                    Coordinate crd1(parts[0].toDouble(&ok1), parts[1].toDouble(&ok2));
-                    if (!ok1 || !ok2)
+
+                if (rootLayer()->screenCsy()->id() != csyid) {
+                    ICoordinateSystem csy;
+                    if (!csy.prepare(csyid))
                         return;
-                    Coordinate crd2(parts[2].toDouble(&ok1), parts[3].toDouble(&ok2));
-                    if (!ok1 || !ok2)
-                        return;
-                    crd1 = rootLayer()->screenCsy()->coord2coord(csy, crd1);
-                    crd2 = rootLayer()->screenCsy()->coord2coord(csy, crd2);
-                    if (!crd1.isValid() || !crd2.isValid())
-                        return;
-                    env = QString("%1,%2,%3,%4").arg(crd1.x).arg(crd1.y).arg(crd2.x).arg(crd2.y);
+                    QStringList parts = env.split(",");
+                    if (parts.size() == 4 || parts.size() == 6) {
+                        bool ok1, ok2;
+                        Coordinate crd1(parts[0].toDouble(&ok1), parts[1].toDouble(&ok2));
+                        if (!ok1 || !ok2)
+                            return;
+                        Coordinate crd2(parts[2].toDouble(&ok1), parts[3].toDouble(&ok2));
+                        if (!ok1 || !ok2)
+                            return;
+                        crd1 = rootLayer()->screenCsy()->coord2coord(csy, crd1);
+                        crd2 = rootLayer()->screenCsy()->coord2coord(csy, crd2);
+                        if (!crd1.isValid() || !crd2.isValid())
+                            return;
+                        env = QString("%1,%2,%3,%4").arg(crd1.x).arg(crd1.y).arg(crd2.x).arg(crd2.y);
+                    }
                 }
+                QString cmd = QString("setviewextent(%1, %2)").arg(modelId()).arg(env);
+                addCommand(cmd);
             }
-            QString cmd = QString("setviewextent(%1, %2)").arg(modelId()).arg(env);
-            addCommand(cmd);
         }
     }
+    catch (const ErrorObject&) {}
 }
 
-void LayerManager::linkTo(QObject *obj, bool bidrectional, const QString& type) {
+void LayerManager::linkTo(QObject *obj, bool bidrectional, const QString& ) {
     LayerManager *lm = dynamic_cast<LayerManager *>(obj);
     if (lm) {
         connect(lm, &LayerManager::linkSendMessage, this, &LayerManager::linkAcceptMessage);
         if (bidrectional) {
             connect(this, &LayerManager::linkSendMessage, lm, &LayerManager::linkAcceptMessage);
         }
+    }
+}
+
+void LayerManager::unLinkTo(QObject *target, const QString& type) {
+    LayerManager *lm = dynamic_cast<LayerManager *>(target);
+    if (lm) {
+        disconnect(lm, "linkSendMessage");
     }
 }
 

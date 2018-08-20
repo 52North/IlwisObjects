@@ -81,6 +81,7 @@ public:
     Q_INVOKABLE void removePostDrawer(QObject *editor);
     Q_INVOKABLE void broadCast(const QVariantMap& parameters);
     Q_INVOKABLE void linkTo(QObject *obj, bool bidrectional, const QString& type);
+    Q_INVOKABLE void unLinkTo(QObject *target, const QString& type);
 
     RootLayerModel *rootLayer() const;
     
