@@ -60,7 +60,7 @@ GDALProxy::GDALProxy() {
         ok = _libgdal.load();
     }
     if ( !ok){
-        ERROR2(ERR_COULD_NOT_LOAD_2, TR("name"), "gdal connector");
+        ERROR2(ERR_COULD_NOT_LOAD_2, TR("name"), "gdal connector,error :" + _libgdal.errorString());
     }
     _isValid = ok;
 }
