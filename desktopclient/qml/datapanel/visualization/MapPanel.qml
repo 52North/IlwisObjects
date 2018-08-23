@@ -199,6 +199,8 @@ Item {
         if (type != panelLayout) { 
             setLayout(type)
             panelLayout = type
+            layoutChoices.toggle()
+
         }
     }
 
@@ -247,6 +249,7 @@ Item {
     }
 
     function transfer(datapanel){
+        console.debug("xxxxx")
         layers.transfer(datapanel)
         viewmanager.transfer(datapanel)
     }
@@ -399,6 +402,15 @@ Item {
 
         }
         return null
+    }
+
+    function zoomFromOverview(envelope) {
+        for(var i=0; i < layermanagers.length; ++i){
+            var lm = layermanagers[i];
+            if ( lm){
+                lm.addCommand("setviewextent("+ lm.viewid + "," + envelope + ")")
+            }
+        }
     }
 
     function broadCastNewExtent(sourceLayerManager, envelope){
