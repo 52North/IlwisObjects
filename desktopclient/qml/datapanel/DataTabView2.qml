@@ -54,12 +54,28 @@ Item {
         width: parent.width - szbut.width - 5
         onDropped:{
             var createParameters = drop.source.sourcePanel.createParameters
-            datapanesplit.newPanel(createParameters[0],createParameters[2],createParameters[1],side==1 ? "left" : "right")
-            if ( drop.source.sourcePanel.panelType === "mappanel") {
+            if ( createParameters.isArray){
+                var tab = datapanesplit.newPanel(createParameters[0],createParameters[2],createParameters[1],side==1 ? "left" : "right")
+            } else {
+                var newTab
+                for(var i=0; i < createParameters.length; ++i ){
+                    var parms = createParameters[i]
+                    if ( i == 0){
+                        newTab = datapanesplit.newPanel(parms[0],parms[2],parms[1],side==1 ? "left" : "right")
+                    }else {
+                        if ( newTab){
+                            newTab.item.addDataSource(parms[0], parms[2], parms[1])
+                        }
+                    }
+                }
+            }
+
+            /*if ( drop.source.sourcePanel.panelType === "mappanel") {
                 var tab = datatab.getTab(datatab.count - 1)
                 var datapanel = tab.item
+            console.debug("pppppppp")
                 datapanel.transfer(drop.source.sourcePanel)
-            }
+            }*/
         }
         z: 10
     }
