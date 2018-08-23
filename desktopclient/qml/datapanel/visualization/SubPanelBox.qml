@@ -45,7 +45,6 @@ Controls.DropableItem {
              x : 4
 
              onCheckedChanged : {
-                 console.debug("pppppppppppppp", checked)
                  if (!checked ){
                      for(var i=0; i < layersview.layermanagers.length; ++i){
                          var layerm1 = layersview.layermanagers[i]
