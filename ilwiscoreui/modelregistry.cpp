@@ -86,27 +86,119 @@ QString Ilwis::Ui::ModelRegistry::mainPanelUrl(const QString & type) const
     return sUNDEF;
 }
 
-QVariantList ModelRegistry::modelList(quint32 selfId, const QString & types)
+QVariantList ModelRegistry::modelList(QObject *source, const QString & propertyType)
 {
-    QStringList typeList = types.split("|");
-    QVariantList result;
-    for (auto item : _models) {
-        if (item.first == selfId)
-            continue;
 
-        QString type = item.second.first;
-        if (typeList.contains(type) || types == "all") {
-            QString iobjectname = name(type, item.second.second);
-            if (iobjectname != sUNDEF) {
-                QVariantMap mp;
-                mp["name"] = iobjectname;
-                mp["modelid"] = item.first;
-                result.push_back(mp);
+
+    QVariantList result;
+    if (propertyType == "")
+        return result;
+
+    QString requiredTargetType;
+    CoverageLayerModel *covLayer = dynamic_cast<CoverageLayerModel *>(source);
+    quint64 ilwisid;
+    if (covLayer)
+        ilwisid = covLayer->coverage()->id();
+    else {
+        RootLayerModel *rootLayer = dynamic_cast<RootLayerModel *>(source);
+        if (rootLayer) {
+            ilwisid = rootLayer->layerManager()->modelId();
+        }
+        else {
+            TableModel * tableModel = dynamic_cast<TableModel *>(source);
+            if (tableModel) {
+                ilwisid = tableModel->modelId();
             }
         }
-
     }
+    if (propertyType == "zoomextent") {
+        requiredTargetType = "layermanager";
+    }  else if (propertyType == "stretch") {
+        requiredTargetType = "rastercoverage";
+    } else if (propertyType == "record") {
+        requiredTargetType = "featurecoverage";
+    }  else if (propertyType == "feature") {
+        requiredTargetType = "table";
+    }
+
+    for (auto item : _models) {
+        QString type = item.second.first;
+        QString url,name;
+        quint64 id = i64UNDEF;
+        getTargetContext(type, item.second.second, requiredTargetType, url, name, id);
+        if (id != i64UNDEF && id != ilwisid) {
+            QVariantMap mp;
+            mp["name"] = name;
+            mp["modelid"] = item.first;
+            bool found = false;
+            for (auto item : result) { // should be done with std::find + lambda but fails on QVariant. no sure why
+                if (item.toMap()["name"] == name) {
+                    found = true;
+                    break;
+                }
+            }
+            if ( !found)
+                result.push_back(mp);
+        }
+    }
+
     return result;
+}
+
+void ModelRegistry::getTargetContext(const QString& type, QObject * obj, const QString& targetType, QString& url, QString& name, quint64& id) const
+{
+    if (type == "coverage" || type == "featurecoverage" || type == "rastercoverage") {
+        CoverageLayerModel *cmodel = dynamic_cast<CoverageLayerModel *>(obj);
+        if (targetType.indexOf("coverage") != -1) {
+            url = cmodel->url();
+            id = cmodel->coverage()->id();
+            name = cmodel->coverage()->name();
+        } else if (targetType == "layermanager") {
+            LayerManager *lm = cmodel->layerManager();
+            if (lm->managerType() == LayerManager::mtMAIN) {
+                url = "";
+                name = lm->layerListName();
+                if ( name != sUNDEF && name.toLower() != "country boundaries")
+                    id = lm->modelId();
+                
+            }
+        } else if (targetType == "record") {
+            TableModel *tmodel = dynamic_cast<TableModel *>(obj);
+            url = tmodel->url();
+            name = tmodel->table()->name();
+            if ( name != sUNDEF)
+                id = tmodel->table()->id();
+            
+        }
+    }
+    if (type == "table" || type == "flattable" || type == "attributetable") {
+        if (targetType.indexOf("coverage") != -1) {
+            TableModel *tmodel = dynamic_cast<TableModel *>(obj);
+            url = tmodel->url();
+            name = tmodel->table()->name();
+            if ( name != sUNDEF)
+                id = tmodel->table()->id();
+            
+        }
+    }
+
+    if (type == "layermanager") {
+        LayerManager *cmodel = dynamic_cast<LayerManager *>(obj);
+        url = "";
+        if (cmodel->managerType() == LayerManager::mtMAIN){
+            name = cmodel->layerListName();
+            if (name != sUNDEF && name.toLower() != "country boundaries" && cmodel)
+                id = cmodel->modelId();
+        }
+    }
+
+    if (type == "chart") {
+        ChartModel *cmodel = dynamic_cast<ChartModel *>(obj);
+        name =  cmodel->name();
+        url = "";
+        if ( name != sUNDEF)
+            id = cmodel->modelId();
+    }
 }
 
 QVariantList ModelRegistry::linkedProperties(int modelId) {
@@ -131,6 +223,10 @@ QVariantList ModelRegistry::linkedProperties(int modelId) {
             ChartModel *cmodel = dynamic_cast<ChartModel *>(obj);
             result.append(cmodel->linkProperties());
         }
+        if (type == "rootlayer") {
+            RootLayerModel *rmodel = dynamic_cast<RootLayerModel *>(obj);
+            result.append(rmodel->layerManager()->linkProperties());
+        }
     }
     return result;
 }
@@ -150,31 +246,7 @@ quint32 Ilwis::Ui::ModelRegistry::lastAddedId() const
     return _lastAddedId;
 }
 
-QString ModelRegistry::name(const QString& type, QObject * obj) const
-{
-    if (type == "coverage" || type == "featurecoverage" || type == "rastercoverage") {
-        CoverageLayerModel *cmodel = dynamic_cast<CoverageLayerModel *>(obj);
-        QString name =  cmodel->coverage()->name();
-        if (cmodel->layerManager()->managerType() == LayerManager::mtMAIN) {
-            return name;
-        }
-    }
-    if (type == "table" || type == "flattable" || type == "attributetable") {
-        TableModel *cmodel = dynamic_cast<TableModel *>(obj);
-        return cmodel->table()->name();
-    }
 
-    if (type == "layermanager") {
-        LayerManager *cmodel = dynamic_cast<LayerManager *>(obj);
-        return cmodel->layerListName();
-    }
-
-    if (type == "chart") {
-        ChartModel *cmodel = dynamic_cast<ChartModel *>(obj);
-        return cmodel->name();
-    }
-    return sUNDEF;
-}
 
 LayerManager *ModelRegistry::createLayerManager(QObject *parent, QQuickItem *viewContainer)
 {
