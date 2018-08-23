@@ -215,12 +215,17 @@ int FeatureLayerModel::numberOfBuffers(const QString&) const {
 
 QVariantList FeatureLayerModel::linkProperties() const
 {
-    QVariantList result;
+    QVariantList result = CoverageLayerModel::linkProperties();
     QVariantMap mp;
+    mp["name"] = "feature";
+    mp["modelid"] = modelId();
+    result.push_back(mp);
+
     mp["name"] = "record";
     mp["modelid"] = modelId();
     mp["method"] = "selectionbyraw";
     result.push_back(mp);
+
 
     return result;
 }
