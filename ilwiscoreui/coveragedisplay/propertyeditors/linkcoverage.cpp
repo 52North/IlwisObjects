@@ -23,6 +23,9 @@ LinkCoverage::LinkCoverage(VisualAttribute *p) : VisualPropertyEditor(p, "linkco
 
 bool LinkCoverage::canUse(const IIlwisObject &obj, const QString &name) const
 {
+    if (name == VisualAttribute::GLOBAL_ONLY)
+        return true;
+
     if (!obj.isValid())
         return false;
     if (!hasType(obj->ilwisType(), itCOVERAGE))
@@ -31,13 +34,9 @@ bool LinkCoverage::canUse(const IIlwisObject &obj, const QString &name) const
     return !vpmodel()->layer()->isSupportLayer();
 }
 
-CoverageLayerModel * LinkCoverage::coverage()
+LayerModel * LinkCoverage::layer()
 {
-    CoverageLayerModel * lm = dynamic_cast<CoverageLayerModel *>(vpmodel()->layer());
-    if (lm)
-        return lm;
-    return 0;
-
+    return vpmodel()->layer();
 }
 
 void LinkCoverage::setLink(const QVariantMap & parameters)

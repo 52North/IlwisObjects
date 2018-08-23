@@ -16,7 +16,7 @@ namespace Ilwis {
             LinkCoverage();
             LinkCoverage(VisualAttribute *p);
 
-            Q_INVOKABLE Ilwis::Ui::CoverageLayerModel *coverage();
+            Q_INVOKABLE Ilwis::Ui::LayerModel *layer();
             Q_INVOKABLE void setLink(const QVariantMap& parms);
 
             bool canUse(const IIlwisObject &obj, const QString &name) const;
