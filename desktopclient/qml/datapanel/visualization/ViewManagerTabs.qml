@@ -48,11 +48,11 @@ TabView{
     function tabClicked(index){
         if ( currentIndex === index){
             if ( viewmanager.height <= 60){
-                layers.state = "visible"
+                layouts.state = "visible"
             }
             else{
-                layers.state = ""
-                layers.state = "invisible"
+                layouts.state = ""
+                layouts.state = "invisible"
             }
         }
 
