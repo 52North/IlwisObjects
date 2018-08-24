@@ -6,6 +6,7 @@
 #include "coveragedisplay\layermodel.h"
 #include "coveragedisplay\visualattribute.h"
 #include "coveragedisplay\layermanager.h"
+#include "modelregistry.h"
 #include "gridlayer.h"
 
 using namespace Ilwis;
@@ -30,6 +31,7 @@ GridLayer::GridLayer(LayerManager *manager, QStandardItem *parent, const IOOptio
     primaryGrid->nodeId(manager->nextId());
     appendRow(primaryGrid);
     manager->lastAddedCoverageLayer(primaryGrid);
+    modelregistry()->registerModel(modelId(), "gridlayer", this);
 
     SecondaryGridLayer *secondaryGrid = new SecondaryGridLayer(manager, this, primaryGrid, options);
     secondaryGrid->nodeId(manager->nextId());

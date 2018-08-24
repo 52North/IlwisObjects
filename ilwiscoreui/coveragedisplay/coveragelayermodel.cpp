@@ -103,6 +103,8 @@ void CoverageLayerModel::coverage(const ICoverage &cov)
     if ( _coverage.isValid()){
         _coordConversionNeeded = _coverage->coordinateSystem()->isCompatibleWith(layerManager()->rootLayer()->screenCsy().ptr());
         modelregistry()->registerModel(modelId(), TypeHelper::type2name(_coverage->ilwisType()), this);
+        if (layerManager()->layerListName() == sUNDEF)
+            layerManager()->setLayerListName(_coverage->name());
     }
 }
 
@@ -281,10 +283,6 @@ bool CoverageLayerModel::supportsLinkType(const QString& type) const
 QVariantList CoverageLayerModel::linkProperties() const
 {
     QVariantList result;
-    QVariantMap mp;
-    mp["name"] = "feature";
-    mp["modelid"] = modelId();
-    result.push_back(mp);
     return result;
 }
 
@@ -301,4 +299,5 @@ QString Ilwis::Ui::CoverageLayerModel::mainPanelUrl()
 void CoverageLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
     qDebug() << "gets message";
 }
+
 

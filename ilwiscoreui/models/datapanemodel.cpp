@@ -6,6 +6,7 @@
 #include "layermanager.h"
 #include "coveragelayermodel.h"
 #include "modelregistry.h"
+#include "operationhelper.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -95,8 +96,9 @@ SidePanelModel *DataPaneModel::leftSide() const
     return _leftside;
 }
 
-TabModel *DataPaneModel::createPanel(const QString &filter, const QString &outputtype, const QString& url, const QString& side)
+TabModel *DataPaneModel::createPanel(const QString &filter2, const QString &outputtype, const QString& url, const QString& side)
 {
+    QString filter = OperationHelper::unquote(filter2);
     SidePanelModel *sidepanel;
     if ( side == "other"){
         sidepanel = leftActive() ? _rightside : _leftside;

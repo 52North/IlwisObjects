@@ -401,7 +401,7 @@ QVariantList Ilwis::Ui::LayerManager::linkProperties() const
 {
     QVariantList result;
     QVariantMap mp;
-    mp["name"] = "zoom";
+    mp["name"] = "zoomextent";
     mp["modelid"] = modelId();
     result.push_back(mp);
 

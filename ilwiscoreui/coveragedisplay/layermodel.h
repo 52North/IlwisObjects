@@ -62,6 +62,7 @@ public:
     Q_PROPERTY(QModelIndex index READ index CONSTANT)
     Q_PROPERTY(LayerModel * parentLayer READ parentLayer CONSTANT)
     Q_PROPERTY(bool hasFixedStructure READ hasFixedStructure CONSTANT)
+    Q_PROPERTY(QString url READ url CONSTANT)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;

@@ -10,6 +10,7 @@
 #include "util/size.h"
 #include "rootlayermodel.h"
 #include "coveragelayermodel.h"
+#include "modelregistry.h"
 #include "raster.h"
 
 
@@ -31,7 +32,7 @@ RootLayerModel::RootLayerModel(LayerManager *lm, QStandardItem *parent) :
 	_cameraPosition = { 0,0,0 };
 	_isValid = true;
 	_icon = "settings_green.png";
-
+    modelregistry()->registerModel(modelId(), "rootlayer", this);
 	fillData();
 }
 
@@ -166,7 +167,7 @@ QVariantMap RootLayerModel::scrollInfo() const
 bool Ilwis::Ui::RootLayerModel::prepare(int prepType)
 {
     if (!hasType(prepType, LayerModel::ptGEOMETRY | LayerModel::ptRENDER)) {
-        addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), "", this));
+        addVisualAttribute(new GlobalAttributeModel(TR("Geometry"), VisualAttribute::GLOBAL_ONLY, this));
         addVisualAttribute(new GlobalAttributeModel(TR("3D"), "", this));
 
         LayerManager::create(this, "gridlayer", layerManager(), sUNDEF, sUNDEF);
@@ -738,3 +739,5 @@ void RootLayerModel::SetCameraPosition() {
     _cameraPosition.y = _zoomEnvelope.center().y - _viewEnvelope.center().y;
     layerManager()->refresh();
 }
+
+

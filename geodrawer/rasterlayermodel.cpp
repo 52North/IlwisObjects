@@ -129,7 +129,7 @@ bool Ilwis::Ui::RasterLayerModel::usesColorData() const
 
 QVariantList Ilwis::Ui::RasterLayerModel::linkProperties() const
 {
-    QVariantList result;
+    QVariantList result = CoverageLayerModel::linkProperties();
     QVariantMap mp;
     mp["name"] = "stretch";
     mp["modelid"] = modelId();

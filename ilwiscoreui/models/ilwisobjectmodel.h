@@ -92,7 +92,7 @@ public:
     bool isValid() const;
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
-    quint32 modelId() const;
+    Q_INVOKABLE quint32 modelId() const;
 
 public slots:
     void recalcDone();

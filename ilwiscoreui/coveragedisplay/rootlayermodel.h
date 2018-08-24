@@ -99,7 +99,6 @@ public:
      bool prepare(int prepType);
      QVariantList gridAxis(const QString& type) const;
 
-
 signals:
      void zoomInModeChanged();
      void panningModeChanged();
