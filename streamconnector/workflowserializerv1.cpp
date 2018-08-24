@@ -159,7 +159,7 @@ bool WorkflowSerializerV1::storeNode(const SPWorkFlowNode& node, const IOOptions
         _stream << wp.syntax();
         _stream << wp.needsQuotes();
         auto line = wp.line();
-        _stream << line.size();
+        _stream << (qint32)line.size();
         for(int p=0; p< line.size();++p ){
             line[i].store(_stream);
         }
