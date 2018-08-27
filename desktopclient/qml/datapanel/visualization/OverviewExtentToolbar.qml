@@ -29,7 +29,8 @@ Rectangle {
         onTriggered : {
             if ( manager){
                 var envelope = manager.rootLayer.zoomEnvelope
-                Global.calcZoomOutEnvelope(envelope, layers, viewmanager,0.707)
+                var zoomposition = {x: 0.5, y: 0.5};
+                Global.calcZoomOutEnvelope(envelope, zoomposition, layers, viewmanager,0.707)
             }
         }
     }

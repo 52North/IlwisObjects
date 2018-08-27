@@ -34,26 +34,27 @@ function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function calcZoomOutEnvelope(envelope, layers, viewmanager, factor)
+function calcZoomOutEnvelope(envelope, zoomposition, layers, viewmanager, factor)
 {
     if ( envelope !== ""){
-        var x1 = envelope.minx
-        var x2 = envelope.maxx
-        var y1 = envelope.miny
-        var y2 = envelope.maxy
-                
-        var dx = factor * Math.abs(x1 - x2)
-        var dy = factor * Math.abs(y1 - y2)
-
-        var nx1 = (x2 + x1) / 2.0 - dx
-        var nx2 = (x2 + x1) / 2.0 + dx
-        var ny1 = (y2 + y1) / 2.0 - dy
-        var ny2 = (y2 + y1) / 2.0 + dy
-        console.debug(x1, x2, nx1, nx2, dx, factor)
-        var newenvelope = nx1 + " " + ny1 + " " + nx2 + " " + ny2
-        layers.newExtent(newenvelope)
+        var x1 = envelope.minx;
+        var x2 = envelope.maxx;
+        var y1 = envelope.miny;
+        var y2 = envelope.maxy;
+        var w = Math.abs(x2 - x1);
+        var h = Math.abs(y2 - y1);
+        var nw = w * factor;
+        var nh = h * factor;
+        var cx = 0.5 * factor + zoomposition.x * (1.0 - factor);
+        var cy = 0.5 * factor + zoomposition.y * (1.0 - factor);
+        var nx1 = x1 + w * cx - nw / 2.0;
+        var nx2 = x1 + w * cx + nw / 2.0;
+        var ny1 = y1 + h * cy - nh / 2.0;
+        var ny2 = y1 + h * cy + nh / 2.0;
+        var newenvelope = nx1 + " " + ny1 + " " + nx2 + " " + ny2;
+        layers.newExtent(newenvelope);
         if (typeof viewmanager.newZoomExtent == 'function')
-            viewmanager.newZoomExtent(newenvelope)
+            viewmanager.newZoomExtent(newenvelope);
     }
 }
 

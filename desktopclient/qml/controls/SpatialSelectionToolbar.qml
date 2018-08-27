@@ -31,7 +31,8 @@ Rectangle {
         onTriggered : {
             if ( worldmapcontainer.manager){
                 var envelope = manager.rootLayer.zoomEnvelope
-                Global.calcZoomOutEnvelope(envelope, worldmap, worldmapcontainer.manager,0.707)
+                var zoomposition = {x: 0.5, y: 0.5};
+                Global.calcZoomOutEnvelope(envelope, zoomposition, worldmap, worldmapcontainer.manager,0.707)
             }
         }
     }

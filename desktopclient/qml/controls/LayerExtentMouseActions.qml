@@ -299,13 +299,9 @@ MouseArea {
     }
     onWheel: {
         if ( layerManager){
-            var cbZoom = layerManager.rootLayer.zoomEnvelope
-            var posx = cbZoom.minx + (cbZoom.maxx - cbZoom.minx) * mouseX / width; // determine mousecursor location at the moment of the mousewheel action
-            var posy = cbZoom.maxy - (cbZoom.maxy - cbZoom.miny) * mouseY / height;
-            var w = (cbZoom.maxx - cbZoom.minx) / 2.0;
-            var h = (cbZoom.maxy - cbZoom.miny) / 2.0;
-            var envelope = {minx: (posx - w), miny: (posy - h), maxx: (posx + w), maxy: (posy + h)} // determine new bounds
-            Global.calcZoomOutEnvelope(envelope, layouts.activePanel(), viewmanager, wheel.angleDelta.y < 0 ? 0.9 : -0.2 )
+            var envelope = layerManager.rootLayer.zoomEnvelope
+            var zoomposition = {x: mouseX / width, y: 1.0 - mouseY / height};
+            Global.calcZoomOutEnvelope(envelope, zoomposition, layouts.activePanel(), viewmanager, wheel.angleDelta.y < 0 ? 1.1 : 1.0/1.1 )
             var enablePanAndZoomOut = layerManager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerManager.rootLayer.scrollInfo.ysizeperc < 1.0
             setZoomPanButton(enablePanAndZoomOut)
             if (!enablePanAndZoomOut && (layerManager.zoomOutMode || layerManager.panningMode)) {

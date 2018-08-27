@@ -56,7 +56,8 @@ Rectangle {
         onTriggered : {
             if ( renderer.layermanager){
                 var envelope = renderer.layerManager.rootLayer.zoomEnvelope
-                Global.calcZoomOutEnvelope(envelope, renderer, renderer.layerManager,0.707)
+                var zoomposition = {x: 0.5, y: 0.5};
+                Global.calcZoomOutEnvelope(envelope, zoomposition, renderer, renderer.layerManager,0.707)
                 grid.setSource("")
             }
         }
