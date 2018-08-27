@@ -26,7 +26,7 @@ class VisualPropertyEditor;
 class LayerModel;
 class RootLayerModel;
 
-const QString LAYER_WIDE_ATTRIBUTE = "Layer Wide";
+const QString LAYER_WIDE_ATTRIBUTE = "Layer Specific";
 
 class ILWISCOREUISHARED_EXPORT VisualAttribute : public AttributeModel
 {

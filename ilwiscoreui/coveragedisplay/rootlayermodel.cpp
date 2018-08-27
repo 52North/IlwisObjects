@@ -25,7 +25,7 @@ RootLayerModel::RootLayerModel() : LayerModel()
 }
 
 RootLayerModel::RootLayerModel(LayerManager *lm, QStandardItem *parent) :
-    LayerModel(lm, parent, TR("Global Properties"),"", IOOptions())
+    LayerModel(lm, parent, TR("Whole Area"),"", IOOptions())
 {
 	_layerType = itROOTLAYER;
  
