@@ -305,7 +305,7 @@ MouseArea {
             var w = (cbZoom.maxx - cbZoom.minx) / 2.0;
             var h = (cbZoom.maxy - cbZoom.miny) / 2.0;
             var envelope = {minx: (posx - w), miny: (posy - h), maxx: (posx + w), maxy: (posy + h)} // determine new bounds
-            Global.calcZoomOutEnvelope(envelope, layers, viewmanager, wheel.angleDelta.y < 0 ? 0.9 : -0.2 ) 
+            Global.calcZoomOutEnvelope(envelope, layouts.activePanel(), viewmanager, wheel.angleDelta.y < 0 ? 0.9 : -0.2 )
             var enablePanAndZoomOut = layerManager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerManager.rootLayer.scrollInfo.ysizeperc < 1.0
             setZoomPanButton(enablePanAndZoomOut)
             if (!enablePanAndZoomOut && (layerManager.zoomOutMode || layerManager.panningMode)) {
