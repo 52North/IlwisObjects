@@ -8,6 +8,7 @@ import QtCharts 2.0
 import ModelRegistry 1.0
 import ChartModel 1.0
 import DataseriesModel 1.0
+import "../../../../qml/controls" as Controls
 
 Rectangle {
     id : chartView
@@ -43,9 +44,13 @@ Rectangle {
 		max : chart != null  ? chart.maxY : 5
 		tickCount : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
-        visible : false
+        visible : true
 	}
 
+    Controls.FloatingRectangle {
+        id : chartInfo
+
+    }
 
 	ChartView {
 		id : visibleGraphs
@@ -55,6 +60,53 @@ Rectangle {
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
+
+        property var selectedPoint: undefined
+        property real toleranceX: 0.1
+        property real toleranceY: 0.1
+
+        function updateHoverValue(mouse) {
+            var cp = visibleGraphs.mapToValue(Qt.point(mouse.x, mouse.y));  // get projected values on x-axis and y-axis
+            var series1 = visibleGraphs.series(0);      // assumption: the series has at least one point
+            var i = 0;
+            var p1;
+            do {
+                p1 = series1.at(i);
+                i++;
+            }
+            while (i < series1.count && series1.at(i).x < cp.x);
+            if (i < series1.count) {
+                var p2 = series1.at(i);
+                var ny = p1.y + (cp.x - p1.x) * (p2.y - p1.y) / (p2.x - p1.x);
+                if (Math.abs(ny - cp.y) < visibleGraphs.toleranceY * (yas.max - yas.min)) {
+                    chartInfo.enabled = true
+                    chartInfo.opacity = 1
+                    chartInfo.x = mouse.x
+                    chartInfo.y = mouse.y
+                    chartInfo.text = ny.toPrecision(4)
+                }
+            }
+        }
+
+        MouseArea {
+            id : chartMouseArea
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+            onPressed: {
+                visibleGraphs.updateHoverValue(mouse);
+            }
+
+            onPositionChanged : {
+                visibleGraphs.updateHoverValue(mouse);
+            }
+
+            onReleased: {
+                chartInfo.enabled = false
+                chartInfo.opacity = 0
+                chartInfo.x = 0
+                chartInfo.y = 0
+            }
+        }
 
     }
 
