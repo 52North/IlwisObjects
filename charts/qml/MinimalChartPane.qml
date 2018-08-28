@@ -60,60 +60,19 @@ Rectangle {
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
-
-        property var selectedPoint: undefined
-        property real toleranceX: 0.1
-        property real toleranceY: 0.1
-
-        function updateHoverValue(mouse) {
-            var cp = visibleGraphs.mapToValue(Qt.point(mouse.x, mouse.y));  // get projected values on x-axis and y-axis
-            var series1 = visibleGraphs.series(0);      // assumption: the series has at least one point
-            var i = 0;
-            var p1;
-            do {
-                p1 = series1.at(i);
-                i++;
-            }
-            while (i < series1.count && series1.at(i).x < cp.x);
-            if (i < series1.count) {
-                var p2 = series1.at(i);
-                var ny = p1.y + (cp.x - p1.x) * (p2.y - p1.y) / (p2.x - p1.x);
-                if (Math.abs(ny - cp.y) < visibleGraphs.toleranceY * (yas.max - yas.min)) {
-                    chartInfo.enabled = true
-                    chartInfo.opacity = 1
-                    chartInfo.x = mouse.x
-                    chartInfo.y = mouse.y
-                    chartInfo.text = ny.toPrecision(4)
-                }
-            }
-        }
-
-        MouseArea {
-            id : chartMouseArea
-            anchors.fill: parent
-            acceptedButtons: Qt.LeftButton
-            onPressed: {
-                visibleGraphs.updateHoverValue(mouse);
-            }
-
-            onPositionChanged : {
-                visibleGraphs.updateHoverValue(mouse);
-            }
-
-            onReleased: {
-                chartInfo.enabled = false
-                chartInfo.opacity = 0
-                chartInfo.x = 0
-                chartInfo.y = 0
-            }
-        }
-
     }
 
-    function dataseriesChanged() {
-        console.log("Via via kleur")
+    function linehover(pnt, state) {
+        if (state) {    // true: mouse is on the line
+            var pos = visibleGraphs.mapToPosition(pnt);
+            chartInfo.enabled = true
+            chartInfo.opacity = 1
+            chartInfo.x = pos.x
+            chartInfo.y = pos.y
+            chartInfo.text = pnt.y.toPrecision(4)
+        }
     }
-  
+
 	function loadGraphs() {
         if ( !chart)
             return
@@ -122,7 +81,6 @@ Rectangle {
             var series = createSeries(chart.chartType, smodel.name, xas, yas)
 			series.pointsVisible = false;
 			series.color = chart.seriesColor(i);
-            series.onColorChanged.connect(dataseriesChanged)    // does not work yet; not sure why
 			var points = smodel.points
 			var pointsCount = points.length;
 			for (var j = 0; j < pointsCount; j++) {
@@ -132,8 +90,10 @@ Rectangle {
 	}
 
     function createSeries(ctype, name, xas, yas){
-        if ( ctype == "line"){
-            return visibleGraphs.createSeries(ChartView.SeriesTypeLine, name, xas, yas);
+        if ( ctype == "line") {
+            var series = visibleGraphs.createSeries(ChartView.SeriesTypeLine, name, xas, yas);
+            series.hovered.connect(linehover)
+            return series;
         }
         if (ctype == "spline"){
             return visibleGraphs.createSeries(ChartView.SeriesTypeSpline, name, xas, yas);
