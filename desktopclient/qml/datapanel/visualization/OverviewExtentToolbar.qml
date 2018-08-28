@@ -28,9 +28,10 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( manager){
-                var envelope = manager.rootLayer.zoomEnvelope
+                var envelope = manager.rootLayer.zoomEnvelope;
                 var zoomposition = {x: 0.5, y: 0.5};
-                Global.calcZoomOutEnvelope(envelope, zoomposition, layers, viewmanager,0.707)
+                envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, viewmanager,0.707);
+                layers.newExtent(envelope.minx + " " + envelope.miny + " " + envelope.maxx + " " + envelope.maxy);
             }
         }
     }

@@ -55,10 +55,11 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( renderer.layermanager){
-                var envelope = renderer.layerManager.rootLayer.zoomEnvelope
+                var envelope = renderer.layerManager.rootLayer.zoomEnvelope;
                 var zoomposition = {x: 0.5, y: 0.5};
-                Global.calcZoomOutEnvelope(envelope, zoomposition, renderer, renderer.layerManager,0.707)
-                grid.setSource("")
+                envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, renderer.layerManager,0.707);
+                renderer.newExtent(envelope.minx + " " + envelope.miny + " " + envelope.maxx + " " + envelope.maxy);
+                grid.setSource("");
             }
         }
     }

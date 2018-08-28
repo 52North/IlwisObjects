@@ -34,7 +34,7 @@ function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function calcZoomOutEnvelope(envelope, zoomposition, layers, viewmanager, factor)
+function calcZoomOutEnvelope(envelope, zoomposition, viewmanager, factor)
 {
     if ( envelope !== ""){
         var x1 = envelope.minx;
@@ -51,11 +51,12 @@ function calcZoomOutEnvelope(envelope, zoomposition, layers, viewmanager, factor
         var nx2 = x1 + w * cx + nw / 2.0;
         var ny1 = y1 + h * cy - nh / 2.0;
         var ny2 = y1 + h * cy + nh / 2.0;
-        var newenvelope = nx1 + " " + ny1 + " " + nx2 + " " + ny2;
-        layers.newExtent(newenvelope);
-        if (typeof viewmanager.newZoomExtent == 'function')
-            viewmanager.newZoomExtent(newenvelope);
+        envelope = {minx: nx1, miny: ny1, maxx: nx2, maxy: ny2};
+        if (typeof viewmanager.newZoomExtent == 'function') {
+            viewmanager.newZoomExtent(nx1 + " " + ny1 + " " + nx2 + " " + ny2);
+        }
     }
+    return envelope;
 }
 
 function drawLine(canvas, ctx, pt1,pt2, selected, color, width){
