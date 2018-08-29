@@ -761,6 +761,15 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_layerinfo.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_layerinfo.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\layerinfo.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -983,6 +992,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\layerinfo.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
   </ItemGroup>
