@@ -165,7 +165,7 @@ void UIContextModel::currentKey(int key)
     if ( key > 0)
         _currentKey.insert(key);
     else {
-        auto iter = _currentKey.find(key);
+        auto iter = _currentKey.find(-key);
         if ( iter != _currentKey.end())
             _currentKey.erase(iter);
 
