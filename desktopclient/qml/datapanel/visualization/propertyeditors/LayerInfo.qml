@@ -33,7 +33,7 @@ Column {
 		}
 		Button {
 		id : openBut
-			iconName : "../../../images/openCS1.png"
+			text : "..."
 			width : 22
 			height : 22
 			onClicked : {
