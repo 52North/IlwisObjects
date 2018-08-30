@@ -55,6 +55,15 @@ void StretchLimits::min(double value) {
     vpmodel()->layer()->redraw();
 }
 
+double StretchLimits::initStretchMin() const {
+	auto  range = vpmodel()->stretchRange();
+	return range.min();
+}
+double StretchLimits::initStretchMax() const {
+	auto  range = vpmodel()->stretchRange();
+	return range.max();
+}
+
 double StretchLimits::max() const {
     if (_zoomOnPreset)
         return vpmodel()->stretchRange().max();
@@ -127,26 +136,10 @@ void StretchLimits::setStretchLimit(double perc) {
     if (raster.isValid()) {
         _zoomLevel = perc;  // persist zoomlevel
 
-        double sum2 = 0;
-        double seen = 0;
-        double startV = rUNDEF, endV = rUNDEF;
         auto hist = raster->statistics(ContainerStatistics<double>::pHISTOGRAM, 100).histogram();   // make sure we have a reasonable number of bins.
-
-        for (int i = 0; i < hist.size() - 1; ++i) {
-            sum2 += (hist[i]._count);
-        }
-        for (int i = 0; i < hist.size() - 1; ++i) {
-            auto& bin = hist[i];
-            seen += bin._count;
-            if (seen >= sum2 * perc && startV == rUNDEF) {
-                startV = bin._limit;
-            }
-            if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
-                endV = bin._limit;
-            }
-        }
-        if (startV != rUNDEF && endV != rUNDEF)
-            setMarkers({ startV, endV });
+		auto limits = vpmodel()->calcStretchRange(hist, perc);
+        if (limits.first != rUNDEF && limits.second != rUNDEF)
+            setMarkers({ limits.first, limits.second });
     }
 
 }

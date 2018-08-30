@@ -12,6 +12,8 @@ namespace Ilwis {
 
                 Q_PROPERTY(double min READ min WRITE min NOTIFY rangeChanged)
                 Q_PROPERTY(double max READ max WRITE max NOTIFY rangeChanged)
+				Q_PROPERTY(double initStretchMin READ initStretchMin CONSTANT)
+				Q_PROPERTY(double initStretchMax READ initStretchMax CONSTANT)
                 Q_PROPERTY(int resolution READ resolution CONSTANT)
                 Q_PROPERTY(double zoomLevel MEMBER _zoomLevel NOTIFY zoomLevelChanged)
                 Q_PROPERTY(bool zoomOnPreset READ zoomOnPreset WRITE zoomOnPreset NOTIFY zoomOnPresetChanged)
@@ -42,6 +44,8 @@ namespace Ilwis {
             void min(double value);
             double max() const;
             void max(double value) const;
+			double initStretchMin() const;
+			double initStretchMax() const;
             QVariantList markers() const;
             int resolution() const;
             bool zoomOnPreset() const;
