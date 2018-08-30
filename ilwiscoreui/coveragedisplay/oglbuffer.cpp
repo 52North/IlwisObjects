@@ -92,6 +92,11 @@ const OGLBufferChunck* OGLBuffer::buffer(int bufferIndex) const
 	return 0;
 }
 
+QVector<qreal> & OGLBuffer::vertices(int bufferIndex)
+{
+	return _buffers[bufferIndex]._vertices;
+}
+
 int OGLBuffer::bufferCount() const
 {
 	return _buffers.size();

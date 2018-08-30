@@ -26,12 +26,11 @@ void SimplePolygonSetter::getVertices(const geos::geom::Geometry *geometry, std:
 {
     IlwisTesselator tesselator;
     int n = (int)geometry->getNumGeometries();
-	Coordinate pnt = _layerManager->rootLayer()->viewEnvelope().center();
     for(int  geom = 0; geom < n; ++geom ){
         const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
         if (!subgeom)
             continue;
-       tesselator.tesselate(_targetSystem,_sourceSystem, subgeom,pnt, vertices, indices); 
+       tesselator.tesselate(subgeom, vertices, indices);
     }
 }
 

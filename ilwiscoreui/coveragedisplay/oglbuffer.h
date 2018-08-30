@@ -24,6 +24,7 @@ public:
 	int addObject(int currentBuffer, const std::vector<qreal>& positions, const std::vector<int>& indices, const std::vector<qreal>& colors , IlwisTypes type, quint64 fid);
 	void addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors);
 	const OGLBufferChunck* buffer(int bufferIndex) const;
+	QVector<qreal> & OGLBuffer::vertices(int bufferIndex); // for coord2coord
 	int bufferCount() const;
     void clear();
 

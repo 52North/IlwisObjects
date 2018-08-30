@@ -47,18 +47,16 @@ IlwisTesselator::~IlwisTesselator()
     tessDeleteTess(_tessaltor);
 }
 
-void IlwisTesselator::tesselate(const ICoordinateSystem &csyRoot, const ICoordinateSystem &csyGeom, const geos::geom::Geometry *geometry,
-    const Coordinate& center, std::vector<qreal>& vertices, std::vector<int> &indices)
+void IlwisTesselator::tesselate(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int> &indices)
 
 {
     tessReinitialize(_tessaltor);
-    std::vector<std::vector<float> > contours = getContours(geometry, csyRoot, csyGeom);
-    tesselateInternal(contours,center, vertices, indices);
+    std::vector<std::vector<float> > contours = getContours(geometry);
+    tesselateInternal(contours, vertices, indices);
 }
 
-std::vector<std::vector<float> > IlwisTesselator::getContours(const geos::geom::Geometry *geometry,const ICoordinateSystem &csyRoot, const ICoordinateSystem &csyGeom)
+std::vector<std::vector<float> > IlwisTesselator::getContours(const geos::geom::Geometry *geometry)
 {
-    bool conversionNeeded = csyRoot != csyGeom;
     const geos::geom::Polygon *polygon = dynamic_cast<const geos::geom::Polygon *>(geometry);
     if (polygon){
         const geos::geom::LineString *outerRing = polygon->getExteriorRing();
@@ -66,14 +64,8 @@ std::vector<std::vector<float> > IlwisTesselator::getContours(const geos::geom::
         contours[0].resize(outerRing->getNumPoints() * 2);
 
         auto addCoord = [&](const geos::geom::Coordinate& crd, int index, int i) {
-            if ( conversionNeeded){
-                Coordinate crdTransformed = csyRoot->coord2coord(csyGeom,crd);
-                contours[index][i] = crdTransformed.x;
-                contours[index][i+1] = crdTransformed.y;
-            } else{
-                contours[index][i] = crd.x;
-                contours[index][i+1] = crd.y;
-            }
+            contours[index][i] = crd.x;
+            contours[index][i+1] = crd.y;
         };
 
         for(int i = 0 ; i < outerRing->getNumPoints(); ++i){
@@ -108,7 +100,7 @@ int orientation(float x1, float y1, float x2, float y2, float x3, float y3)
     return (val > 0) ? 1 : 2; // clock or counterclock wise
 }
 
-void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &contours, const Coordinate& center, std::vector<qreal>& vertices, std::vector<int> &indices)
+void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &contours, std::vector<qreal>& vertices, std::vector<int> &indices)
 {
 
     quint32 maxVerts = 50;
@@ -133,13 +125,13 @@ void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &
        // for (int j = 0; j < maxVerts && p[j] != TESS_UNDEF; ++j) {
        //     qDebug() << verts[p[j] * 2] - center.x << verts[p[j] * 2 + 1] - center.y << verts[p[j] * 2] << verts[p[j] * 2 + 1] ;
        // }
-        float baseX = verts[p[0] * 2] - center.x;
-        float baseY = verts[p[0] * 2 + 1] - center.y;
-        float oldX = verts[p[1] * 2] - center.x;
-        float oldY = verts[p[1] * 2 + 1] - center.y;
+        float baseX = verts[p[0] * 2];
+        float baseY = verts[p[0] * 2 + 1];
+        float oldX = verts[p[1] * 2];
+        float oldY = verts[p[1] * 2 + 1];
         for (int j = 2; j < maxVerts && p[j] != TESS_UNDEF; ++j){
-            float nextX = verts[p[j] * 2] - center.x;
-            float nextY = verts[p[j] * 2 + 1] - center.y;
+            float nextX = verts[p[j] * 2];
+            float nextY = verts[p[j] * 2 + 1];
 
             vertices.push_back(baseX);
             vertices.push_back(baseY);
@@ -169,12 +161,8 @@ void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &
             indices.push_back(currentStart++);
             indices.push_back(currentStart++);
 
-
-
-
             oldX = nextX;
             oldY = nextY;
-
         }
     }
  }
