@@ -11,6 +11,7 @@
 #include "raster.h"
 #include "models/uicontextmodel.h"
 #include "visualpropertyeditor.h"
+#include "containerstatistics.h"
 #include "visualattribute.h"
 
 using namespace Ilwis;
@@ -87,8 +88,11 @@ void VisualAttribute::domain(const IDomain &dom)
     _datadef = DataDefinition(dom);
 }
 
-NumericRange VisualAttribute::stretchRange() const
+NumericRange VisualAttribute::stretchRange(bool useActual) const
 {
+	if (useActual)
+		return _stretchRange;
+
     if ( _stretchRange.isValid())
         return _stretchRange;
     return _actualRange;
@@ -189,6 +193,27 @@ NumericRange VisualAttribute::actualRange() const
 void VisualAttribute::actualRange(const NumericRange &rng)
 {
     _actualRange = rng;
+}
+
+std::pair<double, double> VisualAttribute::calcStretchRange(const std::vector<NumericStatistics::HistogramBin>& hist, double perc) const {
+	double sum2 = 0;
+	double seen = 0;
+	double startV = rUNDEF, endV = rUNDEF;
+
+	for (int i = 0; i < hist.size() - 1; ++i) {
+		sum2 += (hist[i]._count);
+	}
+	for (int i = 0; i < hist.size() - 1; ++i) {
+		auto& bin = hist[i];
+		seen += bin._count;
+		if (seen >= sum2 * perc && startV == rUNDEF) {
+			startV = bin._limit;
+		}
+		if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
+			endV = bin._limit;
+		}
+	}
+	return std::pair<double, double>(startV, endV);
 }
 
 //--------------------------------------------------------------------------
