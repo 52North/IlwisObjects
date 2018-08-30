@@ -97,6 +97,17 @@ public:
         return _bins;
     }
 
+	void setContent(const std::vector<HistogramBin>& bins, const std::vector<double> markers) {
+		_bins = bins;
+		_markers = markers;
+		_binCount = bins.size();
+
+	}
+
+	std::vector<double> markers() const {
+		return _markers;
+	}
+
 
     double prop(PropertySets method) const{
         return operator[](method);

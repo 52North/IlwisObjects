@@ -248,6 +248,17 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         // refresh the pixel content of the textures (for stretch)
         VisualAttribute * attr = activeAttribute();
         if (attr != 0) {
+			auto rng = attr->stretchRange(true);
+			bool k1 = rng.isValid();
+			bool k2 = _raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
+			if (!k1 && k2) {
+				auto hist = _raster->statistics().histogram();   // make sure we have a reasonable number of bins.
+				auto limits = attr->calcStretchRange(hist, 0.02);
+				if (limits.first != rUNDEF && limits.second != rUNDEF) {
+					attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
+					visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());
+				}
+			}
             if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
                 _currentStretchRange = attr->stretchRange(); // refresh the stretch range to be used for the pixel data
                 textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are used

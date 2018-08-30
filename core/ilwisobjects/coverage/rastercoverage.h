@@ -229,6 +229,8 @@ private:
 
     bool bandPrivate(quint32 bandIndex,  PixelIterator inputIter) ;
     PixelIterator bandPrivate(quint32 index, const Ilwis::BoundingBox &box=BoundingBox());
+	bool loadHistogram();
+	void storeHistogram() ;
 };
 
 typedef IlwisData<RasterCoverage> IRasterCoverage;

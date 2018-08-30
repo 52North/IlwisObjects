@@ -177,13 +177,114 @@ ITable RasterCoverage::histogramAsTable()
     return histogram;
 }
 
+bool RasterCoverage::loadHistogram() {
+	QString path = resource().container().toLocalFile();
+	QFileInfo container(path);
+	bool containerIsFile = container.isFile();
+	QFileInfo inf(containerIsFile ? path : resource().url(true).toLocalFile());
+	if (containerIsFile) {
+		path = path.mid(0, path.lastIndexOf("/"));
+	}
+	if (inf.exists()) {
+		path += "/.ilwis/stats";
+		QString name = resource().name();
+		QString containerFile = "";
+		if (containerIsFile) {
+			containerFile = resource().container().fileName() + "/";
+		}
+		QString histName = path + "/" + containerFile + name + ".histogram";
+		QFileInfo infHist(histName);
+		if (infHist.exists()) {
+			QFile cacheFile(histName);
+			if (cacheFile.open(QFile::ReadOnly)) {
+				QDataStream stream(&cacheFile);
+				int streamversion;
+				stream >> streamversion;
+				stream.setVersion(streamversion);
+				QDateTime modifiedDate;
+				stream >> modifiedDate;
+				if (modifiedDate == inf.lastModified()) {
+					int bincount;
+					stream >> bincount;
+					std::vector<NumericStatistics::HistogramBin> bins(bincount);
+					for (auto& bin : bins) {
+						stream >> bin._limit >> bin._count;
+					}
+					int markerCount;
+					stream >> markerCount;
+					std::vector<double> markers(markerCount);
+					for (auto& marker : markers)
+						stream >> marker;
+					statistics().setContent(bins, markers);
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+void RasterCoverage::storeHistogram()  {
+	QString path = resource().container().toLocalFile();
+	QFileInfo inf(path);
+	bool containerIsFile = inf.isFile();
+	if (containerIsFile) {
+		path = path.mid(0, resource().container().toLocalFile().lastIndexOf("/"));
+	}
+	QDir dir(path + "/.ilwis");
+	if (!dir.exists()) {
+		if (!QDir(inf.absoluteFilePath()).mkdir(".ilwis"))
+			return;
+	}
+	if (!QDir(path + "/.ilwis/stats").exists()){
+		QDir statsPath(path + "/.ilwis");
+		if (!statsPath.mkdir("stats"))
+			return;
+	}
+	QString containerFile = "";
+	if (containerIsFile) {
+		containerFile = resource().container().fileName();
+		QDir dir(path + "/.ilwis/stats");
+		if (!QDir(path + "/.ilwis/stats/" + containerFile).exists()) {
+			if (!dir.mkdir(containerFile))
+				return;
+		}
+		containerFile += "/";
+	}
+	QString name = resource().name();
+	QString histName = path + "/.ilwis/stats/" + containerFile + name + ".histogram";
+	QFileInfo infHist(histName);
+	QFile cacheFile(histName);
+	if (cacheFile.open(QFile::WriteOnly)) {
+		QDataStream stream(&cacheFile);
+		stream << stream.version();
+		QFileInfo localFile(containerIsFile ?  inf : resource().url().toLocalFile());
+		stream << localFile.lastModified();
+		auto bins = statistics().histogram();
+		stream << (int)bins.size();
+		for (auto& bin : bins) {
+			stream << bin._limit << bin._count;
+		}
+		auto markers = statistics().markers();
+		stream << (int)markers.size();
+		for (auto& marker : markers)
+			stream << marker;
+	}
+	cacheFile.close();
+}
 
 NumericStatistics &RasterCoverage::statistics(int mode, int bins)
 {
     if ( mode == ContainerStatistics<double>::pNONE)
         return Coverage::statistics(mode);
+	if (!histogramCalculated() && hasType(mode, ContainerStatistics<double>::pHISTOGRAM)) {
+		if (!loadHistogram()) {
+			statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
+			storeHistogram();
+		}
+	}else
+		statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
 
-    statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
     auto rng = datadefRef().range<NumericRange>();
     if ( rng){
         rng->min(statistics().prop(NumericStatistics::pMIN));

@@ -8,6 +8,7 @@
 #include "range.h"
 #include "datadefinition.h"
 #include "attributemodel.h"
+#include "containerstatistics.h"
 #include "ilwiscoreui_global.h"
 
 namespace Ilwis {
@@ -45,7 +46,7 @@ public:
     void representation(const IRepresentation& rpr);
     IDomain domain() const;
     void domain(const IDomain& dom);
-    NumericRange stretchRange() const;
+    NumericRange stretchRange(bool useActual=false) const;
     void stretchRange(const NumericRange& rng);
     QColor value2color(const QVariant& var) const;
     NumericRange actualRange() const;
@@ -59,6 +60,7 @@ public:
     std::vector<QColor> stretchedColors(int size, NumericRange & displayStretchRange) const;
     LayerModel *layer() const;
 	bool isAbstractAttribute() const;
+	virtual std::pair<double, double> calcStretchRange(const std::vector<NumericStatistics::HistogramBin>& hist, double perc) const;
 
     void addVisualPropertyEditor(VisualPropertyEditor* property);
     QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> visualProperties();
@@ -79,6 +81,7 @@ private:
 class ILWISCOREUISHARED_EXPORT LayerAttributeModel : public VisualAttribute{
 public:
     LayerAttributeModel(LayerModel *parentLayer, const Ilwis::IIlwisObject &obj, const DataDefinition& def);
+
 };
 
 class ILWISCOREUISHARED_EXPORT GlobalAttributeModel : public VisualAttribute{

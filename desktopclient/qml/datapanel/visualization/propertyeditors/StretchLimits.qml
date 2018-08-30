@@ -29,6 +29,8 @@ Row {
                 chartArea.item.margins.right = 0
                 chartArea.item.margins.top = 0
                 chartArea.item.margins.bottom = 0
+				slider.minValue = editor.initStretchMin;
+                slider.maxValue = editor.initStretchMax;
 
                  if (editor.zoomOnPreset) {
                     chartArea.item.xmin = editor.min;
