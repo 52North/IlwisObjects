@@ -27,12 +27,15 @@ DropArea {
     Rectangle {
         id : backArea
         anchors.fill: parent
-        color : layerContainer.panelSubIndex == layerview.activeSubPanel ? "#f2f2f2" : "white"
+        color : (layerContainer.panelSubIndex == layerview.activeSubPanel && layerview.layermanagers.length > 1 )? "#edf7f7" : "white"
+		border.width : 2
+		border.color :  (layerContainer.panelSubIndex == layerview.activeSubPanel && layerview.layermanagers.length > 1 )? Global.selectedColor : "white"
 
         Rectangle {
             id : mapBorder
             anchors.fill: parent
             anchors.margins: 20
+
             Controls.DummySpatial{
                 id: renderer
                 anchors.top: parent.top
@@ -144,10 +147,10 @@ DropArea {
                 model : localmanager ? localmanager.xGridAxisTop : null
                 width : parent.width
                 height : parent.height
-                Rectangle {
+                Item {
                     height : 15
                     width : modelData.size
-                    color : backArea.color
+                   // color : backArea.color
                     Text {
                         height : 15
                         width : modelData.size
@@ -170,11 +173,10 @@ DropArea {
                 model : localmanager ? localmanager.xGridAxisBottom : null
                 width : parent.width
                 height : parent.height
-                Rectangle {
+                Item {
                     y : 3
                     height : 15
                     width : modelData.size
-                    color : backArea.color
                    Text {
                         height : 15
                         width : modelData.size
@@ -196,11 +198,10 @@ DropArea {
                 model : localmanager ? localmanager.yGridAxisLeft : null
                 width : parent.width
                 height : parent.height
-                Rectangle {
+                Item {
                     height : modelData.size
                     width : 15
                     x : 3
-                    color : backArea.color
                     Text {
                         anchors.left : parent.left
                         text : modelData.value
@@ -225,11 +226,10 @@ DropArea {
                 model : localmanager ? localmanager.yGridAxisRight : null
                 width : parent.width
                 height : parent.height
-                Rectangle {
+                Item {
                     height : modelData.size
                     anchors.right : parent.right
                     width : 20
-                   color : backArea.color
                     Text {
                         anchors.left : parent.left
                         anchors.leftMargin : 15
