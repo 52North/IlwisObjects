@@ -277,12 +277,15 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
 {
     if ( mode == ContainerStatistics<double>::pNONE)
         return Coverage::statistics(mode);
-	if (!histogramCalculated() && hasType(mode, ContainerStatistics<double>::pHISTOGRAM)) {
-		if (!loadHistogram()) {
-			statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
-			storeHistogram();
-		}
-	}else
+
+    if (hasType(mode, ContainerStatistics<double>::pHISTOGRAM)) {
+        if (!histogramCalculated()) {
+            if (!loadHistogram()) {
+                statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
+                storeHistogram();
+            }
+        }
+	} else
 		statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
 
     auto rng = datadefRef().range<NumericRange>();
