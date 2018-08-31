@@ -60,6 +60,19 @@ Rectangle {
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
+
+        MouseArea {
+            id : chartMouseArea
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+
+            onReleased: {
+                chartInfo.enabled = false
+                chartInfo.opacity = 0
+                chartInfo.x = 0
+                chartInfo.y = 0
+            }        
+        }
     }
 
     function linehover(pnt, state) {
