@@ -255,14 +255,16 @@ Item {
     }
 
     function mapClicked(mx,my){
-        var parms = {linktype : 'pixelposition', mouseevent : 'clicked', 'column' : mx, 'row' : my, 'georefid' : activeLayerManager().rootLayer.screenGrf.id}
-        activeLayerManager().broadCast(parms)
-        if ( activeEditor ){
-            if ( typeof activeEditor.handleMouseClick == 'function'){
-                activeEditor.handleMouseClick(mx,my)
-            }
+		if ( activeLayerManager().rootLayer && activeLayerManager().rootLayer.screenGrf){
+			var parms = {linktype : 'pixelposition', mouseevent : 'clicked', 'column' : mx, 'row' : my, 'georefid' : activeLayerManager().rootLayer.screenGrf.id}
+			activeLayerManager().broadCast(parms)
+			if ( activeEditor ){
+				if ( typeof activeEditor.handleMouseClick == 'function'){
+					activeEditor.handleMouseClick(mx,my)
+				}
         
-        }
+			}
+		}
     }
 
    function mousePressed(mx,my){
