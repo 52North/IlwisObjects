@@ -63,11 +63,11 @@ DropArea {
         }        						 
         Text {
 		    y : 2
-            elide: styleData.elideMode
             text: styleData.value ? styleData.value.name : ""
 		    font.bold : styleData.value ? styleData.value.readonly : false
             height : 18
-            width : 150 
+            width : 250
+			elide: Text.ElideMiddle 
         } 
 
     }
