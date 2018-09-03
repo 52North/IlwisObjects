@@ -115,6 +115,7 @@ void LayerManager::moveLayer(LayerModel *parentLayer, LayerModel *layer, LayerMo
 void LayerManager::setLayerListName(const QString name)
 {
     _layerListName = name;
+	emit layerListNameChanged();
 }
 
 QString LayerManager::layerListName() const
@@ -225,6 +226,7 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
                     lm->rootLayer()->viewEnvelope(envUndetermned);
                 }
             }
+	  		lm->setLayerListName(layername);
 		}
         else {
             // adjust rootlayer envelop to fit all layers

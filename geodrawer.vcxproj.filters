@@ -373,6 +373,8 @@
     <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
+    <None Include="geodrawer\qml\SpatialView.qml" />
+    <None Include="geodrawer\qml\three.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="geodrawer\qml\SpatialView.qml">

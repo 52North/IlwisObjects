@@ -42,6 +42,11 @@ void SimplePolygonSetter::getColors(const VisualAttribute &attr, const QVariant 
 			colors[j] =clr.redF();
 			colors[j+1] =clr.greenF();
 			colors[j+2] =clr.blueF();
-        }
+		}
+		else {
+			colors[j] = defaultColor.redF();
+			colors[j + 1] = defaultColor.greenF();
+			colors[j + 2] = defaultColor.blueF();
+		}
     }
 }

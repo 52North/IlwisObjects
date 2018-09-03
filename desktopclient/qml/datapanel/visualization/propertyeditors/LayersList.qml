@@ -59,7 +59,7 @@ Item {
             height : 18
             color : uicontext.paleColor
             Text{
-                text : qsTr("Layers")
+                text : qsTr("Layers : ") + activeLayerManager().layerListName
                 font.bold: true
                 x : 5
                 anchors.verticalCenter: parent.verticalCenter
@@ -185,7 +185,7 @@ Item {
                     height : 22
                     
                     Rectangle {
-                        width : 200
+                        width : 250
                         height : 2
                         border.width : 1
                         border.color : Global.edgecolor
@@ -193,7 +193,7 @@ Item {
                     }
                      Rectangle {
                         y : 2
-					    width : 200
+					    width : 250
 					    height : 19
 					    color : styleData.selected ? Global.selectedColor : "white"
 				    }

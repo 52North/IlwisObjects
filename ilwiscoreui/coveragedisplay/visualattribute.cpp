@@ -139,7 +139,15 @@ void VisualAttribute::addVisualPropertyEditor(VisualPropertyEditor *property)
         if ( prop->name() == property->attributeName())
             return;
     }
-    _vproperties.push_back(property);
+	bool inserted = false;
+	for (int i = 0; i < _vproperties.size() && !inserted; ++i) {
+		if (property->name() < _vproperties[i]->name()) {
+			_vproperties.insert(i, property);
+			inserted = true;
+		}
+	}
+	if(!inserted)
+		_vproperties.push_back(property);
 }
 
 QQmlListProperty<VisualPropertyEditor> VisualAttribute::visualProperties()
