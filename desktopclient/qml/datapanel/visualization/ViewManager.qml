@@ -22,6 +22,22 @@ Item {
 
     Layout.minimumHeight: 22
 
+
+
+     ViewManagerTabs{
+        id : vmyab1
+        visible : true
+     }
+     ViewManagerTabs{
+        id : vmyab2
+     }
+     ViewManagerTabs{
+       id : vmyab3
+     }
+     ViewManagerTabs{
+        id : vmyab4
+     }
+
     function activateViewManager(index){
         vmyab1.visible = false
         vmyab2.visible = false
@@ -82,20 +98,6 @@ Item {
          if ( tab){
              tab.item.newZoomExtent(newenvelope)
          }
-     }
-
-     ViewManagerTabs{
-        id : vmyab1
-        visible : true
-     }
-     ViewManagerTabs{
-        id : vmyab2
-     }
-     ViewManagerTabs{
-       id : vmyab3
-     }
-     ViewManagerTabs{
-        id : vmyab4
      }
     
 }
