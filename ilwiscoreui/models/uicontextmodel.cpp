@@ -118,7 +118,19 @@ QList<VisualPropertyEditor *> UIContextModel::propertyEditors(VisualAttribute *v
         if ( editor){
             if ( editor->canUse(obj, name)){
                 editor->prepare(obj);
-                editors.append(editor);
+				bool inserted = false;
+				for (int i = 0; i < editors.size() && !inserted; ++i) {
+					QString n1 = editors[i]->displayName();
+					QString n2 = editor->displayName();
+					int res = QString::compare(n2, n1, Qt::CaseInsensitive);
+					if (res <=0) {
+						editors.insert(i, editor);
+						inserted = true;
+					}
+				}
+				if (!inserted)
+					editors.push_back(editor);
+                //editors.append(editor);
             }
             else
                 delete editor;
