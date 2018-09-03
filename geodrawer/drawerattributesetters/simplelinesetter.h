@@ -20,8 +20,8 @@ public:
                             const QVariant& value,const QColor& defaultColor,int start,
 							std::vector<qreal>& colors) const;
 private : 
-	void getVerticesPolygon(const geos::geom::Geometry *geom, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const;
-	void getGeometryVertices(const geos::geom::Geometry * geom, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getVerticesPolygon(const geos::geom::Geometry *geom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getGeometryVertices(const geos::geom::Geometry * geom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
 
 };
 }

@@ -24,7 +24,6 @@ SimplePointSetter::SimplePointSetter(const LayerManager *manager) : BaseSpatialA
 void SimplePointSetter::getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& ) const
 {
 	Envelope env = _layerManager->rootLayer()->vproperty("coverageenvelope").value<Envelope>();
-	Coordinate pnt = _layerManager->rootLayer()->viewEnvelope().center();
 	int n = (int)geometry->getNumGeometries();
 	for (int geom = 0; geom < n; ++geom) {
 		const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
@@ -37,8 +36,8 @@ void SimplePointSetter::getVertices(const geos::geom::Geometry *geometry, std::v
 		}
 
 		double z = coord.z == rUNDEF || std::isnan(coord.z) ? 0 : coord.z;
-		vertices.push_back(coord.x - pnt.x);
-		vertices.push_back(coord.y - pnt.y);
+		vertices.push_back(coord.x);
+		vertices.push_back(coord.y);
 		vertices.push_back(z);
 	}
 }

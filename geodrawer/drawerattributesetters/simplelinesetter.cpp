@@ -28,7 +28,7 @@ SimpleLineSetter::~SimpleLineSetter()
 
 }
 
-void SimpleLineSetter::getGeometryVertices(const geos::geom::Geometry* geom, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const {
+void SimpleLineSetter::getGeometryVertices(const geos::geom::Geometry* geom, std::vector<qreal>& vertices, std::vector<int>& indices) const {
 
 	if (!geom)
 		return;
@@ -49,22 +49,22 @@ void SimpleLineSetter::getGeometryVertices(const geos::geom::Geometry* geom, con
 		if (coordinateConversionNeeded()) {
 			crd = _targetSystem->coord2coord(_sourceSystem, crd);
 		}
-		vertices.push_back(crd.x - pnt.x);
-		vertices.push_back(crd.y - pnt.y);
+		vertices.push_back(crd.x);
+		vertices.push_back(crd.y);
 		vertices.push_back((std::isnan(crd.z) || crd.z == rUNDEF) ? 0 : crd.z);
 		indices[indicesIndex++] = verticesIndex + i;
 	}
 }
 
-void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, const Coordinate& pnt, std::vector<qreal>& vertices, std::vector<int>& indices) const {
+void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, std::vector<qreal>& vertices, std::vector<int>& indices) const {
 	geos::geom::GeometryTypeId geostype = polygons->getGeometryTypeId();
 	if (geostype == geos::geom::GEOS_POLYGON) {
 		const geos::geom::Polygon *polygon = dynamic_cast<const geos::geom::Polygon*>(polygons);
-		getGeometryVertices(polygon->getExteriorRing(), pnt, vertices, indices);
+		getGeometryVertices(polygon->getExteriorRing(), vertices, indices);
 		//indices.push_back(startIndex);
 		quint32 holeCount = (quint32)polygon->getNumInteriorRing();
 		for (quint32 i = 0; i < holeCount; ++i) {
-			getGeometryVertices(polygon->getInteriorRingN(i), pnt, vertices, indices);
+			getGeometryVertices(polygon->getInteriorRingN(i), vertices, indices);
 		}
 		
 	}
@@ -72,10 +72,10 @@ void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, 
 		int n = (quint32)polygons->getNumGeometries();
 		for (int i = 0; i < n; ++i) {
 			const geos::geom::Polygon* polygon = dynamic_cast<const geos::geom::Polygon*>(polygons->getGeometryN(i));
-			getGeometryVertices(polygon->getExteriorRing(), pnt, vertices, indices);
+			getGeometryVertices(polygon->getExteriorRing(), vertices, indices);
             quint32 holeCount = (quint32)polygon->getNumInteriorRing();
             for (quint32 i = 0; i < holeCount; ++i) {
-                getGeometryVertices(polygon->getInteriorRingN(i), pnt, vertices, indices);
+                getGeometryVertices(polygon->getInteriorRingN(i), vertices, indices);
             }
 		}
 	}
@@ -83,10 +83,9 @@ void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, 
 
 void SimpleLineSetter::getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& indices)const
 {
- 	Coordinate pnt = _layerManager->rootLayer()->viewEnvelope().center();
     geos::geom::GeometryTypeId geostype = geometry->getGeometryTypeId();
 	if (geostype == geos::geom::GEOS_POLYGON || geostype == geos::geom::GEOS_MULTIPOLYGON) {
-		getVerticesPolygon(geometry, pnt, vertices, indices);
+		getVerticesPolygon(geometry, vertices, indices);
 		return;
 	}
     int n = (int)geometry->getNumGeometries();
@@ -94,7 +93,7 @@ void SimpleLineSetter::getVertices(const geos::geom::Geometry *geometry, std::ve
         const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
         if (!subgeom)
             continue;
-		getGeometryVertices(subgeom, pnt, vertices, indices);
+		getGeometryVertices(subgeom, vertices, indices);
      }
 }
 

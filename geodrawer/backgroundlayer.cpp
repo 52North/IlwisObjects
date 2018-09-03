@@ -34,9 +34,9 @@ BackgroundLayer::BackgroundLayer(LayerManager *manager, QStandardItem *parent, c
 
 bool BackgroundLayer::prepare(int prepType)
 {
-    auto PushPoints = [](double x, double y, double z, const Coordinate& center, std::vector<qreal>& vector, std::vector<int>& indices)->void {
-        vector.push_back(x - center.x);
-        vector.push_back(y - center.y);
+    auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<int>& indices)->void {
+        vector.push_back(x);
+        vector.push_back(y);
         vector.push_back(z);
         indices.push_back(indices.size());
     };
@@ -45,7 +45,6 @@ bool BackgroundLayer::prepare(int prepType)
 
         Coordinate cmin = layerManager()->rootLayer()->zoomEnvelope().min_corner();
         Coordinate cmax = layerManager()->rootLayer()->zoomEnvelope().max_corner();
-        Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
 
         std::vector<qreal> vertices;
         std::vector<int> indices;
@@ -56,12 +55,12 @@ bool BackgroundLayer::prepare(int prepType)
             colors.push_back(_backgroundcolor.blueF());
         }
 
-        PushPoints(cmin.x, cmin.y, 0, center, vertices, indices);
-        PushPoints(cmax.x, cmin.y, 0, center, vertices, indices);
-        PushPoints(cmin.x, cmax.y, 0, center, vertices, indices);
-        PushPoints(cmin.x, cmax.y, 0, center, vertices, indices);
-        PushPoints(cmax.x, cmin.y, 0, center, vertices, indices);
-        PushPoints(cmax.x, cmax.y, 0, center, vertices, indices);
+        PushPoints(cmin.x, cmin.y, 0, vertices, indices);
+        PushPoints(cmax.x, cmin.y, 0, vertices, indices);
+        PushPoints(cmin.x, cmax.y, 0, vertices, indices);
+        PushPoints(cmin.x, cmax.y, 0, vertices, indices);
+        PushPoints(cmax.x, cmin.y, 0, vertices, indices);
+        PushPoints(cmax.x, cmax.y, 0, vertices, indices);
         
         addVisualAttribute(new GlobalAttributeModel(TR("Background color"), "backgroundeditor", this));
 

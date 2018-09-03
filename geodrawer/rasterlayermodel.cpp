@@ -448,7 +448,6 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
 void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor)
 {
     const IGeoReference & gr = _raster->georeference();
-    Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
     Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
     std::vector<Quad>::iterator & _quad = std::find(_quads.begin(), _quads.end(), quad);
     if (_quad != _quads.end()) {
@@ -470,11 +469,6 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
             c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
             c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
 
-            c1 -= center;
-            c2 -= center;
-            c3 -= center;
-            c4 -= center;
-
             quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
         } else {
             const unsigned int iSize = 10; // this makes 100 quads, thus 200 triangles per texture
@@ -489,16 +483,12 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
                 Coordinate b2 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY));
                 c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
                 c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
-                c1 -= center;
-                c2 -= center;
                 for (int y = 1; y <= iSize; ++y) {
                     double t2 = t1 + rowStep / (double)_height;
                     Coordinate b3 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * (x + 1), imageOffsetY + rowStep * y));
                     Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX + colStep * x, imageOffsetY + rowStep * y));
                     c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
                     c4 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b4);
-                    c3 -= center;
-                    c4 -= center;
                     quad.addQuad(c1, c2, c3, c4, s1, t1, s2, t2);
                     t1 = t2;
                     c1 = c4;

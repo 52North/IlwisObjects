@@ -199,9 +199,9 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
         opacity(0.3);
         _lineColor = QColor("black");
 
-        auto PushPoints = [](double x, double y, double z, const Coordinate& center, std::vector<qreal>& vector, std::vector<int>& indices)->void {
-            vector.push_back(x - center.x);
-            vector.push_back(y - center.y);
+        auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<int>& indices)->void {
+            vector.push_back(x);
+            vector.push_back(y);
             vector.push_back(z);
             indices.push_back(indices.size());
 
@@ -218,28 +218,26 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
             _cellDistance = MathHelper::round((cmax.x - cmin.x) / 7.0);
         }
 
-        Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
-
         std::vector<qreal> vertices;
         std::vector<int> indices;
 
-        PushPoints(cmin.x, cmin.y, 0, center, vertices, indices);
-        PushPoints(cmin.x, cmax.y, 0, center, vertices, indices);
-        PushPoints(cmax.x, cmin.y, 0, center, vertices, indices);
-        PushPoints(cmin.x, cmin.y, 0, center, vertices, indices);
+        PushPoints(cmin.x, cmin.y, 0, vertices, indices);
+        PushPoints(cmin.x, cmax.y, 0, vertices, indices);
+        PushPoints(cmax.x, cmin.y, 0, vertices, indices);
+        PushPoints(cmin.x, cmin.y, 0, vertices, indices);
 
 
         for (double x = ceil(cmin.x / _cellDistance) * _cellDistance; x < cmax.x; x += _cellDistance)
         {
-            PushPoints(x, cmin.y, 0, center, vertices, indices);
-            PushPoints(x, cmax.y, 0, center, vertices, indices);
+            PushPoints(x, cmin.y, 0, vertices, indices);
+            PushPoints(x, cmax.y, 0, vertices, indices);
 
         }
 
         for (double y = ceil(cmin.y / _cellDistance) * _cellDistance; y < cmax.y; y += _cellDistance)
         {
-            PushPoints(cmin.x, y, 0, center, vertices, indices);
-            PushPoints(cmax.x, y, 0, center, vertices, indices);
+            PushPoints(cmin.x, y, 0, vertices, indices);
+            PushPoints(cmax.x, y, 0, vertices, indices);
 
         }
         _buffer.addObject(0, vertices, indices, std::vector<qreal>(), itLINE, 0);
@@ -299,9 +297,9 @@ void SecondaryGridLayer::vproperty(const QString& key, const QVariant& value) {
 
 bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
 {
-    auto PushPoints = [](double x, double y, double z, const Coordinate& center, std::vector<qreal>& vector, std::vector<int>& indices)->void {
-        vector.push_back(x - center.x);
-        vector.push_back(y - center.y);
+    auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<int>& indices)->void {
+        vector.push_back(x);
+        vector.push_back(y);
         vector.push_back(z);
         indices.push_back(indices.size());
     };
@@ -314,7 +312,6 @@ bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
         _cellDistance = dist / _cellCount;
         Coordinate cmin, cmax;
         calcEnvelope(cmin, cmax);
-        Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
 
         std::vector<qreal> vertices;
         std::vector<int> indices;
@@ -329,8 +326,8 @@ bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
             for (int i = 1; i < _cellCount; ++i) {
                 double newx = x + i * _cellDistance;
                 if (newx > cmin.x && newx < cmax.x) {
-                    PushPoints(newx, cmin.y, 0, center, vertices, indices);
-                    PushPoints(newx, cmax.y, 0, center, vertices, indices);
+                    PushPoints(newx, cmin.y, 0, vertices, indices);
+                    PushPoints(newx, cmax.y, 0, vertices, indices);
                 }
             }
         }
@@ -340,8 +337,8 @@ bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
             for (int i = 1; i < _cellCount; ++i) {
                 double newy = y + i * _cellDistance;
                 if (newy > cmin.y && newy < cmax.y) {
-                    PushPoints(cmin.x, newy, 0, center, vertices, indices);
-                    PushPoints(cmax.x, newy, 0, center, vertices, indices);
+                    PushPoints(cmin.x, newy, 0, vertices, indices);
+                    PushPoints(cmax.x, newy, 0, vertices, indices);
                 }
             }
         }

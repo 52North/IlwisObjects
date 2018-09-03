@@ -32,13 +32,13 @@ public:
     Q_PROPERTY(QString projectionInfo READ projectionInfoPrivate NOTIFY projectionInfoChanged)
     Q_PROPERTY(QString currentLatLon READ currentLatLon NOTIFY currentLatLonChanged)
     Q_PROPERTY(QString currentCoordinate READ currentCoordinate WRITE setCurrentCoordinate NOTIFY currentcurrentCoordinateChanged)
-    Q_PROPERTY(double width READ width NOTIFY extentChanged)
-	Q_PROPERTY(double height READ height NOTIFY extentChanged)
+	Q_PROPERTY(double left READ left NOTIFY extentChanged)
+	Q_PROPERTY(double right READ right NOTIFY extentChanged)
+	Q_PROPERTY(double top READ top NOTIFY extentChanged)
+	Q_PROPERTY(double bottom READ bottom NOTIFY extentChanged)
 	Q_PROPERTY(double zoomFactor READ zoomFactor WRITE zoomFactor NOTIFY zoomChanged)
-	Q_PROPERTY(QVariantMap cameraPosition READ cameraPosition WRITE cameraPosition NOTIFY cameraPositionChanged)
+	Q_PROPERTY(QVariantMap cameraPosition READ cameraPosition NOTIFY cameraPositionChanged)
 	Q_PROPERTY(QVariantMap scrollInfo READ scrollInfo WRITE scrollInfo NOTIFY scrollInfoChanged)
- 
-
 
      Q_INVOKABLE QVariantMap screen2Coord(const QVariantMap &var) const;
      Q_INVOKABLE QVariantMap coord2Screen(const QVariantMap &var) const;
@@ -86,7 +86,6 @@ public:
 	 double zoomFactor() const;
 	 void zoomFactor(double zf);
 	 QVariantMap cameraPosition() const;
-	 void cameraPosition(const QVariantMap& coord);
      void active(bool yesno);
      bool active() const;
 
@@ -146,8 +145,10 @@ private:
     IlwisObjectModel *screenCsyPrivate();
     IlwisObjectModel *screenGrfPrivate();
     QString projectionInfoPrivate() const;
-    double width() const;
-    double height() const;
+    double left() const;
+    double right() const;
+    double top() const;
+    double bottom() const;
     void RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap);
     void RecenterZoomVert(Envelope & cbZoom, const Envelope & cbMap);
     void modifyZoomX(double rFactor);

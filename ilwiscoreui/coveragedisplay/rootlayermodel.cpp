@@ -117,24 +117,20 @@ void RootLayerModel::showLayerInfo(bool showLayerInfo)
 void RootLayerModel::scrollInfo(const QVariantMap & si)
 {
 	if (si.size() > 0) {
-		Coordinate center = _zoomEnvelope.center();
 		if (si.contains("leftpositionperc")) {
 			double xold = _zoomEnvelope.min_corner().x;
 			_zoomEnvelope.min_corner().x = (_viewEnvelope.xlength() - 1) * si["leftpositionperc"].toDouble() + _viewEnvelope.min_corner().x;
 			double dx = xold - _zoomEnvelope.min_corner().x;
 			_zoomEnvelope.max_corner().x -= dx; // keep the width the same
-			center = _zoomEnvelope.center();
 		}
 		if (si.contains("bottompositionperc")) {
 			double yold = _zoomEnvelope.max_corner().y;
 			_zoomEnvelope.max_corner().y = _viewEnvelope.max_corner().y - (_viewEnvelope.ylength() - 1) * si["toppositionperc"].toDouble();
 			double dy = yold - _zoomEnvelope.max_corner().y;
 			_zoomEnvelope.min_corner().y -= dy; // keep the height the same
-			center = _zoomEnvelope.center();
 		}
 		zoomEnvelope(_zoomEnvelope);
-		_cameraPosition.x = center.x - _viewEnvelope.center().x;
-		_cameraPosition.y = center.y - _viewEnvelope.center().y;
+		SetCameraPosition();
 		layerManager()->refresh();
 	}
 }
@@ -210,14 +206,24 @@ QString Ilwis::Ui::RootLayerModel::projectionInfoPrivate() const
     return "";
 }
 
-double Ilwis::Ui::RootLayerModel::width() const
+double Ilwis::Ui::RootLayerModel::left() const
 {
-	return _zoomEnvelope.xlength() - 1;
+	return -(_zoomEnvelope.xlength() - 1) / 2.0 + _viewEnvelope.center().x;
 }
 
-double Ilwis::Ui::RootLayerModel::height() const
+double Ilwis::Ui::RootLayerModel::right() const
 {
-	return _zoomEnvelope.ylength() - 1;
+	return (_zoomEnvelope.xlength() - 1) / 2.0 + _viewEnvelope.center().x;
+}
+
+double Ilwis::Ui::RootLayerModel::top() const
+{
+	return (_zoomEnvelope.ylength() - 1) / 2.0 + _viewEnvelope.center().y;
+}
+
+double Ilwis::Ui::RootLayerModel::bottom() const
+{
+	return -(_zoomEnvelope.ylength() - 1) / 2.0 + _viewEnvelope.center().y;
 }
 
 QVariantMap RootLayerModel::viewEnvelopePrivate() const
@@ -600,32 +606,6 @@ QVariantMap RootLayerModel::cameraPosition() const
 	return vmap;
 }
 
-void RootLayerModel::cameraPosition(const QVariantMap & coord)
-{
-	if (coord.size() == 0) {
-		_cameraPosition = { 0,0,0 };
-		return;
-	}
-	bool ok;
-	if (coord.contains("x")) {
-		double v = coord["x"].toDouble(&ok);
-		if (ok)
-			_cameraPosition.x = v;
-
-	}
-	if (coord.contains("y")) {
-		double v = coord["y"].toDouble(&ok);
-		if (ok)
-			_cameraPosition.y = v;
-	}
-	if (coord.contains("z")) {
-		double v = coord["z"].toDouble(&ok);
-		if (ok)
-			_cameraPosition.z = v;
-	}
-
-}
-
 void Ilwis::Ui::RootLayerModel::active(bool yesno)
 {
     // you can not set this state of the root, always true
@@ -676,8 +656,6 @@ QVariantList RootLayerModel::calcAxisValues(const QString& axisType, const Coord
     double precision = 0;
     precision = (int)log10(std::abs(cellDistance));
     precision = precision >= 0 ? 0 : pow(10, precision);
-
-    Coordinate center = layerManager()->rootLayer()->viewEnvelope().center();
 
     QVariantMap data;
     double rest = 0;
@@ -739,5 +717,3 @@ void RootLayerModel::SetCameraPosition() {
     _cameraPosition.y = _zoomEnvelope.center().y - _viewEnvelope.center().y;
     layerManager()->refresh();
 }
-
-

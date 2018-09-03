@@ -100,7 +100,6 @@ void Ilwis::Ui::PolygonLayerModel::finish(const std::vector<quint64>& ids)
         _buffer.storeTriangulation(coverage()->resource().url());
     else
         _buffer.map(ids);
-    Coordinate pnt = layerManager()->rootLayer()->viewEnvelope().center();
     const ICoordinateSystem & csyGeom = _featureLayer->coverage()->coordinateSystem();
     const ICoordinateSystem & csyRoot = layerManager()->rootLayer()->screenCsy();
     if ( csyGeom.isValid() && csyRoot.isValid() && csyGeom != csyRoot) {
@@ -109,17 +108,9 @@ void Ilwis::Ui::PolygonLayerModel::finish(const std::vector<quint64>& ids)
             for (quint64 vi = 0; vi < vertices.size(); vi += 3) {
                 Coordinate crd(vertices[vi], vertices[vi + 1], vertices[vi + 2]);
                 Coordinate crdTransformed = csyRoot->coord2coord(csyGeom,crd);
-                vertices[vi] = crdTransformed.x - pnt.x;
-                vertices[vi + 1] = crdTransformed.y - pnt.y;
+                vertices[vi] = crdTransformed.x;
+                vertices[vi + 1] = crdTransformed.y;
                 vertices[vi + 2] = crdTransformed.z;
-            }
-        }
-    } else {
-        for (qint32 bufferIndex = 0; bufferIndex < _buffer.bufferCount(); ++bufferIndex) {
-            QVector<qreal> & vertices = _buffer.vertices(bufferIndex);
-            for (quint64 vi = 0; vi < vertices.size(); vi += 3) {
-                vertices[vi] -= pnt.x;
-                vertices[vi + 1] -= pnt.y;
             }
         }
     }
