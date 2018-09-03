@@ -55,6 +55,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(QVariantList yGridAxisLeft READ yGridAxisLeft NOTIFY axisValuesChanged)
     Q_PROPERTY(QVariantList yGridAxisRight READ yGridAxisRight NOTIFY axisValuesChanged)
     Q_PROPERTY(bool updatePostDrawers READ updatePostDrawersPrivate NOTIFY updatePostDrawersChanged)
+	Q_PROPERTY(QString layerListName READ layerListName WRITE setLayerListName NOTIFY layerListNameChanged)
 
 
 public:
@@ -65,7 +66,7 @@ public:
     LayerManager(QObject *parent, QQuickItem *viewContainer);
     ~LayerManager();
 
-    Q_INVOKABLE void setLayerListName(const QString name);
+    void setLayerListName(const QString name);
     Q_INVOKABLE void refresh();
     Q_INVOKABLE void addCommand(const QString& expression);
 	Q_INVOKABLE void viewArea(QQuickItem *area);
@@ -140,6 +141,7 @@ signals:
     void linkSendMessage(const QVariantMap& parameters);
     void axisValuesChanged();
     void updatePostDrawersChanged();
+	void layerListNameChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
