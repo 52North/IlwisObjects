@@ -9,6 +9,7 @@
 #include "coveragedisplay/draweroperation.h"
 #include "coveragedisplay/layermodel.h"
 #include "coveragedisplay/layermanager.h"
+#include "coveragedisplay\/visualattribute.h"
 #include "setactiveattribute.h"
 #include "uicontextmodel.h"
 
@@ -60,6 +61,8 @@ Ilwis::OperationImplementation::State SetActiveAttribute::prepare(ExecutionConte
             _attributeName = attr;
     } else {
         _attributeName = _layer->visualVPropertyByIndex(index);
+		if (_attributeName == sUNDEF)
+			_attributeName = LAYER_WIDE_ATTRIBUTE;
     }
 
     if (_attributeName == sUNDEF) {
