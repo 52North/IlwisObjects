@@ -213,7 +213,9 @@ void RasterLayerModel::fillAttributes()
 
 bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 {
-	bool fChanges = true;
+	bool fChanges = false;
+	_addQuads.clear(); // reset "addQuads" and "removeQuads" queues
+	_removeQuads.clear();
 	if (hasType(prepType, LayerModel::ptGEOMETRY) && !isPrepared(LayerModel::ptGEOMETRY)) {
 		if (!_raster.isValid()) {
 			return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "RasterCoverage", TR("Visualization"));
@@ -271,8 +273,6 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
             }
         }
         // generate "addQuads" and "removeQuads" queues
-        _addQuads.clear();
-        _removeQuads.clear();
         for (int i = 0; i < _quads.size(); ++i) {
             if ((_quads[i].id > -1) && (!_quads[i].active || _quads[i].refresh))
                 _removeQuads.push_back(_quads[i].id);
