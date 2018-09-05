@@ -6,10 +6,23 @@ Rectangle {
     id : dd2
     property LayerManager layermanager
     property var viewid : layermanager ? layermanager.viewid : 0
+	property var postRenderCallBack
 
 
 	onLayermanagerChanged : {
 		updateView()
+	}
+
+	function reset() {
+		if ( layersView.item){
+			layersView.item.reset()
+		}
+	}
+
+	function initSizes() {
+		if ( layersView.item){
+			layersView.item.initSizes()
+		}
 	}
 
     color : "grey"
@@ -21,10 +34,11 @@ Rectangle {
     function addCommand(expr){
         layermanager.addCommand(expr)
     }
-   Loader {
+    Loader {
         anchors.fill: parent
         onLoaded :{
             item.visible = true
+			item.postRenderCallBack = dd2.postRenderCallBack
         }
 
         id: layersView

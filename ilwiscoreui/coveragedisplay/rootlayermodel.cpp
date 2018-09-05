@@ -52,7 +52,12 @@ QVariant RootLayerModel::vproperty(const QString &attrName) const
 
 void RootLayerModel::vproperty(const QString &attrName, const QVariant &value)
 {
-
+	if (attrName == "griddraweractive") {
+		LayerModel *layer = findLayerByName("Grid");
+		if (layer) {
+			layer->active(value.toBool());
+		}
+	}
 }
 
 QString RootLayerModel::url() const

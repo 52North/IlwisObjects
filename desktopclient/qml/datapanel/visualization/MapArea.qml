@@ -11,6 +11,7 @@ DropArea {
     property alias mouseActions : mouseActions
     property var localmanager
 
+
     function mapAreaSize() {
         return {"width" : renderer.width , "height" : renderer.height}
     }

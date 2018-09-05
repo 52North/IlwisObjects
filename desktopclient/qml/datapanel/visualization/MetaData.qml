@@ -149,7 +149,8 @@ Item {
                         Connections {
                             target: mouseActions
                             onZoomEnded :{
-                                layerview.manager.addCommand("setviewextent("+ layerview.manager.viewid + "," + envelope + ")");
+                                layerview.zoomFromOverview(envelope)
+                                //layerview.manager.addCommand("setviewextent("+ layerview.manager.viewid + "," + envelope + ")");
                             }
                         }
 

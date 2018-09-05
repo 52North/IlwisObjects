@@ -2,25 +2,25 @@
 #include "mastercatalog.h"  
 #include "models/resourcemodel.h"     
 #include "operationmetadata.h"  
-#include "dataformat.h"                
-#include "uicontextmodel.h"                                         
-#include "applicationformexpressionparser.h"                                       
+#include "dataformat.h"                 
+#include "uicontextmodel.h"                                                         
+#include "applicationformexpressionparser.h"                                                                  
 
-
+ 
 using namespace Ilwis;                           
-using namespace Ui;            
+using namespace Ui;                 
 
 ApplicationFormExpressionParser::ApplicationFormExpressionParser()                               
 {
-}                                                
+}                                                                   
 
 ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
                                                                                              quint32 index,
                                                                                                const QStringList& choices,
                                                                                              bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{
-    FormParameter parm;                         
+    FormParameter parm;                             
     QString prefix = QString("pin_%1_").arg(index + 1);     
-    FieldType alternateUIType = ftNONE;
+    FieldType alternateUIType = ftNONE;   
     if ( resource.hasProperty((prefix + "validationcondition"))){
         OperationResource::UIElement elem = (OperationResource::UIElement)resource[prefix + "altUIType"].toInt();
         if ( elem == OperationResource::ueCOMBO && !workflowContex){ // no comboboxes in the workflow context as the controlling field is porbably not filled in
@@ -581,7 +581,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
     }catch(...){
      }
     return formRows;
-}
+}      
 
 QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                                                             bool showoutputformat,
@@ -589,7 +589,7 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                                                             QStringList hiddenFields, 
                                                             QVariantList operationNames,  
                                                             QStringList constantValues,
-                                                            const std::vector<FormParameter>& parameters)     
+                                                            const std::vector<FormParameter>& parameters)      
 {
         Resource resource = mastercatalog()->id2Resource(metaid);         
          std::vector<FormParameter> outparameters = getOutputParameters(resource);

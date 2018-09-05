@@ -17,6 +17,55 @@ Item {
 	property int mi : -1
 	property var colorShaderMaterialTemplate
 	property var paletteShaderMaterialTemplate
+	property var postRenderCallBack
+	property var doPostRenderCallBack : layermanager.doPostRenderCallBack
+
+	function initSizes(){
+		layermanager.rootLayer.initSizes(canvas.width, canvas.height,true)	
+	}
+
+	function reset() {
+
+		var layerList = layermanager.topLevelLayers
+		for(var i=layerList.length-1; i >=0; --i){
+
+			removeLayer(layerList[i])
+		}
+	}
+
+	function removeLayer(layer){
+		var layerList = layer.childLayers
+        for ( var i=0; i < layerList.length; ++i){
+            removeLayer(layerList[i])
+        }
+		if (layer.drawType == "raster")
+			removeRasterLayer(layer)
+		else if (layer.drawType != "?")
+			removeFeatureLayer(layer)
+	}
+
+	function removeRasterLayer(layer){
+		var sceneObject = scene.getObjectByName(layer.nodeId);
+	    var removeQuads = layer.removeQuads;
+        for (var i=0; i < removeQuads.length; ++i) {
+            var obj = sceneObject.getObjectById(removeQuads[i])
+            if ( obj){
+                sceneObject.remove(obj);
+                obj.material.tTexture.dispose();
+                obj.material.dispose();
+                obj.geometry.dispose();
+            }
+        }
+	}
+
+	function removeFeatureLayer(layer){
+	    var sceneObject = scene.getObjectByName(layer.nodeId);
+		// remove all previous renderings of this layer
+        for (var i = sceneObject.children.length - 1; i >= 0; i--) {
+            sceneObject.remove(sceneObject.children[i]);
+        }
+		layer.clearMeshIndexes()
+	}
 
  	Canvas3D {
         id : canvas
@@ -217,6 +266,7 @@ Item {
 				    layer.addMeshIndex(points.id);
 				    points.renderOrder = sceneObject.renderOrder;
 				    sceneObject.add( points );
+					doPostRenderCallBack = true
 			    }
 		        for(var i=0; i < layer.numberOfBuffers("lines");++i){
 				    var geometry = new GL.THREE.BufferGeometry();
@@ -235,8 +285,10 @@ Item {
 				    layer.addMeshIndex(lines.id);
 				    lines.renderOrder = sceneObject.renderOrder;
 				    sceneObject.add( lines );
+					doPostRenderCallBack = true
 			    }
                // var n = Date.now()
+			
 		        for(var i=0; i < layer.numberOfBuffers("polygons");++i){
 				    var geometry = new GL.THREE.BufferGeometry();
 				    canvas.setGeometry(layer, i,"polygons",geometry)
@@ -247,6 +299,7 @@ Item {
 				    layer.addMeshIndex(polygons.id)
 				    polygons.renderOrder = sceneObject.renderOrder;
 				    sceneObject.add( polygons );
+					doPostRenderCallBack = true
 			    }
                 // var n2 = Date.now()
                 // console.debug("duration=", n2, n, (n2 - n)/1000.0)
@@ -349,14 +402,18 @@ Item {
 					setProperties(layerList[i])
 				}
 				renderer.render(scene, camera);
+
+				if ( postRenderCallBack && doPostRenderCallBack){
+					postRenderCallBack()
+					doPostRenderCallBack = false
+				}
                 //console.log("current: geometries=" + renderer.info.memory.geometries)
                 //console.log("current: textures=" + renderer.info.memory.textures)
 			}
 		}
 
 		onInitializeGL: {
-            console.debug("init gl", canvas.width, canvas.height)
-			layermanager.rootLayer.initSizes(canvas.width, canvas.height,true)
+			initSizes()
 			camera = new GL.THREE.OrthographicCamera( layermanager.rootLayer.left, layermanager.rootLayer.right, layermanager.rootLayer.top, layermanager.rootLayer.bottom, 0, 1 );
 			var cameraPosition = layermanager.rootLayer.cameraPosition;
 			camera.position.set(cameraPosition.x, cameraPosition.y, 1);

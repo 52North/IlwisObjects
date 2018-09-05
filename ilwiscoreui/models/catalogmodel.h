@@ -48,6 +48,7 @@ public:
     Q_INVOKABLE virtual void refresh();
     Q_INVOKABLE void scanContainer(bool threaded, bool forceScan);
     Q_INVOKABLE QStringList filters() const;
+	Q_INVOKABLE QString specialFolder(const QString& folderType);
 
     bool isScanned() const;
     bool initNode() const;

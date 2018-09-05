@@ -38,25 +38,21 @@ LayerManager::LayerManager()
 
 LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject(parent)
 {
-    _tree = new TreeModel(this);
-    _globalLayer =  new RootLayerModel(this, _tree->invisibleRootItem());
-    _tree->invisibleRootItem()->appendRow(_globalLayer);
-	 _viewContainer = viewContainer;
-     _globalLayer->nodeId(nextId());
-     _globalLayer->prepare(0);
-     _modelId = modelregistry()->newModelId();
-     _managerType = (viewContainer && viewContainer->objectName().indexOf("overview_mainui_") != -1) ? LayerManager::mtOVERVIEW : LayerManager::mtMAIN;
-     modelregistry()->registerModel(modelId(), "layermanager", this);
-	 // for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
-	 if (_createLayers.find("compositelayer") == _createLayers.end()) {
-		 //_createLayers["globallayermodel"] = RootLayerModel::create;
-		 _createLayers["compositelayer"] = CompositeLayerModel::create;
+	reset();
+	_modelId = modelregistry()->newModelId();
+	_managerType = (viewContainer && viewContainer->objectName().indexOf("overview_mainui_") != -1) ? LayerManager::mtOVERVIEW : LayerManager::mtMAIN;
+	modelregistry()->registerModel(modelId(), "layermanager", this);
+	// for the moment here; this must be moved to a better place; the static init method used often can not be used because factory and objects are in the same dll
+	if (_createLayers.find("compositelayer") == _createLayers.end()) {
+		//_createLayers["globallayermodel"] = RootLayerModel::create;
+		_createLayers["compositelayer"] = CompositeLayerModel::create;
 
-	 }
+	}
 }
 
 LayerManager::~LayerManager()
 {
+	qDebug() << "deleting layermanager";
     _postDrawers = QList<QObject *>();
     modelregistry()->unRegisterModel(modelId());
 }
@@ -197,7 +193,26 @@ void Ilwis::Ui::LayerManager::move(int nodeId, const QModelIndex & targetLocatio
 
 }
 
+void  LayerManager::reset() {
+	_lastAddedCoverageLayer = 0;
+	_nodeCounter = 0;
+	_childeren.clear();
+	_coverages.clear();
+	_postDrawers.clear();
+	_tree = new TreeModel(this);
+	_globalLayer = new RootLayerModel(this, _tree->invisibleRootItem());
+	_tree->invisibleRootItem()->appendRow(_globalLayer);
+	_globalLayer->nodeId(nextId());
+	_globalLayer->prepare(0);
+	/*_zoomInMode = false;
+	_zoomOutMode = false;
+	_panningMode = false;
+	_hasSelectionDrawer = false;*/
 
+	_doPostRenderCallBack = false;
+	_layerListName = sUNDEF;
+	_needUpdate = false; 
+}
 LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &cov, LayerManager *lm, const IOOptions &options)
 {
     if (cov->coordinateSystem()->isUnknown() && lm->rootLayer()->screenCsy().isValid()){
@@ -386,17 +401,20 @@ void LayerManager::setSelectionPrivate(const Coordinate& crd, LayerModel * layer
 }
 void LayerManager::setSelection(const QString & pixelpair)
 {
-    QStringList parts = pixelpair.split("|");
-    if (parts.size() == 2) {
-        Ilwis::Coordinate crd = rootLayer()->screenGrf()->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
-        QStandardItem *root = _tree->invisibleRootItem();
-        for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
-            LayerModel *layer = static_cast<LayerModel *>(root->child(layerIndex));
-            setSelectionPrivate(crd, layer);
+	try {
+		QStringList parts = pixelpair.split("|");
+		if (parts.size() == 2) {
+			Ilwis::Coordinate crd = rootLayer()->screenGrf()->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
+			QStandardItem *root = _tree->invisibleRootItem();
+			for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
+				LayerModel *layer = static_cast<LayerModel *>(root->child(layerIndex));
+				setSelectionPrivate(crd, layer);
 
-        }
+			}
 
-    }
+		}
+	}
+	catch (const ErrorObject&) {}
 }
 
 QVariantList Ilwis::Ui::LayerManager::linkProperties() const
@@ -649,6 +667,16 @@ QVariantList LayerManager::yGridAxisRight() const
 
 void LayerManager::broadCast(const QVariantMap& parameters) {
     emit linkSendMessage(parameters);
+}
+
+bool LayerManager::doPostRenderCallBack() {
+	return _doPostRenderCallBack;
+}
+
+void LayerManager::doPostRenderCallBack(bool yesno) {
+	_doPostRenderCallBack = yesno;
+	emit doPostRenderCallBackChanged();
+
 }
 
 
