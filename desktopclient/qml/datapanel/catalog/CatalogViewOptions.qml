@@ -13,6 +13,8 @@ Rectangle {
     color : catalogSplit.backgroundCatalogColor
     property string iconName : "../images/selection"
 
+
+
     Component {
         id : layerDrawer
         Controls.DummySpatial{
@@ -21,16 +23,20 @@ Rectangle {
 
             property var resource
             property var controller
-
+			postRenderCallBack : frame.finalizeDraw
+			
             function setResource(object, res){
-                lyrview.associate(object.objectName,"drawEnded")
-                var cmd = "adddrawer(" + viewerId + "," + res.url +",\"itemid=" + res.id + "\"," + res.typeName + ")"
-                addCommand(cmd)
-                setAttribute("GridDrawer", {"active" : false})
-                res.realizeThumbPath()
-                setAttribute("View",{"saveimage" : res.imagePath})
-                lyrview.update()
+				if ( !lyrview.layermanager)
+					lyrview.layermanager = models.createLayerManager(layerDrawer,layerDrawer)
+				else{
+				    lyrview.reset()
+					lyrview.layermanager.reset()
 
+				}
+                var cmd = "adddrawer(" + lyrview.layermanager.viewid + ",\"\",\"itemid=" + res.id + "\"," + res.typeName + ",true)"
+                lyrview.addCommand(cmd)
+                lyrview.layermanager.rootLayer.vproperty("griddraweractive", false)
+				lyrview.initSizes()
             }
         }
     }
@@ -248,7 +254,6 @@ Rectangle {
             height : 40
             x : 8
             onClicked: {
-
                 frame.makeResourceList()
             }
         }
@@ -262,8 +267,8 @@ Rectangle {
 
             function setResource(){
                 if ( frame.resources.length > 0 && frame.currentMap < frame.resources.length){
-                    imageLoader.sourceComponent = null
-                    imageLoader.sourceComponent = layerDrawer
+                    //if(!imageLoader.sourceComponent)
+						imageLoader.sourceComponent = layerDrawer
                     imageLoader.item.setResource(frame, frame.resources[currentMap])
                 }
             }
@@ -288,10 +293,21 @@ Rectangle {
             }
 
             function finalizeDraw() {
-                frame.resources[currentMap].unload()
-                ++currentMap
-                progress.value = currentMap
-                setResource()
+				if ( frame.resources.length > 0 && frame.currentMap < frame.resources.length){
+				    console.debug("finalize draw callback")
+					var path = catalogViews.currentCatalog.specialFolder("thumbs");
+					var res = frame.resources[currentMap]
+					var thumbname = res.name + ".png"
+					var thumbPath = path + "/" + thumbname
+					frame.grabToImage(function(result) {
+						  result.saveToFile(thumbPath);
+					});
+
+					frame.resources[currentMap].unload()
+					++currentMap
+					progress.value = currentMap
+					setResource()
+				}
             }
 
             anchors.left : parent.left

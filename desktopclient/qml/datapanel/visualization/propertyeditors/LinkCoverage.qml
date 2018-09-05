@@ -16,7 +16,7 @@ Item {
 
     Column {
         id : itemColumn
-        width : Mathmin(parent.width - 5, 250)
+        width : Math.min(parent.width - 5, 250)
         height : parent.height
         x : 5
         property var currentModelId : -1
@@ -72,7 +72,8 @@ Item {
   
                 onCurrentIndexChanged : {
                     if ( currentIndex >= 0){
-                        itemColumn.currentModelId = targetList.itemModel[currentIndex].modelid
+						if ( targetList.itemModel[currentIndex])
+							itemColumn.currentModelId = targetList.itemModel[currentIndex].modelid
                     }
                 }
             }

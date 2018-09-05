@@ -4,6 +4,7 @@
 #include <QSqlRecord>
 #include <QQmlContext>
 #include <QThread>
+#include <QDir>
 #include <QCoreApplication>
 #include "coverage.h"
 #include "representation.h"
@@ -462,6 +463,22 @@ bool CatalogModel::isFileBased() const
 		return fb;
 	}
 	return false;
+}
+
+QString CatalogModel::specialFolder(const QString& folderType) {
+	QString path = resource().url().toLocalFile();
+	QDir dirCatalog(path);
+	QDir dir(path + "/.ilwis");
+	if (!dir.exists()) {
+		if (!dirCatalog.mkdir(".ilwis"))
+			return sUNDEF;
+	}
+	if (!QDir(path + "/.ilwis/" + folderType).exists()) {
+		QDir thumbPath(path + "/.ilwis");
+		if (!thumbPath.mkdir(folderType))
+			return sUNDEF;
+	}
+	return path + "/.ilwis/" + folderType;
 }
 
 //-------------------------------------------------

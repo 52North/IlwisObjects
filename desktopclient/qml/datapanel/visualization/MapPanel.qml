@@ -82,12 +82,14 @@ Item {
     }
     Action {
         id : zoomOutClicked
+
         onTriggered : {
             if ( activeLayerManager()){
                 activeLayerManager().zoomOutMode = !activeLayerManager().zoomOutMode
                 activeLayerManager().zoomInMode = false
                 activeLayerManager().panningMode = false
             }
+			
         }
     }
     Action {
