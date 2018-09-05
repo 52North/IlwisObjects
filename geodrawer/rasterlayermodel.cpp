@@ -278,7 +278,6 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
                 _removeQuads.push_back(_quads[i].id);
             if ((_quads[i].active) && ((_quads[i].id == -1) || _quads[i].refresh)) {
                 _addQuads.push_back(i);
-                _quads[i].refresh = false; // by adding it to _addQuads, it is refreshed in the next cycle
             }
         }
         fChanges = (_removeQuads.size() > 0) || (_addQuads.size() > 0);
@@ -532,6 +531,7 @@ QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
         Quad & quad = _quads[_addQuads[bufferIndex]];
         Texture * tex = textureHeap->GetTexture(&quad, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, true);
         if (tex != 0) {
+            quad.refresh = tex->fDirty();
             const QVector<int> & pixelData = tex->data();
             double s = tex->getOffsetX() / (double)_width;
             double t = tex->getOffsetY() / (double)_height;

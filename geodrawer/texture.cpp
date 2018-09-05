@@ -43,10 +43,14 @@ void Texture::CreateTexture(bool fInThread, volatile bool * fDrawStop)
 
 void Texture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
+    dirty = false;
+    bool fOk;
     if (hasType(domain, itCOLORDOMAIN))
-        dirty = !DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+        fOk = DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
     else
-        dirty = !DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+        fOk = DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+    if (!dirty) // while Drawing, dirty might have been set back to true, by another thread; then we need to ensure that another pass will be done
+        dirty = !fOk;
     _quad->refresh = !dirty;
 }
 
