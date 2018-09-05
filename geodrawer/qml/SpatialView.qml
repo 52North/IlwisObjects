@@ -18,7 +18,7 @@ Item {
 	property var colorShaderMaterialTemplate
 	property var paletteShaderMaterialTemplate
 	property var postRenderCallBack
-	property var doPostRenderCallBack : false
+	property var doPostRenderCallBack : layermanager.doPostRenderCallBack
 
 	function initSizes(){
 		layermanager.rootLayer.initSizes(canvas.width, canvas.height,true)	
@@ -85,10 +85,10 @@ Item {
 		function updateAfterSizeChange(){
 			if ( camera && renderer){
 				layermanager.rootLayer.initSizes(canvas.width, canvas.height, false);
-				camera.left = -layermanager.rootLayer.width/2.0;
-				camera.right = layermanager.rootLayer.width/2.0;
-				camera.top = layermanager.rootLayer.height/2.0;
-				camera.bottom = -layermanager.rootLayer.height/2.0;
+				camera.left = layermanager.rootLayer.left;
+				camera.right = layermanager.rootLayer.right;
+				camera.top = layermanager.rootLayer.top;
+				camera.bottom = layermanager.rootLayer.bottom;
 				camera.updateProjectionMatrix();
 				renderer.setSize( canvas.width, canvas.height );
 				var enablePanAndZoomOut = layermanager.rootLayer.scrollInfo.xsizeperc < 1.0 || layermanager.rootLayer.scrollInfo.ysizeperc < 1.0;
@@ -217,10 +217,10 @@ Item {
 			if ( camera){
 				var cameraPosition = layermanager.rootLayer.cameraPosition;
 				camera.position.set(cameraPosition.x,cameraPosition.y, 1);
-				camera.left = -layermanager.rootLayer.width/2.0;
-				camera.right = layermanager.rootLayer.width/2.0;
-				camera.top = layermanager.rootLayer.height/2.0;
-				camera.bottom = -layermanager.rootLayer.height/2.0;
+				camera.left = layermanager.rootLayer.left;
+				camera.right = layermanager.rootLayer.right;
+				camera.top = layermanager.rootLayer.top;
+				camera.bottom = layermanager.rootLayer.bottom;
 				var pp = new GL.THREE.Vector3(cameraPosition.x,cameraPosition.y,0)
 				camera.lookAt(pp);
 				camera.updateProjectionMatrix();
@@ -414,7 +414,7 @@ Item {
 
 		onInitializeGL: {
 			initSizes()
-			camera = new GL.THREE.OrthographicCamera( -layermanager.rootLayer.width/2.0, layermanager.rootLayer.width/2.0, layermanager.rootLayer.height/2.0, -layermanager.rootLayer.height/2.0, 0, 1 );
+			camera = new GL.THREE.OrthographicCamera( layermanager.rootLayer.left, layermanager.rootLayer.right, layermanager.rootLayer.top, layermanager.rootLayer.bottom, 0, 1 );
 			var cameraPosition = layermanager.rootLayer.cameraPosition;
 			camera.position.set(cameraPosition.x, cameraPosition.y, 1);
 			camera.zoom = layermanager.rootLayer.zoomFactor
