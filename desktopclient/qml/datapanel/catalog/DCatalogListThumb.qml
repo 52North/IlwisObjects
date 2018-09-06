@@ -67,15 +67,15 @@ Rectangle{
             }
 
     		function finalizeDraw() {
-			    realizeThumbPath()
-				/*console.debug("finalize draw callback 2")
 				var path = catalogViews.currentCatalog.specialFolder("thumbs");
 				var thumbname = name + ".png"
 				var thumbPath = path + "/" + thumbname
 				lyrview.grabToImage(function(result) {
 					result.saveToFile(thumbPath);
+					imagePath = "file:///" + thumbPath
+					thumbGrid.oldImageName = imagePath
 				});
-				imagePath = "file:///" + thumbPath*/
+
             }
         }
     }
@@ -126,6 +126,7 @@ Rectangle{
                     anchors.fill: parent
                     onClicked:{
                         if ( thumbGrid.oldLoader) {
+						    console.debug("xxxxxxx", thumbGrid.oldImageName)
                             changeImageLoader(thumbGrid.oldLoader, thumbGrid.oldImageName)
                         }
                         thumbGrid.oldLoader = imageLoader
