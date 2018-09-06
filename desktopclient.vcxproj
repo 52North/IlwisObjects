@@ -418,7 +418,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSources.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionPinManager.qml" />
-    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrosssectionTool.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionTool.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridCellCountEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml" />
