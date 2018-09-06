@@ -302,8 +302,8 @@ Rectangle {
 					frame.grabToImage(function(result) {
 						  result.saveToFile(thumbPath);
 					});
-
-					frame.resources[currentMap].unload()
+					if ( frame.resources[currentMap])
+						frame.resources[currentMap].unload()
 					++currentMap
 					progress.value = currentMap
 					setResource()
