@@ -65,7 +65,7 @@ bool AddChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
 			return false;
 
     QColor clr = _chartmodel->newColor();
-	_chartmodel->addDataSeries(_inputTable, _columnX, _columnY, sUNDEF, clr);
+	_chartmodel->insertDataSeries(_inputTable, _chartmodel->seriesCount(), _columnX, _columnY, sUNDEF, clr);
 
 	logOperation(_expression);
 

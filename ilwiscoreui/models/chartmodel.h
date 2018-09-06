@@ -65,7 +65,6 @@ namespace Ilwis {
             DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const;
             quint32 deleteSerie(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
 			bool isValidSeries(const ITable& inputTable, const QString columnName) const;	// check if column with column name exists
-			quint32 addDataSeries(const ITable& inputTable, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color);
             quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QColor& color);
             void updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
             bool updateSeries() const;

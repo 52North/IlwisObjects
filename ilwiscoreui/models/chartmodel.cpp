@@ -40,7 +40,7 @@ quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & t
      
 	_series = QList<DataseriesModel *>(); 
     QColor clr = newColor();
-	addDataSeries(tbl, xaxis, yaxis, zaxis, clr);		// add the first dataseries
+	insertDataSeries(tbl, 0, xaxis, yaxis, zaxis, clr);		// add the first dataseries
 
     return modelId(); 
 }
@@ -85,6 +85,7 @@ QString ChartModel::chartType() const
 int ChartModel::seriesCount() const {
 	return _series.size();
 }
+
 DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const {
     for (auto *series : _series) {
         if (series->xColumn() == xcolumn && series->yColumn() == ycolumn && series->zColumn() == zcolumn)
@@ -161,12 +162,12 @@ bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& x
             if (ycolumn == sUNDEF) {
                 for (int c = 1; c < tbl->columnCount(); ++c) {
                     if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::aYAXIS)) {
-                        addDataSeries(tbl, tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, color);
+                        insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, color);
                     }
                 }
             }
             else {
-                addDataSeries(tbl, tbl->columndefinition(xcIndex).name(), tbl->columndefinition(ycIndex).name(), sUNDEF, color);
+                insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(ycIndex).name(), sUNDEF, color);
             }
             emit updateSeriesChanged();
         }
@@ -358,23 +359,6 @@ bool Ilwis::Ui::ChartModel::axisCompatible(const DataDefinition& inputDef, Axis 
         }
     }
     return false;
-}
-quint32 ChartModel::addDataSeries(const ITable& inputTable, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color) {
-
-	auto newseries = new DataseriesModel(this, xaxis, yaxis, zaxis, color);
-	if (!newseries->setData(inputTable))
-		return _series.size();
-
-    newseries->setType(_chartType);
-	_series.push_back(newseries);
-
-    initializeDataSeries(newseries);
-
-	emit xAxisChanged();
-	emit yAxisChanged();
-	emit chartModelChanged();
-
-	return _series.size();
 }
 
 QColor ChartModel::seriesColor(int seriesIndex) {
