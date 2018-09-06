@@ -76,6 +76,11 @@ QString ResourceModel::imagePath() const
     return _imagePath;
 }
 
+void  ResourceModel::imagePath(const QString& s) {
+    _imagePath = s;
+    emit imagePathChanged();
+}
+
 quint64 ResourceModel::type() const
 {
     return _type;

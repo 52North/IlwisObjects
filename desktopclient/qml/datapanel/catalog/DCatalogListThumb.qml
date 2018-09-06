@@ -3,11 +3,10 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.0
-
+import ModelRegistry 1.0
 import MasterCatalogModel 1.0
 import CatalogModel 1.0
 import ResourceModel 1.0
-
 import "../../Global.js" as Global
 import "../../controls" as Controls
 
@@ -57,6 +56,27 @@ Rectangle{
             anchors.fill: parent
             anchors.margins: 2
             objectName : "thumb_generator_mainui"
+			postRenderCallBack : lyrview.finalizeDraw
+
+			Component.onCompleted: {
+			    console.debug("loaded", id, typeName, name)
+				 lyrview.layermanager = models.createLayerManager(lyrview,lyrview)
+				 var cmd = "adddrawer(" + lyrview.layermanager.viewid + ",\"\",\"itemid=" + id + "\"," + typeName + ",true)"
+				 lyrview.addCommand(cmd)
+				 lyrview.layermanager.rootLayer.vproperty("griddraweractive", false)
+            }
+
+    		function finalizeDraw() {
+			    realizeThumbPath()
+				/*console.debug("finalize draw callback 2")
+				var path = catalogViews.currentCatalog.specialFolder("thumbs");
+				var thumbname = name + ".png"
+				var thumbPath = path + "/" + thumbname
+				lyrview.grabToImage(function(result) {
+					result.saveToFile(thumbPath);
+				});
+				imagePath = "file:///" + thumbPath*/
+            }
         }
     }
 

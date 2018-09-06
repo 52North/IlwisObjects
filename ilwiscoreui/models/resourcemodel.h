@@ -18,7 +18,7 @@ class ILWISCOREUISHARED_EXPORT ResourceModel : public QObject
 
     Q_OBJECT
     Q_PROPERTY(QString name READ name CONSTANT)
-    Q_PROPERTY(QString imagePath READ imagePath CONSTANT)
+    Q_PROPERTY(QString imagePath READ imagePath WRITE imagePath NOTIFY imagePathChanged)
     Q_PROPERTY(QString  size READ size CONSTANT)
     Q_PROPERTY(QString  domainName READ domainName CONSTANT)
     Q_PROPERTY(QString  domainType READ domainType CONSTANT)
@@ -51,6 +51,7 @@ public:
     explicit ResourceModel(const Ilwis::Resource &source, QObject *parent = 0);
     virtual ~ResourceModel();
     QString imagePath() const;
+    void imagePath(const QString& s);
     quint64 type() const;
     QString typeName() const;
     QString name() const;
@@ -131,6 +132,7 @@ signals:
     void isSelectedChanged();
     void keywordsChanged();
     void changedChanged();
+    void imagePathChanged();
 public slots:
 
 };
