@@ -29,7 +29,9 @@ DataFormat::DataFormat(const QString& connector, const QString &code, const QStr
                        const QString &extensions, const QString &access, IlwisTypes datatypes, const QString &description, const QString& parts)
 {
     _properties[fpCODE] = code;
-    _properties[fpNAME] = longname;
+	QString temp = longname;
+	temp.remove(QString("\'"));
+    _properties[fpNAME] = temp;
     _properties[fpDESCRIPTION] = description;
     _properties[fpEXTENSION] = extensions;
     _properties[fpCONNECTOR] = connector;
