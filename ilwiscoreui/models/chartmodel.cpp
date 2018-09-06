@@ -253,6 +253,9 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
     auto newseries = new DataseriesModel(this, xcolumn, ycolumn, zcolumn, color);
     if (!newseries->setData(inputTable))
         return _series.size();
+
+    newseries->setType(_chartType);
+
     _series.insert(index,newseries);
 
     initializeDataSeries(newseries);
