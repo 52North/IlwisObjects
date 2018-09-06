@@ -97,6 +97,9 @@ public:
 	 QVariantMap scrollInfo() const;
      bool prepare(int prepType);
      QVariantList gridAxis(const QString& type) const;
+     virtual bool renderReady();
+     virtual void renderReady(bool yesno);
+
 
 signals:
      void zoomInModeChanged();

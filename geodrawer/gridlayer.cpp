@@ -187,6 +187,15 @@ void SubGridLayer::calcEnvelope(Coordinate& cmin, Coordinate& cmax) const {
         }
     }
 }
+
+bool SubGridLayer::renderReady() {
+    return true; // TODO: return the correct value
+}
+
+void SubGridLayer::renderReady(bool yesno) {
+    // TODO
+}
+
 //------------------------------------------------------------
 PrimaryGridLayer::PrimaryGridLayer(LayerManager *manager, QStandardItem *parent, const IOOptions& options) : SubGridLayer(manager, parent,"Primary Grid", "Main lines in the grid", options){
     order(-20);

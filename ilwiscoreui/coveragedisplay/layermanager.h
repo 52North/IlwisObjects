@@ -56,7 +56,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(QVariantList yGridAxisRight READ yGridAxisRight NOTIFY axisValuesChanged)
     Q_PROPERTY(bool updatePostDrawers READ updatePostDrawersPrivate NOTIFY updatePostDrawersChanged)
 	Q_PROPERTY(QString layerListName READ layerListName WRITE setLayerListName NOTIFY layerListNameChanged)
-	Q_PROPERTY(bool doPostRenderCallBack READ doPostRenderCallBack WRITE doPostRenderCallBack NOTIFY doPostRenderCallBackChanged)
+	Q_PROPERTY(bool doPostRenderCallBack READ doPostRenderCallBack WRITE doPostRenderCallBack)
 
 
 public:
@@ -146,7 +146,6 @@ signals:
     void axisValuesChanged();
     void updatePostDrawersChanged();
 	void layerListNameChanged();
-	void doPostRenderCallBackChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
@@ -162,7 +161,6 @@ private:
 	int _nodeCounter = 0;
     static quint32 _baseViewId;
     ManagerType _managerType = mtUNKNOWN;
-	bool _doPostRenderCallBack = false;
 
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;

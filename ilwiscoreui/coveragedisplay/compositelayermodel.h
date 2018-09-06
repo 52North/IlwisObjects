@@ -17,6 +17,8 @@ namespace Ilwis {
 			CompositeLayerModel(LayerManager * manager, QStandardItem * parent, const QString & name, const QString & desc, const IOOptions & opt);
 			~CompositeLayerModel();
             int numberOfBuffers(const QString&) const;
+            virtual bool renderReady();
+            virtual void renderReady(bool yesno);
 
 			static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 		};

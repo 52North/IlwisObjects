@@ -19,6 +19,7 @@ namespace Ilwis {
 		    Texture * GetTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
 		    void ClearQueuedTextures();
 		    void ReGenerateAllTextures();
+		    bool renderingComplete();
 
 	    protected:
 		    Texture * GenerateTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);

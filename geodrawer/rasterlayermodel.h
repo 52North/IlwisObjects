@@ -52,6 +52,9 @@ public:
     static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 	bool usesColorData() const;
     QVariantList linkProperties() const;
+    virtual bool renderReady();
+    virtual void renderReady(bool yesno);
+
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
     Q_INVOKABLE virtual QVector<qreal> uvs(qint32 bufferIndex) const;
@@ -84,6 +87,7 @@ private:
     bool _initDone;
     bool _refreshPaletteAtNextCycle;
     NumericRange _currentStretchRange;
+    bool _renderReady = false;
 
 public slots:
     void requestRedraw();

@@ -25,6 +25,8 @@ namespace Ilwis {
             Q_INVOKABLE QVariant vproperty(const QString& attrName) const;
             Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
             Q_INVOKABLE bool prepare(int);
+            virtual bool renderReady();
+            virtual void renderReady(bool yesno);
 
             static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 

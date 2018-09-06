@@ -209,7 +209,7 @@ void  LayerManager::reset() {
 	_panningMode = false;
 	_hasSelectionDrawer = false;*/
 
-	_doPostRenderCallBack = false;
+	doPostRenderCallBack(false);
 	_layerListName = sUNDEF;
 	_needUpdate = false; 
 }
@@ -670,21 +670,19 @@ void LayerManager::broadCast(const QVariantMap& parameters) {
 }
 
 bool LayerManager::doPostRenderCallBack() {
-	return _doPostRenderCallBack;
+    bool renderReady = true;
+    QStandardItem *root = _tree->invisibleRootItem();
+    for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(root->child(layerIndex));
+        renderReady &= lyr->renderReady();
+    }
+    return renderReady;
 }
 
 void LayerManager::doPostRenderCallBack(bool yesno) {
-	_doPostRenderCallBack = yesno;
-	emit doPostRenderCallBackChanged();
-
+    QStandardItem *root = _tree->invisibleRootItem();
+    for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
+        LayerModel *lyr = static_cast<LayerModel *>(root->child(layerIndex));
+        lyr->renderReady(yesno);
+    }
 }
-
-
-
-
-
-
-
-
-
-

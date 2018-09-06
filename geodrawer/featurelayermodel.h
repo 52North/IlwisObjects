@@ -63,7 +63,8 @@ public:
 	bool prepare(int);
     int numberOfBuffers(const QString&) const;
     QVariantList linkProperties() const;
-
+    virtual bool renderReady();
+    virtual void renderReady(bool yesno);
 
     static LayerModel *create(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&);
 

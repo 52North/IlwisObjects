@@ -43,3 +43,11 @@ void CompositeLayerModel::setActiveAttribute(int idx) {
 int CompositeLayerModel::numberOfBuffers(const QString&) const {
     return 0;
 }
+
+bool CompositeLayerModel::renderReady() {
+    return true; // TODO: return the correct value
+}
+
+void CompositeLayerModel::renderReady(bool yesno) {
+    // TODO
+}

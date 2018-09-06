@@ -43,6 +43,8 @@ namespace Ilwis {
             Q_INVOKABLE QVariant vproperty(const QString& attrName) const;
             Q_INVOKABLE void vproperty(const QString& attrName, const QVariant& value);
             void setSecondaryGrid(SubGridLayer *sec);
+            virtual bool renderReady();
+            virtual void renderReady(bool yesno);
 
 
         protected:

@@ -63,6 +63,7 @@ public:
     Q_PROPERTY(LayerModel * parentLayer READ parentLayer CONSTANT)
     Q_PROPERTY(bool hasFixedStructure READ hasFixedStructure CONSTANT)
     Q_PROPERTY(QString url READ url CONSTANT)
+    Q_PROPERTY(bool renderReady READ renderReady WRITE renderReady)
 
 	Q_INVOKABLE virtual bool prepare(int);
 	Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
@@ -135,7 +136,8 @@ public:
     qint32 nodeId() const;
     void nodeId(qint32 id);
     virtual void addSelection(quint64 featureid, bool single);
-
+    virtual bool renderReady();
+    virtual void renderReady(bool yesno);
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
@@ -156,6 +158,7 @@ signals:
 	   void prepareChanged();
        void linkSendMessage(const QVariantMap& parameters);
        void xGridAxisValuesChanged();
+
 public slots:
 
 protected:

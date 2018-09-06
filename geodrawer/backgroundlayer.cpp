@@ -107,3 +107,11 @@ int BackgroundLayer::numberOfBuffers(const QString &type) const
         return _buffer.bufferCount();
     return 0;
 }
+
+bool BackgroundLayer::renderReady() {
+    return true; // TODO: return the correct value
+}
+
+void BackgroundLayer::renderReady(bool yesno) {
+    // TODO
+}

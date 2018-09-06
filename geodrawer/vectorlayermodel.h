@@ -34,8 +34,10 @@ namespace Ilwis {
             ICoverage coverage() const;
             virtual void finish(const std::vector<quint64>& ids);
             void addSelection(quint64 featureid, bool single);
-
 			void setActiveFeatureColors(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value);
+			virtual bool renderReady();
+			virtual void renderReady(bool yesno);
+
 		signals:
 			void activeAttributeChanged();
 
@@ -44,6 +46,7 @@ namespace Ilwis {
 			OGLBuffer _buffer;
 			QString _activeAttribute;
             std::vector<quint64> _selectedFeatures;
+            bool _renderReady = false;
 		};
 	}
 }

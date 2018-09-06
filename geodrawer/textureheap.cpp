@@ -225,3 +225,7 @@ void TextureGenerator::run()
 
 	pObject->fStopThread = false;
 }
+
+bool TextureHeap::renderingComplete() {
+    return (workingTexture == 0) && (textureRequest.size() == 0);
+}

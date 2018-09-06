@@ -261,8 +261,18 @@ void FeatureLayerModel::linkMessage(const QVariantMap& parms) {
   
 }
 
+bool FeatureLayerModel::renderReady() {
+    bool renderReady = true;
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *lyrchild = static_cast<LayerModel *>(child(layerIndex));
+        renderReady &= lyrchild->renderReady();
+    }
+    return renderReady;
+}
 
-
-
-
-
+void FeatureLayerModel::renderReady(bool yesno) {
+    for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+        LayerModel *lyrchild = static_cast<LayerModel *>(child(layerIndex));
+        lyrchild->renderReady(yesno);
+    }
+}

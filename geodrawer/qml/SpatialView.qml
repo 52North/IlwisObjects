@@ -18,7 +18,6 @@ Item {
 	property var colorShaderMaterialTemplate
 	property var paletteShaderMaterialTemplate
 	property var postRenderCallBack
-	property var doPostRenderCallBack : layermanager.doPostRenderCallBack
 
 	function initSizes(){
 		layermanager.rootLayer.initSizes(canvas.width, canvas.height,true)	
@@ -266,7 +265,7 @@ Item {
 				    layer.addMeshIndex(points.id);
 				    points.renderOrder = sceneObject.renderOrder;
 				    sceneObject.add( points );
-					doPostRenderCallBack = true
+					layer.renderReady = true
 			    }
 		        for(var i=0; i < layer.numberOfBuffers("lines");++i){
 				    var geometry = new GL.THREE.BufferGeometry();
@@ -285,7 +284,7 @@ Item {
 				    layer.addMeshIndex(lines.id);
 				    lines.renderOrder = sceneObject.renderOrder;
 				    sceneObject.add( lines );
-					doPostRenderCallBack = true
+					layer.renderReady = true
 			    }
                // var n = Date.now()
 			
@@ -299,7 +298,7 @@ Item {
 				    layer.addMeshIndex(polygons.id)
 				    polygons.renderOrder = sceneObject.renderOrder;
 				    sceneObject.add( polygons );
-					doPostRenderCallBack = true
+					layer.renderReady = true
 			    }
                 // var n2 = Date.now()
                 // console.debug("duration=", n2, n, (n2 - n)/1000.0)
@@ -403,9 +402,9 @@ Item {
 				}
 				renderer.render(scene, camera);
 
-				if ( postRenderCallBack && doPostRenderCallBack){
+				if ( postRenderCallBack && layermanager.doPostRenderCallBack){
 					postRenderCallBack()
-					doPostRenderCallBack = false
+					layermanager.doPostRenderCallBack = false
 				}
                 //console.log("current: geometries=" + renderer.info.memory.geometries)
                 //console.log("current: textures=" + renderer.info.memory.textures)

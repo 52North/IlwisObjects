@@ -600,3 +600,10 @@ quint32 LayerModel::modelId() const
     return _modelId;
 }
 
+bool LayerModel::renderReady() {
+    return true; // Dummy implementation, because this class can't be abstract
+}
+
+void LayerModel::renderReady(bool yesno) {
+    // Dummy implementation, because this class can't be abstract
+}

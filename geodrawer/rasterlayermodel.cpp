@@ -555,6 +555,9 @@ QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
             result["height"] = sizeY / zoomFactor;
             result["uvmap"] = uvmap;
             result["valid"] = true;
+            if (textureHeap->renderingComplete() && !renderReady()) {
+                renderReady(true);
+            }
         }
         else
             result["valid"] = false;
@@ -631,4 +634,14 @@ void RasterLayerModel::requestRedraw() {
 
 QVector<qint32> RasterLayerModel::removeQuads() {
     return _removeQuads;
+}
+
+bool RasterLayerModel::renderReady()
+{
+    return _renderReady;
+}
+
+void RasterLayerModel::renderReady(bool yesno)
+{
+    _renderReady = yesno;
 }

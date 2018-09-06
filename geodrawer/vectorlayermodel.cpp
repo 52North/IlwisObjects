@@ -146,3 +146,12 @@ void VectorLayerModel::setActiveFeatureColors(const SPFeatureI & feature, Visual
 	_buffer.changeColor(feature->featureid(), clr);
 }
 
+bool VectorLayerModel::renderReady()
+{
+    return _renderReady;
+}
+
+void VectorLayerModel::renderReady(bool yesno)
+{
+    _renderReady = yesno;
+}
