@@ -84,14 +84,12 @@ Item {
         mastercatalog.setSelectedObjects("")
         var resources = currentCatalog.resources
         var sz = resources.length
-        var selectedIds
+        var selectedIds = ""
         if ( !uicontext.keyPressed(Qt.Key_Control) &&  !uicontext.keyPressed(Qt.Key_Shift))    {
             selectedIds = objectid
-
             for(var i = 0; i < sz; ++i){
                 var resource = resources[i]
-                if (resource.isSelected && resource.id !== objectid)
-                    resource.isSelected=false
+                resource.isSelected=resource.id == objectid
             }
         }else if ( uicontext.keyPressed(Qt.Key_Shift)){
             var startRange = false
