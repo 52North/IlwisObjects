@@ -99,9 +99,10 @@ Rectangle {
                 var slice = series.append("mameloe", 15)
                 var slice = series.append("dikkedeur", 7)
 
-//                for (var j = 0; j < points.length; j++) {
+                for (var j = 0; j < points.length; j++) {
+                console.log("pnt: " + j+1 + " = " + points[j])
 //                    var slice = series.append(smodel.name + (j+1), points[j].y)
-//                }
+                }
             }
 		}
 	}

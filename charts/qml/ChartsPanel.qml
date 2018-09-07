@@ -5,7 +5,9 @@ import QtQuick.Controls.Styles 1.0
 import "." as Charts
 import ChartModel 1.0
 import TabModel 1.0
+import TableModel 1.0
 import "../../../../qml" as Base
+import "../../../../qml/datapanel/table" as TablePanel
 
 Item {
     id : chartspanel
@@ -15,11 +17,12 @@ Item {
     property ChartModel chart
     property string iconName : "../images/graph"
     property TabModel tabmodel
+    property TableModel tabledata
 
     TabView {
         id : chartarea
         anchors.fill : parent
-        Tab{
+        Tab {
             id : charttab
             title: "Chart"
             active : true
@@ -42,6 +45,11 @@ Item {
         Tab {
             id : datatab
             title : "Data"
+
+            TablePanel.TablePane {
+                id : chartTable
+
+            }
         }
     }
 
@@ -50,6 +58,10 @@ Item {
 		chart = models.model(parts[1]);
         chart.assignParent(chartspanel);
 		tabmodel.displayName = chart.name
+
+        tabledata = models.createTableModel(chartspanel, chart.dataTableUrl(), "table")
+        console.log("datatable="+tabledata)
+        chartspanel.chartarea.datatab.chartTable.table = tabledata
     }
 
 	Component.onDestruction :{

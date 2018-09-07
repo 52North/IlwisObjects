@@ -26,6 +26,8 @@ ChartModel::ChartModel(QObject *parent) : QObject(parent)
 {
     _modelId = modelregistry()->newModelId();
     modelregistry()->registerModel(modelId(), "chart", this);
+
+    _datatable.prepare();
 }
 
 Ilwis::Ui::ChartModel::~ChartModel()
@@ -69,6 +71,14 @@ QString ChartModel::minimalPanelUrl() {
     auto baseLoc = context()->ilwisFolder();
     QString loc =  baseLoc.absoluteFilePath() + "/extensions/ui/Charts/qml/MinimalChartPane.qml";
     return QUrl::fromLocalFile(loc).toString();
+}
+
+QString ChartModel::dataTableUrl()
+{
+    if (_datatable.isValid()) {
+        return _datatable->resource().url().toString();
+    }
+    return QString();
 }
 
 void Ilwis::Ui::ChartModel::chartType(const QString & tp)
@@ -116,6 +126,23 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 
 	return NULL;
 }
+
+//ITable Ilwis::Ui::ChartModel::tableFromSeries() {
+//    int offset = _chartTable->columnCount();
+//    if (offset == 0) {
+//        _chartTable->addColumn(inputTable->columndefinition(xaxis));
+//        auto colX = inputTable->column(xaxis);
+//        for (int i = 0; i < _chartTable->recordCount(); ++i)
+//            _chartTable->record(i, { colX[i] }, offset);
+//
+//        offset++;
+//    }
+//
+//    _chartTable->addColumn(inputTable->columndefinition(yaxis));
+//    auto colY = inputTable->column(yaxis);
+//    for (int i = 0; i < _chartTable->recordCount(); ++i)
+//        _chartTable->record(i, { colY[i] }, offset);
+//}
 
 bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color) {
     bool ok;

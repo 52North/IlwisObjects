@@ -47,6 +47,7 @@ namespace Ilwis {
                 Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color);
                 Q_INVOKABLE void assignParent(QObject *parent);
                 Q_INVOKABLE quint32 modelId() const;
+                Q_INVOKABLE QString dataTableUrl();
 
             ChartModel();
             ChartModel(QObject *parent);
@@ -112,6 +113,8 @@ namespace Ilwis {
             int _tickCountY = 5;
             quint32 _modelId;
             QString _name = sUNDEF;
+            ITable _datatable;
+
 			QList<DataseriesModel *> _series;
             std::vector<QString> _graphColors = { "crimson", "blueviolet","olive","deeppink","darkblue","darkred","cadetblue","tomato", "darkslateblue","orangered", "dodgerblue","forestgreen","goldenrod",
             "green","indigo","limegreen","orange", "mediumslateblue","orchid","seagreen","sienna","teal" };
