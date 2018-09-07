@@ -126,7 +126,6 @@ Rectangle{
                     anchors.fill: parent
                     onClicked:{
                         if ( thumbGrid.oldLoader) {
-						    console.debug("xxxxxxx", thumbGrid.oldImageName)
                             changeImageLoader(thumbGrid.oldLoader, thumbGrid.oldImageName)
                         }
                         thumbGrid.oldLoader = imageLoader
@@ -240,20 +239,22 @@ Rectangle{
             else {
                 showObject(id)
                 isSelected = true
-                setSelected(id)
+                catalogViews.setSelected(id)
             }
         }
         onReleased: {
-            image.Drag.drop()
-            image.parent = mouseArea
-            image.anchors.fill = mouseArea
-            image.destroy();
+			if ( image){
+				image.Drag.drop()
+				image.parent = mouseArea
+				image.anchors.fill = mouseArea
+				image.destroy();
+			}
         }
 
         onPressed: {
             thumbGrid.currentIndex = index;
             isSelected = !isSelected
-            setSelected(id)
+            catalogViews.setSelected(id)
             if (catalogViews && !catalogViews.tabmodel.selected)
                 catalogViews.tabmodel.selectTab()
             image = Qt.createQmlObject('import QtQuick 2.0; Image{
