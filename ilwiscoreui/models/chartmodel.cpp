@@ -178,6 +178,10 @@ bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& x
     }
     return true;
 }
+void Ilwis::Ui::ChartModel::assignParent(QObject * parent)
+{
+    setParent(parent);
+}
 bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
 {
     return addDataTable(objid, sUNDEF, sUNDEF, sUNDEF);

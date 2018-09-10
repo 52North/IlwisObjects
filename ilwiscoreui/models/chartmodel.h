@@ -45,6 +45,8 @@ namespace Ilwis {
                 Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
                 Q_INVOKABLE bool addDataTable(const QString& objid);
                 Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color);
+                Q_INVOKABLE void assignParent(QObject *parent);
+                Q_INVOKABLE quint32 modelId() const;
 
             ChartModel();
             ChartModel(QObject *parent);
@@ -52,9 +54,8 @@ namespace Ilwis {
 
             quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis);
 
-            QVariantList ChartModel::linkProperties() const;
-            quint32 ChartModel::modelId() const;
-            QString ChartModel::name() const;
+            QVariantList linkProperties() const;
+            QString name() const;
             static QString mainPanelUrl();
             static QString minimalPanelUrl();
             void chartType(const QString& tp);
