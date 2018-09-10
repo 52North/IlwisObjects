@@ -327,6 +327,7 @@ void Ilwis::Ui::CrosssectionTool::deletePin(int index)
         _pins.removeAt(index);
         vpmodel()->layer()->layerManager()->updatePostDrawers();
         emit pinsChanged();
+        emit pinCountChanged();
     }
 }
 
@@ -352,6 +353,7 @@ void CrosssectionTool::addPinPrivate() {
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
     emit pinsChanged();
+    emit pinCountChanged();
 }
 void CrosssectionTool::addPin()
 {
@@ -398,6 +400,10 @@ QString Ilwis::Ui::CrosssectionTool::pinDataColumn(int index) const
     return QString();
 }
 
+int CrosssectionTool::pinCount() const {
+    return _pins.size();
+}
+
 bool CrosssectionTool::contineousMode() const {
     return _contineousMode;
 }
@@ -410,6 +416,7 @@ int CrosssectionTool::addContineousPin() {
     addPinPrivate();
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
+    emit pinCountChanged();
     return _pins.size() - 1;
 }
 
