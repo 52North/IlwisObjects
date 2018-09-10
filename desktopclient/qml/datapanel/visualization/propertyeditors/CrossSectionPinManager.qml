@@ -159,10 +159,12 @@ Column {
      }
      Row {
         anchors.right : parent.right
-        width : 170
+        width : 260
         height : 25
         spacing : 4
         visible : crosssectiontool.contineousPin == -1
+
+
          Button {
              width : 80
              height : 22
@@ -179,6 +181,17 @@ Column {
                  editor.addPin()
                  selectedRow = editor.pins.length - 1
                  tableview.currentRow = selectedRow
+             }
+         }
+		 Button {
+             width : 80
+             height : 22
+             text : qsTr("Show Chart")
+			 enabled : editor.pinCount > 0
+             onClicked : {
+				var mdl = models.model(modelid)
+			    if ( mdl == null && editor.pinCount > 0)
+					reopenChart() 
              }
          }
      }
