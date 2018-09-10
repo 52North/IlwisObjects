@@ -232,13 +232,11 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
 		if (!lm->rootLayer()->screenCsy().isValid()) {// first real layer sets the csy
 			lm->rootLayer()->screenCsy(cov->coordinateSystem());
             lm->rootLayer()->coverageEnvelope(cov->envelope());
-            lm->rootLayer()->viewEnvelope(cov->envelope());
             if (cov->ilwisType() == itRASTER) {
                 IRasterCoverage rc = cov.as<RasterCoverage>();
                 if (rc->georeference()->grfType<UndeterminedGeoReference>()) {
                     Envelope envUndetermned(Coordinate(0, 0), Coordinate(rc->size().xsize(), rc->size().ysize())); // none.grf bounds
                     lm->rootLayer()->coverageEnvelope(envUndetermned);
-                    lm->rootLayer()->viewEnvelope(envUndetermned);
                 }
             }
 	  		lm->setLayerListName(layername);
@@ -274,10 +272,8 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
 		layer->nodeId(lm->nextId());
 		layer->fillData();
         addLayer(parentLayer, layer, lm, lowernodeid);
-     
 
 		lm->lastAddedCoverageLayer(layer);
-
     
         return layer;
     }

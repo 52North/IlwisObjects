@@ -320,8 +320,6 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
         layerManager()->updateAxis();
         layerManager()->updatePostDrawers();
     }
-    else // initial: "remember" this _viewEnvelope until the mapwindow size is known
-        _viewEnvelope = env;
 }
 
 Envelope Ilwis::Ui::RootLayerModel::viewEnvelope() const
@@ -569,7 +567,7 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
 		grf->coordinateSystem(_screenCsy);
 		screenGrf(grf);
         _screenGrf->size(Size<>(newwidth, newheight, 1));
-        viewEnvelope(_viewEnvelope); // compute correct aspect ratio; initialize _zoomEnvelope and compute _screenGrf as well
+        viewEnvelope(_coverageEnvelope); // compute correct aspect ratio; initialize _viewEnvelope and _zoomEnvelope and compute _screenGrf as well
     } else {
         Size<> sz = _screenGrf->size();
         if (sz.xsize() != newwidth) {
