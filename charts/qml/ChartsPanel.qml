@@ -48,9 +48,14 @@ Item {
     function addDataSource(filter, sourceUrl, sourceType){
 		var parts = filter.split("=");
 		chart = models.model(parts[1]);
-        chart.parent = chartspanel;
+        chart.assignParent(chartspanel);
 		tabmodel.displayName = chart.name
     }
+
+	Component.onDestruction :{
+	    console.debug("closing chart panel")
+		models.unRegisterModel(chart.modelId())
+	}
 
 }
 
