@@ -24,10 +24,8 @@ Item {
 	}
 
 	function reset() {
-
 		var layerList = layermanager.topLevelLayers
-		for(var i=layerList.length-1; i >=0; --i){
-
+		for(var i=layerList.length-1; i >=0; --i) {
 			removeLayer(layerList[i])
 		}
 	}
@@ -45,26 +43,36 @@ Item {
 
 	function removeRasterLayer(layer){
 		var sceneObject = scene.getObjectByName(layer.nodeId);
-	    var removeQuads = layer.removeQuads;
-        for (var i=0; i < removeQuads.length; ++i) {
-            var obj = sceneObject.getObjectById(removeQuads[i])
-            if ( obj){
-                sceneObject.remove(obj);
-                obj.material.tTexture.dispose();
-                obj.material.dispose();
-                obj.geometry.dispose();
-            }
-        }
-	}
+		for (var i = sceneObject.children.length - 1; i >= 0; i--) {
+			var obj = sceneObject.children[i];
+			if ( obj) {
+				sceneObject.remove(obj);
+				obj.material.tTexture.dispose();
+				obj.material.dispose();
+				obj.geometry.dispose();
+			}
+		}
+		if (layer.tPalette != undefined) {
+			layer.tPalette.dispose();
+			layer.tPalette = undefined;
+		}
+        scene.remove(sceneObject);
+    }
 
 	function removeFeatureLayer(layer){
 	    var sceneObject = scene.getObjectByName(layer.nodeId);
 		// remove all previous renderings of this layer
         for (var i = sceneObject.children.length - 1; i >= 0; i--) {
-            sceneObject.remove(sceneObject.children[i]);
+            var obj = sceneObject.children[i];
+            if (obj) {
+                sceneObject.remove(obj);
+                obj.material.dispose();
+                obj.geometry.dispose();
+            }
         }
-		layer.clearMeshIndexes()
-	}
+        layer.clearMeshIndexes();
+        scene.remove(sceneObject);
+    }
 
  	Canvas3D {
         id : canvas
