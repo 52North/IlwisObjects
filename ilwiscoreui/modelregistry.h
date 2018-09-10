@@ -29,13 +29,14 @@ namespace Ilwis {
             Q_INVOKABLE Ilwis::Ui::ChartModel *createChartModel(QObject *parent);
             Q_INVOKABLE QObject* model(quint32 id);
             Q_INVOKABLE QString mainPanelUrl(const QString& type) const;
+            Q_INVOKABLE void unRegisterModel(quint32 id);
 
 
             ModelRegistry(QObject *parent = 0);
             ~ModelRegistry();
 
             void registerModel(quint32 id, const QString& type, QObject *model);
-            void unRegisterModel(quint32 id);
+           ;
             std::pair<QString, QObject *> getModel(quint32) ;
 
 
