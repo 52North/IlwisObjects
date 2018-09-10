@@ -19,6 +19,7 @@ class ILWISCOREUISHARED_EXPORT ResourceModel : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(QString imagePath READ imagePath WRITE imagePath NOTIFY imagePathChanged)
+    Q_PROPERTY(QString containerFile READ containerFile CONSTANT)
     Q_PROPERTY(QString  size READ size CONSTANT)
     Q_PROPERTY(QString  domainName READ domainName CONSTANT)
     Q_PROPERTY(QString  domainType READ domainType CONSTANT)
@@ -77,6 +78,7 @@ public:
     QString url() const;
     QString rawUrl() const;
     QString container() const;
+    QString containerFile() const; // the container-filename followed by a slash ('/') when accessing the bands of multiband-images, otherwise empty
     virtual QString iconPath() const;
     void iconPath(const QString& name);
     bool isRoot() const;

@@ -466,7 +466,7 @@ bool CatalogModel::isFileBased() const
 }
 
 QString CatalogModel::specialFolder(const QString& folderType) {
-	QString path = resource().url().toLocalFile();
+	QString path = (QFileInfo(resource().url().toLocalFile()).isFile()) ? resource().container().toLocalFile() : resource().url().toLocalFile(); // get containing folder if we are a "container" file
 	QDir dirCatalog(path);
 	QDir dir(path + "/.ilwis");
 	if (!dir.exists()) {

@@ -297,7 +297,7 @@ Rectangle {
 				    console.debug("finalize draw callback")
 					var path = catalogViews.currentCatalog.specialFolder("thumbs");
 					var res = frame.resources[currentMap]
-					var thumbname = res.name + ".png"
+					var thumbname = res.containerFile + res.name + ".png"
 					var thumbPath = path + "/" + thumbname
 					frame.grabToImage(function(result) {
 						  result.saveToFile(thumbPath);

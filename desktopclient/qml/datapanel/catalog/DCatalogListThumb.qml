@@ -68,7 +68,7 @@ Rectangle{
 
     		function finalizeDraw() {
 				var path = catalogViews.currentCatalog.specialFolder("thumbs");
-				var thumbname = name + ".png"
+				var thumbname = containerFile + name + ".png"
 				var thumbPath = path + "/" + thumbname
 				lyrview.grabToImage(function(result) {
 					result.saveToFile(thumbPath);

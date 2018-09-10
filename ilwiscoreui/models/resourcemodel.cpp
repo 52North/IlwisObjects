@@ -186,6 +186,31 @@ QString ResourceModel::container() const
     return "";
 }
 
+QString ResourceModel::containerFile() const
+{
+    QString containerFile = "";
+    if (hasType(item().ilwisType(), itRASTER)) {
+        QString path = resource().container().toLocalFile();
+        QFileInfo infContainer(path);
+        bool containerIsFile = infContainer.isFile();
+        if (containerIsFile) {
+            path = path.mid(0, resource().container().toLocalFile().lastIndexOf("/"));
+            containerFile = resource().container().fileName();
+            QDir dir(path + "/.ilwis/thumbs");
+            if (!QDir(path + "/.ilwis/thumbs/" + containerFile).exists()) {
+                if (!dir.mkdir(containerFile))
+                    containerFile = "";
+                else
+                    containerFile += "/";
+            }
+            else
+                containerFile += "/";
+        }
+    }
+
+    return containerFile;
+}
+
 QString ResourceModel::icon(const Resource& res)
 {
     try{
@@ -525,7 +550,7 @@ void ResourceModel::resource(const Ilwis::Resource& res)
         QString path = inf.absolutePath();
         _isRoot = inf.isRoot();
         _displayName = item.name();
-        QFileInfo thumbPath = path + "/.ilwis/thumbs/" + item.rawName() + ".png";
+        QFileInfo thumbPath = path + "/.ilwis/thumbs/" + containerFile() + item.rawName() + ".png";
         if ( thumbPath.exists()) {
             _imagePath =  QUrl::fromLocalFile(thumbPath.absoluteFilePath()).toString();
         } else {
