@@ -61,6 +61,19 @@ Item {
 
     }
 
+	function reopenChart(){
+		var pc = editor.pinCount
+		var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn('bands'), yaxis : editor.pinDataColumn(1), zaxis : ''}
+		modelid = objectcreator.createObject(createInfo)
+		var filter = "itemid=" + modelid
+		bigthing.newCatalog(filter, "chart", "",layerview.tabmodel.side == "left" ? "right" : "left")
+		for(var i=0; i < editor.pinCount; ++i){
+			var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(i+1) + ")"
+			console.debug("aaaaexpr", expr,editor.pinCount)
+			layerview.activeLayerManager().addCommand(expr);
+		}
+	}
+
     function handleMouseClick(mx,my){
         if (!editor.contineousMode()){
             if ( tab1.item.selectedRow >= 0){
@@ -71,8 +84,13 @@ Item {
                     var filter = "itemid=" + modelid
                     bigthing.newCatalog(filter, "chart", "","other")
                  }else {
-                    var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(tab1.item.selectedRow + 1) + ")"
-                    layerview.activeLayerManager().addCommand(expr);
+				    var chartModel = models.model(modelid)
+					if ( chartModel){
+						var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(tab1.item.selectedRow + 1) + ")"
+						layerview.activeLayerManager().addCommand(expr);
+					}else {
+						reopenChart()
+					}
                  }
              }
         }
