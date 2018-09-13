@@ -54,7 +54,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["projectedcoordinatesystem" ] = new IlwisObjectCreatorModel("projectedcoordinatesystem", TR("Projected Coordinate System"),itCONVENTIONALCOORDSYSTEM,"CreateProjectedCoordinateSystem.qml", 530, this);
     _creators["geographiccoordinatesystem" ] = new IlwisObjectCreatorModel("geographiccoordinatesystem", TR("Geographic (LatLon) Coordinate System"),itCONVENTIONALCOORDSYSTEM|itLOCATION,"CreateLatLonCoordinateSystem.qml", 320, this);
     _creators["boundsonlycoordinatesystem" ] = new IlwisObjectCreatorModel("boundsonlycoordinatesystem", TR("Bounds only Coordinate System"),itBOUNDSONLYCSY,"CreateBoundsOnlyCsy.qml", 250, this);
-    _creators["rastercoverage" ] = new IlwisObjectCreatorModel("rastercoverage", TR("Raster Coverage"),itRASTER,"CreateRasterCoverage.qml", 390, this);
+    _creators["rastercoverage" ] = new IlwisObjectCreatorModel("rastercoverage", TR("Raster Coverage"),itRASTER,"CreateRasterCoverage.qml", 420, this);
     _creators["featurecoverage" ] = new IlwisObjectCreatorModel("featurecoverage", TR("Feature Coverage"),itFEATURE,"UnderDevelopment.qml", 200, this);
     _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"CreateTable.qml", 520, this);
     _creators["chart"] = new IlwisObjectCreatorModel("chart", TR("Chart"), itTABLE, "CreateChart.qml", 520, this);
@@ -711,13 +711,13 @@ QString ObjectCreator::createRasterCoverage(const QVariantMap& parms){
         return sUNDEF;
 
     QString expr = "createrastercoverage(";
-    expr += parms["georeference"].toString();
+    expr += "\"" + parms["georeference"].toString() + "\"";
     expr += ",";
     expr += parms["domain"].toString();
     expr += ",";
     expr += "\"" + parms["bands"].toString() + "\"";
     expr += ",";
-    expr += parms["stackdomain"].toString();
+    expr += "\"" + parms["stackdomain"].toString() + "\"" ;
     expr += ",";
     expr += "\"" + parms["stackdefinition"].toString() + "\"";
     expr += ",";
