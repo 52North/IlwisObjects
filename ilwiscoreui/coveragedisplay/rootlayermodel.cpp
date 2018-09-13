@@ -377,7 +377,7 @@ ICoordinateSystem RootLayerModel::screenCsy() const
 void RootLayerModel::screenCsy(const ICoordinateSystem &screenCsy)
 {
     _screenCsy = screenCsy;
-    _csy = new IlwisObjectModel(_screenCsy->resource(),this);
+    _csy = new IlwisObjectModel(_screenCsy,this);
 
     emit coordinateSystemChanged();
     emit latlonEnvelopeChanged();
