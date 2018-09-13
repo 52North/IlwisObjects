@@ -105,6 +105,7 @@ Controls.DropableItem{
                 labelWidth: 100
                 width : parent.width
                 content : "1.."
+				callbackFunction : addRasterListAsDomain
             }
             Text{
                 height: Global.rowHeight - 4
@@ -156,24 +157,28 @@ Controls.DropableItem{
                         }
 
                         anchors.fill: parent
-                        ListView {
-                            function bands() {
-                                var result = ""
-                                for(var i=0; i < rasters.count; ++i){
-                                    if ( result != "")
-                                        result += ","
-                                    var r = rasters.get(i)
-                                    result += r.path
-                                }
-                                return result
-                            }
+						 ScrollView {
+						 	anchors.fill : parent
+							anchors.margins: 2
+							ListView {
+								clip : true
+								function bands() {
+									var result = ""
+									for(var i=0; i < rasters.count; ++i){
+										if ( result != "")
+											result += ","
+										var r = rasters.get(i)
+										result += r.path
+									}
+									return result
+								}
 
-                            id : rasterlist
-                            anchors.fill : parent
-                            anchors.margins: 2
-                            model : rasters
-                            delegate :  Text { height : 16; text : path}
-                        }
+								id : rasterlist
+								anchors.fill : parent
+								model : rasters
+								delegate :  Text { height : 16; text : path}
+							}
+						}
                         onDropped : {
                             var idstring = drag.source.ids
                             if ( (idstring && idstring === "") || idstring.indexOf("|") === -1)
@@ -234,15 +239,29 @@ Controls.DropableItem{
             return true;
         }
 
+
         ApplyCreateButtons {
             width : parent.width
             height : 30
             anchors.bottom : parent.bottom
-            anchors.bottomMargin: 8
+            anchors.bottomMargin: 25
             anchors.rightMargin: 3
             id : applyButton
             createObject: inner.apply
         }
     }
+	function addRasterListAsDomain(url){
+		if ( url && url != ""){
+			if ( url.indexOf("file://") == 0){
+				var parts = url.split("/")
+				var name = parts[parts.length - 1]
+				var index = name.indexOf(".");
+				if ( index != -1){
+					name = name.substr(0,index);
+				}
+				stackdomvalue.content = name + "_stackdomain"
+			}
+		}
+	}
 }
 
