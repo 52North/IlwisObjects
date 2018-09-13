@@ -57,6 +57,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
 public:
     IlwisObjectModel();
     explicit IlwisObjectModel(const Ilwis::Resource &source, QObject *parent = 0);
+    IlwisObjectModel(const Ilwis::IIlwisObject &source, QObject *parent=0);
     virtual ~IlwisObjectModel();
 
     QString creationDate() const;
