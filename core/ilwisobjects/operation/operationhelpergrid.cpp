@@ -134,6 +134,21 @@ int OperationHelperRaster::subdivideTasks(ExecutionContext *ctx,const IRasterCov
     return cores;
 }
 
+IRasterCoverage OperationHelperRaster::resample(const IRasterCoverage& sourceRaster, const IGeoReference& targetGrf) {
+    if (!sourceRaster.isValid() || !targetGrf.isValid())
+        return IRasterCoverage();
+
+        Resource res;
+        res.prepare();
+        QString expr = QString("%3=resample(%1,%2,nearestneighbour)").arg(sourceRaster->resource().url().toString()).arg(targetGrf->resource().url().toString()).arg(res.name());
+        ExecutionContext ctxLocal;
+        SymbolTable symtabLocal;
+        if (!commandhandler()->execute(expr, &ctxLocal, symtabLocal))
+            return false;
+        QVariant var = symtabLocal.getValue(res.name());
+        return var.value<IRasterCoverage>();
+}
+
 bool OperationHelperRaster::resample(IRasterCoverage& raster1, IRasterCoverage& raster2, ExecutionContext *ctx) {
     if ( !raster1.isValid())
         return false;

@@ -13,6 +13,7 @@ public:
     static BoundingBox initialize(const IRasterCoverage &inputRaster, IRasterCoverage &outputRaster, quint64 what);
     static int subdivideTasks(ExecutionContext *ctx,const IRasterCoverage& raster, const BoundingBox& bounds, std::vector<BoundingBox > &boxes);
     static bool resample(IRasterCoverage& input1, IRasterCoverage& input2, ExecutionContext *ctx);
+    static IRasterCoverage resample(const IRasterCoverage& sourceRaster, const IGeoReference& targetGrf);
 
     template<typename T> static bool execute(ExecutionContext* ctx, T func, IRasterCoverage& outputRaster, const BoundingBox& bounds=BoundingBox()) {
         std::vector<BoundingBox> boxes;
