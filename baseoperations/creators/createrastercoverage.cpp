@@ -45,7 +45,10 @@ bool CreateRasterCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
     initialize(_outputRaster->size().linearSize());
     double minv=1e307,maxv = -1e307;
     PixelIterator pout(_outputRaster);
-    for(auto& band : _bands){
+    for(auto band : _bands){
+        if (_autoresample && !band->georeference()->isCompatible(_grf)) {
+            band = OperationHelperRaster::resample(band, _grf);
+        }
         for(double value : band){
             *pout = value;
             minv = Ilwis::min(value,minv);
@@ -253,6 +256,7 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
             }
         }
     }
+
     QString dom = _expression.input<QString>(1);
     if ( dom == "as bands"){
         if (_bands.size() > 0)
