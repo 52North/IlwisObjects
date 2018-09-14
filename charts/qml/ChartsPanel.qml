@@ -61,7 +61,7 @@ Item {
 
         tabledata = models.createTableModel(chartspanel, chart.dataTableUrl(), "table")
         console.log("datatable="+tabledata)
-        chartspanel.chartarea.datatab.chartTable.table = tabledata
+//        chartspanel.chartarea.datatab.chartTable.table = tabledata
     }
 
 	Component.onDestruction :{
