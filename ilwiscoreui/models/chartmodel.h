@@ -34,6 +34,8 @@ namespace Ilwis {
                 Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
                 Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
                 Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
+                Q_PROPERTY(bool fixedY         READ fixedYAxis  WRITE setFixedYAxis  NOTIFY yAxisChanged)
+
                 Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
                 Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
                 Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
@@ -75,6 +77,16 @@ namespace Ilwis {
             void tickCountY(int tc);
             int tickCountY() const;
             QColor newColor() const;
+            double minx() const;
+            double maxx() const;
+            double miny() const;
+            double maxy() const;
+            void setMinX(double val);
+            void setMaxX(double val);
+            void setMinY(double val);
+            void setMaxY(double val);
+            bool fixedYAxis() const;
+            void setFixedYAxis(bool fixed);
 
         signals:
             void chartTypeChanged();
@@ -89,18 +101,6 @@ namespace Ilwis {
 
         private:
 			QQmlListProperty<DataseriesModel> series();
-			double minx() {
-				return _minx;
-			}
-			double maxx() {
-				return _maxx;
-			}
-			double miny() {
-				return _miny;
-			}
-			double maxy() {
-				return _maxy;
-			}
 
             void initializeDataSeries(DataseriesModel *newseries);
             QString formatXAxis() const;
@@ -108,6 +108,8 @@ namespace Ilwis {
             bool axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck=true);
 
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
+            bool _fixedY = false;
+            bool _fixedX = false;
 			QString _chartType = sUNDEF;
             int _tickCountX = 5;
             int _tickCountY = 5;

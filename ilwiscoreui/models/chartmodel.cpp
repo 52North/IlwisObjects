@@ -262,6 +262,46 @@ int ChartModel::tickCountY() const {
     return _tickCountY;
 }
 
+double ChartModel::minx() const {
+    return _minx;
+}
+
+double ChartModel::maxx() const {
+    return _maxx;
+}
+
+double ChartModel::miny() const {
+    return _miny;
+}
+
+double ChartModel::maxy() const {
+    return _maxy;
+}
+
+void ChartModel::setMinX(double val) {
+    _minx = val; emit xAxisChanged();
+}
+
+void ChartModel::setMaxX(double val) {
+    _maxx = val; emit xAxisChanged();
+}
+
+void ChartModel::setMinY(double val) {
+    _miny = val; emit yAxisChanged();
+}
+
+void ChartModel::setMaxY(double val) {
+    _maxy = val; emit yAxisChanged();
+}
+
+bool ChartModel::fixedYAxis() const {
+    return _fixedY;
+}
+
+void ChartModel::setFixedYAxis(bool fixed) {
+    _fixedY = fixed; emit yAxisChanged();
+}
+
 QColor Ilwis::Ui::ChartModel::newColor() const
 {
      for (QColor clr : _graphColors) {
@@ -288,7 +328,7 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
 
     newseries->setType(_chartType);
 
-    _series.insert(index,newseries);
+    _series.insert(index, newseries);
 
     initializeDataSeries(newseries);
 
@@ -320,10 +360,10 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         _maxy = newseries->maxy();
     }
     else {
-        _minx = std::min(_minx, newseries->minx());
-        _maxx = std::max(_maxx, newseries->maxx());
-        _miny = std::min(_miny, newseries->miny());
-        _maxy = std::max(_maxy, newseries->maxy());
+        if (!_fixedX) _minx = std::min(_minx, newseries->minx());
+        if (!_fixedX) _maxx = std::max(_maxx, newseries->maxx());
+        if (!_fixedY) _miny = std::min(_miny, newseries->miny());
+        if (!_fixedY) _maxy = std::max(_maxy, newseries->maxy());
     }
     double res = newseries->resolutionX();
     double dist = std::abs(_minx - _maxx);

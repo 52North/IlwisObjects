@@ -29,6 +29,9 @@
     <None Include="charts\qml\MinimalChartPane.qml">
       <Filter>qml</Filter>
     </None>
+    <None Include="charts\qml\SetYAxisRange.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -112,6 +115,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_setseriestype.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="charts\chartyaxisnumrange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="charts\setyaxisrange.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_setyaxisrange.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_setyaxisrange.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
@@ -126,6 +141,9 @@
     <CustomBuild Include="charts\setseriestype.h">
       <Filter>Header Files\PropertyForms</Filter>
     </CustomBuild>
+    <CustomBuild Include="charts\setyaxisrange.h">
+      <Filter>Header Files\PropertyForms</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="charts\createchart.h">
@@ -138,6 +156,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="charts\updatechart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\chartyaxisnumrange.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
