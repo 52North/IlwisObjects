@@ -111,7 +111,15 @@ outParameters returns [ OutParametersNode *node]
 	(',' id2=ID (sel2=selector				{ node->addSelector((char *)($id2.text->chars), $sel2.node);}		)?						
 								{ node->addResult(new IDNode((char *)($id2.text->chars))); }
 		(for2=formatPart 				{ node->addSpecifier((char *)($id2.text->chars), $for2.node); }	)?
-	)*		
+	)*	
+	|  id3=STRING (sel3=selector				{ node->addSelector((char *)($id3.text->chars),$sel3.node);}		)?						
+								{ node->addResult(new IDNode((char *)($id3.text->chars))); }
+		(for3=formatPart 				{ node->addSpecifier((char *)($id3.text->chars), $for3.node); }	)?
+	(',' id4=ID (sel4=selector				{ node->addSelector((char *)($id4.text->chars), $sel4.node);}		)?						
+								{ node->addResult(new IDNode((char *)($id4.text->chars))); }
+		(for5=formatPart 				{ node->addSpecifier((char *)($id4.text->chars), $for5.node); }	)?
+	)*	 
+	
 	;			
 
 actualParameters returns [ ParametersNode *node]
