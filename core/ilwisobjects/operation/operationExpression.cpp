@@ -622,7 +622,9 @@ QString OperationExpression::modifyTableOutputUrl(const QString& output, const Q
 
 QString createOuputName(const Resource& resource, const QString& name) {
     QString path = resource.url(true).toString();
-    if (resource.ilwisType() == itCATALOG) {
+    QFileInfo inf(resource.url(true).toLocalFile());
+    bool isf = inf.isFile();
+    if (isf) {
         int index = resource.url(true).toString().lastIndexOf("/");
         path = resource.container().toString().mid(0, index);
     }
