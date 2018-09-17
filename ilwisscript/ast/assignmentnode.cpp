@@ -32,6 +32,7 @@
 #include "selectornode.h"
 #include "outparametersnode.h"
 #include "dataformat.h"
+#include "operationhelper.h"
 #include "assignmentnode.h"
 
 using namespace Ilwis;
@@ -168,6 +169,7 @@ void createCatalog(const IRasterCoverage& raster){
 
 QString AssignmentNode::addPossibleExtension(QSharedPointer<ASTNode> &specifier, QString result, IlwisTypes tp)
 {
+    result = OperationHelper::unquote(result);
     if (!specifier.isNull()){
         QString format, provider;
         getFormat(specifier, format, provider);
