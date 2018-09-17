@@ -73,7 +73,9 @@ private:
 
             gdal()->rasterIO(hband, GF_Write, 0, y - 1, columns, 1, (void *)&data[0],columns,1, gdaltype,0,0 );
 
-            if ( iter.zchanged())     {
+            if ( iter.zchanged()) {
+                if (bandcount == raster->size().zsize())
+                    break;
                 hband = gdal()->getRasterBand(dataset,++bandcount);
                 if (hband == 0)
                     break;
