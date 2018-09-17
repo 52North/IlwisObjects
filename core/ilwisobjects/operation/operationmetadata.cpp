@@ -446,6 +446,8 @@ void OperationResource::addInParameter(quint32 order, IlwisTypes type, const QSt
     addProperty(prefix + "name", nme);
     addProperty(prefix + "desc", description);
     addProperty(prefix + "optional", false);
+    if (hasType(type, itILWISOBJECT)) // safer to put urls around urls in case there are spaces in the url
+        needsQuotes = true;
     addProperty(prefix + "needsquotes", needsQuotes);
     if ( altUIType != ueNONE)
         addProperty(prefix + "altUIType", altUIType);
