@@ -18,6 +18,8 @@ public:
     OperationWorker(const OperationExpression& opExpr);
 
     static void run(const OperationExpression &expression);
+
+    QVariantMap runparms;
 public slots:
     void process();
 
@@ -28,6 +30,7 @@ signals:
 
 private:
    OperationExpression _expression;
+
 
 };
 }

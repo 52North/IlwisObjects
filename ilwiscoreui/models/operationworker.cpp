@@ -73,17 +73,15 @@ void OperationWorker::run(const OperationExpression &expression){
 void OperationWorker::process(){
     QThread *thread = QThread::currentThread();
     QVariant var = thread->property("workingcatalog");
+    //QVariant runvar = thread->property("runparameters");
     if ( var.isValid()){
         kernel()->setTLS("workingcatalog", new QVariant(var));
     }
     run(_expression);
 
-  QThread *current = QThread::currentThread();
-    QVariant runvar = current->property("runparameters");
-    if ( runvar.isValid()){
-        QVariantMap values = runvar.toMap();
+    if ( runparms.size() > 0){
         bool ok;
-        quint32 id = values["runid"].toUInt(&ok);
+        quint32 id = runparms["runid"].toUInt(&ok);
         if ( ok){
             QVariantMap mp;
             mp["runid"] = id;
