@@ -64,6 +64,7 @@ void createCatalog(const IRasterCoverage& raster,std::vector<Resource>& items){
         newName.remove(".ilwis");
         resBand.setUrl(newUrl.toString() + "/" + newName);
         resBand.code("band="+QString::number(band));
+        resBand.setExtendedType(resBand.extendedType() & ~itCATALOG);
         items.push_back(resBand);
     }
 }

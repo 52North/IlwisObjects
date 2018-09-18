@@ -112,7 +112,7 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
             if ( count == 1)
                 addItem(handle, url, csyId, grfId, itRASTER,itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM,sz, iUNDEF, false);
             else {
-                addItem(handle, url, csyId, grfId, itRASTER,itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM,sz);
+                addItem(handle, url, csyId, grfId, itRASTER, itCATALOG | itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM | itFILE,sz);
                 addItem(handle, url, count, iUNDEF, itCATALOG, itFILE | itRASTER);
             }
         } else {

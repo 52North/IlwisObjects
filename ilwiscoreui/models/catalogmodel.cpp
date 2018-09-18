@@ -369,6 +369,8 @@ void CatalogModel::gatherItems() {
     bool hasParent = true;
     QUrl previousContainer;
     for(const Resource& resource : items){
+        if (resource.ilwisType() == itCATALOG && hasType(resource.extendedType(), itRASTER)) // skip container catalog Resources; the main Resource already functions as the container.
+            continue;
         _allItems.push_back( new ResourceModel(resource, this));
         hasParent &= (previousContainer.isValid() ? resource.container() == previousContainer : true);
         previousContainer = resource.container();

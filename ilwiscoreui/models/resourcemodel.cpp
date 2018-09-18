@@ -215,16 +215,14 @@ QString ResourceModel::icon(const Resource& res)
 {
     try{
         quint64 tp = res.ilwisType();
-        if ( hasType(res.extendedType(), itFEATURE) && tp == itCATALOG)
-            return iconPath(tp | itCOVERAGE);
-        if ( hasType(res.extendedType(), itTABLE) && tp == itCATALOG)
-            return iconPath(tp | itTABLE);
-        if ( hasType(res.extendedType(), itRASTER)){
-            return iconPath(tp | itRASTER);
+        if (hasType(res.extendedType(), itCATALOG)) {
+            if (tp == itFEATURE)
+                return iconPath(itCOVERAGE | itCATALOG);
+            else if (tp == itTABLE || tp == itRASTER)
+                return iconPath(tp | itCATALOG);
         }
-        if ( hasType(tp ,itCOORDSYSTEM)){
+        if ( hasType(tp, itCOORDSYSTEM))
             return iconPath(itCOORDSYSTEM);
-        }
         return iconPath(tp);
     } catch(const ErrorObject& ){
 
@@ -239,16 +237,14 @@ QString ResourceModel::iconPath() const
             return _iconPath;
 
         quint64 tp = itemRef().ilwisType();
-        if ( hasType(itemRef().extendedType(), itFEATURE) && tp == itCATALOG)
-            return iconPath(tp | itCOVERAGE);
-        if ( hasType(itemRef().extendedType(), itTABLE) && tp == itCATALOG)
-            return iconPath(tp | itTABLE);
-        if ( hasType(itemRef().extendedType(), itRASTER)){
-            return iconPath(tp | itRASTER);
+        if (hasType(itemRef().extendedType(), itCATALOG)) {
+            if (tp == itFEATURE)
+                return iconPath(itCOVERAGE | itCATALOG);
+            else if (tp == itTABLE || tp == itRASTER)
+                return iconPath(tp | itCATALOG);
         }
-        if ( hasType(tp ,itCOORDSYSTEM)){
+        if ( hasType(tp, itCOORDSYSTEM))
             return iconPath(itCOORDSYSTEM);
-        }
         return iconPath(tp);
     } catch(const ErrorObject& ){
 

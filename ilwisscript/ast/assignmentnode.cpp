@@ -161,6 +161,7 @@ void createCatalog(const IRasterCoverage& raster){
         newName.remove(".ilwis");
         resBand.setUrl(newUrl.toString() + "/" + newName);
         resBand.code("band="+QString::number(band));
+        resBand.setExtendedType(resBand.extendedType() & ~itCATALOG);
         bands.push_back(resBand);
     }
     mastercatalog()->addItems(bands);
@@ -204,6 +205,10 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                 }
                 if (  hasType(tp, itILWISOBJECT | itCOLUMN)) {
                     if ( hasType(tp, itRASTER)) {
+                        IRasterCoverage source =  sym._var.value<IRasterCoverage>();
+                        if (source.isValid() && source->size().zsize() > 1) {
+                            source->extendedType(source->extendedType() | itCATALOG);
+                        }
                         ok &= copyObject<RasterCoverage>(sym, result,symbols);
                         IRasterCoverage resultGC = symbols.getValue<IRasterCoverage>(result);
                         if ( resultGC.isValid() && resultGC->size().zsize() > 1){

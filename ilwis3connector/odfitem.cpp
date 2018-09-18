@@ -83,6 +83,7 @@ ODFItem::ODFItem(const IniFile &file, std::unordered_map<QString, IniFile> *know
         _extendedType |= itGEODETICDATUM;
     if ( _ini.fileInfo().suffix() == "mpl"){
         _isMapList = true;
+        _extendedType |= itCATALOG;
     }
 
    _size = findSize();
