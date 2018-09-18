@@ -3,6 +3,7 @@
 #include "ilwisobject.h"
 #include "ilwisdata.h"
 #include "coordinatesystem.h"
+#include "ilwiscoordinate.h"
 #include "georeference.h"
 #include "georefimplementation.h"
 #include "simpelgeoreference.h"
@@ -83,6 +84,18 @@ GeoRefImplementation *CornersGeoReference::clone()
 QString CornersGeoReference::typeName()
 {
     return "corners";
+}
+
+bool CornersGeoReference::isCompatible(const IGeoReference &georefOther) const {
+    if (size() != georefOther->size())
+        return false;
+    if (!coordinateSystem()->isCompatibleWith(georefOther->coordinateSystem().ptr()))
+        return false;
+    Ilwis::Box<Ilwis::Coordinate> box = envelope();
+    Ilwis::Box<Ilwis::Coordinate> boxOther = georefOther->envelope();
+    double delta = coordinateSystem()->isLatLon() ? 0.000001 : 0.01;
+    
+    return box.equals(boxOther, delta);
 }
 
 

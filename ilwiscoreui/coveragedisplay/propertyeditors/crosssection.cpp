@@ -78,6 +78,7 @@ CrosssectionTool::CrosssectionTool(VisualAttribute *p) :
     VisualPropertyEditor(p, "crosssectiontool",TR("Cross Section"),QUrl("CrossSectionTool.qml"))
 {
     _pinData.prepare();
+    _activePinData.prepare();
 }
 
 bool CrosssectionTool::canUse(const IIlwisObject& obj, const QString& name ) const
@@ -96,14 +97,15 @@ VisualPropertyEditor *CrosssectionTool::create(VisualAttribute *p)
 }
 
 void CrosssectionTool::prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef) {
-    _coverage = coverage();
+    _panelCoverage = coverage();
     auto *lm = vpmodel()->layer()->layerManager();
     QString path = context()->ilwisFolder().absoluteFilePath();
     QUrl url = QUrl::fromLocalFile(path);
-    if (_coverage.isValid() && _coverage->ilwisType() == itRASTER) {
-        IRasterCoverage raster = _coverage.as<RasterCoverage>();
+    if (_panelCoverage.isValid() && _panelCoverage->ilwisType() == itRASTER) {
+        IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
         if (raster.isValid()) {
-            _dataSources.push_back(new PinDataSource(raster->id(), this));
+            _dataSource = new PinDataSource(raster->id(), this);
+            emit bandsChanged();
         }
     }
     associatedUrl(url.toString() + "/qml/datapanel/visualization/propertyeditors/PostDrawerCrossSection.qml");
@@ -119,7 +121,7 @@ bool CrosssectionTool::labelExists(const QString& newlabel) const{
 }
 QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
 {
-    QVariantList result;
+   /* QVariantList result;
     IGeoReference grf = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf();
     if (_coverage.isValid()) {
             if (_coverage->ilwisType() == itRASTER) {
@@ -128,7 +130,7 @@ QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
                 grf = raster->georeference();
             }
         }
-    }
+    }*/
 
    return QQmlListProperty<CrossSectionPin>(this, _pins);
 }
@@ -139,18 +141,18 @@ QString CrosssectionTool::columnName(int index, const QString& coverageName) con
     QString ycolName = _pins[index]->label();
     if (_contineousMode)
         ycolName = "contineous_pin";
-    if (_dataSources.size() > 1) {
+   /* if (_dataSource) {
         ycolName += coverageName;
-    }
+    }*/
     ycolName = ycolName.replace(QRegExp("[/ .-,;:'\"]"), "_");
 
     return ycolName;
 }
 int Ilwis::Ui::CrosssectionTool::decimalsCrds() const
 {
-    if (!_coverage.isValid())
+    if (!_panelCoverage.isValid())
         return 0;
-    return _coverage->coordinateSystem()->isLatLon() ? 7 : 3;
+    return _panelCoverage->coordinateSystem()->isLatLon() ? 7 : 3;
 }
 void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
     if (!_pinData.isValid())
@@ -159,20 +161,18 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
 
     std::vector<QVariant> empty(_pinData->recordCount());
     _pinData->column(index+1, empty);  // index == 0 is the band value which we dont want to change
-    for (int i = 0; i < _dataSources.size(); ++i) {
-        IRasterCoverage raster;
-        raster.prepare(_dataSources[i]->coverageId());
-        if (raster.isValid()) {
-            QString ycolName = columnName(index, raster->name());
-            Pixel pix = raster->georeference()->coord2Pixel(crd);
-            int col = 0;
-            if ((col = _pinData->columnIndex(ycolName)) != iUNDEF) {
-                int rec = 0;
-                for (int z = 0; z < raster->size().zsize(); ++z) {
-                    if (_dataSources[i]->active(z)) {
-                        double v = raster->pix2value(Pixel(pix.x, pix.y, z));
-                        _pinData->setCell(col, rec++, v);
-                    }
+    IRasterCoverage raster;
+    raster.prepare(_dataSource->coverageId());
+    if (raster.isValid()) {
+        QString ycolName = columnName(index, raster->name());
+        Pixel pix = raster->georeference()->coord2Pixel(crd);
+        int col = 0;
+        if ((col = _pinData->columnIndex(ycolName)) != iUNDEF) {
+            int rec = 0;
+            for (int z = 0; z < raster->size().zsize(); ++z) {
+                if (_dataSource->active(z)) {
+                    double v = raster->pix2value(Pixel(pix.x, pix.y, z));
+                    _pinData->setCell(col, rec++, v);
                 }
             }
         }
@@ -182,8 +182,8 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
 void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixels)
 {
     if (index >= 0 && index < _pins.size()) {
-        if (_coverage->ilwisType() == itRASTER) {
-            IRasterCoverage raster = _coverage.as<RasterCoverage>();
+        if (_panelCoverage->ilwisType() == itRASTER) {
+            IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
             if (raster.isValid()) {
                 Coordinate crd;
                 if (useScreenPixels) {
@@ -209,8 +209,8 @@ void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixel
 void CrosssectionTool::changePixel(int index, double x, double y)
 {
     if (index >= 0 && index < _pins.size()) {
-        if (_coverage->ilwisType() == itRASTER) {
-            IRasterCoverage raster = _coverage.as<RasterCoverage>();
+        if (_panelCoverage->ilwisType() == itRASTER) {
+            IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
             if (raster.isValid()) {
                 Pixel pix = raster->georeference()->coord2Pixel(Coordinate(x, y));
                 _pins[index]->x(x) ;
@@ -249,8 +249,8 @@ QString Ilwis::Ui::CrosssectionTool::tableUrlPrivate()
 }
 
 int CrosssectionTool::maxR() const {
-    if (_coverage.isValid() && _coverage->ilwisType() == itRASTER) {
-        IRasterCoverage raster = _coverage.as<RasterCoverage>();
+    if (_panelCoverage.isValid() && _panelCoverage->ilwisType() == itRASTER) {
+        IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
         if (raster.isValid()) {
             return raster->georeference()->size().ysize();
         }
@@ -259,8 +259,8 @@ int CrosssectionTool::maxR() const {
 }
 
 int CrosssectionTool::maxC() const {
-    if (_coverage.isValid() && _coverage->ilwisType() == itRASTER) {
-        IRasterCoverage raster = _coverage.as<RasterCoverage>();
+    if (_panelCoverage.isValid() && _panelCoverage->ilwisType() == itRASTER) {
+        IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
         if (raster.isValid()) {
             return raster->georeference()->size().xsize();
         }
@@ -269,29 +269,29 @@ int CrosssectionTool::maxC() const {
 }
 
 double CrosssectionTool::minX() const {
-    if (_coverage.isValid()) {
-        return _coverage->envelope().min_corner().x;
+    if (_panelCoverage.isValid()) {
+        return _panelCoverage->envelope().min_corner().x;
     }
     return 0;
 }
 
 double CrosssectionTool::minY() const {
-    if (_coverage.isValid()) {
-        return _coverage->envelope().min_corner().y;
+    if (_panelCoverage.isValid()) {
+        return _panelCoverage->envelope().min_corner().y;
     }
     return 0;
 }
 
 double CrosssectionTool::maxX() const {
-    if (_coverage.isValid()) {
-        return _coverage->envelope().max_corner().x;
+    if (_panelCoverage.isValid()) {
+        return _panelCoverage->envelope().max_corner().x;
     }
     return 0;
 }
 
 double CrosssectionTool::maxY() const {
-    if (_coverage.isValid()) {
-        return _coverage->envelope().max_corner().y;
+    if (_panelCoverage.isValid()) {
+        return _panelCoverage->envelope().max_corner().y;
     }
     return 0;
 }
@@ -333,23 +333,20 @@ void Ilwis::Ui::CrosssectionTool::deletePin(int index)
 
 void CrosssectionTool::addPinPrivate() {
     IRasterCoverage raster;
-    raster.prepare(_dataSources[0]->coverageId()); //TODO: multiple datasources
-    if (!raster.isValid())
-        return;
+    raster.prepare(_dataSource->coverageId());
 
     if (_pinData->columnIndex("bands") == iUNDEF) { // empty table
         _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
         for (int z = 0; z < raster->size().zsize(); ++z) {
-            if (_dataSources[0]->active(z))
+            if (_dataSource->active(z))
                 _pinData->setCell(0, z, z);
         }
     }
-    for (int i = 0; i < _dataSources.size(); ++i) {
-        QString ycolName = columnName(_pins.size() - 1, raster->name());
-        if (_pinData->columnIndex(ycolName) == iUNDEF) {
-            _pinData->addColumn(ColumnDefinition(ycolName, raster->datadef(), _pinData->columnCount() - 1));
-        }
+    QString ycolName = columnName(_pins.size() - 1, raster->name());
+    if (_pinData->columnIndex(ycolName) == iUNDEF) {
+        _pinData->addColumn(ColumnDefinition(ycolName, raster->datadef(), _pinData->columnCount() - 1));
     }
+
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
     emit pinsChanged();
@@ -361,34 +358,50 @@ void CrosssectionTool::addPin()
     addPinPrivate();
 }
 
-QQmlListProperty<Ilwis::Ui::PinDataSource> CrosssectionTool::dataSources() 
+Ilwis::Ui::PinDataSource* CrosssectionTool::dataSource() 
 {
-    return QQmlListProperty<Ilwis::Ui::PinDataSource>(this, _dataSources);
+    return _dataSource;
 }
 
 
 void Ilwis::Ui::CrosssectionTool::addDataSource(const QString & id)
 {
-    bool ok;
-    quint64 objid = id.toULongLong(&ok);
-    if (!ok)
-        return;
-    _dataSources.push_back(new PinDataSource(objid, this));
-    emit dataSourcesChanged();
+    try {
+        bool ok;
+        quint64 objid = id.toULongLong(&ok);
+        if (!ok)
+            return;
+        _dataSource = new PinDataSource(objid, this);
+        emit dataSourceChanged();
+        emit bandsChanged();
+    }
+    catch (const ErrorObject& err) {}
 }
 
-QVariantList Ilwis::Ui::CrosssectionTool::band(int index)
+QVariantList Ilwis::Ui::CrosssectionTool::bands()
 {
-    if (index < _dataSources.size()) {
-        return _dataSources[index]->bands();
+    if (_dataSource) {
+        return _dataSource->bands();
     }
     return QVariantList();
 }
 
-Q_INVOKABLE void Ilwis::Ui::CrosssectionTool::setActive(int sourceIndex, int bandIndex, bool yesno)
+void Ilwis::Ui::CrosssectionTool::setActive(int bandIndex, bool yesno)
 {
-    if (sourceIndex < _dataSources.size()) {
-        _dataSources[sourceIndex]->active(bandIndex, yesno);
+    if (_dataSource) {
+        _dataSource->active(bandIndex, yesno);
+        int count = 0;
+        int recs = _pinData->recordCount();
+        for (int rec = 0; rec < recs; ++rec)
+            _pinData->removeRecord(0); // clear table
+
+        for (int rec = 0; rec < recs; ++rec) {
+            if (_dataSource->active(rec)) 
+                _pinData->setCell(0, count++, rec);
+        }
+        for (int pin = 0; pin < pinCount(); ++pin) {
+                changePinData(pin, Coordinate(_pins[pin]->x(), _pins[pin]->y()));
+        }
     }
 }
 
@@ -425,12 +438,20 @@ PinDataSource::PinDataSource() {
 
 }
 
-PinDataSource::PinDataSource(quint64 objid, QObject *parent) {
+PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
     IRasterCoverage raster;
     raster.prepare(objid);
     if (!raster.isValid())
         return;
     _objid = objid;
+    CrosssectionTool *tool = static_cast<CrosssectionTool *>(parent);
+    IRasterCoverage rasterPanel = tool->coverage().as<RasterCoverage>();
+    if (!rasterPanel.isValid()) {
+        throw ErrorObject(TR("Crossection tool only works for raster coverages"));
+    }
+    if (!raster->georeference()->isCompatible(rasterPanel->georeference())) {
+        throw ErrorObject(TR("Rasters must have compatible georeferences"));
+    }
     const RasterStackDefinition&  stack = raster->stackDefinition();
     for (quint32 i = 0; i < stack.count(); ++i) {
         QString name = stack.index(i);

@@ -10,6 +10,9 @@ Rectangle {
     id : applicationForm
     height : 0
     x : parent.x + 5
+	state : "minimized"
+
+
 
     function newForm(metaid, title, url){
         operationid = metaid

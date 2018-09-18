@@ -154,8 +154,8 @@ bool WorkflowSerializerV1::storeNode(const SPWorkFlowNode& node, const IOOptions
         _stream << wp.flowLabel();
         _stream << wp.valueType();
         _stream << (qint32)wp.state();
-        _stream << wp.attachement(true);
-        _stream << wp.attachement(false);
+        _stream << (qint32)wp.attachement(true);
+        _stream << (qint32)wp.attachement(false);
         _stream << wp.syntax();
         _stream << wp.needsQuotes();
         auto line = wp.line();

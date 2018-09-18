@@ -68,7 +68,7 @@ quint64 ChartDataseriesType::createMetadata()
 {
     OperationResource resource({ "ilwis://operations/chartdataseriestype" });
     resource.setLongName("Change type of a chart series");
-    resource.setSyntax("chartseriestype(parameters))");
+    resource.setSyntax("chartseriestype(parameters)");
     resource.setInParameterCount({ 3 });
     resource.addInParameter(0, itINT32, TR("chart ID"), TR("the ID identifying the chart containing the series."));
     resource.addInParameter(1, itSTRING, TR("series name"), TR(""));

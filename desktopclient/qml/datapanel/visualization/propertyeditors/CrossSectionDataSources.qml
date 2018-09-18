@@ -10,29 +10,17 @@ Column {
     anchors.margins : 5
     anchors.fill : parent
     spacing : 3
-    Controls.ComboxLabelPair{
+    Controls.TextEditLabelPair{
         id : datas
         width : parent.width -10
         height : 20
         labelWidth : 100
-        labelText : qsTr("Data source(s)")
-        itemModel :  editor.dataSources
-        role : "source"
-        DropArea {
-            id: cbDropArea
-            anchors.fill: parent
-            enabled: true
-            onDropped: {
-                editor.addDataSource(drag.source.ilwisobjectid)
-                datas.currentIndex = datas.itemModel.length - 1
-                bands.model = editor.band(datas.currentIndex)
-            }
-        }
-        onCurrentIndexChanged : {
-            if ( itemModel) {
-                bands.model = editor.band(currentIndex)
-            }
-        }
+        labelText : qsTr("Data source")
+		content : editor.dataSource ? editor.dataSource.source : ""
+		onContentChanged : {
+                editor.addDataSource(ilwisobjectid)
+                bands.model = editor.bands	
+		}
     }
     Text {
         text : qsTr("Bands") 
@@ -51,6 +39,7 @@ Column {
             ListView {
                 id : bands
                 anchors.fill : parent
+				model : editor.bands
 
                 delegate : Row {
                     width : parent.width
@@ -60,9 +49,16 @@ Column {
                         width : 20
                         checked : modelData.active
                         style : Base.CheckBoxStyle1{}
-                        onCheckedChanged : {
-                            editor.setActive(datas.currentIndex, bands.index, checked)
-                        }
+                        onClicked : {
+                            editor.setActive(index, checked)
+							var chartModel = models.model(modelid)
+							if ( chartModel){
+								for(var i=0; i < editor.pinCount; ++i){
+									var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(i+1) + ")"
+									layerview.activeLayerManager().addCommand(expr);
+								}
+							}
+						}
                     } 
                     Text {
                         text : modelData.name

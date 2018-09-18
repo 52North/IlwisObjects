@@ -242,8 +242,10 @@ public:
         } else {
             if ( mustExist)
                 return false;
-
-            if(tp != itUNKNOWN && prepare(Resource(name, tp), options))
+            Resource resNew = Resource(name, tp);
+            if (options.contains("extendedtype"))
+                resNew.setExtendedType(options["extendedtype"].toULongLong());
+            if(tp != itUNKNOWN && prepare(resNew, options))
                 return true;
         }
         return ERROR1(ERR_COULDNT_CREATE_OBJECT_FOR_1,name);

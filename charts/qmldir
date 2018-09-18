@@ -5,6 +5,9 @@ ChartManagement.qml 1.0 qml/ChartManagement.qml
 DataseriesList.qml 1.0 qml/DataseriesList.qml
 DataseriesOperationList.qml 1.0 DataseriesOperationList.qml
 DataseriesOperate.qml 1.0 DataseriesOperate.qml
+MinimalChartPane.qml 1.0 qml/MinimalChartPane.qml
 SetSeriesColor.qml 1.0 qml/SetSeriesColor.qml
+SetChartType.qml 1.0 qml/SetChartType.qml
+SetYAxisRange.qml 1.0 qml/SetYAxisRange.qml
 
 plugin Charts

@@ -287,18 +287,18 @@ public:
         const PointType& pmin = box.min_corner();
         const PointType& pmax = box.max_corner();
 
-        if ( std::abs( min_corner.x - pmin.x) > delta)
+        if ( std::abs( min_corner().x - pmin.x) > delta)
             return false;
-        if ( std::abs( min_corner.y - pmin.y) > delta)
+        if ( std::abs( min_corner().y - pmin.y) > delta)
             return false;
-        if ( std::abs( max_corner.x - pmax.x) > delta)
+        if ( std::abs( max_corner().x - pmax.x) > delta)
             return false;
-        if ( std::abs( max_corner.y - pmax.y) > delta)
+        if ( std::abs( max_corner().y - pmax.y) > delta)
             return false;
         if ( is3D() && box.is3D()) {
-            if ( std::abs( min_corner.z - pmin.z) > delta)
+            if ( std::abs( min_corner().z - pmin.z) > delta)
                 return false;
-            if ( std::abs( max_corner.z - pmax.z) > delta)
+            if ( std::abs( max_corner().z - pmax.z) > delta)
                 return false;
         }
         return true;

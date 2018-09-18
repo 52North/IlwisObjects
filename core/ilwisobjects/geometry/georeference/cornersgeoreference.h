@@ -19,6 +19,7 @@ public:
     Envelope envelope() const;
     GeoRefImplementation *clone();
     static QString typeName();
+    bool isCompatible(const IlwisData<GeoReference>& georefOther) const;
 
 
     static GeoRefImplementation *create();

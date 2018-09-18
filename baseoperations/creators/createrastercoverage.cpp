@@ -8,6 +8,9 @@
 #include "operation.h"
 #include "raster.h"
 #include "itemdomain.h"
+#include "domainitem.h"
+#include "identifieritem.h"
+#include "identifierrange.h"
 #include "itemiterator.h"
 #include "pixeliterator.h"
 #include "catalog.h"
@@ -42,7 +45,10 @@ bool CreateRasterCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
     initialize(_outputRaster->size().linearSize());
     double minv=1e307,maxv = -1e307;
     PixelIterator pout(_outputRaster);
-    for(auto& band : _bands){
+    for(auto band : _bands){
+        if (_autoresample && !band->georeference()->isCompatible(_grf)) {
+            band = OperationHelperRaster::resample(band, _grf);
+        }
         for(double value : band){
             *pout = value;
             minv = Ilwis::min(value,minv);
@@ -250,6 +256,7 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
             }
         }
     }
+
     QString dom = _expression.input<QString>(1);
     if ( dom == "as bands"){
         if (_bands.size() > 0)
@@ -262,11 +269,30 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
         kernel()->issues()->log(QString(TR("%1 is and invalid domain")).arg(dom));
         return sPREPAREFAILED;
     }
-
-
-    _stackDomain = IDomain("count");
-    _stackValueStrings = {"1"};
-    _stackValueNumbers = {1};
+    QString potentialCatalog = _expression.input<QString>(4);
+    ICatalog cat;
+    if (cat.prepare(potentialCatalog, { "mustexist", true })) {
+        auto resources = cat->items();
+        QString domainName = _expression.input<QString>(3);
+        QString path = cat->resource().container().toString();
+        INamedIdDomain dom;
+        if (dom.prepare(domainName, { "extendedtype",itNAMEDITEM})) {
+            for (auto resource : resources) {
+                NamedIdentifier *item = new NamedIdentifier(resource.name());
+                dom->addItem(item);
+            }
+            dom->connectTo(path + "/" + domainName, "domain", "stream", IlwisObject::cmOUTPUT);
+            dom->store();
+            _stackDomain = dom;
+            for (auto band : _bands)
+                _stackValueStrings.push_back(band->name());
+        }
+    }
+    else {
+        _stackDomain = IDomain("count");
+        _stackValueStrings = { "1" };
+        _stackValueNumbers = { 1 };
+    }
     if ( _expression.parameterCount() >= 4){
         for(int i=3; i < _expression.parameterCount(); ++i){
             if ( hasType(_expression.parm(i).valuetype(),itSTRING|itINTEGER)){
@@ -335,8 +361,8 @@ quint64 CreateRasterCoverage::createMetadata()
      resource.addInParameter(0, itGEOREF,TR("Georeference"), TR("Geometry of the new rastercoverage"));
      resource.addInParameter(1, itDOMAIN|itSTRING,TR("Domain"), TR("Domain used by the raster coverage"));
      resource.addInParameter(2, itSTRING, TR("Bands"), TR("parameter defining a the bands that will be copied to the new raster coverage, Note that the bands maybe empty in which case an empty raster will be created"));
-     resource.addOptionalInParameter(3, itDOMAIN,TR("Stack domain"), TR("Option Domain of the z direction (stack), default is 'count'"));
-     resource.addOptionalInParameter(4, itSTRING|itINTEGER,TR("Stack defintion"), TR("Content of the stack, numbers, elements of item domain or sets of numbers"));
+     resource.addOptionalInParameter(3, itDOMAIN | itSTRING,TR("Stack domain"), TR("Option Domain of the z direction (stack), default is 'count'"));
+     resource.addOptionalInParameter(4, itSTRING|itINTEGER|itRASTER,TR("Stack defintion"), TR("Content of the stack, numbers, elements of item domain,raster bands or sets of numbers"));
      resource.addOptionalInParameter(5, itBOOL,TR("Auto resample"), TR("Checking this option will automatically resample all bands to the input georeference"));
      resource.setOutParameterCount({1});
      resource.addOutParameter(0, itRASTER, TR("raster coverage"), TR("The newly created raster"));

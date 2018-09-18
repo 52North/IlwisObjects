@@ -58,7 +58,7 @@ Rectangle {
        Tab {
             title : qsTr("Meta data")
             property string iconName : "../../qml/images/metadata_s"
-            id : columnmetadatview
+            id : columnmetadataview
 
         }
  

@@ -32,13 +32,13 @@ Item {
         return table.defaultWidth(index)
     }
 
-    function transfer(datapanel){
+    function transfer(datapanel) {
         if ( datapanel.table)    {
             addDataSource(datapanel.table.url, "", "table")
         }
     }
 
-    function addDataSource(sourceUrl, filter, sourceType){
+    function addDataSource(filter, sourceUrl, sourceType){
         table = models.createTableModel(tablePane,sourceUrl, sourceType)
 
         if ( table){

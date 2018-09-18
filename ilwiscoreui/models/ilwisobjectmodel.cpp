@@ -47,6 +47,23 @@ IlwisObjectModel::IlwisObjectModel(const Ilwis::Resource &source, QObject *paren
     }
 }
 
+IlwisObjectModel::IlwisObjectModel(const Ilwis::IIlwisObject &source, QObject *parent) : ResourceModel(source->resource(), parent)
+{
+    try {
+        if (source->name() != "Global Layer") { // special case for the dummy object of the global layer
+            _ilwisobject = source;
+            _modelId = modelregistry()->newModelId();
+            modelregistry()->registerModel(modelId(), "ilwisobject", this);
+        }
+    }
+    catch (const ErrorObject&) {
+
+    }
+    catch (std::exception& ex) {
+        kernel()->issues()->log(ex.what());
+    }
+}
+
 Ilwis::Ui::IlwisObjectModel::~IlwisObjectModel()
 {
     modelregistry()->unRegisterModel(modelId());

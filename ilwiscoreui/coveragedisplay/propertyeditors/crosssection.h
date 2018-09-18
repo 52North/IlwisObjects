@@ -69,7 +69,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
     Q_OBJECT
 
         Q_PROPERTY(QQmlListProperty<Ilwis::Ui::CrossSectionPin> pins READ pins NOTIFY pinsChanged)
-        Q_PROPERTY(QQmlListProperty<Ilwis::Ui::PinDataSource> dataSources READ dataSources NOTIFY dataSourcesChanged)
+        Q_PROPERTY(Ilwis::Ui::PinDataSource* dataSource READ dataSource NOTIFY dataSourceChanged)
         Q_PROPERTY(int maxRow READ maxR CONSTANT)
         Q_PROPERTY(int maxColumn READ maxC CONSTANT)
         Q_PROPERTY(int minX READ minX CONSTANT)
@@ -80,6 +80,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
         Q_PROPERTY(QString tableUrl READ tableUrlPrivate CONSTANT)
         Q_PROPERTY(int decimalsCrds READ decimalsCrds CONSTANT)
         Q_PROPERTY(int pinCount READ pinCount NOTIFY pinCountChanged)
+        Q_PROPERTY(QVariantList bands READ bands NOTIFY bandsChanged)
 
 public:
     CrosssectionTool();
@@ -89,7 +90,7 @@ public:
     bool canUse(const IIlwisObject &obj, const QString &name) const;
     static VisualPropertyEditor *create(VisualAttribute *p);
     QQmlListProperty<Ilwis::Ui::CrossSectionPin> pins() ;
-    QQmlListProperty<Ilwis::Ui::PinDataSource> dataSources() ;
+    Ilwis::Ui::PinDataSource* dataSource() ;
     bool labelExists(const QString& newlabel) const;
 
     Q_INVOKABLE void changeCoords(int index, int x, int y, bool useScreenPixels);
@@ -101,20 +102,23 @@ public:
     Q_INVOKABLE void deletePin(int index);
     Q_INVOKABLE void addPin();
     Q_INVOKABLE void addDataSource(const QString& id);
-    Q_INVOKABLE QVariantList band(int index);
-    Q_INVOKABLE void setActive(int sourceIndex, int bandIndex, bool yesno);
+    
+    Q_INVOKABLE void setActive(int bandIndex, bool yesno);
     Q_INVOKABLE QString pinDataColumn(int index) const;
     Q_INVOKABLE bool contineousMode() const;
     Q_INVOKABLE void contineousMode(bool yesno);
     Q_INVOKABLE int addContineousPin();
+
     int pinCount() const;
+    QVariantList bands();
 
 signals:
     void pinLocation4screenChanged();
     void pinsChanged();
-    void dataSourcesChanged();
+    void dataSourceChanged();
     void contineousModeChanged();
     void pinCountChanged();
+    void bandsChanged();
 
   NEW_PROPERTYEDITOR(CrosssectionTool)
 
@@ -135,11 +139,12 @@ private:
 
 
     QList<CrossSectionPin *> _pins;
-    QList<PinDataSource *> _dataSources;
+    PinDataSource * _dataSource;
     ITable _pinData;
+    ITable _activePinData; // shadows pindata but only contains records that are active
     bool _contineousMode = false;
 
-    ICoverage _coverage;
+    ICoverage _panelCoverage;  // the map were location info is comming from. Might be identical(initialy it will) to the coverage inthe datasource
 };
 }
 }

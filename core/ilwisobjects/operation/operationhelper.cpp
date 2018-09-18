@@ -181,6 +181,10 @@ QString OperationHelper::variant2string(const QVariant& v, IlwisTypes tp){
     return "";
 }
 
+bool OperationHelper::isUrl(const QString& text) {
+    return text.indexOf("file://") == 0 || text.indexOf("http://") == 0 || text.indexOf("https://") == 0 || text.indexOf("ilwis://") == 0 || text.indexOf("postgresql://");
+}
+
 IlwisTypes OperationHelper::determineType(const QString &value)
 {
     if ( value == "\"?\"")

@@ -619,6 +619,22 @@ QString OperationExpression::modifyTableOutputUrl(const QString& output, const Q
     return outpath;
 
 }
+
+QString createOuputName(const Resource& resource, const QString& name) {
+    QString path = resource.url(true).toString();
+    QFileInfo inf(resource.url(true).toLocalFile());
+    bool isf = inf.isFile();
+    if (isf) {
+        int index = resource.url(true).toString().lastIndexOf("/");
+        path = resource.container().toString().mid(0, index);
+    }
+    path += "/" + name;
+    if (path.indexOf(QRegExp("[ ,)(\"\']")) != -1) {
+        path = "\"" + path + "\"";
+    }
+    return path;
+}
+
 OperationExpression OperationExpression::createExpression(quint64 operationid, const QString& parameters, bool acceptIncompleteExpressions){
 //    if (  parameters == "")
 //        return OperationExpression();
@@ -810,8 +826,11 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
                     }
                 }
                 // if there is no path we extend it with a path unless the output is a new column, output is than the "old" table so no new output object
-                if ( output.indexOf("://") == -1 )
-                    output = context()->workingCatalog()->resource().url().toString() + "/" + output + format;
+                if (output.indexOf("://") == -1) {
+                    output = createOuputName(context()->workingCatalog()->resource(), output);
+                    output += format;
+                   // output = context()->workingCatalog()->resource().url().toString() + "/" + output + format;
+                }
                 else
                     output = output + format;
             }else{

@@ -81,6 +81,7 @@ public:
     static IIlwisObject variant2ilwisobject(const QVariant &variant, IlwisTypes tp);
     static QString variant2string(const QVariant &v, IlwisTypes tp);
     static QString unquote(const QString &name);
+    static bool isUrl(const QString& text); 
 };
 }
 
