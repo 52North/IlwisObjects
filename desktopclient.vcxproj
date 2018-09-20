@@ -257,6 +257,7 @@
     <None Include="desktopclient\qml\controls\DummySpatial.qml" />
     <None Include="desktopclient\qml\controls\EllipsoidSelector.qml" />
     <None Include="desktopclient\qml\controls\ExpandableText.qml" />
+    <None Include="desktopclient\qml\controls\ExtraZoomOptions.qml" />
     <None Include="desktopclient\qml\controls\FilteredTextEditLabelPair.qml" />
     <None Include="desktopclient\qml\controls\FlatButton.qml" />
     <None Include="desktopclient\qml\controls\FloatingRectangle.qml" />
