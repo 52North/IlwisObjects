@@ -30,6 +30,7 @@ Item {
     property int activeSubPanel : 0
     property string panelLayout : "1"
     property bool allPanelsLinked : true
+	property var lastZoomEnvelope : ""
 
     onPanelLayoutChanged : {
         setLayout()
@@ -106,7 +107,7 @@ Item {
     Controls.ToolButton{
             height : 20
             width : 20
-            x: 150
+            x: 164
             y : 8
             iconSource: "../../images/mappanels20.png"
             tooltip: qsTr("Splits the map panels into several sub panels")
@@ -126,6 +127,15 @@ Item {
         clip:true
         z : 1000
         panelCallBack : switchLayout
+    }
+	Controls.ExtraZoomOptions {
+        id : extraZoom
+        y : 38
+        x :0
+        height : 20
+        state : "invisible"
+        clip:true
+        z : 1100
     }
 
     MapPanelTopToolBar {
