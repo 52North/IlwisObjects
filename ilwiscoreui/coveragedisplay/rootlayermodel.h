@@ -49,6 +49,7 @@ public:
 	 Q_INVOKABLE void initSizes(int newwidth, int newheight, bool initial);
      Q_INVOKABLE void setActiveAttribute(int idx);
      Q_INVOKABLE void reset(int pixwidth, int pixheight);
+     Q_INVOKABLE QVariantMap coord2coord(LayerModel* source, double x, double y) const;
 
 	 //void setEnvelopeView(const BoundingBox& pixelArea);
 
