@@ -31,6 +31,7 @@ Item {
     property string panelLayout : "1"
     property bool allPanelsLinked : true
 	property var lastZoomEnvelope : ""
+	property var oldZoomEnvelope : ""
 
     onPanelLayoutChanged : {
         setLayout()

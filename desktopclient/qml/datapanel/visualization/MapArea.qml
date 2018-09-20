@@ -116,6 +116,7 @@ DropArea {
                 Connections {
                     target: mouseActions
                     onZoomEnded :{
+					    layerview.oldZoomEnvelope = layerview.lastZoomEnvelope
 					    layerview.lastZoomEnvelope = envelope
 						var command = "setviewextent("+ layerManager().viewid + "," + envelope + ")"
                         layerManager().addCommand(command);

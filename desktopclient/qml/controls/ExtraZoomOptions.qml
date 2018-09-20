@@ -33,10 +33,10 @@ DropableItem {
 				height : 25
 
 				onClicked : {
-					if ( layerview.lastZoomEnvelope != ""){
-					     var command = "setviewextent("+ layermanager.viewid + "," + layerview.lastZoomEnvelope + ")"
+					if ( layerview.oldZoomEnvelope != ""){
+					     var command = "setviewextent("+ layermanager.viewid + "," + layerview.oldZoomEnvelope + ")"
 						layermanager.addCommand(command);
-                        layerview.broadCastNewExtent(layermanager, layerview.lastZoomEnvelope)
+                        layerview.broadCastNewExtent(layermanager, layerview.oldZoomEnvelope)
 						toggle()
 					}
 				}
@@ -86,8 +86,9 @@ DropableItem {
 												var crdMin = layermanager.rootLayer.coord2coord(lyr, env["minx"], env["miny"])
 												var crdMax = layermanager.rootLayer.coord2coord(lyr, env["maxx"], env["maxy"])
 												var newEnv = crdMin["x"] + ","+ crdMin["y"] + "," + crdMax["x"] + ","+ crdMax["y"]
+												layerview.oldZoomEnvelope = layerview.lastZoomEnvelope
+												layerview.lastZoomEnvelope = newEnv
 												var command = "setviewextent("+ layermanager.viewid + "," + newEnv + ")"
-												console.debug("ttttt", command)
 												layermanager.addCommand(command);
 												layerview.broadCastNewExtent(layermanager, newEnv)
 												toggle()
