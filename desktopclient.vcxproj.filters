@@ -1197,6 +1197,9 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerInfo.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
+    <None Include="desktopclient\qml\controls\ExtraZoomOptions.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
