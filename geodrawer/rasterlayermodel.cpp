@@ -342,9 +342,9 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
     // if patch is outside viewport, do not display
     const IGeoReference & gr = _raster->georeference();
     Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY)); // minx, miny
-    Coordinate b2 = gr->pixel2Coord(Pixel(imageOffsetX + imageSizeX, imageOffsetY)); // maxx, miny
-    Coordinate b3 = gr->pixel2Coord(Pixel(imageOffsetX + imageSizeX, imageOffsetY + imageSizeY)); // maxx, maxy
-    Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY + imageSizeY)); // minx, maxy
+    Coordinate b2 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), imageOffsetY)); // maxx, miny
+    Coordinate b3 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), min(imageOffsetY + imageSizeY, _imageHeight))); // maxx, maxy
+    Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, min(imageOffsetY + imageSizeY, _imageHeight))); // minx, maxy
     Coordinate c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
     Coordinate c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
     Coordinate c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
