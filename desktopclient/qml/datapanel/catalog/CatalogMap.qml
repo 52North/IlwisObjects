@@ -125,8 +125,9 @@ Rectangle {
                         continue;
 
                     var envelope = renderer.rootLayer().drawEnvelope(env)
-                    if ( envelope.minx <=x && (envelope.minx + envelope.width) > x &&
-                            envelope.miny <= y && (envelope.miny + envelope.height) > y ){
+					console.debug(envelope.minx, envelope.miny,envelope.width,envelope.height, mx, my)
+                    if ( envelope.minx <=mx && (envelope.minx + envelope.width) > mx &&
+                            envelope.miny <= my && (envelope.miny + envelope.height) >my ){
                         maps.push({"name" : mapItems.items[i].name,
                                       "imagePath" : mapItems.items[i].imagePath,
                                       "id" : mapItems.items[i].id,
@@ -135,9 +136,10 @@ Rectangle {
                                       "typeName" : mapItems.items[i].typeName })
                     }
                 }
+				console.debug("yyyyyy", maps.length)
                 if ( maps.length > 0 && !renderer.layermanager.zoomInMode){
                     grid.setSource("") // remove old grid
-                    grid.setSource("SelectedSpatialItems.qml",{"x" : x + 20, "y" : y -20, "model" : maps})
+                    grid.setSource("SelectedSpatialItems.qml",{"x" : mx + 20, "y" : my -20, "model" : maps})
                     grid.active  = true
                 }
                 if (catalogViews && catalogViews.tabmodel && !catalogViews.tabmodel.selected)

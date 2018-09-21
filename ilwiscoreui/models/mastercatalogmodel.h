@@ -110,6 +110,7 @@ private:
     int _activeTab = 0;
     QString _currentUrl;
     CatalogModel *_currentCatalog = 0;
+    CatalogModel *_lastCatalog = 0;
     bool _metadataEditMode = false;
 
 

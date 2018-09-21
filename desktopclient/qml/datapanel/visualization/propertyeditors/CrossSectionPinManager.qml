@@ -15,7 +15,7 @@ Column {
         height : 20
         checked : editor.contineousMode()
         style : Base.CheckBoxStyle1{}
-        text : qsTr("ContineousMode")
+        text : qsTr(" Continuous Mode")
 
         onCheckedChanged : {
             editor.contineousMode(checked)

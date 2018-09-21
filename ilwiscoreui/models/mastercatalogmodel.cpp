@@ -843,8 +843,10 @@ void MasterCatalogModel::setCurrentCatalog(CatalogModel *cat)
     }
     if ( cat->url() == Catalog::DEFAULT_WORKSPACE){
         Resource res = Ilwis::Resource(context()->workingCatalog()->resource().url().toString(), itCATALOG);
+        _lastCatalog = _currentCatalog;
         _currentCatalog = new CatalogModel(res, CatalogModel::getCatalogType(res), this);
     } else{
+        _lastCatalog = _currentCatalog;
         _currentCatalog = cat;
         if ( _rootObject){
             QObject *obj = _rootObject->findChild<QObject *>("main_ui_catalogform");

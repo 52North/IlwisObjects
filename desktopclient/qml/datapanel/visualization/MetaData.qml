@@ -37,33 +37,6 @@ Item {
         width: parent.width
         height : parent.height
         spacing : 3
-       /* Rectangle {
-            id : layerContainer
-            width : 180
-            height : parent.height
-            color : uicontext.workbenchBGColor
-            border.color: "lightgrey"
-            border.width: 1
-            Rectangle {
-                id : layersLabel
-                width : 180
-                height : 18
-                color : uicontext.paleColor
-                Text{
-                    text : qsTr("Layers")
-                    font.bold : true
-                    x : 5
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-            MetaDataLayerList{
-                anchors.top : layersLabel.bottom
-                height : parent.height - layersLabel.height
-                width : parent.width
-            }
-
-
-        }*/
         Rectangle{
             width : parent.width - 8
             height : metatdata.height

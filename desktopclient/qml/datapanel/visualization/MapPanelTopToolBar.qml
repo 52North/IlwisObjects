@@ -21,6 +21,7 @@ Item {
     property alias panButton : maptools.panButton
     property alias zoomoutButton : maptools.zoomoutButton
     property alias zoominButton : maptools.zoominButton
+	property alias extraZoomOptions : maptools.extraZoomOptions
 
     Controls.LayerExtentsToolbar{
         id : maptools

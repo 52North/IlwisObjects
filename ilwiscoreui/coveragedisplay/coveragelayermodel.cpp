@@ -72,7 +72,14 @@ VisualAttribute * CoverageLayerModel::activeAttribute()
 
 QVariant CoverageLayerModel::vproperty(const QString &pName) const
 {
-	return LayerModel::vproperty(pName);
+    QVariant v = LayerModel::vproperty(pName);
+    if (v.isValid())
+        return v;
+    if (pName == "envelope") {
+        Envelope env = coverage()->envelope();
+        return env.toMap();
+    }
+    return QVariant();
 }
 
 void CoverageLayerModel::vproperty(const QString &attr, const QVariant &value)
@@ -105,7 +112,7 @@ void CoverageLayerModel::coverage(const ICoverage &cov)
         modelregistry()->registerModel(modelId(), TypeHelper::type2name(_coverage->ilwisType()), this);
         if (layerManager()->layerListName() == sUNDEF)
             layerManager()->setLayerListName(_coverage->name());
-    }
+      }
 }
 
 QString CoverageLayerModel::url() const

@@ -54,7 +54,7 @@ MouseArea {
 	    height : 0
 	    visible : false
 	    border.width : 1
-	    border.color : "midnightblue"
+	    border.color : "#e6f9ff"
 	    color : "transparent"
 	    z : 100
 

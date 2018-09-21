@@ -736,3 +736,24 @@ void RootLayerModel::renderReady(bool yesno) {
         lyrchild->renderReady(yesno);
     }
 }
+
+QVariantMap RootLayerModel::coord2coord(LayerModel* source, double x, double y) const {
+    QVariantMap result;
+    try {
+        CoverageLayerModel *cov = dynamic_cast<CoverageLayerModel *>(source);
+        if (cov) {
+            if (_screenCsy->isCompatibleWith(cov->coverage()->coordinateSystem().ptr())) {
+                result["x"] = x;
+                result["y"] = y;
+            }
+            else {
+                auto crd = _screenCsy->coord2coord(cov->coverage()->coordinateSystem(), Coordinate(x, y));
+                result["x"] = crd.x;
+                result["y"] = crd.y;
+            }
+        }
+        return result;
+    }
+    catch (const ErrorObject& err) {}
+    return result;
+}

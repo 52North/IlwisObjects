@@ -30,8 +30,11 @@ class ILWISCOREUISHARED_EXPORT ModelBuilder : public QObject
 public:
     explicit ModelBuilder(QObject *parent = 0);
 
+    Q_PROPERTY(QVariantList analysisModels READ analysisModels CONSTANT)
+
     Q_INVOKABLE Ilwis::Ui::ModelDesigner * createModel(Ilwis::Ui::ResourceModel *rmodel, QObject *parent);
     Q_INVOKABLE Ilwis::Ui::AnalysisModel * createAnalysisModel(Ilwis::AnalysisPattern *pattern);
+  
     ApplicationModelUI *createApplicationModelUI(Ilwis::ApplicationModel *appmodel, QObject *parent);
 
     AnalysisModel *registerAnalysisModel(const QString& type, CreateAnalysisModel creator);
@@ -41,6 +44,8 @@ public:
 
 
 private:
+    QVariantList analysisModels() const;
+
     std::map<QString, CreateAnalysisModel>  _analysisModelCreators;
     std::map<QString, CreateAppModel>  _applicationModelCreators;
 

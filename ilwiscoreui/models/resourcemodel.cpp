@@ -245,6 +245,8 @@ QString ResourceModel::iconPath() const
         }
         if ( hasType(tp, itCOORDSYSTEM))
             return iconPath(itCOORDSYSTEM);
+        if (displayName() == "..")
+            return "folderUp.png";
         return iconPath(tp);
     } catch(const ErrorObject& ){
 
@@ -291,9 +293,10 @@ QString ResourceModel::iconPath(IlwisTypes tp)
         return "georeftiepoints20.png";
     else if ( tp & itGEOREF)
         return "georeference.png";
-    else if ( tp == itCATALOG)
+    else if (tp == itCATALOG) {
         return "folder.png";
-    else if ( tp == (itTHEMATICITEM | itITEMDOMAIN))
+    }
+    else if (tp == (itTHEMATICITEM | itITEMDOMAIN))
         return "itemdomain.png";
     else if ( tp == (itIDENTIFIERITEM | itITEMDOMAIN))
         return "itemdomain.png";

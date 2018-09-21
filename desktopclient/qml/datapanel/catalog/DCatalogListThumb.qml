@@ -218,7 +218,7 @@ Rectangle{
             content : makeSize(size)
             labelWidth: 80
             readOnly: true
-            labelText: qsTr("Physical size")
+            labelText: qsTr("Data size")
             height : 17
             boldLabel: false
         }

@@ -82,3 +82,14 @@ ApplicationModelUI *ModelBuilder::registerApplicationModel(const QString &type, 
     }
     return 0;
 }
+
+QVariantList ModelBuilder::analysisModels() const
+{
+    QVariantList result;
+    for (auto analysis : _analysisModelCreators) {
+        QVariantMap mp;
+        mp["name"] = analysis.first;
+        result.push_back(mp);
+    }
+    return result;
+}

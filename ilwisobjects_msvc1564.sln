@@ -106,6 +106,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "charts", "charts.vcxproj", 
 		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "classification", "classification.vcxproj", "{120EDD85-A90D-4859-ABD9-864C205A5377}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -192,6 +194,10 @@ Global
 		{D4BCF555-C0AB-4A28-BCEA-BD0265CC34BB}.Debug|x64.Build.0 = Debug|x64
 		{D4BCF555-C0AB-4A28-BCEA-BD0265CC34BB}.Release|x64.ActiveCfg = Release|x64
 		{D4BCF555-C0AB-4A28-BCEA-BD0265CC34BB}.Release|x64.Build.0 = Release|x64
+		{120EDD85-A90D-4859-ABD9-864C205A5377}.Debug|x64.ActiveCfg = Debug|x64
+		{120EDD85-A90D-4859-ABD9-864C205A5377}.Debug|x64.Build.0 = Debug|x64
+		{120EDD85-A90D-4859-ABD9-864C205A5377}.Release|x64.ActiveCfg = Release|x64
+		{120EDD85-A90D-4859-ABD9-864C205A5377}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

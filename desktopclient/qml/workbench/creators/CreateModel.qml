@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.0
 import MasterCatalogModel 1.0
 import OperationCatalogModel 1.0
 import IlwisObjectCreatorModel 1.0
+import ModelBuilder 1.0
 
 import "../.." as Base
 import "../../workbench" as Workbench
@@ -50,6 +51,15 @@ Controls.DropableItem{
                 labelWidth: 100
                 width : parent.width
             }
+			Controls.ComboxLabelPair {
+			    id : analysistype
+                labelText: qsTr("Model type")
+                labelWidth: 100
+                height : 20
+                width : parent.width
+				itemModel : modelbuilder.analysisModels
+				role : 'name'
+			}
             Controls.TextAreaLabelPair{
                 id : descedit
                 labelText: qsTr("Description")

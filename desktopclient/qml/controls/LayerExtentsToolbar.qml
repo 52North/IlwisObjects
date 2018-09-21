@@ -16,8 +16,10 @@ ToolBar{
     property alias panButton: panButton
     property alias zoomoutButton: zoomoutButton
     property alias zoominButton : zoominButton
+	property bool extraZoomOptions : false
    
     signal toolbarClicked()
+
     Row {
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
@@ -89,6 +91,20 @@ ToolBar{
                 text : qsTr("Trigger a state so that a rectangle can be drawn for zooming in")
             }
         }
+		Controls.ToolButton{
+		    id : extraZoomOpt
+            height : 25
+            width : 14
+			iconW : width - 4
+			iconH : iconW
+            iconSource: "../images/darkbluearrow.png"
+            onClicked: {
+			    extraZoom.layermanager = layerview.activeLayerManager()
+                extraZoom.x = x
+                extraZoom.toggle()
+            }
+			//visible : extraZoomOptions
+		}
         MapExtentButton{
             id : zoomoutButton
             icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout20A.png" : "zoomout20.png") : "zoomout20B.png"
