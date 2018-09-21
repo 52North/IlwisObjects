@@ -70,10 +70,7 @@ Item {
         id : entireClicked
         onTriggered : {
             entireMap()
-            if ( activeLayerManager()){
-                activeLayerManager().zoomOutMode = false
-                activeLayerManager().panningMode = false
-            }
+     
         }
     }
     Action {
@@ -259,10 +256,13 @@ Item {
         var env = activeLayerManager().rootLayer.viewEnvelope
         broadCastNewExtent(activeLayerManager(), env)
         viewmanager.newZoomExtent(env)
+        if ( activeLayerManager()){
+                activeLayerManager().zoomOutMode = false
+                activeLayerManager().panningMode = false
+        }
     }
 
     function transfer(datapanel){
-        console.debug("xxxxx")
         layers.transfer(datapanel)
         viewmanager.transfer(datapanel)
     }
