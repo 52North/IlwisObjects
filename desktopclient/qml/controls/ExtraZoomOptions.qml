@@ -38,6 +38,8 @@ DropableItem {
 						layermanager.addCommand(command);
                         layerview.broadCastNewExtent(layermanager, layerview.oldZoomEnvelope)
 						toggle()
+					}else {
+						layerview.entireMap()
 					}
 				}
 			}
