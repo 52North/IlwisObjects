@@ -110,7 +110,7 @@ void Ilwis::Ui::PolygonLayerModel::finish(const std::vector<quint64>& ids)
                 Coordinate crdTransformed = csyRoot->coord2coord(csyGeom,crd);
                 vertices[vi] = crdTransformed.x;
                 vertices[vi + 1] = crdTransformed.y;
-                vertices[vi + 2] = crdTransformed.z;
+                vertices[vi + 2] = (std::isnan(crdTransformed.z) || crdTransformed.z == rUNDEF) ? 0 : crdTransformed.z;
             }
         }
     }
