@@ -1200,6 +1200,9 @@
     <None Include="desktopclient\qml\controls\ExtraZoomOptions.qml">
       <Filter>Distribution Files\qml\datapanel\visualization</Filter>
     </None>
+    <None Include="desktopclient\qml\controls\Busy.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

@@ -242,6 +242,7 @@
     <None Include="desktopclient\qml\CommandLineArea.qml" />
     <None Include="desktopclient\qml\controls\ActionButtonH.qml" />
     <None Include="desktopclient\qml\controls\ActionButtonV.qml" />
+    <None Include="desktopclient\qml\controls\Busy.qml" />
     <None Include="desktopclient\qml\controls\CatalogTab.qml" />
     <None Include="desktopclient\qml\controls\CollapsiblePanel.qml" />
     <None Include="desktopclient\qml\controls\ColorList.qml" />
