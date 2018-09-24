@@ -66,6 +66,7 @@ class ILWISCOREUISHARED_EXPORT UIContextModel : public QObject
     Q_PROPERTY(QString genericBGColor READ genericBGColor WRITE genericBGColor NOTIFY genericBGColorChanged)
     Q_PROPERTY(QString actionColor READ actionColor WRITE actionColor NOTIFY actionColorChanged)
     Q_PROPERTY(QString actionHeaderColor READ actionHeaderColor WRITE actionHeaderColor NOTIFY actionHeaderColorChanged)
+    Q_PROPERTY(bool uiBusy READ uiBusy WRITE uiBusy NOTIFY uiBusyChanged)
 
 
 public:
@@ -115,6 +116,8 @@ public:
 	QColor defaultColor(const QString& type);
 	QString showLastGeneratedResult() const;
     void showLastGeneratedResult(const QString& lgr);
+    void uiBusy(bool yesno);
+    bool uiBusy() const;
 
 signals:
     void activeSplitChanged();
@@ -132,6 +135,7 @@ signals:
     void actionColorChanged();
     void actionHeaderColorChanged();
     void showLastGeneratedResultChanged();
+    void uiBusyChanged();
 
 
 public slots:
@@ -157,6 +161,7 @@ private:
     QMutex _mutex4viewLock;
     QWaitCondition _wait4ViewCreate;
     QString _lastGeneratedShowCommand;
+    bool _uiBusy = false;
 
     static std::unique_ptr<UIContextModel>_uicontext;
 

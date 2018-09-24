@@ -796,5 +796,14 @@ QString UIContextModel::moduleData() const{
     return modules;
 }
 
+void UIContextModel::uiBusy(bool yesno) {
+    _uiBusy = true;
+    emit uiBusyChanged();
+}
+bool UIContextModel::uiBusy() const {
+    return _uiBusy;
+}
+
+
 
 
