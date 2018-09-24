@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QVector3D>
 #include <QtGui/QOpenGLFunctions>
 #include "coverage.h"
@@ -26,12 +27,14 @@ void SimplePolygonSetter::getVertices(const geos::geom::Geometry *geometry, std:
 {
     IlwisTesselator tesselator;
     int n = (int)geometry->getNumGeometries();
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     for(int  geom = 0; geom < n; ++geom ){
         const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
         if (!subgeom)
             continue;
        tesselator.tesselate(subgeom, vertices, indices);
     }
+    QApplication::restoreOverrideCursor();
 }
 
 void SimplePolygonSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, std::vector<qreal>& colors) const
