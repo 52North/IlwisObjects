@@ -166,9 +166,7 @@ public:
     double pix2value(const Pixeld& pix){
         if ( _georef->isValid() && !connector().isNull()) {
             double v = _grid->value(pix);
-            if ( datadefRef().domain()->ilwisType() == itITEMDOMAIN)
-                return v;
-            return datadef().range()->ensure(v).value<double>();
+            return v;
         }
         return rUNDEF;
 
