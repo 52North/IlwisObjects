@@ -117,9 +117,9 @@ NumericRange& NumericRange::operator+=(double v)
         max(v);
     }
     else {
-        if ( v > _max )
+        if ( v > _max || isNumericalUndef(max()))
             max(v);
-        if ( v < _min)
+        if ( v < _min || isNumericalUndef(min()))
             min(v);
     }
     return *this;
@@ -130,9 +130,9 @@ void NumericRange::add(double v)
     if ( isNumericalUndef(v))
         return;
 
-    if (v < min())
+    if (v < min() || isNumericalUndef(min()))
        min(v);
-    if ( v > max())
+    if ( v > max() || isNumericalUndef(min()))
        max(v);
 }
 
