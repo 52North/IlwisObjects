@@ -1,3 +1,4 @@
+#include <QApplication>
 #include "coverage.h"
 #include "representation.h"
 #include "attributemodel.h"
@@ -163,7 +164,17 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
     _pinData->column(index+1, empty);  // index == 0 is the band value which we dont want to change
     IRasterCoverage raster;
     raster.prepare(_dataSource->coverageId());
+    
     if (raster.isValid()) {
+        if (raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+            if (!raster->datadef().range<NumericRange>()->isValid()) {
+                //QGuiApplication *app = static_cast<QGuiApplication *>(QApplication::instance());
+                QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+                raster->statistics(Ilwis::NumericStatistics::pBASIC);
+                QApplication::restoreOverrideCursor();
+            }
+        }
+  
         QString ycolName = columnName(index, raster->name());
         Pixel pix = raster->georeference()->coord2Pixel(crd);
         int col = 0;
