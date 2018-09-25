@@ -63,6 +63,8 @@ void PointLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *at
         _pointColors.resize(_pointVertices.size());
         int start = std::max((int)0, (int)(_pointColors.size() - 3));
         _pointsetter->getColors(*attr, value, uicontext()->defaultColor("coveragepoint"), start, _pointColors);
+        //_buffer.addPoint(currentBuffer,_pointColors,  feature->featureid())
+        //currentBuffer = _buffer.addObject(currentBuffer, _pointVertices, indices, _pointColors, itPOINT, feature->featureid());
     }
 }
 
@@ -70,9 +72,9 @@ void PointLayerModel::setColors(int start, VisualAttribute *attr, const QVariant
 	_pointsetter->getColors(*attr, value, uicontext()->defaultColor("coveragepoint"), start, _pointColors);
 }
 
-void Ilwis::Ui::PointLayerModel::finish(const std::vector<quint64>&)
+void Ilwis::Ui::PointLayerModel::finish(const std::vector<quint64>&ids)
 {
-	_buffer.addPoints(_pointVertices, _pointColors);
+	_buffer.addPoints(_pointVertices, _pointColors, ids);
 	_pointColors = _pointVertices = std::vector<qreal>();
 }
 
