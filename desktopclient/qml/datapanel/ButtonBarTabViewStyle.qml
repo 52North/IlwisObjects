@@ -29,14 +29,14 @@ TabViewStyle {
         Image {
             source : control.getTab(styleData.index).item ? (styleData.selected ? control.getTab(styleData.index).item.iconName + "_green.png" : control.getTab(styleData.index).item.iconName + "_grey.png") : ""
             anchors.top: parent.top
-            anchors.topMargin: 4
+            anchors.topMargin: 2
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Text {
             id: text
             anchors.bottom : parent.bottom
-            anchors.bottomMargin: 2
+            anchors.bottomMargin: 6
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment:Text.AlignHCenter
 
