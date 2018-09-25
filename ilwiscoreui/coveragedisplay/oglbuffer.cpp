@@ -11,18 +11,23 @@ OGLBuffer::OGLBuffer()
 
 }
 
-void OGLBuffer::addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors) {
+void OGLBuffer::addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors, const std::vector<quint64>& ids) {
 
 	_buffers.resize(_buffers.size() + 1);
 	OGLBufferChunck& buffer = _buffers.back();
 	FeatureMarker marker;
 	marker._firstChunk = _buffers.size() - 1;
-	marker._count = positions.size();
+    marker._count = 1;
 
 	buffer._vertices.resize(positions.size());
 	buffer._colors.resize( colors.size());
 	std::copy(positions.begin(), positions.end(), buffer._vertices.begin());
 	std::copy(colors.begin(), colors.end(), buffer._colors.begin());
+    _features = std::unordered_map<quint64, std::vector<FeatureMarker>>();
+    for (int i=0; i < ids.size(); ++i) {
+        marker._start = i*3;
+        _features[ids[i]].push_back(marker);
+    }
 }
 
 void OGLBuffer::changeColor(quint64 fid, const QColor& clr) {

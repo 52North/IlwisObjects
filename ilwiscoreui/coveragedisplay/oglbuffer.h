@@ -22,7 +22,7 @@ public:
 	OGLBuffer();
 	void changeColor(quint64 fid, const QColor & clr);
 	int addObject(int currentBuffer, const std::vector<qreal>& positions, const std::vector<int>& indices, const std::vector<qreal>& colors , IlwisTypes type, quint64 fid);
-	void addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors);
+	void addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors, const std::vector<quint64>& ids);
 	const OGLBufferChunck* buffer(int bufferIndex) const;
 	QVector<qreal> & OGLBuffer::vertices(int bufferIndex); // for coord2coord
 	int bufferCount() const;
