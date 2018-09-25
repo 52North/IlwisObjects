@@ -141,7 +141,8 @@ Item {
                     xpos = Math.max(0, xpos)
                     xpos = Math.min(xpos, width - m.width)
                     ctx.fillStyle = 'rgb(0,0, 0)' 
-                    ctx.fillText(v, xpos, baseY + 15)
+					var shift = i % 2 ? 10 : 0
+                    ctx.fillText(v, xpos, baseY + 15 + shift)
                     ctx.stroke()
                 }
             }
