@@ -20,7 +20,7 @@ Item {
 
     signal zoomEnded(string envelope)
 
-    Layout.minimumHeight: 22
+    Layout.minimumHeight: Global.actionBarMinHeight
 
 
 
