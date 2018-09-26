@@ -63,6 +63,7 @@ quint64 WorkingCatalog::createMetadata()
     operation.setDescription(TR("The working catalog is the only location were data maybe used without full url as path. It is a convenience system for creating more readable expressions"));
     operation.setSyntax("setworkingcatalog(url)");
     operation.setInParameterCount({1});
+    operation.parameterNeedsQuotes(0);
     operation.addInParameter(0,itSTRING , TR("Location working catalog"),TR("The default location were to look for data as an url"));
     operation.setOutParameterCount({0});
     operation.setKeywords("data,workflow");
