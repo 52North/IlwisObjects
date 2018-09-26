@@ -30,6 +30,7 @@
 #include "workflow/modelbuilder.h"
 #include "workflow/analysismodel.h"
 #include "controlpointslistmodel.h"
+#include "operationhelper.h"
 #include "operationworker.h"
 
 using namespace Ilwis;
@@ -709,6 +710,7 @@ QString ObjectCreator::createRasterCoverage(const QVariantMap& parms){
     QString name = parms["name"].toString();
     if ( name == "")
         return sUNDEF;
+    name = OperationHelper::quote(name);
 
     QString expr = "createrastercoverage(";
     expr += "\"" + parms["georeference"].toString() + "\"";
