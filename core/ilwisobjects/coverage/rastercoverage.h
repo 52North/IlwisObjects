@@ -209,6 +209,7 @@ public:
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
     bool histogramCalculated() const;
     ITable histogramAsTable() ;
+    NumericRange calcMinMax(bool force=false) const;
 
 protected:
 

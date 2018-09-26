@@ -1,3 +1,4 @@
+#include <qapplication.h>
 #include "raster.h"
 #include "connectorinterface.h"
 #include "symboltable.h"
@@ -281,8 +282,21 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
     if (hasType(mode, ContainerStatistics<double>::pHISTOGRAM)) {
         if (!histogramCalculated()) {
             if (!loadHistogram()) {
-                statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
+                std::unique_ptr<Tranquilizer> trq;
+                bool inWorkerThread = QThread::currentThread() != QCoreApplication::instance()->thread();
+                if (inWorkerThread) {
+                    trq.reset(Tranquilizer::create(context()->runMode()));
+                    trq->prepare("Raster values", "calculating statistics of layers", size().linearSize());
+
+                }
+                else {
+                    if (hasType(context()->runMode(), rmDESKTOP)) {
+                        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+                    }
+                }
+                statistics().calculate(begin(), end(), trq, (ContainerStatistics<double>::PropertySets)mode, bins);
                 storeHistogram();
+                QApplication::restoreOverrideCursor();
             }
         }
 	} else
@@ -730,6 +744,48 @@ void RasterCoverage::setPseudoUndef(double v){
     datadefRef().range(rng);
 
 }
+
+NumericRange RasterCoverage::calcMinMax(bool force) const
+{
+    if (!force) {
+        auto rng = datadef().range<NumericRange>();
+        if (rng->isValid())
+            return NumericRange(rng->min(), rng->max(), rng->resolution());
+    }
+    std::unique_ptr<Tranquilizer> trq;
+    bool inWorkerThread = QThread::currentThread() != QCoreApplication::instance()->thread();
+    if (inWorkerThread) {
+        trq.reset(Tranquilizer::create(context()->runMode()));
+        trq->prepare("Raster values", "calculating statistics of layers", size().zsize());
+
+    }
+    else {
+        if (hasType(context()->runMode(), rmDESKTOP)) {
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        }
+    }
+
+    if ( trq.get() != 0)
+        trq->prepare("Raster values", "calculating numeric ranges of layers", size().zsize());
+    double vmin = 1e308, vmax = -1e308;
+    IRasterCoverage raster(id());
+    PixelIterator iter(raster);
+ 
+    for (; iter != iter.end(); ++iter) {
+        vmin = Ilwis::min(*iter, vmin);
+        vmax = Ilwis::max(*iter, vmax);
+        if (trq.get() != 0) {
+            if (!trq->update(1))
+                return NumericRange();
+        }
+    }
+    QApplication::restoreOverrideCursor();
+
+    return NumericRange(vmin, vmax, datadef().range<NumericRange>()->resolution());
+
+}
+
+
 
 
 
