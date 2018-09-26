@@ -185,6 +185,12 @@ bool OperationHelper::isUrl(const QString& text) {
     return text.indexOf("file://") == 0 || text.indexOf("http://") == 0 || text.indexOf("https://") == 0 || text.indexOf("ilwis://") == 0 || text.indexOf("postgresql://");
 }
 
+QString OperationHelper::quote(const QString& str, bool always) {
+    if (always || str.indexOf(QRegExp("[ ,)(\"\']")) != -1)
+        return "\"" + str + "\"";
+    return str;
+}
+
 IlwisTypes OperationHelper::determineType(const QString &value)
 {
     if ( value == "\"?\"")
