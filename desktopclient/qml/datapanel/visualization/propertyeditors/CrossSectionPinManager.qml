@@ -58,6 +58,7 @@ Item {
 					width : 80
 					delegate :  
 						TextField {
+						id : label
 							text: styleData.value
 							height : 20
 							verticalAlignment:Text.AlignVCenter
@@ -68,6 +69,11 @@ Item {
 									tableview.selection.select(styleData.row)
 									selectedRow  = styleData.row 
 								}    
+							}
+							onEditingFinished : {
+								//editor.pinlabel = label.text
+								//var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+								//layerview.activeLayerManager().addCommand(expr);
 							}
 						}
 				}
@@ -90,6 +96,8 @@ Item {
 						}
 						onEditingFinished : {
 							editor.changeCoords(styleData.row, text, editor.pinRow(styleData.row), false)
+							var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+							layerview.activeLayerManager().addCommand(expr);
 						}
 					}
 				}
@@ -111,6 +119,8 @@ Item {
 						}
 						onEditingFinished : {
 							editor.changeCoords(styleData.row, editor.pinColumn(styleData.row), text, false)
+							var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+							layerview.activeLayerManager().addCommand(expr);
 						}
 					}
 				}
@@ -133,6 +143,8 @@ Item {
 						}
 						onEditingFinished : {
 							editor.changePixel(styleData.row, text, editor.pinY(styleData.row))
+							var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+							layerview.activeLayerManager().addCommand(expr);
 						}
 					}
 				}
@@ -155,6 +167,8 @@ Item {
 						}
 						onEditingFinished : {
 							editor.changePixel(styleData.row, editor.pinX(styleData.row), text)
+							var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+							layerview.activeLayerManager().addCommand(expr);
 						}
 					}
 				}
