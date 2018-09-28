@@ -8,7 +8,7 @@ Item {
 
     function draw(ctx, editor){
         antialiasing = false
-        ctx.strokeStyle = Qt.rgba(255, 0, 0, 1);
+        ctx.strokeStyle = "#ff4500"
         ctx.lineWidth = 1;
         ctx.font = '12px sans-serif'
         var points = editor.pinLocation4screen
