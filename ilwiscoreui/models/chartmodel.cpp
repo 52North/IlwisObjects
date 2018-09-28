@@ -30,12 +30,12 @@ ChartModel::ChartModel(QObject *parent) : QObject(parent)
     _datatable.prepare();
 }
 
-Ilwis::Ui::ChartModel::~ChartModel()
+ChartModel::~ChartModel()
 {
     modelregistry()->unRegisterModel(modelId());
 }
 
-quint32 Ilwis::Ui::ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis)
+quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis)
 {
     _name = name;
     chartType(cType);
@@ -81,7 +81,7 @@ QString ChartModel::dataTableUrl()
     return QString();
 }
 
-void Ilwis::Ui::ChartModel::chartType(const QString & tp)
+void ChartModel::chartType(const QString & tp)
 {
     _chartType = tp;
     emit chartTypeChanged();
@@ -127,7 +127,7 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
-//ITable Ilwis::Ui::ChartModel::tableFromSeries() {
+//ITable ChartModel::tableFromSeries() {
 //    int offset = _chartTable->columnCount();
 //    if (offset == 0) {
 //        _chartTable->addColumn(inputTable->columndefinition(xaxis));
@@ -144,7 +144,7 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 //        _chartTable->record(i, { colY[i] }, offset);
 //}
 
-bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color) {
+bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color) {
     bool ok;
     quint64 id = objid.toULongLong(&ok);
     if (!ok) {
@@ -185,10 +185,10 @@ bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& x
         }
     }
     if (_series.size() > 0) {
-        if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::aXAXIS)) {
+        if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::AXAXIS)) {
             if (ycolumn == sUNDEF) {
                 for (int c = 1; c < tbl->columnCount(); ++c) {
-                    if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::aYAXIS)) {
+                    if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::AYAXIS)) {
                         insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, color);
                     }
                 }
@@ -205,16 +205,16 @@ bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid, const QString& x
     }
     return true;
 }
-void Ilwis::Ui::ChartModel::assignParent(QObject * parent)
+void ChartModel::assignParent(QObject * parent)
 {
     setParent(parent);
 }
-bool Ilwis::Ui::ChartModel::addDataTable(const QString & objid)
+bool ChartModel::addDataTable(const QString & objid)
 {
     return addDataTable(objid, sUNDEF, sUNDEF, sUNDEF);
 }
 
-DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) const
+DataseriesModel* ChartModel::getSeriesByName(const QString name) const
 {
 	auto itr = std::find_if(_series.begin(), _series.end(), [name](DataseriesModel* serie) { return serie->name() == name; });
 	if (itr != _series.end()) {
@@ -224,12 +224,12 @@ DataseriesModel* Ilwis::Ui::ChartModel::getSeriesByName(const QString name) cons
 	return NULL;
 }
 
-bool Ilwis::Ui::ChartModel::updateSeries() const
+bool ChartModel::updateSeries() const
 {
     return true;
 }
 
-bool Ilwis::Ui::ChartModel::isValidSeries(const ITable& inputTable, const QString columnName) const
+bool ChartModel::isValidSeries(const ITable& inputTable, const QString columnName) const
 {
 	return inputTable->columndefinition(columnName).isValid();
 }
@@ -302,7 +302,7 @@ void ChartModel::setFixedYAxis(bool fixed) {
     _fixedY = fixed; emit yAxisChanged();
 }
 
-QColor Ilwis::Ui::ChartModel::newColor() const
+QColor ChartModel::newColor() const
 {
      for (QColor clr : _graphColors) {
         bool found = false;
@@ -325,6 +325,10 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
     auto newseries = new DataseriesModel(this, xcolumn, ycolumn, zcolumn, color);
     if (!newseries->setData(inputTable))
         return _series.size();
+
+    if (_series.size() == 0) {
+        _xaxisType = ChartModel::AxisType(newseries->xAxisType());
+    }
 
     newseries->setType(_chartType);
 
@@ -353,28 +357,35 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         }
     };
 
-    if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
-        _minx = newseries->minx();
-        _maxx = newseries->maxx();
-        _miny = newseries->miny();
-        _maxy = newseries->maxy();
-    }
-    else {
-        if (!_fixedX) _minx = std::min(_minx, newseries->minx());
-        if (!_fixedX) _maxx = std::max(_maxx, newseries->maxx());
-        if (!_fixedY) _miny = std::min(_miny, newseries->miny());
-        if (!_fixedY) _maxy = std::max(_maxy, newseries->maxy());
-    }
-    double res = newseries->resolutionX();
-    double dist = std::abs(_minx - _maxx);
+    if (_xaxisType == AxisType::AT_VALUE) {
+        if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
+            _minx = newseries->minx();
+            _maxx = newseries->maxx();
+            _miny = newseries->miny();
+            _maxy = newseries->maxy();
+        }
+        else {
+            if (!_fixedX) _minx = std::min(_minx, newseries->minx());
+            if (!_fixedX) _maxx = std::max(_maxx, newseries->maxx());
+            if (!_fixedY) _miny = std::min(_miny, newseries->miny());
+            if (!_fixedY) _maxy = std::max(_maxy, newseries->maxy());
+        }
+        double res = newseries->resolutionX();
+        double dist = std::abs(_minx - _maxx);
 
-    if (std::floor(res) == res) {
-        IntegerTicks(res, dist, _tickCountX, _minx, _maxx);
+        if (std::floor(res) == res) {
+            IntegerTicks(res, dist, _tickCountX, _minx, _maxx);
+        }
+        res = newseries->resolutionY();
+        dist = std::abs(_miny - _maxy);
+        if (std::floor(res) == res) {
+            IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
+        }
     }
-    res = newseries->resolutionY();
-    dist = std::abs(_miny - _maxy);
-    if (std::floor(res) == res) {
-        IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
+    else if (_xaxisType == AxisType::AT_CATEGORIES) {
+        auto dd = newseries->datadefinition(Axis::AXAXIS);
+        auto totalRange = dd.domain()->range();
+        _tickCountX = totalRange->count();
     }
 }
 
@@ -407,7 +418,18 @@ QString ChartModel::formatYAxis() const
     }
     return result;
 }
-bool Ilwis::Ui::ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)
+
+quint16 ChartModel::xaxisType() const
+{
+    switch (_xaxisType) {
+    case AxisType::AT_VALUE     : return 1;
+    case AxisType::AT_DATETIME  : return 2;
+    case AxisType::AT_CATEGORIES: return 3;
+    }
+    return 0;
+}
+
+bool ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)
 {
     if (basicCheck && _series.size() > 0) {
         // in the basic check we only check if it fits the first dataseries (axis)

@@ -49,6 +49,9 @@ Item {
             TablePanel.TablePane {
                 id : chartTable
 
+                Component.onCompleted : {
+                    chartTable.addDataSource("", chart.dataTableUrl(), "table")
+                }
             }
         }
     }
@@ -61,6 +64,7 @@ Item {
 
         tabledata = models.createTableModel(chartspanel, chart.dataTableUrl(), "table")
         console.log("datatable="+tabledata)
+//        chartTable.addDataSource(filter, chart.dataTableUrl(), "table")
 //        chartspanel.chartarea.datatab.chartTable.table = tabledata
     }
 
