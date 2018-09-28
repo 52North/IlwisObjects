@@ -45,10 +45,12 @@ bool CreateRasterCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
     initialize(_outputRaster->size().linearSize());
     double minv=1e307,maxv = -1e307;
     PixelIterator pout(_outputRaster);
+    double resolution = 1e30;
     for(auto band : _bands){
         if (_autoresample && !band->georeference()->isCompatible(_grf)) {
             band = OperationHelperRaster::resample(band, _grf);
         }
+        resolution = std::min(band->datadefRef().domain()->range<NumericRange>()->resolution(), resolution);
         for(double value : band){
             *pout = value;
             minv = Ilwis::min(value,minv);
@@ -57,7 +59,8 @@ bool CreateRasterCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
             ++pout;
         }
     }
-    double resolution = _outputRaster->datadefRef().domain()->range<NumericRange>()->resolution();
+    if (resolution == 1e30) resolution = 0;
+    //double resolution = _outputRaster->datadefRef().domain()->range<NumericRange>()->resolution();
     NumericRange *rng = new NumericRange(minv, maxv, resolution);
     _outputRaster->datadefRef().range(rng);
 
