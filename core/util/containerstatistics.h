@@ -148,17 +148,14 @@ public:
         double sigDigits = 0;
         double rest = 0;
 
-        double pmin = rUNDEF, pmax = rUNDEF, pcount = 0, psum = 0;
-        quint64 count = 0, pnetcount = 0;
+        double pmin = rUNDEF, pmax = rUNDEF, psum = 0;
+        quint64 pcount=0, pnetcount = 0;
         kernel()->startClock();
-        //std::for_each(begin, end, [&](const DataType& sample) {
         for (auto iter = begin; iter != end; ++iter) {
-            count++;
             DataType sample = *iter;
             if (sample != undefined) {
                 rest = fabs(sample - (qint64)sample);
                 sigDigits = std::max(sigDigits, rest - sigDigits);
-                //basicMarkers(sample);
                 pmin = Ilwis::min(pmin, sample);
                 pmax = Ilwis::max(pmax, sample);
                 if (!isNumericalUndef(sample)) {
@@ -183,7 +180,6 @@ public:
 
             }
         }
-        //}});
 
         bool isUndefined = pnetcount == 0;
         std::fill(_markers.begin(), _markers.end(), rUNDEF);
