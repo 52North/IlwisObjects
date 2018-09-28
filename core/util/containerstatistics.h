@@ -259,7 +259,7 @@ public:
             double stretchFactor = stretchRange / prop(pDELTA);
             double rmin = prop(pMIN);
             double rdelta = prop(pDELTA);
-            quint16 index = getOffsetFactorFor(input, rmin, rmax);
+            quint16 index = getOffsetFactorFor(input, rmin, rdelta);
             return _bins[index]._limit * stretchFactor;
         }
 
