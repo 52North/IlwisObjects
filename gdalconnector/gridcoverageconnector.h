@@ -31,7 +31,6 @@ public:
     void createRasterDataDef(double vminRaster, double vmaxRaster, double resolution, RasterCoverage* raster);
 
 private:
-    int _layers;
     GDALDataType _gdalValueType;
     int _typeSize;
     GDALDriverH _driver;
