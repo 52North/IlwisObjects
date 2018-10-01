@@ -18,18 +18,28 @@ namespace Ilwis {
         class TableModel;
 		class DataseriesModel;
 
+        class ItemCategory {
+        public:
+            int upper;
+            QString label;
+        };
+
         class ILWISCOREUISHARED_EXPORT ChartModel : public QObject
         {
             Q_OBJECT
 
         public:
-            enum Axis{aXAXIS, aYAXIS, aZAXIS};
+            enum Axis { AXAXIS = 1, AYAXIS = 2, AZAXIS = 3};
+            enum AxisType { AT_VALUE = 1, AT_DATETIME = 2, AT_CATEGORIES = 3};
+            Q_ENUM(Axis)
+            Q_ENUM(AxisType)
 
             Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
             Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
             Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
             Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series NOTIFY chartModelChanged)
 
+                Q_PROPERTY(quint16 xaxisType   READ xaxisType)
                 Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
                 Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
                 Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
@@ -65,8 +75,8 @@ namespace Ilwis {
             QString chartType() const;
 
 			int seriesCount() const;
-			Ilwis::Ui::DataseriesModel* getSeriesByName(const QString name) const;
-            DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const;
+			DataseriesModel* getSeriesByName(const QString name) const;
+            DataseriesModel* getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const;
             quint32 deleteSerie(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
 			bool isValidSeries(const ITable& inputTable, const QString columnName) const;	// check if column with column name exists
             quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QColor& color);
@@ -77,6 +87,10 @@ namespace Ilwis {
             void tickCountY(int tc);
             int tickCountY() const;
             QColor newColor() const;
+
+            quint16 xaxisType() const;
+
+            // value axis
             double minx() const;
             double maxx() const;
             double miny() const;
@@ -110,6 +124,7 @@ namespace Ilwis {
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             bool _fixedY = false;
             bool _fixedX = false;
+            AxisType _xaxisType;
 			QString _chartType = sUNDEF;
             int _tickCountX = 5;
             int _tickCountY = 5;

@@ -4,8 +4,9 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import QtGraphicalEffects 1.0
 import QtQuick 2.5
-import QtCharts 2.0
+import QtCharts 2.1
 import ChartModel 1.0
+//import ChartEnums 1.0
 import DataseriesModel 1.0
 
 Rectangle {
@@ -41,8 +42,9 @@ Rectangle {
         labelFormat : chart ? chart.formatYAxis : "%.3f"
 	}
 
-    BarCategoryAxis {
-        id : xbar
+    CategoryAxis {
+        id : itemaxisx
+        labelsPosition : CategoryAxis.AxisLabelsPositionOnValue
     }
 
     LinearGradient {
@@ -74,10 +76,28 @@ Rectangle {
 	function loadGraphs() {
         if ( !chart)
             return
+
+        var currxaxis = xas;
+        var xaxistype = chart.xaxisType;
+        console.log("type=" + xaxistype)
+        if (xaxistype == 3) {   // 3 == chart.AxisType.AT_CATEGORIES
+            var ser = chart.getSeries(0)
+            var xcat = ser.categories("xaxis");
+            var keys = xcat.keys;
+            var labels = xcat.labels;
+            currxaxis = [];
+            itemaxisx.min = ser.minID;
+            itemaxisx.max = ser.maxID;
+            for (var i = 0; i < keys.length; i++) {
+                itemaxisx.append(labels[i], keys[i])
+            }
+            currxaxis = itemaxisx
+        }
+
 		for (var i = 0; i < chart.seriesCount; i++) {
 			var smodel = chart.getSeries(i);
             var ctype = smodel.charttype
-            var series = createSeries(ctype, smodel.name, xas, yas)
+            var series = createSeries(ctype, smodel.name, currxaxis, yas)
             if (ctype == "line" || ctype == "spline" || ctype == "points") {
 			    series.pointsVisible = false;
 			    series.color = chart.seriesColor(i);
@@ -108,17 +128,17 @@ Rectangle {
 	}
 
     function createSeries(ctype, name, xas, yas){
-        if ( ctype == "line"){
+        if ( ctype == "line") {
             return visibleGraphs.createSeries(ChartView.SeriesTypeLine, name, xas, yas);
         }
-        if (ctype == "spline"){
+        if (ctype == "spline") {
             return visibleGraphs.createSeries(ChartView.SeriesTypeSpline, name, xas, yas);
         }
         if (ctype == "bar")
             return visibleGraphs.createSeries(ChartView.SeriesTypeBar, name, xas, yas);
         if ( ctype == "pie")
             return visibleGraphs.createSeries(ChartView.SeriesTypePie, name);
-        if ( ctype == "points"){
+        if ( ctype == "points") {
             var series =  visibleGraphs.createSeries(ChartView.SeriesTypeScatter, name, xas, yas);
             series.markerSize = 10
             return series

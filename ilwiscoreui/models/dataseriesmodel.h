@@ -25,21 +25,25 @@ namespace  Ilwis {
 
 		class ILWISCOREUISHARED_EXPORT DataseriesModel : public QObject
 		{
-			Q_OBJECT
+            Q_OBJECT
 
-			Q_PROPERTY(QString name        READ name                      NOTIFY isNameChanged)
-			Q_PROPERTY(QColor color        READ color      WRITE setColor NOTIFY onColorChanged)
-            Q_PROPERTY(QString charttype   READ charttype  WRITE setType  NOTIFY onTypeChanged)
-			Q_PROPERTY(QVariantList points READ points                    NOTIFY onPointsChanged)
+                Q_PROPERTY(QString name            READ name                      NOTIFY isNameChanged)
+                Q_PROPERTY(QColor color            READ color      WRITE setColor NOTIFY onColorChanged)
+                Q_PROPERTY(QString charttype       READ charttype  WRITE setType  NOTIFY onTypeChanged)
+                Q_PROPERTY(QVariantList points     READ points                    NOTIFY onPointsChanged)
 
-			Q_PROPERTY(double minX         READ minx)
-			Q_PROPERTY(double maxX         READ maxx)
-			Q_PROPERTY(double minY         READ miny)
-			Q_PROPERTY(double maxY         READ maxy)
-            Q_PROPERTY(int resolutionX READ resolutionX CONSTANT)
-            Q_PROPERTY(int resolutionY READ resolutionY CONSTANT)
-            Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
-            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
+                Q_PROPERTY(quint16 xAxisType   READ xAxisType)
+                Q_PROPERTY(double minX         READ minx)
+                Q_PROPERTY(double maxX         READ maxx)
+                Q_PROPERTY(double minY         READ miny)
+                Q_PROPERTY(double maxY         READ maxy)
+                Q_PROPERTY(int resolutionX READ resolutionX CONSTANT)
+                Q_PROPERTY(int resolutionY READ resolutionY CONSTANT)
+                Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
+                Q_PROPERTY(int minID       MEMBER _minID)
+                Q_PROPERTY(int maxID       MEMBER _maxID)
+
+                Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
 
 		public:
 
@@ -54,6 +58,8 @@ namespace  Ilwis {
             QString xColumn() const;
             QString yColumn() const;
             QString zColumn() const;
+
+            quint16 xAxisType() const;
 
 			double minx() {
 				return _minx;
@@ -74,7 +80,8 @@ namespace  Ilwis {
             DataDefinition datadefinition(ChartModel::Axis axis);
 
             QQmlListProperty<ChartOperationEditor> operations();
-            Q_INVOKABLE Ilwis::Ui::ChartOperationEditor* operation(quint32 index);
+            Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
+            Q_INVOKABLE QVariantMap categories(QString axis);
 
 
 		signals:
@@ -84,6 +91,7 @@ namespace  Ilwis {
 
 			void onPointsChanged();
             void operationsChanged();
+            void xcategoriesChanged();
 
 		public slots:
 			QString name() const;
@@ -98,7 +106,9 @@ namespace  Ilwis {
 			quint32 _seriesIndex;
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
             DataDefinition _dataDefinitions[3];
-			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
+
+            double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
+            int _minID, _maxID;
 			QVariantList _points;
             QList<ChartOperationEditor *> _operations;
 		};

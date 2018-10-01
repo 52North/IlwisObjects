@@ -16,6 +16,7 @@
 #include <boost/accumulators/statistics/sum.hpp>
 #include <boost/accumulators/statistics/moment.hpp>
 #include <boost/accumulators/statistics/kurtosis.hpp>
+#include "tranquilizer.h"
 
 #include "mathhelper.h"
 
@@ -136,87 +137,115 @@ public:
 
 
 
-    template<typename IterType> bool calculate(const IterType& begin,  const IterType& end, int mode=pBASIC, int bins = 0, double pseudoUndef=rILLEGAL){
-        Basic basicMarkers;
+    template<typename IterType> bool calculate(const IterType& begin, const IterType& end, std::unique_ptr<Tranquilizer>& tranquilizer, int mode = pBASIC, int bins = 0, double pseudoUndef = rILLEGAL) {
+        //Basic basicMarkers;
         Median median;
         Variance var;
         Skew skew;
         Kurtosis kurt;
-        quint64 count = 0;
         DataType undefined;
         undefined = pseudoUndef != rILLEGAL ? undef<DataType>() : pseudoUndef;
         double sigDigits = 0;
         double rest = 0;
-        std::for_each(begin, end, [&] (const DataType& sample){
-            count++;
-            if ( sample != undefined) {
+
+        double pmin = rUNDEF, pmax = rUNDEF, psum = 0;
+        quint64 pcount=0, pnetcount = 0;
+        kernel()->startClock();
+        for (auto iter = begin; iter != end; ++iter) {
+            DataType sample = *iter;
+            if (sample != undefined) {
                 rest = fabs(sample - (qint64)sample);
                 sigDigits = std::max(sigDigits, rest - sigDigits);
-                basicMarkers(sample);
-                if ( hasType(mode, pVARIANCE))
+                pmin = Ilwis::min(pmin, sample);
+                pmax = Ilwis::max(pmax, sample);
+                if (!isNumericalUndef(sample)) {
+                    ++pnetcount;
+                    psum += sample;
+                }
+                ++pcount;
+
+                if (hasType(mode, pVARIANCE))
                     var(sample);
-                if ( hasType(mode, pMEDIAN)) {
+                if (hasType(mode, pMEDIAN)) {
                     median(sample);
                 }
-                if ( hasType(mode, pSKEW)) {
+                if (hasType(mode, pSKEW)) {
                     skew(sample);
                 }
-                if ( hasType(mode, pKURTOSIS)) {
+                if (hasType(mode, pKURTOSIS)) {
                     kurt(sample);
                 }
+                if (tranquilizer.get() != 0)
+                    tranquilizer->update(1);
 
-            }});
-            bool isUndefined = boost::accumulators::count(basicMarkers) == 0;
-            std::fill(_markers.begin(), _markers.end(), rUNDEF);
-            if( !isUndefined) {
-                _markers[index(pMIN)] = boost::accumulators::min(basicMarkers);
-                _markers[index(pMAX)] = boost::accumulators::max(basicMarkers);
-                _markers[index(pDISTANCE)] = std::abs(prop(pMAX) - prop(pMIN));
-                _markers[index(pDELTA)] = prop(pMAX) - prop(pMIN);
-                _markers[index(pNETTOCOUNT)] = boost::accumulators::count(basicMarkers);
-                _markers[index(pCOUNT)] = count;
-                _markers[index(pSUM)] = boost::accumulators::sum(basicMarkers);
-                _markers[index(pMEAN)] = boost::accumulators::mean(basicMarkers);
-                _markers[index(pMEDIAN)] = boost::accumulators::median(median);
-                _markers[index(pVARIANCE)] = boost::accumulators::moment<2>(var);
-                _markers[index(pSKEW)] = boost::accumulators::moment<3>(skew);
-                _markers[index(pKURTOSIS)] = boost::accumulators::kurtosis(kurt);
-                _sigDigits = findSignificantDigits(begin, end, undefined);
+            }
+        }
 
-                if ( mode & pSTDEV) {
-                    _markers[index(pSTDEV)] = calcStdDev(begin, end, undefined);
-                }
-                if ( mode & pHISTOGRAM) {
+        bool isUndefined = pnetcount == 0;
+        std::fill(_markers.begin(), _markers.end(), rUNDEF);
+        if (!isUndefined) {
+            _markers[index(pMIN)] = pmin;
+            _markers[index(pMAX)] = pmax;
+            _markers[index(pDISTANCE)] = std::abs(prop(pMAX) - prop(pMIN));
+            _markers[index(pDELTA)] = prop(pMAX) - prop(pMIN);
+            _markers[index(pNETTOCOUNT)] = pnetcount;
+            _markers[index(pCOUNT)] = pcount;
+            _markers[index(pSUM)] = psum;
+            _markers[index(pMEAN)] = pnetcount > 0 ? psum / pnetcount : rUNDEF;
+            _markers[index(pMEDIAN)] = boost::accumulators::median(median);
+            _markers[index(pVARIANCE)] = boost::accumulators::moment<2>(var);
+            _markers[index(pSKEW)] = boost::accumulators::moment<3>(skew);
+            _markers[index(pKURTOSIS)] = boost::accumulators::kurtosis(kurt);
+            _sigDigits = findSignificantDigits(begin, end, undefined);
 
-                    double ncount = prop(pNETTOCOUNT);
-                    if ( ncount > 1) {
-                        if (bins == 0 && _binCount == iUNDEF ){
-                            if ( prop(pSTDEV) == rUNDEF) {
-                                _markers[index(pSTDEV)] = calcStdDev(begin, end, undefined);
-                            }
-                            if ( _markers[index(pSTDEV)] != rUNDEF ) {
-                                double h = 3.5 * _markers[index(pSTDEV)] / pow(ncount, 0.3333);
-                                _binCount = prop(pDISTANCE) / h;
-                            }
-                        } else if(bins != 0){
-                            _binCount = bins-1;
+            if (mode & pSTDEV) {
+                _markers[index(pSTDEV)] = calcStdDev(begin, end, undefined);
+            }
+            if (mode & pHISTOGRAM) {
+
+                double ncount = prop(pNETTOCOUNT);
+                if (ncount > 1) {
+                    if (bins == 0 && _binCount == iUNDEF) {
+                        if (prop(pSTDEV) == rUNDEF) {
+                            _markers[index(pSTDEV)] = calcStdDev(begin, end, undefined);
+                        }
+                        if (_markers[index(pSTDEV)] != rUNDEF) {
+                            double h = 3.5 * _markers[index(pSTDEV)] / pow(ncount, 0.3333);
+                            _binCount = prop(pDISTANCE) / h;
                         }
                     }
-
-                    _bins.resize(_binCount + 2); // last cell is for undefines
-                    double delta  = prop(pDELTA);
-                    for(int i=0; i < _binCount; ++i ) {
-                        _bins[i] = HistogramBin(prop(pMIN) + i * ( delta / _binCount));
+                    else if (bins != 0) {
+                        _binCount = bins - 1;
                     }
-                    _bins[_binCount] = HistogramBin(prop(pMAX));
-                    std::for_each(begin, end, [&] (const DataType& sample){
-                        quint16 index = isNumericalUndef(sample) ? (quint16)_bins.size() - 1 : getOffsetFactorFor(sample);
-                        _bins[index]._count++;
-                    });
+                }
+
+                _bins.resize(_binCount + 2); // last cell is for undefines
+                double delta = prop(pDELTA);
+                for (int i = 0; i < _binCount; ++i) {
+                    _bins[i] = HistogramBin(prop(pMIN) + i * (delta / _binCount));
+                }
+                _bins[_binCount] = HistogramBin(prop(pMAX));
+                double rmin = prop(pMIN);
+                double rdelta = prop(pDELTA);
+                for (auto iter = begin; iter != end; ++iter) {
+                    DataType sample = *iter;
+                    quint16 index = (quint16)_bins.size() - 1;
+                    if (!isNumericalUndef(sample)) {
+                        index = _bins.size() * (double)(sample - rmin) / rdelta;
+                        index =  index == _bins.size() ? index - 1 : index;
+                    }
+                    _bins[index]._count++;
                 }
             }
+        }
+        kernel()->endClock();
 
-            return true;
+        return true;
+    }
+
+        template<typename IterType> bool calculate(const IterType& begin,  const IterType& end, int mode=pBASIC, int bins = 0, double pseudoUndef=rILLEGAL){
+            std::unique_ptr<Tranquilizer> tranquilizer;
+            return calculate(begin, end, tranquilizer, mode, bins, pseudoUndef);
         }
 
         bool isValid() const {
@@ -228,7 +257,9 @@ public:
             return rUNDEF;
 
             double stretchFactor = stretchRange / prop(pDELTA);
-            quint16 index = getOffsetFactorFor(input);
+            double rmin = prop(pMIN);
+            double rdelta = prop(pDELTA);
+            quint16 index = getOffsetFactorFor(input, rmin, rdelta);
             return _bins[index]._limit * stretchFactor;
         }
 
@@ -278,13 +309,9 @@ public:
 
         }
 
-        quint16 getOffsetFactorFor(const DataType& sample) const {
-            double rmin = prop(pMIN);
-            quint16 index = _bins.size() * (double)(sample - rmin) / prop(pDELTA);
-            if(index == _bins.size())
-                return index - 1;
-            else
-                return index;
+        quint16 getOffsetFactorFor(const DataType& sample, double rmin, double rdelta) const {
+            quint16 index = _bins.size() * (double)(sample - rmin) / rdelta;
+            return index == _bins.size() ? index - 1 : index;
         }
 
         double getBinWidth() const {
