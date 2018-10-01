@@ -201,14 +201,24 @@ QString DataseriesModel::zColumn() const {
     return _zaxis;
 }
 
-quint16 DataseriesModel::xAxisType() const
+quint16 DataseriesModel::axisType(ChartModel::Axis at) const
 {
-    auto xtype = _dataDefinitions[0].domain()->ilwisType();
+    int ddix = (int)at - 1;
+    auto xtype = _dataDefinitions[ddix].domain()->ilwisType();
     if (xtype == itITEMDOMAIN)
         return ChartModel::AxisType::AT_CATEGORIES;
 
     return ChartModel::AxisType::AT_VALUE;      // TODO: datetime domain
 }
+
+quint16 DataseriesModel::xAxisType() const {
+    return axisType(ChartModel::AXAXIS);
+}
+
+quint16 DataseriesModel::yAxisType() const {
+    return axisType(ChartModel::AYAXIS);
+}
+
 
 QVariantMap DataseriesModel::categories(QString axis)
 {

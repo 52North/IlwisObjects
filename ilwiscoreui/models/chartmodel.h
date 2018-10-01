@@ -125,7 +125,7 @@ namespace Ilwis {
             bool _fixedY = false;
             bool _fixedX = false;
             AxisType _xaxisType;
-			QString _chartType = sUNDEF;
+            QString _chartType = sUNDEF;
             int _tickCountX = 5;
             int _tickCountY = 5;
             quint32 _modelId;
