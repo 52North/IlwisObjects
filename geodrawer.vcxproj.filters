@@ -228,6 +228,9 @@
     <ClCompile Include="geodrawer\operations\setactiveattribute.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
+    <ClCompile Include="geodrawer\cctexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h">
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="geodrawer\operations\setactiveattribute.h">
       <Filter>Header Files\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\cctexture.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

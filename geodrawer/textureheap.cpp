@@ -3,10 +3,23 @@
 #include "coveragedisplay/coveragelayermodel.h"
 #include "textureheap.h"
 #include "texture.h"
+#include "cctexture.h"
 #include "rasterlayermodel.h"
 
 using namespace Ilwis;
 using namespace Ui;
+
+TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster)
+: textureThread(0)
+, fAbortTexGen(false)
+, fStopThread(false)
+, workingTexture(0)
+, raster(raster)
+, iPaletteSize(0)
+, rasterLayerModel(rasterLayerModel)
+, fColorComposite(true)
+{
+}
 
 TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize)
 : textureThread(0)
@@ -16,6 +29,7 @@ TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCover
 , raster(raster)
 , iPaletteSize(iPaletteSize)
 , rasterLayerModel(rasterLayerModel)
+, fColorComposite(false)
 {
 }
 
@@ -99,8 +113,12 @@ Texture * TextureHeap::GetTexture(Quad * quad, const unsigned int offsetX, const
 Texture * TextureHeap::GenerateTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
 {
 	csChangeTexCreatorList.lock();
-	if ( raster.isValid())
-		textureRequest.push_back(new Texture(rasterLayerModel, raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
+	if (raster.isValid()) {
+		if (fColorComposite)
+			textureRequest.push_back(new CCTexture(rasterLayerModel, raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor));
+		else
+			textureRequest.push_back(new Texture(rasterLayerModel, raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
+	}
 	csChangeTexCreatorList.unlock();
 	if (fInThread) {
         if (!textureThread) {

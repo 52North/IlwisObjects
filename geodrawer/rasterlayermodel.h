@@ -54,6 +54,7 @@ public:
     QVariantList linkProperties() const;
     virtual bool renderReady();
     virtual void renderReady(bool yesno);
+    std::vector<qint32> ccBands() const;
 
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
@@ -63,39 +64,58 @@ public:
     Q_INVOKABLE void setQuadId(qint32 bufferIndex, qint32 id);
 
 protected:
-    TextureHeap * textureHeap;
-
-private:
     void DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY);
-    void GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor);
-    QVariantMap palette();
     void init();
-    void refreshPalette();
-    IRasterCoverage _raster;
+    TextureHeap * textureHeap;
     std::vector<Quad> _quads;
     std::vector<qint32> _addQuads;
     QVector<qint32> _removeQuads;
-    QVector<qint32> removeQuads();
+    std::vector<qint32> _ccBands;
+    IRasterCoverage _raster;
+    NumericRange _currentStretchRange;
     int _maxTextureSize;
     int _paletteSize;
-    QVariantMap _palette;
-    unsigned long _imageWidth;
-    unsigned long _imageHeight;
     unsigned long _width;
     unsigned long _height;
-    bool _linear;
+    unsigned long _imageWidth;
+    unsigned long _imageHeight;
     bool _initDone;
+    bool _linear;
+
+private:
+    void GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor);
+    QVariantMap palette();
+    void refreshPalette();
+    QVector<qint32> removeQuads();
+    QVariantMap _palette;
     bool _refreshPaletteAtNextCycle;
-    NumericRange _currentStretchRange;
     bool _renderReady = false;
 
 public slots:
-    void requestRedraw();
+    virtual void requestRedraw();
 
 signals:
     void paletteChanged();
 
     NEW_LAYERMODEL(RasterLayerModel);
+};
+
+class CCRasterLayerModel : public RasterLayerModel
+{
+    Q_OBJECT
+public:
+	CCRasterLayerModel();
+    CCRasterLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
+
+	bool prepare(int);
+    void init();
+    QString value2string(const QVariant &value, const QString &attrName) const;
+	bool usesColorData() const;
+
+public slots:
+    virtual void requestRedraw();
+
+    NEW_LAYERMODEL(CCRasterLayerModel);
 };
 }
 }
