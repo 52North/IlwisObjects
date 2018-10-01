@@ -219,7 +219,7 @@ Column {
         Action {
             id :addbookmark
             onTriggered: {
-                mastercatalog.addBookmark(createCatalogForm.currentFolder)
+                mastercatalog.addBookmark(mastercatalog.currentCatalog.url)
                 bookmarkadded()
             }
         }
