@@ -58,7 +58,8 @@ bool CCTexture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texS
     BoundingBox bbG(Pixel(offsetX, offsetY, bandNrs[1]), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1, bandNrs[1]));
     BoundingBox bbB(Pixel(offsetX, offsetY, bandNrs[2]), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1, bandNrs[2]));
     quint32 size = texSizeX * texSizeY * 4; // r,g,b,a
-    texture_data.resize(size);
+    if (texture_data.size() == 0)
+        texture_data.resize(size); // allowed the first time only; after this the vector will always be in-use by a webGL object
     PixelIterator pixIterR(_raster, bbR); // This iterator runs through bb. The corners of bb are "inclusive".
     PixelIterator pixIterG(_raster, bbG); // This iterator runs through bb. The corners of bb are "inclusive".
     PixelIterator pixIterB(_raster, bbB); // This iterator runs through bb. The corners of bb are "inclusive".
