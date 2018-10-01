@@ -311,7 +311,7 @@ public:
 
         quint16 getOffsetFactorFor(const DataType& sample, double rmin, double rdelta) const {
             quint16 index = _bins.size() * (double)(sample - rmin) / rdelta;
-            return index == _bins.size() ? return index - 1 : index;
+            return index == _bins.size() ? index - 1 : index;
         }
 
         double getBinWidth() const {
