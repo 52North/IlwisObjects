@@ -148,7 +148,7 @@ Item {
 								var lyr = activeLayerManager().findLayer(currentNodeId)
 								if ( lyr) {
                                     var parentLayer = lyr.parentLayer ? lyr.parentLayer.nodeid : ""
-									var cmd = 'adddrawer(' + activeLayerManager().viewid + ',\"' + parentLayer + '\",,compositelayer,true, \"' + newname.content + '\",' + currentNodeId + ')'
+									var cmd = 'adddrawer(' + activeLayerManager().viewid + ',\"' + parentLayer + '\",,compositelayer,true,\"\", \"' + newname.content + '\",' + currentNodeId + ')'
 									layerview.activeLayerManager().addCommand(cmd)
 									activeLayerManager().refresh()
 									setModel()

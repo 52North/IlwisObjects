@@ -130,20 +130,34 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
 		}
 	}
 	_options["visible"] = _expression.input<bool>(4);
+    QString options = _expression.input<QString>(5);
+    if (options.size() > 0) {
+        QStringList opts = options.split(',');
+        for (QString opt : opts) {
+            QStringList elems = opt.split('=');
+            if (elems.size() == 2) {
+                QString key = elems[0];
+                QString val = elems[1];
+                _options[key] = val;
+            }
+        }
+    }
+
     return sPREPARED;
 }
 
 quint64 AddDrawer::createMetadata()
 {
     OperationResource operation({"ilwis://operations/adddrawer"});
-    operation.setSyntax("adddrawer(viewid, parent,datasource,typename)");
+    operation.setSyntax("adddrawer(viewid, parent,datasource,typename,visible,options)");
     operation.setDescription(TR("adds a new drawer to the layerview identified by viewid"));
-    operation.setInParameterCount({5});
+    operation.setInParameterCount({6});
     operation.addInParameter(0,itINTEGER , TR("view id"),TR("id of the view to which this drawer has to be added"));
     operation.addInParameter(1,itSTRING , TR("parent"),TR("indicates the parent of the layer. If it is empty it will be added under the global layer. Parent is a '|' delimited string of layer names"));
     operation.addInParameter(2,itSTRING , TR("Data source"),TR("The url that is used to retrieve the data for this layer. It may be empty in the case oof layers that are not based on a data source"));
     operation.addInParameter(3,itSTRING , TR("Typename"),TR("which data type is represented by this url or the type of drawer that should be created in case of layers that are not based on a datasource"));
 	operation.addInParameter(4, itBOOL, TR("Visible"), TR("Should the layer initially be visible"));
+    operation.addInParameter(5, itSTRING, TR("Options"), TR("The options, as comma-separated key-value pairs"));
 
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization");
@@ -158,16 +172,17 @@ REGISTER_OPERATION(AddDrawerWithName)
 quint64 AddDrawerWithName::createMetadata()
 {
 	OperationResource operation({ "ilwis://operations/adddrawer" });
-	operation.setSyntax("adddrawer(viewid, parent,datasource,typename,layername)");
+	operation.setSyntax("adddrawer(viewid, parent,datasource,typename,visible,options,layername)");
 	operation.setLongName(TR("Add Layer with Name"));
 	operation.setDescription(TR("adds a new drawer to the layerview identified by viewid"));
-	operation.setInParameterCount({ 6 });
+	operation.setInParameterCount({ 7 });
 	operation.addInParameter(0, itINTEGER, TR("view id"), TR("id of the view to which this drawer has to be added"));
 	operation.addInParameter(1, itSTRING, TR("parent"), TR("indicates the parent of the layer. If it is empty it will be added under the global layer. Parent is a '|' delimited string of layer names"));
 	operation.addInParameter(2, itSTRING, TR("Data source"), TR("The url that is used to retrieve the data for this layer. It may be empty in the case oof layers that are not based on a data source"));
 	operation.addInParameter(3, itSTRING, TR("Typename"), TR("which data type is represented by this url or the type of drawer that should be created in case of layers that are not based on a datasource"));
 	operation.addInParameter(4, itBOOL, TR("Visible"), TR("Should the layer initially be visible"));
-	operation.addInParameter(5, itSTRING, TR("Layer Name"), TR("The name of the layer as displayed in the UI"));
+    operation.addInParameter(5, itSTRING, TR("Options"), TR("The options, as comma-separated key-value pairs"));
+	operation.addInParameter(6, itSTRING, TR("Layer Name"), TR("The name of the layer as displayed in the UI"));
 
 	operation.setOutParameterCount({ 0 });
 	operation.setKeywords("visualization");
@@ -201,7 +216,7 @@ Ilwis::OperationImplementation::State AddDrawerWithName::prepare(ExecutionContex
 	if (AddDrawer::prepare(ctx, tbl) == sPREPAREFAILED) {
 		return sPREPAREFAILED;
 	}
-	_layername = _expression.input<QString>(5);
+	_layername = _expression.input<QString>(6);
 
 	return sPREPARED;
 
@@ -213,17 +228,18 @@ REGISTER_OPERATION(AddDrawerWithNameAndTreePlace)
 quint64 AddDrawerWithNameAndTreePlace::createMetadata()
 {
     OperationResource operation({ "ilwis://operations/adddrawer" });
-    operation.setSyntax("adddrawer(viewid, parent,datasource,typename,layername,aboveLayer)");
+    operation.setSyntax("adddrawer(viewid, parent,datasource,typename,visible,options,layername,aboveLayer)");
     operation.setLongName(TR("Add Layer with Name"));
     operation.setDescription(TR("adds a new drawer to the layerview identified by viewid"));
-    operation.setInParameterCount({ 7 });
+    operation.setInParameterCount({ 8 });
     operation.addInParameter(0, itINTEGER, TR("view id"), TR("id of the view to which this drawer has to be added"));
     operation.addInParameter(1, itSTRING, TR("parent"), TR("indicates the parent of the layer. If it is empty it will be added under the global layer. Parent is a '|' delimited string of layer names"));
     operation.addInParameter(2, itSTRING, TR("Data source"), TR("The url that is used to retrieve the data for this layer. It may be empty in the case oof layers that are not based on a data source"));
     operation.addInParameter(3, itSTRING, TR("Typename"), TR("which data type is represented by this url or the type of drawer that should be created in case of layers that are not based on a datasource"));
     operation.addInParameter(4, itBOOL, TR("Visible"), TR("Should the layer initially be visible"));
-    operation.addInParameter(5, itSTRING, TR("Layer Name"), TR("The name of the layer as displayed in the UI"));
-    operation.addInParameter(6, itINT32, TR("Above Layer"), TR("The node id above which the layer will be placed"));
+    operation.addInParameter(5, itSTRING, TR("Options"), TR("The options, as comma-separated key-value pairs"));
+    operation.addInParameter(6, itSTRING, TR("Layer Name"), TR("The name of the layer as displayed in the UI"));
+    operation.addInParameter(7, itINT32, TR("Above Layer"), TR("The node id above which the layer will be placed"));
 
     operation.setOutParameterCount({ 0 });
     operation.setKeywords("visualization");
@@ -257,9 +273,9 @@ Ilwis::OperationImplementation::State AddDrawerWithNameAndTreePlace::prepare(Exe
     if (AddDrawer::prepare(ctx, tbl) == sPREPAREFAILED) {
         return sPREPAREFAILED;
     }
-    _layername = _expression.input<QString>(5);
+    _layername = _expression.input<QString>(6);
     bool ok;
-    auto lnid = _expression.input<qint32>(6, ok);
+    auto lnid = _expression.input<qint32>(7, ok);
     if ( lnid  != iUNDEF)
         _options.addOption("lowernodeid", lnid);
 

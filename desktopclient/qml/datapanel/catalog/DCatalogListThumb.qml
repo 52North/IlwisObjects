@@ -61,7 +61,7 @@ Rectangle{
 			Component.onCompleted: {
 			    console.debug("loaded", id, typeName, name)
 				 lyrview.layermanager = models.createLayerManager(lyrview,lyrview)
-				 var cmd = "adddrawer(" + lyrview.layermanager.viewid + ",\"\",\"itemid=" + id + "\"," + typeName + ",true)"
+				 var cmd = "adddrawer(" + lyrview.layermanager.viewid + ",\"\",\"itemid=" + id + "\"," + typeName + ",true,\"\")"
 				 lyrview.addCommand(cmd)
 				 lyrview.layermanager.rootLayer.vproperty("griddraweractive", false)
             }

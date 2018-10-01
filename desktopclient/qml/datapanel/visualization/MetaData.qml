@@ -148,13 +148,13 @@ Item {
 
     }
 
-    function addDataSource(filter, sourceName, sourceType){
+    function addDataSource(filter, sourceName, sourceType, options){
      if ( coverage){
             if (! metatdata.manager){
                 metatdata.manager = models.createLayerManager(metadata,overview)
                 overview.layermanager = metatdata.manager
             }
-            var cmd = "adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true)"
+            var cmd = "adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true,\"" + (options !== undefined ? options : "") +  "\")"
             metatdata.manager.addCommand(cmd)
             var layer = manager.topLevelLayers[1];
             var expr = "setactiveattribute(" + manager.viewid + "," + layer.nodeId + ",1)"
@@ -166,7 +166,7 @@ Item {
     function transfer(datapanel){
         var layers = datapanel.manager.layers;
        for(var i =1; i < layers.length; i++){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
-            var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
+            var expr = "adddrawer(" + overview.layermanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ",true,\"\")"
             overview.layermanager.addCommand(expr)
        }
     }

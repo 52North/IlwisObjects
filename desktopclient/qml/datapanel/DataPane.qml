@@ -110,7 +110,7 @@ Rectangle {
             return insertetTab
         }
 
-        function newPanel(filter,outputtype, url,side) {
+        function newPanel(filter,outputtype, url,side, options) {
             var id = -1
             var insertetTab
             var allNew = datapane.leftSide.tabCount === 0 && datapane.rightSide.tabCount === 0
@@ -126,7 +126,7 @@ Rectangle {
                     insertetTab = tabview.addTab(data, component)
                     insertetTab.active = true
                     insertetTab.item.tabmodel = newPanel
-                    id = insertetTab.item.addDataSource(filter, url, outputtype)
+                    id = insertetTab.item.addDataSource(filter, url, outputtype, options)
                     activeItem = insertetTab.item
 
                 }

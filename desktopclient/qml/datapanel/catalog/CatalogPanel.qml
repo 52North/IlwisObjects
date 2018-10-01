@@ -26,7 +26,7 @@ Item {
 
     signal catalogChanged()
 
-    function showObject(objectids){
+    function showObject(objectids,options){
         var filter
         if ( objectids === -1){ // case for  .. one step back
             var container = currentCatalog.container
@@ -42,16 +42,16 @@ Item {
 
 
                 var resource = mastercatalog.id2Resource(ids[i],0)
-                if ( resource.typeName === "catalog" || resource.hasExtendedType("catalog")){ // object as container case
+                if ( resource.typeName === "catalog" || ((resource.typeName !== "rastercoverage" || options === undefined) && resource.hasExtendedType("catalog"))){ // object as container case // TODO: improve this
                     filter = "container='" + resource.url + "'"
                     newTab = datapanesplit.changePanel(filter, "catalog",resource.url)
                 }else { // object as 'real' data case
                     filter = "itemid=" + resource.id
                     // try to find a suitable data pane for it 
                     if ( newTab && resource.typeName.indexOf("coverage")!== -1){
-                        newTab.item.addDataSource(filter,resource.name,resource.typeName)
+                        newTab.item.addDataSource(filter,resource.name,resource.typeName,options)
                     }else {
-                        newTab = datapanesplit.newPanel(filter, resource.typeName,resource.url,"other")
+                        newTab = datapanesplit.newPanel(filter, resource.typeName,resource.url,"other",options)
                     }
                     if ( newTab == null){ // we dont have a seperate pane for it so it is an object with only metadata to show
                         mastercatalog.setSelectedObjects(ids[i])

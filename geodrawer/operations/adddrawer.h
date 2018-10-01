@@ -45,13 +45,6 @@ public:
 
 	static quint64 createMetadata();
 
-
-
-private:
-	ICoverage _coverage;
-	QString _drawerCode;
-
-
 	NEW_OPERATION(AddDrawerWithName);
 };
 
@@ -66,12 +59,6 @@ public:
     Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
 
     static quint64 createMetadata();
-
-
-
-private:
-    ICoverage _coverage;
-    QString _drawerCode;
 
     NEW_OPERATION(AddDrawerWithNameAndTreePlace);
 };

@@ -762,7 +762,7 @@ void UIContextModel::addMessage(const QString &message, const QString &type)
 QString UIContextModel::worldmapCommand(const QString& id) const
 {
     try{
-        QString cmd = QString("adddrawer(%1,%2, \"itemid=%3\",featurecoverage,true)").arg(id).arg(_worldMap->resource().url().toString()).arg(_worldMap->id());
+        QString cmd = QString("adddrawer(%1,%2, \"itemid=%3\",featurecoverage,true,\"\")").arg(id).arg(_worldMap->resource().url().toString()).arg(_worldMap->id());
 
         return cmd;
     } catch (const ErrorObject&){}

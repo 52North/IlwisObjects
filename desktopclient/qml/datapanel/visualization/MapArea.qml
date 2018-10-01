@@ -274,7 +274,7 @@ DropArea {
     function transfer(datapanel){
         var layers = localmanager.layers;
         for(var i = layers.length-1; i > 0; --i){  // start at 1 because the first layer is always the global layer, is there by default so we skip it
-            var expr = "adddrawer(" + localmanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ")"
+            var expr = "adddrawer(" + localmanager.viewid + ","+ layers[i].name + ",\"itemid=" + layers[i].id + "\"," + layers[i].typeName + ",true,\"\")"
             localmanager.addCommand(expr)
         }
         localmanager.refresh()

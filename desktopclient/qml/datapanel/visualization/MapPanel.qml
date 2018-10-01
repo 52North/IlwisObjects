@@ -236,7 +236,7 @@ Item {
     }
 
 
-    function addDataSource(filter, sourceName, sourceType){
+    function addDataSource(filter, sourceName, sourceType, options){
         if ( filter !== ""){
             if (filter.indexOf("layouttype=")!= -1){
                 var parts = filter.split("and")
@@ -244,7 +244,7 @@ Item {
                 var layouttype = parts.substring(4)
                 panelLayout = layouttype.trim()
             }
-            var id = layouts.activePanel().addDataSource(filter, sourceName, sourceType)
+            var id = layouts.activePanel().addDataSource(filter, sourceName, sourceType, options)
            
             return id
         }

@@ -33,7 +33,7 @@ Rectangle {
 					lyrview.layermanager.reset()
 
 				}
-                var cmd = "adddrawer(" + lyrview.layermanager.viewid + ",\"\",\"itemid=" + res.id + "\"," + res.typeName + ",true)"
+                var cmd = "adddrawer(" + lyrview.layermanager.viewid + ",\"\",\"itemid=" + res.id + "\"," + res.typeName + ",true,\"\")"
                 lyrview.addCommand(cmd)
                 lyrview.layermanager.rootLayer.vproperty("griddraweractive", false)
 				lyrview.initSizes()

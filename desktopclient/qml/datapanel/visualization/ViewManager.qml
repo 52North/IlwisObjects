@@ -65,14 +65,14 @@ Item {
         return null
     }
 
-    function addDataSource(filter, sourceName, sourceType){
+    function addDataSource(filter, sourceName, sourceType, options){
         if ( filter.indexOf("=") !== -1 && filter[0] != '\"'){
             filter = "\"" + filter + "\""
         }
         var tab = activeSubPanel().getTab(2)
 
         if ( tab && tab.item ){
-            tab.item.addDataSource(filter, sourceName, sourceType)
+            tab.item.addDataSource(filter, sourceName, sourceType, options)
 
         }
 

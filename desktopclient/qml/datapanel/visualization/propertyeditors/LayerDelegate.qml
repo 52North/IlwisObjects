@@ -128,7 +128,7 @@ DropArea {
 		        var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
                 tree.dropHandled = true
                 var nodeid = styleData.value.nodeid
-		        var cmd = "adddrawer(" + activeLayerManager().viewid + ",\"\"," + resource.url + "," + resource.typeName + ",true," + resource.name + "," + nodeid + ")"
+		        var cmd = "adddrawer(" + activeLayerManager().viewid + ",\"\"," + resource.url + "," + resource.typeName + ",true,\"\"," + resource.name + "," + nodeid + ")"
                 layerview.activeLayerManager().addCommand(cmd)
                 setModel()
                 layerview.activeLayerManager().refresh()

@@ -54,16 +54,16 @@ Item {
         maparea.transfer(mappane)
     }
 
-    function addDataSource(filter, sourceName, sourceType){
+    function addDataSource(filter, sourceName, sourceType, options){
         var filter2 = filter
         if ( filter.indexOf("=") !== -1 && filter[0] != '\"'){
             filter = "\"" + filter + "\""
         }
-        var cmd = "adddrawer(" + layerManager().viewid + ",\"\"," + filter + "," + sourceType + ",true)"
+        var cmd = "adddrawer(" + layerManager().viewid + ",\"\"," + filter + "," + sourceType + ",true,\"" + (options !== undefined ? options : "") +  "\")"
 
         layerManager().addCommand(cmd)
         layerManager().refresh()
-        viewmanager.addDataSource(filter2, sourceName, sourceType)
+        viewmanager.addDataSource(filter2, sourceName, sourceType, options)
         maparea.initGeoDrawer()
         layerview.createParameters[layerview.activeSubPanel] = [filter, sourceName, sourceType]
         return layerManager().viewid
