@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.5
 import QtCharts 2.1
 import ChartModel 1.0
-import ChartEnums 1.0
+//import ChartEnums 1.0
 import DataseriesModel 1.0
 
 Rectangle {
