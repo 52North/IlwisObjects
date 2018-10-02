@@ -104,11 +104,12 @@ DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& yc
     return 0;
 }
 
-quint32 ChartModel::deleteSerie(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn)  {
+quint32 ChartModel::deleteSerie(const QString& ycolumn, const QString& zcolumn)  {
     for (int i = 0; i < _series.size(); ++i) {
         auto *series = _series[i];
-        if (series->xColumn() == xcolumn && series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
+        if (series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
             _series.removeAt(i);
+            emit updateSeriesChanged();
             return i;
         }
     }
@@ -236,8 +237,9 @@ bool ChartModel::isValidSeries(const ITable& inputTable, const QString columnNam
 
 void ChartModel::updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) {
     auto *serie = getSeries(xcolumn, ycolumn, zcolumn);
+    bool contPin = ycolumn == "contineous_pin";
     QColor currentColor = serie ? serie->color() : newColor(); 
-    quint32 index = deleteSerie(xcolumn, ycolumn, zcolumn);
+    quint32 index = deleteSerie(ycolumn, zcolumn);
     insertDataSeries(inputTable, index, xcolumn, ycolumn, zcolumn, currentColor);
     emit updateSeriesChanged();
 }
