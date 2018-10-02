@@ -335,8 +335,10 @@ double CrosssectionTool::pinY(int index) const {
 void Ilwis::Ui::CrosssectionTool::deletePin(int index)
 {
     if (index < _pins.size() && index >= 0) {
+        QString columnName = _pinData->columndefinition(index + 1).name();
         _pins.removeAt(index);
         vpmodel()->layer()->layerManager()->updatePostDrawers();
+        _pinData->deleteColumn(columnName);
         emit pinsChanged();
         emit pinCountChanged();
     }
