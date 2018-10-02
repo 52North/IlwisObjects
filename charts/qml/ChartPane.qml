@@ -39,12 +39,19 @@ Rectangle {
 		max : chart != null  ? chart.maxY : 5
 		tickCount : chart ? chart.tickCountY : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
+        onRangeChanged : {
+//            applyNiceNumbers()
+        }
 	}
 
     CategoryAxis {
         id : itemaxisx
         labelsPosition : CategoryAxis.AxisLabelsPositionOnValue
 //        labelsAngle : 45    // from positive x-axis clockwise; in degrees
+    }
+
+    CategoryAxis {
+        id : itemyaxis
     }
 
     LinearGradient {

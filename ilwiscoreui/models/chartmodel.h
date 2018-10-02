@@ -31,8 +31,10 @@ namespace Ilwis {
         public:
             enum Axis { AXAXIS = 1, AYAXIS = 2, AZAXIS = 3};
             enum AxisType { AT_VALUE = 1, AT_DATETIME = 2, AT_CATEGORIES = 3};
+            enum NiceFormatting { NF_NONE = 0, NF_XAXIS = 1, NF_YAXIS_LEFT = 2, NF_YAXIS_RIGHT = 3, NF_XY_LEFT = 4, NF_XYRIGHT = 5, NF_XY_ALL = 6};
             Q_ENUM(Axis)
             Q_ENUM(AxisType)
+            Q_ENUM(NiceFormatting)
 
             Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
             Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
@@ -124,6 +126,7 @@ namespace Ilwis {
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             bool _fixedY = false;
             bool _fixedX = false;
+            bool _useNiceNumbers = false;
             AxisType _xaxisType;
             QString _chartType = sUNDEF;
             int _tickCountX = 5;

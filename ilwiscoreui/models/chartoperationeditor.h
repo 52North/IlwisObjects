@@ -18,16 +18,18 @@ namespace Ilwis {
 			Q_OBJECT
 
 			Q_PROPERTY(QString  name READ name CONSTANT)
-			Q_PROPERTY(QString qmlUrl READ qmlUrl CONSTANT)
+            Q_PROPERTY(QString displayName READ displayName CONSTANT)
+            Q_PROPERTY(QString qmlUrl READ qmlUrl CONSTANT)
 
 		public:
 			ChartOperationEditor() {}
-			explicit ChartOperationEditor(const QString& name, const QUrl& ur, const QString& description, QObject *parent = 0);
+			explicit ChartOperationEditor(const QString& name, const QString& displayName, const QUrl& ur, const QString& description, QObject *parent = 0);
 			virtual bool canUse(ChartModel *model, const QVariantMap& parameters) const { return false; }
 			virtual void prepare(ChartModel *model);
 			virtual void execute(const QVariantMap& parameters) {}
 
 			QString qmlUrl() const;
+            QString displayName() const;
 
 		signals:
 
@@ -37,6 +39,7 @@ namespace Ilwis {
 			ChartModel *chartModel() const;
 		private:
 			QUrl _qmlUrl;
+            QString _displayName;
 			ChartModel *_chartModel;
 
 		};

@@ -74,7 +74,7 @@ Item {
                 sourceComponent: Component {
                     Text {
                         x : 4
-                        text: name
+                        text: displayName
                         width : operationlist.width
                         height : 14
                         MouseArea{

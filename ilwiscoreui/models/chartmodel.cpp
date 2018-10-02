@@ -435,12 +435,7 @@ QString ChartModel::formatYAxis() const
 
 quint16 ChartModel::xaxisType() const
 {
-    switch (_xaxisType) {
-    case AxisType::AT_VALUE     : return 1;
-    case AxisType::AT_DATETIME  : return 2;
-    case AxisType::AT_CATEGORIES: return 3;
-    }
-    return 0;
+    return (quint16)_xaxisType;
 }
 
 bool ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)
