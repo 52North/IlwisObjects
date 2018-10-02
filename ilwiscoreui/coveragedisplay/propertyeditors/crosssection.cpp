@@ -350,7 +350,7 @@ void CrosssectionTool::addPinPrivate() {
         _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
         for (int z = 0; z < raster->size().zsize(); ++z) {
             if (_dataSource->active(z))
-                _pinData->setCell(0, z, z);
+                _pinData->setCell(0, z, z+1);
         }
     }
     QString ycolName = columnName(_pins.size() - 1, raster->name());
