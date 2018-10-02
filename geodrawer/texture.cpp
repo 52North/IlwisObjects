@@ -129,7 +129,8 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
 
     BoundingBox bb(Pixel(offsetX, offsetY), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1));
     quint32 size = texSizeX * texSizeY * 4; // r,g,b,a
-    texture_data.resize(size);
+    if (texture_data.size() == 0)
+        texture_data.resize(size); // allowed the first time only; after this the vector will always be in-use by a webGL object
     PixelIterator pixIter(_raster, bb); // This iterator runs through bb. The corners of bb are "inclusive".
 
     if (*fDrawStop)
