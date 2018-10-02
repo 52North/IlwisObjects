@@ -127,6 +127,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_setyaxisrange.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="charts\deleteChartSeries.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="charts\chartyaxisnumrange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\deleteChartSeries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
