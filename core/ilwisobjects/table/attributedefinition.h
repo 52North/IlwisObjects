@@ -28,6 +28,7 @@ public:
     ColumnDefinition operator[](quint32 index);
     std::vector<IlwisTypes> ilwisColumnTypes() const;
     void clearAttributeDefinitions();
+    void deleteColumn(const QString& name);
 
     QVariant checkInput(const QVariant &inputVar, quint32 columnIndex) const;
     quint32 definitionCount() const;

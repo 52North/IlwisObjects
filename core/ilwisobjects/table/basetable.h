@@ -56,6 +56,7 @@ public:
 
     //@override
     virtual bool addColumn(const ColumnDefinition& def);
+    bool deleteColumn(const QString &name);
 
     //@override
     IlwisTypes ilwisType() const;

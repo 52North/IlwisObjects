@@ -76,6 +76,12 @@ quint32 Record::columnCount() const
     return (quint32)_data.size();
 }
 
+void Record::deleteColumn(int index) {
+    if (index < _data.size()) {
+        _data.erase(_data.begin() + index);
+    }
+}
+
 Ilwis::Record::operator std::vector<QVariant>()
 {
     return _data;

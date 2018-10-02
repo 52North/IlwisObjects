@@ -94,6 +94,20 @@ bool FlatTable::isValid() const
     return BaseTable::isValid();
 }
 
+bool FlatTable::deleteColumn(const QString &name) {
+    int cIndex  = columnIndex(name);
+    if (cIndex != iUNDEF) {
+        _attributeDefinition.deleteColumn(name);
+        for (int i = 0; i < _datagrid.size(); ++i) {
+            Record& rec = recordRef(i);
+            rec.deleteColumn(cIndex);
+
+        }
+        return true;
+    }
+    return false;
+}
+
 bool FlatTable::addColumn(const QString &name, const IDomain &domain,const bool readonly)
 {
     bool ok = BaseTable::addColumn(name, domain, readonly);
