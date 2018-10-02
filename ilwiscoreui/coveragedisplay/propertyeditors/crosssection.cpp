@@ -467,7 +467,7 @@ PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
     }
     const RasterStackDefinition&  stack = raster->stackDefinition();
     for (quint32 i = 0; i < stack.count(); ++i) {
-        QString name = stack.index(i);
+        QString name = QString::number(i + 1); // stack.index(i+1);
         QVariantMap data;
         data["name"] = name;
         data["active"] = true;
