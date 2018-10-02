@@ -33,8 +33,12 @@ Item {
 				if (checked){
 					crosssectiontool.contineousPin = editor.addContineousPin()
 				}else {
+					var columnName = editor.pinDataColumn(crosssectiontool.contineousPin + 1)
 					editor.deletePin( crosssectiontool.contineousPin)
+					var expr = "deletechartseries(" + modelid + "," + columnName + ")"
+					layerview.activeLayerManager().addCommand(expr);
 					crosssectiontool.contineousPin = -1
+
 				}
 
 			}
