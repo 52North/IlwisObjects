@@ -454,14 +454,14 @@ QString OperationCatalogModel::executeoperation(quint64 operationid, const QStri
         auto opExpr = OperationExpression::createExpression(operationid, parameters);
         if ( metadata.isValid() && opExpr.isValid()){
             if ( metadata->resource().hasProperty("runinmainthread")){ // some operations may not run in a different thread. particular operations that invoke methods from the qml which must run in the mainthread
-                OperationWorker::run(opExpr);
+                OperationWorker::run(opExpr, runparams.toMap());
             }else {
                 QThread* thread = new QThread;
                 OperationWorker* worker = new OperationWorker(opExpr);
                 worker->moveToThread(thread);
                 thread->setProperty("workingcatalog", qVariantFromValue(context()->workingCatalog()));
                 thread->setProperty("runparameters", runparams);
-                worker->runparms = runparams.toMap();
+                worker->_runparms = runparams.toMap();
                 thread->connect(thread, &QThread::started, worker, &OperationWorker::process);
                 thread->connect(worker, &OperationWorker::finished, thread, &QThread::quit);
                 thread->connect(worker, &OperationWorker::finished, worker, &OperationWorker::deleteLater);
@@ -497,7 +497,7 @@ QString OperationCatalogModel::executeoperation(quint64 operationid, const QStri
          thread->start();
      }
      else {
-         OperationWorker::run(opExpr);
+         OperationWorker::run(opExpr, QVariantMap());
      }
  }
 

@@ -18,13 +18,15 @@ OperationWorker::OperationWorker(const OperationExpression &opExpr) :_expression
    connect(this, &OperationWorker::sendMessage, kernel(), &Kernel::acceptMessage);
 }
 
-void OperationWorker::run(const OperationExpression &expression){
+void OperationWorker::run(const OperationExpression &expression, const QVariantMap& runparams){
     try {
 
         uicontext()->showLastGeneratedResult("");
         Operation op(expression);
         SymbolTable tbl;
         ExecutionContext ctx;
+        ctx._additionalInfo = runparams.toStdMap();
+      
         if(op->execute(&ctx, tbl)){
             if ( ctx._results.size() > 0){
                 for(auto resultName : ctx._results){
@@ -77,11 +79,11 @@ void OperationWorker::process(){
     if ( var.isValid()){
         kernel()->setTLS("workingcatalog", new QVariant(var));
     }
-    run(_expression);
+    run(_expression, _runparms);
 
-    if ( runparms.size() > 0){
+    if ( _runparms.size() > 0){
         bool ok;
-        quint32 id = runparms["runid"].toUInt(&ok);
+        quint32 id = _runparms["runid"].toUInt(&ok);
         if ( ok){
             QVariantMap mp;
             mp["runid"] = id;
