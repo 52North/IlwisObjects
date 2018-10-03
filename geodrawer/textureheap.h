@@ -8,7 +8,6 @@ namespace Ilwis {
 	namespace Ui {
         class RasterLayerModel;
         class Texture;
-        class Quad;
         class TextureHeap
 	    {
 	    public:
@@ -17,13 +16,14 @@ namespace Ilwis {
 		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize);
 		    virtual ~TextureHeap();
 
-		    Texture * GetTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
+		    Texture * GetTexture(bool & optimal, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread); // Pre: optimal = false; Post; optimal = true if and only if the texture was an exact match with no dirty flag
 		    void ClearQueuedTextures();
 		    void ReGenerateAllTextures();
 		    bool renderingComplete();
+            bool optimalTextureAvailable(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor);
 
 	    protected:
-		    Texture * GenerateTexture(Quad * quad, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
+		    Texture * GenerateTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
 		    void ReGenerateTexture(Texture * texture, bool fInThread);
 		    Texture * GenerateNextTexture(bool fInThread);
 		    std::vector<Texture*> textures;

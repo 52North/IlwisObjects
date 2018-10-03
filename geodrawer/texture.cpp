@@ -11,10 +11,9 @@
 using namespace Ilwis;
 using namespace Ui;
 
-Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
+Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
 : _rasterLayerModel(rasterLayerModel)
 , _raster(raster)
-, _quad(quad)
 , offsetX(offsetX)
 , offsetY(offsetY)
 , sizeX(sizeX)
@@ -25,7 +24,6 @@ Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & ra
 , dirty(false)
 , domain(raster->datadef().domain()->ilwisType())
 {
-    quad->refresh = true;
 }
 
 Texture::~Texture()
@@ -38,29 +36,22 @@ void Texture::CreateTexture(bool fInThread, volatile bool * fDrawStop)
         valid = DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
     else
         valid = DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
-    _quad->refresh = valid;
 }
 
 void Texture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
-    dirty = false;
-    bool fOk;
     if (hasType(domain, itCOLORDOMAIN))
-        fOk = DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
+        dirty = !DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
     else
-        fOk = DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
-    if (!dirty) // while Drawing, dirty might have been set back to true, by another thread; then we need to ensure that another pass will be done
-        dirty = !fOk;
-    _quad->refresh = !dirty;
+        dirty = !DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
 }
 
-bool Texture::equals(Quad * quad, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor)
+bool Texture::equals(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor)
 {
     if (this->offsetX == offsetX1 && this->offsetY == offsetY1 && this->offsetX + this->sizeX == offsetX2 && this->offsetY + sizeY == offsetY2 && this->zoomFactor == zoomFactor) {
-        _quad = quad;
         return true;
     } else
-	    return false;
+        return false;
 }
 
 bool Texture::contains(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2)

@@ -40,7 +40,7 @@ Quad::Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, con
 , zoomFactor(zoomFactor)
 , id(-1)
 , active(true)
-, refresh(false)
+, dirty(false)
 {
 }
 
@@ -272,20 +272,25 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 			}
             if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
                 _currentStretchRange = attr->stretchRange(); // refresh the stretch range to be used for the pixel data
-                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are used
+                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are refreshed
                 for (qint32 i = 0; i < _quads.size(); ++i) {
                     if (_quads[i].active) {
-                        _quads[i].refresh = true; // this ensures the "active" quads are taken out and back into webgl
+                        _quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
                     }
                 }
                 _refreshPaletteAtNextCycle = true;
             }
         }
         // generate "addQuads" and "removeQuads" queues
+
         for (int i = 0; i < _quads.size(); ++i) {
-            if ((_quads[i].id > -1) && (!_quads[i].active || _quads[i].refresh))
-                _removeQuads.push_back(_quads[i].id);
-            if ((_quads[i].active) && ((_quads[i].id == -1) || _quads[i].refresh)) {
+            Quad & quad = _quads[i];
+            bool refresh = false;
+            if (quad.active && quad.dirty)
+                refresh = textureHeap->optimalTextureAvailable(quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
+            if ((quad.id > -1) && (!quad.active || refresh))
+                _removeQuads.push_back(quad.id);
+            if ((quad.active) && ((quad.id == -1) || refresh)) {
                 _addQuads.push_back(i);
             }
         }
@@ -538,9 +543,10 @@ QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
     QVariantMap result;
     if (bufferIndex < _addQuads.size()) {
         Quad & quad = _quads[_addQuads[bufferIndex]];
-        Texture * tex = textureHeap->GetTexture(&quad, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, true);
+        bool optimal = false;
+        Texture * tex = textureHeap->GetTexture(optimal, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, true);
         if (tex != 0) {
-            quad.refresh = tex->fDirty();
+            quad.dirty = !optimal;
             const QVector<int> & pixelData = tex->data();
             double s = tex->getOffsetX() / (double)_width;
             double t = tex->getOffsetY() / (double)_height;
@@ -760,19 +766,23 @@ bool Ilwis::Ui::CCRasterLayerModel::prepare(int prepType)
 			}
             if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
                 _currentStretchRange = attr->stretchRange(); // refresh the stretch range to be used for the pixel data
-                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are used
+                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are refreshed
                 for (qint32 i = 0; i < _quads.size(); ++i) {
                     if (_quads[i].active) {
-                        _quads[i].refresh = true; // this ensures the "active" quads are taken out and back into webgl
+                        _quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
                     }
                 }
             }
         }
         // generate "addQuads" and "removeQuads" queues
         for (int i = 0; i < _quads.size(); ++i) {
-            if ((_quads[i].id > -1) && (!_quads[i].active || _quads[i].refresh))
-                _removeQuads.push_back(_quads[i].id);
-            if ((_quads[i].active) && ((_quads[i].id == -1) || _quads[i].refresh)) {
+            Quad & quad = _quads[i];
+            bool refresh = false;
+            if (quad.active && quad.dirty)
+                refresh = textureHeap->optimalTextureAvailable(quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
+            if ((quad.id > -1) && (!quad.active || refresh))
+                _removeQuads.push_back(quad.id);
+            if ((quad.active) && ((quad.id == -1) || refresh)) {
                 _addQuads.push_back(i);
             }
         }

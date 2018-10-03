@@ -8,7 +8,7 @@ namespace Ilwis {
 	    class CCTexture : public Texture
 	    {
 	    public:
-            CCTexture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor);
+            CCTexture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor);
             virtual ~CCTexture();
             virtual void CreateTexture(bool fInThread, volatile bool * fDrawStop);
             virtual void ReCreateTexture(bool fInThread, volatile bool * fDrawStop);

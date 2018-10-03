@@ -5,16 +5,15 @@
 namespace Ilwis {
 
 	namespace Ui {
-	    class Quad;
         class RasterLayerModel;
 	    class Texture
 	    {
 	    public:
-            Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize);
+            Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize);
             virtual ~Texture();
             virtual void CreateTexture(bool fInThread, volatile bool * fDrawStop);
             virtual void ReCreateTexture(bool fInThread, volatile bool * fDrawStop);
-            bool equals(Quad * quad, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor);
+            bool equals(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor);
             bool contains(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2);
             const unsigned int getZoomFactor() const;
             const bool fValid() const;
@@ -39,7 +38,6 @@ namespace Ilwis {
             bool dirty;
             const IRasterCoverage & _raster;
             RasterLayerModel * _rasterLayerModel;
-            Quad * _quad;
 	    };
 	}
 }

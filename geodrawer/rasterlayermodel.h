@@ -29,7 +29,7 @@ public:
     QVector<qreal> uvs;
 	QVector<int> indices;
     bool active;
-    bool refresh;
+    bool dirty;
 };
 
 class TextureHeap;

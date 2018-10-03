@@ -9,8 +9,8 @@
 using namespace Ilwis;
 using namespace Ui;
 
-CCTexture::CCTexture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, Quad * quad, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor)
-: Texture(rasterLayerModel, raster, quad, offsetX, offsetY, sizeX, sizeY, zoomFactor, 0)
+CCTexture::CCTexture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor)
+: Texture(rasterLayerModel, raster, offsetX, offsetY, sizeX, sizeY, zoomFactor, 0)
 {
 }
 
@@ -21,17 +21,11 @@ CCTexture::~CCTexture()
 void CCTexture::CreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
     valid = DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
-    _quad->refresh = valid;
 }
 
 void CCTexture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
 {
-    dirty = false;
-    bool fOk;
-    fOk = DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
-    if (!dirty) // while Drawing, dirty might have been set back to true, by another thread; then we need to ensure that another pass will be done
-        dirty = !fOk;
-    _quad->refresh = !dirty;
+    dirty = !DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
 }
 
 bool CCTexture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
