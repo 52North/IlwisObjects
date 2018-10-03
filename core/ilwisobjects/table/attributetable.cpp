@@ -292,6 +292,12 @@ void AttributeTable::columndefinition(const ColumnDefinition &)
 void AttributeTable::insertRecord(quint32 lowerRec)
 {
     WARN2(ERR_OPERATION_NOTSUPPORTED2, TR("inserting records"), TR("attributes"));
+
+}
+
+bool AttributeTable::deleteColumn(const QString &name) {
+    WARN2(ERR_OPERATION_NOTSUPPORTED2, TR("deleting columns"), TR("attributes"));
+    return false;
 }
 
 

@@ -6,7 +6,6 @@ import QtGraphicalEffects 1.0
 import QtQuick 2.5
 import QtCharts 2.1
 import ChartModel 1.0
-//import ChartEnums 1.0
 import DataseriesModel 1.0
 
 Rectangle {
@@ -40,11 +39,19 @@ Rectangle {
 		max : chart != null  ? chart.maxY : 5
 		tickCount : chart ? chart.tickCountY : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
+        onRangeChanged : {
+//            applyNiceNumbers()
+        }
 	}
 
     CategoryAxis {
         id : itemaxisx
         labelsPosition : CategoryAxis.AxisLabelsPositionOnValue
+//        labelsAngle : 45    // from positive x-axis clockwise; in degrees
+    }
+
+    CategoryAxis {
+        id : itemyaxis
     }
 
     LinearGradient {
@@ -79,7 +86,6 @@ Rectangle {
 
         var currxaxis = xas;
         var xaxistype = chart.xaxisType;
-        console.log("type=" + xaxistype)
         if (xaxistype == 3) {   // 3 == chart.AxisType.AT_CATEGORIES
             var ser = chart.getSeries(0)
             var xcat = ser.categories("xaxis");

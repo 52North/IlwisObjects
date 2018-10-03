@@ -103,7 +103,7 @@ public:
      * \return  true if succesful. Duplicate columns are not allowed
      */
     virtual bool addColumn(const ColumnDefinition& def)=0;
-
+    virtual bool deleteColumn(const QString &name) = 0;
     /*!
      * retrieves the definition of the column with the given name.<br>
      * if there is no collumn with that name an invalid ColumnDefinition will be returned.

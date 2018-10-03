@@ -29,6 +29,7 @@ public:
     bool addColumn(const QString &name, const IDomain &domain, const bool readonly=false);
     bool addColumn(const ColumnDefinition& def);
     bool addColumn(const QString &name, const QString& domainname,const bool readonly=false);
+    bool deleteColumn(const QString &name);
     void columndefinition(const ColumnDefinition& coldef);
     ColumnDefinition columndefinition(const QString& columnName) const;
     ColumnDefinition columndefinition(quint32 index) const;

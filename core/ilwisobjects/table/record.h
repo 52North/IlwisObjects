@@ -29,6 +29,7 @@ public:
     void cell(quint32 column, const QVariant& value);
     quint32 columnCount() const;
     operator std::vector<QVariant>() ;
+    void deleteColumn(int index);
 
 
     void storeData(const std::vector<IlwisTypes> &types, QDataStream &stream, const IOOptions &options);

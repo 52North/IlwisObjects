@@ -174,7 +174,7 @@ Controls.DropableItem{
                     id : createButton
                     text : qsTr("Create & Open")
                     width : 110
-                    height : 18
+                    height : 22
                     anchors.right: parent.right
 
                     enabled: nameedit.content.length > 0 && topItem.currentCatalogCorrectUrl() !== ""

@@ -28,6 +28,26 @@ bool AttributeDefinition::addColumn(const ColumnDefinition& def){
     return true;
 }
 
+void AttributeDefinition::deleteColumn(const QString& name) {
+    auto iter = _columnDefinitionsByName.find(name);
+    if (iter != _columnDefinitionsByName.end()) {
+        _columnDefinitionsByName.erase(iter);
+    }
+    int count = 0;
+    bool found = false;
+    for (int i = 0; i < _columnDefinitionsByIndex.size(); ++i) {
+        if (_columnDefinitionsByIndex[i].name() != name) {
+            _columnDefinitionsByIndex[i] = _columnDefinitionsByIndex[count++];
+        }
+        else
+            found = true;
+   }
+   if (found) {
+       _columnDefinitionsByIndex.resize(_columnDefinitionsByIndex.size() - 1);
+   }
+
+}
+
 bool AttributeDefinition::addColumn(const QString &name, const QString &domainname, bool readonly)
 {
     IDomain dom;

@@ -50,20 +50,21 @@ IWorkflow WorkflowImplementation::workflow()
     return _workflow;
 }
 
-void WorkflowImplementation::initStepMode(){
+void WorkflowImplementation::initStepMode(ExecutionContext *ctx){
     QThread *current = QThread::currentThread();
-    QVariant var = current->property("runparameters");
-    if ( var.isValid()){
-        QVariantMap values = var.toMap();
+    QVariantMap values;
+    if (ctx) {
+        values = QMap<QString, QVariant>(ctx->_additionalInfo);
         bool ok;
         quint32 id = values["runid"].toUInt(&ok);
-        if ( ok)
+        if (ok)
             _runid = id;
         _stepMode = values["stepmode"].toBool();
-        if ( _stepMode){
-            if ( ok){
+        if (_stepMode) {
+            if (ok) {
                 kernel()->addSyncLock(_runid);
-            }else
+            }
+            else
                 _stepMode = false;
         }
     }
@@ -85,7 +86,7 @@ bool WorkflowImplementation::execute(ExecutionContext *ctx, SymbolTable &symTabl
     connect(kernel(), &Kernel::sendMessage, this, &WorkflowImplementation::acceptMessage);
     _stopExecution = false;
     _initial = true;
-    initStepMode();
+    initStepMode(ctx);
 
     ExecutionContext ctx2;
     SymbolTable symTable2;

@@ -104,11 +104,12 @@ DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& yc
     return 0;
 }
 
-quint32 ChartModel::deleteSerie(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn)  {
+quint32 ChartModel::deleteSerie(const QString& ycolumn, const QString& zcolumn)  {
     for (int i = 0; i < _series.size(); ++i) {
         auto *series = _series[i];
-        if (series->xColumn() == xcolumn && series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
+        if (series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
             _series.removeAt(i);
+            emit updateSeriesChanged();
             return i;
         }
     }
@@ -236,8 +237,9 @@ bool ChartModel::isValidSeries(const ITable& inputTable, const QString columnNam
 
 void ChartModel::updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) {
     auto *serie = getSeries(xcolumn, ycolumn, zcolumn);
+    bool contPin = ycolumn == "contineous_pin";
     QColor currentColor = serie ? serie->color() : newColor(); 
-    quint32 index = deleteSerie(xcolumn, ycolumn, zcolumn);
+    quint32 index = deleteSerie(ycolumn, zcolumn);
     insertDataSeries(inputTable, index, xcolumn, ycolumn, zcolumn, currentColor);
     emit updateSeriesChanged();
 }
@@ -361,14 +363,10 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
             _minx = newseries->minx();
             _maxx = newseries->maxx();
-            _miny = newseries->miny();
-            _maxy = newseries->maxy();
         }
         else {
             if (!_fixedX) _minx = std::min(_minx, newseries->minx());
             if (!_fixedX) _maxx = std::max(_maxx, newseries->maxx());
-            if (!_fixedY) _miny = std::min(_miny, newseries->miny());
-            if (!_fixedY) _maxy = std::max(_maxy, newseries->maxy());
         }
         double res = newseries->resolutionX();
         double dist = std::abs(_minx - _maxx);
@@ -376,22 +374,38 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         if (std::floor(res) == res) {
             IntegerTicks(res, dist, _tickCountX, _minx, _maxx);
         }
-        res = newseries->resolutionY();
-        dist = std::abs(_miny - _maxy);
-        if (std::floor(res) == res) {
-            IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
-        }
     }
     else if (_xaxisType == AxisType::AT_CATEGORIES) {
         auto dd = newseries->datadefinition(Axis::AXAXIS);
         auto totalRange = dd.domain()->range();
         _tickCountX = totalRange->count();
     }
+
+    if (newseries->yAxisType() == AxisType::AT_VALUE) {
+        if (isNumericalUndef(_miny) || isNumericalUndef(_maxy)) {
+            _miny = newseries->miny();
+            _maxy = newseries->maxy();
+        }
+        else {
+            if (!_fixedY) _miny = std::min(_miny, newseries->miny());
+            if (!_fixedY) _maxy = std::max(_maxy, newseries->maxy());
+        }
+        double res = newseries->resolutionY();
+        double dist = std::abs(_miny - _maxy);
+        if (std::floor(res) == res) {
+            IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
+        }
+    }
+    else if (newseries->yAxisType() == AxisType::AT_CATEGORIES) {
+        auto dd = newseries->datadefinition(Axis::AYAXIS);
+        auto totalRange = dd.domain()->range();
+        _tickCountY = totalRange->count();
+    }
 }
 
 QString formatAxis(double res, const QString& result) {
     if (res == 0)
-        return "%f";
+        return "%.6f";
     if (res - (quint64)res > 0) {
         int n = std::abs(log10(res - (quint64)res));
         return QString("%.%1f").arg(n);
@@ -421,12 +435,7 @@ QString ChartModel::formatYAxis() const
 
 quint16 ChartModel::xaxisType() const
 {
-    switch (_xaxisType) {
-    case AxisType::AT_VALUE     : return 1;
-    case AxisType::AT_DATETIME  : return 2;
-    case AxisType::AT_CATEGORIES: return 3;
-    }
-    return 0;
+    return (quint16)_xaxisType;
 }
 
 bool ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)

@@ -335,8 +335,10 @@ double CrosssectionTool::pinY(int index) const {
 void Ilwis::Ui::CrosssectionTool::deletePin(int index)
 {
     if (index < _pins.size() && index >= 0) {
+        QString columnName = _pinData->columndefinition(index + 1).name();
         _pins.removeAt(index);
         vpmodel()->layer()->layerManager()->updatePostDrawers();
+        _pinData->deleteColumn(columnName);
         emit pinsChanged();
         emit pinCountChanged();
     }
@@ -350,7 +352,7 @@ void CrosssectionTool::addPinPrivate() {
         _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
         for (int z = 0; z < raster->size().zsize(); ++z) {
             if (_dataSource->active(z))
-                _pinData->setCell(0, z, z);
+                _pinData->setCell(0, z, z+1);
         }
     }
     QString ycolName = columnName(_pins.size() - 1, raster->name());
@@ -465,7 +467,7 @@ PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
     }
     const RasterStackDefinition&  stack = raster->stackDefinition();
     for (quint32 i = 0; i < stack.count(); ++i) {
-        QString name = stack.index(i);
+        QString name = QString::number(i + 1); // stack.index(i+1);
         QVariantMap data;
         data["name"] = name;
         data["active"] = true;

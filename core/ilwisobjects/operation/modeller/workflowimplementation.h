@@ -56,7 +56,7 @@ private:
     bool _stopExecution = false;
 
     void clearCalculatedValues();
-    void initStepMode();
+    void initStepMode(ExecutionContext *ctx);
 };
 
 

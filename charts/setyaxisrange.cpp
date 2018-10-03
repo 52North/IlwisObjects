@@ -20,7 +20,7 @@ using namespace Ui;
 
 REGISTER_CHARTPROPERTYEDITOR("setyaxisrange", SetYAxisRange)
 
-SetYAxisRange::SetYAxisRange() : ChartOperationEditor("setyaxisrange", QUrl("SetYAxisRange.qml"), TR("Changes Y-axis range of the graph"))
+SetYAxisRange::SetYAxisRange() : ChartOperationEditor("setyaxisrange", TR("Set Y-axis range"), QUrl("SetYAxisRange.qml"), TR("Changes Y-axis range of the graph"))
 {
 }
 

@@ -17,9 +17,9 @@ class OperationWorker : public QObject{
 public:
     OperationWorker(const OperationExpression& opExpr);
 
-    static void run(const OperationExpression &expression);
+    static void run(const OperationExpression &expression, const QVariantMap& runparams);
 
-    QVariantMap runparms;
+    QVariantMap _runparms;
 public slots:
     void process();
 

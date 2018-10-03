@@ -33,6 +33,7 @@ namespace  Ilwis {
                 Q_PROPERTY(QVariantList points     READ points                    NOTIFY onPointsChanged)
 
                 Q_PROPERTY(quint16 xAxisType   READ xAxisType)
+                Q_PROPERTY(quint16 yAxisType   READ yAxisType)
                 Q_PROPERTY(double minX         READ minx)
                 Q_PROPERTY(double maxX         READ maxx)
                 Q_PROPERTY(double minY         READ miny)
@@ -60,6 +61,7 @@ namespace  Ilwis {
             QString zColumn() const;
 
             quint16 xAxisType() const;
+            quint16 yAxisType() const; 
 
 			double minx() {
 				return _minx;
@@ -99,7 +101,9 @@ namespace  Ilwis {
             QString charttype() const;
 
 		private:
-			QString _name = sUNDEF;
+            quint16 axisType(ChartModel::Axis at) const;
+
+            QString _name = sUNDEF;
 			QColor _color = QColor();
             QString _type = "line";
 			bool _selected = false;
