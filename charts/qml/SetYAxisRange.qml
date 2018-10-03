@@ -47,6 +47,7 @@ Rectangle {
     Row {
         id : checkfixed
         anchors.top : yaxisrangehigh.bottom
+        x : 10
 
         CheckBox {
             id : fixedYaxis
@@ -59,6 +60,27 @@ Rectangle {
         }
         Text {
             text : qsTr("Lock Y-axis range")
+            height : 20
+            width : 250
+        }
+    }
+
+    Row {
+        id : checknicenumbers
+        anchors.top : checkfixed.bottom
+        x : 10
+
+        CheckBox {
+            id : nicenumbersy
+
+            width : 20
+            height : 20
+            Component.onCompleted : {
+                checked = chart.niceNumbersY
+            }
+        }
+        Text {
+            text : qsTr("Round to nice numbers")
             height : 20
             width : 250
         }
@@ -82,10 +104,9 @@ Rectangle {
             if ( yaxisrangehigh.content != "") {
                 newhigh  = parseFloat(yaxisrangehigh.content)
             }
-            var parameters = {low:newlow, high:newhigh, fixed : fixedYaxis.checked}
+            var parameters = {low:newlow, high:newhigh, fixed : fixedYaxis.checked, nice : nicenumbersy.checked}
             operation.execute(parameters)
         }
     }
-
 }
 

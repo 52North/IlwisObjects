@@ -38,10 +38,12 @@ void SetYAxisRange::execute(const QVariantMap &parameters)
         double low = parameters["low"].toDouble();
         double high = parameters["high"].toDouble();
         bool fixed = parameters["fixed"].toBool();
+        bool niceNumbers = parameters["nice"].toBool();
         QString fixedString = fixed ? "true" : "false";
+        QString niceString = niceNumbers ? "true" : "false";
 
         quint32 cid = chartModel()->modelId();
-        QString expr = QString("chartyaxisnumrange(%1,\"%2\",\"%3\",\"%4\")").arg(cid).arg(low).arg(high).arg(fixedString);
+        QString expr = QString("chartyaxisnumrange(%1,\"%2\",\"%3\",\"%4\",\"%5\")").arg(cid).arg(low).arg(high).arg(fixedString).arg(niceString);
 
         Ilwis::OperationExpression ex(expr);
         Ilwis::Operation op(ex);

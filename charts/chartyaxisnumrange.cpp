@@ -63,6 +63,12 @@ Ilwis::OperationImplementation::State ChartYAxisNumrange::prepare(ExecutionConte
         return sPREPAREFAILED;
     }
 
+    _nice = _expression.input<bool>(4, ok);
+    if (!ok) {
+        kernel()->issues()->log(QString(TR("%1 is not a boolean").arg(_expression.parm(4).value())));
+        return sPREPAREFAILED;
+    }
+
     return sPREPARED;
 }
 
@@ -75,6 +81,7 @@ bool ChartYAxisNumrange::execute(ExecutionContext *ctx, SymbolTable &symTable)
     _chartmodel->setMinY(_low);
     _chartmodel->setMaxY(_high);
     _chartmodel->setFixedYAxis(_fixed);
+    _chartmodel->setNiceNumbersY(_nice);
 
     return true;
 }
@@ -84,11 +91,12 @@ quint64 ChartYAxisNumrange::createMetadata()
     OperationResource resource({ "ilwis://operations/chartyaxisnumrange" });
     resource.setLongName("Change the Y-axis range of the chart");
     resource.setSyntax("chartyaxisnumrange(parameters)");
-    resource.setInParameterCount({ 4 });
+    resource.setInParameterCount({ 4, 5 });
     resource.addInParameter(0, itINT32, TR("chart ID"), TR("the ID identifying the chart."));
     resource.addInParameter(1, itNUMBER, TR("low"), TR("the new lowest value for the Y-axis (specify ? to leave unchanged)"));
     resource.addInParameter(2, itNUMBER, TR("high"), TR("the new highest value for the Y-axis (specify ? to leave unchanged)"));
     resource.addInParameter(3, itBOOL, TR("fixed"), TR("fix the range to the min and max values"));
+    resource.addInParameter(4, itBOOL, TR("nice"), TR("round the axis numbers to 'nice' numbers"));
     resource.setKeywords("chart series, table, chart, Y-axis, range");
 
     mastercatalog()->addItems({ resource });
