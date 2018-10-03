@@ -489,24 +489,20 @@ bool RasterCoverageConnector::loadData(IlwisObject* data, const IOOptions& optio
             blocklimits[bandindex].push_back(i);
     }
 
-    quint32 nr_bands = raster->size().zsize();
     for(const auto& layer : blocklimits){
-        quint64 linesLeft = totalLines - grid->maxLines() * (layer.second[0] % nr_bands); //std::min((quint64)grid->maxLines(), totalLines - grid->maxLines() * layer.second[0]);
+        int inLayerBlockIndex = layer.second[0] % grid->blocksPerBand(); //
+        quint64 linesLeft = totalLines - grid->maxLines() * inLayerBlockIndex; //std::min((quint64)grid->maxLines(), totalLines - grid->maxLines() * layer.second[0]);
         if ( _colorModel == ColorRangeBase::cmNONE || raster->datadef().domain()->valueType() == itPALETTECOLOR){ // palette entries are just integers so we can use the numeric read for it
             layerHandle = gdal()->getRasterBand(_handle->handle(), layer.first + 1);
-            int inLayerBlockIndex = layer.second[0] % grid->blocksPerBand(); //
             for(const auto& index : layer.second) {
                 quint32 offsetIndex = bandindex == iUNDEF ? layer.first : (layer.first - bandindex);
                 loadNumericBlock(layerHandle, index, inLayerBlockIndex, linesPerBlock, linesLeft, block, raster,offsetIndex );
-
                 if(!moveIndexes(linesPerBlock, linesLeft, inLayerBlockIndex))
                     break;
             }
         }else { // continous colorcase, combining 3/4 (gdal)layers into one
-            int inLayerBlockIndex = layer.second[0] % grid->blocksPerBand(); //
             for(const auto& index : layer.second) {
                 loadColorBlock(layer.first,index,inLayerBlockIndex,linesPerBlock,linesLeft,block,grid);
-
                 if(!moveIndexes(linesPerBlock, linesLeft, inLayerBlockIndex)) // ensures that the administration with respect how much needs to be done is inorder
                     break;
             }
