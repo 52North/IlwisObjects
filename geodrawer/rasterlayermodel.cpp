@@ -279,6 +279,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
                     }
                 }
                 _refreshPaletteAtNextCycle = true;
+                refreshStretch();
             }
         }
         // generate "addQuads" and "removeQuads" queues
@@ -332,7 +333,27 @@ void RasterLayerModel::init()
         _currentStretchRange = attr->stretchRange();
 
     refreshPalette();
+    refreshStretch();
     connect(layerManager(), &LayerManager::needUpdateChanged, this, &RasterLayerModel::requestRedraw);
+}
+
+void RasterLayerModel::refreshStretch() {
+    double scale = 1.0;
+    double offset = 0;
+    VisualAttribute * attr = activeAttribute();
+    if (attr != 0) {
+        if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
+            scale = _currentStretchRange.distance() / attr->stretchRange().distance();
+            offset = (_currentStretchRange.min() - attr->stretchRange().min()) / attr->stretchRange().distance();
+        }
+    }
+
+    _stretch["scale"] = scale;
+    _stretch["offset"] = offset;
+}
+
+QVariantMap RasterLayerModel::stretch() {
+    return _stretch;
 }
 
 #ifndef sqr
@@ -772,6 +793,7 @@ bool Ilwis::Ui::CCRasterLayerModel::prepare(int prepType)
                         _quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
                     }
                 }
+                refreshStretch();
             }
         }
         // generate "addQuads" and "removeQuads" queues
@@ -790,6 +812,8 @@ bool Ilwis::Ui::CCRasterLayerModel::prepare(int prepType)
         _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 	}
     if (hasType(prepType, LayerModel::ptRENDER)) {
+        refreshStretch();
+        add2ChangedProperties("colorcompstretch");
         _prepared |= LayerModel::ptRENDER;
     }
 	return fChanges;
@@ -821,6 +845,7 @@ void CCRasterLayerModel::init()
     if (attr != 0)
         _currentStretchRange = attr->stretchRange();
 
+    refreshStretch();
     connect(layerManager(), &LayerManager::needUpdateChanged, this, &RasterLayerModel::requestRedraw);
 }
 

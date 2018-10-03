@@ -135,6 +135,8 @@ Item {
 				    tTexture.needsUpdate = true;
 				    var uniforms = {
                         alpha: { type: "f", value: layer.vproperty("opacity") },
+                        stretchscale: { type: "f", value: layer.stretch.scale },
+                        stretchoffset: { type: "f", value: layer.stretch.offset },
                         texture1: { type: "t", value: tTexture },
                         uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 				    };
@@ -380,6 +382,17 @@ Item {
 				    layer.tPalette.image.data.set(palette.data);
 				    layer.tPalette.needsUpdate = true;
                 }
+			} else if ( propertyType == "colorcompstretch"){
+			    var meshes = scene.getObjectByName(layer.nodeId);
+			    if ( meshes) {
+			        for(var i=0; i < meshes.children.length; ++i) {
+			            var mesh = meshes.children[i];
+			            if ( mesh){
+			                mesh.material.uniforms.stretchscale.value = layer.stretch.scale;
+			                mesh.material.uniforms.stretchoffset.value = layer.stretch.offset;
+			            }
+			        }
+			    }
 			}
 		}
 
@@ -440,9 +453,15 @@ Item {
 			colorShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
 			colorShaderMaterialTemplate.fragmentShader =
 				'varying vec2 vUv;' +
-				'uniform sampler2D texture1;uniform float alpha;' +
+				'uniform sampler2D texture1;uniform float alpha;uniform float stretchscale;uniform float stretchoffset;' +
 				'void main() { ' +
 					'gl_FragColor = texture2D(texture1,vUv);' +
+					'gl_FragColor.r *= stretchscale;' +
+					'gl_FragColor.r += stretchoffset;' +
+					'gl_FragColor.g *= stretchscale;' +
+					'gl_FragColor.g += stretchoffset;' +
+					'gl_FragColor.b *= stretchscale;' +
+					'gl_FragColor.b += stretchoffset;' +
 					'gl_FragColor.a *= alpha;' +
 				'}'
             paletteShaderMaterialTemplate = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });

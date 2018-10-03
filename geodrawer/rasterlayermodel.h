@@ -43,6 +43,7 @@ public:
     ~RasterLayerModel();
     Q_PROPERTY(QVariantMap palette READ palette NOTIFY paletteChanged);
     Q_PROPERTY(QVector<qint32> removeQuads READ removeQuads)
+    Q_PROPERTY(QVariantMap stretch READ stretch NOTIFY stretchChanged);
 
 	void coverage(const ICoverage& cov);
     void fillAttributes() ;
@@ -66,6 +67,8 @@ public:
 protected:
     void DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY);
     void init();
+    QVariantMap stretch(); // for "live" RGB stretching of a Color Composite; thus not for Palette rasters (Palette rasters "live" stretch their palette)
+    void refreshStretch();
     TextureHeap * textureHeap;
     std::vector<Quad> _quads;
     std::vector<qint32> _addQuads;
@@ -88,6 +91,7 @@ private:
     void refreshPalette();
     QVector<qint32> removeQuads();
     QVariantMap _palette;
+    QVariantMap _stretch;
     bool _refreshPaletteAtNextCycle;
     bool _renderReady = false;
 
@@ -96,6 +100,7 @@ public slots:
 
 signals:
     void paletteChanged();
+    void stretchChanged();
 
     NEW_LAYERMODEL(RasterLayerModel);
 };
