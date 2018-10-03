@@ -46,7 +46,8 @@ namespace Ilwis {
                 Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
                 Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
                 Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
-                Q_PROPERTY(bool fixedY         READ fixedYAxis  WRITE setFixedYAxis  NOTIFY yAxisChanged)
+                Q_PROPERTY(bool fixedY         READ fixedYAxis   WRITE setFixedYAxis   NOTIFY yAxisChanged)
+                Q_PROPERTY(bool niceNumbersY   READ niceNumbersY WRITE setNiceNumbersY NOTIFY yAxisChanged)
 
                 Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
                 Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
@@ -103,6 +104,8 @@ namespace Ilwis {
             void setMaxY(double val);
             bool fixedYAxis() const;
             void setFixedYAxis(bool fixed);
+            bool niceNumbersY() const;
+            void setNiceNumbersY(bool nice);
 
         signals:
             void chartTypeChanged();
@@ -126,7 +129,7 @@ namespace Ilwis {
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             bool _fixedY = false;
             bool _fixedX = false;
-            bool _useNiceNumbers = false;
+            bool _niceNumbersY = false;
             AxisType _xaxisType;
             QString _chartType = sUNDEF;
             int _tickCountX = 5;

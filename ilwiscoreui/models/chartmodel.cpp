@@ -304,6 +304,13 @@ void ChartModel::setFixedYAxis(bool fixed) {
     _fixedY = fixed; emit yAxisChanged();
 }
 
+bool ChartModel::niceNumbersY() const {
+    return _niceNumbersY;
+}
+void ChartModel::setNiceNumbersY(bool nice) {
+    _niceNumbersY = nice; emit yAxisChanged();
+}
+
 QColor ChartModel::newColor() const
 {
      for (QColor clr : _graphColors) {

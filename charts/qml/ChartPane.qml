@@ -25,6 +25,16 @@ Rectangle {
 		loadGraphs();
 	}
 
+    Connections {
+        target : chart
+        onYAxisChanged : {
+            if (chart) {
+                if (chart.niceNumbersY) {
+                    yas.applyNiceNumbers()
+                }
+            }
+        }
+    }
 	ValueAxis {
 		id : xas
 		min : chart != null ? chart.minX : 0
@@ -39,9 +49,13 @@ Rectangle {
 		max : chart != null  ? chart.maxY : 5
 		tickCount : chart ? chart.tickCountY : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
-        onRangeChanged : {
-//            applyNiceNumbers()
-        }
+/*        onRangeChanged : {
+            if (chart) {
+                if (chart.niceNumbersY) {
+                    applyNiceNumbers()
+                }
+            }
+        }*/
 	}
 
     CategoryAxis {
