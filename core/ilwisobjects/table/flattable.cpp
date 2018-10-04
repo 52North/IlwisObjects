@@ -97,13 +97,15 @@ bool FlatTable::isValid() const
 bool FlatTable::deleteColumn(const QString &name) {
     int cIndex  = columnIndex(name);
     if (cIndex != iUNDEF) {
-        _attributeDefinition.deleteColumn(name);
-        for (int i = 0; i < _datagrid.size(); ++i) {
-            Record& rec = recordRef(i);
-            rec.deleteColumn(cIndex);
+        if (BaseTable::deleteColumn(name)) {
+            _attributeDefinition.deleteColumn(name);
+            for (int i = 0; i < _datagrid.size(); ++i) {
+                Record& rec = recordRef(i);
+                rec.deleteColumn(cIndex);
 
+            }
+            return true;
         }
-        return true;
     }
     return false;
 }
