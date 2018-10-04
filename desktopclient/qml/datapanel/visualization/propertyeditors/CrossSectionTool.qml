@@ -13,6 +13,7 @@ Item {
     property var modelid : null
     property int contineousPin : -1
     property bool contineousMode : false
+	clip : true
 
     TabView {
         anchors.fill : parent
