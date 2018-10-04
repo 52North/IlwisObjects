@@ -8,7 +8,9 @@ import "../../../controls" as Controls
 Row {
     width : Math.min(300,parent ? Math.min(parent.width,500) : 300)
     height: parent ? parent.height - 10 : 0
+    clip : true
     property var editor
+    property int offset : 30
     Column {
         id : minihist
         width : parent.width - 60
@@ -19,9 +21,10 @@ Row {
 
         Loader {
             id : chartArea
-            width : parent.width
+            width : parent.width + offset
             height : parent.height - slider.height - 10
             source : models.mainPanelUrl("minimalchart")
+            x : -offset
 
             onLoaded : {
                 chartArea.item.chart.addDataTable(editor.coverageId,"max","counts","", "black")

@@ -45,6 +45,7 @@ Rectangle {
 		tickCount : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
         visible : true
+        labelsVisible : false
 	}
 
     Controls.FloatingRectangle {
