@@ -18,6 +18,7 @@ Item {
     height : 35
     property var bid
     property var manager
+    property alias normalButton : maptools.normalButton
     property alias panButton : maptools.panButton
     property alias zoomoutButton : maptools.zoomoutButton
     property alias zoominButton : maptools.zoominButton
