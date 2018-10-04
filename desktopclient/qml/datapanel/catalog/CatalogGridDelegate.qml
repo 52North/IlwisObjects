@@ -29,7 +29,7 @@ Item {
     Controls.ToolTip{
         id : tooltip
         target : iconDelegate
-        text : typeName + (description !== "" ? "\n"+ description : "")
+        text : typeName + ("\n" + name ) + (description !== "" ? "\n"+ description : "")
     }
 
     Row {
