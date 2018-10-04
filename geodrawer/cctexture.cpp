@@ -54,34 +54,24 @@ bool CCTexture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texS
     quint32 size = texSizeX * texSizeY * 4; // r,g,b,a
     if (texture_data.size() == 0)
         texture_data.resize(size); // allowed the first time only; after this the vector will always be in-use by a webGL object
-    PixelIterator pixIterR(_raster, bbR); // This iterator runs through bb. The corners of bb are "inclusive".
-    PixelIterator pixIterG(_raster, bbG); // This iterator runs through bb. The corners of bb are "inclusive".
-    PixelIterator pixIterB(_raster, bbB); // This iterator runs through bb. The corners of bb are "inclusive".
 
     if (*fDrawStop)
         return false;
 
-    auto end = pixIterR.end();
-    quint32 position = 0;
     VisualAttribute * attr = _rasterLayerModel->activeAttribute();
     if (attr != 0) {
         NumericRange & actualRange = attr->actualRange();
         NumericRange & stretchRange = attr->stretchRange();
-
-        while (pixIterR != end && position < size) {
+        quint32 position = 0; // red
+        PixelIterator pixIterR(_raster, bbR); // This iterator runs through bbR. The corners of bbR are "inclusive".
+        auto endR = pixIterR.end();
+        while (pixIterR != endR && position < size) {
             double valueR = *pixIterR;
-            double valueG = *pixIterG;
-            double valueB = *pixIterB;
             int colorR = isNumericalUndef2(valueR, _raster) ? 0 : 255.0 * getStretchedValue(valueR, actualRange, stretchRange);
-            int colorG = isNumericalUndef2(valueG, _raster) ? 0 : 255.0 * getStretchedValue(valueG, actualRange, stretchRange);
-            int colorB = isNumericalUndef2(valueB, _raster) ? 0 : 255.0 * getStretchedValue(valueB, actualRange, stretchRange);
-            texture_data[position++] = colorR;
-            texture_data[position++] = colorG;
-            texture_data[position++] = colorB;
+            texture_data[position] = colorR;
+            position += 3;
             texture_data[position++] = 255; // alpha
             pixIterR += zoomFactor;
-            pixIterG += zoomFactor;
-            pixIterB += zoomFactor;
             if (pixIterR.ychanged()) {
                 if (*fDrawStop)
                     return false;
@@ -89,7 +79,43 @@ bool CCTexture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texS
                 position += 4 * (texSizeX - xSizeOut);
                 if (zoomFactor > 1) {
                     pixIterR += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+                }
+            }
+        }
+        position = 1; // green
+        PixelIterator pixIterG(_raster, bbG); // This iterator runs through bbG. The corners of bbG are "inclusive".
+        auto endG = pixIterG.end();
+        while (pixIterG != endG && position < size) {
+            double valueG = *pixIterG;
+            int colorG = isNumericalUndef2(valueG, _raster) ? 0 : 255.0 * getStretchedValue(valueG, actualRange, stretchRange);
+            texture_data[position] = colorG;
+            position += 4;
+            pixIterG += zoomFactor;
+            if (pixIterG.ychanged()) {
+                if (*fDrawStop)
+                    return false;
+
+                position += 4 * (texSizeX - xSizeOut);
+                if (zoomFactor > 1) {
                     pixIterG += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
+                }
+            }
+        }
+        position = 2; // blue
+        PixelIterator pixIterB(_raster, bbB); // This iterator runs through bbB. The corners of bbB are "inclusive".
+        auto endB = pixIterB.end();
+        while (pixIterB != endB && position < size) {
+            double valueB = *pixIterB;
+            int colorB = isNumericalUndef2(valueB, _raster) ? 0 : 255.0 * getStretchedValue(valueB, actualRange, stretchRange);
+            texture_data[position] = colorB;
+            position += 4;
+            pixIterB += zoomFactor;
+            if (pixIterB.ychanged()) {
+                if (*fDrawStop)
+                    return false;
+
+                position += 4 * (texSizeX - xSizeOut);
+                if (zoomFactor > 1) {
                     pixIterB += sizeX * (zoomFactor - 1) - ((zoomFactor - (sizeX % zoomFactor)) % zoomFactor);
                 }
             }
