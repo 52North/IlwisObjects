@@ -77,9 +77,13 @@ bool BaseTable::addColumn(const ColumnDefinition& def){
     return ok;
 }
 
-bool Ilwis::BaseTable::deleteColumn(const QString & name)
+bool Ilwis::BaseTable::deleteColumn(const QString & )
 {
-    return true;
+    if (_columns > 0) {
+        --_columns;
+        return true;
+    }
+    return false;
 }
 
 bool BaseTable::addColumn(const QString &columnname, const IDomain& domain, const bool readonly)
