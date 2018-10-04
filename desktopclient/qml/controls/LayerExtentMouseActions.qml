@@ -34,14 +34,6 @@ MouseArea {
     signal mouseReleased(int mx, int my)
     signal selectTab()
 
-   /* Connections {
-        target: maptools
-        onToolbarClicked :{
-            zoomOutModeInWheelMode = false
-            panModeInWheelMode = false
-        }
-    }*/
-
     FloatingRectangle{
         id : floatrect
     }
@@ -112,6 +104,11 @@ MouseArea {
               mousePressed(mouseX, mouseY)
             }
         }
+    }
+
+    function resetWheelPanZoomFlags() {
+        zoomOutModeInWheelMode = false
+        panModeInWheelMode = false
     }
 
     function setRectangle(envelope){

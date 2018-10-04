@@ -24,11 +24,18 @@ Item {
     property alias zoominButton : maptools.zoominButton
 	property alias extraZoomOptions : maptools.extraZoomOptions
 
+    signal toolbarClicked()
+
     Controls.LayerExtentsToolbar{
         id : maptools
         width : parent.width
         height : parent.height
-
+    }
+    Connections {
+        target: maptools
+        onToolbarClicked: {
+            toolbarClicked()
+        }
     }
     LocationBar{
         id : lb

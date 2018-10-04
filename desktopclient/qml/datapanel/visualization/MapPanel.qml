@@ -180,6 +180,12 @@ Item {
                 viewmanager.newZoomExtent(envelope)
             }
         }
+        Connections {
+            target: activeLayerExtentsToolbar()
+            onToolbarClicked: {
+                layouts.activePanel().maparea().mouseActions.resetWheelPanZoomFlags()
+            }
+        }
         handleDelegate: Rectangle{
             width : parent.width
             height : 6
