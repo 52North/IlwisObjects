@@ -31,7 +31,7 @@ Item {
         height : 18
         color : uicontext.paleColor
         Text {
-            text : qsTr("Dataseries")
+            text : qsTr("Data series")
             width : parent.width
             font.bold: true
             x : 5
@@ -39,7 +39,7 @@ Item {
         }
         Controls.ToolTip {
             target : title
-            text : qsTr("All dataseries in the chart")
+            text : qsTr("All data series in the chart")
         }
     }
 

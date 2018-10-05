@@ -18,7 +18,7 @@ using namespace Ui;
 
 REGISTER_CHARTPROPERTYEDITOR("setseriescolor", SetSeriesColor)
 
-SetSeriesColor::SetSeriesColor() : ChartOperationEditor("setseriescolor", TR("Set Dataseries Color"), QUrl("SetSeriesColor.qml"), TR("Changes the color of the selected dataseries in the chart"))
+SetSeriesColor::SetSeriesColor() : ChartOperationEditor("setseriescolor", TR("Set Series Color"), QUrl("SetSeriesColor.qml"), TR("Changes the color of the selected data series in the chart"))
 {
 }
 

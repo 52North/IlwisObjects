@@ -21,7 +21,7 @@ using namespace Ui;
 
 REGISTER_CHARTPROPERTYEDITOR("setseriestype", SetSeriesType)
 
-SetSeriesType::SetSeriesType() : ChartOperationEditor("setdataseriestype", TR("Set Dataseries Type"), QUrl("SetChartType.qml"), TR("Changes the graph type of the dataseries"))
+SetSeriesType::SetSeriesType() : ChartOperationEditor("setdataseriestype", TR("Set Series Type"), QUrl("SetChartType.qml"), TR("Changes the graph type of the data series"))
 {
 }
 
