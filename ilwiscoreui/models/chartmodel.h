@@ -29,9 +29,9 @@ namespace Ilwis {
             Q_OBJECT
 
         public:
-            enum Axis { AXAXIS = 1, AYAXIS = 2, AZAXIS = 3};
-            enum AxisType { AT_VALUE = 1, AT_DATETIME = 2, AT_CATEGORIES = 3};
-            enum NiceFormatting { NF_NONE = 0, NF_XAXIS = 1, NF_YAXIS_LEFT = 2, NF_YAXIS_RIGHT = 3, NF_XY_LEFT = 4, NF_XYRIGHT = 5, NF_XY_ALL = 6};
+            enum class Axis { AXAXIS = 1, AYAXIS = 2, AZAXIS = 3};
+            enum class AxisType { AT_VALUE = 1, AT_DATETIME = 2, AT_CATEGORIES = 3};
+            enum class NiceFormatting { NF_NONE = 0, NF_XAXIS = 1, NF_YAXIS_LEFT = 2, NF_YAXIS_RIGHT = 3, NF_XY_LEFT = 4, NF_XYRIGHT = 5, NF_XY_ALL = 6};
             Q_ENUM(Axis)
             Q_ENUM(AxisType)
             Q_ENUM(NiceFormatting)

@@ -51,7 +51,7 @@ Ilwis::OperationImplementation *CreateChart::create(quint64 metaid, const Ilwis:
 Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx, const SymbolTable &) 
 {
     auto CheckAxis = [](const ITable& tbl, const QString& name, ChartModel::Axis atype)->QString {
-        if (atype == ChartModel::AZAXIS && (name == sUNDEF || name == ""))
+        if (atype == ChartModel::Axis::AZAXIS && (name == sUNDEF || name == ""))
             return sUNDEF;
 
         quint32 index = tbl->columnIndex(name);
@@ -76,13 +76,13 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
     }
     _chartType = chartType;
 
-    OperationHelper::check([&]()->bool { return (_xaxis = CheckAxis(_table, _expression.input<QString>(4), ChartModel::AXAXIS)) != sUNDEF; },
+    OperationHelper::check([&]()->bool { return (_xaxis = CheckAxis(_table, _expression.input<QString>(4), ChartModel::Axis::AXAXIS)) != sUNDEF; },
     { ERR_NO_OBJECT_TYPE_FOR_2,"column", _expression.input<QString>(4) });
 
-    OperationHelper::check([&]()->bool { return (_yaxis = CheckAxis(_table, _expression.input<QString>(5), ChartModel::AYAXIS)) != sUNDEF; },
+    OperationHelper::check([&]()->bool { return (_yaxis = CheckAxis(_table, _expression.input<QString>(5), ChartModel::Axis::AYAXIS)) != sUNDEF; },
     { ERR_NO_OBJECT_TYPE_FOR_2,"column", _expression.input<QString>(5) });
 
-    _zaxis = CheckAxis(_table, _expression.input<QString>(6), ChartModel::AXAXIS);
+    _zaxis = CheckAxis(_table, _expression.input<QString>(6), ChartModel::Axis::AXAXIS);
 
      return sPREPARED;
 }

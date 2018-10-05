@@ -186,10 +186,10 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
         }
     }
     if (_series.size() > 0) {
-        if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::AXAXIS)) {
+        if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::Axis::AXAXIS)) {
             if (ycolumn == sUNDEF) {
                 for (int c = 1; c < tbl->columnCount(); ++c) {
-                    if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::AYAXIS)) {
+                    if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::Axis::AYAXIS)) {
                         insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, color);
                     }
                 }
@@ -388,7 +388,7 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         _tickCountX = totalRange->count();
     }
 
-    if (newseries->yAxisType() == AxisType::AT_VALUE) {
+    if (newseries->yAxisType() == static_cast<quint16>(ChartModel::AxisType::AT_VALUE) ) {
         if (isNumericalUndef(_miny) || isNumericalUndef(_maxy)) {
             _miny = newseries->miny();
             _maxy = newseries->maxy();
@@ -403,7 +403,7 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
             IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
         }
     }
-    else if (newseries->yAxisType() == AxisType::AT_CATEGORIES) {
+    else if (newseries->yAxisType() == static_cast<quint16>(AxisType::AT_CATEGORIES)) {
         auto dd = newseries->datadefinition(Axis::AYAXIS);
         auto totalRange = dd.domain()->range();
         _tickCountY = totalRange->count();
