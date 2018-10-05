@@ -49,13 +49,6 @@ Rectangle {
 		max : chart != null  ? chart.maxY : 5
 		tickCount : chart ? chart.tickCountY : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
-/*        onRangeChanged : {
-            if (chart) {
-                if (chart.niceNumbersY) {
-                    applyNiceNumbers()
-                }
-            }
-        }*/
 	}
 
     CategoryAxis {
