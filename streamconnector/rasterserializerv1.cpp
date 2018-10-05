@@ -82,14 +82,15 @@ template<typename T> void loadBulk(const RawConverter& converter, QDataStream& s
         for(int i = 0; i < blockCount; ++i){
 
             stream.readRawData((char *)&rawdata[0],blockSize * sizeof(T) );
+
+            if (realdata.size() != blockSize )
+                realdata.resize(blockSize);
             for( int j = 0; j < blockSize; ++j)
                 realdata[j] = converter.raw2real(rawdata[j]);
             raster->gridRef()->setBlockData(i, realdata);
             if ( i < blockCount - 1){
                 stream >> blockIndex;
                 stream >> blockSize;
-                if ( blockSize != initBlockSize)
-                    realdata.resize(blockSize);
             }
 
         }
