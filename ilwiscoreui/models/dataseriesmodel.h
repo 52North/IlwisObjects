@@ -102,6 +102,7 @@ namespace  Ilwis {
 
 		private:
             quint16 axisType(ChartModel::Axis at) const;
+            void fillOperations();
 
             QString _name = sUNDEF;
 			QColor _color = QColor();

@@ -25,13 +25,6 @@ DataseriesModel::DataseriesModel(const QString name) : _name(name) {
 DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color)
 	: QObject(chartModel), _xaxis(xaxis), _yaxis(yaxis), _zaxis(zaxis), _color(color)
 {
-    auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
-    if (factory) {
-        QVariantMap parameters = { { "dataseries", true } };
-        _operations = factory->selectedOperations(chartModel, parameters);
-        for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
-            (*iter)->setParent(this);
-    }
     _seriesIndex = 0;
 }
 
@@ -145,23 +138,40 @@ double DataseriesModel::resolutionZ()
 
 DataDefinition DataseriesModel::datadefinition(ChartModel::Axis axis)
 {
-    if (axis == ChartModel::AXAXIS)
+    if (axis == ChartModel::Axis::AXAXIS)
         return _dataDefinitions[0];
-    if (axis == ChartModel::AYAXIS)
+    if (axis == ChartModel::Axis::AYAXIS)
         return _dataDefinitions[1];
-    if (axis == ChartModel::AXAXIS)
+    if (axis == ChartModel::Axis::AXAXIS)
         return _dataDefinitions[2];
 
     return DataDefinition();
 }
 
+void DataseriesModel::fillOperations() {
+    ChartModel* chartModel = static_cast<ChartModel*>(parent());
+    auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
+    if (factory) {
+        QVariantMap parameters = { { "dataseries", true }, {"yaxistype", axisType(ChartModel::Axis::AYAXIS) } };
+        _operations = factory->selectedOperations(chartModel, parameters);
+        for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
+            (*iter)->setParent(this);
+    }
+}
+
 QQmlListProperty<ChartOperationEditor> DataseriesModel::operations()
 {
+    if (_operations.isEmpty())
+        fillOperations();
+
     return QQmlListProperty<ChartOperationEditor>(this, _operations);
 }
 
 ChartOperationEditor * DataseriesModel::operation(quint32 index)
 {
+    if (_operations.isEmpty())
+        fillOperations();
+
     if (index < _operations.size())
         return _operations[index];
 
@@ -206,17 +216,17 @@ quint16 DataseriesModel::axisType(ChartModel::Axis at) const
     int ddix = (int)at - 1;
     auto xtype = _dataDefinitions[ddix].domain()->ilwisType();
     if (xtype == itITEMDOMAIN)
-        return ChartModel::AxisType::AT_CATEGORIES;
+        return static_cast<quint16>(ChartModel::AxisType::AT_CATEGORIES);
 
-    return ChartModel::AxisType::AT_VALUE;      // TODO: datetime domain
+    return static_cast<quint16>(ChartModel::AxisType::AT_VALUE);      // TODO: datetime domain
 }
 
 quint16 DataseriesModel::xAxisType() const {
-    return axisType(ChartModel::AXAXIS);
+    return axisType(ChartModel::Axis::AXAXIS);
 }
 
 quint16 DataseriesModel::yAxisType() const {
-    return axisType(ChartModel::AYAXIS);
+    return axisType(ChartModel::Axis::AYAXIS);
 }
 
 
