@@ -27,8 +27,15 @@ SetYAxisRange::SetYAxisRange() : ChartOperationEditor("setyaxisrange", TR("Set Y
 
 bool SetYAxisRange::canUse(ChartModel *model, const QVariantMap &parameter) const
 {
-//    if (!parameter.empty())
-//        return parameter["dataseries"].toBool();
+    bool ok = false;
+    if (!parameter.empty()) {
+        auto iter = parameter.find("yaxistype");
+        if (iter != parameter.end()) {
+            auto at = static_cast<ChartModel::AxisType>(iter.value().toInt());
+            ok = at == ChartModel::AxisType::AT_VALUE;
+        }
+        return ok && parameter["dataseries"].toBool();
+    }
     return true;
 }
 
