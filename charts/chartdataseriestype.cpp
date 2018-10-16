@@ -59,7 +59,9 @@ bool ChartDataseriesType::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     auto serie = _chartmodel->getSeriesByName(_seriesName);
     serie->setType(_newType);
+    _chartmodel->chartType(_newType);
     _chartmodel->updateSeriesChanged();
+    _chartmodel->chartTypeChanged();
 
     return true;
 }
