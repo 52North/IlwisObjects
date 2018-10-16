@@ -128,23 +128,6 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
-//ITable ChartModel::tableFromSeries() {
-//    int offset = _chartTable->columnCount();
-//    if (offset == 0) {
-//        _chartTable->addColumn(inputTable->columndefinition(xaxis));
-//        auto colX = inputTable->column(xaxis);
-//        for (int i = 0; i < _chartTable->recordCount(); ++i)
-//            _chartTable->record(i, { colX[i] }, offset);
-//
-//        offset++;
-//    }
-//
-//    _chartTable->addColumn(inputTable->columndefinition(yaxis));
-//    auto colY = inputTable->column(yaxis);
-//    for (int i = 0; i < _chartTable->recordCount(); ++i)
-//        _chartTable->record(i, { colY[i] }, offset);
-//}
-
 bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color) {
     bool ok;
     quint64 id = objid.toULongLong(&ok);
@@ -309,6 +292,27 @@ bool ChartModel::niceNumbersY() const {
 }
 void ChartModel::setNiceNumbersY(bool nice) {
     _niceNumbersY = nice; emit yAxisChanged();
+}
+
+bool ChartModel::legendVisible()
+{
+    return false;
+}
+
+bool ChartModel::xAxisVisble()
+{
+    if (_chartType == "pie")
+        return false;
+
+    return true;
+}
+
+bool ChartModel::yAxisVisble()
+{
+    if (_chartType == "pie")
+        return false;
+
+    return true;
 }
 
 QColor ChartModel::newColor() const

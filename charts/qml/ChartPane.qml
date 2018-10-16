@@ -41,6 +41,7 @@ Rectangle {
 		max : chart != null  ? chart.maxX : 5
 		tickCount : chart ? chart.tickCountX : 5
         labelFormat : chart ? chart.formatXAxis : "%.3f"
+        visible : chart ? chart.xAxisVisible : true
 	}
 
 	ValueAxis {
@@ -49,16 +50,19 @@ Rectangle {
 		max : chart != null  ? chart.maxY : 5
 		tickCount : chart ? chart.tickCountY : 5
         labelFormat : chart ? chart.formatYAxis : "%.3f"
+        visible : chart ? chart.yAxisVisible : true
 	}
 
     CategoryAxis {
         id : itemaxisx
         labelsPosition : CategoryAxis.AxisLabelsPositionOnValue
 //        labelsAngle : 45    // from positive x-axis clockwise; in degrees
+        visible : chart ? chart.xAxisVisible : true
     }
 
     CategoryAxis {
         id : itemyaxis
+        visible : chart ? chart.yAxisVisible : true
     }
 
     LinearGradient {
@@ -95,14 +99,14 @@ Rectangle {
         var xaxistype = chart.xaxisType;
         if (xaxistype == 3) {   // 3 == chart.AxisType.AT_CATEGORIES
             var ser = chart.getSeries(0)
-            var xcat = ser.categories("xaxis");
+            var xcat = ser.categories("xaxis", true);
             var keys = xcat.keys;
             var labels = xcat.labels;
             currxaxis = [];
             itemaxisx.min = ser.minID;
             itemaxisx.max = ser.maxID;
             for (var i = 0; i < keys.length; i++) {
-                itemaxisx.append(labels[i], keys[i])
+                itemaxisx.append(labels[i], keys[i]);
             }
             currxaxis = itemaxisx
         }
@@ -127,14 +131,24 @@ Rectangle {
                 bar.color = chart.seriesColor(i);
             }
             if (ctype == "pie") {
-			    var points = smodel.points;
-                var slice = series.append("pipo", 10)
-                var slice = series.append("mameloe", 15)
-                var slice = series.append("dikkedeur", 7)
 
+			    var points = smodel.points;
+
+                // simple aggregation on category values
+                var accu = {};
                 for (var j = 0; j < points.length; j++) {
-                console.log("pnt: " + j+1 + " = " + points[j])
-//                    var slice = series.append(smodel.name + (j+1), points[j].y)
+                    var key = points[j].x;
+                    if (key in accu)
+                        accu[key] += points[j].y;
+                    else
+                        accu[key] = points[j].y;
+                }
+                
+                for (var j = 0; j < labels.length; j++) {
+                    var cat = labels[j];
+                    var id = keys[j];
+                    var slice = series.append(cat, accu[id]);
+                    slice.labelVisible = true
                 }
             }
 		}

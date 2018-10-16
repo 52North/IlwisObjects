@@ -40,6 +40,7 @@ namespace Ilwis {
             Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
             Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
             Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series NOTIFY chartModelChanged)
+            Q_PROPERTY(bool legendVisible READ legendVisible            NOTIFY legendChanged)
 
                 Q_PROPERTY(quint16 xaxisType   READ xaxisType)
                 Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
@@ -54,6 +55,9 @@ namespace Ilwis {
                 Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
                 Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
                 Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
+
+                Q_PROPERTY(bool xAxisVisible   READ xAxisVisble   NOTIFY chartTypeChanged)
+                Q_PROPERTY(bool yAxisVisible   READ yAxisVisble   NOTIFY chartTypeChanged)
 
                 Q_INVOKABLE QColor seriesColor(int seriesIndex);
                 Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
@@ -106,6 +110,10 @@ namespace Ilwis {
             void setFixedYAxis(bool fixed);
             bool niceNumbersY() const;
             void setNiceNumbersY(bool nice);
+            bool legendVisible();
+
+            bool xAxisVisble();
+            bool yAxisVisble();
 
         signals:
             void chartTypeChanged();
@@ -117,6 +125,7 @@ namespace Ilwis {
             void updateSeriesChanged();
             void tickCountXChanged();
             void tickCountYChanged();
+            void legendChanged();
 
         private:
 			QQmlListProperty<DataseriesModel> series();
