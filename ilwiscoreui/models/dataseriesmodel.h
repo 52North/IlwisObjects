@@ -83,7 +83,7 @@ namespace  Ilwis {
 
             QQmlListProperty<ChartOperationEditor> operations();
             Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
-            Q_INVOKABLE QVariantMap categories(QString axis);
+            Q_INVOKABLE QVariantMap categories(QString axis, bool unique);
 
 
 		signals:

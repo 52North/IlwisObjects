@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <map>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "factory.h"
@@ -230,7 +231,7 @@ quint16 DataseriesModel::yAxisType() const {
 }
 
 
-QVariantMap DataseriesModel::categories(QString axis)
+QVariantMap DataseriesModel::categories(QString axis, bool unique)
 {
     QVariantMap cat;
 
@@ -248,20 +249,32 @@ QVariantMap DataseriesModel::categories(QString axis)
     QList<QString> labels;
     auto totalRange = _dataDefinitions[domix].domain()->range();
     ItemRangeIterator iter(totalRange->as<ItemRange>());
+    std::map<QString, int> cats;
     while (iter.isValid()) {
         SPDomainItem item = (*iter);
         QString label = item->name();
         int ix = item->raw();
-        keys.append(ix);
-        labels.append(label);
+        if (unique)
+            cats[label] = ix;
+        else {
+            keys.append(ix);
+            labels.append(label);
+        }
 
         ++iter;
     }
 
     QVariant vkey;
     QVariant vlabel;
+    if (unique) {
+        for (const auto it : cats) {
+            keys.append(it.second);
+            labels.append(it.first);
+        }
+    }
     vkey.setValue(keys);
     vlabel.setValue(labels);
+
     cat["keys"] = vkey;
     cat["labels"] = vlabel;
     return cat;
