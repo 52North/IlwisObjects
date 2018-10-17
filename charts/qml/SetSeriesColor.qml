@@ -22,7 +22,7 @@ Rectangle {
     }
     Controls.ColorPicker2 {
         id : chartcolorselector
-        initialColor : dataseriesOperationList.currentSeries.color
+        initialColor : dataseriesOperationList.currentSeries ? dataseriesOperationList.currentSeries.color : "black"
 
         anchors.top : colorselectorlabel.bottom
         onSelectedColorChanged: {

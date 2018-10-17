@@ -26,11 +26,18 @@ Item {
         if ( operationlist.model && newindex < operationlist.model.length ){
             dataseriesoperation.currentOperation = operationlist.model[newindex]
         }
+        else {
+            dataseriesoperation.currentOperation = null
+        }
     }
 
     onCurrentSeriesChanged: {
         if ( currentSeries)
             operationlist.model = currentSeries.operations
+        else {
+            dataseriesoperation.currentOperation = null
+            operationlist.model = null
+        }
     }
 
     Rectangle {

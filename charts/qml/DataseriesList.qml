@@ -16,12 +16,21 @@ Item {
     height: parent.height -10
     property alias currentIndex : dataserieslist.currentIndex
 
-    function setCurrentIndex(newindex) {
+    function setOperIndex(newindex) {
         if (chart) {
+            chartlabel.currentIndex = -1
             dataserieslist.currentIndex = newindex
             dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
 
             dataseriesOperationList.setOperation(0)
+        }
+    }
+
+    function setChartIndex() {
+        if (chart) {
+            chartlabel.currentIndex = 0
+            dataserieslist.currentIndex = -1
+            dataseriesOperationList.currentSeries = null
         }
     }
 
@@ -43,32 +52,6 @@ Item {
         }
     }
 
-/*    Rectangle {
-        id : chartlabel
-        width : parent.width - 2
-        height : 18
-        anchors.top : title.bottom
-        clip : true
-        color: uicontext.lightestColor
-        Text {
-            text : qsTr("Chart")
-            width : parent.width
-//            font.bold: true
-            x : 5
-            anchors.verticalCenter: parent.verticalCenter
-        }
-        Controls.ToolTip {
-            target : chartlabel
-            text : qsTr("Global properties of the chart")
-        }
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-//                setCurrentIndex(index)
-            }
-        }
-    }*/
-
     ListView {
         id : chartlabel
         width : parent.width - 2
@@ -76,6 +59,7 @@ Item {
         anchors.top : title.bottom
         model : ["Chart"]
         highlight: charthighlight
+        currentIndex : -1
 
         anchors.topMargin: 4
         x : 3
@@ -104,15 +88,11 @@ Item {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
-//                            setCurrentIndex(index)
+                            setChartIndex()
                         }
                     }
                 }
             }
-        }
-
-        Component.onCompleted : {
-            currentIndex = 0
         }
 
         Component {
@@ -133,11 +113,7 @@ Item {
         anchors.top : chartlabel.bottom
         model : chartspanel.chart ? chartspanel.chart.series : null
         onModelChanged: {
-            setCurrentIndex(0)
-        }
-
-        Component.onCompleted : {
-            currentIndex = -1
+            setOperIndex(0)
         }
 
         anchors.topMargin: 4
@@ -181,7 +157,7 @@ Item {
                     MouseArea{
                         anchors.fill: parent
                         onClicked: {
-                            setCurrentIndex(index)
+                            setOperIndex(index)
                         }
                     }
                 }
