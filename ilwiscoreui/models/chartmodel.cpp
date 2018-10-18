@@ -294,9 +294,25 @@ void ChartModel::setNiceNumbersY(bool nice) {
     _niceNumbersY = nice; emit yAxisChanged();
 }
 
-bool ChartModel::legendVisible()
+bool ChartModel::legendVisible() const
 {
-    return false;
+    return _legendVisible;
+}
+
+void ChartModel::setLegendVisible(bool show) {
+    _legendVisible = show;
+    emit legendChanged();
+    emit chartModelChanged();
+}
+
+QString ChartModel::legendAlignment() const {
+    return _alignment;
+}
+
+void ChartModel::setLegendAlignment(const QString& align) {
+    _alignment = align;
+    emit legendChanged();
+    emit chartModelChanged();
 }
 
 bool ChartModel::xAxisVisble()

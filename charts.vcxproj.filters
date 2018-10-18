@@ -32,6 +32,9 @@
     <None Include="charts\qml\SetYAxisRange.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\SetLegendProperties.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -130,6 +133,18 @@
     <ClCompile Include="charts\deleteChartSeries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="charts\chartlegendproperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="charts\setlegendproperties.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_setlegendproperties.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_setlegendproperties.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="charts\ilwischarts_plugin.h">
@@ -145,6 +160,9 @@
       <Filter>Header Files\PropertyForms</Filter>
     </CustomBuild>
     <CustomBuild Include="charts\setyaxisrange.h">
+      <Filter>Header Files\PropertyForms</Filter>
+    </CustomBuild>
+    <CustomBuild Include="charts\setlegendproperties.h">
       <Filter>Header Files\PropertyForms</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -165,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="charts\deleteChartSeries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\chartlegendproperties.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

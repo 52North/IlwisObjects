@@ -20,22 +20,28 @@
     <None Include="charts\qml\DataseriesOperationList.qml" />
     <None Include="charts\qml\MinimalChartPane.qml" />
     <None Include="charts\qml\SetChartType.qml" />
+    <None Include="charts\qml\SetLegendProperties.qml" />
     <None Include="charts\qml\SetSeriesColor.qml" />
     <None Include="charts\qml\SetYAxisRange.qml" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="charts\addchartseries.cpp" />
     <ClCompile Include="charts\chartdataseriestype.cpp" />
+    <ClCompile Include="charts\chartlegendproperties.cpp" />
     <ClCompile Include="charts\chartseriescolor.cpp" />
     <ClCompile Include="charts\chartyaxisnumrange.cpp" />
     <ClCompile Include="charts\deleteChartSeries.cpp" />
     <ClCompile Include="charts\ilwischarts_plugin.cpp" />
     <ClCompile Include="charts\createchart.cpp" />
+    <ClCompile Include="charts\setlegendproperties.cpp" />
     <ClCompile Include="charts\setseriestype.cpp" />
     <ClCompile Include="charts\setyaxisrange.cpp" />
     <ClCompile Include="charts\updatechart.cpp" />
     <ClCompile Include="charts\setseriescolor.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ilwischarts_plugin.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_setlegendproperties.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SetSeriesColor.cpp">
@@ -48,6 +54,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ilwischarts_plugin.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_setlegendproperties.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_SetSeriesColor.cpp">
@@ -98,6 +107,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </Command>
     </CustomBuild>
+    <ClInclude Include="charts\chartlegendproperties.h" />
     <ClInclude Include="charts\chartseriescolor.h" />
     <ClInclude Include="charts\chartyaxisnumrange.h" />
     <ClInclude Include="charts\createchart.h" />
@@ -122,6 +132,16 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QTCharts" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I.\charts" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
     </CustomBuild>
     <ClInclude Include="charts\deleteChartSeries.h" />
+    <CustomBuild Include="charts\setlegendproperties.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_PLUGIN -D_WINDLL "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QTCharts" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I.\charts" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DNDEBUG -D_WINDLL "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QTCharts" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I.\charts" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
+    </CustomBuild>
     <ClInclude Include="charts\updatechart.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

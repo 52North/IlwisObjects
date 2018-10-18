@@ -39,8 +39,9 @@ namespace Ilwis {
             Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
             Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
             Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
-            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series NOTIFY chartModelChanged)
-            Q_PROPERTY(bool legendVisible READ legendVisible            NOTIFY legendChanged)
+            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series            NOTIFY chartModelChanged)
+            Q_PROPERTY(bool legendVisible READ legendVisible            WRITE setLegendVisible    NOTIFY legendChanged)
+            Q_PROPERTY(QString legendAlignment    READ legendAlignment  WRITE setLegendAlignment  NOTIFY legendChanged)
 
                 Q_PROPERTY(quint16 xaxisType   READ xaxisType)
                 Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
@@ -110,7 +111,10 @@ namespace Ilwis {
             void setFixedYAxis(bool fixed);
             bool niceNumbersY() const;
             void setNiceNumbersY(bool nice);
-            bool legendVisible();
+            bool legendVisible() const;
+            void setLegendVisible(bool show);
+            QString legendAlignment() const;
+            void setLegendAlignment(const QString& align);
 
             bool xAxisVisble();
             bool yAxisVisble();
@@ -139,6 +143,9 @@ namespace Ilwis {
             bool _fixedY = false;
             bool _fixedX = false;
             bool _niceNumbersY = false;
+            bool _legendVisible = true;
+            QString _alignment = "top";
+
             AxisType _xaxisType;
             QString _chartType = sUNDEF;
             int _tickCountX = 5;

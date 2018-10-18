@@ -81,6 +81,8 @@ Rectangle {
         backgroundColor : "transparent"
         theme : ChartView.ChartThemeBlueIcy
         dropShadowEnabled : true
+        legend.visible : chart ? chart.legendVisible : true
+        legend.alignment : chart ? aligntoint(chart.legendAlignment) : aligntoint("top")
 
         DropArea {
             anchors.fill: parent
@@ -153,6 +155,19 @@ Rectangle {
             }
 		}
 	}
+
+    function aligntoint(align) {
+        if (align == "top")
+            return 0x20
+        if (align == "right")
+            return 0x02
+        if (align == "bottom")
+            return 0x040
+        if (align == "left")
+            return 0x01
+
+        return 0x20 // fallback
+    }
 
     function createSeries(ctype, name, xas, yas){
         if ( ctype == "line") {

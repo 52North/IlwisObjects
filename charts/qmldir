@@ -9,5 +9,6 @@ MinimalChartPane.qml 1.0 qml/MinimalChartPane.qml
 SetSeriesColor.qml 1.0 qml/SetSeriesColor.qml
 SetChartType.qml 1.0 qml/SetChartType.qml
 SetYAxisRange.qml 1.0 qml/SetYAxisRange.qml
+SetLegendProperties.qml 1.0 qml/SetLegendProperties.qml
 
 plugin Charts
