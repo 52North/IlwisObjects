@@ -127,7 +127,7 @@ quint64 SelectionFeatures::createMetadata()
     OperationResource operation({"ilwis://operations/selection"});
     operation.setSyntax("selection(featurecoverage,selection-definition)");
     operation.setLongName("Select features");
-    operation.setDescription(TR("the operation select parts of the spatial extent or attributes to create a 'smaller' coverage"));
+    operation.setDescription(TR("the operation select parts of the spatial extent or attributes to create a smaller coverage"));
     operation.setInParameterCount({2});
     operation.addInParameter(0,itFEATURE, TR("input feature coverage"),TR("input feature rcoverage with a domain as specified by the selection"));
     operation.addInParameter(1,itSTRING, TR("selection-definition"),TR("Selection can either be attribute, layer index or area definition (e.g. box)"));
