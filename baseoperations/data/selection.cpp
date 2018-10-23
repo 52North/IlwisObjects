@@ -226,7 +226,7 @@ quint64 SelectionRaster::createMetadata()
     OperationResource operation({"ilwis://operations/selection"});
     operation.setLongName("Raster Selection");
     operation.setSyntax("selection(coverage,selection-definition)");
-    operation.setDescription(TR("the operation select parts of the spatial extent or attributes to create a 'smaller' coverage"));
+    operation.setDescription(TR("the operation select parts of the spatial extent or attributes to create a smaller coverage"));
     operation.setInParameterCount({2});
     operation.addInParameter(0,itRASTER, TR("input rastercoverage"),TR("input rastercoverage with a domain as specified by the selection"));
     operation.addInParameter(1,itSTRING,  TR("selection-definition"),TR("Selection can either be attribute, layer index or area definition (e.g. box)"));
