@@ -45,7 +45,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         MapExtentButton{
             id : panButton1
-            icon : "entiremap20.png"
+            icon : "full_map_a.png"
             onClicked: {
                 worldmap.addCommand("setviewextent("+ worldmap.viewid + ",entiremap)");
                 worldmap.update()
@@ -56,7 +56,7 @@ Rectangle {
 
         MapExtentButton{
             id : zoominButton
-            icon : checked ? "zoomin20A.png" : "zoomin20.png"
+            icon : checked ? "pan_a.png" : "pan_i.png"
             checkable: true
             checked: false
             action : zoomClicked

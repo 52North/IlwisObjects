@@ -57,13 +57,13 @@ Rectangle {
             id : panButton1
             checkable: true
             checked: false
-            icon : checked ? "pan20A.png" : "pan20.png"
+            icon : checked ? "pan_a.png" : "pan_i.png"
             action : panningClicked
         }
 
         Controls.MapExtentButton{
             id : zoominButton1
-            icon : checked ? "zoomin20A.png" : "zoomin20.png"
+            icon : checked ? "zoom_out_a.png" : "zoom_out_i.png"
             checkable: true
             checked: false
             action : zoomClicked

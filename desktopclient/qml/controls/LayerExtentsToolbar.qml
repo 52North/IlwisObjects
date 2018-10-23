@@ -25,7 +25,7 @@ ToolBar{
         anchors.verticalCenter: parent.verticalCenter
         spacing : 2
         MapExtentButton{
-            icon  :"entiremap20.png"
+            icon  :"full_map_a.png"
             id : entireMap
             action : entireClicked
             onClicked: {
@@ -48,7 +48,7 @@ ToolBar{
 
         MapExtentButton{
             id : panButton
-            icon : panButton.enabled ? (panButton.checked ? "pan20A.png" : "pan20.png") : "pan20B.png"
+            icon : panButton.enabled ? (panButton.checked ? "pan_a.png" : "pan_i.png") : "pan_i.png"
             action : panningClicked
             checkable: true
             checked: false
@@ -73,7 +73,7 @@ ToolBar{
 
         MapExtentButton{
             id : zoominButton
-            icon : zoominButton.checked ? "zoomin20A.png" : "zoomin20.png"
+            icon : zoominButton.checked ? "zoom_a.png" : "zoom_i.png"
             action : zoomClicked
             checkable: true
             checked: false
@@ -107,7 +107,7 @@ ToolBar{
 		}
         MapExtentButton{
             id : zoomoutButton
-            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout20A.png" : "zoomout20.png") : "zoomout20B.png"
+            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoom_out_a.png" : "zoom_out_i.png") : "zoom_out_i.png"
             action : zoomOutClicked
             checkable: true
             checked: false
@@ -131,7 +131,7 @@ ToolBar{
         }
         MapExtentButton{
             id : normalButton
-            icon : normalButton.checked ? "arrow20A.png" : "arrow20.png"
+            icon : normalButton.checked ? "getinfo_a.png" : "getinfo_i.png"
             action : normalClicked
             checkable: true
             checked: true

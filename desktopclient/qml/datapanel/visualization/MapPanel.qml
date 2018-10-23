@@ -183,7 +183,8 @@ Item {
         Connections {
             target: activeLayerExtentsToolbar()
             onToolbarClicked: {
-                layouts.activePanel().maparea().mouseActions.resetWheelPanZoomFlags()
+				if(layouts.activePanel() && layouts.activePanel().maparea() && layouts.activePanel().maparea().mouseActions)
+					layouts.activePanel().maparea().mouseActions.resetWheelPanZoomFlags()
             }
         }
         handleDelegate: Rectangle{
