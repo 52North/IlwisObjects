@@ -75,7 +75,7 @@ Rectangle {
             property int buttonWidth : 220
 
             Controls.WideButton{
-                image : "../images/openmult20.png"
+                image : "../images/thumb_selected.png"
                 label : qsTr("Open selected coverages\nin seperate panels")
                 width : buttonRow.buttonWidth
                 height : 40
