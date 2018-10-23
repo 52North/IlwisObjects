@@ -115,12 +115,12 @@ void Kernel::init() {
     _version->addBinaryVersion(Ilwis::Version::bvPOLYGONFORMAT37);
     _version->addODFVersion("3.1");
 
-    _dbPublic = QSqlDatabase::addDatabase("QSQLITE");
-    _dbPublic.setHostName("localhost");
-    _dbPublic.setDatabaseName(":memory:");
-    _dbPublic.open();
-
-    InternalDatabaseConnection stmt;
+	_dbPublic.reset(new PublicDatabase(QSqlDatabase::addDatabase("QSQLITE")));
+    _dbPublic->setHostName("localhost");
+    _dbPublic->setDatabaseName(":memory:");
+    _dbPublic->open();
+	
+	QSqlQuery stmt(*_dbPublic.get());
     stmt.exec("PRAGMA page_size = 4096");
     stmt.exec("PRAGMA cache_size = 16384");
     stmt.exec("PRAGMA temp_store = MEMORY");
@@ -128,7 +128,7 @@ void Kernel::init() {
     stmt.exec("PRAGMA locking_mode = EXCLUSIVE");
     stmt.exec("PRAGMA synchronous = OFF");
 
-     _dbPublic.prepare();
+	_dbPublic->prepare();
 
     ConnectorFactory *confac = new ConnectorFactory();
     addFactory(confac);
@@ -160,9 +160,9 @@ Kernel::~Kernel() {
     issues()->log(QString("Ilwis closed at %1").arg(Time::now().toString()),IssueObject::itMessage);
 
     context()->configurationRef().store();
-    if ( _dbPublic.isOpen()){
+    if ( _dbPublic->isOpen()){
         qDebug() << "closing database";
-          _dbPublic.close();
+          _dbPublic->close();
     }
 }
 
@@ -195,7 +195,7 @@ QString Kernel::translate(const QString& s) const {
      return _version;
  }
 
-PublicDatabase &Kernel::database()
+std::unique_ptr<PublicDatabase>& Kernel::database()
 {
     return _dbPublic;
 }

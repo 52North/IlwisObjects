@@ -104,7 +104,7 @@ public:
      *  Returns a reference to the publicdatabase
      * \return
      */
-    PublicDatabase &database();
+	std::unique_ptr<PublicDatabase>& database();
     /*!
      *  issues returns a reference to the issuelogger. In the software the issuelogger is used to store all kinds of info about what is happening. This method exposes the logger to add/retrieve information.
      *
@@ -200,7 +200,7 @@ private:
     QThreadStorage<QCache<QString, QVariant> *> _caches;
     ModuleMap _modules;
     SPVersion _version;
-    PublicDatabase _dbPublic;
+    std::unique_ptr<PublicDatabase> _dbPublic;
     QNetworkAccessManager _networkmanager;
     QScopedPointer<IssueLogger> _issues;
     QHash<QString, FactoryInterface * > _masterfactory;
