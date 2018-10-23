@@ -262,7 +262,7 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
     while (iterIn != inEnd) {
         trq()->update(1);
 
-        std::copy(iterIn, iterIn + _nb, slice.begin());
+      //  std::copy(iterIn, iterIn + _nb, slice.begin());
         std::vector<bool> valid(_nb);
         std::transform(slice.begin(), slice.end(), valid.begin(),
                        [] (const double d) { return d >= 2.0; });
