@@ -21,10 +21,14 @@ PublicDatabase::PublicDatabase() {
 
 PublicDatabase::PublicDatabase(const QSqlDatabase &db) : QSqlDatabase(db)
 {
+
+
 }
 
 void PublicDatabase::prepare() {
-    exec("BEGIN IMMEDIATE TRANSACTION");
+
+	int index = freeConnectionIndex();
+    exec(index, "BEGIN IMMEDIATE TRANSACTION");
     QSqlQuery sql(*this);
 
     QString stmt = "create table operationMetadata (operationId TEXT, name TEXT, description TEXT,icon TEXT, grouping TEXT)";
@@ -160,12 +164,13 @@ void PublicDatabase::prepare() {
 
     loadPublicTables();
 
-    exec("COMMIT TRANSACTION");
+    exec(index,"COMMIT TRANSACTION");
 
     if ( kernel()->issues()->maxIssueLevel() == IssueObject::itCritical) {
-        exec("ROLLBACK TRANSACTION");
+        exec(index,"ROLLBACK TRANSACTION");
         throw ErrorObject(TR("Critical errors found when initializing Public database"));
     }
+	freeConnectionIndex(index);
 
 }
 
@@ -184,11 +189,11 @@ bool PublicDatabase::code2Record(const QString &code, const QString &table, QSql
 
 QString PublicDatabase::findAlias(const QString &name, const QString &type, const QString &nspace)
 {
-    InternalDatabaseConnection db;
+    PublicDatabase db;
     QString query = QString("Select code from aliasses where alias='%1' and type='%2' and source='%3'").arg(name).arg(type).arg(nspace);
-    if ( db.exec(query)) {
-        if ( db.next())
-            return db.value(0).toString();
+    if ( db.exec(0,query)) {
+        if ( db.next(0))
+            return db.value(0,0).toString();
     }
     return sUNDEF;
 }
@@ -210,7 +215,7 @@ void PublicDatabase::loadPublicTables() {
 }
 
 void PublicDatabase::addRegionallEnvelopes() {
-    InternalDatabaseConnection db;
+	InternalDatabaseConnection db;
     QString query = "Select * from teritories where type='country'";
     struct Info{
         Info(const QString& name="", const Envelope& env=Envelope()) : _continent(name),_env(env) {}
@@ -517,6 +522,22 @@ bool PublicDatabase::fillDatumRecord(const QStringList& parts, QSqlQuery &sqlPub
 }
 
 
+void PublicDatabase::freeConnectionIndex(int index) {
+	if (index < _usedConnections.size())
+		_usedConnections[index] = false;
+}
+int PublicDatabase::freeConnectionIndex()  {
+
+	for (int index = 0; index < _usedConnections.size(); ++index) {
+		if (!_usedConnections[index]) {
+			_usedConnections[index] = true;
+			return index;
+		}
+	}
+	_connection.push_back(QSqlQuery(*this));
+	_usedConnections.push_back(true);
+	return _usedConnections.size() - 1;
+}
 
 bool PublicDatabase::doQuery(const QString& query, QSqlQuery &sqlPublic)
 {
@@ -528,4 +549,62 @@ bool PublicDatabase::doQuery(const QString& query, QSqlQuery &sqlPublic)
     return true;
 }
 
+bool PublicDatabase::exec(int index, const QString &query)
+{
+	_connection[index].clear();
+	return doQuery(query, _connection[index]);
+}
 
+bool PublicDatabase::next(int index)
+{
+	
+	return  _connection[index].next();
+}
+
+QSqlError PublicDatabase::lastError(int index) const
+{
+	
+	return _connection[index].lastError();
+}
+
+QVariant PublicDatabase::value(int index,int i) const
+{
+	
+	return _connection[index].value(i);
+}
+
+QVariant PublicDatabase::value(int index, const QString &name) const
+{
+	
+	return _connection[index].value(name);
+}
+
+QSqlRecord PublicDatabase::record(int index) const
+{
+	
+	return _connection[index].record();
+}
+
+bool PublicDatabase::exec(int index)
+{
+
+	return _connection[index].exec();
+}
+
+bool PublicDatabase::prepare(int index, const QString &query)
+{
+	
+	return _connection[index].prepare(query);
+}
+
+void PublicDatabase::bindValue(int index,const QString &placeholder, const QVariant &val, QSql::ParamType type)
+{
+	
+	return _connection[index].bindValue(placeholder, val, type);
+}
+
+bool PublicDatabase::isValid(int index) const
+{
+	//  Locker<std::recursive_mutex> lock(_guard);
+	return _connection[index].isValid();
+}

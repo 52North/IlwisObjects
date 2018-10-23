@@ -40,6 +40,20 @@ public:
     bool code2Record(const QString& code, const QString& table, QSqlRecord& rec);
     QString findAlias(const QString& name, const QString& type, const QString& nspace);
 
+	bool exec(int index, const QString& query);
+	bool next(int index);
+	QSqlError lastError(int index) const;
+	QVariant value(int index,int i) const;
+	QVariant value(int index, const QString& name) const;
+	QSqlRecord record(int index) const;
+	bool exec(int index);
+	bool prepare(int index, const QString& query);
+	void bindValue(int index, const QString& placeholder, const QVariant& val,
+		QSql::ParamType type = QSql::In);
+	bool isValid(int index) const;
+	int freeConnectionIndex() ;
+	void freeConnectionIndex(int index);
+
 private:
     void loadPublicTables();
     void insertFile(const QString &filename, QSqlQuery &sqlPublic);
@@ -55,6 +69,9 @@ private:
     void insertItemDomains(QSqlQuery &sqlPublic);
     bool fillTeritoryRecord(const QStringList &parts, QSqlQuery &sqlPublic);
     void addRegionallEnvelopes();
+
+	std::vector<QSqlQuery> _connection;
+	std::vector<bool> _usedConnections;
 };
 }
 
