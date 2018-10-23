@@ -77,9 +77,9 @@ Rectangle {
         TextArea {
             id : descriptionString
             Layout.minimumWidth: parent.width
-            anchors.top : descTitle.bottom
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 5
+            //anchors.top : descTitle.bottom
+            //anchors.bottom: parent.bottom
+            //anchors.bottomMargin: 5
             text : descriptiontext
         }
     }
