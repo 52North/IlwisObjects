@@ -189,7 +189,7 @@ EulerExpCoverage::EulerExpCoverage(quint64 metaid,const Ilwis::OperationExpressi
 OperationImplementation *EulerExpCoverage::create(quint64 metaid, const Ilwis::OperationExpression &expr){return new EulerExpCoverage(metaid,expr);}
 
 quint64 EulerExpCoverage::createMetadata() {
-    Resource resource = UnaryMathRasterAndNumber::populateMetadata(QString("ilwis://operations/exp"), "Exp (Power of Euler's number) for rasters");
+    Resource resource = UnaryMathRasterAndNumber::populateMetadata(QString("ilwis://operations/exp"), "Exp (Power of Eulers number) for rasters");
     resource.addProperty("pin_1_desc",QString("input data source with a numerical domain"));
     resource.addProperty("pout_1_desc",QString("output data source with a numerical domain"));
 
@@ -485,7 +485,7 @@ EulerExpTable::EulerExpTable(quint64 metaid,const Ilwis::OperationExpression& ex
 OperationImplementation *EulerExpTable::create(quint64 metaid, const Ilwis::OperationExpression &expr){return new EulerExpTable(metaid,expr);}
 
 quint64 EulerExpTable::createMetadata() {
-    Resource resource = UnaryMathTable::populateMetadata(QString("ilwis://operations/exp"), "Exp (Power of Euler's number) for Columns");
+    Resource resource = UnaryMathTable::populateMetadata(QString("ilwis://operations/exp"), "Exp (Power of Eulers number) for Columns");
     resource.addProperty("pin_1_desc",QString("input data source with a numerical domain"));
     resource.addProperty("pout_1_desc",QString("output data source with a numerical domain"));
 
