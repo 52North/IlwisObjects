@@ -24,12 +24,9 @@ public:
     void bindValue(const QString& placeholder, const QVariant& val,
                    QSql::ParamType type = QSql::In);
     bool isValid() const;
-
 private:
-    mutable std::recursive_mutex _guard;
-    QSqlQuery _connection;
-    //debug
-    static quint64 _locknumber;
+	int _index = 0;
+	static std::recursive_mutex _guard;
 };
 }
 
