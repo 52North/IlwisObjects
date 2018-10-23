@@ -333,7 +333,7 @@ bool DomainConnector::storeMetaData(IlwisObject *data, const IOOptions &options)
 {
     Domain *dom = static_cast<Domain *>(data);
     QString dmName = dom->name();
-    QString alias = kernel()->database().findAlias(dmName,"domain","ilwis3");
+    QString alias = kernel()->database()->findAlias(dmName,"domain","ilwis3");
     if ( alias != sUNDEF)
         return true; // nothing to be done, already exists as a system domain
     if(!Ilwis3Connector::storeMetaData(data, itDOMAIN))
