@@ -225,22 +225,25 @@ double Ellipsoid::excentricity2() const
 }
 
 void Ellipsoid::setEllipsoid( double a, double invf){
-    InternalDatabaseConnection db;
-    QString query = "Select * from ellipsoid";
-    if ( db.exec(query) ){
-        while( db.next()){
-             QSqlRecord rec = db.record();
-             double maxis = rec.field("majoraxis").value().toDouble();
-             double invflat = rec.field("invflattening").value().toDouble();
-             if ( a == 6378137 && invf == 0){ // special case that is basically an error but is assumed to refered to the wgs84 ellipsoid
-                 fromInternal(rec);
-                 return;
-             }else if ( std::abs(maxis - a) < 0.01 && std::abs(invflat - invf) < 0.0000001){
-                 fromInternal(rec);
-                 return;
-             }
-        }
-    }
+	if (a != rUNDEF && a > 0 && invf != rUNDEF) {
+		InternalDatabaseConnection db;
+		QString query = "Select * from ellipsoid";
+		if (db.exec(query)) {
+			while (db.next()) {
+				QSqlRecord rec = db.record();
+				double maxis = rec.field("majoraxis").value().toDouble();
+				double invflat = rec.field("invflattening").value().toDouble();
+				if (a == 6378137 && invf == 0) { // special case that is basically an error but is assumed to refered to the wgs84 ellipsoid
+					fromInternal(rec);
+					return;
+				}
+				else if (std::abs(maxis - a) < 0.01 && std::abs(invflat - invf) < 0.0000001) {
+					fromInternal(rec);
+					return;
+				}
+			}
+		}
+	}
     _flattening = (invf <= 1) ? 0 : 1.0/invf; // invf = 0 for spheres
     _majorAxis = a;
     _minoraxis = _majorAxis * (1.0 - _flattening);
