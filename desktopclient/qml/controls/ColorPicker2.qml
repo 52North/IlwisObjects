@@ -11,8 +11,8 @@ Rectangle {
     property var initialColor
 
     onInitialColorChanged : {
-        choosenItemColor.color = initialColor  
-        chosenItemText.text = initialColor  
+        choosenItemColor.color = initialColor ? initialColor : "white"
+        chosenItemText.text = initialColor ? initialColor : "white"
     }
 
     width : 235
