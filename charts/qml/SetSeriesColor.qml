@@ -29,7 +29,7 @@ Rectangle {
             var oldIndex =  dataserieslist.currentIndex
             var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, color : chartcolorselector.selectedColor}
             operation.execute(paramaters)
-            dataserieslist.setCurrentIndex(oldIndex)
+            dataserieslist.currentIndex = oldIndex
         }
 
     }
