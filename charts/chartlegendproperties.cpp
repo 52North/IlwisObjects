@@ -41,7 +41,7 @@ Ilwis::OperationImplementation::State ChartLegendProperties::prepare(ExecutionCo
     ChartOperation::prepare(ctx, st);
 
     if (!getModel()) {
-        kernel()->issues()->log(TR("Invalid model id used for chart. Chart can not assign new dataseries type"));
+        kernel()->issues()->log(TR("Invalid model id used for chart. Chart can not change legend"));
         return sPREPAREFAILED;
     }
 

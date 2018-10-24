@@ -10,10 +10,19 @@ import "../../../../qml/controls" as Controls
 import "../.." as Base
 import ChartModel 1.0
 
+
 Rectangle {
     width: 300
     height: parent ? parent.height - 10 : 0
     property var operation
+
+    function applyChanges() {
+        if (chartlegendalignment.comboText == "")
+            return
+
+        var parameters = {show:checkshowlegend.checked, align:chartlegendalignment.comboText}
+        operation.execute(parameters)
+    }
 
     Row {
         id : checkvisible
@@ -26,6 +35,9 @@ Rectangle {
             height : 20
             Component.onCompleted : {
                 checked = chart.legendVisible
+            }
+            onClicked : {
+                applyChanges()
             }
         }
         Text {
@@ -49,21 +61,10 @@ Rectangle {
             chartlegendalignment.initialComboText = chart.legendAlignment
         }
 
-    }
-
-    Button {
-        width : 80
-        height : 20
-
-        anchors.top : chartlegendalignment.bottom
-        anchors.right: chartlegendalignment.right
-        anchors.rightMargin: 3
-
-        text : qsTr("Apply")
-        onClicked: {
-            var parameters = {show:checkshowlegend.checked, align:chartlegendalignment.comboText}
-            operation.execute(parameters)
+        onIndexChanged : {
+            applyChanges()
         }
+
     }
 }
 

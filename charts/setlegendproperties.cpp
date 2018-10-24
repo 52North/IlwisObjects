@@ -29,7 +29,7 @@ setLegendProperties::setLegendProperties() : ChartOperationEditor("setlegendprop
 bool setLegendProperties::canUse(ChartModel *model, const QVariantMap &parameter) const
 {
     if (!parameter.empty())
-        return parameter["dataseries"].toBool();
+        return parameter["chart"].toBool();
     return false;
 }
 
