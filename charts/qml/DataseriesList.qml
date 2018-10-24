@@ -30,7 +30,7 @@ Item {
         if (chart) {
             chartlabel.currentIndex = 0
             dataserieslist.currentIndex = -1
-            dataseriesOperationList.currentSeries = null
+            dataseriesOperationList.currentSeries = chart
         }
     }
 

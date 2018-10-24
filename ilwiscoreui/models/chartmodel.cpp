@@ -6,6 +6,10 @@
 #include "table.h"
 #include "modelregistry.h"
 #include "tablemodel.h"
+#include "factory.h"
+#include "abstractfactory.h"
+#include "chartoperationfactory.h"
+#include "chartoperationeditor.h"
 #include "chartmodel.h"
 #include "dataseriesmodel.h"
 #include "colorrange.h"
@@ -90,6 +94,35 @@ void ChartModel::chartType(const QString & tp)
 QString ChartModel::chartType() const
 {
     return _chartType;
+}
+
+void ChartModel::fillOperations() {
+    auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
+    if (factory) {
+        QVariantMap parameters = { { "chart", true } };
+        _operations = factory->selectedOperations(this, parameters);
+        for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
+            (*iter)->setParent(this);
+    }
+}
+
+QQmlListProperty<ChartOperationEditor> ChartModel::operations()
+{
+    if (_operations.isEmpty())
+        fillOperations();
+
+    return QQmlListProperty<ChartOperationEditor>(this, _operations);
+}
+
+ChartOperationEditor * ChartModel::operation(quint32 index)
+{
+    if (_operations.isEmpty())
+        fillOperations();
+
+    if (index < _operations.size())
+        return _operations[index];
+
+    return nullptr;
 }
 
 int ChartModel::seriesCount() const {

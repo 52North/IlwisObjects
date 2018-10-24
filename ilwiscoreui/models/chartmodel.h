@@ -17,6 +17,7 @@ namespace Ilwis {
     namespace Ui {
         class TableModel;
 		class DataseriesModel;
+        class ChartOperationEditor;
 
         class ItemCategory {
         public:
@@ -40,6 +41,7 @@ namespace Ilwis {
             Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
             Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
             Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series            NOTIFY chartModelChanged)
+            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
             Q_PROPERTY(bool legendVisible READ legendVisible            WRITE setLegendVisible    NOTIFY legendChanged)
             Q_PROPERTY(QString legendAlignment    READ legendAlignment  WRITE setLegendAlignment  NOTIFY legendChanged)
 
@@ -81,6 +83,9 @@ namespace Ilwis {
             static QString minimalPanelUrl();
             void chartType(const QString& tp);
             QString chartType() const;
+
+            QQmlListProperty<ChartOperationEditor> operations();
+            Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
 
 			int seriesCount() const;
 			DataseriesModel* getSeriesByName(const QString name) const;
@@ -124,6 +129,7 @@ namespace Ilwis {
 			void nameChanged();
 			void chartModelChanged();
 			void seriesCountChanged();
+            void operationsChanged();
 			void xAxisChanged();
 			void yAxisChanged();
             void updateSeriesChanged();
@@ -133,6 +139,7 @@ namespace Ilwis {
 
         private:
 			QQmlListProperty<DataseriesModel> series();
+            void fillOperations();
 
             void initializeDataSeries(DataseriesModel *newseries);
             QString formatXAxis() const;
@@ -155,6 +162,8 @@ namespace Ilwis {
             ITable _datatable;
 
 			QList<DataseriesModel *> _series;
+            QList<ChartOperationEditor *> _operations;
+
             std::vector<QString> _graphColors = { "crimson", "blueviolet","olive","deeppink","darkblue","darkred","cadetblue","tomato", "darkslateblue","orangered", "dodgerblue","forestgreen","goldenrod",
             "green","indigo","limegreen","orange", "mediumslateblue","orchid","seagreen","sienna","teal" };
         };
