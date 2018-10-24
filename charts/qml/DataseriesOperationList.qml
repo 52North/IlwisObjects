@@ -20,10 +20,11 @@ Item {
         operationlist.model = operations
      }
 
-    function setOperation(newindex){
+    function setOperation(newindex) {
         operationlist.currentIndex = newindex
         dataseriesoperation.seriesIndex = newindex
-        if ( operationlist.model && newindex < operationlist.model.length ){
+
+        if ( operationlist.model && newindex < operationlist.model.length ) {
             dataseriesoperation.currentOperation = operationlist.model[newindex]
         }
         else {
@@ -32,8 +33,10 @@ Item {
     }
 
     onCurrentSeriesChanged: {
-        if ( currentSeries)
+        if ( currentSeries) {
             operationlist.model = currentSeries.operations
+            setOperation(0)
+        }
         else {
             dataseriesoperation.currentOperation = null
             operationlist.model = null
