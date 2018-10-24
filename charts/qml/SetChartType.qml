@@ -16,28 +16,21 @@ Rectangle {
     height: parent ? parent.height - 10 : 0
     property var operation
 
-/*    Text {
-        id : colorselectorlabel
-        text : "Chart type"
-    }*/
-
     Controls.ComboxLabelPair {
         id : charttypeselector
         labelText : qsTr("Chart type")
         labelWidth : 100
         width : parent.width - 5
         height : 20
-        itemModel : ["Line", "Spline", "Bar", "Pie", "Points", "Polar", "3DLine", "3DSpline", "3DBar" ]
+        itemModel : ["Line", "Spline", "Bar", "Pie", "Points" }//, "Polar", "3DLine", "3DSpline", "3DBar" ]
 
         Component.onCompleted : {
             charttypeselector.initialComboText = dataseriesOperationList.currentSeries.charttype
         }
 
         onIndexChanged : {
-//            var oldIndex =  dataserieslist.currentIndex
             var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : charttypeselector.comboText}
             operation.execute(paramaters)
-//            dataserieslist.setCurrentIndex(oldIndex)
         }
     }
 
