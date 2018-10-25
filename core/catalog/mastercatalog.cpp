@@ -373,16 +373,18 @@ quint64 MasterCatalog::url2id(const QUrl &url, IlwisTypes tp, bool casesensitive
 
 Resource MasterCatalog::id2Resource(quint64 iid) const {
    // Locker<std::recursive_mutex> lock(_guard);
-    auto query = QString("select * from mastercatalog where itemid = %1").arg(iid);
-    InternalDatabaseConnection db(query);
-    if ( db.next()) {
-        auto rec = db.record();
-        return Resource(rec);
-    }else{ // might be an anonymous object
-        auto obj = mastercatalog()->get(iid);
-        if ( obj){
-            return obj->resource();
-        }
+	{ // scopes the InternalDatabaseConnection; it will unlock when done
+		auto query = QString("select * from mastercatalog where itemid = %1").arg(iid);
+		InternalDatabaseConnection db(query);
+		if (db.next()) {
+			auto rec = db.record();
+			return Resource(rec);
+		}
+	}
+	// might be an anonymous object
+    auto obj = mastercatalog()->get(iid);
+    if ( obj){
+          return obj->resource();
     }
     return Resource();
 }
