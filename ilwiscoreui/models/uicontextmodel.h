@@ -151,7 +151,6 @@ private:
     QObject *_rootObject = 0;
     int _activeSplit = 1;
     std::set<int> _currentKey;
-    std::atomic<quint64> _lastAddedId;
     QStringList _colorNames;
     std::map<QString, QColor> _colorCodes;
     WorkSpaceModel *_currentWorkSpace = 0;

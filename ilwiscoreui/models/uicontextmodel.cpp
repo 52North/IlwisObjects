@@ -12,6 +12,7 @@
 #include "featurecoverage.h"
 #include "feature.h"
 #include "raster.h"
+#include "modelregistry.h"
 #include "uicontextmodel.h"
 #include "factory.h"
 #include "abstractfactory.h"
@@ -376,21 +377,11 @@ qint64 UIContextModel::addMapPanel(const QString& filter, const QString& side, c
     if ( datapane ){
         Locker<std::mutex> lock(_mutexAddPanel);
         // the invoke goes to a different thread
-        bool ok = QMetaObject::invokeMethod(datapane,"newPanel",Q_ARG(QVariant, filter),Q_ARG(QVariant,"coverage"),Q_ARG(QVariant,url),Q_ARG(QVariant,side));
+        bool ok = QMetaObject::invokeMethod(datapane,"newPanel",Q_ARG(QVariant, filter),Q_ARG(QVariant,"coverage"),Q_ARG(QVariant,url),Q_ARG(QVariant,side),  Q_ARG(QVariant, ""));
         if (!ok)
             return i64UNDEF;
-        // we want to retrieve the viewid for potential use else where; it is set in a different thread
-        // the action might already been done in which case _lastaddid has a value; in case it is not done
-        // we have to wait until the other thread frees the qwaitcondition
-        if ( _lastAddedId.load() == Ilwis::i64UNDEF){
-            _mutex4viewLock.lock();
-            _wait4ViewCreate.wait(&_mutex4viewLock);
-        }
-        // it is now guaranteed that _lastaddedid has a value
-        quint64 id =  _lastAddedId;
-        // we reset it to undef as the value is safely stored in a local var
-        _lastAddedId.store(Ilwis::i64UNDEF);
-        return id + 1;
+		qint64 id = modelregistry()->lastAddedId();
+        return id;
         // the outer lock is now freed and other threads may use the mechanism
     }
     return i64UNDEF;
