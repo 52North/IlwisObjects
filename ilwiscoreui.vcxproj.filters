@@ -81,6 +81,12 @@
     <Filter Include="Source Files\ilwisobjects\tableoperations">
       <UniqueIdentifier>{3fc6571a-96d6-44cb-89c4-8c16ee753f66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\catalog\operations">
+      <UniqueIdentifier>{064f89f2-1278-4544-8699-af757e91b068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\catalog\operations">
+      <UniqueIdentifier>{6fc710c3-5c97-4b9d-a0d8-e80769e33bd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwiscoreui\models\workflow\applicationmodelui.cpp">
@@ -770,6 +776,30 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\layerinfo.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\catalogoperationeditor.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\catalogoperationfactory.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_catalogoperationeditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogoperationeditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="opencoverage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\opencoverages.cpp">
+      <Filter>Source Files\catalog\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_opencoverages.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_opencoverages.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -997,6 +1027,12 @@
     <CustomBuild Include="ilwiscoreui\coveragedisplay\propertyeditors\layerinfo.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\catalogoperationeditor.h">
+      <Filter>Header Files\catalog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\opencoverages.h">
+      <Filter>Header Files\catalog\operations</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwiscoreui\models\.gitignore">
@@ -1027,6 +1063,12 @@
     </ClInclude>
     <ClInclude Include="ilwiscoreui\models\chartoperationfactory.h">
       <Filter>Header Files\ilwisobjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\catalogoperationfactory.h">
+      <Filter>Header Files\catalog</Filter>
+    </ClInclude>
+    <ClInclude Include="opencoverage.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

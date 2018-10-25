@@ -174,6 +174,9 @@
     <ClCompile Include="Debug\moc_catalogmodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_catalogoperationeditor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_catalogscontroller.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -294,6 +297,9 @@
     <ClCompile Include="Debug\moc_openattributetable.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_opencoverages.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_operationcatalogmodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -372,6 +378,8 @@
     <ClCompile Include="Debug\moc_workspacemodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\catalogoperationeditor.cpp" />
+    <ClCompile Include="ilwiscoreui\catalogoperationfactory.cpp" />
     <ClCompile Include="ilwiscoreui\controlpointmodel.cpp" />
     <ClCompile Include="ilwiscoreui\controlpointslistmodel.cpp" />
     <ClCompile Include="ilwiscoreui\coveragedisplay\coveragelayermodel.cpp" />
@@ -400,6 +408,7 @@
     <ClCompile Include="ilwiscoreui\models\columnmodel.cpp" />
     <ClCompile Include="ilwiscoreui\models\workflow\conceptmodel.cpp" />
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\convertattributedomain.cpp" />
+    <ClCompile Include="ilwiscoreui\opencoverages.cpp" />
     <ClCompile Include="ilwiscoreui\tableoperations\columnvisibility.cpp" />
     <ClCompile Include="ilwiscoreui\tableoperations\convertcolumndomain.cpp" />
     <ClCompile Include="ilwiscoreui\models\datapanemodel.cpp" />
@@ -463,6 +472,7 @@
     <ClCompile Include="ilwiscoreui\models\workflow\workflowcatalogmodel.cpp" />
     <ClCompile Include="ilwiscoreui\models\workflow\workflowmodel.cpp" />
     <ClCompile Include="ilwiscoreui\models\workspacemodel.cpp" />
+    <ClCompile Include="opencoverage.cpp" />
     <ClCompile Include="Release\moc_analysismodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -476,6 +486,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Release\moc_backgroundlayereditor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Release\moc_catalogoperationeditor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Release\moc_chartmodel.cpp">
@@ -559,6 +572,9 @@
     <ClCompile Include="Release\moc_modelregistry.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Release\moc_opencoverages.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Release\moc_operationsbykeymodel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -609,6 +625,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="ilwiscoreui\opencoverages.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DILWISCOREUI_LIBRARY -D_WINDLL "-I$(QTDIR)\include\QTCharts" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\ilwiscore\core" "-I.\ilwiscoreui" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\coveragedisplay" "-I.\ilwiscoreui\coveragedisplay\propertyeditors" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DILWISCOREUI_LIBRARY -DQT_NO_DEBUG -DNDEBUG -D_WINDLL "-I$(QTDIR)\include\QTCharts" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\ilwiscore\core" "-I.\ilwiscoreui" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\coveragedisplay" "-I.\ilwiscoreui\coveragedisplay\propertyeditors" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+    </CustomBuild>
+    <ClInclude Include="opencoverage.h" />
     <CustomBuild Include="ilwiscoreui\models\workflow\analysismodel.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DILWISCOREUI_LIBRARY -DQT_NO_DEBUG -DNDEBUG -D_WINDLL  "-I$(QTDIR)\include\QTCharts" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\ilwiscore\core" "-I.\ilwiscoreui" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\coveragedisplay" "-I.\ilwiscoreui\coveragedisplay\propertyeditors" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing analysismodel.h...</Message>
@@ -809,6 +836,17 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DILWISCOREUI_LIBRARY -DQT_NO_DEBUG -DNDEBUG -D_WINDLL  "-I$(QTDIR)\include\QTCharts" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\ilwiscore\core" "-I.\ilwiscoreui" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\coveragedisplay" "-I.\ilwiscoreui\coveragedisplay\propertyeditors" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
     </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\catalogoperationeditor.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DILWISCOREUI_LIBRARY -D_WINDLL "-I$(QTDIR)\include\QTCharts" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\ilwiscore\core" "-I.\ilwiscoreui" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\coveragedisplay" "-I.\ilwiscoreui\coveragedisplay\propertyeditors" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DILWISCOREUI_LIBRARY -DQT_NO_DEBUG -DNDEBUG -D_WINDLL "-I$(QTDIR)\include\QTCharts" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\ilwiscore\core" "-I.\ilwiscoreui" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\coveragedisplay" "-I.\ilwiscoreui\coveragedisplay\propertyeditors" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtConcurrent" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015"</Command>
+    </CustomBuild>
+    <ClInclude Include="ilwiscoreui\catalogoperationfactory.h" />
     <ClInclude Include="ilwiscoreui\coveragedisplay\drawerattributesetter.h" />
     <ClInclude Include="ilwiscoreui\coveragedisplay\drawerattributesetterfactory.h" />
     <ClInclude Include="ilwiscoreui\coveragedisplay\drawerinterfaceenums.h" />

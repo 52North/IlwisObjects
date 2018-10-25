@@ -293,7 +293,7 @@
     <None Include="desktopclient\qml\controls\VScrollBar.qml" />
     <None Include="desktopclient\qml\controls\WideButton.qml" />
     <None Include="desktopclient\qml\datapanel\ButtonBarTabViewStyle.qml" />
-    <None Include="desktopclient\qml\datapanel\catalog\CatalogActions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogManager.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogButton.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogButtonBar.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogContextMenu.qml" />
@@ -305,6 +305,8 @@
     <None Include="desktopclient\qml\datapanel\catalog\CatalogLayoutButtonBar.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogLocationView.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogMap.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogOperationList.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\CatalogOperations.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogPanel.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogProperties.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogRefreshOptions.qml" />
@@ -317,6 +319,7 @@
     <None Include="desktopclient\qml\datapanel\catalog\DropConversionFormats.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\ObjectCopyOptions.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\ObjectDeleteOptions.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\OpenCoverages.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\OperationLayoutButtonBar.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\OperationPanel.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\OperationTable.qml" />
@@ -983,6 +986,7 @@
     <Image Include="desktopclient\qml\images\zoomout20B.png" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="desktopclient\qml\datapanel\catalog\CatalogOperationEditor.qml" />
     <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml" />
     <Text Include="desktopclient\qml\datapanel\visualization\ViewManagerTabs.qml" />
   </ItemGroup>
