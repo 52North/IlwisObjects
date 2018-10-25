@@ -8,7 +8,7 @@
 #include "abstractfactory.h"
 #include "tranquilizerfactory.h"
 #include "raster.h"
-#include "symboltable.h"
+//#include "symboltable.h"
 #include "ilwisoperation.h"
 #include "ilwiscontext.h"
 #include "rasterinterpolator.h"
@@ -216,13 +216,12 @@ std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
                     b(i - m1) = wfit[i] * yfit[i];
                 }
                 // Solving linear-squares problem A^TAc = A^Tb
-				// TODO : will not compile under MSVC
-                //Eigen::Matrix3d ATA = A * A.transpose();
-               // Eigen::VectorXd ATb = A * b;
-                //Eigen::VectorXd c = ATA.partialPivLu().solve(ATb);
+                Eigen::Matrix3d ATA = A * A.transpose();
+                Eigen::VectorXd ATb = A * b;
+				Eigen::VectorXd c = ATA.partialPivLu().solve(ATb);
 
                 // Evaluating the fitted function
-               // yfit[i] = c(0) + c(1) * t[i - m1] + c(2) * t[i - m1] * t[i - m1];
+                yfit[i] = c(0) + c(1) * t[i - m1] + c(2) * t[i - m1] * t[i - m1];
             }
             else {
                 dut.clear();
@@ -262,7 +261,13 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
     while (iterIn != inEnd) {
         trq()->update(1);
 
-      //  std::copy(iterIn, iterIn + _nb, slice.begin());
+		PixelIterator pib(iterIn);
+		PixelIterator pie(iterIn + _nb);
+		auto sit = slice.begin();
+		while (pib != pie) {
+			*sit++ = *pib;
+			pib++;
+		}
         std::vector<bool> valid(_nb);
         std::transform(slice.begin(), slice.end(), valid.begin(),
                        [] (const double d) { return d >= 2.0; });
