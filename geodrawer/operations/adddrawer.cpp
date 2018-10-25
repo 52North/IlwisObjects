@@ -91,7 +91,7 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
         ERROR2(ERR_ILLEGAL_VALUE_2, TR("dataype for layer drawer"), _drawerCode);
         return sPREPAREFAILED;
     }
-    if (parent != "") {
+    if (parent != "" && parent != sUNDEF) {
         LayerIndex idx = parent.toInt();
         if (!(_parentLayer = dynamic_cast<QStandardItem *>(layerManager()->findLayer(idx)))) {
             kernel()->issues()->log(TR("The parent of the to be added layer doesnt exist:") + parent);
@@ -153,7 +153,7 @@ quint64 AddDrawer::createMetadata()
     operation.setDescription(TR("adds a new drawer to the layerview identified by viewid"));
     operation.setInParameterCount({6});
     operation.addInParameter(0,itINTEGER , TR("view id"),TR("id of the view to which this drawer has to be added"));
-    operation.addInParameter(1,itSTRING , TR("parent"),TR("indicates the parent of the layer. If it is empty it will be added under the global layer. Parent is a '|' delimited string of layer names"));
+    operation.addInParameter(1,itSTRING , TR("parent"),TR("indicates the parent of the layer. If it is empty or undefined it will be added under the global layer. Parent is a '|' delimited string of layer names"));
     operation.addInParameter(2,itSTRING , TR("Data source"),TR("The url that is used to retrieve the data for this layer. It may be empty in the case oof layers that are not based on a data source"));
     operation.addInParameter(3,itSTRING , TR("Typename"),TR("which data type is represented by this url or the type of drawer that should be created in case of layers that are not based on a datasource"));
 	operation.addInParameter(4, itBOOL, TR("Visible"), TR("Should the layer initially be visible"));
