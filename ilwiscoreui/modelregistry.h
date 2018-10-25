@@ -21,7 +21,7 @@ namespace Ilwis {
 
         public:
             Q_PROPERTY(bool needsUpdate READ needsUpdate NOTIFY needsUpdateChanged)
-            Q_PROPERTY(quint32 lastAddedId READ lastAddedId NOTIFY lastAddedIdChanged)
+            Q_PROPERTY(quint32 lastAddedId READ lastAddedId WRITE lastAddedId NOTIFY lastAddedIdChanged)
             Q_INVOKABLE QVariantList modelList(QObject *source,  const QString& types);
             Q_INVOKABLE QVariantList linkedProperties(int modelId);
             Q_INVOKABLE Ilwis::Ui::LayerManager* createLayerManager(QObject *parent, QQuickItem *viewContainer);
@@ -43,6 +43,7 @@ namespace Ilwis {
             quint32 newModelId();
             bool needsUpdate() const;
             quint32 lastAddedId() const;
+			void lastAddedId(quint64 id);
     
         signals:
             void needsUpdateChanged();

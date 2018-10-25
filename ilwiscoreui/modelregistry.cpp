@@ -231,22 +231,24 @@ QVariantList ModelRegistry::linkedProperties(int modelId) {
     return result;
 }
 
-quint32 Ilwis::Ui::ModelRegistry::newModelId()
+quint32 ModelRegistry::newModelId()
 {
     return _baseId++;
 }
 
-bool Ilwis::Ui::ModelRegistry::needsUpdate() const
+bool ModelRegistry::needsUpdate() const
 {
     return true;
 }
 
-quint32 Ilwis::Ui::ModelRegistry::lastAddedId() const
+quint32 ModelRegistry::lastAddedId() const
 {
     return _lastAddedId;
 }
 
-
+void ModelRegistry::lastAddedId(quint64 id) {
+	_lastAddedId = id;
+}
 
 LayerManager *ModelRegistry::createLayerManager(QObject *parent, QQuickItem *viewContainer)
 {
