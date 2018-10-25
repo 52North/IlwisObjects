@@ -99,11 +99,12 @@ Rectangle {
 
         var currxaxis = xas;
         var xaxistype = chart.xaxisType;
+		var labels = []
         if (xaxistype == 3) {   // 3 == chart.AxisType.AT_CATEGORIES
             var ser = chart.getSeries(0)
             var xcat = ser.categories("xaxis", true);
             var keys = xcat.keys;
-            var labels = xcat.labels;
+            labels = xcat.labels;
             currxaxis = [];
             itemaxisx.min = ser.minID;
             itemaxisx.max = ser.maxID;
