@@ -66,6 +66,7 @@ Item {
         viewmanager.addDataSource(filter2, sourceName, sourceType, options)
         maparea.initGeoDrawer()
         layerview.createParameters[layerview.activeSubPanel] = [filter, sourceName, sourceType]
+		models.lastAddedId = layerManager().viewid
         return layerManager().viewid
     }
 
