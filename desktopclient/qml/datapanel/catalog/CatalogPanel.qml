@@ -81,6 +81,7 @@ Item {
     }
 
     function setSelected(objectid){
+	    var currentSelection = mastercatalog.selectedIds()
         mastercatalog.setSelectedObjects("")
         var resources = currentCatalog.resources
         var sz = resources.length
@@ -108,11 +109,23 @@ Item {
                 }
             }
         } else if ( uicontext.keyPressed(Qt.Key_Control)){
+		  var oldList = currentSelection.split("|")
+		  var newIds = ""
           for(var k = 0; k < sz; ++k){
               if ( resources[k].isSelected){
-                selectedIds = selectedIds == "" ? resources[k].id : selectedIds + "|" +resources[k].id
+			    var found = false
+			    var id = resources[k].id
+				for(var p=0; p < oldList.length && !found; ++p){
+					if ( oldList[p] == id){
+						selectedIds = selectedIds == "" ? id : selectedIds + "|" + id
+						found = true
+					}
+				}
+				if (!found)
+					newIds = newIds == "" ? id : newIds + "|" + id
               }
           }
+		  selectedIds = selectedIds == "" ? newIds : selectedIds + "|" + newIds
         }
         mastercatalog.setSelectedObjects(selectedIds)
     }
@@ -160,7 +173,7 @@ Item {
             id : catalogView
             height : parent.height - Global.actionBarMinHeight
         }
-        CatalogActions{
+        CatalogManager{
             id : actionBar
         }
         handleDelegate: Rectangle{
