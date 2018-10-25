@@ -11,6 +11,9 @@
 #include "workspacemodel.h"
 #include "catalogview.h"
 #include "tranquilizer.h"
+#include "abstractfactory.h"
+#include "catalogoperationfactory.h"
+#include "catalogoperationeditor.h"
 #include "ilwiscoreui_global.h"
 
 namespace Ilwis {
@@ -18,6 +21,7 @@ class CatalogView;
 
 namespace Ui {
 class CatalogFilterModel;
+class CatalogOperationEditor;
 
 typedef QQmlListProperty<Ilwis::Ui::ResourceModel> QMLResourceList;
 
@@ -28,6 +32,7 @@ class ILWISCOREUISHARED_EXPORT MasterCatalogModel : public QObject
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::CatalogFilterModel> defaultFilters READ defaultFilters CONSTANT)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::WorkSpaceModel> workspaces READ workspaces NOTIFY workspacesChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::IlwisObjectModel> selectedData READ selectedData NOTIFY selectionChanged)
+	Q_PROPERTY(QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> catalogOperationEditors READ catalogOperationEditors NOTIFY catalogOperationEditorsChanged)
     Q_PROPERTY(int activeSplit READ activeSplit WRITE setActiveSplit NOTIFY activeSplitChanged)
     Q_PROPERTY(QString currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
     Q_PROPERTY(Ilwis::Ui::CatalogModel* currentCatalog READ currentCatalog WRITE setCurrentCatalog NOTIFY currentCatalogChanged)
@@ -112,6 +117,7 @@ private:
     CatalogModel *_currentCatalog = 0;
     CatalogModel *_lastCatalog = 0;
     bool _metadataEditMode = false;
+	CatalogOperationFactory _catalogOperations;
 
 
     CatalogModel *addBookmark(const QString &label, const QString &shortName, const QUrl &location, const QString &descr, const QString &query, bool threading = true);
@@ -125,6 +131,7 @@ private:
     void addDefaultFilters();
     void metadataEditMode(bool yesno);
     bool metadataEditMode() const;
+	QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> catalogOperationEditors();
 signals:
     void selectionChanged();
     void activeSplitChanged();
@@ -134,6 +141,7 @@ signals:
     void workspacesChanged();
     void historyChanged();
     void editModeChanged();
+	void catalogOperationEditorsChanged();
 private slots:
     void initFinished();
  };

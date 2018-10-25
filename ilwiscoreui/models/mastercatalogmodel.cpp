@@ -38,6 +38,7 @@
 #include "operationcatalogmodel.h"
 #include "oshelper.h"
 #include "resourcemanager.h"
+#include "opencoverages.h"
 #include "mastercatalogmodel.h"
 
 using namespace Ilwis;
@@ -441,6 +442,7 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
         if ( objects == ""){
             clearList();
             emit selectionChanged();
+			emit catalogOperationEditorsChanged();
             return;
         }
         QStringList parts = objects.split("|");
@@ -455,6 +457,7 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
             IlwisObjectModel *ioModel = new IlwisObjectModel(resource, this);
             _selectedObjects.append(ioModel);
             emit selectionChanged();
+			emit catalogOperationEditorsChanged();
         }
         kernel()->issues()->silent(false);
     }catch(const ErrorObject& ){
@@ -462,6 +465,16 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
         Ilwis::kernel()->issues()->log(ex.what());
     }
     kernel()->issues()->silent(false);
+}
+
+QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> MasterCatalogModel::catalogOperationEditors() {
+	std::vector<ResourceModel *> maps;
+	for (auto *object : _selectedObjects) {
+		if (hasType(object->type(), itCOVERAGE)) {
+			maps.push_back(object);
+		}
+	}
+	return QQmlListProperty<CatalogOperationEditor>(this, _catalogOperations.selectedOperations(maps));
 }
 
 bool MasterCatalogModel::hasSelectedObjects() const
@@ -887,6 +900,7 @@ void MasterCatalogModel::prepare()
 {
     TranquilizerFactory *factory = kernel()->factory<TranquilizerFactory>("ilwis::tranquilizerfactory");
     factory->registerTranquilizerType(rmDESKTOP, DesktopTranquilizer::create);
+	_catalogOperations.registerCatalogOperation("opencoverages", OpenCoverages::create);
 
     _bookmarks.push_back(addBookmark(TR("Temporary Catalog"),TR("Temporary"),
                INTERNAL_CATALOG_URL,
