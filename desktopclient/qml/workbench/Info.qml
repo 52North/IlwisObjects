@@ -91,19 +91,24 @@ WorkBenchShifter {
                         content : uicontext.moduleData()
                     }
 
+					Text {
+						height : 20
+						text : "Community leader : Rob Lemmens";
+					}
+
                     Controls.TextAreaLabelPair{
                         width : parent.width
                         height: 100
                         labelText: qsTr("Developers")
                         labelWidth: 100
-                        content: "Martin Schouwenburg(lead),\nHenning Bredel,\nBas Retsios,\nHeinrich Kiessling,\nJohannes Kolbe\nJoão Bonina\nWim Feringa(UI)"
+                        content: "Martin Schouwenburg(lead),\nHenning Bredel,\nBas Retsios,\nWillem Nieuwenhuis,\nHeinrich Kiessling,\nJohannes Kolbe\nJoão Bonina\nWim Feringa(UI)"
                     }
                     Controls.TextAreaLabelPair{
                         width : parent.width
                         height: 60
                         labelText: qsTr("Documentation")
                         labelWidth: 100
-                        content: "Jamshid Farifteh"
+                        content: "Jamshid Farifteh,\nDiana Chavarro Rincon"
                     }
                 }
             }
