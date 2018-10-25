@@ -68,6 +68,7 @@
 #include "workflow/analysismodel.h"
 #include "workflow/conceptmodel.h"
 #include "workflow/applicationmodelui.h"
+#include "catalogoperationeditor.h"
 #include "../core/buildnumber.h"
 
 using namespace Ilwis;
@@ -123,6 +124,7 @@ void StartIlwis::init() {
         qmlRegisterType<RepresentationElementModel>("RepresentationElement", 1,0, "RepresentationElement");
         qmlRegisterType<ProjectionParameterModel>("ProjectionParameterModel", 1,0, "ProjectionParameterModel");
         qmlRegisterType<WorkflowModel>("WorkflowModel", 1,0, "WorkflowModel");
+		qmlRegisterType<CatalogOperationEditor>("CatalogOperationEditor", 1, 0, "CatalogOperationEditor");
        
         qmlRegisterType<TableModel>("TableModel", 1,0,"TableModel");
         qmlRegisterType<TableOperation>("TableOperation",1,0,"TableOperation");
