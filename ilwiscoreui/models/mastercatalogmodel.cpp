@@ -39,6 +39,7 @@
 #include "oshelper.h"
 #include "resourcemanager.h"
 #include "opencoverages.h"
+#include "generatethumbnails.h"
 #include "mastercatalogmodel.h"
 
 using namespace Ilwis;
@@ -901,6 +902,7 @@ void MasterCatalogModel::prepare()
     TranquilizerFactory *factory = kernel()->factory<TranquilizerFactory>("ilwis::tranquilizerfactory");
     factory->registerTranquilizerType(rmDESKTOP, DesktopTranquilizer::create);
 	_catalogOperations.registerCatalogOperation("opencoverages", OpenCoverages::create);
+	_catalogOperations.registerCatalogOperation("generatethumbnails", GenerateThumbnails::create);
 
     _bookmarks.push_back(addBookmark(TR("Temporary Catalog"),TR("Temporary"),
                INTERNAL_CATALOG_URL,
