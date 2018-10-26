@@ -1215,6 +1215,9 @@
     <None Include="desktopclient\qml\datapanel\catalog\OpenCoverages.qml">
       <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\catalog\GenerateThumbs.qml">
+      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
