@@ -262,6 +262,7 @@
     <None Include="desktopclient\qml\controls\FilteredTextEditLabelPair.qml" />
     <None Include="desktopclient\qml\controls\FlatButton.qml" />
     <None Include="desktopclient\qml\controls\FloatingRectangle.qml" />
+    <None Include="desktopclient\qml\controls\FolderBrowser.qml" />
     <None Include="desktopclient\qml\controls\FolderSelection.qml" />
     <None Include="desktopclient\qml\controls\FormatsComboBox.qml" />
     <None Include="desktopclient\qml\controls\HScrollBar.qml" />
@@ -312,11 +313,11 @@
     <None Include="desktopclient\qml\datapanel\catalog\CatalogRefreshOptions.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogTable.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogThumbGrid.qml" />
-    <None Include="desktopclient\qml\datapanel\catalog\CatalogViewOptions.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogViews.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\DCatalogListThumb.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\DCatalogThumb.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\DropConversionFormats.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\ExportData.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\GenerateThumbs.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\ObjectCopyOptions.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\ObjectDeleteOptions.qml" />

@@ -420,9 +420,6 @@
     <None Include="desktopclient\qml\datapanel\catalog\CatalogThumbGrid.qml">
       <Filter>Distribution Files\qml\datapanel\catalog</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\catalog\CatalogViewOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogViews.qml">
       <Filter>Distribution Files\qml\datapanel\catalog</Filter>
     </None>
@@ -1216,6 +1213,12 @@
       <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\GenerateThumbs.qml">
+      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\FolderBrowser.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\catalog\ExportData.qml">
       <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
     </None>
   </ItemGroup>

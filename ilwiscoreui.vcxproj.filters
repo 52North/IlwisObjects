@@ -788,9 +788,6 @@
     <ClCompile Include="Release\moc_catalogoperationeditor.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="opencoverage.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\opencoverages.cpp">
       <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
@@ -808,6 +805,21 @@
     </ClCompile>
     <ClCompile Include="Release\moc_generatethumbnails.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\exportdata.cpp">
+      <Filter>Source Files\catalog\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_exportdata.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_filesystem.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_filesystem.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\filesystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1045,6 +1057,12 @@
     <CustomBuild Include="ilwiscoreui\generatethumbnails.h">
       <Filter>Header Files\catalog\operations</Filter>
     </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\exportdata.h">
+      <Filter>Header Files\catalog\operations</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ilwiscoreui\filesystem.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwiscoreui\models\.gitignore">
@@ -1078,9 +1096,6 @@
     </ClInclude>
     <ClInclude Include="ilwiscoreui\catalogoperationfactory.h">
       <Filter>Header Files\catalog</Filter>
-    </ClInclude>
-    <ClInclude Include="opencoverage.h">
-      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
