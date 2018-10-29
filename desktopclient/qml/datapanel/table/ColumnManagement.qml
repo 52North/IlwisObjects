@@ -43,7 +43,7 @@ Rectangle {
             currentIndex = index
         }
         Tab {
-            title : qsTr("Operations")
+            title : qsTr("Actions for Tables")
             SplitView{
                 id : columnview
                 property string iconName : "../images/display_options"
