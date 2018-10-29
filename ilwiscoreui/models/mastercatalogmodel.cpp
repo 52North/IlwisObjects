@@ -40,6 +40,7 @@
 #include "resourcemanager.h"
 #include "opencoverages.h"
 #include "generatethumbnails.h"
+#include "exportdata.h"
 #include "mastercatalogmodel.h"
 
 using namespace Ilwis;
@@ -903,6 +904,7 @@ void MasterCatalogModel::prepare()
     factory->registerTranquilizerType(rmDESKTOP, DesktopTranquilizer::create);
 	_catalogOperations.registerCatalogOperation("opencoverages", OpenCoverages::create);
 	_catalogOperations.registerCatalogOperation("generatethumbnails", GenerateThumbnails::create);
+	_catalogOperations.registerCatalogOperation("exportdata", ExportData::create);
 
     _bookmarks.push_back(addBookmark(TR("Temporary Catalog"),TR("Temporary"),
                INTERNAL_CATALOG_URL,
