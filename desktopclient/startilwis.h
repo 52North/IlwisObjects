@@ -14,6 +14,7 @@ class PreferencesModel;
 class KeyFilter;
 class QThread;
 class InternalDatabaseModel;
+class QFileSystemModel;
 
 namespace Ilwis {
 	namespace Ui {
@@ -58,6 +59,7 @@ private:
 	Ilwis::Ui::ObjectCreator *_objcreator;
 	PreferencesModel *_preferences;
 	InternalDatabaseModel *_database;
+	QFileSystemModel *_filesystemmodel;
 	KeyFilter *_keys;
 
     QQmlApplicationEngine *_engine;

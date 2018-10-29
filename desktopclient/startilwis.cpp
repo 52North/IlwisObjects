@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QSqlQuery>
+#include <QFileSystemModel>
 #include "kernel.h"
 #include "errorobject.h"
 #include "resource.h"
@@ -69,6 +70,7 @@
 #include "workflow/conceptmodel.h"
 #include "workflow/applicationmodelui.h"
 #include "catalogoperationeditor.h"
+#include "filesystem.h"
 #include "../core/buildnumber.h"
 
 using namespace Ilwis;
@@ -157,6 +159,7 @@ void StartIlwis::init() {
         qmlRegisterType<PinDataSource>("PinDataSource", 1, 0, "PinDataSource");
         qmlRegisterType<ControlPointModel>("ControlPointModel", 1, 0, "ControlPointModel");
         qmlRegisterType<ControlPointsListModel>("ControlPointsListModel", 1, 0, "ControlPointsListModel");
+		qmlRegisterType<FileSystem>("FileSystem", 1, 0, "FileSystem");
 
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);
@@ -171,6 +174,11 @@ void StartIlwis::init() {
         _database = new InternalDatabaseModel();
         _trqthread = new QThread;
 
+		/*_filesystemmodel = new QFileSystemModel();
+		_filesystemmodel->setRootPath("");
+		_filesystemmodel->setFilter(QDir::Dirs | QDir::Drives | QDir::NoDotAndDotDot);*/
+		//tree->setCurrentIndex(fsModel->index(QDir::currentPath()));
+
         ctx->setContextProperty("mastercatalog", _mastercatalogmodel);
         ctx->setContextProperty("formbuilder", _formbuilder);
         ctx->setContextProperty("messagehandler", _messageHandler);
@@ -183,6 +191,8 @@ void StartIlwis::init() {
         ctx->setContextProperty("internaldatabase",_database);
         ctx->setContextProperty("uicontext", uicontext().get());
         ctx->setContextProperty("models", modelregistry().get());
+		//ctx->setContextProperty("filesystem", _filesystemmodel);
+		//ctx->setContextProperty("rootPathIndex", _filesystemmodel->index(_filesystemmodel->rootPath()));
 
         uicontext()->prepare();
         uicontext()->qmlContext(ctx);
@@ -279,6 +289,7 @@ void StartIlwis::stop()
     delete _objcreator;
     delete _preferences;
     delete _keys;
+	delete _filesystemmodel;
     _trqthread->quit();
     _trqthread->deleteLater();
 
