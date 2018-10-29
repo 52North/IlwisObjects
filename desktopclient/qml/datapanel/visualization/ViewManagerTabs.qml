@@ -64,7 +64,7 @@ TabView{
     }
 
     Component.onCompleted: {
-        var tab =addTab(qsTr("Display Options"), displayOptions)
+        var tab =addTab(qsTr("Actions for Display"), displayOptions)
         tab.active = true
 
         tab = addTab(qsTr("Layers Info"), layersinfo)
