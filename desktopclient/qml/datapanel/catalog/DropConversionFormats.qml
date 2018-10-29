@@ -11,6 +11,13 @@ Column {
     width : 290
     height : childrenRect.height
     spacing : 3
+	property bool showRaster : true
+	property bool showFeatures : true
+	property bool showTables : true
+	property bool showCsy : false
+	property bool showCatalog : false
+	property bool showDomain : false
+
 
     function getFormatString(requestedType){
         if ( requestedType === "rastercoverage"){
@@ -56,6 +63,7 @@ Column {
         ilwisType: uicontext.typeName2typeId("rastercoverage");
         labelText: qsTr("Raster coverage")
         labelWidth: 120
+		visible : showRaster
         query : providersQuery()
 
         Controls.ToolTip{
@@ -89,7 +97,7 @@ Column {
         labelText: qsTr("Feature coverage")
         labelWidth: 120
         query : providersQuery()
-
+		visible : showFeatures
         Controls.ToolTip{
             target: features
             text : qsTr("Feature coverages dropped in this catalog will be converted to the indicated format")
@@ -120,7 +128,7 @@ Column {
         labelText: qsTr("Table")
         labelWidth: 120
          query : providersQuery()
-
+		visible : showTables
         Controls.ToolTip{
             target: table
             text : qsTr("Tables dropped in this catalog will be converted to the indicated format")
@@ -149,6 +157,7 @@ Column {
         ilwisType: uicontext.typeName2typeId("coordinatesystem");
         labelText: qsTr("CoordinateSystem")
         labelWidth: 120
+		visible : showCsy
         query : providersQuery()
 
         Controls.ToolTip{
@@ -181,7 +190,7 @@ Column {
         labelText: qsTr("Domain")
         labelWidth: 120
         query : providersQuery()
-
+		visible : showDomain
         Controls.ToolTip{
             target: dom
             text : qsTr("Domains dropped in this catalog will be converted to the indicated format")
@@ -211,7 +220,7 @@ Column {
         labelWidth: 120
         enabled : false // future
         query : providersQuery()
-
+		visible : showCatalog
         Controls.ToolTip{
             target: dom
             text : qsTr("Catalogs dropped in this catalog will be converted to the indicated format")
