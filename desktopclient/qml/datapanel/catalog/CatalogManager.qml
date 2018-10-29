@@ -40,10 +40,8 @@ TabView {
     }*/
 
     Component.onCompleted: {
+	    addTab(qsTr("Actions for Selection"), viewOperations).active = true
         addTab(qsTr("Filter"), filterOptions).active = true
-        addTab(qsTr("Actions for Selection"), viewOperations).active = true
-       // addTab(qsTr("Copy"), copyOptions).active = true
-       // addTab(qsTr("Refresh"), refreshOptions).active = true
     }
 
   function getFormatString(requestedType) {
