@@ -805,8 +805,8 @@ void MasterCatalogModel::setWorkingCatalog(const QString &path)
 
 void MasterCatalogModel::refreshCatalog(const QString& path)
 {
-    auto items = context()->workingCatalog()->items();
-    mastercatalog()->removeItems(items);
+   // auto items = context()->workingCatalog()->items();
+   // mastercatalog()->removeItems(items);
 
     QThread* thread = new QThread;
     CatalogWorker3* worker = new CatalogWorker3(path);
@@ -1084,6 +1084,8 @@ void CatalogWorker3::process()
         if ( !catalog.isValid()){
             return ;
         }
+		//auto items = context()->workingCatalog()->items();
+		//mastercatalog()->removeItems(items);
         catalog->scan();
         emit updateContainer();
         emit finished();
