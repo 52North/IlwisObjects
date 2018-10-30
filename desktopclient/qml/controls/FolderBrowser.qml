@@ -6,7 +6,7 @@ import FileSystem 1.0
 Item {
 	width : 400
 	height : 250
-	property alias currentUrl : folders.currentPath
+	property alias currentUrl : folders.currentUrl
 
 	FileSystem {
 		id : folders
