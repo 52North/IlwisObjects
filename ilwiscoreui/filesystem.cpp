@@ -76,6 +76,10 @@ QString FileSystem::currentPath() const {
 	return _currentPath;
 }
 
+QString FileSystem::currentUrl() const {
+	return QUrl::fromLocalFile(_currentPath).toString();
+}
+
 QModelIndex FileSystem::currentPathIndex() {
 	QModelIndex idx = index(_currentPath);
 	if (idx.isValid())

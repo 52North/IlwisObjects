@@ -12,6 +12,7 @@ namespace Ilwis {
 			Q_PROPERTY(QString filter READ filter WRITE filter NOTIFY filterChanged)
 			Q_PROPERTY(QString root READ root WRITE root NOTIFY rootChanged)
 			Q_PROPERTY(QString currentPath READ currentPath WRITE currentPath NOTIFY currentPathChanged)
+			Q_PROPERTY(QString currentUrl READ currentUrl NOTIFY currentPathChanged)
 			Q_PROPERTY(QModelIndex rootPathIndex READ rootPathIndex NOTIFY rootChanged)
 			Q_PROPERTY(QModelIndex currentPathIndex READ currentPathIndex WRITE currentPathIndex NOTIFY currentPathChanged)
 
@@ -30,6 +31,7 @@ namespace Ilwis {
 			void currentPathIndex(const QModelIndex& idx);
 			QModelIndex rootPathIndex();
 			Q_INVOKABLE QString icon(const QModelIndex& index);
+			QString currentUrl() const;
 
 		signals:
 			void filterChanged();
