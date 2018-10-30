@@ -32,7 +32,7 @@ Rectangle {
             currentIndex = index
         }
         Tab {
-            title : qsTr("Operations")
+            title : qsTr("Actions for Charts")
             SplitView {
                 id : dataseriesview
 	            property string iconName : "../../qml/images/graph"
