@@ -1,4 +1,5 @@
 module Classification
 SupervisedClassificationPanel.qml 1.0 qml/SupervisedClassificationPanel.qml
 SupervisedClassificationForm.qml 1.0 qml/SupervisedClassificationForm.qml
+
 plugin Classification

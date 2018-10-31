@@ -1,5 +1,5 @@
 import QtQuick 2.2
-import "../../../qml/Global.js" as Global
+import "../../../../qml/Global.js" as Global
 
 
 Rectangle {

@@ -1,16 +1,12 @@
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "modeller/modellerfactory.h"
-#include "symboltable.h"
 #include "commandhandler.h"
 #include "operationmetadata.h"
 #include "geos/geom/Coordinate.h"
 #include "location.h"
 #include "ilwiscoordinate.h"
 #include "box.h"
-#include "workflownode.h"
-#include "modeller/workflow.h"
-#include "modeller/analysispattern.h"
 #include "supervisedclassification.h"
 
 using namespace Ilwis;
@@ -55,7 +51,7 @@ QString SupervisedClassification::type() const
 
 SupervisedClassification::SupervisedClassification(const QString &name, const QString &description) : AnalysisPattern(name, description)
 {
-    Init();
+    Init(); 
 }
 
 SupervisedClassification::AnalysisPattern *SupervisedClassification::create(const QString &name, const QString &description, const IOOptions &options)

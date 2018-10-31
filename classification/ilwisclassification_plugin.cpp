@@ -6,7 +6,7 @@
 #include "ilwisdata.h"
 #include "factory.h"
 #include "abstractfactory.h"
-#include "supervisedclassificationmodel.h"
+#include "supervisedclassificationmodel.h" 
 
 
 using namespace Ilwis;

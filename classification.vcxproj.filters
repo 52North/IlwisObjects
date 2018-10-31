@@ -46,6 +46,9 @@
     <CustomBuild Include="classification\supervisedclassificationmodel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="classification\supervisedclassification.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="classification\ilwisclassification_plugin.cpp">
@@ -63,10 +66,14 @@
     <ClCompile Include="classification\supervisedclassification.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="classification\supervisedclassification.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ilwisclassification_plugin.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_supervisedclassification.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_supervisedclassification.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

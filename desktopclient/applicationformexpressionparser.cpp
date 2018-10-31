@@ -248,21 +248,21 @@ QString ApplicationFormExpressionParser::dropKeys(IlwisTypes type) const{
     }
     if ( hasType(type, itGEOREF)){
         if ( keypart != "") keypart += ",";
-        keypart += "\""+ TypeHelper::type2name(itGEOREF) + "\"";
+        keypart += "\""+ TypeHelper::type2name(itGEOREF) + "\""; 
+    } 
+    if ( hasType(type, itNUMBER)){           
+        if ( keypart != "") keypart += ",";  
+        keypart += "\""+ TypeHelper::type2name(itNUMBER) + "\""; 
     }
-    if ( hasType(type, itNUMBER)){
-        if ( keypart != "") keypart += ",";
-        keypart += "\""+ TypeHelper::type2name(itNUMBER) + "\"";
-    }
-    if ( hasType(type, itSTRING)){
-        if ( keypart != "") keypart += ",";
+    if ( hasType(type, itSTRING)){   
+        if ( keypart != "") keypart += ","; 
         keypart += "\""+ TypeHelper::type2name(itSTRING) + "\"";
     }
-    if ( hasType(type, itWORKFLOW)){
+    if ( hasType(type, itWORKFLOW)){ 
         if ( keypart != "") keypart += ",";
-        keypart += "\""+ TypeHelper::type2name(itWORKFLOW) + "\"";
+        keypart += "\""+ TypeHelper::type2name(itWORKFLOW) + "\""; 
     }
-    return keypart;
+    return keypart; 
 }
 
 QString ApplicationFormExpressionParser::setoutputIcons(const QString& iconField1, const QString& iconField2,const std::vector<FormParameter>& parameters, int i, int& imagewidth) const
@@ -435,18 +435,18 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
 
                     operationRowEnd += "}}";
 
-                    operationParameterCount = 0;
-                }
+                    operationParameterCount = 0; 
+                } 
 
-                ++operationParameterCount;
+                ++operationParameterCount;      
 
-                formRows += operationRowStart;
-            }
-
-            QString visibile = "true";
+                formRows += operationRowStart; 
+            }  
+			 
+            QString visibile = "true"; 
             for (const QString index : hiddenFields) {
                 if(i == index.toInt()){
-                    visibile = "false";
+                    visibile = "false";       
                 }
             }
             QString wrapMode = input ? "TextEdit.NoWrap" : "TextEdit.Wrap";
@@ -474,18 +474,18 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     textFieldPart = textField.arg(i).
                         arg(width).
                         arg(checkWidth).
-                        arg(imagewidth).
-                        arg(xshift).
+                        arg(imagewidth). 
+                        arg(xshift).       
                         arg(input ? dropKeys(parameters[i]._dataType) : "\"?\"").
                         arg(constantValue == "" ? parameters[i]._defValue : constantValue).
-                        arg(checkEffects).
-                        arg(parameters[i]._placeHolderValue);
+                        arg(checkEffects).    
+                        arg(parameters[i]._placeHolderValue);      
                 else {
-                    textFieldPart = textArea.arg(i).
+                    textFieldPart = textArea.arg(i). 
                         arg(width).
                         arg(checkWidth).
                         arg(imagewidth).
-                        arg(xshift).
+                        arg(xshift). 
                         arg(input ? dropKeys(parameters[i]._dataType) : "\"?\"").
                         arg(constantValue == "" ? parameters[i]._defValue : constantValue).
                         arg(checkEffects).

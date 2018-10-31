@@ -24,7 +24,7 @@ REGISTER_ANALYSISMODEL(Ilwis::SClassification::SupervisedClassificationmodel, "s
 
 SupervisedClassificationmodel::SupervisedClassificationmodel()
 {
-
+ 
 }
 
 SupervisedClassificationmodel::SupervisedClassificationmodel(Ilwis::AnalysisPattern *p) : AnalysisModel(p){

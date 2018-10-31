@@ -1,5 +1,4 @@
-#ifndef ILWISCLASSIFICATION_PLUGIN_H
-#define ILWISCLASSIFICATION_PLUGIN_H
+#pragma once
 
 #include <QQmlExtensionPlugin>
 
@@ -12,5 +11,4 @@ public:
     void registerTypes(const char *uri);
 };
 
-#endif 
 

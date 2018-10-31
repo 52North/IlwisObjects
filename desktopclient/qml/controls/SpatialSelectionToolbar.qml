@@ -13,8 +13,11 @@ Rectangle {
     width : 27
     color : Global.alternatecolor1
 
-    property alias zoomoutButton: zoomoutButton
-    property alias zoominButton: zoominButton
+    property alias zoomoutButton: zoomoutButton1
+    property alias zoominButton: zoominButton1
+	property var panButton : panButton1
+
+	signal toolbarClicked()
 
     Action {
         id : zoomClicked
@@ -37,6 +40,9 @@ Rectangle {
             }
         }
     }
+	Action {
+        id : panningClicked
+		}
 
     Column{
         spacing : 2
@@ -44,27 +50,71 @@ Rectangle {
         height : parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         MapExtentButton{
-            id : panButton1
+            id : normalButton
             icon : "full_map_a.png"
             onClicked: {
                 worldmap.addCommand("setviewextent("+ worldmap.viewid + ",entiremap)");
                 worldmap.update()
                 if ( currentCatalog)
                     currentCatalog.filter("spatial","")
+
+				panButton1.enabled = false
+                panButton1.checked = false
+                zoomoutButton1.enabled = false
+                zoomoutButton1.checked = false
+                if (!zoominButton.checked) {
+                     normalButton.checked = true
+                }
+                toolbarClicked()
             }
         }
 
         MapExtentButton{
-            id : zoominButton
-            icon : checked ? "pan_a.png" : "pan_i.png"
+            id : zoominButton1
+            icon : checked ? "zoom_a.png" : "zoom_i.png"
             checkable: true
             checked: false
             action : zoomClicked
+
+			onClicked: {
+                checked = !checked
+                normalButton.checked = !checked
+                zoomoutButton1.checked = false
+                panButton1.checked = false
+                toolbarClicked()
+
+            }
         }
         MapExtentButton{
-            id : zoomoutButton
-            icon :"zoomout20.png"
+            id : zoomoutButton1
+            icon : zoomoutButton1.enabled ? (zoomoutButton1.checked ? "zoom_out_a.png" : "zoom_out_i.png") : "zoom_out_i.png"
             action : zoomOutClicked
+
+			onClicked: {
+               if ( enabled){
+                    checked = !checked
+                    normalButton.checked = !checked
+                    zoominButton1.checked = false
+                    panButton1.checked = false
+                    toolbarClicked()
+                }
+            }
+        }
+		MapExtentButton{
+            id : panButton1
+			checkable: true
+            icon : panButton1.enabled ? (panButton1.checked ? "pan_a.png" : "pan_i.png") : "pan_i.png"
+            action : panningClicked
+			onClicked: {
+               if ( enabled){
+                    checked = !checked
+                    normalButton.checked = !checked
+                    zoominButton1.checked = false
+                    zoomoutButton1.checked = false
+                    toolbarClicked()
+                }
+
+            }
         }
     }
 }

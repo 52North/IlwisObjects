@@ -10,7 +10,7 @@ import LayerManager 1.0
 import ModelRegistry 1.0
 
 Item {
-    id : selector
+    id : layerview
     property var currentEnvelope
     property var filterTarget
     clip : true
@@ -26,7 +26,13 @@ Item {
             worldmapcontainer.manager.rootLayer.vproperty("viewextent", currentEnvelope)
     }
 
+	function activeLayerExtentsToolbar() {
+		return buttons
+	}
 
+	function changeSubPanel() {
+		return false
+	}
 
     Row{
         id : worldmapcontainer
@@ -83,7 +89,7 @@ Item {
         State { name: "invisible"
 
             PropertyChanges {
-                target: selector
+                target: layerview
                 height : 0
             }
 
@@ -91,7 +97,7 @@ Item {
         State {
             name : "visible"
             PropertyChanges {
-                target: selector
+                target: layerview
                 height : 270
             }
         }

@@ -5,6 +5,9 @@
 
 #include "kernel.h"
 #include "ilwisdata.h"
+#include "symboltable.h"
+#include "operationmetadata.h"
+#include "workflownode.h"
 #include "modeller/workflow.h"
 #include "modeller/analysispattern.h"
 #include "supervisedclassificationmodel.h"
@@ -14,7 +17,7 @@ namespace SClassification {
 
 class SupervisedClassification : public AnalysisPattern
 {
-
+	Q_OBJECT
 public:
 
     explicit SupervisedClassification();

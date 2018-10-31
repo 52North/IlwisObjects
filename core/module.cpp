@@ -62,6 +62,7 @@ ModuleMap::~ModuleMap() {
 
 void ModuleMap ::loadPlugin(const QFileInfo& file){
     QPluginLoader loader(file.absoluteFilePath());
+
     QObject *plugin = loader.instance();
     if (plugin)  {
         Module *module = qobject_cast<Module *>(plugin);
@@ -70,7 +71,7 @@ void ModuleMap ::loadPlugin(const QFileInfo& file){
             insert(module->name(),module);
 
         }
-    }
+	}
 }
 
 void ModuleMap::addModules(const QString& path) {

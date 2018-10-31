@@ -103,7 +103,7 @@ Item {
         workflowView.workflowManager = manager.workflowManager
     }
 
-    function addDataSource(filter, sourceName, sourceType){
+    function addDataSource(filter, sourceName, sourceType, options){
         if ( filter !== "" ){
 
             if (sourceType === "model" ) {
