@@ -289,7 +289,7 @@ void StartIlwis::stop()
     delete _objcreator;
     delete _preferences;
     delete _keys;
-	delete _filesystemmodel;
+//	delete _filesystemmodel;
     _trqthread->quit();
     _trqthread->deleteLater();
 
