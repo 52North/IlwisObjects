@@ -93,6 +93,20 @@ Rectangle {
         }
     }
 
+	function aggregate(points) {
+        var accu = {};
+
+		for (var j = 0; j < points.length; j++) {
+			var key = points[j].x;
+			if (key in accu)
+				accu[key] += points[j].y;
+			else
+				accu[key] = points[j].y;
+		}
+
+		return accu;
+	}
+
 	function loadGraphs() {
         if ( !chart)
             return
@@ -128,25 +142,28 @@ Rectangle {
 			    }
             }
             if (ctype == "bar") {
-			    series.color = chart.seriesColor(i);
-			    var points = smodel.points;
-			    var bar = series.append(smodel.name, points);
+				// simple aggregation on category values
+				var accu = aggregate(smodel.points);
+
+				var yvals = []
+				var ymin = accu[0]
+				var ymax = accu[0]
+			    for (var j = 0; j < labels.length; j++) {
+                    var id = keys[j];
+					yvals.push(accu[id])
+					ymin = Math.min(ymin, accu[id])
+					ymax = Math.max(ymin, accu[id])
+				}
+				yas.min = ymin
+				yas.max = ymax
+			    var bar = series.append(smodel.name, yvals);
                 bar.color = chart.seriesColor(i);
+				series.labelsPosition = AbstractBarSeries.LabelsInsideEnd
+				series.labelsVisible = true
             }
             if (ctype == "pie") {
+				var accu = aggregate(smodel.points);
 
-			    var points = smodel.points;
-
-                // simple aggregation on category values
-                var accu = {};
-                for (var j = 0; j < points.length; j++) {
-                    var key = points[j].x;
-                    if (key in accu)
-                        accu[key] += points[j].y;
-                    else
-                        accu[key] = points[j].y;
-                }
-                
                 for (var j = 0; j < labels.length; j++) {
                     var cat = labels[j];
                     var id = keys[j];
