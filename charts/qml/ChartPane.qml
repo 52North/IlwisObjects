@@ -120,10 +120,10 @@ Rectangle {
             var keys = xcat.keys;
             labels = xcat.labels;
             currxaxis = [];
-            itemaxisx.min = ser.minID;
-            itemaxisx.max = ser.maxID;
+            itemaxisx.min = ser.minID - 1;
+            itemaxisx.max = ser.maxID + 1;
             for (var i = 0; i < keys.length; i++) {
-                itemaxisx.append(labels[i], keys[i]);
+                itemaxisx.append(labels[i], i); //keys[i]);
             }
             currxaxis = itemaxisx
         }
@@ -142,7 +142,6 @@ Rectangle {
 			    }
             }
             if (ctype == "bar") {
-				// simple aggregation on category values
 				var accu = aggregate(smodel.points);
 
 				var yvals = []
