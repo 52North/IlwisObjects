@@ -45,6 +45,14 @@ void AnalysisPattern::attachedModel(quint64 modelid)
     _modelId = modelid;
 }
 
+void AnalysisPattern::addData(const QString& key, const QVariant& var) {
+
+}
+
+QVariant AnalysisPattern::data(const QString& key) const {
+	return QVariant();
+}
+
 IModel AnalysisPattern::attachedModel()
 {
     if ( !_attachedModel.isValid())

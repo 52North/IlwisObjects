@@ -8,6 +8,7 @@ Button{
     property string iconsource
     property string buttontext;
     property string backColor : "white"
+	clip : true
 
     id : addContainer
     Image {

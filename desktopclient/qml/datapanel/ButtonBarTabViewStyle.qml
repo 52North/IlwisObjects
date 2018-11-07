@@ -19,6 +19,7 @@ TabViewStyle {
 
         implicitWidth: control.width / control.count
         implicitHeight: tabHeight
+		clip : true
 
         Controls.ToolTip{
             id : ttip

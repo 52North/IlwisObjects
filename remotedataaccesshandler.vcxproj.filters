@@ -49,35 +49,23 @@
     <ClCompile Include="remotedataaccesshandler\remoteoperationrequesthandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_remoteoperation.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_remoteoperation.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_remotedataaccesshandlermodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_remotedataaccesshandlermodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_remotedataaccessrequesthandler.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_remotedataaccessrequesthandler.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="remotedataaccesshandler\remotedataaccesshandlermodule.h">
+    <QtMoc Include="remotedataaccesshandler\remotedataaccesshandlermodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="remotedataaccesshandler\remotedataaccessrequesthandler.h">
+    </QtMoc>
+    <QtMoc Include="remotedataaccesshandler\remotedataaccessrequesthandler.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="remotedataaccesshandler\remoteoperation.h">
+    </QtMoc>
+    <QtMoc Include="remotedataaccesshandler\remoteoperation.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="remotedataaccesshandler\remoteoperationrequesthandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>

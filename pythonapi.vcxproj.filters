@@ -124,12 +124,8 @@
     <ClCompile Include="pythonapi\pythonapi_vertexiterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_pythonapi_qissuelogger.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_pythonapi_qissuelogger.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="pythonapi\ilwisobjects_wrap.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -198,9 +194,9 @@
     <ClInclude Include="pythonapi\pythonapi_pyobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="pythonapi\pythonapi_qissuelogger.h">
+    <QtMoc Include="pythonapi\pythonapi_qissuelogger.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="pythonapi\pythonapi_qtGNUTypedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -82,12 +82,8 @@
     <ClCompile Include="gdalconnector\gridcoverageconnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_gdalmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_gdalmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gdalconnector\coordinatesystemconnector.h">
@@ -120,9 +116,9 @@
     <ClInclude Include="gdalconnector\gdalitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="gdalconnector\gdalmodule.h">
+    <QtMoc Include="gdalconnector\gdalmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="gdalconnector\gdalobjectfactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>

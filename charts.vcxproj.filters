@@ -76,12 +76,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ilwischarts_plugin.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ilwischarts_plugin.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="charts\ilwischarts_plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,24 +108,16 @@
     <ClCompile Include="charts\setseriestype.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_setseriestype.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_setseriestype.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="charts\chartyaxisnumrange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="charts\setyaxisrange.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_setyaxisrange.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_setyaxisrange.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="charts\deleteChartSeries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -139,32 +127,28 @@
     <ClCompile Include="charts\setlegendproperties.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_setlegendproperties.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_setlegendproperties.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="charts\ilwischarts_plugin.h">
+    <QtMoc Include="charts\ilwischarts_plugin.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="charts\setseriescolor.h">
+    </QtMoc>
+    <QtMoc Include="charts\setseriescolor.h">
       <Filter>Header Files\PropertyForms</Filter>
-    </CustomBuild>
+    </QtMoc>
     <CustomBuild Include="charts\chartdataseriestype.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="charts\setseriestype.h">
+    <QtMoc Include="charts\setseriestype.h">
       <Filter>Header Files\PropertyForms</Filter>
-    </CustomBuild>
-    <CustomBuild Include="charts\setyaxisrange.h">
+    </QtMoc>
+    <QtMoc Include="charts\setyaxisrange.h">
       <Filter>Header Files\PropertyForms</Filter>
-    </CustomBuild>
-    <CustomBuild Include="charts\setlegendproperties.h">
+    </QtMoc>
+    <QtMoc Include="charts\setlegendproperties.h">
       <Filter>Header Files\PropertyForms</Filter>
-    </CustomBuild>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="charts\createchart.h">

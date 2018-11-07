@@ -63,10 +63,12 @@ Item {
 
         layerManager().addCommand(cmd)
         layerManager().refresh()
-        viewmanager.addDataSource(filter2, sourceName, sourceType, options)
+		if (typeof viewmanager !== 'undefined')
+			viewmanager.addDataSource(filter2, sourceName, sourceType, options)
         maparea.initGeoDrawer()
         layerview.createParameters[layerview.activeSubPanel] = [filter, sourceName, sourceType]
 		models.lastAddedId = layerManager().viewid
+		console.debug("oooooo", layerManager().viewid)
         return layerManager().viewid
     }
 

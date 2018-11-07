@@ -149,7 +149,7 @@ Item {
     }
 
     function addDataSource(filter, sourceName, sourceType, options){
-     if ( coverage){
+     if ( coverage && layerview.showManager){
             if (! metatdata.manager){
                 metatdata.manager = models.createLayerManager(metadata,overview)
                 overview.layermanager = metatdata.manager

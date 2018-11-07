@@ -14,11 +14,11 @@
     <ProjectGuid>{7F9F42AB-0D8A-38CF-BD28-41923F09EEE7}</ProjectGuid>
     <RootNamespace>SMCE</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <PlatformToolSet>v140</PlatformToolSet>
+    <PlatformToolSet>v141</PlatformToolSet>
     <OutputDirectory>..\libraries\win32release\extensions\ui\SMCE\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -35,7 +35,7 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>SMCE</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;core;ilwiscoreui;core\ilwisobjects\domain;ilwiscoreui;ilwiscoreui\models;ilwiscoreui\drawers;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core\geos\include;core\ilwisobjects\operation\modeller;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui/drawers;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;ilwiscoreui;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui\drawers;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core\geos\include;core\ilwisobjects\operation\modeller;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\representation;core\catalog;ilwiscoreui/drawers;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -76,7 +76,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-    </ClCompile>
+    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -107,10 +107,10 @@ xcopy  /S /Y /I smce\tree ..\output\win32release\bin\extensions\ui\SMCE\tree\*
 xcopy  /S /Y /I smce\controls ..\output\win32release\bin\extensions\ui\SMCE\controls\*</Command>
       <Message>Copy SMCE.dll to ..\output\win32release\bin\extensions\ui\SMCE</Message>
     </PostBuildEvent>
-  </ItemDefinitionGroup>
+  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\..\external;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath></QtMoc></ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;core;ilwiscoreui;core\ilwisobjects\domain;ilwiscoreui;ilwiscoreui\models;ilwiscoreui\drawers;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core\geos\include;core\ilwisobjects\operation\modeller;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui/drawers;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;ilwiscoreui;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui\drawers;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core\geos\include;core\ilwisobjects\operation\modeller;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\representation;core\catalog;ilwiscoreui/drawers;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -127,7 +127,7 @@ xcopy  /S /Y /I smce\controls ..\output\win32release\bin\extensions\ui\SMCE\cont
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    </ClCompile>
+    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;..\libraries\win32debug\ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quickd.lib;$(QTDIR)\lib\Qt5OpenGLd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Qmld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -157,26 +157,14 @@ xcopy  /S /Y /I smce\tree ..\output\win32debug\bin\extensions\ui\SMCE\tree\*
 xcopy  /S /Y /I smce\controls ..\output\win32debug\bin\extensions\ui\SMCE\controls\*</Command>
       <Message>Copy SMCE.dll to ..\output\win32debug\bin\extensions\ui\SMCE</Message>
     </PostBuildEvent>
-  </ItemDefinitionGroup>
+  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\..\external;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath></QtMoc></ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Debug\moc_node.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_smcemodel.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_smce_plugin.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Release\moc_node.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Release\moc_smcemodel.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Release\moc_smce_plugin.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
     <ClCompile Include="smce\modelsmcespatialalternatives.cpp" />
     <ClCompile Include="smce\node.cpp" />
     <ClCompile Include="smce\smce.cpp" />
@@ -186,37 +174,37 @@ xcopy  /S /Y /I smce\controls ..\output\win32debug\bin\extensions\ui\SMCE\contro
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="smce\modelsmcespatialalternatives.h" />
-    <CustomBuild Include="smce\node.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DNDEBUG -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing node.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_PLUGIN -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing node.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-    </CustomBuild>
+    <QtMoc Include="smce\node.h">
+      
+      
+      
+      
+      
+      
+      
+      
+    </QtMoc>
     <ClInclude Include="smce\smce.h" />
-    <CustomBuild Include="smce\smce_plugin.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DNDEBUG -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing smce_plugin.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_PLUGIN -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing smce_plugin.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="smce\smcemodel.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_PLUGIN -DNDEBUG -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing smcemodel.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DQT_PLUGIN -D_WINDLL  "-I." "-I.\core" "-I.\ilwiscoreui" "-I.\core\ilwisobjects\domain" "-I.\ilwiscoreui\models" "-I.\ilwiscoreui\drawers" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\geos\include" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\ilwiscoreui\drawers" "-I.\..\external" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtQml"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing smcemodel.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-    </CustomBuild>
+    <QtMoc Include="smce\smce_plugin.h">
+      
+      
+      
+      
+      
+      
+      
+      
+    </QtMoc>
+    <QtMoc Include="smce\smcemodel.h">
+      
+      
+      
+      
+      
+      
+      
+      
+    </QtMoc>
     <ClInclude Include="smce\smcespatialalternatives.h" />
   </ItemGroup>
   <ItemGroup>
@@ -247,7 +235,7 @@ xcopy  /S /Y /I smce\controls ..\output\win32debug\bin\extensions\ui\SMCE\contro
     <None Include="smce\table\TableColumn.qml" />
     <None Include="smce\tree\Tree.qml" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>

@@ -112,18 +112,10 @@
     <ClCompile Include="streamconnector\workflowserializerv1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_streammodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_streammodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_downloadmanager.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_downloadmanager.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="streamconnector\catalogconnection.h">
@@ -144,9 +136,9 @@
     <ClInclude Include="streamconnector\domainserializerv1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="streamconnector\downloadmanager.h">
+    <QtMoc Include="streamconnector\downloadmanager.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="streamconnector\ellipsoidserializerv1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -183,9 +175,9 @@
     <ClInclude Include="streamconnector\streamconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="streamconnector\streammodule.h">
+    <QtMoc Include="streamconnector\streammodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="streamconnector\streamobjectfactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>

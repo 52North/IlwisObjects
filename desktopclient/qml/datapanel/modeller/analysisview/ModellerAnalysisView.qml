@@ -3,7 +3,7 @@ import UIContextModel 1.0
 import ".." as Model
 
 Model.ModellerWorkArea {
-
+    id : workarea
     property var currentAnalysis
 
     onCurrentAnalysisChanged: {
@@ -45,5 +45,11 @@ Model.ModellerWorkArea {
         meme.source = currentAnalysis ? (uicontext.ilwisFolder + "/extensions/ui/" + currentAnalysis.panel("main")) : ""
         state = "visible"
     }
+
+	function view() {
+		if ( meme.item)
+			return meme.item
+		return null
+	}
 }
 

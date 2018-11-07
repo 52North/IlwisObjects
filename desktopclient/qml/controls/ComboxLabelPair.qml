@@ -25,6 +25,7 @@ Item {
         for(var i=0; i < textid.model.length; ++i){
             if ( Global.compareStrings(textid.model[i], name, true, true))    {
                 index = i
+				console.debug("aaaaaa", index)
                 break
             }
         }

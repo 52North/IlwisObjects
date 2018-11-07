@@ -9,8 +9,10 @@ import "../../controls" as Controls
 import "../.." as Base
 
 Item {
+    id : applyButtons
     property var createObject
     property var applyVisible : true
+	property var createdId : ""
 
     function currentCatalogCorrectUrl(){ // must be a file location
         var panel = datapanel.activeItem

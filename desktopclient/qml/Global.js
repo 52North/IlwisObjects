@@ -134,6 +134,14 @@ function urlToLocalPath(path) {
     return path.replace("file://","")
 }
 
+function isInteger(valueType) {
+    return valueType === "signedbyte" || valueType === "byte" || valueType === "int16" || valueType === "uint16" || valueType === "int32" || valueType === "uint32" || valueType ==="int64" || valueType === "uint64"
+}
+
+function isReal(valueType) {
+    return valueType === "real32" || valueType === "real64"
+}
+
 function compareStrings (string1, string2, ignoreCase, useLocale) {
     if (ignoreCase) {
         if (useLocale) {

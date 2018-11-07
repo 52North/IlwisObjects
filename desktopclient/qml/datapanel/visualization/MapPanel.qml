@@ -25,13 +25,13 @@ Item {
    // property alias maptools: maptools
     property var layermanagers : []
     property bool canSeparate : true
-    property string selectiondrawertopic : "main"
-    property string selectiondrawertopicoverview : "overview"
     property int activeSubPanel : 0
     property string panelLayout : "1"
     property bool allPanelsLinked : true
 	property var lastZoomEnvelope : ""
 	property var oldZoomEnvelope : ""
+	property var showManager : true
+
 
     onPanelLayoutChanged : {
         setLayout()
@@ -195,16 +195,17 @@ Item {
         LayerPanelLayout {
             id : layouts
             width : parent.width
-            height : parent.height - Global.actionBarMaxHeight
+            height : parent.height - ( showManager ? Global.actionBarMaxHeight : 0)
 
 
         }
         ViewManager{
             id : viewmanager
-            height : Global.actionBarHeight
+            height : showManager ? Global.actionBarHeight : 0
             anchors.left: parent.left
             anchors.leftMargin: 5
             anchors.right: parent.right
+			visible : showManager
         }
     }
 

@@ -59,6 +59,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["featurecoverage" ] = new IlwisObjectCreatorModel("featurecoverage", TR("Feature Coverage"),itFEATURE,"UnderDevelopment.qml", 200, this);
     _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"CreateTable.qml", 520, this);
     _creators["chart"] = new IlwisObjectCreatorModel("chart", TR("Chart"), itTABLE, "CreateChart.qml", 520, this);
+	_creators["supervisedclassification"] = new IlwisObjectCreatorModel("supervisedclassification", TR("Supervised Classification"), itMODEL, "CreateSupervisedClassification.qml", 320, this);
     _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation"),itREPRESENTATION,"UnderDevelopment.qml", 250, this);
     _creators["domain" ] = new IlwisObjectCreatorModel("domain",TR("Domain"),itDOMAIN,"CreateDomain.qml", 250, this);
     _creators["combinationmatrix" ] = new IlwisObjectCreatorModel("combinationmatrix",TR("Combinationmatrix"),itCOMBINATIONMATRIX,"CreateCombinationMatrix.qml", 600, this);
@@ -573,6 +574,44 @@ QString ObjectCreator::createTable(const QVariantMap &parms) {
         return sUNDEF;
 
 }
+QString ObjectCreator::createSupervisedClassification(const QVariantMap &parms) {
+
+	IModel model;
+	model.prepare();
+	QString name = parms["name"].toString();
+	model->resourceRef().name(name, false, false);
+	QString url = parms["url"].toString();
+	if (url.indexOf(".ilwis") == -1)
+		url += ".ilwis";
+	model->resourceRef().setUrl(url);
+	model->resourceRef().setUrl(url, true);
+	model->resourceRef().setDescription(parms["description"].toString());
+	model->resourceRef().addProperty("keyword", parms["keywords"].toString());
+	mastercatalog()->addItems({ model->resource() });
+
+	QVariantMap analysisParms;
+	analysisParms["modelId"] = model->id();
+	analysisParms["type"] = "analysispattern";
+	analysisParms["subtype"] = "supervisedclassification";
+	analysisParms["description"] = parms["description"];
+	analysisParms["pattername"] = name;
+	analysisParms["multispectralraster"] = parms["raster"];
+
+	createModellerObject(analysisParms, model.ptr());
+
+	model->connectTo(parms["url"].toString(), "model", "stream", IlwisObject::cmOUTPUT);
+	model->store();
+
+	QVariant mastercatalog = uicontext()->rootContext()->contextProperty("mastercatalog");
+	if (mastercatalog.isValid()) {
+		MasterCatalogModel *mcmodel = mastercatalog.value<MasterCatalogModel*>();
+		CatalogModel *ocmodel = mcmodel->currentCatalog();
+		if (dynamic_cast<OperationCatalogModel *>(ocmodel)) {
+			ocmodel->refresh();
+		}
+	}
+	return QString::number(model->id());
+}
 
 QString ObjectCreator::createChart(const QVariantMap &parms) {
 
@@ -605,6 +644,9 @@ QString ObjectCreator::createObject(const QVariantMap &parms)
 {
     try {
     QString type = parms["type"].toString();
+	if (type == "supervisedclassification") {
+		return createSupervisedClassification(parms);
+	}
     if (type == "chart") {
         return createChart(parms);
     } else if (  type == "workflow" ){
@@ -673,7 +715,8 @@ QObject *ObjectCreator::createModellerObject(const QVariantMap &parms, QObject *
                 if ( patternName != ""){
                     QString desc= parms["description"].toString();
                     ModellerFactory *factory = kernel()->factory<ModellerFactory>("ModellerFactory","ilwis");
-                    AnalysisPattern * pattern = factory->createAnalysisPattern(subtype, patternName, desc, IOOptions());
+					IOOptions opt = parms;
+                    AnalysisPattern * pattern = factory->createAnalysisPattern(subtype, patternName, desc, opt);
                     if ( pattern){
                         currentModel->addAnalysisPattern(pattern);
                         AnalysisModel *amodel = modelbuilder()->createAnalysisModel(pattern);

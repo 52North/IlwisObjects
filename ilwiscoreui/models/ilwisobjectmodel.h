@@ -44,6 +44,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
     Q_PROPERTY(bool externalReadOnly READ externalReadOnly CONSTANT)
     Q_PROPERTY(bool isCoverage READ isCoverage CONSTANT)
     Q_PROPERTY(QString valuetype READ valuetype CONSTANT)
+	Q_PROPERTY(QString internalValuetype READ internalValuetype CONSTANT)
     Q_PROPERTY(bool isProjected READ isProjectedCoordinateSystem CONSTANT)
     Q_PROPERTY(QString projectionInfo READ projectionInfo NOTIFY projectionInfoChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::AttributeModel> attributes READ attributes CONSTANT)
@@ -59,6 +60,17 @@ public:
     explicit IlwisObjectModel(const Ilwis::Resource &source, QObject *parent = 0);
     IlwisObjectModel(const Ilwis::IIlwisObject &source, QObject *parent=0);
     virtual ~IlwisObjectModel();
+
+	Q_INVOKABLE QString rangeDefinition(bool defaultRange, bool calc, const QString &columnName);
+	Q_INVOKABLE QString shortRangeDefinition();
+	Q_INVOKABLE QString getProperty(const QString& propertyname) const;
+	Q_INVOKABLE bool canUse(const QString& id);
+	Q_INVOKABLE void setAttribute(const QString& attrname, const QString& value, const QString& extra = "");
+	Q_INVOKABLE Ilwis::Ui::OperationModel *operation(const QString& id);
+	Q_INVOKABLE Ilwis::Ui::CatalogModel *catalog(const QString& id);
+	Q_INVOKABLE void unload();
+	Q_INVOKABLE QString copy(const QString& newUrl, const QString& format, const QString& provider);
+	Q_INVOKABLE void recalcLayers();
 
     QString creationDate() const;
     QString modifiedDate() const;
@@ -77,19 +89,9 @@ public:
     QQmlListProperty<DomainItemModel> domainitems();
     QQmlListProperty<ProjectionParameterModel> projectionItems();
     QString valuetype() const;
+	QString internalValuetype() const;
     QString value2string(const QVariant& value, const QString& attrName="");
-    Q_INVOKABLE QString rangeDefinition(bool defaultRange, bool calc, const QString &columnName);
-    Q_INVOKABLE QString shortRangeDefinition();
-    Q_INVOKABLE QString getProperty(const QString& propertyname) const;
-    Q_INVOKABLE bool canUse(const QString& id);
-    Q_INVOKABLE void setAttribute(const QString& attrname, const QString& value, const QString& extra="" );
-    Q_INVOKABLE Ilwis::Ui::OperationModel *operation(const QString& id);
-    Q_INVOKABLE Ilwis::Ui::CatalogModel *catalog(const QString& id);
-    Q_INVOKABLE void unload();
-    Q_INVOKABLE QString copy(const QString& newUrl, const QString& format, const QString& provider);
-    Q_INVOKABLE void recalcLayers();
-
-
+  
     bool isValid() const;
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
@@ -118,6 +120,7 @@ private:
     QString parentDomain() const;
     QStringList quickProps() const;
     bool hasAttributes() const;
+	IlwisTypes valueTypePrivate() const;
 };
 }
 }

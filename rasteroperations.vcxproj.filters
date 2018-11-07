@@ -100,12 +100,8 @@
     <ClCompile Include="rasteroperations\filter\timesat_nrs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_rasteroperationsmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_rasteroperationsmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h">
@@ -156,9 +152,9 @@
     <ClInclude Include="rasteroperations\classification\rasterclassification.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="rasteroperations\rasteroperationsmodule.h">
+    <QtMoc Include="rasteroperations\rasteroperationsmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="rasteroperations\classification\rasterslicing.h">
       <Filter>Header Files</Filter>
     </ClInclude>

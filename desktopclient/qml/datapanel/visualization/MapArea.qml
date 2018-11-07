@@ -122,7 +122,7 @@ DropArea {
                         layerManager().addCommand(command);
                         broadCastNewExtent(layerManager(), envelope)
 
-                        if ( viewmanager){
+                        if ( typeof viewmanager != 'undefined' && viewmanager){
                             viewmanager.newZoomExtent(envelope)
                         }
                     }

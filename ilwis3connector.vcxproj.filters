@@ -97,12 +97,8 @@
     <ClCompile Include="ilwis3connector\tableconnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ilwis3module.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ilwis3module.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ilwis3connector\Ilwis3Connector_global.h">
@@ -138,9 +134,9 @@
     <ClInclude Include="ilwis3connector\ilwis3featureconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="ilwis3connector\ilwis3module.h">
+    <QtMoc Include="ilwis3connector\ilwis3module.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="ilwis3connector\ilwis3objectfactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>

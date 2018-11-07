@@ -100,12 +100,8 @@
     <ClCompile Include="internalconnector\workflowconnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_internalmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_internalmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="internalconnector\projections\dutchrd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -144,9 +140,9 @@
     <ClInclude Include="internalconnector\internalmodelconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="internalconnector\internalmodule.h">
+    <QtMoc Include="internalconnector\internalmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="internalconnector\internalprjmplfactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>

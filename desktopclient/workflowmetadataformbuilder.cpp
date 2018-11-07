@@ -1,15 +1,15 @@
-#include "kernel.h"
-#include "mastercatalog.h"
-#include "models/resourcemodel.h"
+#include "kernel.h" 
+#include "mastercatalog.h" 
+#include "models/resourcemodel.h"                        
 
-#include "workflowmetadataformbuilder.h"
+#include "workflowmetadataformbuilder.h"     
 
 
-using namespace Ilwis;
+using namespace Ilwis; 
 
-WorkflowMetadataFormBuilder::WorkflowMetadataFormBuilder()
+WorkflowMetadataFormBuilder::WorkflowMetadataFormBuilder() 
 {
-}
+} 
 
 QString WorkflowMetadataFormBuilder::createWorkflowForm(quint64 metaid) const
 {

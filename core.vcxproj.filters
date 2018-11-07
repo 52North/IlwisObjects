@@ -1634,110 +1634,32 @@
     <ClCompile Include="core\util\xpathparser.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_ilwisobject.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_ilwisobject.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_commandhandler.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_commandhandler.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_xmlstreamparser.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_xmlstreamparser.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_workflowimplementation.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_workflowimplementation.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_tranquilizer.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_tranquilizer.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_module.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_module.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_mastercatalog.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_mastercatalog.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_kernel.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_kernel.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_issuelogger.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_issuelogger.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_ilwisobjectconnector.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_ilwisobjectconnector.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_catalogview.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_catalogview.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_catalogexplorerworker.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_catalogexplorerworker.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_catalog.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_catalog.cpp">
-      <Filter>Source Files</Filter>
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <ClCompile Include="core\geos\src\index\intervalrtree\IntervalRTreeBranchNode.cpp">
       <Filter>Source Files\geos\src\index\intervalrtree</Filter>
     </ClCompile>
@@ -1774,12 +1696,8 @@
     <ClCompile Include="core\ilwisobjects\representation\shapelookup.cpp">
       <Filter>Source Files\ilwisobjects\representation</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_catalogexplorer.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_catalogexplorer.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\geos\include\geos\index\strtree\AbstractNode.h">
@@ -2757,15 +2675,15 @@
     <ClInclude Include="core\catalog\catalogconnector.h">
       <Filter>Header Files\catalog</Filter>
     </ClInclude>
-    <CustomBuild Include="core\catalog\catalogexplorerworker.h">
+    <QtMoc Include="core\catalog\catalogexplorerworker.h">
       <Filter>Header Files\catalog</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\catalog\catalogquery.h">
       <Filter>Header Files\catalog</Filter>
     </ClInclude>
-    <CustomBuild Include="core\catalog\catalogview.h">
+    <QtMoc Include="core\catalog\catalogview.h">
       <Filter>Header Files\catalog</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\ilwisobjects\domain\colordomain.h">
       <Filter>Header Files\ilwisobjects\domain</Filter>
     </ClInclude>
@@ -2781,9 +2699,9 @@
     <ClInclude Include="core\ilwisobjects\table\combinationmatrix.h">
       <Filter>Header Files\ilwisobjects\table</Filter>
     </ClInclude>
-    <CustomBuild Include="core\ilwisobjects\operation\commandhandler.h">
+    <QtMoc Include="core\ilwisobjects\operation\commandhandler.h">
       <Filter>Header Files\ilwisobjects\operation</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\ilwisobjects\operation\modeller\conditionNode.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
     </ClInclude>
@@ -2952,9 +2870,9 @@
     <ClInclude Include="core\ilwisinterfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="core\ilwisobjects\ilwisobjectconnector.h">
+    <QtMoc Include="core\ilwisobjects\ilwisobjectconnector.h">
       <Filter>Header Files\ilwisobjects</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\ilwisobjects\ilwisobjectfactory.h">
       <Filter>Header Files\ilwisobjects</Filter>
     </ClInclude>
@@ -3000,9 +2918,9 @@
     <ClInclude Include="core\iooptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="core\issuelogger.h">
+    <QtMoc Include="core\issuelogger.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\ilwisobjects\domain\itemdomain.h">
       <Filter>Header Files\ilwisobjects\domain</Filter>
     </ClInclude>
@@ -3018,9 +2936,9 @@
     <ClInclude Include="core\ilwisobjects\operation\modeller\junctionNode.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
     </ClInclude>
-    <CustomBuild Include="core\kernel.h">
+    <QtMoc Include="core\kernel.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\kernel_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -3033,9 +2951,9 @@
     <ClInclude Include="core\ilwisobjects\operation\logicalexpressionparser.h">
       <Filter>Header Files\ilwisobjects\operation</Filter>
     </ClInclude>
-    <CustomBuild Include="core\catalog\mastercatalog.h">
+    <QtMoc Include="core\catalog\mastercatalog.h">
       <Filter>Header Files\catalog</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\catalog\mastercatalogcache.h">
       <Filter>Header Files\catalog</Filter>
     </ClInclude>
@@ -3054,9 +2972,9 @@
     <ClInclude Include="core\ilwisobjects\operation\modeller\modellerfactory.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
     </ClInclude>
-    <CustomBuild Include="core\module.h">
+    <QtMoc Include="core\module.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\geos\include\geos\noding.h">
       <Filter>Header Files\geos\include\geos</Filter>
     </ClInclude>
@@ -3246,9 +3164,9 @@
     <ClInclude Include="core\geos\include\geos\timeval.h">
       <Filter>Header Files\geos\include\geos</Filter>
     </ClInclude>
-    <CustomBuild Include="core\util\tranquilizer.h">
+    <QtMoc Include="core\util\tranquilizer.h">
       <Filter>Header Files\util</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\util\tranquilizerfactory.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -3279,18 +3197,18 @@
     <ClInclude Include="core\ilwisobjects\operation\modeller\workflow.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
     </ClInclude>
-    <CustomBuild Include="core\ilwisobjects\operation\modeller\workflowimplementation.h">
+    <QtMoc Include="core\ilwisobjects\operation\modeller\workflowimplementation.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\ilwisobjects\operation\modeller\workflownode.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
     </ClInclude>
     <ClInclude Include="core\ilwisobjects\operation\modeller\workflowparameter.h">
       <Filter>Header Files\ilwisobjects\operation\modeller</Filter>
     </ClInclude>
-    <CustomBuild Include="core\util\xmlstreamparser.h">
+    <QtMoc Include="core\util\xmlstreamparser.h">
       <Filter>Header Files\util</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\util\xpathparser.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -3356,14 +3274,14 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="core\catalog\catalog.h">
+    <QtMoc Include="core\catalog\catalog.h">
       <Filter>Header Files\catalog</Filter>
-    </CustomBuild>
-    <CustomBuild Include="core\ilwisobjects\ilwisobject.h">
+    </QtMoc>
+    <QtMoc Include="core\ilwisobjects\ilwisobject.h">
       <Filter>Header Files\ilwisobjects</Filter>
-    </CustomBuild>
-    <CustomBuild Include="core\catalog\catalogexplorer.h">
+    </QtMoc>
+    <QtMoc Include="core\catalog\catalogexplorer.h">
       <Filter>Header Files\catalog</Filter>
-    </CustomBuild>
+    </QtMoc>
   </ItemGroup>
 </Project>

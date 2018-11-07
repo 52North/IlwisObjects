@@ -27,6 +27,8 @@ public:
     virtual void store(QDataStream& stream);
     virtual void loadMetadata(QDataStream& stream);
     virtual void loadData(QDataStream& stream);
+	virtual void addData(const QString& key, const QVariant& var);
+	virtual QVariant data(const QString& key) const;
     virtual QString type() const = 0 ;
 
     void attachedModel(quint64 modelid);

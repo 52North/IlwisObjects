@@ -65,41 +65,29 @@
     <ClCompile Include="smce\smcespatialalternatives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_smce_plugin.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_smce_plugin.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_smcemodel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_smcemodel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_node.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_node.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="smce\modelsmcespatialalternatives.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="smce\node.h">
+    <QtMoc Include="smce\node.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="smce\smce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="smce\smce_plugin.h">
+    <QtMoc Include="smce\smce_plugin.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="smce\smcemodel.h">
+    </QtMoc>
+    <QtMoc Include="smce\smcemodel.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="smce\smcespatialalternatives.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -28,8 +28,8 @@ Item {
 
     Controls.LayerExtentsToolbar{
         id : maptools
-        width : parent.width
-        height : parent.height
+        height : 37
+		width : 195
     }
     Connections {
         target: maptools
@@ -39,5 +39,6 @@ Item {
     }
     LocationBar{
         id : lb
+		width : Math.min(320, toprow.width - maptools.width)
     }
 }

@@ -93,15 +93,9 @@
     <ClCompile Include="geodrawer\drawerattributesetters\simplepolygonsetter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_geodrawer_plugin.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_geodrawer_plugin.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_qml.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
+    
+    
+    
     <ClCompile Include="geodrawer\operations\cleardrawers.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
@@ -162,12 +156,8 @@
     <ClCompile Include="geodrawer\polygonlayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_vectorlayermodel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_vectorlayermodel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="geodrawer\vectorlayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -195,24 +185,16 @@
     <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp">
       <Filter>Source Files\tesselation</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_rasterlayermodel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_rasterlayermodel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="geodrawer\textureheap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="geodrawer\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_textureheap.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_textureheap.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
     <ClCompile Include="geodrawer\gridlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -242,9 +224,9 @@
     <ClInclude Include="geodrawer\drawingcolor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="geodrawer\geodrawer_plugin.h">
+    <QtMoc Include="geodrawer\geodrawer_plugin.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="geodrawer\openglhelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -367,9 +349,9 @@
     <None Include="geodrawer\qml\SpatialView.qml">
       <Filter>Resource Files</Filter>
     </None>
-    <CustomBuild Include="geodrawer\qml.qrc">
+    <QtRcc Include="geodrawer\qml.qrc">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
+    </QtRcc>
     <None Include="geodrawer\qml\three.js">
       <Filter>Resource Files</Filter>
     </None>
@@ -393,14 +375,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="geodrawer\vectorlayermodel.h">
+    <QtMoc Include="geodrawer\vectorlayermodel.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="geodrawer\rasterlayermodel.h">
+    </QtMoc>
+    <QtMoc Include="geodrawer\rasterlayermodel.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="geodrawer\textureheap.h">
+    </QtMoc>
+    <QtMoc Include="geodrawer\textureheap.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
   </ItemGroup>
 </Project>

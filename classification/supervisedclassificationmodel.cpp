@@ -12,7 +12,9 @@
 #include "modeller/analysispattern.h"
 #include "modeller/applicationmodel.h"
 #include "modeller/model.h"
+#include "modeller/analysispattern.h"
 #include "workflow/modelbuilder.h"
+#include "supervisedclassification.h"
 #include "supervisedclassificationmodel.h"
 
 
@@ -44,5 +46,32 @@ QVariantMap SupervisedClassificationmodel::execute(const QVariantMap parameters)
         _analysis->execute(parameters, output);
     }
     return output;
+}
+
+QString SupervisedClassificationmodel::multispectralraster()  {
+	QString result;
+	if (_analysis) {
+		QVariant data = _analysis->data(SCRASTERKEY);
+		if (data.isValid()) {
+			IRasterCoverage raster = data.value<IRasterCoverage>();
+			if (raster.isValid()) {
+				result = raster->resource().url().toString();
+			}
+		}
+	}
+	return result;
+
+}
+
+void SupervisedClassificationmodel::multispectralraster(const QString& msr) {
+	if (_analysis) {
+		IRasterCoverage raster;
+		if (raster.prepare(msr)) {
+			QVariant data;
+			data.setValue<IRasterCoverage>(raster);
+			_analysis->addData(SCRASTERKEY, data);
+			emit multispectralrasterChanged();
+		}
+	}
 }
 

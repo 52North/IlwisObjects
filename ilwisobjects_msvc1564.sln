@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "core.vcxproj", "{8676F964-09A2-3019-9D14-5CFA2C3BCDDB}"
 EndProject
@@ -107,6 +107,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "charts", "charts.vcxproj", 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "classification", "classification.vcxproj", "{120EDD85-A90D-4859-ABD9-864C205A5377}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF521325-520E-364B-AA78-78FD051513B5} = {AF521325-520E-364B-AA78-78FD051513B5}
+		{9AB0FA31-AC92-3AD3-9579-C8DD6541516B} = {9AB0FA31-AC92-3AD3-9579-C8DD6541516B}
+		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -204,5 +209,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		Qt5Version = QT5MSVC_64
+		SolutionGuid = {C38EC393-1AE2-41F5-922B-154E0612E72F}
 	EndGlobalSection
 EndGlobal

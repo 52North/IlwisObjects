@@ -128,56 +128,36 @@
     <ClCompile Include="desktopclient\workflowmetadataformbuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Debug\moc_ilwistype.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_ilwistype.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_applicationformexpressionparser.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_applicationformexpressionparser.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_startilwis.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_startilwis.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_keyfilter.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_keyfilter.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_workflowmetadataformbuilder.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_workflowmetadataformbuilder.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="desktopclient\applicationformexpressionparser.h">
+    <QtMoc Include="desktopclient\applicationformexpressionparser.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="core\buildnumber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="desktopclient\ilwistype.h">
+    <QtMoc Include="desktopclient\ilwistype.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="desktopclient\keyfilter.h">
+    </QtMoc>
+    <QtMoc Include="desktopclient\keyfilter.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="desktopclient\startilwis.h">
+    </QtMoc>
+    <QtMoc Include="desktopclient\startilwis.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="desktopclient\workflowmetadataformbuilder.h">
+    </QtMoc>
+    <QtMoc Include="desktopclient\workflowmetadataformbuilder.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="desktopclient\qml\CheckBoxStyle1.qml">
@@ -1220,6 +1200,9 @@
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ExportData.qml">
       <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateSupervisedClassification.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -64,12 +64,8 @@
     <ClCompile Include="pythonscript\runpythonprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_pythonscriptmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_pythonscriptmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pythonscript\callpythonoperation.h">
@@ -87,9 +83,9 @@
     <ClInclude Include="pythonscript\pythonscriptconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="pythonscript\pythonscriptmodule.h">
+    <QtMoc Include="pythonscript\pythonscriptmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="pythonscript\pythonworkflowconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>

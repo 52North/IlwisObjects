@@ -386,32 +386,51 @@ QQmlListProperty<ProjectionParameterModel> IlwisObjectModel::projectionItems()
     return QQmlListProperty<ProjectionParameterModel>();
 }
 
+IlwisTypes IlwisObjectModel::valueTypePrivate() const {
+	if (!_ilwisobject.isValid())
+		return i64UNDEF;
+
+	IlwisTypes objectype = _ilwisobject->ilwisType();
+	IlwisTypes valueType = itUNKNOWN;
+	if (hasType(objectype, itCOVERAGE | itDOMAIN)) {
+		if (objectype == itRASTER) {
+			IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
+			valueType = raster->datadef().domain()->valueType();
+		}
+		else if (hasType(objectype, itFEATURE)) {
+			IFeatureCoverage features = _ilwisobject.as<FeatureCoverage>();
+			ColumnDefinition coldef = features->attributeDefinitions().columndefinition(COVERAGEKEYCOLUMN);
+			if (coldef.isValid()) {
+				valueType = coldef.datadef().domain()->valueType();
+			}
+
+		}
+		else if (hasType(objectype, itDOMAIN)) {
+			IDomain dom = _ilwisobject.as<Domain>();
+			valueType = dom->valueType();
+
+		}
+	}
+	return valueType;
+}
+QString IlwisObjectModel::internalValuetype() const {
+	try {
+
+		QString typeName = TypeHelper::type2name(valueTypePrivate());
+
+		return typeName == sUNDEF ? "" : typeName;
+	}
+	catch (const ErrorObject&) {
+		// no exceptions may escape here
+	}
+	return "";
+}
+
 QString IlwisObjectModel::valuetype() const
 {
     try{
-        if ( !_ilwisobject.isValid())
-            return "";
-
-        IlwisTypes objectype = _ilwisobject->ilwisType();
-        IlwisTypes valueType = itUNKNOWN;
-        if ( hasType( objectype, itCOVERAGE|itDOMAIN)){
-            if ( objectype == itRASTER){
-                IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
-                valueType = raster->datadef().domain()->valueType();
-            } else if ( hasType( objectype , itFEATURE)){
-                IFeatureCoverage features = _ilwisobject.as<FeatureCoverage>();
-                ColumnDefinition coldef = features->attributeDefinitions().columndefinition(COVERAGEKEYCOLUMN);
-                if ( coldef.isValid()){
-                    valueType = coldef.datadef().domain()->valueType();
-                }
-
-            } else if ( hasType( objectype , itDOMAIN)){
-                IDomain dom = _ilwisobject.as<Domain>();
-                valueType = dom->valueType();
-
-            }
-        }
-        QString typeName =  TypeHelper::type2HumanReadable(valueType);
+ 
+        QString typeName =  TypeHelper::type2HumanReadable(valueTypePrivate());
 
         return typeName == sUNDEF ? "" : typeName;
     }catch(const ErrorObject& ){

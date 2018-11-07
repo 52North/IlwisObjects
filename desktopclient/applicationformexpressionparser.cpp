@@ -248,13 +248,13 @@ QString ApplicationFormExpressionParser::dropKeys(IlwisTypes type) const{
     }
     if ( hasType(type, itGEOREF)){
         if ( keypart != "") keypart += ",";
-        keypart += "\""+ TypeHelper::type2name(itGEOREF) + "\""; 
-    } 
-    if ( hasType(type, itNUMBER)){           
+        keypart += "\""+ TypeHelper::type2name(itGEOREF) + "\"";    
+    }       
+    if ( hasType(type, itNUMBER)){                  
         if ( keypart != "") keypart += ",";  
         keypart += "\""+ TypeHelper::type2name(itNUMBER) + "\""; 
     }
-    if ( hasType(type, itSTRING)){   
+    if ( hasType(type, itSTRING)){    
         if ( keypart != "") keypart += ","; 
         keypart += "\""+ TypeHelper::type2name(itSTRING) + "\"";
     }

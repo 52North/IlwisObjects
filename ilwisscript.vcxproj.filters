@@ -202,12 +202,8 @@
     <ClCompile Include="ilwisscript\ast\whilenode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ilwisscriptmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ilwisscriptmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ilwisscript\parserlexer\IlwisScriptLexer.h">
@@ -357,9 +353,9 @@
     <ClInclude Include="ilwisscript\parserlexer\ilwisscriptParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="ilwisscript\ilwisscriptmodule.h">
+    <QtMoc Include="ilwisscript\ilwisscriptmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="ilwisscript\ast\multiplicationnode.h">
       <Filter>Header Files</Filter>
     </ClInclude>

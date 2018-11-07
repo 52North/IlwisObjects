@@ -511,12 +511,8 @@
     <ClCompile Include="projectionimplproj4\proj4\src\vector1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_projectionmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_projectionmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="projectionimplproj4\proj4\src\emess.h">
@@ -549,9 +545,9 @@
     <ClInclude Include="projectionimplproj4\proj4\src\proj_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="projectionimplproj4\projectionmodule.h">
+    <QtMoc Include="projectionimplproj4\projectionmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="projectionimplproj4\proj4\src\projects.h">
       <Filter>Header Files</Filter>
     </ClInclude>

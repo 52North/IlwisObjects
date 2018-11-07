@@ -61,20 +61,16 @@
     <ClCompile Include="featureoperations\transformcoordinates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_featureoperationsmodule.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_featureoperationsmodule.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="featureoperations\buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <CustomBuild Include="featureoperations\featureoperationsmodule.h">
+    <QtMoc Include="featureoperations\featureoperationsmodule.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
+    </QtMoc>
     <ClInclude Include="featureoperations\gridding.h">
       <Filter>Header Files</Filter>
     </ClInclude>

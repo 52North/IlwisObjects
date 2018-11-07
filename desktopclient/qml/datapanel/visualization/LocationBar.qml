@@ -9,21 +9,18 @@ import "../../controls" as Controls
 import "../../Global.js" as Global
 import "../.." as Base
 
-Rectangle {
+Row {
     id : header
-    width : 300
-    anchors.right: parent.right
     height : 24
     anchors.verticalCenter: parent.verticalCenter
-
-    color : "transparent"
+	anchors.right : parent.right
+	anchors.rightMargin : 8
+	spacing : 2
 
     TextField{
         id : nativeCoords
-        width : 155;
+        width : header.width * 0.5
         height : 18
-        anchors.right: parent.right
-        anchors.rightMargin: 4
         readOnly: true
         anchors.verticalCenter: parent.verticalCenter
         text : manager ? manager.rootLayer.currentLatLon : ""
@@ -31,10 +28,8 @@ Rectangle {
 
     TextField{
         id : otherCoords
-        width : nativeCoords.width - 14;
+        width : header.width * 0.5 
         height : 18
-        anchors.right: nativeCoords.left
-        anchors.rightMargin: 4
         readOnly: true
         anchors.verticalCenter: parent.verticalCenter
         text : manager ? manager.rootLayer.currentCoordinate : ""

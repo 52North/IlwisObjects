@@ -560,6 +560,10 @@ void RootLayerModel::reset(int pixwidth, int pixheight) {
 }
 
 void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
+	if (newwidth <= 0 || newheight <= 0) {
+		//kernel()->issues()->log(TR("Illegal sizes to create drawer"));
+		return;
+	}
     if (initial) {
 		IGeoReference grf;
 		grf.prepare();

@@ -22,6 +22,7 @@ public:
 
     IOOptions()  {}
     IOOptions(const QString& key, const QVariant& value) { (*this)[key] = value; }
+	IOOptions(const QVariantMap& other);
 
     bool isEmpty() const;
 

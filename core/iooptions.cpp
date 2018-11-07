@@ -10,6 +10,12 @@ bool IOOptions::isEmpty() const
     return size() == 0;
 }
 
+IOOptions::IOOptions(const QVariantMap& other) {
+	for (auto iter = other.begin(); iter != other.end(); ++iter) {
+		addOption({ iter.key(), iter.value() });
+	}
+}
+
 IOOptions &IOOptions::operator<<(const IOOptions::Option &option)
 {
     return addOption(option._key, option._value);
