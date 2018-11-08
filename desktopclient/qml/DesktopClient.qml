@@ -31,8 +31,36 @@ ApplicationWindow {
     property int defaultFunctionBarWidth : Math.min(bigthing.width * 0.25,390)
     property int activeCatalog: 0
     property double uiScale : preferences.uiScale
+ 
 
-    function newCatalog(filter, outputtype, url, side){
+    Controls.ToolTipLabel{id : toolTip}
+
+    Column {
+        id : root
+        height : bigthing.height
+        width :  bigthing.width
+        property int defaultCommLineHeight : 10
+
+        scale : uiScale
+        transformOrigin:Item.TopLeft
+
+     
+        TopArea{
+              width : parent.width
+              height: 5
+        }
+
+
+        MainSplit {
+            id : mainSplit
+            width: parent.width
+            height : root.height - root.defaultCommLineHeight
+            Layout.fillHeight: true
+        }
+
+    }
+
+   function newCatalog(filter, outputtype, url, side){
 
         var a =  mainSplit.newCatalog(filter, outputtype, url, side)
         return a;
@@ -49,77 +77,5 @@ ApplicationWindow {
 
     function getWorkbenchPane(name, vstate){
         mainSplit.getWorkbenchPane(name, vstate)
-    }
-
-    Controls.ToolTipLabel{id : toolTip}
-
-    Column {
-        id : root
-        height : bigthing.height
-        width :  bigthing.width
-        property int defaultCommLineHeight : 64
-
-        scale : uiScale
-        transformOrigin:Item.TopLeft
-
-        Item {
-            id : topArea
-            width : parent.width
-            height : root.defaultCommLineHeight
-
-
-
-            Rectangle {
-                anchors.left: parent.left
-                anchors.top : parent.top
-                width : xu1.width + 1
-                height : 100
-                color : uicontext.paleColor
-                border.width: 1
-                border.color : "#b3b3b3"
-            }
-
-            Item {
-                id : xu1
-                anchors.left: parent.left
-                anchors.top : parent.top
-                width : dummy.width + 7
-                height : 100
-
-                Rectangle{
-                    id : dummy
-                    height : 100
-                    width : 70
-                    anchors.left: parent.left
-                    anchors.top : parent.top
-                    color : uicontext.middleColor
-                }
-            }
-            DropShadow {
-                id: butShadow2
-                anchors.fill: source
-                cached: true
-                horizontalOffset: 4
-                radius: 6
-                samples: 12
-                color: "#80000000"
-                smooth: true
-                opacity: 0.7
-                source: xu1
-            }
-            TopArea{
-                width : parent.width
-                height: parent.height
-            }
-        }
-
-
-        MainSplit {
-            id : mainSplit
-            width: parent.width
-            height : root.height - root.defaultCommLineHeight
-            Layout.fillHeight: true
-        }
-
     }
 }
