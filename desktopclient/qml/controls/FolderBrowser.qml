@@ -7,6 +7,16 @@ Item {
 	width : 400
 	height : 250
 	property alias currentUrl : folders.currentUrl
+	property var currentFolder
+
+	onCurrentFolderChanged : {
+		var path = mastercatalog.pathList(currentFolder)
+		for(var i=0; i < path.length; ++i){
+		    console.debug("pathelement ", path[i])
+			var index = folders.pathIndex(path[i]);
+			folderTree.expand(index)
+		}
+	}
 
 	FileSystem {
 		id : folders
@@ -15,6 +25,7 @@ Item {
 	}
 
 	TreeView {
+	    id : folderTree
 		anchors.fill : parent
 		visible: true
 
