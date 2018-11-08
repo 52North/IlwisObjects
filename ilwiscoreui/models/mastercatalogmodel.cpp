@@ -975,6 +975,14 @@ bool MasterCatalogModel::metadataEditMode() const {
     return _metadataEditMode;
 }
 
+QStringList MasterCatalogModel::pathList(const QString& path) const {
+	
+	QUrl url(path);
+	QString p = url.path();
+	QStringList result = p.split("/");
+	return result;
+}
+
 //--------------------
 CatalogWorker::CatalogWorker(QList<CatalogModel *> &models, ICatalog cat) : _models(models)
 {

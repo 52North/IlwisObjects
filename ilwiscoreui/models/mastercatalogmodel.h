@@ -90,6 +90,7 @@ public:
      // for trq test
     Q_INVOKABLE void longAction();
     Q_INVOKABLE bool isCompatible(const QString& objUrl1, const QString& objUrl2, const QString& type);
+	Q_INVOKABLE QStringList pathList(const QString& path) const;
     std::vector<Ilwis::Resource> select(const QString& filter);
 
 
