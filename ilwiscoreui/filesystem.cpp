@@ -94,3 +94,11 @@ void FileSystem::currentPathIndex(const QModelIndex& idx) {
 	_currentPath = filePath(idx);
 	emit currentPathChanged();
 }
+
+QModelIndex FileSystem::pathIndex(const QString& pathElement) {
+	QModelIndex idx = index(pathElement);
+	QModelIndex idx3 = index("E:/Data/Bna");
+	if (idx.isValid())
+		return idx;
+	return QModelIndex();
+}

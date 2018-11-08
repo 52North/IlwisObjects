@@ -30,6 +30,7 @@ namespace Ilwis {
 			QModelIndex currentPathIndex();
 			void currentPathIndex(const QModelIndex& idx);
 			QModelIndex rootPathIndex();
+			Q_INVOKABLE QModelIndex pathIndex(const QString& pathIndex);
 			Q_INVOKABLE QString icon(const QModelIndex& index);
 			QString currentUrl() const;
 
