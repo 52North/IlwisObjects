@@ -9,7 +9,6 @@ ToolButton{
     property string iconname
     id : button
     property string label
-    height : 60
     width : parent.width
 
     checkable: true
@@ -61,7 +60,7 @@ ToolButton{
 
             PropertyChanges {
                 target: button
-                height : (parent.height) / 9
+                height : butColumn.butheight
                 opacity : 1
                 enabled : true
             }
@@ -79,8 +78,8 @@ ToolButton{
     ]
     transitions: [
         Transition {
-            NumberAnimation { properties: "height"; duration : 500 ; easing.type: Easing.InOutCubic }
-            NumberAnimation { properties: "opacity"; duration : 500 ; easing.type: Easing.InOutCubic }
+            NumberAnimation { properties: "height"; duration : 300 ; easing.type: Easing.InOutCubic }
+            NumberAnimation { properties: "opacity"; duration : 300 ; easing.type: Easing.InOutCubic }
         }
     ]
 

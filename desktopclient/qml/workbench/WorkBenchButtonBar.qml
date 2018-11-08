@@ -16,38 +16,7 @@ Rectangle {
     width :colContainer.width
     color : uicontext.paleColor
 
-    function setButtonStatus(buttonname, status) {
-        if ( status === "toggle"){
-            toggle(buttonname,status)
-            return
-        }
-
-        prop.checked = nav.checked = oper.checked = errors.checked = progress.checked = create.checked = preferences.checked = false
-        if ( buttonname === "navigator"){
-            nav.checked = status === "on"
-        }
-        if ( buttonname === "operationselection")
-            oper.checked = status === "on"
-        if ( buttonname === "objectproperties")
-            prop.checked = status === "on"
-        if ( buttonname === "messages")
-            errors.checked = status === "on"
-        if ( buttonname === "tranquilizer")
-            progress.checked = status === "on"
-        if ( buttonname === "objectcreation")
-            create.checked = status === "on"
-        if ( buttonname === "info")
-            info.checked = status === "on"
-        if ( buttonname === "preferences")
-            preferences.checked = status === "on"
-
-    }
-    function toggle(button, visibility) {
-        var currentValue = button.checked
-        prop.checked = nav.checked = oper.checked = errors.checked = progress.checked = create.checked = preferences.checked = false
-        button.checked = !currentValue
-        butColumn.initial = false
-    }
+  
 
     DropShadow {
         id: butShadow
@@ -73,13 +42,32 @@ Rectangle {
             height : Math.min(1100,parent.height)
             property bool initial : true
             z: buttonB.z + 1
+			property var butheight : (height - aArea.height) / (children.length - 1)
+
+			onButheightChanged : {
+				console.debug("eeeeeeeeeeeeeeeee", butheight, height,children.length, aArea.height)
+			}
+
+			Rectangle {
+				id : aArea
+				width : parent.width
+				height : 70
+				color : uicontext.middleColor
+				Image {
+					width : 54
+					height : 27
+					source : "../images/ilwis_logo_txt.png"
+					x : 5
+					y : 2
+				}
+			}
 
             WorkBenchButton{
                 id : nav
                 objectName : "workbench_navbutton_mainui"
                 iconname: butColumn.initial ? "locator_start.png" : "locator.png"
                 label: qsTr("Locator")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(nav)
                     transitionInfoPane("navigator","toggle")
@@ -95,7 +83,7 @@ Rectangle {
                 id : oper
                 iconname : "operations.png"
                 label: qsTr("Operations")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(oper)
                     transitionInfoPane("operationselection","toggle")
@@ -112,7 +100,7 @@ Rectangle {
                 iconname : "console.png"
                 label: qsTr("Python")
                 checkable: false
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     var id = uicontext.consoleScriptId()
                     bigthing.newCatalog("itemid=" + id, "script", "ilwis://internalcatalog/consolescript.py", "other")
@@ -128,7 +116,7 @@ Rectangle {
                 id : prop
                 iconname : "metadata.png"
                 label: qsTr("Metadata")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(prop)
                     transitionInfoPane("objectproperties","toggle")
@@ -144,7 +132,7 @@ Rectangle {
                 id : create
                 iconname : "create.png"
                 label: qsTr("Create")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(create)
                     transitionInfoPane("objectcreation","toggle")
@@ -159,7 +147,7 @@ Rectangle {
                 id : errors
                 iconname : messagehandler.messageIcon
                 label: qsTr("Messages")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(errors)
                     transitionInfoPane("messages","toggle")
@@ -200,7 +188,7 @@ Rectangle {
 
                 iconname : "progress.png"
                 label: qsTr("Progress")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(progress)
                     transitionInfoPane("tranquilizers","toggle")
@@ -216,7 +204,7 @@ Rectangle {
                 id : preferences
                 iconname : "settings.png"
                 label: qsTr("Settings")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(preferences)
                     transitionInfoPane("preferences","toggle")
@@ -232,7 +220,7 @@ Rectangle {
                 id : info
                 iconname : "info.png"
                 label: qsTr("Info")
-
+				height : butColumn.butheight
                 function mouseClicked() {
                     toggle(info)
                     transitionInfoPane("info","toggle")
@@ -272,7 +260,40 @@ Rectangle {
     ]
     transitions: [
         Transition {
-            NumberAnimation { properties: "width"; duration : 500 ; easing.type: Easing.InOutCubic }
+            NumberAnimation { properties: "width"; duration : 300 ; easing.type: Easing.InOutCubic }
         }
     ]
+
+  function setButtonStatus(buttonname, status) {
+        if ( status === "toggle"){
+            toggle(buttonname,status)
+            return
+        }
+
+        prop.checked = nav.checked = oper.checked = errors.checked = progress.checked = create.checked = preferences.checked = false
+        if ( buttonname === "navigator"){
+            nav.checked = status === "on"
+        }
+        if ( buttonname === "operationselection")
+            oper.checked = status === "on"
+        if ( buttonname === "objectproperties")
+            prop.checked = status === "on"
+        if ( buttonname === "messages")
+            errors.checked = status === "on"
+        if ( buttonname === "tranquilizer")
+            progress.checked = status === "on"
+        if ( buttonname === "objectcreation")
+            create.checked = status === "on"
+        if ( buttonname === "info")
+            info.checked = status === "on"
+        if ( buttonname === "preferences")
+            preferences.checked = status === "on"
+
+    }
+    function toggle(button, visibility) {
+        var currentValue = button.checked
+        prop.checked = nav.checked = oper.checked = errors.checked = progress.checked = create.checked = preferences.checked = false
+        button.checked = !currentValue
+        butColumn.initial = false
+    }
 }
