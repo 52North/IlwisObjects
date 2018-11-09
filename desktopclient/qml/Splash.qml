@@ -80,6 +80,9 @@ Rectangle {
                 if ((state == "end") && (!running)) {
                     rootwindow.initIlwis()
                 }
+				if ((state == "begin") && (!running)) {
+                    rootwindow.showMain()
+                }
             }
         }
     ]
