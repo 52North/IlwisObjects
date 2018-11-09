@@ -76,7 +76,6 @@ Rectangle {
         }
 
         function changePanel(filter, outputtype, url){
-
             var sidePanel = datapane.activeSide
             var tabview = sidePanel.tabview
             var insertetTab
@@ -143,26 +142,6 @@ Rectangle {
                 }
             }
             return insertetTab
-        }
-
-        function showTabInFloatingWindow(panelside, tabIndex) {
-            var sidePanel = panelside === 1 ? datapane.leftSide : datapane.rightSide
-            var tabview = sidePanel.tabview
-            var tab = tabview.getTab(tabIndex)
-            var tabData = sidePanel.tab(tabIndex)
-
-            if (tab && tab.item) {
-                var qml = "import QtQuick 2.1; import QtQuick.Window 2.1;"
-                qml += "FloatingWindow { id: floatingWindow } ";
-                var window = Qt.createQmlObject(qml, datapanesplit)
-                window.height = tab.item.height
-                window.width = tab.item.width
-                window.show();
-                window.datapanel =  tabData.componentUrl
-                window.transfer(tab.item)
-
-                closeTab(sidePanel.isLeft, tabIndex);
-            }
         }
 
         function changeWidth(pside, partside){
