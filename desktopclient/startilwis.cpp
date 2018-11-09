@@ -233,20 +233,20 @@ void StartIlwis::init() {
 
 void StartIlwis::initMainWindow()
 {
-    QObject *top =_engine->rootObjects().value(0);
-    QObject *topLevel = top->findChild<QObject *>("mainwindow__mainui");
-    if ( topLevel){
-        uicontext()->rootObject(topLevel);
-        QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
-        window->setIcon(QIcon("./qml/images/ilwis4.png"));
+	QObject *top = _engine->rootObjects().value(0);
+	QObject *topLevel = top->findChild<QObject *>("root__mainui");
+	if (topLevel) {
+		uicontext()->rootObject(topLevel);
+	}
+	QQuickWindow *window = qobject_cast<QQuickWindow *>(top);
+	window->setIcon(QIcon("./qml/images/ilwis4.png"));
 
-        window->setTitle(" ");
-        if ( !window ) {
-            qWarning("Error: Your root item has to be a Window.");
-            return;
-        }
-        window->show();
-    }
+	window->setTitle(" ");
+	if (!window) {
+		qWarning("Error: Your root item has to be a Window.");
+		return;
+	}
+	window->show();
 
     uicontext()->initializeDataPane();
 }
