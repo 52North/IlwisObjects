@@ -15,17 +15,14 @@ import PreferencesModel 1.0
 import "Global.js" as Global
 import "controls" as Controls
 
-ApplicationWindow {
+Rectangle {
     id : bigthing
     width: Screen.width * 0.8
     height : Screen.height * 0.9
     color : uicontext.lightColor
-    objectName: "mainwindow__mainui"
+    objectName: "root__mainui"
 
-    onClosing: {
-        uicontext.exitUI()
-        rootwindow.close()
-    }
+ 
 
     property int maxPull : 500
     property int defaultFunctionBarWidth : Math.min(bigthing.width * 0.25,390)
