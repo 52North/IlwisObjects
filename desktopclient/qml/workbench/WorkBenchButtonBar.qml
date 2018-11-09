@@ -44,10 +44,6 @@ Rectangle {
             z: buttonB.z + 1
 			property var butheight : (height - aArea.height) / (children.length - 1)
 
-			onButheightChanged : {
-				console.debug("eeeeeeeeeeeeeeeee", butheight, height,children.length, aArea.height)
-			}
-
 			Rectangle {
 				id : aArea
 				width : parent.width
