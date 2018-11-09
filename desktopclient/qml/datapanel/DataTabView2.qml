@@ -69,13 +69,6 @@ Item {
                     }
                 }
             }
-
-            /*if ( drop.source.sourcePanel.panelType === "mappanel") {
-                var tab = datatab.getTab(datatab.count - 1)
-                var datapanel = tab.item
-            console.debug("pppppppp")
-                datapanel.transfer(drop.source.sourcePanel)
-            }*/
         }
         z: 10
     }
@@ -88,12 +81,6 @@ Item {
 
         style: Base.TabStyle2 {
             id : tabstyle
-            Connections {
-                target: tabstyle
-                onExpandToWindow: {
-                    action : datapanesplit.showTabInFloatingWindow(panelside,tabindex)
-                }
-            }
             Connections {
                 target: tabstyle
                 onFullSize: {
