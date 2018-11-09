@@ -27,6 +27,7 @@ Item {
     signal catalogChanged()
 
     function showObject(objectids,options){
+	    console.debug("zzzzzzzzz")
         var filter
         if ( objectids === -1){ // case for  .. one step back
             var container = currentCatalog.container
@@ -68,7 +69,6 @@ Item {
         var url = sourceName
         if ( currentCatalog)
             currentCatalog.makeParent(0) 
-
         currentCatalog = mastercatalog.newCatalog(url,filter)
         if ( currentCatalog){
             currentCatalog.makeParent(catalogViews)
