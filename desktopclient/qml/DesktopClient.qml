@@ -22,8 +22,6 @@ Rectangle {
     color : uicontext.lightColor
     objectName: "root__mainui"
 
- 
-
     property int maxPull : 500
     property int defaultFunctionBarWidth : Math.min(bigthing.width * 0.25,390)
     property int activeCatalog: 0
@@ -57,7 +55,7 @@ Rectangle {
 
     }
 
-   function newCatalog(filter, outputtype, url, side){
+    function newCatalog(filter, outputtype, url, side){
 
         var a =  mainSplit.newCatalog(filter, outputtype, url, side)
         return a;

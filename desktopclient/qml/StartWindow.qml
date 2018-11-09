@@ -25,7 +25,7 @@ ApplicationWindow {
 
     function initIlwis() {
         startilwis.init()
-		windowloader.item.time = 700
+		windowloader.item.time = 500
 		windowloader.item.state = "begin"
     }
 
@@ -43,14 +43,6 @@ ApplicationWindow {
 
     Loader{
         id : windowloader
-       // source : "Splash.qml"
-
-		onLoaded: {
-			if ( initDone){
-				flags =   Qt.Window
-		
-			}
-		}
     }
 
 	Component.onCompleted :{
