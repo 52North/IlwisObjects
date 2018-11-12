@@ -17,44 +17,41 @@ TabViewStyle {
     property string selectColor : "white"
     property string nonselectColor : uicontext.paleColor
     property int tabHeight : 35
+	frame: Rectangle { color: "white"; border.width: 1 ; border.color: "lightgrey" }
 
-    tab: Row {
-		width: 300
-		height: tabHeight
-		property TabModel tabmodel : datapane.tab(side == 1, styleData.index)
+    tab:
+
+
 		BorderImage {
 			id: name
-			source: tabmodel && tabmodel.selected ? "images/tab_big_active2.png" : "images/tab_big_inactive2.png"
-			border.left: 5; border.right: 5
-
-	
-
-			width: parent.width - rplusbut.width - minbut.width
+			property TabModel tabmodel : datapane.tab(side == 1, styleData.index)
+			width: parent.width
 			height: tabHeight
+			source: tabmodel && tabmodel.selected ? "images/tab_big_active2.png" : "images/tab_big_inactive2.png"
+
+			border.left: 5; border.right: 5
+			Row {
+				id : thetab
+				width: parent.width 
+				height: tabHeight
 
 			Item {
 				id : label
-				width : parent.width
-				height : tabHeight - 2
+				width : parent.width - minbut.width - rplusbut.width - 4
 				anchors.bottom: parent.bottom
-				anchors.left: parent.left
-				Row {
-					width : parent.width - 10
-					anchors.bottom: parent.bottom
-					x : 8
-					height : 35
+				height : 35
 
-					Text {
-						width : parent.width - 10
-						height : 20
-						text: tabmodel ? tabmodel.displayName : "?"
-						color: tabmodel && tabmodel.selected ? "black" : "#403F3F"
-						elide: Text.ElideMiddle
-						font.pointSize: tabmodel && tabmodel.selected ? 9 : 8
-						font.weight: tabmodel && tabmodel.selected ? Font.Bold : Font.Normal
-						anchors.bottom: parent.bottom
-						anchors.bottomMargin: 2
-					}
+				Text {
+				    x : 8
+					width : parent.width - 10
+					height : 20
+					text: tabmodel ? tabmodel.displayName : "?"
+					color: tabmodel && tabmodel.selected ? "black" : "#403F3F"
+					elide: Text.ElideMiddle
+					font.pointSize: tabmodel && tabmodel.selected ? 9 : 8
+					font.weight: tabmodel && tabmodel.selected ? Font.Bold : Font.Normal
+					anchors.bottom: parent.bottom
+					anchors.bottomMargin: 2
 				}
 				MouseArea  {
 					id : mouseArea2
@@ -72,13 +69,16 @@ TabViewStyle {
 						fullSize()
 					}
 					onReleased: {
-					   if ( image){
+						if ( image){
 							image.Drag.drop()
 							image.parent = mouseArea2
 							image.anchors.fill = mouseArea2
 							image.destroy();
 						}else
-						   showTimer.stop()
+							showTimer.stop()
+					}
+					onPressed: {
+						showTimer.start()
 					}
 
 					function createDragObject() {
@@ -104,65 +104,65 @@ TabViewStyle {
 						}', mouseArea2, "dynamicImage");
 					}
 
-					onPressed: {
-						showTimer.start()
-					}
 				}
 				Timer{
 					id : showTimer
 					interval: 250
 					onTriggered: {
 						mouseArea2.createDragObject()
-
-
 					}
-
 				}
+
+
 			}
-		}
-		QC10.Button {
-		    id : rplusbut
-			height : tabHeight
-			width : 16
-			text : "+"
-			//visible : panelType() == "catalog"
-		    onClicked: menu.open()
-
-			Menu {
-				id: menu
-				y: rplusbut.height
-				width : 100
-
-				MenuItem {
-					text: qsTr("Open Left")
-
-					onTriggered : {
-						bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "left")
-					}
-				}
-				MenuItem {
-					text: qsTr("Open Right")
-
-					onTriggered : {
-						bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "right")
-					}
+			Controls.SmallRoundButton {
+				id : minbut
+				anchors.verticalCenter: thetab.verticalCenter
+				height : 20
+				text : "x"
+				//opacity : datapanesplit.totalTabCount() > 1 ? 1 : 0
+				visible : datapanesplit.totalTabCount() > 1 ? true : false
+				width : visible ? 20 : 0
+				onClicked: {
+					datapanesplit.closeTab(side == 1, styleData.index)
 				}
 			}
 
-		}
-		QC10.Button {
-		    id : minbut
-			height : tabHeight
-			width : 16
-			text : "x"
-			opacity : datapanesplit.totalTabCount() > 1 ? 1 : 0
-			onClicked: {
-				datapanesplit.closeTab(side == 1, styleData.index)
+			Controls.SmallRoundButton {
+				anchors.verticalCenter: thetab.verticalCenter
+				id : rplusbut
+				height : 20
+				width : 20
+				text : "+"
+				//visible : panelType() == "catalog"
+				onClicked: menu.open()
+
+				Menu {
+					id: menu
+					y: rplusbut.height
+					width : 100
+
+					MenuItem {
+						text: qsTr("Open Left")
+
+						onTriggered : {
+							bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "left")
+						}
+					}
+					MenuItem {
+						text: qsTr("Open Right")
+
+						onTriggered : {
+							bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "right")
+						}
+					}
+				}
+
 			}
 		}
+	
 	}
-    frame: Rectangle { color: "white"; border.width: 1 ; border.color: "lightgrey" }
-
+    
 	function panelType() {
 		var sidePanel = datapane.activeSide
 		if ( sidePanel){
