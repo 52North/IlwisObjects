@@ -17,8 +17,8 @@ import "controls" as Controls
 
 Rectangle {
     id : bigthing
-    width: Screen.width * 0.8
-    height : Screen.height * 0.9
+    width: rootwindow.width
+    height : rootwindow.height
     color : uicontext.lightColor
     objectName: "root__mainui"
 
