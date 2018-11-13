@@ -10,7 +10,7 @@ Rectangle {
     id : modellayers
     width : parent.width
     height : parent.height
-    property string iconName : "../images/layers_s"
+    property string iconName : "../images/metadata"
 
     SplitView {
         id : layerprops

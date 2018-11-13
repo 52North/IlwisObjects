@@ -17,7 +17,7 @@ Item {
     property alias coverage : overview
     property alias mouseActions : mouseActions
     property bool drawerActive : false
-    property string iconName : "../images/metadata_s"
+    property string iconName : "../images/metadata"
     property LayerManager manager
     objectName: uicontext.uniqueName() + "_metadata_mappanel"
 

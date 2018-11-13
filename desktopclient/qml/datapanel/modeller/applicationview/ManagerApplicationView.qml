@@ -11,7 +11,7 @@ Item {
     id : appv
     width : parent.width
     height : parent.height
-    property string iconName : "../images/app"
+    property string iconName : "../images/metadata"
 
     function refreshFormArea(form) {
         formArea.source = uicontext.ilwisFolder + "/extensions/ui/" + form
