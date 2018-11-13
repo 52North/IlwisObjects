@@ -3,12 +3,14 @@
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <QtQml>
+#include <QQuickStyle>
  
 #include "startilwis.h"          
    
 int main(int argc, char *argv[])               
 {
-        QApplication app(argc, argv);                                
+	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication app(argc, argv);                                
 		   
 #ifdef _WIN32                
 		 
@@ -21,6 +23,7 @@ int main(int argc, char *argv[])
         if (ver20) {                              
 
 #endif
+
 
             QQmlApplicationEngine engine;   
             qmlRegisterType<StartIlwis>("StartIlwis",1,0,"StartIlwis");
