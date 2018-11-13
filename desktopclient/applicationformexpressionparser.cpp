@@ -348,16 +348,18 @@ QString ApplicationFormExpressionParser::setInputIcons(const QString& iconField1
     if ( imagePart != ""){
         imagePart = QString("Row{width:%1;spacing:2;height:20 ;anchors.right: parent.right;anchors.rightMargin: 2;%2}").arg(imagewidth).arg(imagePart) ;
     }
-    return imagePart;
+    return imagePart; 
 }
 
-QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int width, const std::vector<FormParameter>& parameters, bool input, QString& results, bool showEmptyOptionInList, QStringList hiddenFields, QVariantList operationNames, QStringList constantValues) const{
-    QString rowBodyText = "Rectangle{visible:%7;height : %8;width : parent.width;color : \"white\";%1Text { x:%5 + %6;maximumLineCount: 2;text: qsTr(\"%2\"); id:label_pin_%4; width : %3 - %5 - %6;wrapMode:TextEdit.Wrap; }";
+QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int width, const std::vector<FormParameter>& parameters, bool input, QString& results, bool showEmptyOptionInList, QStringList hiddenFields, QVariantList operationNames, QStringList constantValues) const {
+	QString rowBodyText = "Rectangle{visible:%7;height : %8;width : parent.width;color : \"white\";%1Text { x:%5 + %6;maximumLineCount: 2;text: qsTr(\"%2\"); id:label_pin_%4; width : %3 - %5 - %6;wrapMode:TextEdit.Wrap; }";
+	QString rowBodyText2 = "Rectangle{visible:%1;height : %2;width : parent.width;color : \"white\";%1%2";
 
-    QString textField = "DropArea{ x : %2; height : 20; width : parent.width - label_pin_%1.width - 5 - %3 - %4 - %5; keys: [%6];\
+	QString textField = "DropArea{ x : %2; height : 20; width : parent.width - label_pin_%1.width - 5 - %3 - %4 - %5; keys: [%6];\
                onDropped : { pin_%1.text = drag.source.message; addValidation(pin_%1,%1, drag.source.ilwisobjectid) }\
            TextField{ id : pin_%1; objectName : \"pin_%1_\" + " + metaid + "; \
-            property string itemType : \"textfield\"; text: \"%7\";placeholderText:\"%9\";style: TextFieldStyle {placeholderTextColor: \"grey\"}\
+            property string itemType : \"textfield\"; text: \"%7\";placeholderText:\"%9\";style: TextFieldStyle {placeholderTextColor: \"grey\"; \
+			background: Rectangle { radius: 3; width : parent.width; height: parent.height;color : \"white\"; Rectangle{ width: parent.width; height : 2; anchors.bottom : parent.bottom;	border.color: \"#e6e6e6\" ; border.width: 1}}}\
             Controls.ToolTip{target : pin_%1; text:operation ? operation.inputparameterDescription(%1) : \"\"}\
             anchors.fill : parent optionalOutputMarker %8}}";
     QString textArea = "DropArea{ x : %2; height : 65; width : parent.width - label_pin_%1.width - 5 - %3 - %4 - %5; keys: [%6];\
@@ -371,7 +373,8 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
     QString iconField3 = "Button{ width : 20; height:20; checkable : true;checked : false;"
              "onClicked : { eval( uicontext.showLastGeneratedResult )}"
               "Image{anchors.centerIn : parent;width : 14; height:14;source:\"../images/%1\";fillMode: Image.PreserveAspectFit}}";
-    QString comboField = "ComboBox{id : pin_%1; objectName : \"pin_%1_\" + " + metaid + "; property string itemType : \"combobox\";x : %2;height:20;width : parent.width - label_pin_%1.width - 5 - %3;Controls.ToolTip{target : pin_%1; text:operation ? operation.inputparameterDescription(%1) : \"\"}model : %4;currentIndex: %5;";
+	QString comboField = "Controls.ComboxLabelPair{ id: pin_%1;property string itemType : \"combobox\";width : parent.width;fontBold : false;labelWidth : %5 - 5;Controls.ToolTip{target : pin_%1; text: operation ? operation.inputparameterDescription(%1) : \"\"}itemModel : %2;currentIndex: %3;labelText :\" %4 \"}";
+    //QString comboField = "ComboBox{id : pin_%1; objectName : \"pin_%1_\" + " + metaid + "; property string itemType : \"combobox\";x : %2;height:20;width : parent.width - label_pin_%1.width - 5 - %3;Controls.ToolTip{target : pin_%1; text:operation ? operation.inputparameterDescription(%1) : \"\"}model : %4;currentIndex: %5;";
     QString rowBodyChoiceHeader = "Row{ width : parent.width;Text { text: qsTr(\"%1\"); width : %2; } Column{ExclusiveGroup { id: exclusivegroup_pin_%3} %4}}";
     QString rowChoiceOption = "RadioButton{id:choice_pin_%1;text:qsTr(\"%2\");checked:%3;exclusiveGroup:exclusivegroup_pin_%4;property string value:qsTr(\"%5\")}";
     QString formRows;
@@ -560,8 +563,11 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     ++j;
                 }
                 choices += "]";
-                QString comboPart = QString(comboField).arg(i).arg(width).arg(checkWidth).arg(choices).arg(inputIndex) + "}";
-                QString parameterRow = QString(rowBodyText + comboPart + "}").arg(check).arg(parameters[i]._label).arg(width).arg(i).arg(checkWidth).arg(xshift).arg(visibile).arg(hasType(parameters[i]._fieldType,ftTEXTEDIT|ftCOMBOBOX) ? 30 : 75);
+				QString comboPart = QString(comboField).arg(i).arg(choices).arg(inputIndex).arg(parameters[i]._label).arg(width);
+				QString parameterRow = QString("Rectangle{visible:%1;height : %2;width : parent.width;color : \"white\";%3}")
+					.arg(visibile).arg(hasType(parameters[i]._fieldType, ftTEXTEDIT | ftCOMBOBOX) ? 30 : 75)
+					.arg(comboPart);
+               // QString parameterRow = QString(rowBodyText + comboPart + "}").arg(check).arg(width).arg(i).arg(checkWidth).arg(xshift).arg(visibile).arg(hasType(parameters[i]._fieldType,ftTEXTEDIT|ftCOMBOBOX) ? 30 : 75);
                 formRows += parameterRow;
                 if ( results != "")
                     results += "+ \"|\" +";
@@ -634,9 +640,9 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
             } 
             results += ";";
             if(operationNames.isEmpty()){ 
-                seperator = "Rectangle{width : parent.width - 12; x: 6; height:2;color : \"#B3B3B3\"}";
+                seperator = "Rectangle{width : parent.width - 12; x: 6; height:2;color : \"#d9d9d9\"}";
             }else{
-                seperator = "Rectangle{width : parent.width - 12; x: 6; height:5;color : \"#B3B3B3\"}";
+                seperator = "Rectangle{width : parent.width - 12; x: 6; height:5;color : \"#d9d9d9\"}";
             }
               
         }else                                                     
