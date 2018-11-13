@@ -26,8 +26,52 @@ Item {
 
     signal catalogChanged()
 
-    function showObject(objectids,options){
-	    console.debug("zzzzzzzzz")
+  
+
+    Rectangle{
+        id : infobar
+        width : parent.width
+        height : 20
+        color : uicontext.genericBGColor
+        Text {
+            width : parent.width
+            height : 16
+            text : currentCatalog ? currentCatalog.url : ""
+            anchors.centerIn: parent
+            color : "#000099"
+            opacity: 0.7
+        }
+    }
+
+    SplitView {
+        width : parent.width
+        orientation: Qt.Vertical
+        height : parent.height - infobar.height
+        anchors.top : infobar.bottom
+        id : catalogSplit
+
+        property color backgroundCatalogColor : (tabmodel && tabmodel.side == "right" ? uicontext.workbenchBGColor : uicontext.genericBGColor)
+
+        CatalogViews {
+            id : catalogView
+            height : parent.height - Global.actionBarMinHeight
+        }
+        CatalogManager{
+            id : actionBar
+        }
+        handleDelegate: Rectangle{
+            width : parent.width
+            height : 1
+            color : "lightgrey"
+        }
+
+    }
+
+    Component.onDestruction: {
+        currentCatalog.makeParent(0)
+    }
+
+  function showObject(objectids,options){
         var filter
         if ( objectids === -1){ // case for  .. one step back
             var container = currentCatalog.container
@@ -143,48 +187,5 @@ Item {
 
         var iconP = "../../images/" + name
         return iconP
-    }
-
-    Rectangle{
-        id : infobar
-        width : parent.width
-        height : 20
-        color : uicontext.genericBGColor
-        Text {
-            width : parent.width
-            height : 16
-            text : currentCatalog ? currentCatalog.url : ""
-            anchors.centerIn: parent
-            color : "#000099"
-            opacity: 0.7
-        }
-    }
-
-    SplitView {
-        width : parent.width
-        orientation: Qt.Vertical
-        height : parent.height - infobar.height
-        anchors.top : infobar.bottom
-        id : catalogSplit
-
-        property color backgroundCatalogColor : (tabmodel && tabmodel.side == "right" ? uicontext.workbenchBGColor : uicontext.genericBGColor)
-
-        CatalogViews {
-            id : catalogView
-            height : parent.height - Global.actionBarMinHeight
-        }
-        CatalogManager{
-            id : actionBar
-        }
-        handleDelegate: Rectangle{
-            width : parent.width
-            height : 1
-            color : "lightgrey"
-        }
-
-    }
-
-    Component.onDestruction: {
-        currentCatalog.makeParent(0)
     }
 }
