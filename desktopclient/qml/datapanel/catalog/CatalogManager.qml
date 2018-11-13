@@ -30,14 +30,6 @@ TabView {
         id : viewOperations
         CatalogOperations{}
     }
-   /* Component {
-        id : copyOptions
-        ObjectCopyOptions{}
-    }
-    Component {
-        id : refreshOptions
-        CatalogRefreshOptions{}
-    }*/
 
     Component.onCompleted: {
 	    addTab(qsTr("Actions for Selection"), viewOperations).active = true
