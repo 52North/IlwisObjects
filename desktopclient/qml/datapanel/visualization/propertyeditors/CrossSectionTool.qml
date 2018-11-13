@@ -70,7 +70,6 @@ Item {
 		bigthing.newCatalog(filter, "chart", "",layerview.tabmodel.side == "left" ? "right" : "left")
 		for(var i=0; i < editor.pinCount; ++i){
 			var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(i+1) + ")"
-			console.debug("aaaaexpr", expr,editor.pinCount)
 			layerview.activeLayerManager().addCommand(expr);
 		}
 	}
