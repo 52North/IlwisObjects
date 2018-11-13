@@ -26,38 +26,6 @@ Item {
         }
     }
 
-    function defaultWidth(index){
-        if (!table)
-            return 60
-        return table.defaultWidth(index)
-    }
-
-    function transfer(datapanel) {
-        if ( datapanel.table)    {
-            addDataSource(datapanel.table.url, "", "table")
-        }
-    }
-
-    function addDataSource(filter, sourceUrl, sourceType){
-        table = models.createTableModel(tablePane,sourceUrl, sourceType)
-
-        if ( table){
-            tableView.model = table
-            columnManagement.setColumnModel1(table.columns)
-
-            for(var i =0; i < table.columnCount; ++i){
-                if ( i == 0)
-                    tableView.addColumn(column.createObject(tableView,{"role" : "first", "title" : "nr", "width" : defaultWidth(i)}))
-                else {
-                    var roleName = table.roleName(i)
-                    var dw = table.defaultWidth(i)
-                    tableView.addColumn(column.createObject(tableView,{"role" : roleName, "title" : roleName, "width" : dw}))
-                }
-            }
-            createParameters = [sourceUrl, filter, sourceType]
-            return table.id
-        }
-    }
 
 	TableTools {
 		id: tableToolbar
@@ -132,6 +100,39 @@ Item {
         ColumnManagement{
             id : columnManagement
             height : 270
+        }
+    }
+
+    function defaultWidth(index){
+        if (!table)
+            return 60
+        return table.defaultWidth(index)
+    }
+
+    function transfer(datapanel) {
+        if ( datapanel.table)    {
+            addDataSource(datapanel.table.url, "", "table")
+        }
+    }
+
+    function addDataSource(filter, sourceUrl, sourceType){
+        table = models.createTableModel(tablePane,sourceUrl, sourceType)
+
+        if ( table){
+            tableView.model = table
+            columnManagement.setColumnModel1(table.columns)
+
+            for(var i =0; i < table.columnCount; ++i){
+                if ( i == 0)
+                    tableView.addColumn(column.createObject(tableView,{"role" : "first", "title" : "nr", "width" : defaultWidth(i)}))
+                else {
+                    var roleName = table.roleName(i)
+                    var dw = table.defaultWidth(i)
+                    tableView.addColumn(column.createObject(tableView,{"role" : roleName, "title" : roleName, "width" : dw}))
+                }
+            }
+            createParameters = [sourceUrl, filter, sourceType]
+            return table.id
         }
     }
 }

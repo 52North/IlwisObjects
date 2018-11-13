@@ -120,7 +120,6 @@ TabViewStyle {
 				anchors.verticalCenter: thetab.verticalCenter
 				height : 20
 				text : "x"
-				//opacity : datapanesplit.totalTabCount() > 1 ? 1 : 0
 				visible : datapanesplit.totalTabCount() > 1 ? true : false
 				width : visible ? 20 : 0
 				onClicked: {
@@ -132,9 +131,9 @@ TabViewStyle {
 				anchors.verticalCenter: thetab.verticalCenter
 				id : rplusbut
 				height : 20
-				width : 20
+				width : visible ? 20 : 0
 				text : "+"
-				//visible : panelType() == "catalog"
+				visible : panelType() == "catalog"
 				onClicked: menu.open()
 
 				Menu {

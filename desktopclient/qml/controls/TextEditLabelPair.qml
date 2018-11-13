@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.4 as QC20
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import "../Global.js" as Global
@@ -51,9 +52,15 @@ DropArea {
                 radius: 3
                 width : parent.width
                 height: parent.height
-                border.color: parent.enabled ? Global.edgecolor : "transparent"
-                border.width: textid.readOnly ? 0: 1
-                color : transparentBackgrond ? "transparent" : "white"
+				color : transparentBackgrond ? "transparent" : "white"
+				Rectangle {
+					width : parent.width
+					height: 2
+					anchors.bottom : parent.bottom
+					border.color: textid.enabled ? "#d9d9d9" : "transparent"
+					border.width: textid.readOnly ? 0: 1
+
+				}
             }
         }
         onTextChanged: {

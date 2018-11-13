@@ -1,13 +1,12 @@
-#include "kernel.h" 
-#include "mastercatalog.h" 
-#include "models/resourcemodel.h"                        
+#include "kernel.h"        
+#include "mastercatalog.h"            
+#include "models/resourcemodel.h"                                                                                                       
+#include "workflowmetadataformbuilder.h"                                                                                                                                                                         
 
-#include "workflowmetadataformbuilder.h"     
 
-
-using namespace Ilwis; 
-
-WorkflowMetadataFormBuilder::WorkflowMetadataFormBuilder() 
+using namespace Ilwis;             
+ 
+WorkflowMetadataFormBuilder::WorkflowMetadataFormBuilder()        
 {
 } 
 

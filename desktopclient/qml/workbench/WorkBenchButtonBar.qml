@@ -39,7 +39,7 @@ Rectangle {
         Column {
             id : butColumn
             width : 70
-            height : Math.min(1100,parent.height)
+            height : 900 // Math.min(1100,parent.height)
             property bool initial : true
             z: buttonB.z + 1
 			property var butheight : (height - aArea.height) / (children.length - 1)
@@ -61,7 +61,7 @@ Rectangle {
             WorkBenchButton{
                 id : nav
                 objectName : "workbench_navbutton_mainui"
-                iconname: butColumn.initial ? "locator_start.png" : "locator.png"
+                iconname: butColumn.initial ? "locator_white.svg" : (checked ? "locator_green.svg" : "locator_white.svg")
                 label: qsTr("Locator")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -77,7 +77,7 @@ Rectangle {
 
             WorkBenchButton{
                 id : oper
-                iconname : "operations.png"
+                iconname : checked ? "operations_green.svg" : "operations_white.svg"
                 label: qsTr("Operations")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -91,26 +91,9 @@ Rectangle {
                 }
 
             }
-            WorkBenchButton {
-                id : consoleBut
-                iconname : "console.png"
-                label: qsTr("Python")
-                checkable: false
-				height : butColumn.butheight
-                function mouseClicked() {
-                    var id = uicontext.consoleScriptId()
-                    bigthing.newCatalog("itemid=" + id, "script", "ilwis://internalcatalog/consolescript.py", "other")
-                }
-
-                Controls.ToolTip {
-                    target: prop
-                    text: qsTr("Opens the Python console to enter python script commands")
-                }
-            }
-
             WorkBenchButton{
                 id : prop
-                iconname : "metadata.png"
+                iconname : checked ? "metadata_green.svg" : "metadata_white.svg"
                 label: qsTr("Metadata")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -126,7 +109,7 @@ Rectangle {
             }
             WorkBenchButton{
                 id : create
-                iconname : "create.png"
+                iconname : checked ? "create_green.svg" : "create_white.svg"
                 label: qsTr("Create")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -141,7 +124,7 @@ Rectangle {
             }
             WorkBenchButton{
                 id : errors
-                iconname : messagehandler.messageIcon
+                iconname : checked ? "message_green.svg" : "message_white.svg"
                 label: qsTr("Messages")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -182,7 +165,7 @@ Rectangle {
 
                 }
 
-                iconname : "progress.png"
+                iconname : checked ? "progress_green.svg" : "progress_white.svg"
                 label: qsTr("Progress")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -198,7 +181,7 @@ Rectangle {
             }
             WorkBenchButton{
                 id : preferences
-                iconname : "settings.png"
+                iconname : checked ? "settings_green.svg" : "settings_white.svg"
                 label: qsTr("Settings")
 				height : butColumn.butheight
                 function mouseClicked() {
@@ -214,7 +197,7 @@ Rectangle {
             }
             WorkBenchButton{
                 id : info
-                iconname : "info.png"
+                iconname : checked ? "info_green.svg" : "info_white.svg"
                 label: qsTr("Info")
 				height : butColumn.butheight
                 function mouseClicked() {
