@@ -59,7 +59,7 @@ Column {
     Controls.FormatsComboBox{
         id : rasters
         width : parent.width
-        height : 20
+        height : 24
         ilwisType: uicontext.typeName2typeId("rastercoverage");
         labelText: qsTr("Raster coverage")
         labelWidth: 120
