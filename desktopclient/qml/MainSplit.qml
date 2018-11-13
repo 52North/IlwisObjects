@@ -17,6 +17,30 @@ import "controls" as Controls
 Rectangle {
     id : mainSplit
 
+
+    WorkBench.WorkBenchButtonBar{
+        id : workBenchButtons
+    }
+
+    SplitView {
+        width : parent.width - workBenchButtons.width
+        height : parent.height
+        anchors.left: workBenchButtons.right
+        orientation: Qt.Horizontal
+
+        WorkBench.WorkBench{
+            id : workBench
+            datapanel: dataPanel
+            state : "invisible"
+        }
+
+        DataPanel.DataPane{
+            id : dataPanel
+            width : parent.width - workBench.width
+            anchors.left: workBench.right
+        }
+    }
+
     function newCatalog(filter, outputtype, url,side){
          var a =  dataPanel.newCatalog(filter, outputtype, url,side)
          return a
@@ -46,30 +70,6 @@ Rectangle {
             }
         }
     }
-    WorkBench.WorkBenchButtonBar{
-        id : workBenchButtons
-    }
-
-    SplitView {
-        width : parent.width - workBenchButtons.width
-        height : parent.height
-        anchors.left: workBenchButtons.right
-        orientation: Qt.Horizontal
-
-        WorkBench.WorkBench{
-            id : workBench
-            datapanel: dataPanel
-            state : "invisible"
-        }
-
-        DataPanel.DataPane{
-            id : dataPanel
-            width : parent.width - workBench.width
-            anchors.left: workBench.right
-        }
-    }
-
-
 
 }
 
