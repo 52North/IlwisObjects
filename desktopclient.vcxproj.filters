@@ -108,6 +108,11 @@
     <Filter Include="Distribution Files\qml\datapanel\catalog\operations">
       <UniqueIdentifier>{7134d997-c6f3-42a0-bea4-1fa8df89e9ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="desktopclient\applicationformexpressionparser.cpp">
@@ -128,16 +133,6 @@
     <ClCompile Include="desktopclient\workflowmetadataformbuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="desktopclient\applicationformexpressionparser.h">
@@ -1203,6 +1198,9 @@
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateSupervisedClassification.qml">
       <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\SmallRoundButton.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2414,5 +2412,10 @@
     <Text Include="desktopclient\qml\datapanel\catalog\CatalogOperationEditor.qml">
       <Filter>Distribution Files\qml\datapanel\catalog</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
