@@ -12,7 +12,7 @@ import "../controls" as Controls
 
 Rectangle {
     id : searchBar
-    color : Global.alternatecolor1
+    //color : Global.alternatecolor1
 
     Column {
         y : 2
@@ -40,7 +40,7 @@ Rectangle {
                 id : filtertxt
                 labelText:  qsTr("Keyword filter")
                 labelWidth: 100
-                width : parent.width - 49
+                width : parent.width - 9
                 transparentBackgrond: false
                 onContentChanged: {
                     operations.keyFilter = filtertxt.content;
