@@ -11,7 +11,7 @@ Rectangle {
     anchors.fill: parent
     anchors.topMargin: 3
     color : catalogSplit.backgroundCatalogColor
-	property string iconName : "../images/display_options"
+	property string iconName : "../images/actions"
 
 	  SplitView {
 		width : parent.width - 5
