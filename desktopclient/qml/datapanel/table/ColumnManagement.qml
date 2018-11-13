@@ -46,7 +46,7 @@ Rectangle {
             title : qsTr("Actions for Tables")
             SplitView{
                 id : columnview
-                property string iconName : "../images/display_options"
+                property string iconName : "../images/actions"
                 function setModel(cm){
                     //columnlist.columnmodel = cm
                 }
@@ -77,14 +77,14 @@ Rectangle {
                 id : columnmetadatalist
             }
         }
-        Tab {
+   /*     Tab {
             title : qsTr("Charts")
             id : graphpanel
             active : true
            // ChartsPanel{
 //
            // }
-        }
+        } */
 
      style: DataPanel.ButtonBarTabViewStyle{}
     }
