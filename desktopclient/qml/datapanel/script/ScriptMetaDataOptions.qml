@@ -4,5 +4,5 @@ Item {
     id : metatdata
     width : 210
     height : parent.height
-    property string iconName : "../images/metadata_s"
+    property string iconName : "../images/metadata"
 }
