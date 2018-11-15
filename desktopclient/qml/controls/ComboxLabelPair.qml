@@ -47,7 +47,7 @@ Item {
         text : labelText
         font.bold: fontBold
         font.pointSize: fontSize
-        y :11
+        y :10
     }
     QC2.ComboBox{
         id : control
@@ -107,7 +107,7 @@ Item {
 
 			Text {
 			    x : 4
-				y : 11
+				y : 10
 				leftPadding: 0
 				width : parent.width - 15
 				rightPadding: control.indicator.width + control.spacing
