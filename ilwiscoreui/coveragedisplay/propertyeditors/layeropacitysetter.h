@@ -1,5 +1,4 @@
-#ifndef LAYERTRANSPARENCYSETTER_H
-#define LAYERTRANSPARENCYSETTER_H
+#pragma once
 
 #include <QObject>
 #include <QQmlListProperty>
@@ -23,7 +22,6 @@ public:
     void opacity(float tr);
 
 
-  NEW_PROPERTYEDITOR(LayerOpacitySetter)
 signals:
       void opacityChanged();
 
@@ -32,4 +30,3 @@ private:
 }
 }
 
-#endif // LAYERTRANSPARENCYSETTER_H
