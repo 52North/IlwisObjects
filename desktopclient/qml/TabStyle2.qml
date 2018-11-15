@@ -35,129 +35,142 @@ TabViewStyle {
 				width: parent.width 
 				height: tabHeight
 
-			Item {
-				id : label
-				width : parent.width - minbut.width - rplusbut.width - 4
-				anchors.bottom: parent.bottom
-				height : 35
-
-				Text {
-				    x : 8
-					width : parent.width - 10
-					height : 20
-					text: tabmodel ? tabmodel.displayName : "?"
-					color: tabmodel && tabmodel.selected ? "black" : "#403F3F"
-					elide: Text.ElideMiddle
-					font.pointSize: tabmodel && tabmodel.selected ? 9 : 8
-					font.weight: tabmodel && tabmodel.selected ? Font.Bold : Font.Normal
+				Item {
+					id : label
+					width : parent.width - minbut.width - rplusbut.width - refreshbut.width - 4
 					anchors.bottom: parent.bottom
-					anchors.bottomMargin: 2
+					height : 35
+
+					Text {
+						x : 8
+						width : parent.width - 10
+						height : 20
+						text: tabmodel ? tabmodel.displayName : "?"
+						color: tabmodel && tabmodel.selected ? "black" : "#403F3F"
+						elide: Text.ElideMiddle
+						font.pointSize: tabmodel && tabmodel.selected ? 9 : 8
+						font.weight: tabmodel && tabmodel.selected ? Font.Bold : Font.Normal
+						anchors.bottom: parent.bottom
+						anchors.bottomMargin: 2
+					}
+					MouseArea  {
+						id : mouseArea2
+						property variant image
+						drag.target: image
+						anchors.fill : parent
+						onClicked : {
+							currentIndex = styleData.index
+							datapane.select(side == 1, currentIndex, true)
+							dataPanel.activeItem = control.getTab(currentIndex).item
+							datatabview.sideChange()
+
+						}
+						onDoubleClicked: {
+							fullSize()
+						}
+						onReleased: {
+							if ( image){
+								image.Drag.drop()
+								image.parent = mouseArea2
+								image.anchors.fill = mouseArea2
+								image.destroy();
+							}else
+								showTimer.stop()
+						}
+						onPressed: {
+							showTimer.start()
+						}
+
+						function createDragObject() {
+							image = Qt.createQmlObject('import QtQuick 2.0; Image{
+								id : image
+								width : 140; height : 35
+								source : \"images/tabborderdrag.png\"
+								fillMode: Image.PreserveAspectFit
+								property var sourcePanel : control.getTab(currentIndex).item
+
+								Drag.keys: "datatab"
+								Drag.active: mouseArea2.drag.active
+								Drag.hotSpot.x: 10
+								Drag.hotSpot.y: 10
+								Drag.source : image
+								opacity : 0.5
+
+								states: State {
+									when: mouseArea2.drag.active
+									ParentChange { target: image; parent: root }
+									AnchorChanges { target: image; anchors.verticalCenter: undefined; anchors.horizontalCenter: undefined }
+								}
+							}', mouseArea2, "dynamicImage");
+						}
+
+					}
+					Timer{
+						id : showTimer
+						interval: 250
+						onTriggered: {
+							mouseArea2.createDragObject()
+						}
+					}
+
+
 				}
-				MouseArea  {
-					id : mouseArea2
-					property variant image
-					drag.target: image
-					anchors.fill : parent
-					onClicked : {
-						currentIndex = styleData.index
-						datapane.select(side == 1, currentIndex, true)
-						dataPanel.activeItem = control.getTab(currentIndex).item
-						datatabview.sideChange()
 
+				Controls.SmallRoundButton {
+					id : refreshbut
+					anchors.verticalCenter: thetab.verticalCenter
+					height : 22
+					iconBase : "../images/refresh"
+					visible : panelType() == "catalog"
+					width : visible ? height : 0
+					onClicked: {
+						//datapanesplit.closeTab(side == 1, styleData.index)
 					}
-					onDoubleClicked: {
-						fullSize()
-					}
-					onReleased: {
-						if ( image){
-							image.Drag.drop()
-							image.parent = mouseArea2
-							image.anchors.fill = mouseArea2
-							image.destroy();
-						}else
-							showTimer.stop()
-					}
-					onPressed: {
-						showTimer.start()
-					}
+				}
 
-					function createDragObject() {
-						image = Qt.createQmlObject('import QtQuick 2.0; Image{
-							id : image
-							width : 140; height : 35
-							source : \"images/tabborderdrag.png\"
-							fillMode: Image.PreserveAspectFit
-							property var sourcePanel : control.getTab(currentIndex).item
+				Controls.SmallRoundButton {
+					id : minbut
+					anchors.verticalCenter: thetab.verticalCenter
+					height : 25
+					iconBase : "../images/close"
+					visible : datapanesplit.totalTabCount() > 1 ? true : false
+					width : visible ? height : 0
+					onClicked: {
+						datapanesplit.closeTab(side == 1, styleData.index)
+					}
+				}
 
-							Drag.keys: "datatab"
-							Drag.active: mouseArea2.drag.active
-							Drag.hotSpot.x: 10
-							Drag.hotSpot.y: 10
-							Drag.source : image
-							opacity : 0.5
+				Controls.SmallRoundButton {
+					anchors.verticalCenter: thetab.verticalCenter
+					id : rplusbut
+					height : 25
+					width : visible ? height : 0
+					iconBase : "../images/add"
+					visible : panelType() == "catalog"
+					onClicked: menu.open()
 
-							states: State {
-								when: mouseArea2.drag.active
-								ParentChange { target: image; parent: root }
-								AnchorChanges { target: image; anchors.verticalCenter: undefined; anchors.horizontalCenter: undefined }
+					Menu {
+						id: menu
+						y: rplusbut.height
+						width : 100
+
+						MenuItem {
+							text: qsTr("Open Left")
+
+							onTriggered : {
+								bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "left")
 							}
-						}', mouseArea2, "dynamicImage");
-					}
+						}
+						MenuItem {
+							text: qsTr("Open Right")
 
-				}
-				Timer{
-					id : showTimer
-					interval: 250
-					onTriggered: {
-						mouseArea2.createDragObject()
-					}
-				}
-
-
-			}
-			Controls.SmallRoundButton {
-				id : minbut
-				anchors.verticalCenter: thetab.verticalCenter
-				height : 20
-				text : "x"
-				visible : datapanesplit.totalTabCount() > 1 ? true : false
-				width : visible ? 20 : 0
-				onClicked: {
-					datapanesplit.closeTab(side == 1, styleData.index)
-				}
-			}
-
-			Controls.SmallRoundButton {
-				anchors.verticalCenter: thetab.verticalCenter
-				id : rplusbut
-				height : 20
-				width : visible ? 20 : 0
-				text : "+"
-				visible : panelType() == "catalog"
-				onClicked: menu.open()
-
-				Menu {
-					id: menu
-					y: rplusbut.height
-					width : 100
-
-					MenuItem {
-						text: qsTr("Open Left")
-
-						onTriggered : {
-							bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "left")
+							onTriggered : {
+								bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "right")
+							}
 						}
 					}
-					MenuItem {
-						text: qsTr("Open Right")
 
-						onTriggered : {
-							bigthing.newCatalog("container='" + mastercatalog.currentUrl +"'","catalog",mastercatalog.currentUrl, "right")
-						}
-					}
 				}
-
-			}
 		}
 	
 	}
