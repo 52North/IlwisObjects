@@ -3,24 +3,34 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 36 36" style="enable-background:new 0 0 36 36;" xml:space="preserve">
 <style type="text/css">
-	.st0{display:none;}
-	.st1{display:inline;fill:#246E4D;}
-	.st2{display:inline;fill:#707070;}
-	.st3{display:inline;fill:#BDBCBC;}
-	.st4{display:inline;fill:#EAEFEC;}
-	.st5{display:inline;fill:#D7E0D8;}
-	.st6{fill:none;}
-	.st7{fill:#FFFFFF;}
-	.st8{fill:#246E4D;}
-	.st9{fill:#6F6F6F;}
-	.st10{fill:#6F6F6E;}
-	.st11{fill:none;stroke:#1D1D1B;stroke-width:0.7087;stroke-miterlimit:10;}
-	.st12{fill:#EAEFEC;}
-	.st13{fill:#1D1D1B;}
-	.st14{fill:#D7E0D8;}
-	.st15{fill:#BDBCBC;}
+	.st0{fill:#246E4D;}
+	.st1{fill:#707070;}
+	.st2{fill:#BDBCBC;}
+	.st3{fill:#EAEFEC;}
+	.st4{fill:#D7E0D8;}
+	.st5{fill:none;}
+	.st6{fill:#FFFFFF;}
+	.st7{fill:#6F6F6E;}
+	.st8{fill:#6F6F6F;}
+	.st9{fill:none;stroke:#1D1D1B;stroke-width:0.7087;stroke-miterlimit:10;}
+	.st10{fill:#1D1D1B;}
+	.st11{fill:none;stroke:#246E4D;stroke-width:0.992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st12{fill:none;stroke:#246E4D;stroke-width:0.992;stroke-miterlimit:10;}
+	.st13{fill:#9EC420;}
+	.st14{fill:#6BBE9F;}
+	.st15{fill:#D0EBFC;}
+	.st16{fill:#5BC5F2;}
+	.st17{fill:#006AA9;}
+	.st18{fill:#FF0000;}
+	.st19{fill:#39B54A;}
+	.st20{fill:#FFFF00;}
+	.st21{fill:#0000FF;}
+	.st22{fill:#EEE758;stroke:#A19F3D;stroke-miterlimit:10;}
+	.st23{fill:#246E4D;stroke:#246E4D;stroke-width:1.4173;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st24{fill:#FFFFFF;stroke:#246E4D;stroke-miterlimit:10;}
+	.st25{fill:#246E4D;stroke:#246E4D;stroke-miterlimit:10;}
 </style>
-<g id="Layer_1" class="st0">
+<g id="Layer_1">
 </g>
 <g id="locator_x5F_white">
 </g>
@@ -51,9 +61,10 @@
 <g id="settings_x5F_green">
 </g>
 <g id="infowehite">
-	<rect x="0" y="0.1" class="st6" width="36" height="36"/>
-	<path class="st7" d="M16.4,26h3.2v-9.6h-3.2V26z M18,2C9.1,2,2,9.2,2,18s7.2,16,16,16s16-7.2,16-16S26.8,2,18,2z M18,30.8
-		c-7.1,0-12.8-5.7-12.8-12.8S10.9,5.2,18,5.2S30.8,11,30.8,18S25,30.8,18,30.8z M16.4,13.2h3.2V10h-3.2V13.2z"/>
+	<rect x="0" y="0.1" class="st5" width="36" height="36"/>
+	<path class="st6" d="M16.4,25.8h3.1v-9.3h-3.1V25.8z M18,2.5C9.4,2.5,2.5,9.5,2.5,18S9.4,33.5,18,33.5S33.5,26.6,33.5,18
+		S26.5,2.5,18,2.5z M18,30.4c-6.8,0-12.4-5.6-12.4-12.4S11.1,5.6,18,5.6S30.4,11.2,30.4,18S24.8,30.4,18,30.4z M16.4,13.4h3.1v-3.1
+		h-3.1V13.4z"/>
 </g>
 <g id="info_x5F_green">
 </g>

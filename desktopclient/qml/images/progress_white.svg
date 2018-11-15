@@ -3,24 +3,34 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 36 36" style="enable-background:new 0 0 36 36;" xml:space="preserve">
 <style type="text/css">
-	.st0{display:none;}
-	.st1{display:inline;fill:#246E4D;}
-	.st2{display:inline;fill:#707070;}
-	.st3{display:inline;fill:#BDBCBC;}
-	.st4{display:inline;fill:#EAEFEC;}
-	.st5{display:inline;fill:#D7E0D8;}
-	.st6{fill:none;}
-	.st7{fill:#FFFFFF;}
-	.st8{fill:#246E4D;}
-	.st9{fill:#6F6F6F;}
-	.st10{fill:#6F6F6E;}
-	.st11{fill:none;stroke:#1D1D1B;stroke-width:0.7087;stroke-miterlimit:10;}
-	.st12{fill:#EAEFEC;}
-	.st13{fill:#1D1D1B;}
-	.st14{fill:#D7E0D8;}
-	.st15{fill:#BDBCBC;}
+	.st0{fill:#246E4D;}
+	.st1{fill:#707070;}
+	.st2{fill:#BDBCBC;}
+	.st3{fill:#EAEFEC;}
+	.st4{fill:#D7E0D8;}
+	.st5{fill:none;}
+	.st6{fill:#FFFFFF;}
+	.st7{fill:#6F6F6E;}
+	.st8{fill:#6F6F6F;}
+	.st9{fill:none;stroke:#1D1D1B;stroke-width:0.7087;stroke-miterlimit:10;}
+	.st10{fill:#1D1D1B;}
+	.st11{fill:none;stroke:#246E4D;stroke-width:0.992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st12{fill:none;stroke:#246E4D;stroke-width:0.992;stroke-miterlimit:10;}
+	.st13{fill:#9EC420;}
+	.st14{fill:#6BBE9F;}
+	.st15{fill:#D0EBFC;}
+	.st16{fill:#5BC5F2;}
+	.st17{fill:#006AA9;}
+	.st18{fill:#FF0000;}
+	.st19{fill:#39B54A;}
+	.st20{fill:#FFFF00;}
+	.st21{fill:#0000FF;}
+	.st22{fill:#EEE758;stroke:#A19F3D;stroke-miterlimit:10;}
+	.st23{fill:#246E4D;stroke:#246E4D;stroke-width:1.4173;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st24{fill:#FFFFFF;stroke:#246E4D;stroke-miterlimit:10;}
+	.st25{fill:#246E4D;stroke:#246E4D;stroke-miterlimit:10;}
 </style>
-<g id="Layer_1" class="st0">
+<g id="Layer_1">
 </g>
 <g id="locator_x5F_white">
 </g>
@@ -43,14 +53,12 @@
 <g id="messages_x5F_green">
 </g>
 <g id="progress_x5F_white">
-	<rect x="0" y="-0.1" class="st6" width="36" height="36"/>
-	<g>
-		<path class="st7" d="M30.4,22.5H5.7c-2.6,0-4.6-2.1-4.6-4.6s2.1-4.6,4.6-4.6h24.7c2.6,0,4.6,2.1,4.6,4.6S32.9,22.5,30.4,22.5z
-			 M5.7,14.8c-1.7,0-3.1,1.4-3.1,3.1S4,21,5.7,21h24.7c1.7,0,3.1-1.4,3.1-3.1s-1.4-3.1-3.1-3.1H5.7z"/>
-		<path class="st7" d="M12.9,19.9H5.7c-1.1,0-1.9-0.9-1.9-1.9v0c0-1.1,0.9-1.9,1.9-1.9h7.1L12.9,19.9z"/>
-	</g>
 </g>
 <g id="progress_x5F_green">
+	<rect x="0" y="-0.1" class="st5" width="36" height="36"/>
+	<path class="st6" d="M29.6,13.3H6.3c-2.5,0-4.6,2.1-4.6,4.6s2.1,4.6,4.6,4.6h23.3c2.5,0,4.6-2.1,4.6-4.6S32.1,13.3,29.6,13.3z
+		 M6.3,15.2h23.3c1.5,0,2.7,1.2,2.7,2.7s-1.2,2.7-2.7,2.7H6.3c-1.5,0-2.7-1.2-2.7-2.7S4.8,15.2,6.3,15.2z"/>
+	<path class="st6" d="M13.1,19.7H6.4c-1,0-1.8-0.8-1.8-1.8v0c0-1,0.8-1.8,1.8-1.8h6.7L13.1,19.7z"/>
 </g>
 <g id="settings_x5F_white">
 </g>
