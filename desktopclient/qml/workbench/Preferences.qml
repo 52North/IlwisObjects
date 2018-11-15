@@ -15,7 +15,7 @@ WorkBenchShifter {
 
     FunctionBarHeader{
         id : functionBar
-        headerImage: "../images/settings.png"
+        headerImage: "../images/settings_green.svg"
         headerText:"Settings"
     }
     Column {
@@ -29,7 +29,7 @@ WorkBenchShifter {
             height : childrenRect.height
             Preferences.PreferencesButton{
                 connectedItem: locs
-                imageSource : "../images/folderdisk.png"
+                imageSource : "../images/settingsdock_locations.svg"
                 labelText : qsTr("Locations")
             }
 
@@ -44,7 +44,7 @@ WorkBenchShifter {
             height : childrenRect.height
 
             Preferences.PreferencesButton{
-                imageSource : "../images/visualizationCS1.png"
+                imageSource : "../images/settingsdock_gui.svg"
                 labelText : qsTr("User Interface")
                 connectedItem: displayOptions
 
@@ -55,21 +55,21 @@ WorkBenchShifter {
             }
         }
         Preferences.PreferencesButton{
-            imageSource : "../images/mapview.png"
+            imageSource : "../images/settingsdock_mapview.svg"
             labelText : qsTr("Map view")
         }
         Preferences.PreferencesButton{
             connectedItem: locs
-            imageSource : "../images/table20.png"
+            imageSource : "../images/settingsdock_tableview.svg"
             labelText : qsTr("Table view")
         }
 
         Preferences.PreferencesButton{
-            imageSource : "../images/users20.png"
+            imageSource : "../images/settingsdock-users.svg"
             labelText : qsTr("Users")
         }
         Preferences.PreferencesButton{
-            imageSource : "../images/font20.png"
+            imageSource : "../images/settingsdock_fonts.svg"
             labelText : qsTr("Fonts")
         }
     }
