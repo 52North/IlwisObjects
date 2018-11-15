@@ -49,7 +49,7 @@ Rectangle {
         Text {
             width : parent.width
             height : 30
-            text : "Build : " + startilwis.buildNumber()
+            text : "Build time : " + startilwis.buildNumber()
             font.pointSize: 12
             color : "darkblue"
             anchors.horizontalCenter: parent.horizontalCenter
