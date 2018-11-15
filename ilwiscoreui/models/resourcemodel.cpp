@@ -270,7 +270,7 @@ QString ResourceModel::iconPath(IlwisTypes tp)
    if ( tp == (itOPERATIONMETADATA|itSCRIPT))
         return "operation20.png";
     if ( tp & itRASTER)
-        return "raster.png";
+        return "object_raster.svg";
     else if ( tp == itPOLYGON)
         return "vector_fill.png";
     else if ( tp == itLINE)
@@ -282,46 +282,46 @@ QString ResourceModel::iconPath(IlwisTypes tp)
     else if ( tp & itTABLE)
         return "table.png";
     else if ( tp == (itCONVENTIONALCOORDSYSTEM|itLOCATION))
-        return "latloncsy20.png";
+        return "coordinate.png";
     else if ( tp == itCONVENTIONALCOORDSYSTEM)
         return "coordinate.png";
     else if ( tp == itBOUNDSONLYCSY)
-        return "boundsonlycsy20.png";
+        return "coordinate.png";
     else if ( tp & itCOORDSYSTEM)
         return "coordinate.png";
     else if ( tp  == (itGEOREF | itLOCATION))
-        return "georeftiepoints20.png";
+        return "georeference.png";
     else if ( tp & itGEOREF)
         return "georeference.png";
     else if (tp == itCATALOG) {
         return "folder.png";
     }
     else if (tp == (itTHEMATICITEM | itITEMDOMAIN))
-        return "itemdomain.png";
+        return "object_domain_item.svg";
     else if ( tp == (itIDENTIFIERITEM | itITEMDOMAIN))
-        return "itemdomain.png";
+        return "object_domain_item.svg";
     else if ( tp == (itNUMERICITEM | itITEMDOMAIN))
-        return "itemdomain.png";
+        return "object_domain_item.svg";
     else if ( tp == (itINDEXEDITEM | itITEMDOMAIN))
-        return "itemdomain.png";
+        return "object_domain_item.svg";
     else if ( tp == (itTIMEITEM | itITEMDOMAIN))
-        return "timeintervaldom20.png";
+        return "object_domain_item.svg";
     else if ( tp == (itTIME | itDOMAIN))
-        return "timedom20.png";
+        return "object_domain_time.svg";
     else if ( tp == (itCOLORDOMAIN))
-        return "colordom20.png";
+        return "object_domain_color.svg";
     else if ( tp == (itPALETTECOLOR | itITEMDOMAIN))
-        return "colorpalette20.png";
+        return "object_domain_item.svg";
     else if ( tp == (itNUMERICDOMAIN))
-        return "numericdomain.png";
+        return "object_domain_numb.svg";
     else if ( tp & itITEMDOMAIN)
-        return "itemdomain.png";
+        return "object_domain_item.svg";
     else if ( tp & itTEXTDOMAIN)
         return "textdomain.png";
     else if ( tp & itDOMAIN)
-        return "domain.png";
+        return "object_domain_general.svg";
     else if ( tp == itSCRIPT)
-        return "script.png";
+        return "object_script.svg";
     else if ( tp & itREPRESENTATION)
         return "representation.png";
     else if ( hasType(tp,itNUMERICDOMAIN))
@@ -337,7 +337,7 @@ QString ResourceModel::iconPath(IlwisTypes tp)
     else if ( tp & itSTRING)
         return "text20.png";
     else if ( tp & itWORKFLOW)
-        return "workflow20.png";
+        return "object_workflow.svg";
     else if ( tp & itOPERATIONMETADATA)
         return "operation.png";
     else if ( tp & itCOORDINATE)

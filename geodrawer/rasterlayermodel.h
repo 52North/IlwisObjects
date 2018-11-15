@@ -45,7 +45,7 @@ public:
     Q_PROPERTY(QVector<qint32> removeQuads READ removeQuads)
     Q_PROPERTY(QVariantMap stretch READ stretch NOTIFY stretchChanged);
 
-	void coverage(const ICoverage& cov);
+	void coverage(const ICoverage& cov) override;
     void fillAttributes() ;
 	bool prepare(int);
     QString value2string(const QVariant &value, const QString &attrName) const;
