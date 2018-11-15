@@ -69,6 +69,7 @@ const quint64 itSCRIPT = 2 * itCOLUMN;                // 576460752303423488
 const quint64 itMODEL = 2 * itSCRIPT;                 // 1152921504606846976
 const quint64 itCOMBINATIONMATRIX = 2 * itMODEL;      // 2305843009213693952  
 const quint64 itLAYER = 2 * itCOMBINATIONMATRIX;	  // 4611686018427387904
+const quint64 itCHART = 2 * itLAYER;				  //9223372036854775808
 
 const quint64 itCOVERAGE = itPOINT | itRASTER | itPOLYGON | itLINE ; //15
 const quint64 itFEATURE = itPOINT | itPOLYGON | itLINE; //7

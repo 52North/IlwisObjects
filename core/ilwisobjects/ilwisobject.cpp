@@ -717,6 +717,8 @@ QString IlwisObject::type2Name(IlwisTypes t)
         return "Script";
     case  itMODEL:
         return "Model";
+	case  itCHART:
+		return "Chart";
     }
 
     return sUNDEF;
@@ -805,6 +807,9 @@ IlwisTypes IlwisObject::name2Type(const QString& dname)
     if ( name.compare( "Model",Qt::CaseInsensitive) == 0) {
         return  itMODEL;
     }
+	if (name.compare("Chart", Qt::CaseInsensitive) == 0) {
+		return  itCHART;
+	}
     if ( name.compare( "CombinationMatrix",Qt::CaseInsensitive) == 0) {
         return  itCOMBINATIONMATRIX;;
     }
