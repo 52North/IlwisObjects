@@ -106,7 +106,6 @@ void CoverageLayerModel::coverage(const ICoverage &cov)
 {
     _coverage = cov;
     fillAttributes();
-    _coverage = cov;
     if ( _coverage.isValid()){
         _coordConversionNeeded = _coverage->coordinateSystem()->isCompatibleWith(layerManager()->rootLayer()->screenCsy().ptr());
         modelregistry()->registerModel(modelId(), TypeHelper::type2name(_coverage->ilwisType()), this);
