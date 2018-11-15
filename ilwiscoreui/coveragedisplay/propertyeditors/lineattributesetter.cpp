@@ -18,8 +18,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("linepropertysetter",LinePropertySetter)
-
 LinePropertySetter::LinePropertySetter()
 {}
 

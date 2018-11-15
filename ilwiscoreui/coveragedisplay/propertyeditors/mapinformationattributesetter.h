@@ -21,8 +21,6 @@ public:
     bool showInfo() const;
     void setShowInfo(bool yesno);
 
-    NEW_PROPERTYEDITOR(MapInformationPropertySetter)
-
 signals:
     void showInfoChanged();
 

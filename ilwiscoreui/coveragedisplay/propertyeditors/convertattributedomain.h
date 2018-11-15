@@ -28,7 +28,6 @@ private:
     QStringList colorSchemes() const;
     DataDefinition _attributeDef;
 
- NEW_PROPERTYEDITOR(ConvertAttributeDomain)
 };
 }
 }

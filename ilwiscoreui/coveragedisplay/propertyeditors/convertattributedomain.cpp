@@ -16,10 +16,9 @@
 #include "visualpropertyeditor.h"
 #include "convertattributedomain.h"
 
+
 using namespace Ilwis;
 using namespace Ui;
-
-REGISTER_PROPERTYEDITOR("convertattributedomain",ConvertAttributeDomain)
 
 ConvertAttributeDomain::ConvertAttributeDomain()
 {

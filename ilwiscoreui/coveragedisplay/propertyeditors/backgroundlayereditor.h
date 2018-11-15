@@ -21,7 +21,6 @@ public:
     bool canUse(const IIlwisObject &obj, const QString &name) const;
     static VisualPropertyEditor *create(VisualAttribute *p);
 
-    NEW_PROPERTYEDITOR(BackgroundLayerEditor)
 };
 }
 }

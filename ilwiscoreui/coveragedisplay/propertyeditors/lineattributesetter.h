@@ -29,8 +29,6 @@ public:
 
     static VisualPropertyEditor *create(VisualAttribute *p);
 
- NEW_PROPERTYEDITOR(LinePropertySetter)
-
  signals:
      void showBoundariesChanged();
      void boundaryColorChanged();

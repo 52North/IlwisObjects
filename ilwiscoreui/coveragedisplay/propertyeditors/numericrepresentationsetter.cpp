@@ -14,9 +14,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-//-----------------------------------------
-REGISTER_PROPERTYEDITOR("numericrepresentationsetter",NumericRepresentationSetter)
-
 NumericRepresentationSetter::NumericRepresentationSetter(VisualAttribute *p) :
         VisualPropertyEditor(p,"numericrepresentationsetter",TR("Legend"),QUrl("NumericRepresentation.qml"))
 {

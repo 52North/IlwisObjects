@@ -31,8 +31,6 @@ namespace Ilwis {
 
             static VisualPropertyEditor *create(VisualAttribute *p);
 
-            NEW_PROPERTYEDITOR(StretchLimits)
-
             signals:
                 void rangeChanged();
                 void markersChanged();

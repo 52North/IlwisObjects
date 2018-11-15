@@ -12,8 +12,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("mapinfopropertyeditor",MapInformationPropertySetter)
-
 MapInformationPropertySetter::MapInformationPropertySetter(VisualAttribute *p) :
     VisualPropertyEditor(p, "mapinfopropertyeditor",TR("Mouse over Info"),QUrl("MapinfoProperties.qml"))
 {

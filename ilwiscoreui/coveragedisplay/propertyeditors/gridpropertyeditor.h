@@ -44,14 +44,11 @@ protected:
 class GridLineColorEditor : public SubGridPropertyEditor {
 
 public:
-    GridLineColorEditor(VisualAttribute *p);
-    GridLineColorEditor();
-    QString gridDrawerName() const;
+	GridLineColorEditor(VisualAttribute *p);
+	GridLineColorEditor();
+	QString gridDrawerName() const;
 
-    static VisualPropertyEditor *create(VisualAttribute *p);
-
-    NEW_PROPERTYEDITOR(GridLineColorEditor)
-
+	static VisualPropertyEditor *create(VisualAttribute *p);
 
 };
 
@@ -63,9 +60,6 @@ public:
     QString gridDrawerName() const;
 
     static VisualPropertyEditor *create(VisualAttribute *p);
-
-    NEW_PROPERTYEDITOR(GridOpacityEditor)
-
 
 };
 
@@ -80,8 +74,6 @@ public:
     QString gridDrawerName() const;
 
     static VisualPropertyEditor *create(VisualAttribute *p);
-
-    NEW_PROPERTYEDITOR(PrimaryGridCellDistanceEditor)
 
     double distance() const;
     void distance(double v);
@@ -107,8 +99,6 @@ public:
     QString gridDrawerName() const;
 
     static VisualPropertyEditor *create(VisualAttribute *p);
-
-    NEW_PROPERTYEDITOR(SecondaryGridCellCountEditor)
 
     int noOfCells() const;
     void noOfCells(int v);

@@ -120,8 +120,6 @@ signals:
     void pinCountChanged();
     void bandsChanged();
 
-  NEW_PROPERTYEDITOR(CrosssectionTool)
-
 private:
     int maxR() const;
     int maxC() const;

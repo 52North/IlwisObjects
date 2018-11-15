@@ -26,8 +26,6 @@ public:
 
 
 
-  NEW_PROPERTYEDITOR(OpenAttributeTable)
-
 private:
 };
 }

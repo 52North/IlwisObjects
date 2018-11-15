@@ -26,8 +26,6 @@ public:
     Q_INVOKABLE void setRepresentation(const QString& name)    ;
     QQmlListProperty<RepresentationElementModel> representationElements();
 
-    NEW_PROPERTYEDITOR(NumericRepresentationSetter)
-
 signals:
     void rprNameChanged();
     void itemsChanged();

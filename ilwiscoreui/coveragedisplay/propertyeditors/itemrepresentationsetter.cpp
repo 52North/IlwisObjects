@@ -14,8 +14,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("itemrepresentationsetter",ItemRepresentationSetter)
-
 ItemRepresentationSetter::ItemRepresentationSetter()
 {
 

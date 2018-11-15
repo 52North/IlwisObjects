@@ -17,8 +17,6 @@ public:
     PolygonPropertySetter();
     PolygonPropertySetter(VisualAttribute *p);
     static VisualPropertyEditor *create(VisualAttribute *p);
-
-    NEW_PROPERTYEDITOR(PolygonPropertySetter)
     bool canUse(const IIlwisObject &obj, const QString &name) const;
     bool showAreas() const;
     void setShowAreas(bool yesno);

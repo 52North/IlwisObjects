@@ -97,8 +97,6 @@ void SubGridPropertyEditor::isActive(bool yesno)
 }*/
 
 //---------------------------------------------
-REGISTER_PROPERTYEDITOR("gridlinecolorpropertyeditor", GridLineColorEditor)
-
 GridLineColorEditor::GridLineColorEditor() : SubGridPropertyEditor() {
 
 }
@@ -118,8 +116,6 @@ VisualPropertyEditor *GridLineColorEditor::create(VisualAttribute *p)
 }
 
 //---------------------------------------------
-REGISTER_PROPERTYEDITOR("primarygridopacitypropertyeditor", GridOpacityEditor)
-
 GridOpacityEditor::GridOpacityEditor() : SubGridPropertyEditor() {
 
 }
@@ -139,8 +135,6 @@ VisualPropertyEditor *GridOpacityEditor::create(VisualAttribute *p)
 }
 
 //------------------------------------------------
-REGISTER_PROPERTYEDITOR("primarygridcelldistancepropertyeditor", PrimaryGridCellDistanceEditor)
-
 PrimaryGridCellDistanceEditor::PrimaryGridCellDistanceEditor() : SubGridPropertyEditor() {
 
 }
@@ -180,8 +174,6 @@ void PrimaryGridCellDistanceEditor::distance(double v)
 }
 
 //------------------------------------------------
-REGISTER_PROPERTYEDITOR("secondarycellcountpropertyeditor", SecondaryGridCellCountEditor)
-
 SecondaryGridCellCountEditor::SecondaryGridCellCountEditor() : SubGridPropertyEditor() {
 
 }

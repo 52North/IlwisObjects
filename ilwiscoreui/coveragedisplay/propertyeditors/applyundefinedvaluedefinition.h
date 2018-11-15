@@ -25,8 +25,6 @@ public:
     void undefinedvalue(double tr);
 
 
-     NEW_PROPERTYEDITOR(ApplyUndefinedValueDefinition)
-
 signals:
          void undefinedChanged();
 };

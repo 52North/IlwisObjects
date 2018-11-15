@@ -27,8 +27,6 @@ public:
     void attributesChanged(Raw index, const QVariantMap &values);
      void representationChanged(const IRepresentation& rpr);
 
-    NEW_PROPERTYEDITOR(ItemRepresentationSetter)
-
 signals:
     void rprNameChanged();
     void itemsChanged();

@@ -9,8 +9,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("viewattributes",OpenAttributeTable)
-
 OpenAttributeTable::OpenAttributeTable()
 {
 

@@ -10,8 +10,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("linkcoverage", LinkCoverage)
-
 LinkCoverage::LinkCoverage()
 {
 

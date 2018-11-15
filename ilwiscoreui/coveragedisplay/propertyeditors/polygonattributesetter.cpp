@@ -16,8 +16,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("polygonpropertysetter",PolygonPropertySetter)
-
 PolygonPropertySetter::PolygonPropertySetter(VisualAttribute *p) :
     VisualPropertyEditor(p,"polygonpropertysetter",TR("Areas"),QUrl("PolygonProperties.qml"))
 {

@@ -14,7 +14,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("crosssectiontool",CrosssectionTool)
 
 CrossSectionPin::CrossSectionPin() : QObject()
 {}

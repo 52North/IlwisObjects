@@ -8,8 +8,6 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("backgroundlayereditor",BackgroundLayerEditor)
-
 BackgroundLayerEditor::BackgroundLayerEditor()
 {
 

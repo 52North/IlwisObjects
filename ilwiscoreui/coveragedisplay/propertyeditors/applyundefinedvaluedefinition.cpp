@@ -8,7 +8,7 @@
 using namespace Ilwis;
 using namespace Ui;
 
-REGISTER_PROPERTYEDITOR("applyundefinedvalue",ApplyUndefinedValueDefinition)
+
 
 ApplyUndefinedValueDefinition::ApplyUndefinedValueDefinition()
 {
