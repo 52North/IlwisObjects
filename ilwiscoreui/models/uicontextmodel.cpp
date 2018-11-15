@@ -31,6 +31,23 @@
 #include "script.h"
 #include "operationcatalogmodel.h"
 #include "scriptmodel.h"
+#include "visualpropertyeditor.h"
+#include "applyundefinedvaluedefinition.h"
+#include "backgroundlayereditor.h"
+#include "crosssection.h"
+#include "gridpropertyeditor.h"
+#include "itemrepresentationsetter.h"
+#include "layerinfo.h"
+#include "layeropacitysetter.h"
+#include "lineattributesetter.h"
+#include "linkcoverage.h"
+#include "mapinformationattributesetter.h"
+#include "numericrepresentationsetter.h"
+#include "openattributetable.h"
+#include "polygonattributesetter.h"
+#include "representationelementmodel.h"
+#include "stretchlimits.h"
+#include "convertattributedomain.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -251,6 +268,27 @@ void UIContextModel::prepare()
     factory->registerTableOperation("linktable", LinkTable::create);
     Ilwis::kernel()->addFactory(factory);
     QString rawUrlWorldMap = OSHelper::createFileUrlFromParts(ilwisloc, "/resources/country_boundaries.ilwis");
+
+	addPropertyEditor("applyundefinedvalue", ApplyUndefinedValueDefinition::create);
+	addPropertyEditor("backgroundlayereditor", BackgroundLayerEditor::create);
+	addPropertyEditor("crosssectiontool", CrosssectionTool::create);
+	addPropertyEditor("gridlinecolorpropertyeditor", GridLineColorEditor::create);
+	addPropertyEditor("primarygridopacitypropertyeditor", GridOpacityEditor::create);
+	addPropertyEditor("primarygridcelldistancepropertyeditor", PrimaryGridCellDistanceEditor::create);
+	addPropertyEditor("secondarycellcountpropertyeditor", SecondaryGridCellCountEditor::create);
+	addPropertyEditor("itemrepresentationsetter", ItemRepresentationSetter::create);
+	addPropertyEditor("layerinfo", LayerInfo::create);
+	addPropertyEditor("layeropacitysetter", LayerOpacitySetter::create);
+	addPropertyEditor("linepropertysetter", LinePropertySetter::create);
+	addPropertyEditor("linkcoverage", LinkCoverage::create);
+	addPropertyEditor("mapinfopropertyeditor", MapInformationPropertySetter::create);
+	addPropertyEditor("numericrepresentationsetter", NumericRepresentationSetter::create);
+	addPropertyEditor("viewattributes", OpenAttributeTable::create);
+	addPropertyEditor("polygonpropertysetter", PolygonPropertySetter::create);
+	addPropertyEditor("stretchlimits", StretchLimits::create);
+	addPropertyEditor("convertattributedomain", ConvertAttributeDomain::create);
+
+
 
     QString url = QString("ilwis://system/coverages/country_boundaries.ilwis");
     Resource mapResource(url, rawUrlWorldMap, itFEATURE);
