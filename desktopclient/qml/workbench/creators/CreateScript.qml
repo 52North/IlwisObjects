@@ -46,15 +46,6 @@ Controls.DropableItem{
             anchors.fill: parent
             spacing : 4
 
-			Button {
-				text : qsTr("Open Python Console")
-				width : parent.width
-				height : 22
-				onClicked : {
-					var id = uicontext.consoleScriptId()
-                    bigthing.newCatalog("itemid=" + id, "script", "ilwis://internalcatalog/consolescript.py", "other")
-				}
-			}
             Controls.TextEditLabelPair{
                 id : nameedit
                 labelText: qsTr("Name")
