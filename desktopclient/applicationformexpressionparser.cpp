@@ -504,10 +504,14 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     QString query = QString("(datatype & %1)!=0 and (readwrite='rc' or readwrite='rcu')").arg(parameters[i]._dataType);
                     QString formatList = formats(query, parameters[i]._dataType);
                     if ( formatList != ""){
-                        QString formatLabel = QString("Row{height:20;width:parent.width;Text { x:5;text: qsTr(\"Output format\"); id:label_pout_format_%2; width :%1;}").arg(width).arg(i);
-                        QString formatCombo = QString("ComboBox{id : pout_format_%1; height:20; width : parent.width - label_pout_format_%1.width - 5;model : %2}").arg(i).arg(formatList);
-                        results += "+\"@@\"+"  + QString("pout_format_%1.currentText").arg(i);
-                        formRows +=formatLabel + formatCombo + "}";
+
+
+                        //QString formatLabel = QString("Row{height:20;width:parent.width;Text { x:5;text: qsTr(\"Output format\"); id:label_pout_format_%2; width :%1;}").arg(width).arg(i);
+                        //QString formatCombo = QString("ComboBox{id : pout_format_%1; height:20; width : parent.width - label_pout_format_%1.width - 5;model : %2}").arg(i).arg(formatList);
+						QString formats = QString("Controls.ComboxLabelPair{ id: pout_format_%1; width : parent.width  - 5;fontBold : false;labelWidth : %2 - 5;itemModel : %3;labelText :qsTr(\"Output format\")}").
+							arg(i).arg(width).arg(formatList);
+                        results += "+\"@@\"+"  + QString("pout_format_%1.comboText").arg(i);
+                        formRows += formats;
                     }
                 }
 
@@ -571,7 +575,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                 formRows += parameterRow;
                 if ( results != "")
                     results += "+ \"|\" +";
-                results += QString("pin_%1.currentText").arg(i);
+                results += QString("pin_%1.comboText").arg(i);
             }
 
             formRows += operationRowEnd;
@@ -640,9 +644,9 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
             } 
             results += ";";
             if(operationNames.isEmpty()){ 
-                seperator = "Rectangle{width : parent.width - 12; x: 6; height:2;color : \"#d9d9d9\"}";
+                seperator = "Rectangle{width : parent.width - 12; x: 6; height:2;color : \"#2E8D63\"}";
             }else{
-                seperator = "Rectangle{width : parent.width - 12; x: 6; height:5;color : \"#d9d9d9\"}";
+                seperator = "Rectangle{width : parent.width - 12; x: 6; height:5;color : \"#2E8D63\"}";
             }
               
         }else                                                     
