@@ -136,7 +136,6 @@ Rectangle {
                                       "typeName" : mapItems.items[i].typeName })
                     }
                 }
-				console.debug("yyyyyy", maps.length)
                 if ( maps.length > 0 && !renderer.layermanager.zoomInMode){
                     grid.setSource("") // remove old grid
                     grid.setSource("SelectedSpatialItems.qml",{"x" : mx + 20, "y" : my -20, "model" : maps})

@@ -4,5 +4,5 @@ Item {
     id : conceptv
     width : parent.width
     height : parent.height
-    property string iconName : "../images/metadata"
+    property string iconName : "../images/modeller_concepts"
 }

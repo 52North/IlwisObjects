@@ -11,7 +11,7 @@ Item {
     id : analysisv
     width : parent.width
     height : parent.height
-    property string iconName : "../images/analysis"
+    property string iconName : "../images/modeller_analysis"
 
     property alias loaderItem: formArea.item
 

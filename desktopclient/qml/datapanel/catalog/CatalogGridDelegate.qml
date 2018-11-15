@@ -84,6 +84,24 @@ Item {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         hoverEnabled: true
 
+		function doubleClick(mouse) { // in 5.11 there was an issue in some scenario's with dblclik, this is a workaround
+		      console.debug("double click")
+		      if (mouse.button == Qt.LeftButton) {
+                if ( name == "..")
+                    showObject(-1)
+                else {
+                    showObject(id)
+                    isSelected = true
+                    catalogViews.setSelected(id)
+                }
+            }
+		}
+
+		Timer{
+            id:timer
+            interval: 500
+        }
+
         onPositionChanged: {
             tooltip.stopTimer()
             if ( floatingProps.item){
@@ -108,18 +126,14 @@ Item {
                 var menu = Qt.createQmlObject(menuCreateString, catalogGrid, "popupMenu");
                 menu.popup();
             }
-        }
-        onDoubleClicked: {
-            if (mouse.button == Qt.LeftButton) {
-                if ( name == "..")
-                    showObject(-1)
-                else {
-                    showObject(id)
-                    isSelected = true
-                    catalogViews.setSelected(id)
-                }
+			if(timer.running){
+	            doubleClick(mouse)
+                timer.stop()
             }
-        }
+            else{
+				timer.restart()
+			}
+		}
         onReleased: {
             if ( image){
                 image.Drag.drop()
@@ -130,7 +144,7 @@ Item {
 //            if ( floatingProps && floatingProps.item){
 //                floatingProps.source=""
 //            }
-        }
+        } 
         onPressed: {
             itemgrid.currentIndex = index;
             if ( !mastercatalog.metadataEditMode && mouse.button == Qt.LeftButton){ // no selections in the editmode as this would change the selected item in the property form which you are editing at that moment

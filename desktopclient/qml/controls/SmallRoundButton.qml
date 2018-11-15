@@ -9,23 +9,23 @@ RoundButton {
 	id : rplusbut
 	property var backcolor : "transparent"
 	property var noborder : true
+	property var iconBase
+    property bool entered : false
 
-	contentItem: Text {
-		text: rplusbut.text
-		font: rplusbut.font
-		opacity: enabled ? 1.0 : 0.3
-		color: rplusbut.down ? "black" : "grey"
+	contentItem: Image {
+		source: rplusbut.iconBase + (entered ? "_black.svg" : "_green.svg")
 		horizontalAlignment: Text.AlignHCenter
 		verticalAlignment: Text.AlignVCenter
+		width : parent.width
+		height : parent.height
 	}
 
 	background: Rectangle {
-		implicitWidth: parent.height
-		implicitHeight: parent.width
-		radius : parent.height
-		opacity: enabled ? 1 : 0.3
+		width: parent.height
+		height: parent.width
+		radius : 10
 		color : backcolor
-		border.color: noborder ? "transparent" : (rplusbut.down ? "grey" : "lightgrey")
+		border.color: noborder ? "transparent" : (rplusbut.down ? "grey" : "red")
 		border.width: noborder ? 0 : 1
 	}
 }

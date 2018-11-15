@@ -28,7 +28,7 @@ TabViewStyle {
         }
 
         Image {
-            source : control.getTab(styleData.index).item ? (styleData.selected ? control.getTab(styleData.index).item.iconName + "_green.svg" : control.getTab(styleData.index).item.iconName + "_white.svg") : ""
+            source : control.getTab(styleData.index).item ? (styleData.selected ? control.getTab(styleData.index).item.iconName + "_green.svg" : control.getTab(styleData.index).item.iconName + "_grey.svg") : ""
             anchors.top: parent.top
             anchors.topMargin: 2
             anchors.horizontalCenter: parent.horizontalCenter

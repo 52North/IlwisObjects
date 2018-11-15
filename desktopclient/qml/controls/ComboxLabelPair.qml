@@ -47,7 +47,7 @@ Item {
         text : labelText
         font.bold: fontBold
         font.pointSize: fontSize
-        y :3
+        y :11
     }
     QC2.ComboBox{
         id : control
@@ -107,7 +107,7 @@ Item {
 
 			Text {
 			    x : 4
-				y : 4
+				y : 11
 				leftPadding: 0
 				width : parent.width - 15
 				rightPadding: control.indicator.width + control.spacing
@@ -127,7 +127,7 @@ Item {
 			implicitHeight: 40
 			color : transparentBackgrond ? "transparent" : "white"
 			Rectangle {
-				width : parent.width
+				width : parent.width - 15
 				height: 2
 				anchors.bottom : parent.bottom
 				border.color: backgr.enabled ? "#d9d9d9" : "transparent"

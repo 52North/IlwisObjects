@@ -8,6 +8,7 @@ Rectangle {
     property var currentEditor
     color : Global.alternatecolor3
     onCurrentEditorChanged: {
+	     console.debug("Current editor changed")
          if ( currentEditor){ 
              if ( editorColumn2.state == "minimized"){
                  editorColumn1.state = "minimized"

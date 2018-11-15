@@ -52,7 +52,7 @@ ToolButton{
     style : ButtonStyle{
         background: Rectangle {
             anchors.fill: parent
-            color : ((control.pressed || (checked & checkable)) ? uicontext.darkColor : uicontext.middleColor)
+            color : uicontext.middleColor
         }
     }
     states: [

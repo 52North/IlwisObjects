@@ -25,7 +25,7 @@ ToolBar{
         anchors.verticalCenter: parent.verticalCenter
         spacing : 2
         MapExtentButton{
-            icon  :"full_map_a.png"
+            icon  :"full_green.svg"
             id : entireMap
             action : entireClicked
             onClicked: {
@@ -48,7 +48,7 @@ ToolBar{
 
         MapExtentButton{
             id : panButton
-            icon : panButton.enabled ? (panButton.checked ? "pan_a.png" : "pan_i.png") : "pan_i.png"
+            icon : panButton.enabled ? (panButton.checked ? "pan_green.svg" : "pan_grey.svg") : "pan_grey.svg"
             action : panningClicked
             checkable: true
             checked: false
@@ -73,7 +73,7 @@ ToolBar{
 
         MapExtentButton{
             id : zoominButton
-            icon : zoominButton.checked ? "zoom_a.png" : "zoom_i.png"
+            icon : zoominButton.checked ? "zoomin_green.svg" : "zoomin_grey.svg"
             action : zoomClicked
             checkable: true
             checked: false
@@ -107,7 +107,7 @@ ToolBar{
 		}
         MapExtentButton{
             id : zoomoutButton
-            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoom_out_a.png" : "zoom_out_i.png") : "zoom_out_i.png"
+            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout-green.svg" : "zoomout_grey.svg") : "zoomout_grey.svg"
             action : zoomOutClicked
             checkable: true
             checked: false
