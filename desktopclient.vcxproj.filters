@@ -1202,6 +1202,9 @@
     <None Include="desktopclient\qml\controls\SmallRoundButton.qml">
       <Filter>Distribution Files\qml\controls</Filter>
     </None>
+    <None Include="desktopclient\qml\workbench\creators\CreatePythonConsole.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

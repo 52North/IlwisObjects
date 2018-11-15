@@ -453,6 +453,7 @@
     <None Include="desktopclient\qml\workbench\creators\CreatePaletteDomain.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateProjectedCoordinateSystem.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateProjectionFromBase.qml" />
+    <None Include="desktopclient\qml\workbench\creators\CreatePythonConsole.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateRasterCoverage.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateScript.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateSupervisedClassification.qml" />
