@@ -63,6 +63,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation"),itREPRESENTATION,"UnderDevelopment.qml", 250, this);
     _creators["domain" ] = new IlwisObjectCreatorModel("domain",TR("Domain"),itDOMAIN,"CreateDomain.qml", 250, this);
     _creators["combinationmatrix" ] = new IlwisObjectCreatorModel("combinationmatrix",TR("Combinationmatrix"),itCOMBINATIONMATRIX,"CreateCombinationMatrix.qml", 600, this);
+	_creators["pythonconsole"] = new IlwisObjectCreatorModel("pythonconsole", TR("Python Console"), itSCRIPT, "CreatePythonConsole.qml",300, this);
 }
 
 ObjectCreator::~ObjectCreator()
@@ -675,7 +676,9 @@ QString ObjectCreator::createObject(const QVariantMap &parms)
         return createTable(parms);
     }
 
-
+	else if (type == "pythonconsole") {
+		return sUNDEF;
+	}
 
     return QString::number(i64UNDEF);
     } catch (const ErrorObject& ){
