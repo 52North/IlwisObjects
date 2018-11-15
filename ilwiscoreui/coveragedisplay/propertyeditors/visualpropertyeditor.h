@@ -83,11 +83,5 @@ protected:
 }
 }
 
-#define NEW_PROPERTYEDITOR(name) \
-    private: \
-static int dummy_propertyeditor;
-
-#define REGISTER_PROPERTYEDITOR(propertyname, name) \
-    int name::dummy_propertyeditor = uicontext()->addPropertyEditor(propertyname, name::create);
 
 #endif // PROPERTYEDITOR2_H
