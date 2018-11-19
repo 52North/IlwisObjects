@@ -22,7 +22,7 @@ GenerateThumbnails::GenerateThumbnails() : CatalogOperationEditor("generatethumb
 }
 
 
-bool GenerateThumbnails::canUse(const std::vector<ResourceModel *>& resources) const
+bool GenerateThumbnails::canUse(const std::vector<ResourceModel *>& resources) 
 {
 	for (auto resource : resources) {
 		if (hasType(resource->type(), itCOVERAGE))
