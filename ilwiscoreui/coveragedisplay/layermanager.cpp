@@ -223,7 +223,10 @@ LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &co
     if (parentLayer == 0)
         parentLayer = lm->layerTree()->invisibleRootItem();
 
-    QString type = TypeHelper::type2name(cov->ilwisType());
+	QString type = TypeHelper::type2name(cov->ilwisType());
+	if (options.contains("createtype")) {
+		type = options["createtype"].toString();
+	}
     auto iter = _createLayers.find(type);
     if ( iter != _createLayers.end()){
         auto createFunc   = (*iter).second;
@@ -488,12 +491,15 @@ bool Ilwis::Ui::LayerManager::needUpdate() const
 
 void LayerManager::addCommand(const QString &expression)
 {
-    OperationExpression expr(expression);
-    if ( expr.isValid()){
-        ExecutionContext ctx;
-        SymbolTable tbl;
-        commandhandler()->execute(expression, &ctx, tbl);
-    }
+	try {
+		OperationExpression expr(expression);
+		if (expr.isValid()) {
+			ExecutionContext ctx;
+			SymbolTable tbl;
+			commandhandler()->execute(expression, &ctx, tbl);
+		}
+	}
+	catch (const ErrorObject&) {}
 }
 
 void LayerManager::clearLayers(LayerModel *parentLayer)
