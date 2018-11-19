@@ -130,18 +130,18 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
 		}
 	}
 	_options["visible"] = _expression.input<bool>(4);
-    QString options = _expression.input<QString>(5);
-    if (options.size() > 0) {
-        QStringList opts = options.split(',');
-        for (QString opt : opts) {
-            QStringList elems = opt.split('=');
-            if (elems.size() == 2) {
-                QString key = elems[0];
-                QString val = elems[1];
-                _options[key] = val;
-            }
-        }
-    }
+	QString options = _expression.input<QString>(5);
+	if (options.size() > 0) {
+		QStringList opts = options.split(',');
+		for (QString opt : opts) {
+			QStringList elems = opt.split('=');
+			if (elems.size() == 2) {
+				QString key = elems[0];
+				QString val = elems[1];
+				_options[key] = val;
+			}
+		}
+	}
 
     return sPREPARED;
 }
