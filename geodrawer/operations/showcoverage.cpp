@@ -32,7 +32,7 @@ bool ShowCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
     if (_prepState == sNOTPREPARED)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
-    qint64 id = uicontext()->addMapPanel("itemid=" + QString::number(_id),_side, _url);
+    qint64 id = uicontext()->addMapPanel("itemid=" + QString::number(_id),_side, _url, _extraParameters);
     if ( id == -1)
         return false;
 
@@ -70,6 +70,7 @@ Ilwis::OperationImplementation::State ShowCoverage::prepare(ExecutionContext *ct
         kernel()->issues()->log(_side + TR(" is not a valid side type"));
         return sPREPAREFAILED ;
     }
+	_extraParameters = _expression.input<QString>(2);
 
 
     return sPREPARED;
@@ -80,12 +81,14 @@ quint64 ShowCoverage::createMetadata()
     OperationResource operation({"ilwis://operations/showcoverage"});
     operation.setSyntax("showcoverage(coverageurl,!other|left|right)");
     operation.setDescription(TR("Creates a new mappanel with the indicated coverage"));
-    operation.setInParameterCount({2});
+    operation.setInParameterCount({3});
     operation.addInParameter(0,itCOVERAGE , TR("Coverage url"),TR("The url of the coverage to be displayed"));
     operation.addInParameter(1,itSTRING , TR("Panel side"),TR("Which side should the panel open, left, right or at the other side of the active panel"));
+	operation.addInParameter(2, itSTRING, TR("Extra Parameters"), TR("Extra info on how the coverage should be displayed/openend"));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itINTEGER , TR("View id"),TR("Id of the view that is opened. The id can be used in subsequent visualization operations"));
     operation.setKeywords("visualization");
+	operation.parameterNeedsQuotes(2);
     operation.addProperty("runinmainthread",true); // this operation invokes a qml method so it must run in the main thread
 
     mastercatalog()->addItems({operation});

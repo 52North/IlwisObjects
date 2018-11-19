@@ -22,6 +22,7 @@ private:
     QString _url;
     QString _side;
     QString _type;
+	QString _extraParameters;
 };
 }
 }
