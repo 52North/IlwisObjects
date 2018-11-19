@@ -41,6 +41,7 @@
 #include "opencoverages.h"
 #include "generatethumbnails.h"
 #include "exportdata.h"
+#include "colorcompositecreation.h"
 #include "mastercatalogmodel.h"
 
 using namespace Ilwis;
@@ -905,6 +906,7 @@ void MasterCatalogModel::prepare()
 	_catalogOperations.registerCatalogOperation("opencoverages", OpenCoverages::create);
 	_catalogOperations.registerCatalogOperation("generatethumbnails", GenerateThumbnails::create);
 	_catalogOperations.registerCatalogOperation("exportdata", ExportData::create);
+	_catalogOperations.registerCatalogOperation("colorcompositecreation", ColorCompositeCreation::create);
 
     _bookmarks.push_back(addBookmark(TR("Temporary Catalog"),TR("Temporary"),
                INTERNAL_CATALOG_URL,
