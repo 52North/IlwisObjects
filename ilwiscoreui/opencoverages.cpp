@@ -22,7 +22,7 @@ OpenCoverages::OpenCoverages() : CatalogOperationEditor("opencoverages", TR("Ope
 }
 
 
-bool OpenCoverages::canUse(const std::vector<ResourceModel *>& resources) const
+bool OpenCoverages::canUse(const std::vector<ResourceModel *>& resources) 
 {
 	for (auto resource : resources) {
 		if (hasType(resource->type(), itCOVERAGE))
@@ -43,7 +43,7 @@ QVariant OpenCoverages::execute(const QVariantMap &parameters)
 			Resource res = mastercatalog()->id2Resource(id);
 			if (!res.isValid() || hasType(res.ilwisType(), itCOVERAGE) == false)
 				continue;
-			QString expr = QString("showcoverage(%1, %2)").arg(res.url(true).toString()).arg(side);
+			QString expr = QString("showcoverage(%1, %2,\"\")").arg(res.url(true).toString()).arg(side);
 			if (viewid != iUNDEF) {
 				expr = QString("adddrawer(%1,\"?\",\"itemid=%2\",%3,true,\"\")").arg(viewid).arg(id).arg(IlwisObject::type2Name(res.ilwisType()));
 			}
