@@ -154,22 +154,21 @@ Item {
             }
         } else if ( uicontext.keyPressed(Qt.Key_Control)){
 		  var oldList = currentSelection.split("|")
-		  var newIds = ""
+		  selectedIds = currentSelection
           for(var k = 0; k < sz; ++k){
               if ( resources[k].isSelected){
 			    var found = false
 			    var id = resources[k].id
 				for(var p=0; p < oldList.length && !found; ++p){
 					if ( oldList[p] == id){
-						selectedIds = selectedIds == "" ? id : selectedIds + "|" + id
-						found = true
+					    found = true
 					}
 				}
-				if (!found)
-					newIds = newIds == "" ? id : newIds + "|" + id
+				if (!found){
+					selectedIds = selectedIds == "" ? id : selectedIds + "|" + id
+				}
               }
           }
-		  selectedIds = selectedIds == "" ? newIds : selectedIds + "|" + newIds
         }
         mastercatalog.setSelectedObjects(selectedIds)
     }
