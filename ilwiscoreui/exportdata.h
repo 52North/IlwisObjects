@@ -17,7 +17,7 @@ namespace Ilwis {
 		public:
 			ExportData();
 
-			bool canUse(const std::vector<ResourceModel *>& resosurces) const;
+			bool canUse(const std::vector<ResourceModel *>& resosurces) ;
 			Q_INVOKABLE QVariant execute(const QVariantMap& parameters);
 			static Ilwis::Ui::CatalogOperationEditor *create() { return new ExportData();
 			}

@@ -22,7 +22,7 @@ ExportData::ExportData() : CatalogOperationEditor("exportdata", TR("Export objec
 }
 
 
-bool ExportData::canUse(const std::vector<ResourceModel *>& resources) const
+bool ExportData::canUse(const std::vector<ResourceModel *>& resources) 
 {
 	for (auto resource : resources) {
 		if (hasType(resource->type(), itCOVERAGE | itTABLE))
