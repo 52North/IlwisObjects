@@ -273,6 +273,7 @@
     <None Include="desktopclient\qml\datapanel\catalog\CatalogTable.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogThumbGrid.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\CatalogViews.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\ColorComposite.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\DCatalogListThumb.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\DCatalogThumb.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\DropConversionFormats.qml" />
