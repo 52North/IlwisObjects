@@ -93,9 +93,6 @@
     <ClCompile Include="geodrawer\drawerattributesetters\simplepolygonsetter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="geodrawer\operations\cleardrawers.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
@@ -156,8 +153,6 @@
     <ClCompile Include="geodrawer\polygonlayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="geodrawer\vectorlayermodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -185,16 +180,12 @@
     <ClCompile Include="geodrawer\tesselation\ilwistesselator.cpp">
       <Filter>Source Files\tesselation</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="geodrawer\textureheap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="geodrawer\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="geodrawer\gridlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -211,6 +202,9 @@
       <Filter>Source Files\operations</Filter>
     </ClCompile>
     <ClCompile Include="geodrawer\cctexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="geodrawer\colorcompositemodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -342,6 +336,9 @@
       <Filter>Header Files\operations</Filter>
     </ClInclude>
     <ClInclude Include="geodrawer\cctexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\colorcompositemodel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

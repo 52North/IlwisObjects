@@ -140,120 +140,6 @@
     <ClCompile Include="ilwiscoreui\models\workspacemodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <ClCompile Include="ilwiscoreui\models\catalogfiltermodel.cpp">
       <Filter>Source Files\catalog</Filter>
     </ClCompile>
@@ -329,16 +215,12 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\coveragelayermodel.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\oglbuffer.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\layerinfoitem.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\models\workflow\analysismodel.cpp">
       <Filter>Source Files\modeller</Filter>
     </ClCompile>
@@ -384,20 +266,12 @@
     <ClCompile Include="ilwiscoreui\models\operationworker.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\rootlayermodel.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\representationelementmodel.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\compositelayermodel.cpp">
       <Filter>Source Files\spatialdrawing</Filter>
     </ClCompile>
@@ -422,20 +296,12 @@
     <ClCompile Include="ilwiscoreui\tableoperations\linktable.cpp">
       <Filter>Source Files\ilwisobjects\tableoperations</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\modelregistry.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\linkcoverage.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\models\chartmodel.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
@@ -445,38 +311,24 @@
     <ClCompile Include="ilwiscoreui\models\dataseriesmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\crosssection.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="ilwiscoreui\controlpointmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\controlpointslistmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ilwiscoreui\models\chartoperationfactory.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\models\chartoperationeditor.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\stretchlimits.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\layerinfo.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
@@ -486,26 +338,20 @@
     <ClCompile Include="ilwiscoreui\catalogoperationfactory.cpp">
       <Filter>Source Files\catalog</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\opencoverages.cpp">
       <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\generatethumbnails.cpp">
       <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="ilwiscoreui\exportdata.cpp">
       <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
-    
-    
-    
     <ClCompile Include="ilwiscoreui\filesystem.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\colorcompositecreation.cpp">
+      <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -748,6 +594,9 @@
     </QtMoc>
     <QtMoc Include="ilwiscoreui\filesystem.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\colorcompositecreation.h">
+      <Filter>Header Files\catalog\operations</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
