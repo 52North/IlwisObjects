@@ -235,8 +235,9 @@ TabModel *SidePanelModel::createPanel(quint32 index, const QString &filter, cons
             if (hasType(resources[0].ilwisType(), itCOVERAGE)) {
 				if (outputtype == "table")
 					tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
-				else
+				else {
 					tab = new TabModel(url, modelregistry()->mainPanelUrl("coverage"), outputtype, this);
+				}
             }
             else if (hasType(resources[0].ilwisType(), itTABLE)) {
                 tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
