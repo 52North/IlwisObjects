@@ -106,7 +106,7 @@ QVariant ColorCompositeCreation::execute(const QVariantMap &parameters)
 		return QVariant();
 	IRasterCoverage colorcomposite;
 	colorcomposite.prepare();
-	colorcomposite->resourceRef().name("colorcompiste", false, false);
+	colorcomposite->resourceRef().name("colorcomposite", false, false);
 	colorcomposite->coordinateSystem(baseMap->coordinateSystem());
 	colorcomposite->georeference(baseMap->georeference());
 	std::vector<double> indexes = { 0 };
