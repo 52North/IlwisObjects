@@ -110,7 +110,7 @@ public:
     OperationCatalogModel *globalOperationCatalog() const;
     void setCurrentWorkSpace(WorkSpaceModel* cws);
     void initializeDataPane();
-    qint64 addMapPanel(const QString &filter, const QString &side, const QString url);
+    qint64 addMapPanel(const QString &filter, const QString &side, const QString url, const QString& options="");
     QStringList formatList() const;
     QString ilwisFolder() const;
 	QColor defaultColor(const QString& type);

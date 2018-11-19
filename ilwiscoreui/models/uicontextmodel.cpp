@@ -410,12 +410,12 @@ void UIContextModel::initializeDataPane()
 
 }
 
-qint64 UIContextModel::addMapPanel(const QString& filter, const QString& side, const QString url){
+qint64 UIContextModel::addMapPanel(const QString& filter, const QString& side, const QString url, const QString& options){
     QObject *datapane = rootObject()->findChild<QObject*>("datapane_mainui");
     if ( datapane ){
         Locker<std::mutex> lock(_mutexAddPanel);
         // the invoke goes to a different thread
-        bool ok = QMetaObject::invokeMethod(datapane,"newPanel",Q_ARG(QVariant, filter),Q_ARG(QVariant,"coverage"),Q_ARG(QVariant,url),Q_ARG(QVariant,side),  Q_ARG(QVariant, ""));
+        bool ok = QMetaObject::invokeMethod(datapane,"newPanel",Q_ARG(QVariant, filter),Q_ARG(QVariant,"coverage"),Q_ARG(QVariant,url),Q_ARG(QVariant,side),  Q_ARG(QVariant, options));
         if (!ok)
             return i64UNDEF;
 		qint64 id = modelregistry()->lastAddedId();
