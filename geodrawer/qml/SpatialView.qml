@@ -104,10 +104,12 @@ Item {
 		}
 
         function setZoomPanButton (enablePanAndZoomOut) {
-            if (layerview.activeLayerExtentsToolbar()){
-                layerview.activeLayerExtentsToolbar().panButton.enabled = enablePanAndZoomOut
-                layerview.activeLayerExtentsToolbar().zoomoutButton.enabled = enablePanAndZoomOut
-            }
+			 if (typeof layerview !== 'undefined'){
+				if (layerview.activeLayerExtentsToolbar()){
+					layerview.activeLayerExtentsToolbar().panButton.enabled = enablePanAndZoomOut
+					layerview.activeLayerExtentsToolbar().zoomoutButton.enabled = enablePanAndZoomOut
+				}
+			}
         }
 
         function drawRasterAsColor(sceneObject,layer) {
@@ -135,8 +137,12 @@ Item {
 				    tTexture.needsUpdate = true;
 				    var uniforms = {
                         alpha: { type: "f", value: layer.vproperty("opacity") },
-                        stretchscale: { type: "f", value: layer.stretch.scale },
-                        stretchoffset: { type: "f", value: layer.stretch.offset },
+                        stretchscale_r: { type: "f", value: layer.stretch.scale_r },
+                        stretchoffset_r: { type: "f", value: layer.stretch.offset_r },
+                        stretchscale_g: { type: "f", value: layer.stretch.scale_g },
+                        stretchoffset_g: { type: "f", value: layer.stretch.offset_g },
+                        stretchscale_b: { type: "f", value: layer.stretch.scale_b },
+                        stretchoffset_b: { type: "f", value: layer.stretch.offset_b },
                         texture1: { type: "t", value: tTexture },
                         uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 				    };
@@ -388,8 +394,12 @@ Item {
 			        for(var i=0; i < meshes.children.length; ++i) {
 			            var mesh = meshes.children[i];
 			            if ( mesh){
-			                mesh.material.uniforms.stretchscale.value = layer.stretch.scale;
-			                mesh.material.uniforms.stretchoffset.value = layer.stretch.offset;
+			                mesh.material.uniforms.stretchscale_r.value = layer.stretch.scale_r;
+			                mesh.material.uniforms.stretchoffset_r.value = layer.stretch.offset_r;
+			                mesh.material.uniforms.stretchscale_g.value = layer.stretch.scale_g;
+			                mesh.material.uniforms.stretchoffset_g.value = layer.stretch.offset_g;
+			                mesh.material.uniforms.stretchscale_b.value = layer.stretch.scale_b;
+			                mesh.material.uniforms.stretchoffset_b.value = layer.stretch.offset_b;
 			            }
 			        }
 			    }
@@ -397,7 +407,7 @@ Item {
 		}
 
         function setProperties(layer) {
-            if ( layer && layer.isValid){
+            if ( layer && layer.isValid && layer.isDrawable){
 				var changedProperties = layer.changedProperties
                 for(var j=0; j < changedProperties.length; ++j){
 				    var property = changedProperties[j]
@@ -453,15 +463,15 @@ Item {
 			colorShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
 			colorShaderMaterialTemplate.fragmentShader =
 				'varying vec2 vUv;' +
-				'uniform sampler2D texture1;uniform float alpha;uniform float stretchscale;uniform float stretchoffset;' +
+				'uniform sampler2D texture1;uniform float alpha;uniform float stretchscale_r;uniform float stretchoffset_r;uniform float stretchscale_g;uniform float stretchoffset_g;uniform float stretchscale_b;uniform float stretchoffset_b;' +
 				'void main() { ' +
 					'gl_FragColor = texture2D(texture1,vUv);' +
-					'gl_FragColor.r *= stretchscale;' +
-					'gl_FragColor.r += stretchoffset;' +
-					'gl_FragColor.g *= stretchscale;' +
-					'gl_FragColor.g += stretchoffset;' +
-					'gl_FragColor.b *= stretchscale;' +
-					'gl_FragColor.b += stretchoffset;' +
+					'gl_FragColor.r *= stretchscale_r;' +
+					'gl_FragColor.r += stretchoffset_r;' +
+					'gl_FragColor.g *= stretchscale_g;' +
+					'gl_FragColor.g += stretchoffset_g;' +
+					'gl_FragColor.b *= stretchscale_b;' +
+					'gl_FragColor.b += stretchoffset_b;' +
 					'gl_FragColor.a *= alpha;' +
 				'}'
             paletteShaderMaterialTemplate = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
