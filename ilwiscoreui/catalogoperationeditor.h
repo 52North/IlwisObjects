@@ -23,7 +23,7 @@ namespace Ilwis {
 		public:
 			CatalogOperationEditor() {}
 			explicit CatalogOperationEditor(const QString& name, const QString& displayName, const QUrl& ur, const QString& description, QObject *parent = 0);
-			virtual bool canUse(const std::vector<ResourceModel *>& resosurces) const { return false; }
+			virtual bool canUse(const std::vector<ResourceModel *>& resosurces) { return false; }
 			virtual QVariant execute(const QVariantMap& parameters) { return QVariant(); }
 
 			QString qmlUrl() const;
