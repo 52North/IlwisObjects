@@ -46,7 +46,7 @@ public:
     Q_PROPERTY(QVariantMap stretch READ stretch NOTIFY stretchChanged);
 
 	void coverage(const ICoverage& cov) override;
-    void fillAttributes() ;
+    void fillAttributes();
 	bool prepare(int);
     QString value2string(const QVariant &value, const QString &attrName) const;
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
@@ -55,7 +55,6 @@ public:
     QVariantList linkProperties() const;
     virtual bool renderReady();
     virtual void renderReady(bool yesno);
-    std::vector<qint32> ccBands() const;
 
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
@@ -68,14 +67,12 @@ protected:
     void DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY);
     void init();
     QVariantMap stretch(); // for "live" RGB stretching of a Color Composite; thus not for Palette rasters (Palette rasters "live" stretch their palette)
-    void refreshStretch();
+    virtual void refreshStretch();
     TextureHeap * textureHeap;
     std::vector<Quad> _quads;
     std::vector<qint32> _addQuads;
     QVector<qint32> _removeQuads;
-    std::vector<qint32> _ccBands;
     IRasterCoverage _raster;
-    NumericRange _currentStretchRange;
     int _maxTextureSize;
     int _paletteSize;
     unsigned long _width;
@@ -84,14 +81,15 @@ protected:
     unsigned long _imageHeight;
     bool _initDone;
     bool _linear;
+	QVariantMap _stretch;
 
 private:
     void GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor);
     QVariantMap palette();
     void refreshPalette();
     QVector<qint32> removeQuads();
+	NumericRange _currentStretchRange;
     QVariantMap _palette;
-    QVariantMap _stretch;
     bool _refreshPaletteAtNextCycle;
     bool _renderReady = false;
 
@@ -105,23 +103,6 @@ signals:
     NEW_LAYERMODEL(RasterLayerModel);
 };
 
-class CCRasterLayerModel : public RasterLayerModel
-{
-    Q_OBJECT
-public:
-	CCRasterLayerModel();
-    CCRasterLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
-
-	bool prepare(int);
-    void init();
-    QString value2string(const QVariant &value, const QString &attrName) const;
-	bool usesColorData() const;
-
-public slots:
-    virtual void requestRedraw();
-
-    NEW_LAYERMODEL(CCRasterLayerModel);
-};
 }
 }
 

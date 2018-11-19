@@ -82,7 +82,7 @@ void Quad::addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinat
     indices.push_back(2 + offset);
     indices.push_back(2 + offset);
     indices.push_back(1 + offset);
-    indices.push_back(3 + offset);
+    indices.push_back(3 + offset); 
 }
 
 void Quad::setId(qint32 id) {
@@ -105,6 +105,9 @@ RasterLayerModel::RasterLayerModel(LayerManager *manager, QStandardItem *parent,
 , _initDone(false)
 {
 	_isDrawable = true;
+	if (options.contains("drawable")) {
+		_isDrawable = options["drawable"].toBool();
+	}
 	_isValid = true;
 	_icon = "raster.png";
 	_layerType = itRASTERLAYER;
@@ -116,11 +119,11 @@ RasterLayerModel::~RasterLayerModel() {
 
 LayerModel *RasterLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
-    if (options.contains("drawmethod")) {
+   /* if (options.contains("colorcompositebands")) {
         if (options["drawmethod"] == "colorcomposite") {
             return new CCRasterLayerModel(manager, parentLayer, name, desc, options);
         }
-    }
+    }*/
     return new RasterLayerModel(manager, parentLayer, name, desc, options);
 }
 
@@ -192,13 +195,7 @@ void RasterLayerModel::coverage(const ICoverage &cov)
     if (!_raster->histogramCalculated()) {
         _raster->statistics(ContainerStatistics<double>::pHISTOGRAM).histogram();
     }
-    for (int i = 0; i < _ccBands.size(); ++i) { // protect if ccBands refers to non-existing bands
-        if (_ccBands[i] >= _raster->size().zsize())
-            _ccBands[i] = _raster->size().zsize() - 1;
-    }
-
     fillAttributes();
-
 }
 
 void RasterLayerModel::fillAttributes()
@@ -348,8 +345,12 @@ void RasterLayerModel::refreshStretch() {
         }
     }
 
-    _stretch["scale"] = scale;
-    _stretch["offset"] = offset;
+	_stretch["scale_r"] = scale;
+	_stretch["offset_r"] = offset;
+	_stretch["scale_g"] = scale;
+	_stretch["offset_g"] = offset;
+	_stretch["scale_b"] = scale;
+	_stretch["offset_b"] = offset;
 }
 
 QVariantMap RasterLayerModel::stretch() {
@@ -680,178 +681,4 @@ bool RasterLayerModel::renderReady()
 void RasterLayerModel::renderReady(bool yesno)
 {
     _renderReady = yesno;
-}
-
-std::vector<qint32> RasterLayerModel::ccBands() const
-{
-    return _ccBands;
-}
-
-// ************************************************
-#undef min
-#undef max
-
-CCRasterLayerModel::CCRasterLayerModel()
-: RasterLayerModel()
-{
-}
-
-CCRasterLayerModel::CCRasterLayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options)
-: RasterLayerModel(manager, parent, name, desc, options)
-{
-    if (options.contains("bands")) {
-        int ccBands = options["bands"].toInt();
-        for (int i = 0; i < ccBands; ++i) {
-            _ccBands.push_back(options[QString("band%1").arg(i)].toInt());
-        }
-        for (int i = ccBands; i < 3; ++i) { // fill up to 3 bands in case we got less
-            _ccBands.push_back(0);
-        }
-    } else {
-        for (int i = 0; i < 3; ++i) {
-            _ccBands.push_back(3-i); // TODO: this is a temporary default for Sentinel
-        }
-    }
-}
-
-bool Ilwis::Ui::CCRasterLayerModel::usesColorData() const
-{
-	return true;
-}
-
-QString CCRasterLayerModel::value2string(const QVariant &value, const QString &attrName) const
-{
-    if ( attrName != "") {
-        IRasterCoverage raster = CoverageLayerModel::coverage().as<RasterCoverage>();
-        if ( raster->datadef().domain()->ilwisType() == itCOLORDOMAIN){
-            auto clr = ColorRangeBase::toColor(value, ColorRangeBase::cmRGBA);
-            return ColorRangeBase::toString(clr,ColorRangeBase::cmRGBA)    ;
-        }
-    }
-
-    if ( value.toDouble() == rUNDEF)
-        return sUNDEF;
-
-    return QString::number(value.toDouble(), 'f', 3);
-}
-
-bool Ilwis::Ui::CCRasterLayerModel::prepare(int prepType)
-{
-	bool fChanges = false;
-	_addQuads.clear(); // reset "addQuads" and "removeQuads" queues
-	_removeQuads.clear();
-	if (hasType(prepType, LayerModel::ptGEOMETRY) && !isPrepared(LayerModel::ptGEOMETRY)) {
-		if (!_raster.isValid()) {
-			return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "RasterCoverage", TR("Visualization"));
-		}
-
-        if (!_initDone) {
-            init();
-            _initDone = true;
-        }
-
-        const IGeoReference & gr = _raster->georeference();
-        bool grLinear = gr->isLinear();
-        const ICoordinateSystem & rootCsy = layerManager()->rootLayer()->screenCsy();
-        const ICoordinateSystem & rasterCsy = _raster->coordinateSystem();
-        bool convNeeded = rootCsy.isValid() && rasterCsy.isValid() && !rootCsy->isEqual(rasterCsy.ptr()) && !rootCsy->isUnknown() && !rasterCsy->isUnknown();
-        _linear = grLinear && !convNeeded;
-
-        // stop generating textures
-        textureHeap->ClearQueuedTextures();
-        // remove inactive quads from the list
-        for (qint32 i = _quads.size() - 1; i >= 0; --i) {
-            if (!_quads[i].active) {
-                _quads[i] = _quads.back();
-                _quads.pop_back();
-            }
-        }
-        // mark remaining quads as inactive
-        for (std::vector<Quad>::iterator quad = _quads.begin(); quad != _quads.end(); ++quad)
-            quad->active = false;
-        // check which quads are in the viewport, and mark them active
-        DivideImage(0, 0, _width, _height);
-        // refresh the pixel content of the textures (for stretch)
-        VisualAttribute * attr = activeAttribute();
-        if (attr != 0) {
-			auto rng = attr->stretchRange(true);
-			bool k1 = rng.isValid();
-			bool k2 = _raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
-			if (!k1 && k2) {
-				auto hist = _raster->statistics().histogram();   // make sure we have a reasonable number of bins.
-				auto limits = attr->calcStretchRange(hist, 0.02);
-				if (limits.first != rUNDEF && limits.second != rUNDEF) {
-					attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
-					visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());
-				}
-			}
-            if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
-                _currentStretchRange = attr->stretchRange(); // refresh the stretch range to be used for the pixel data
-                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are refreshed
-                for (qint32 i = 0; i < _quads.size(); ++i) {
-                    if (_quads[i].active) {
-                        _quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
-                    }
-                }
-                refreshStretch();
-            }
-        }
-        // generate "addQuads" and "removeQuads" queues
-        for (int i = 0; i < _quads.size(); ++i) {
-            Quad & quad = _quads[i];
-            bool refresh = false;
-            if (quad.active && quad.dirty)
-                refresh = textureHeap->optimalTextureAvailable(quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
-            if ((quad.id > -1) && (!quad.active || refresh))
-                _removeQuads.push_back(quad.id);
-            if ((quad.active) && ((quad.id == -1) || refresh)) {
-                _addQuads.push_back(i);
-            }
-        }
-        fChanges = (_removeQuads.size() > 0) || (_addQuads.size() > 0);
-        _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
-	}
-    if (hasType(prepType, LayerModel::ptRENDER)) {
-        refreshStretch();
-        add2ChangedProperties("colorcompstretch");
-        _prepared |= LayerModel::ptRENDER;
-    }
-	return fChanges;
-}
-
-void CCRasterLayerModel::init()
-{
-    _maxTextureSize = 256; // = min(512, getMaxTextureSize());
-    _paletteSize = 0;
-
-    textureHeap = new TextureHeap(this, _raster);
-
-    if ( _raster->georeference().isValid() && _raster->georeference()->isValid()) {
-        _imageWidth = _raster->georeference()->size().xsize();
-        _imageHeight = _raster->georeference()->size().ysize();
-    } else if ( _raster.isValid()) {
-        _imageWidth = _raster->size().xsize();
-        _imageHeight = _raster->size().ysize();
-    }
-
-    double log2width = log((double)_imageWidth)/log(2.0);
-    log2width = max(6, ceil(log2width)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
-    _width = pow(2, log2width);
-    double log2height = log((double)_imageHeight)/log(2.0);
-    log2height = max(6, ceil(log2height)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
-    _height = pow(2, log2height);
-
-    VisualAttribute * attr = activeAttribute();
-    if (attr != 0)
-        _currentStretchRange = attr->stretchRange();
-
-    refreshStretch();
-    connect(layerManager(), &LayerManager::needUpdateChanged, this, &RasterLayerModel::requestRedraw);
-}
-
-void CCRasterLayerModel::requestRedraw() {
-    // without requestAnimationFrame, this is the way to force a redraw for now
-    _prepared = ptNONE;
-    updateGeometry(true);
-    add2ChangedProperties("buffers");
 }
