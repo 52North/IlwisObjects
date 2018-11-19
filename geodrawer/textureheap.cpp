@@ -9,12 +9,12 @@
 using namespace Ilwis;
 using namespace Ui;
 
-TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster)
+TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, std::vector<IRasterCoverage> ccBands)
 : textureThread(0)
 , fAbortTexGen(false)
 , fStopThread(false)
 , workingTexture(0)
-, raster(raster)
+, _ccBands(ccBands)
 , iPaletteSize(0)
 , rasterLayerModel(rasterLayerModel)
 , fColorComposite(true)
@@ -138,11 +138,10 @@ bool TextureHeap::optimalTextureAvailable(const unsigned int offsetX, const unsi
 Texture * TextureHeap::GenerateTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
 {
 	csChangeTexCreatorList.lock();
-	if (raster.isValid()) {
-		if (fColorComposite)
-			textureRequest.push_back(new CCTexture(rasterLayerModel, raster, offsetX, offsetY, sizeX, sizeY, zoomFactor));
-		else
-			textureRequest.push_back(new Texture(rasterLayerModel, raster, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
+	if (fColorComposite)
+		textureRequest.push_back(new CCTexture(rasterLayerModel, _ccBands, offsetX, offsetY, sizeX, sizeY, zoomFactor));
+	else if (raster.isValid()) {
+		textureRequest.push_back(new Texture(rasterLayerModel, raster, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
 	}
 	csChangeTexCreatorList.unlock();
 	if (fInThread) {

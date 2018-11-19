@@ -12,7 +12,7 @@ namespace Ilwis {
 	    {
 	    public:
             friend class TextureGenerator;
-		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster);
+			TextureHeap(RasterLayerModel * rasterLayerModel, std::vector<IRasterCoverage> ccBands);
 		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize);
 		    virtual ~TextureHeap();
 
@@ -29,6 +29,7 @@ namespace Ilwis {
 		    std::vector<Texture*> textures;
 		    std::vector<Texture*> textureRequest;
 		    IRasterCoverage raster;
+			std::vector<IRasterCoverage> _ccBands;
 		    unsigned int iPaletteSize;
 		    bool fAbortTexGen;
 		    TextureGenerator * textureThread;
