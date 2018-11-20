@@ -36,52 +36,42 @@ std::vector<QUrl> FolderCatalogExplorer::sources(const QStringList &filters, int
 
 std::vector<QUrl> FolderCatalogExplorer::loadFolders(const Resource& source, const QStringList& namefilter, int options)
 {
-    QStringList fileList;
+	QStringList fileList;
+    std::vector<QUrl> allfiles;
 
-     QUrl location = source.url(true);
-     if ( location.toString() == "file://") { // root will only contain drives (folders)
-         QFileInfoList drives = QDir::drives();
-         QStringList dirs;
-         foreach(const auto& drive , drives) {
-             QDir dir(drive.canonicalFilePath());
-              dirs.append(dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot));
-         }
-         fileList.append(dirs);
-     } else {
-         QString p = location.toLocalFile();
-         QDir folder(p);
-         p = folder.absolutePath();
-         folder.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-         QStringList dirlist = folder.entryList();
-         if (!folder.exists()) {
-             return  std::vector<QUrl>();
-         }
-         QString slash = location.toString().endsWith("/") ? "" : "/";
-//         fileList = folder.entryList();
+	QUrl location = source.url(true);
+	if (location.toString() == "file://") { // root will only contain drives (folders)
+		QFileInfoList drives = QDir::drives();
+		foreach(const auto& drive, drives) {
+			QDir dir(drive.canonicalFilePath());
+			fileList.append(dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot));
+		}
 
-//         for(QString& file : fileList) {
-//             file = source.url().toString() + slash + file;
-//         }
-         folder.setFilter(QDir::Files | QDir::Dirs);
+        allfiles.resize(fileList.size());
+        std::copy(fileList.begin(), fileList.end(), allfiles.begin());
+    }
+	else {
+		QString p = location.toLocalFile();
+		QDir folder(p);
+		if (!folder.exists()) {
+			return  std::vector<QUrl>();
+		}
 
-         QStringList files = folder.entryList(namefilter);
-         files.append(dirlist);
+        folder.setFilter(QDir::Files | QDir::Dirs);
+        QStringList files = folder.entryList(namefilter);
+        
+        folder.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+		QStringList dirlist = folder.entryList();
+        files.append(dirlist);
 
-         QString sourceUrl = source.url(true).toString();
+		QString sourceUrl = location.toString();
+        sourceUrl += sourceUrl.endsWith("/") ? "" : "/";
+        for (QString file : files) {
+            allfiles.emplace_back(sourceUrl + file);
+		}
 
-         for(QString file : files) {
-             QString fullfile = sourceUrl + slash + file;
-             fileList.push_back(fullfile);
-         }
-
-     }
-     std::vector<QUrl> files(fileList.size());
-     auto iter = files.begin();
-     for(const QString& filename : fileList) {
-         (*iter) = filename;
-         ++iter;
-     }
-     return files;
+	}
+	return allfiles;
 }
 
 QFileInfo FolderCatalogExplorer::toLocalFile(const QUrl& datasource) const
