@@ -204,6 +204,11 @@ void RasterLayerModel::fillAttributes()
         _visualAttributes = QList<VisualAttribute *>();
         _visualAttributes.push_back(new LayerAttributeModel(this,_raster, _raster->datadef()));
         _visualAttributes.push_back(new VisualAttribute(this, _raster->datadef(),PIXELVALUE));
+		activeAttributeName(PIXELVALUE); // default
+		auto editors = uicontext()->propertyEditors(_visualAttributes.back(), _raster, PIXELVALUE);
+
+		for (auto editor : editors)
+			_visualAttributes.back()->addVisualPropertyEditor(editor);
 
         if ( _raster->hasAttributes()){
             for(int i=0; i < _raster->attributeTable()->columnCount(); ++i){
@@ -211,10 +216,21 @@ void RasterLayerModel::fillAttributes()
                 IlwisTypes valueType = coldef.datadef().domain()->valueType();
                 if ( hasType(valueType, itNUMBER|itDOMAINITEM|itSTRING|itCOLOR)){
                     _visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(),coldef.name()));
+					auto editors = uicontext()->propertyEditors(_visualAttributes.back(), _raster, coldef.datadef());
+					for (auto editor : editors)
+						_visualAttributes.back()->addVisualPropertyEditor(editor);
                 }
             }
         }
     }
+}
+
+QVariant RasterLayerModel::vproperty(const QString& pName) const {
+	return CoverageLayerModel::vproperty(pName);
+}
+
+void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
+	CoverageLayerModel::vproperty(pName, value);
 }
 
 bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)

@@ -55,6 +55,8 @@ public:
     QVariantList linkProperties() const;
     virtual bool renderReady();
     virtual void renderReady(bool yesno);
+	virtual QVariant vproperty(const QString& pName) const;
+	virtual void vproperty(const QString& pName, const QVariant& value);
 
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
