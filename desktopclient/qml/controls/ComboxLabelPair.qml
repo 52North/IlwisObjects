@@ -107,7 +107,7 @@ Item {
 
 			Text {
 			    x : 4
-				y : 10
+				y : 5
 				leftPadding: 0
 				width : parent.width - 15
 				rightPadding: control.indicator.width + control.spacing
