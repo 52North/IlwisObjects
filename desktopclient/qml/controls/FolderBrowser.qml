@@ -12,7 +12,6 @@ Item {
 	onCurrentFolderChanged : {
 		var path = mastercatalog.pathList(currentFolder)
 		for(var i=0; i < path.length; ++i){
-		    console.debug("pathelement ", path[i])
 			var index = folders.pathIndex(path[i]);
 			folderTree.expand(index)
 		}
