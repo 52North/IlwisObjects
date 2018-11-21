@@ -22,6 +22,10 @@ RepresentationElementModel::RepresentationElementModel(const QString &label, Vis
 {
 }
 
+RepresentationElementModel::RepresentationElementModel(const QString& label, double fract, VisualPropertyEditor *p) : QObject(p), Identity(label), _fraction(fract) {
+
+}
+
 RepresentationElementModel::RepresentationElementModel(const IRepresentation& rpr, Raw raw, const QString &label, VisualPropertyEditor *parent) : QObject(parent), Identity(label), _rpr(rpr), _raw(raw)
 {
 }
@@ -56,6 +60,10 @@ void RepresentationElementModel::opacity(double v) {
         color(clr);
         emit eopacityChanged();
     }
+}
+
+double RepresentationElementModel::fraction() const {
+	return _fraction;
 }
 
 

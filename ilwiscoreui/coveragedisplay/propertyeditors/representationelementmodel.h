@@ -20,15 +20,18 @@ public:
     RepresentationElementModel();
     explicit RepresentationElementModel(VisualPropertyEditor *p);
     RepresentationElementModel(const QString& label, VisualPropertyEditor *parent=0);
+	RepresentationElementModel(const QString& label, double fract, VisualPropertyEditor *parent);
     RepresentationElementModel(const IRepresentation& rpr, Raw raw,const QString& label, VisualPropertyEditor *parent=0);
     Q_PROPERTY(QColor ecolor READ color WRITE color NOTIFY ecolorChanged)
     Q_PROPERTY(QString label READ name CONSTANT)
     Q_PROPERTY(double eopacity READ opacity NOTIFY eopacityChanged)
+	Q_PROPERTY(double fraction READ fraction CONSTANT)
 
     QColor color() const;
     void color(const QColor& clr);
     double opacity() const;
     void opacity(double v);
+	double fraction() const;
 
 signals:
     void ecolorChanged();
@@ -38,6 +41,7 @@ signals:
 private:
     IRepresentation _rpr;
     Raw _raw;
+	double _fraction = rUNDEF;
 };
 }
 }

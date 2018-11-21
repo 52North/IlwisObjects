@@ -11,12 +11,15 @@ class ILWISCOREUISHARED_EXPORT NumericRepresentationSetter : public VisualProper
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQmlListProperty<RepresentationElementModel> representationElements READ representationElements NOTIFY itemsChanged)
+  
 public:
+	Q_PROPERTY(QQmlListProperty<Ilwis::Ui::RepresentationElementModel> representationElements READ representationElements NOTIFY itemsChanged)
+
     NumericRepresentationSetter(VisualAttribute *p);
     NumericRepresentationSetter();
 
 	bool canUse(const IIlwisObject & obj, const DataDefinition & coldef) const;
+	bool canUse(const IIlwisObject &obj, const QString& name) const;
 
     void prepare(const IIlwisObject &, const DataDefinition &);
     static VisualPropertyEditor *create(VisualAttribute *p);
@@ -24,7 +27,7 @@ public:
     Q_INVOKABLE QColor color(const QString &property, double frac);
     Q_INVOKABLE bool canUse(const QString& id) const;
     Q_INVOKABLE void setRepresentation(const QString& name)    ;
-    QQmlListProperty<RepresentationElementModel> representationElements();
+    QQmlListProperty< Ilwis::Ui::RepresentationElementModel > representationElements();
 
 signals:
     void rprNameChanged();

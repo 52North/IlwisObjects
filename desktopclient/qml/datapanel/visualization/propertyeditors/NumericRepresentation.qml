@@ -14,7 +14,7 @@ Rectangle {
         for(var j =0; j < w; j++){
             ctx.beginPath()
             var frac = j / w
-            var color = editor.color(frac)
+            var color = editor.color("", frac)
             ctx.beginPath()
             ctx.lineWidth = 1
             ctx.strokeStyle = color
@@ -26,11 +26,11 @@ Rectangle {
         ctx.restore()
     }
 
-    function setText(ctx, label, x){
-        ctx.lineWidth = 0.4
+    function setText(ctx, label, x, below){
+        //ctx.lineWidth = 0.4
         var textW = ctx.measureText(label)
-        ctx.font = "9px sans-serif normal";
-        ctx.text(label, Math.max(0,x - textW.width / 2), 14)
+        ctx.font = "11px sans-serif";
+        ctx.text(label, Math.max(0,x - textW.width / 2), below ? 55 : 14)
         ctx.stroke()
     }
 
@@ -42,21 +42,23 @@ Rectangle {
         if ( items.length === 0)
             return
 
-        var step = Math.floor(w / (items.length - 1))
+        var step = Math.floor(w * item)
         var x = 0
+		var below = true
+		ctx.beginPath()
         for(var j =0; j < items.length - 1; ++j){
-            ctx.beginPath()
-            ctx.moveTo(x,20)
-            ctx.lineTo(x,45)
+			var  p = w * items[j].fraction
+            ctx.moveTo(p,20)
+            ctx.lineTo(p,45)
             ctx.stroke()
-            setText(ctx,items[j].label, x)
-            x = x + step
-        }
+            setText(ctx,items[j].label, p, below)
+			below = false
+         }
         ctx.beginPath()
         ctx.moveTo(w,20)
         ctx.lineTo(w,45)
         ctx.stroke()
-        setText(ctx, items[items.length - 1].label,w)
+        setText(ctx, items[items.length - 1].label,w, true)
 
         ctx.restore()
     }
@@ -67,17 +69,18 @@ Rectangle {
         ctx.stroke();
     }
 
-    Controls.TextFieldDropArea {
+    Controls.TextEditLabelPair {
         function check(id){
             return editor.canUse(id)
         }
-
+		labelWidth : 100
+		labelText : qsTr("Representation")
         id : rprName
         width : parent.width - 20
         height : Global.rowHeight
         content : editor.representationName
         x : 10
-        canUse: check
+        checkFunction: check
 
         onContentChanged: {
             editor.setRepresentation(content)
@@ -92,7 +95,7 @@ Rectangle {
         property bool isDirty : true
         renderTarget:  Canvas.FramebufferObject
         x : 10
-        height : 50
+        height : 60
         Rectangle{
             x : 0
             y : 19
@@ -104,6 +107,8 @@ Rectangle {
 
         onPaint : {
             var ctx = getContext("2d")
+			clear(ctx)
+			//antialiasing = false
             drawArea(ctx, width - 15, height)
             drawBars(ctx, width - 15, height)
 

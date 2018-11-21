@@ -7,6 +7,7 @@
 #include "visualattribute.h"
 #include "visualpropertyeditor.h"
 #include "coveragelayermodel.h"
+#include "raster.h"
 #include "numericrepresentationsetter.h"
 #include "mathhelper.h"
 
@@ -21,12 +22,20 @@ NumericRepresentationSetter::NumericRepresentationSetter(VisualAttribute *p) :
 }
 
 NumericRepresentationSetter::NumericRepresentationSetter()
-
 {
-
+	
 }
 
-bool NumericRepresentationSetter::canUse(const IIlwisObject &obj, const DataDefinition &def) const
+bool NumericRepresentationSetter::canUse(const IIlwisObject &obj, const QString& name) const
+{
+	if (name == PIXELVALUE && obj->ilwisType() == itRASTER) {
+		IRasterCoverage raster = obj.as<RasterCoverage>();
+		return (hasType(raster->datadef().domain()->ilwisType(), itNUMERICDOMAIN));
+	}
+	return false;
+}
+
+bool NumericRepresentationSetter::canUse(const IIlwisObject &obj, const DataDefinition &def) const 
 {
     if ( def.isValid())
         return hasType(def.domain()->ilwisType(), itNUMERICDOMAIN);
@@ -53,11 +62,16 @@ void NumericRepresentationSetter::prepare( const IIlwisObject &obj, const DataDe
 
         NumericRange roundedRange = MathHelper::roundRange(numrange.min(), numrange.max());
         double tickValue = roundedRange.min();
+		double step = roundedRange.resolution();
         while(tickValue <= numrange.max()){
-            _rprElements.push_back(new RepresentationElementModel(QString::number(tickValue),this));
-            tickValue += roundedRange.resolution();
+            _rprElements.push_back(new RepresentationElementModel(QString::number(tickValue), tickValue / numrange.distance(), this));
+            tickValue += step;
         }
-        _rprElements.push_back(new RepresentationElementModel(QString::number(tickValue),this));
+		if ((tickValue - roundedRange.resolution()) != numrange.max()) {
+			if (tickValue > numrange.max())
+				tickValue = numrange.max();
+			_rprElements.push_back(new RepresentationElementModel(QString::number(numrange.max()), this));
+		}
 
         emit rprNameChanged();
     }
@@ -95,20 +109,18 @@ bool NumericRepresentationSetter::canUse(const QString &id) const
 
 void NumericRepresentationSetter::setRepresentation(const QString &name)
 {
-//    Resource resource = mastercatalog()->name2Resource(name, itREPRESENTATION)    ;
-//    if ( !resource.isValid())
-//        return;
-//    IRepresentation rpr(resource);
-//    QVariant actAttribute = layer()->drawer()->attribute("activevisualattribute");
-//    if ( !actAttribute.isValid())
-//        return ;
-//    QVariant var;
-//    var.setValue<IRepresentation>(rpr);
-//    layer()->drawer()->setAttribute("visualattribute|representation|" + actAttribute.toString(),var);
-//    layer()->drawer()->unprepare(Geodrawer::DrawerInterface::ptRENDER);
-//    layer()->drawer()->prepare(Geodrawer::DrawerInterface::ptRENDER, IOOptions());
-//    layer()->drawer()->redraw();
-
+    Resource resource = mastercatalog()->name2Resource(name, itREPRESENTATION)    ;
+    if ( !resource.isValid())
+        return;
+    IRepresentation rpr(resource);
+	VisualAttribute *actAttribute = vpmodel()->layer()->activeAttribute();
+    if ( !actAttribute)
+        return ;
+    QVariant var;
+    var.setValue<IRepresentation>(rpr);
+	//vpmodel()->layer()->vproperty("visualattribute|representation|" + actAttribute->attributename(),var);
+	vpmodel()->layer()->vproperty(QString("visualattribute|%1|representation").arg(actAttribute->attributename()),rpr->resource().url().toString());
+	vpmodel()->layer()->add2ChangedProperties("buffers", false);
 }
 
 QQmlListProperty<RepresentationElementModel> NumericRepresentationSetter::representationElements()
