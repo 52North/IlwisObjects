@@ -426,6 +426,7 @@
     <None Include="desktopclient\qml\Splash.qml" />
     <None Include="desktopclient\qml\StartBlock.qml" />
     <None Include="desktopclient\qml\StartWindow.qml" />
+    <None Include="desktopclient\qml\Tab2Menu.qml" />
     <None Include="desktopclient\qml\TabStyle1.qml" />
     <None Include="desktopclient\qml\TabStyle2.qml" />
     <None Include="desktopclient\qml\TabStyleCatalog.qml" />
@@ -953,6 +954,7 @@
     <Text Include="desktopclient\qml\datapanel\catalog\CatalogOperationEditor.qml" />
     <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml" />
     <Text Include="desktopclient\qml\datapanel\visualization\ViewManagerTabs.qml" />
+    <Text Include="desktopclient\qml\Tab2MenuItemDelegate.qml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

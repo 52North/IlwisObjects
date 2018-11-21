@@ -1208,6 +1208,9 @@
     <None Include="desktopclient\qml\datapanel\catalog\ColorComposite.qml">
       <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
     </None>
+    <None Include="desktopclient\qml\Tab2Menu.qml">
+      <Filter>Distribution Files\qml</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
@@ -2417,6 +2420,9 @@
     </Text>
     <Text Include="desktopclient\qml\datapanel\catalog\CatalogOperationEditor.qml">
       <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+    </Text>
+    <Text Include="desktopclient\qml\Tab2MenuItemDelegate.qml">
+      <Filter>Distribution Files\qml</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
