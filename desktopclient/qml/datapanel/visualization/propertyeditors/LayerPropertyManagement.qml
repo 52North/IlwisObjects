@@ -11,7 +11,7 @@ Rectangle {
     id : propertyEditorBar
 
     property int layerIndex : 0
-    color : Global.actionItemColor
+    color :  Global.actionItemColor
     property string iconName : "../images/actions"
 	//property alias treeModel : layerColumn.treeModel
 	function setModel(){
