@@ -75,6 +75,9 @@ QVariant CoverageLayerModel::vproperty(const QString &pName) const
     QVariant v = LayerModel::vproperty(pName);
     if (v.isValid())
         return v;
+	if (pName == "activevisualattribute") {
+		return  _activeAttribute;
+	}
     if (pName == "envelope") {
         Envelope env = coverage()->envelope();
         return env.toMap();
@@ -85,6 +88,9 @@ QVariant CoverageLayerModel::vproperty(const QString &pName) const
 void CoverageLayerModel::vproperty(const QString &attr, const QVariant &value)
 {
 	LayerModel::vproperty(attr, value);
+	if (attr == "activeattribute") {
+		activeAttributeName(value.toString());
+	}
 }
 
 bool CoverageLayerModel::showInfo() const
