@@ -125,7 +125,6 @@ Rectangle {
                         continue;
 
                     var envelope = renderer.rootLayer().drawEnvelope(env)
-					console.debug(envelope.minx, envelope.miny,envelope.width,envelope.height, mx, my)
                     if ( envelope.minx <=mx && (envelope.minx + envelope.width) > mx &&
                             envelope.miny <= my && (envelope.miny + envelope.height) >my ){
                         maps.push({"name" : mapItems.items[i].name,
