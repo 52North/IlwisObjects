@@ -49,6 +49,7 @@ public:
     Q_PROPERTY(QString icon READ icon CONSTANT)
     Q_PROPERTY(QString name READ text NOTIFY nameChanged)
     Q_PROPERTY(bool isDrawable READ isDrawable CONSTANT)
+	Q_PROPERTY(bool isVirtual READ isVirtual CONSTANT)
     Q_PROPERTY(bool isVectorLayer READ isVectorLayer CONSTANT)
 	Q_PROPERTY(bool usesColorData READ usesColorData CONSTANT)
 	Q_PROPERTY(double opacity READ opacity WRITE opacity NOTIFY opacityChanged)
@@ -138,6 +139,7 @@ public:
     virtual void addSelection(quint64 featureid, bool single);
     virtual bool renderReady();
     virtual void renderReady(bool yesno);
+	bool isVirtual() const;
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
@@ -166,6 +168,7 @@ protected:
 	   QString _icon = "folderFeature20.png";
 	   bool _isDrawable = false;
 	   bool _isVector = false;
+	   bool _isVirtual = false;
 	   int _prepared = 0;
 	   IlwisTypes _layerType = itUNKNOWN;
 	   bool _isValid = false;

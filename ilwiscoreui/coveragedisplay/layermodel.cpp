@@ -29,6 +29,9 @@ LayerModel::LayerModel(LayerManager *manager, QStandardItem *parent, const QStri
     else
         setParent(manager);
     _modelId = modelregistry()->newModelId();
+	if (opt.contains("virtual")) {
+		_isVirtual = opt["virtual"].toBool();
+	}
         
 }
 
@@ -41,6 +44,10 @@ LayerModel *LayerModel::create(LayerManager *manager, LayerModel *layer, const Q
     //return new LayerModel(manager, layer, name, desc, options);
 
     return 0;
+}
+
+bool LayerModel::isVirtual() const {
+	return _isVirtual;
 }
 
 void LayerModel::redraw() const
@@ -102,14 +109,14 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
 		if (!vattr)
 			return;
 
-        if ( parts.size() ==4){
+        if ( parts.size() ==3){
             if ( parts[2] == "representation"){
-				IRepresentation rpr(parts[3]);
+				IRepresentation rpr(value.toString());
                 if ( rpr.isValid()){
                     vattr->representation(rpr);
                 }
             }else if( parts[2] == "domain"){
-				IDomain dom(parts[3]);
+				IDomain dom(value.toString());
                 if ( dom.isValid()){
                     vattr->domain(dom);
                 }
