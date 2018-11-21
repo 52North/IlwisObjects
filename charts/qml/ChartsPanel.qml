@@ -70,7 +70,6 @@ Item {
     }
 
 	Component.onDestruction :{
-	    console.debug("closing chart panel")
 		models.unRegisterModel(chart.modelId())
 	}
 
