@@ -12,7 +12,7 @@
 #include "representation.h"
 #include "coveragedisplay/coveragelayermodel.h"
 #include "coveragedisplay/layerinfoitem.h"
-#include "coveragedisplay/visualattribute.h"
+#include "coveragedisplay/visualattribute.h" 
 #include "rasterlayermodel.h"
 #include "textureheap.h"
 #include "texture.h"
@@ -73,11 +73,11 @@ void ColorCompositeLayerModel::coverage(const ICoverage& cov) {
 	CoverageLayerModel::coverage(cov);
 	_raster = CoverageLayerModel::coverage().as<RasterCoverage>();
 	_icon = ResourceModel::iconPath(_raster->ilwisType());
-	auto lyr = layerManager()->create(this, "rastercoverage", layerManager(), "Red Layer " + cov->name(), cov->description(), { "drawable", false });
+	auto lyr = layerManager()->create(this, "rastercoverage", layerManager(), "Red Layer " + cov->name(), cov->description(), { "virtual", true });
 	static_cast<RasterLayerModel *>(lyr)->coverage(_ccBands[0]);
-	lyr = layerManager()->create(this, "rastercoverage", layerManager(), "Green Layer " + cov->name(), cov->description(), { "drawable", false });
+	lyr = layerManager()->create(this, "rastercoverage", layerManager(), "Green Layer " + cov->name(), cov->description(), { "virtual", true });
 	static_cast<RasterLayerModel *>(lyr)->coverage(_ccBands[1]);
-	lyr = layerManager()->create(this, "rastercoverage", layerManager(), "Blue Layer " + cov->name(), cov->description(), { "drawable", false });
+	lyr = layerManager()->create(this, "rastercoverage", layerManager(), "Blue Layer " + cov->name(), cov->description(), { "virtual", true });
 	static_cast<RasterLayerModel *>(lyr)->coverage(_ccBands[2]);
 	fillAttributes();
 }
