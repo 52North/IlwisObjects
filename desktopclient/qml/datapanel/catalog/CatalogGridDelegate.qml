@@ -85,7 +85,6 @@ Item {
         hoverEnabled: true
 
 		function doubleClick(mouse) { // in 5.11 there was an issue in some scenario's with dblclik, this is a workaround
-		      console.debug("double click")
 		      if (mouse.button == Qt.LeftButton) {
                 if ( name == "..")
                     showObject(-1)
