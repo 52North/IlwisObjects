@@ -16,10 +16,6 @@ Button {
     property var iconW : 20
     property var background : Global.selectedColor
 
-    onCheckedChanged : {
-        console.debug(type, checked)
-    }
-
     Rectangle {
         anchors.centerIn: parent
         height : iconH + 4
