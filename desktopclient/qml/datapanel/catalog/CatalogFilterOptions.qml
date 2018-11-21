@@ -79,7 +79,7 @@ Rectangle {
                     currentIndex = itemModel.count - 4
                 }
                 onCurrentIndexChanged: {
-                    if ( currentIndex >= 0) {
+                    if ( currentIndex >= 0 && currentCatalog) {
                         var teritory = itemModel[currentIndex]
                         if ( teritory.code !== "world"){
                             var dx = Math.abs(teritory.longmin - teritory.longmax) * 0.05
@@ -114,7 +114,7 @@ Rectangle {
                     currentIndex = itemModel.count - 1
                 }
                 onCurrentIndexChanged: {
-                    if ( currentIndex >= 0) {
+                    if ( currentIndex >= 0 && currentCatalog) {
                         var teritory = itemModel[currentIndex]
                         if ( teritory.code !== "world"){
                             var dx = Math.abs(teritory.longmin - teritory.longmax) * 0.05
