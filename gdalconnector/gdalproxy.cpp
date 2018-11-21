@@ -231,7 +231,7 @@ bool GDALProxy::prepare() {
             GDALDriverH driverH = getDriver(index);
             if ( driverH) {
                 QString cext = getMetaDataItem(driverH,GDAL_DMD_EXTENSION,NULL);//raster extensions only
-                if ( cext == "mpr/mpl") // ilwsi3 formats have their own handling
+                if ( cext == "mpr/mpl") // ilwis3 formats have their own handling
                     continue;
                 QString create1 = getMetaDataItem(driverH,GDAL_DCAP_CREATE,NULL);//raster extensions only
                 QString create2 = getMetaDataItem(driverH,GDAL_DCAP_CREATECOPY,NULL);//raster extensions only
@@ -261,6 +261,13 @@ bool GDALProxy::prepare() {
         _rasterExtensions.removeDuplicates();
         _allExtensions += _rasterExtensions;
         _allExtensions += _featureExtensions;
+
+		DataFormat senzip("gdal", "zip", "Sentinel2", "zip", "r", itRASTER);
+		senzip.store();
+        DataFormat senxml("gdal", "xml", "Sentinel2", "xml", "r", itRASTER);
+        senxml.store();
+        _allExtensions += "*.zip";	// S2[AB]_MSIL(1C|2A)
+        _allExtensions += "*.xml";	// S2[AB]_MSIL(1C|2A)
 
     }
 

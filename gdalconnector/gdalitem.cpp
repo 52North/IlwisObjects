@@ -17,6 +17,9 @@
 #include "proj4parameters.h"
 #include "mastercatalog.h"
 #include "size.h"
+#include "quazip/quazip.h"
+#include "quazip/quazipfile.h"
+#include "quazip//quazipdir.h"
 
 using namespace Ilwis;
 using namespace Gdal;
@@ -97,6 +100,20 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
         return ;
     QFileInfo file = localFile;
     GdalHandle* handle = gdal()->openFile(file.absoluteFilePath(), i64UNDEF , GA_ReadOnly, false);
+    if (!handle) {
+        // try sentinel
+        if (file.suffix().toLower() == "zip") {
+            QuaZip zip(file.absoluteFilePath());
+            zip.open(QuaZip::Mode::mdUnzip);
+            QuaZipDir nav(&zip);
+            QStringList filters;
+            filters.append("*.xml");
+            QList<QuaZipFileInfo64> entries = nav.entryInfoList64();
+//            QList<QuaZipFileInfo> allitems = zip.getFileInfoList();
+            int err = zip.getZipError();
+            zip.close();
+        }
+    }
     if (handle){
         quint64 sz = file.size();
         int count = layerCount(handle);

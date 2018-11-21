@@ -35,7 +35,16 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>gdalconnector</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -59,7 +68,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external\gdal;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\external\zlib-1.2.11;..\external\quazip;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external\gdal;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -76,10 +85,11 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\Projects\Ilwis\ilwisobjects\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\external\quazip\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -102,10 +112,19 @@
       <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\gdalconnector\* /S /Y /I</Command>
       <Message>xCopy gdalconnector.dll to ..\output\win32release\bin\extensions\gdalconnector</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;.\..\external\gdal;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath><Define>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;.\..\external\gdal;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external\gdal;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\external\zlib-1.2.11;..\external\quazip;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;..\external\gdal;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -122,10 +141,11 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
-      <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;..\external\quazip\release\quazip.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -147,7 +167,16 @@
       <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\gdalconnector\* /S /Y /I</Command>
       <Message>xCopy gdalconnector.dll to ..\output\win32debug\bin\extensions\gdalconnector</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;.\..\external\gdal;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath><Define>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_PLUGIN;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;.\..\external\gdal;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_PLUGIN;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gdalconnector\coordinatesystemconnector.cpp" />
     <ClCompile Include="gdalconnector\coverageconnector.cpp" />
@@ -164,8 +193,6 @@
     <ClCompile Include="gdalconnector\gdaltableloader.cpp" />
     <ClCompile Include="gdalconnector\georefconnector.cpp" />
     <ClCompile Include="gdalconnector\gridcoverageconnector.cpp" />
-    
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gdalconnector\coordinatesystemconnector.h" />
@@ -179,14 +206,16 @@
     <ClInclude Include="gdalconnector\gdalfeaturetableconnector.h" />
     <ClInclude Include="gdalconnector\gdalitem.h" />
     <QtMoc Include="gdalconnector\gdalmodule.h">
-      
-      
-      
-      
-      
-      
-      
-      
+      <CustomBuild>
+        <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DGDALCONNECTOR_LIBRARY -DQT_NO_DEBUG -DQT_PLUGIN -DNDEBUG -D_WINDLL  "-I.\..\external\zlib-1.2.11" "-I.\..\external\quazip" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\external\gdal" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore"</Command>
+        <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing gdalmodule.h...</Message>
+        <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DWIN64 -DGDALCONNECTOR_LIBRARY -DQT_PLUGIN -D_WINDLL  "-I.\..\external\zlib-1.2.11" "-I.\..\external\quazip" "-I." "-I.\core" "-I.\core\ilwisobjects" "-I.\core\ilwisobjects\geometry" "-I.\core\util" "-I.\core\ilwisobjects\geometry\geodeticdatum" "-I.\core\ilwisobjects\geometry\projection" "-I.\core\ilwisobjects\geometry\coordinatesystem" "-I.\core\ilwisobjects\geometry\georeference" "-I.\core\ilwisobjects\coverage" "-I.\core\ilwisobjects\table" "-I.\core\ilwisobjects\operation\model" "-I.\core\ilwisobjects\operation" "-I.\core\ilwisobjects\operation\modeller" "-I.\core\ilwisobjects\workflow" "-I.\core\ilwisobjects\representation" "-I.\core\catalog" "-I.\core\ilwisobjects\domain" "-I.\core\geos\include" "-I.\..\external" "-I.\..\external\gdal" "-I$(QTDIR)\include" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2015" "-I$(INHERIT)\." "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtSql" "-I$(QTDIR)\include\QtCore"</Command>
+        <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing gdalmodule.h...</Message>
+        <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+        <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+        <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+        <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      </CustomBuild>
     </QtMoc>
     <ClInclude Include="gdalconnector\gdalobjectfactory.h" />
     <ClInclude Include="gdalconnector\gdalproxy.h" />
@@ -194,7 +223,10 @@
     <ClInclude Include="gdalconnector\georefconnector.h" />
     <ClInclude Include="gdalconnector\gridcoverageconnector.h" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
