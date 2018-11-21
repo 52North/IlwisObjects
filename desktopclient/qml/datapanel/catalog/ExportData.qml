@@ -95,7 +95,6 @@ Rectangle {
 							}
 							var ff = formats.split(":")
 							var expr = "saveas(" + inpUrl + "," + outputUrl + "," + ff[1] + "," + ff[0] + ")"
-							console.debug(expr)
 							operations.executeoperation(expr,true)
 
 						}
