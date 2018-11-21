@@ -35,7 +35,7 @@ Rectangle {
             title : qsTr("Actions for Charts")
             SplitView {
                 id : dataseriesview
-	            property string iconName : "../../qml/images/graph"
+	            property string iconName : "../../qml/images/actions"
 
                 handleDelegate: Controls.SplitHandle {
                     imageHeight: 15
@@ -56,11 +56,17 @@ Rectangle {
         }
 
        Tab {
-            title : qsTr("Meta data")
-            property string iconName : "../../qml/images/metadata_s"
+            title : qsTr("Metadata")
             id : columnmetadataview
+			Item {
+	            property string iconName : "../../qml/images/metadata"
+			}
 
         }
+
+		Component.onCompleted : {
+			columnmetadataview.active = true
+		}
  
        style: DataPanel.ButtonBarTabViewStyle{}
     }
