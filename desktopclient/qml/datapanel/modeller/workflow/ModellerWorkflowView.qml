@@ -623,7 +623,6 @@ Modeller.ModellerWorkArea {
                     removeLinkTo(currentItem.itemid)
                     item.removeContent()
                 }else if ( currentItem.type === "rangejunctionitem"){
-                    console.debug(currentItem)
                     item = removeItemFromList(currentItem.condition.junctionsList, currentItem.itemid)
                     removeLinkTo(currentItem.itemid)
                 }
