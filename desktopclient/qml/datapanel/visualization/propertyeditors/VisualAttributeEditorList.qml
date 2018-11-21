@@ -7,9 +7,6 @@ Item {
 
     property var displayEditorModel
 
-	onDisplayEditorModelChanged : {
-		console.debug("displayEditorModel", displayEditorModel)
-	}
 
     Rectangle {
         id : propertiesLabel

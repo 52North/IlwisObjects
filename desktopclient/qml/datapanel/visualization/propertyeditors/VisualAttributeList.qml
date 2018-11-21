@@ -65,7 +65,6 @@ Rectangle {
             onCurrentIndexChanged: {
 				if ( currentCoverage && attributesList.model && currentIndex < attributesList.model.length ) {
 					currentCoverage.setActiveAttribute(currentIndex)
-					console.debug("attributelist index changed",attributesList.model,attributesList.model.length, attributesList.model[currentIndex], currentIndex, attributesList.model[currentIndex].attributename)
 					editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
 					if ( editorListColumn.displayEditorModel.length > 0)
 						editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
