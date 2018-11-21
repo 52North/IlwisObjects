@@ -407,7 +407,7 @@ Item {
 		}
 
         function setProperties(layer) {
-            if ( layer && layer.isValid && layer.isDrawable){
+            if ( layer && layer.isValid && !layer.isVirtual){
 				var changedProperties = layer.changedProperties
                 for(var j=0; j < changedProperties.length; ++j){
 				    var property = changedProperties[j]
