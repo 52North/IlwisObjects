@@ -13,6 +13,8 @@ MenuItem {
 	implicitWidth: itemWith
 	implicitHeight: 24
 	property var actionFunc
+
+	
 	
 	arrow: Canvas {
 		x: parent.width - width

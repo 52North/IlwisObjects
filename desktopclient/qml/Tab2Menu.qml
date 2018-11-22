@@ -12,8 +12,8 @@ Menu {
 	id: dropmenu
 	property int itemWith : 180
 
-	function openCatalog(label, side, currentMenu){
-	    var url = mastercatalog.currentUrl 
+	function url(label){
+		    var url = mastercatalog.currentUrl 
 		if (qsTr("Coordinate Systems") == label){
 			url = "ilwis://system/coordinatesystems"
 		}
@@ -35,7 +35,12 @@ Menu {
 		if (qsTr("Scripts") == label){
 			url = "ilwis://system/scripts"
 		}
-		bigthing.newCatalog("container='" + url +"'","catalog",url, side)
+		return url
+	}
+	function openCatalog(label, side, currentMenu){
+
+	    var nexturl = url(label)
+		bigthing.newCatalog("container='" + nexturl +"'","catalog",nexturl, side)
 		dismiss()
 	}
 
@@ -50,7 +55,14 @@ Menu {
 		Action { text: qsTr("Projections") }
 		Action { text: qsTr("Representations") }
 		Action { text: qsTr("Scripts") }
-		delegate: Tab2MenuItemDelegate{ actionFunc : openCatalog}
+		delegate: Tab2MenuItemDelegate{ 
+			actionFunc : openCatalog
+
+			onTriggered : {
+				dropmenu.dismiss()
+				bigthing.changeCatalog("container='" + url(text) +"'","catalog",url(text))
+			}
+		}
 	}
 
 	Menu {
@@ -62,7 +74,11 @@ Menu {
             onObjectAdded: bookmarksMenu.insertItem( index, object )  
             onObjectRemoved: bookmarksMenu.removeItem( object )  
             delegate: Tab2MenuItemDelegate {  
-                text: men_title  
+                text: men_title 
+				onTriggered : {
+					bookmarksMenu.dismiss()
+					bigthing.changeCatalog("container='" + men_url +"'","catalog",men_url)
+				}
 				actionFunc : function (label, side, currentMenu) {
 					bigthing.newCatalog("container='" + men_url +"'","catalog",men_url, side)
 					currentMenu.dismiss()
@@ -76,7 +92,9 @@ Menu {
 	topPadding: 2
 	bottomPadding: 2
 
-	delegate: Tab2MenuItemDelegate{actionFunc : openCatalog}
+	delegate: Tab2MenuItemDelegate{
+		actionFunc : openCatalog
+	}
 
 	background: Rectangle {
 		implicitWidth: itemWith

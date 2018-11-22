@@ -137,6 +137,7 @@ TabViewStyle {
 
 
 				Tab2Menu {
+				    y : 20
 					id : menu
 				}
 			}
