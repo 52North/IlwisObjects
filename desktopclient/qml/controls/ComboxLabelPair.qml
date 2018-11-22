@@ -55,15 +55,17 @@ Item {
         height : parent.height
         width : parent.width - label.width
         model : itemModel
+
         editable : textEditable
         textRole: role
+
 
 	    delegate: QC2.ItemDelegate {
 		    id  : itdelg
 			width: control.width
 			height : 26
 			contentItem: Text {
-				text: modelData
+				text: control.textRole ? modelData[control.textRole] : modelData
 				height : 26
 				color: "black"
 				font: control.font
@@ -76,6 +78,23 @@ Item {
 				color: itdelg.highlighted ? Global.selectedColor : "transparent"
 			}
 		}
+
+		/*delegate : Rectangle {
+			width: control.width
+			height : 26
+			Text {
+				text: modelData
+				height : 26
+				color: "black"
+				font: control.font
+				elide: Text.ElideRight
+				verticalAlignment: Text.AlignVCenter
+			}
+			MouseArea {
+				anchors.fill : parent
+				onClicked: control.popup.close()
+			}
+		}*/
 
 		indicator: Canvas {
 			id: canvas
