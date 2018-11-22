@@ -22,6 +22,7 @@ class CatalogView;
 namespace Ui {
 class CatalogFilterModel;
 class CatalogOperationEditor;
+class MenuModel;
 
 typedef QQmlListProperty<Ilwis::Ui::ResourceModel> QMLResourceList;
 
@@ -38,6 +39,7 @@ class ILWISCOREUISHARED_EXPORT MasterCatalogModel : public QObject
     Q_PROPERTY(Ilwis::Ui::CatalogModel* currentCatalog READ currentCatalog WRITE setCurrentCatalog NOTIFY currentCatalogChanged)
     Q_PROPERTY(QStringList history READ history NOTIFY historyChanged)
     Q_PROPERTY(bool metadataEditMode READ metadataEditMode WRITE metadataEditMode NOTIFY editModeChanged)
+	Q_PROPERTY(Ilwis::Ui::MenuModel *bookMarkMenu READ bookMarkMenu NOTIFY bookmarksChanged)
 
 
 
@@ -91,6 +93,7 @@ public:
     Q_INVOKABLE void longAction();
     Q_INVOKABLE bool isCompatible(const QString& objUrl1, const QString& objUrl2, const QString& type);
 	Q_INVOKABLE QStringList pathList(const QString& path) const;
+	MenuModel *bookMarkMenu();
     std::vector<Ilwis::Resource> select(const QString& filter);
 
 
@@ -114,6 +117,7 @@ private:
     QStringList _bookmarkids;
     int _activeSplit = 0;
     int _activeTab = 0;
+	MenuModel *_bookmarkMenu=0;
     QString _currentUrl;
     CatalogModel *_currentCatalog = 0;
     CatalogModel *_lastCatalog = 0;

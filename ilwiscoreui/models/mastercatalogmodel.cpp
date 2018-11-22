@@ -41,6 +41,7 @@
 #include "opencoverages.h"
 #include "generatethumbnails.h"
 #include "exportdata.h"
+#include "menumodel.h"
 #include "colorcompositecreation.h"
 #include "mastercatalogmodel.h"
 
@@ -67,6 +68,24 @@ CatalogModel *MasterCatalogModel::addBookmark(const QString& label, const QStrin
 	cm->setDisplayName(label);
 	cm->scanContainer(threading, false);
 	return cm;
+}
+
+MenuModel *MasterCatalogModel::bookMarkMenu() {
+	if (_bookmarkMenu == 0) {
+		_bookmarkMenu = new MenuModel(this);
+		_bookmarkMenu->addRole("men_title");
+		_bookmarkMenu->addRole("men_url");
+	}
+	_bookmarkMenu->clear();
+	for (CatalogModel *catalog : _bookmarks) {
+		Resource res = catalog->item();
+		if (res.url().toString().indexOf("ilwis://system") != 0) {
+			auto *item = _bookmarkMenu->newItem();
+			item->setData(res.name(), _bookmarkMenu->roleid("men_title"));
+			item->setData(res.url().toString(), _bookmarkMenu->roleid("men_url"));
+		}
+	}
+	return _bookmarkMenu;
 }
 
 MasterCatalogModel::MasterCatalogModel(QQmlContext *qmlcontext) :  _qmlcontext(qmlcontext)
