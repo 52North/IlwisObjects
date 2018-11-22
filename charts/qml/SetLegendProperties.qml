@@ -61,7 +61,7 @@ Rectangle {
             chartlegendalignment.initialComboText = chart.legendAlignment
         }
 
-        onIndexChanged : {
+        onComboTextChanged : {
             applyChanges()
         }
 

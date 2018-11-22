@@ -28,7 +28,7 @@ Rectangle {
             charttypeselector.initialComboText = dataseriesOperationList.currentSeries.charttype
         }
 
-        onIndexChanged : {
+        onComboTextChanged : {
             var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : charttypeselector.comboText}
             operation.execute(paramaters)
         }
