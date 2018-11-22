@@ -194,6 +194,7 @@
     <ClCompile Include="ilwiscoreui\exportdata.cpp" />
     <ClCompile Include="ilwiscoreui\filesystem.cpp" />
     <ClCompile Include="ilwiscoreui\generatethumbnails.cpp" />
+    <ClCompile Include="ilwiscoreui\menumodel.cpp" />
     <ClCompile Include="ilwiscoreui\modelregistry.cpp" />
     <ClCompile Include="ilwiscoreui\models\chartmodel.cpp" />
     <ClCompile Include="ilwiscoreui\models\chartoperation.cpp" />
@@ -413,6 +414,10 @@
     <QtMoc Include="ilwiscoreui\modelregistry.h">
     </QtMoc>
     <QtMoc Include="ilwiscoreui\models\chartmodel.h">
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\menumodel.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;$(QTDIR)\include\QTCharts;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;.\..\ilwiscore\core;.\ilwiscoreui;.\ilwiscoreui\models;.\ilwiscoreui\coveragedisplay;.\ilwiscoreui\coveragedisplay\propertyeditors;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;.\debug;$(QTDIR)\mkspecs\win32-msvc2015</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\.;.\GeneratedFiles;$(QTDIR)\include\QTCharts;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;.\..\ilwiscore\core;.\ilwiscoreui;.\ilwiscoreui\models;.\ilwiscoreui\coveragedisplay;.\ilwiscoreui\coveragedisplay\propertyeditors;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;.\debug;$(QTDIR)\mkspecs\win32-msvc2015</IncludePath>
     </QtMoc>
     <ClInclude Include="ilwiscoreui\models\chartoperation.h" />
     <QtMoc Include="ilwiscoreui\models\dataseriesmodel.h">

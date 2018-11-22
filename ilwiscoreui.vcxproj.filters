@@ -353,6 +353,9 @@
     <ClCompile Include="ilwiscoreui\colorcompositecreation.cpp">
       <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\menumodel.cpp">
+      <Filter>Source Files\catalog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -597,6 +600,9 @@
     </QtMoc>
     <QtMoc Include="ilwiscoreui\colorcompositecreation.h">
       <Filter>Header Files\catalog\operations</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\menumodel.h">
+      <Filter>Header Files\catalog</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
