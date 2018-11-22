@@ -12,8 +12,8 @@ MenuItem {
 	id: menuItem
 	implicitWidth: itemWith
 	implicitHeight: 24
+	property var actionFunc
 	
-
 	arrow: Canvas {
 		x: parent.width - width
 		implicitWidth: 40
@@ -75,7 +75,8 @@ MenuItem {
 			}
 
 			onClicked : {
-				dropmenu.openCatalog(menuItem.text, "left")
+				actionFunc(menuItem.text, "left",menuItem.menu)
+
 			}
 		}
 		Text {
@@ -110,7 +111,7 @@ MenuItem {
 
 			}
 			onClicked : {
-				dropmenu.openCatalog(menuItem.text, "right")
+				actionFunc(menuItem.text, "right",menuItem.menu)
 			}
 		}
 	}

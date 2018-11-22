@@ -12,7 +12,7 @@ Menu {
 	id: dropmenu
 	property int itemWith : 180
 
-	function openCatalog(label, side){
+	function openCatalog(label, side, currentMenu){
 	    var url = mastercatalog.currentUrl 
 		if (qsTr("Coordinate Systems") == label){
 			url = "ilwis://system/coordinatesystems"
@@ -50,20 +50,33 @@ Menu {
 		Action { text: qsTr("Projections") }
 		Action { text: qsTr("Representations") }
 		Action { text: qsTr("Scripts") }
-		delegate: Tab2MenuItemDelegate{}
+		delegate: Tab2MenuItemDelegate{ actionFunc : openCatalog}
 	}
 
 	Menu {
+	    id :bookmarksMenu
 		title: qsTr("Bookmarks")
 
-		Action { text: qsTr("System") }
-		Action { text: qsTr("Temporary")}
+		Instantiator {  
+            model: mastercatalog.bookMarkMenu  
+            onObjectAdded: bookmarksMenu.insertItem( index, object )  
+            onObjectRemoved: bookmarksMenu.removeItem( object )  
+            delegate: Tab2MenuItemDelegate {  
+                text: men_title  
+				actionFunc : function (label, side, currentMenu) {
+					bigthing.newCatalog("container='" + men_url +"'","catalog",men_url, side)
+					currentMenu.dismiss()
+				};
+
+
+            }  
+        }  
 	}
 
 	topPadding: 2
 	bottomPadding: 2
 
-	delegate: Tab2MenuItemDelegate{}
+	delegate: Tab2MenuItemDelegate{actionFunc : openCatalog}
 
 	background: Rectangle {
 		implicitWidth: itemWith

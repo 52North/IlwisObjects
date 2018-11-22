@@ -70,6 +70,7 @@
 #include "workflow/conceptmodel.h"
 #include "workflow/applicationmodelui.h"
 #include "catalogoperationeditor.h"
+#include "menumodel.h"
 #include "filesystem.h"
 #include "../core/buildnumber.h"
 
@@ -160,6 +161,7 @@ void StartIlwis::init() {
         qmlRegisterType<ControlPointModel>("ControlPointModel", 1, 0, "ControlPointModel");
         qmlRegisterType<ControlPointsListModel>("ControlPointsListModel", 1, 0, "ControlPointsListModel");
 		qmlRegisterType<FileSystem>("FileSystem", 1, 0, "FileSystem");
+		qmlRegisterType<MenuModel>("MenuModel", 1, 0, "MenuModel");
 
 
         _mastercatalogmodel = new MasterCatalogModel(ctx);

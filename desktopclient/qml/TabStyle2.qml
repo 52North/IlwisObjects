@@ -124,17 +124,7 @@ TabViewStyle {
 				}
 			}
 
-			Controls.SmallRoundButton {
-				id : minbut
-				anchors.verticalCenter: thetab.verticalCenter
-				height : 25
-				iconBase : "../images/close"
-				visible : datapanesplit.totalTabCount() > 1 ? true : false
-				width : visible ? height : 0
-				onClicked: {
-					datapanesplit.closeTab(side == 1, styleData.index)
-				}
-			}
+
 
 			Controls.SmallRoundButton {
 				anchors.verticalCenter: thetab.verticalCenter
@@ -148,6 +138,18 @@ TabViewStyle {
 
 				Tab2Menu {
 					id : menu
+				}
+			}
+
+			Controls.SmallRoundButton {
+				id : minbut
+				anchors.verticalCenter: thetab.verticalCenter
+				height : 25
+				iconBase : "../images/close"
+				visible : datapanesplit.totalTabCount() > 1 ? true : false
+				width : visible ? height : 0
+				onClicked: {
+					datapanesplit.closeTab(side == 1, styleData.index)
 				}
 			}
 		}
