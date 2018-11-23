@@ -21,7 +21,7 @@ Item {
 	property bool transparentBackgrond : false
     property string role
     property alias currentIndex : control.currentIndex
-    height : 28
+    height : 20
 
     signal indexChanged()
 
@@ -66,7 +66,7 @@ Item {
 			height : 26
 			contentItem: Text {
 				text: control.textRole ? modelData[control.textRole] : modelData
-				height : 26
+				height : 20
 				color: "black"
 				font: control.font
 				elide: Text.ElideRight
