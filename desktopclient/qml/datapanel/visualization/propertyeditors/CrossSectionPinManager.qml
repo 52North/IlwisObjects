@@ -21,26 +21,39 @@ Item {
 	Column { 
 		anchors.fill : parent
 
-		CheckBox {
+		Item {
 			width : 120
 			height : 20
-			checked : editor.contineousMode()
-			style : Base.CheckBoxStyle1{}
-			text : qsTr(" Continuous Mode")
+			Text {
+				anchors.fill : parent
+				visible : !editor.hasData
+				text : qsTr("No data soource yet set")
+				color : "red"
+			}
+			CheckBox {
+				width : parent.width
+				height : parent.height
+				visible : editor.hasData
+				checked : editor.contineousMode()
+				style : Base.CheckBoxStyle1{}
+				text : qsTr(" Continuous Mode")
 
-			onCheckedChanged : {
-				editor.contineousMode(checked)
-				if (checked){
-					crosssectiontool.contineousPin = editor.addContineousPin()
-				}else {
-					var columnName = editor.pinDataColumn(crosssectiontool.contineousPin + 1)
-					editor.deletePin( crosssectiontool.contineousPin)
-					var expr = "deletechartseries(" + modelid + "," + columnName + ")"
-					layerview.activeLayerManager().addCommand(expr);
-					crosssectiontool.contineousPin = -1
+				onCheckedChanged : {
+				    if(editor.hasData) {
+						editor.contineousMode(checked)
+						if (checked){
+							crosssectiontool.contineousPin = editor.addContineousPin()
+						}else {
+							var columnName = editor.pinDataColumn(crosssectiontool.contineousPin + 1)
+							editor.deletePin( crosssectiontool.contineousPin)
+							var expr = "deletechartseries(" + modelid + "," + columnName + ")"
+							layerview.activeLayerManager().addCommand(expr);
+							crosssectiontool.contineousPin = -1
+
+						}
+					}
 
 				}
-
 			}
 		}
 		TableView {
@@ -191,7 +204,7 @@ Item {
 			width : 260
 			height : 25
 			spacing : 4
-			visible : crosssectiontool.contineousPin == -1
+			visible : crosssectiontool.contineousPin == -1 && editor.hasData
 
 
 			 Button {

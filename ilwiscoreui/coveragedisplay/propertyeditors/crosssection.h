@@ -81,6 +81,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
         Q_PROPERTY(int decimalsCrds READ decimalsCrds CONSTANT)
         Q_PROPERTY(int pinCount READ pinCount NOTIFY pinCountChanged)
         Q_PROPERTY(QVariantList bands READ bands NOTIFY bandsChanged)
+		Q_PROPERTY(bool hasData READ hasData NOTIFY hasDataChanged)
 
 public:
     CrosssectionTool();
@@ -119,6 +120,7 @@ signals:
     void contineousModeChanged();
     void pinCountChanged();
     void bandsChanged();
+	void hasDataChanged();
 
 private:
     int maxR() const;
@@ -133,11 +135,12 @@ private:
     void addPinPrivate();
     QString columnName(int index, const QString& coverageName) const;
     int decimalsCrds() const;
+	bool hasData() const;
 
 
 
     QList<CrossSectionPin *> _pins;
-    PinDataSource * _dataSource;
+    PinDataSource * _dataSource = 0;
     ITable _pinData;
     ITable _activePinData; // shadows pindata but only contains records that are active
     bool _contineousMode = false;

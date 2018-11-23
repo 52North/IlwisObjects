@@ -101,15 +101,19 @@ void CrosssectionTool::prepare(const Ilwis::IIlwisObject& bj, const DataDefiniti
     auto *lm = vpmodel()->layer()->layerManager();
     QString path = context()->ilwisFolder().absoluteFilePath();
     QUrl url = QUrl::fromLocalFile(path);
-    if (_panelCoverage.isValid() && _panelCoverage->ilwisType() == itRASTER) {
+    /*if (_panelCoverage.isValid() && _panelCoverage->ilwisType() == itRASTER) {
         IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
         if (raster.isValid()) {
             _dataSource = new PinDataSource(raster->id(), this);
             emit bandsChanged();
         }
-    }
+    }*/
     associatedUrl(url.toString() + "/qml/datapanel/visualization/propertyeditors/PostDrawerCrossSection.qml");
     lm->addPostDrawer(this);
+}
+
+bool CrosssectionTool::hasData() const {
+	return _dataSource != 0;
 }
 
 bool CrosssectionTool::labelExists(const QString& newlabel) const{
@@ -155,7 +159,7 @@ int Ilwis::Ui::CrosssectionTool::decimalsCrds() const
     return _panelCoverage->coordinateSystem()->isLatLon() ? 7 : 3;
 }
 void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
-    if (!_pinData.isValid())
+    if (!_pinData.isValid() || _dataSource == 0)
         return;
  
 
@@ -344,6 +348,9 @@ void Ilwis::Ui::CrosssectionTool::deletePin(int index)
 }
 
 void CrosssectionTool::addPinPrivate() {
+	if (!_dataSource)
+		return;
+
     IRasterCoverage raster;
     raster.prepare(_dataSource->coverageId());
 
@@ -386,6 +393,7 @@ void Ilwis::Ui::CrosssectionTool::addDataSource(const QString & id)
         _dataSource = new PinDataSource(objid, this);
         emit dataSourceChanged();
         emit bandsChanged();
+		emit hasDataChanged();
     }
     catch (const ErrorObject& err) {}
 }
