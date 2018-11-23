@@ -28,8 +28,9 @@ Rectangle {
             charttypeselector.initialComboText = dataseriesOperationList.currentSeries.charttype
         }
 
-        onComboTextChanged : {
-            var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : charttypeselector.comboText}
+        onIndexChanged : {
+			var newitem = itemModel[currentIndex]
+            var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : newitem } //charttypeselector.comboText}
             operation.execute(paramaters)
         }
     }
