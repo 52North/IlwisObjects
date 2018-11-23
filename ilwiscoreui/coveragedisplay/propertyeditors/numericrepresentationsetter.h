@@ -28,14 +28,12 @@ public:
     Q_INVOKABLE bool canUse(const QString& id) const;
     Q_INVOKABLE void setRepresentation(const QString& name)    ;
     QQmlListProperty< Ilwis::Ui::RepresentationElementModel > representationElements();
-
 signals:
     void rprNameChanged();
     void itemsChanged();
 
 private:
-
-    IRepresentation _representation;
+	void fillElements();
 };
 }
 }

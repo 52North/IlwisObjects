@@ -29,8 +29,8 @@ Rectangle {
     function setText(ctx, label, x, below){
         //ctx.lineWidth = 0.4
         var textW = ctx.measureText(label)
-        ctx.font = "11px sans-serif";
-        ctx.text(label, Math.max(0,x - textW.width / 2), below ? 55 : 14)
+        ctx.font = "8pt sans-serif";
+        ctx.fillText(label, Math.max(0,x - textW.width / 2), below ? 55 : 14)
         ctx.stroke()
     }
 

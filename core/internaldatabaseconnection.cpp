@@ -9,7 +9,7 @@ std::recursive_mutex InternalDatabaseConnection::_guard;
 InternalDatabaseConnection::InternalDatabaseConnection()
 {
 	_guard.lock();
-	_index = kernel()->database()->freeConnectionIndex();
+	_index = kernel()->database()->freeConnectionIndex(); 
 }
 
 InternalDatabaseConnection::InternalDatabaseConnection(const QString &query)

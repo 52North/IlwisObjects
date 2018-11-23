@@ -39,6 +39,12 @@ TabViewStyle {
 				anchors.bottom: parent.bottom
 				height : 35
 
+				function showMarker(paneltype){
+				     if ( datapane.tab(side == 1, styleData.index))
+						return datapane.tab(side == 1, styleData.index).type == paneltype
+					 return false
+				}
+
 				Text {
 					x : 8
 					width : parent.width - 10
@@ -115,12 +121,12 @@ TabViewStyle {
 			Controls.SmallRoundButton {
 				id : refreshbut
 				anchors.verticalCenter: thetab.verticalCenter
-				height : 22
+				height : 25
 				iconBase : "../images/refresh"
-				visible : panelType() == "catalog"
+				visible :label.showMarker("catalog") 
 				width : visible ? height : 0
 				onClicked: {
-					//datapanesplit.closeTab(side == 1, styleData.index)
+					mastercatalog.currentCatalog.scanContainer(true,true)
 				}
 			}
 
@@ -132,7 +138,7 @@ TabViewStyle {
 				height : 25
 				width : visible ? height : 0
 				iconBase : "../images/add"
-				visible : panelType() == "catalog"
+				visible : label.showMarker("catalog") 
 				onClicked: menu.open()
 
 
@@ -158,6 +164,7 @@ TabViewStyle {
     
 	function panelType() {
 		var sidePanel = datapane.activeSide
+		console.debug("zzzzzzz", datapane.activeSide,sidePanel.tabview ,tabview.getTab(tabview.currentIndex))
 		if ( sidePanel){
 			var tabview = sidePanel.tabview
 			if ( tabview && tabview.getTab(tabview.currentIndex)){

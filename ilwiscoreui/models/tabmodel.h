@@ -16,6 +16,7 @@ namespace Ilwis {
 				Q_PROPERTY(bool selected READ selected WRITE setSelected NOTIFY selectedChanged)
 				Q_PROPERTY(QString side READ side CONSTANT)
 				Q_PROPERTY(quint32 id READ id() CONSTANT)
+				Q_PROPERTY(QString type READ type CONSTANT)
 		public:
 			TabModel(QObject* parent = 0);
 			TabModel(const QString& url, const QString& componentUrl, const QString &type, QObject* parent);
@@ -26,6 +27,7 @@ namespace Ilwis {
 			void setSelected(bool yesno);
 			bool selected() const;
 			QString side() const;
+			QString type() const;
 			Q_INVOKABLE void selectTab();
 			Q_INVOKABLE quint32 id() const;
 		signals:
@@ -38,6 +40,7 @@ namespace Ilwis {
 			QString _displayName;
 			bool _canSeparate = false;
 			bool _selected = false;
+			QString _type = "?"; 
 		};
 	}
 }

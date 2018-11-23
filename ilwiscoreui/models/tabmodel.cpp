@@ -27,6 +27,7 @@ TabModel::TabModel(const QString &url, const QString &componentUrl,const QString
         if ( res.isValid()){
             _displayName = res.hasProperty("longname") ? res["longname"].toString() : res.name();
         }
+		_type = type;
     }
 	if (_displayName == "") {
 		QString path = QUrl(url).path();
@@ -35,6 +36,10 @@ TabModel::TabModel(const QString &url, const QString &componentUrl,const QString
 	}
  
     ++_id;
+}
+
+QString TabModel::type() const {
+	return _type;
 }
 
 QString TabModel::componentUrl() const
