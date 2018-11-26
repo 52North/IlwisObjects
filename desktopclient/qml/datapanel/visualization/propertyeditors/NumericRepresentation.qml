@@ -9,6 +9,54 @@ Rectangle {
     y : 4
      property var editor
 
+
+
+    Controls.TextEditLabelPair {
+        function check(id){
+            return editor.canUse(id)
+        }
+		labelWidth : 100
+		labelText : qsTr("Representation")
+        id : rprName
+        width : parent.width - 20
+        height : Global.rowHeight
+        content : editor.representationName
+        x : 10
+        checkFunction: check
+
+        onContentChanged: {
+            editor.setRepresentation(content)
+            rprCanvas.requestPaint()
+        }
+    }
+
+    Canvas{
+        id : rprCanvas
+        anchors.top : rprName.bottom
+        width : editorColumn1.width - 20
+        property bool isDirty : true
+        renderTarget:  Canvas.FramebufferObject
+        x : 10
+        height : 60
+        Rectangle{
+            x : 0
+            y : 19
+            width: parent.width - 14
+            height : 22
+            color : "transparent"
+            border.color: "black"
+        }
+
+        onPaint : {
+            var ctx = getContext("2d")
+			clear(ctx)
+			//antialiasing = false
+            drawArea(ctx, width - 15, height)
+            drawBars(ctx, width - 15, height)
+
+       }
+    }
+
     function drawArea(ctx, w, h ){
         ctx.save();
         for(var j =0; j < w; j++){
@@ -67,51 +115,5 @@ Rectangle {
         ctx.reset();
         ctx.clearRect(0, 0, width, height);
         ctx.stroke();
-    }
-
-    Controls.TextEditLabelPair {
-        function check(id){
-            return editor.canUse(id)
-        }
-		labelWidth : 100
-		labelText : qsTr("Representation")
-        id : rprName
-        width : parent.width - 20
-        height : Global.rowHeight
-        content : editor.representationName
-        x : 10
-        checkFunction: check
-
-        onContentChanged: {
-            editor.setRepresentation(content)
-            rprCanvas.requestPaint()
-        }
-    }
-
-    Canvas{
-        id : rprCanvas
-        anchors.top : rprName.bottom
-        width : editorColumn1.width - 20
-        property bool isDirty : true
-        renderTarget:  Canvas.FramebufferObject
-        x : 10
-        height : 60
-        Rectangle{
-            x : 0
-            y : 19
-            width: parent.width - 14
-            height : 22
-            color : "transparent"
-            border.color: "black"
-        }
-
-        onPaint : {
-            var ctx = getContext("2d")
-			clear(ctx)
-			//antialiasing = false
-            drawArea(ctx, width - 15, height)
-            drawBars(ctx, width - 15, height)
-
-       }
     }
 }
