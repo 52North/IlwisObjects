@@ -75,11 +75,13 @@ void NumericRepresentationSetter::fillElements() {
 
 		NumericRange roundedRange = MathHelper::roundRange(numrange.min(), numrange.max());
 		double tickValue = roundedRange.min();
+		double dist = 0;
 		double step = roundedRange.resolution();
 		_rprElements = QList<RepresentationElementModel *>();
 		while (tickValue <= numrange.max()) {
-			_rprElements.push_back(new RepresentationElementModel(QString::number(tickValue), tickValue / numrange.distance(), this));
+			_rprElements.push_back(new RepresentationElementModel(QString::number(tickValue), dist / numrange.distance(), this));
 			tickValue += step;
+			dist += step;
 		}
 		if ((tickValue - roundedRange.resolution()) != numrange.max()) {
 			if (tickValue > numrange.max())
@@ -142,7 +144,9 @@ void NumericRepresentationSetter::setRepresentation(const QString &name)
 	//vpmodel()->layer()->vproperty("visualattribute|representation|" + actAttribute->attributename(),var);
 	vpmodel()->layer()->vproperty(QString("visualattribute|%1|representation").arg(actAttribute->attributename()),rpr->resource().url().toString());
 	fillElements();
-	vpmodel()->layer()->add2ChangedProperties("buffers", true);
+	//vpmodel()->layer()->add2ChangedProperties("buffers", true);
+	vpmodel()->layer()->prepare(LayerModel::ptRENDER);
+	vpmodel()->layer()->redraw();
 }
 
 QQmlListProperty<RepresentationElementModel> NumericRepresentationSetter::representationElements()

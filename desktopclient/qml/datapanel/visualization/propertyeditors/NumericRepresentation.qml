@@ -82,7 +82,7 @@ Rectangle {
         ctx.stroke()
     }
 
-    function drawBars(ctx, w, h ){
+    function drawBars(ctx, w, h ){ 
         ctx.save()
         var color = Qt.rgba(0,0,0,1)
         ctx.strokeStyle = color
@@ -93,13 +93,20 @@ Rectangle {
         var step = Math.floor(w * item)
         var x = 0
 		var below = true
+		var nstart = Number(items[0].label)
+		var nlast = Number(items[items.length - 1].label)
+		var nprev =  Number(items[items.length - 2].label)
+		var f =  w / (nlast - nstart)
+		console.debug("zzzzz2", nstart, nlast, f, w)
 		ctx.beginPath()
         for(var j =0; j < items.length - 1; ++j){
-			var  p = w * items[j].fraction
+			var current = Number(items[j].label)
+			var  p = (current - nstart) * f
             ctx.moveTo(p,20)
             ctx.lineTo(p,45)
             ctx.stroke()
             setText(ctx,items[j].label, p, below)
+			console.debug("zzzzzz",j, p, items[j].label,items[j].fraction)
 			below = false
          }
         ctx.beginPath()
@@ -107,6 +114,7 @@ Rectangle {
         ctx.lineTo(w,45)
         ctx.stroke()
         setText(ctx, items[items.length - 1].label,w, true)
+		console.debug("zzzzzz1",items.length - 1, w, items[items.length - 1].label)
 
         ctx.restore()
     }
