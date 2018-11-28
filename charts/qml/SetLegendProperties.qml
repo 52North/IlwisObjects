@@ -16,14 +16,6 @@ Rectangle {
     height: parent ? parent.height - 10 : 0
     property var operation
 
-    function applyChanges() {
-        if (chartlegendalignment.comboText == "")
-            return
-
-        var parameters = {show:checkshowlegend.checked, align:chartlegendalignment.comboText}
-        operation.execute(parameters)
-    }
-
     Row {
         id : checkvisible
         x : 10
@@ -61,10 +53,19 @@ Rectangle {
             chartlegendalignment.initialComboText = chart.legendAlignment
         }
 
-        onComboTextChanged : {
+        onIndexChanged : {
             applyChanges()
         }
-
     }
+
+    function applyChanges() {
+        if (chartlegendalignment.comboText == "")
+            return
+
+        var parameters = {show:checkshowlegend.checked, align:chartlegendalignment.comboText}
+        operation.execute(parameters)
+    }
+
+
 }
 

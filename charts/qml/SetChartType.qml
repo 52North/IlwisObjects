@@ -29,10 +29,10 @@ Rectangle {
         }
 
         onIndexChanged : {
-			var newitem = itemModel[currentIndex]
-            var paramaters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : newitem } //charttypeselector.comboText}
-            operation.execute(paramaters)
+            var parameters = {seriesname:dataseriesOperationList.currentSeries.name, charttype : charttypeselector.comboText}
+            operation.execute(parameters)
         }
+
     }
 
 }

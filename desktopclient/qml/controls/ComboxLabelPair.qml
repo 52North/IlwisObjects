@@ -144,7 +144,7 @@ Item {
 			}
 		}
 
-	    onCurrentIndexChanged: {
+        onActivated : {
             indexChanged()
         }
 
