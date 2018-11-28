@@ -411,7 +411,6 @@ Item {
 				var changedProperties = layer.changedProperties
                 for(var j=0; j < changedProperties.length; ++j){
 				    var property = changedProperties[j]
-					console.debug("xxxxxx", property, layer.name)
 				    changeProperty(property, layer)
 				    layer.removeFromChangedProperties(property) // note: the loop as it is here will not handle a list of properties in one go
 				}
