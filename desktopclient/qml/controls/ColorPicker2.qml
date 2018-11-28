@@ -279,6 +279,7 @@ Rectangle {
                             hoverEnabled: true
                             onClicked: {
                                 colorPicker.lastSelectedColor = disk.getColor(mouseX, mouseY,true)
+                                comboBox.state = ""
                             }
                             onPositionChanged: {
                                 var clr = disk.getColor(mouseX, mouseY,false)
