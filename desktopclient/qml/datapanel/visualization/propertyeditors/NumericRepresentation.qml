@@ -1,5 +1,7 @@
 import QtQuick 2.1
 import RepresentationElement 1.0
+import VisualAttribute 1.0
+import LayerModel 1.0
 import "../../../Global.js" as Global
 import "../../../controls" as Controls
 
@@ -8,13 +10,12 @@ Rectangle {
     height : 70
     y : 4
      property var editor
-
-
-
+	
     Controls.TextEditLabelPair {
         function check(id){
             return editor.canUse(id)
         }
+
 		labelWidth : 100
 		labelText : qsTr("Representation")
         id : rprName
@@ -25,8 +26,8 @@ Rectangle {
         checkFunction: check
 
         onContentChanged: {
-            editor.setRepresentation(content)
-            rprCanvas.requestPaint()
+			editor.visualAttribute.layer.vproperty("visualattribute|" + editor.visualAttribute.attributename + "|representation", content)
+			rprCanvas.requestPaint()
         }
     }
 
@@ -83,6 +84,7 @@ Rectangle {
     }
 
     function drawBars(ctx, w, h ){ 
+	    console.debug("draw c")
         ctx.save()
         var color = Qt.rgba(0,0,0,1)
         ctx.strokeStyle = color
@@ -97,7 +99,6 @@ Rectangle {
 		var nlast = Number(items[items.length - 1].label)
 		var nprev =  Number(items[items.length - 2].label)
 		var f =  w / (nlast - nstart)
-		console.debug("zzzzz2", nstart, nlast, f, w)
 		ctx.beginPath()
         for(var j =0; j < items.length - 1; ++j){
 			var current = Number(items[j].label)
@@ -106,7 +107,6 @@ Rectangle {
             ctx.lineTo(p,45)
             ctx.stroke()
             setText(ctx,items[j].label, p, below)
-			console.debug("zzzzzz",j, p, items[j].label,items[j].fraction)
 			below = false
          }
         ctx.beginPath()
@@ -114,7 +114,6 @@ Rectangle {
         ctx.lineTo(w,45)
         ctx.stroke()
         setText(ctx, items[items.length - 1].label,w, true)
-		console.debug("zzzzzz1",items.length - 1, w, items[items.length - 1].label)
 
         ctx.restore()
     }
