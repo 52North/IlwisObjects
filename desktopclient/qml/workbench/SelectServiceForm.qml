@@ -15,6 +15,7 @@ Rectangle {
     property var currentAppForm : null
    // property string exprparameters
     property var operationid
+	height : 700
 
     onFormQMLChanged: {
         if ( currentAppForm != null){
@@ -95,7 +96,7 @@ Rectangle {
         anchors.bottom: serviceConnectionArea.bottom
         anchors.bottomMargin: 12
         anchors.right: parent.right
-        anchors.rightMargin: 35
+        anchors.rightMargin: 65
         width : 100
         height : 15
         Row {

@@ -123,7 +123,7 @@ Item {
             }
         }
 
-        style: Base.TabStyle1{}
+        //style: Base.TabStyle1{}
 
     }
 
@@ -136,7 +136,7 @@ Item {
 
             PropertyChanges {
                 target: createCatalogForm
-                height : 370
+                height : tabs.currentIndex == 0 ? 370 : 570
                 opacity : 1
 
             }
