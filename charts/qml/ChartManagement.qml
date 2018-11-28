@@ -13,24 +13,11 @@ Rectangle {
     width: parent.width
     Layout.minimumHeight: 24
 
-    TabView{
+    TabView {
         anchors.fill: parent
         id : charttabs
         tabPosition: Qt.BottomEdge
 
-        function tabClicked(index){
-            if ( currentIndex === index){
-                if ( chartManagement.height <= 60){
-                    chartspanel.state = "visible"
-                }
-                else{
-                    chartspanel.state = ""
-                    chartspanel.state = "invisible"
-                }
-            }
-
-            currentIndex = index
-        }
         Tab {
             title : qsTr("Actions for Charts")
             SplitView {
@@ -68,7 +55,22 @@ Rectangle {
 			columnmetadataview.active = true
 		}
  
-       style: DataPanel.ButtonBarTabViewStyle{}
+        style: DataPanel.ButtonBarTabViewStyle{}
+
+        function tabClicked(index){
+            if ( currentIndex === index){
+                if ( chartManagement.height <= 60){
+                    chartspanel.state = "visible"
+                }
+                else{
+                    chartspanel.state = ""
+                    chartspanel.state = "invisible"
+                }
+            }
+
+            currentIndex = index
+        }
+
     }
 }
 
