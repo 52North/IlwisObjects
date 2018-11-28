@@ -351,7 +351,6 @@ bool ChartModel::legendVisible() const
 void ChartModel::setLegendVisible(bool show) {
     _legendVisible = show;
     emit legendChanged();
-    emit chartModelChanged();
 }
 
 QString ChartModel::legendAlignment() const {
@@ -361,7 +360,6 @@ QString ChartModel::legendAlignment() const {
 void ChartModel::setLegendAlignment(const QString& align) {
     _alignment = align;
     emit legendChanged();
-    emit chartModelChanged();
 }
 
 bool ChartModel::xAxisVisble()
