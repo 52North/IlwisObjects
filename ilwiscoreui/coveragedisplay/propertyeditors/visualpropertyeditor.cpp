@@ -177,6 +177,13 @@ void VisualPropertyEditor::displayName(const QString& newname){
     _displayName = newname;
 }
 
+bool VisualPropertyEditor::updateEditor() const {
+	return true;
+}
+void VisualPropertyEditor::updateEditor(bool yesno) {
+	emit updateEditorChanged();
+}
+
 
 
 

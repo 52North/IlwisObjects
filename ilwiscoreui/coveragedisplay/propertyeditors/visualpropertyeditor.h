@@ -46,6 +46,8 @@ class ILWISCOREUISHARED_EXPORT VisualPropertyEditor : public QObject, public Ilw
     Q_PROPERTY(QString associatedUrl READ associatedUrl CONSTANT)
     Q_PROPERTY(bool postDrawerActive READ postDrawerActive WRITE postDrawerActive NOTIFY postDrawerActiveChanged)
     Q_PROPERTY(QString coverageId READ coverageId CONSTANT)
+    Q_PROPERTY(Ilwis::Ui::VisualAttribute* visualAttribute READ vpmodel CONSTANT)
+	Q_PROPERTY(bool updateEditor READ updateEditor WRITE updateEditor NOTIFY updateEditorChanged)
 
 public:
     VisualPropertyEditor(QObject *parent = 0);
@@ -71,12 +73,15 @@ public:
 protected:
     VisualAttribute *vpmodel() const;
     VisualAttribute *vpmodel() ;
+	bool updateEditor() const;
+	void updateEditor(bool yesno);
 
     QUrl _qmlUrl;
 
 signals:
     void rprNameChanged();
     void postDrawerActiveChanged();
+	void updateEditorChanged();
 
 private:
 
