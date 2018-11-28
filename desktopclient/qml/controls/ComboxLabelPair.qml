@@ -25,17 +25,6 @@ Item {
 
     signal indexChanged()
 
-    function select(name){
-        var index = -1
-        for(var i=0; i < control.model.length; ++i){
-            if ( Global.compareStrings(control.model[i], name, true, true))    {
-                index = i
-                break
-            }
-        }
-        control.currentIndex = index
-    }
-    
     onInitialComboTextChanged : {
         select(initialComboText)
     }
@@ -158,6 +147,18 @@ Item {
 	    onCurrentIndexChanged: {
             indexChanged()
         }
+
+
+    }
+    function select(name){
+        var index = -1
+        for(var i=0; i < control.model.length; ++i){
+            if ( Global.compareStrings(control.model[i], name, true, true))    {
+                index = i
+                break
+            }
+        }
+        control.currentIndex = index
     }
 }
 
