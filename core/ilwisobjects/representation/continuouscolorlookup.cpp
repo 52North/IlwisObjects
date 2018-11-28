@@ -74,13 +74,26 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
     }
     value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1
     for(int i = 0; i < _groups.size(); ++i){
-        if ( value <= _groups[i].max()){
-            double delta = _groups[i].distance();
+		if (_groups[i]._reversed) {
+			if (value < _groups[i]._first && value >= _groups[i]._last) {
+				double delta = std::abs(_groups[i]._last - _groups[i]._first);
+				double position = 0;
+				if (_step == 0) {
+					position = (value - _groups[i]._last) / delta;
+				}
+				else
+					position = ((quint32)(value - _groups[i]._last) / _step) / ((quint32)(delta / _step));
+
+				position = 1.0 - position;
+				return ContinuousColorRange::valueAt(position, &_colorranges[i]);
+			}
+		} else if (value <= _groups[i]._last) {
+            double delta = std::abs(_groups[i]._last - _groups[i]._first);
             double position = 0;
             if ( _step == 0){
-                position = (value - _groups[i].min())/ delta;
+                position = (value - _groups[i]._first)/ delta;
             }else
-                position = ((quint32)(value - _groups[i].min())/ _step)/( (quint32)(delta / _step));
+                position = ((quint32)(value - _groups[i]._first)/ _step)/( (quint32)(delta / _step));
 
             return ContinuousColorRange::valueAt(position,&_colorranges[i]);
         }
@@ -88,20 +101,15 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
     return QColor();
 }
 
-void ContinuousColorLookup::addGroup(const NumericRange &range, const ContinuousColorRange &colorrange)
+void ContinuousColorLookup::addGroup(const ValueRange &range, const ContinuousColorRange &colorrange)
 {
-    if ( !(range.min() >= 0 && range.max() <= 1.0)){
-        ERROR2(ERR_INVALID_INIT_FOR_2, TR("Numerical range"), "Representation");
-        return;
-    }
-    if ( _colorranges.size() > 0){
-        if ( range.min() < _groups.back().min()){
-            kernel()->issues()->log(TR("Numerical ranges for representation must be added in order"));
-            return ;
-        }
-    }
-    _colorranges.push_back(colorrange);
-    _groups.push_back(range);
+	if (_groups.size() == 0) {
+		_groups.push_back(range);
+		_colorranges.push_back(colorrange);
+	}else if (!_groups.back().overlaps(range)) {
+		_colorranges.push_back(colorrange);
+		_groups.push_back(range);
+	}
 }
 
 void ContinuousColorLookup::setColor(double value, const QColor &clr)
@@ -136,11 +144,14 @@ void ContinuousColorLookup::fromDefinition(const QString &definition)
             return;
         }
         bool ok1, ok2;
-        NumericRange numrange(limits[0].toDouble(&ok1), limits[1].toDouble(&ok2));
+		ValueRange vr;
+		vr._first = limits[0].toDouble(&ok1);
+		vr._last = limits[1].toDouble(&ok2);
         if ( !(ok1 && ok2)){
             ERROR2(ERR_ILLEGAL_VALUE_2,TR("Representation definition"), definition);
             return;
         }
+		vr._reversed = vr._last < vr._first;
         QColor color1 = string2color(groupdef[1]);
         if ( !(color1.isValid())){
             ERROR2(ERR_ILLEGAL_VALUE_2,TR("Representation definition"), definition);
@@ -154,7 +165,7 @@ void ContinuousColorLookup::fromDefinition(const QString &definition)
             return;
         }
         ContinuousColorRange colorrange(color1, color2);
-        addGroup(numrange,colorrange);
+        addGroup(vr,colorrange);
 
     }
 

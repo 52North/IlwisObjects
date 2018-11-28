@@ -20,23 +20,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "colorlookup.h"
 
 namespace Ilwis {
-
 class Domain;
 typedef IlwisData<Domain> IDomain;
 
 class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 {
+	struct ValueRange {
+		double _first = rUNDEF;
+		double _last = rUNDEF;
+		double _reversed = false;
+		bool overlaps(const ValueRange& rng) {
+			return _last < rng._first || (_first > rng._first && _last < rng._last) || (_first < rng._first && _last > rng._last);
+		}
+	};
 public:
         ContinuousColorLookup();
         ContinuousColorLookup(const QString& definition);
         ContinuousColorLookup(const IDomain&, const QString &rprCode="");
         QColor value2color(double value, const Ilwis::NumericRange &actualRange = NumericRange(), const Ilwis::NumericRange &stretchRange = NumericRange()) const;
-        void addGroup(const NumericRange& range, const ContinuousColorRange& colorrange);
+        void addGroup(const ValueRange& range, const ContinuousColorRange& colorrange);
         void setColor(double value, const QColor& clr) ;
         ColorLookUp *clone() const;
 
 private:
-        std::vector<NumericRange> _groups;
+
+        std::vector<ValueRange> _groups;
         std::vector<ContinuousColorRange> _colorranges;
         NumericRange _numericRange;
         double _step = 0;
