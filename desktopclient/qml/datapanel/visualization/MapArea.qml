@@ -1,8 +1,10 @@
 import QtQuick 2.1
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
+import VisualAttribute 1.0
 import "../../controls" as Controls
 import "../../Global.js" as Global
 
@@ -11,19 +13,20 @@ DropArea {
     property alias mouseActions : mouseActions
     property var localmanager
 
-
     function mapAreaSize() {
         return {"width" : renderer.width , "height" : renderer.height}
     }
 
     onDropped: {
         var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
-        layerview.activeSubPanel  = layerContainer.panelSubIndex
-        var filter = "itemid=" + resource.id
-        addDataSource(filter, resource.name, resource.typeName)       
+		if ( resource.typeName == "representation"){
+			changeRepresentation(resource)
+		}else {
+			layerview.activeSubPanel  = layerContainer.panelSubIndex
+			var filter = "itemid=" + resource.id
+			addDataSource(filter, resource.name, resource.typeName)   
+		}
     }
-
-
 
     Rectangle {
         id : backArea
@@ -31,6 +34,82 @@ DropArea {
         color : (layerContainer.panelSubIndex == layerview.activeSubPanel && layerview.layermanagers.length > 1 )? "#edf7f7" : "white"
 		border.width : 2
 		border.color :  (layerContainer.panelSubIndex == layerview.activeSubPanel && layerview.layermanagers.length > 1 )? Global.selectedColor : "white"
+
+		Rectangle {
+			id : chooseList
+			anchors.centerIn : parent
+			visible : false
+			enabled : visible
+			width: 150
+			height : 150
+			color : "white"
+			border.width : 1
+			border.color : Global.edgecolor
+			radius : 4
+			property var dataList
+			property var formtitle 
+			property var choices
+			property var resource
+			property var func
+			z : 100
+			Column {
+				width : 145
+				height : 143
+				x : 3
+				y : 5
+				spacing : 2
+				Label {
+					width : parent.width - 6
+					height : 25
+					text : "  " + chooseList.formtitle
+					font.bold : true
+					verticalAlignment : Text.AlignVCenter
+					background : Rectangle {
+						color : Global.palegreen
+						radius : 3
+					}
+				}
+				ListView {
+				    id : choiceList
+					height : parent.height - 30
+					width : parent.width - 6
+					model : chooseList.choices
+					highlight : Rectangle{width : parent.width;height : 18;color : Global.selectedColor}
+					delegate : Text {
+						x : 2
+						width : parent.width
+						height : 20
+						text : modelData
+						verticalAlignment : Text.AlignVCenter
+						MouseArea {
+							anchors.fill : parent
+							onClicked : {
+								 choiceList.currentIndex = index
+								 chooseList.state = "invisible"
+								 chooseList.func(chooseList.dataList[index], chooseList.resource)
+							}
+						}
+					}
+				}
+			}
+			states: [
+            State { name: "visible"
+                    PropertyChanges { target: chooseList; opacity : 1 }
+                    PropertyChanges { target: chooseList; visible : true }
+            },
+            State {
+                name : "invisble"
+                    PropertyChanges { target: chooseList; opacity : 0 }
+                    PropertyChanges { target: chooseList; visible : false }
+            }
+
+        ]
+        transitions: [
+            Transition {
+                NumberAnimation { properties: "opacity"; duration : 5000 ; easing.type: Easing.InOutCubic }
+            }
+        ]
+		}
 
         Rectangle {
             id : mapBorder
@@ -279,6 +358,35 @@ DropArea {
         }
         localmanager.refresh()
     }
+
+	function changeRpr(layer, resource){
+		layer.vproperty("visualattribute|" + layer.activeAttribute().attributename + "|representation", resource.url)
+	}
+	function changeRepresentation(resource){
+		var coverages = localmanager.allCoverages
+		var possibleLayers = []
+		for(var  i=0; i < coverages.length; ++i){
+			var coverage = coverages[i]
+			if ( coverage.canUse(resource.id)){
+				possibleLayers.push(coverage)
+			}
+
+		}
+		if (possibleLayers.length === 1) {
+			changeRpr(possibleLayers[0], resource)
+		}else {
+		    var names = []
+			for(var j=0; j < coverages.length; ++j)
+				names.push(coverages[j].name)
+
+			chooseList.state = "visible"
+			chooseList.choices = names
+			chooseList.dataList = coverages
+			chooseList.resource = resource
+			chooseList.func = changeRpr
+			chooseList.formtitle = "Select layer"
+		}
+	}
 
 }
 
