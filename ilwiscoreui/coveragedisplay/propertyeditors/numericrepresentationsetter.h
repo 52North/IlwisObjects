@@ -42,10 +42,9 @@ public:
 
     Q_INVOKABLE QColor color(const QString &property, double frac);
     Q_INVOKABLE bool canUse(const QString& id) const;
-    Q_INVOKABLE void setRepresentation(const QString& name)    ;
+	void representationChanged(const IRepresentation &rpr);
     QQmlListProperty< Ilwis::Ui::RepresentationElementModel > representationElements();
 signals:
-    void rprNameChanged();
     void itemsChanged();
 
 private:

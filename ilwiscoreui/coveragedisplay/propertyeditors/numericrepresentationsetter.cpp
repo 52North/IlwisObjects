@@ -130,21 +130,12 @@ bool NumericRepresentationSetter::canUse(const QString &id) const
 
 }
 
-void NumericRepresentationSetter::setRepresentation(const QString &name)
+void NumericRepresentationSetter::representationChanged(const IRepresentation &rpr)
 {
-    Resource resource = mastercatalog()->name2Resource(name, itREPRESENTATION)    ;
-    if ( !resource.isValid())
-        return;
-    IRepresentation rpr(resource);
 	VisualAttribute *actAttribute = vpmodel()->layer()->activeAttribute();
-    if ( !actAttribute)
-        return ;
-    QVariant var;
-    var.setValue<IRepresentation>(rpr);
-	//vpmodel()->layer()->vproperty("visualattribute|representation|" + actAttribute->attributename(),var);
-	vpmodel()->layer()->vproperty(QString("visualattribute|%1|representation").arg(actAttribute->attributename()),rpr->resource().url().toString());
+	if (!actAttribute)
+		return;
 	fillElements();
-	//vpmodel()->layer()->add2ChangedProperties("buffers", true);
 	vpmodel()->layer()->prepare(LayerModel::ptRENDER);
 	vpmodel()->layer()->redraw();
 }
