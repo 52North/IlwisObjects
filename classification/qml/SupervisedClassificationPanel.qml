@@ -17,9 +17,6 @@ SplitView {
     width : parent.width
     height : datapane.height
 
-	onHeightChanged : {
-		console.debug("xxxxxxx", "scMap", width, "maps", maps.width, "datapane", datapane.width, "modellersplit", modellersplit.width)
-	}
     orientation: Qt.Horizontal
 
 	Item {
