@@ -630,3 +630,7 @@ bool LayerModel::renderReady() {
 void LayerModel::renderReady(bool yesno) {
     // Dummy implementation, because this class can't be abstract
 }
+
+bool LayerModel::canUse(quint64 id)  {
+	return false;
+}

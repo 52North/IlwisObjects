@@ -98,13 +98,14 @@ public:
 	Q_INVOKABLE bool isPrepared(quint32 type) const;
     Q_INVOKABLE virtual void setActiveAttribute(int idx);
     Q_INVOKABLE quint32 modelId() const;
-
+	Q_INVOKABLE virtual bool canUse(quint64 id) ;
+	Q_INVOKABLE virtual Ilwis::Ui::VisualAttribute *activeAttribute();
+	Q_INVOKABLE virtual void redraw() const;
 
 	LayerModel();
     LayerModel(LayerManager *manager, QStandardItem *parent, const QString &name, const QString &desc, const IOOptions& options);
     ~LayerModel();
-
-    virtual void redraw() const;
+		
     int activeVProperty() const;
     void activeVProperty(int index);
     QString visualVPropertyByIndex(int index) const;
@@ -143,7 +144,7 @@ public:
     const LayerManager *layerManager() const;
     LayerManager *layerManager();
     virtual void activeAttributeName(const QString& pName);
-    virtual VisualAttribute *activeAttribute();
+    
     virtual VisualAttribute *visualAttribute(const QString &attrName) const;
     void order(qint32 n);
     qint32 order() const;
