@@ -714,3 +714,13 @@ void RasterLayerModel::renderReady(bool yesno)
 {
     _renderReady = yesno;
 }
+
+bool RasterLayerModel::canUse(quint64 id) {
+	if (CoverageLayerModel::canUse(id))
+		return true;
+	return false;
+}
+
+VisualAttribute *RasterLayerModel::activeAttribute() {
+	return CoverageLayerModel::activeAttribute();
+}

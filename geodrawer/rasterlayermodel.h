@@ -80,6 +80,8 @@ public:
     Q_INVOKABLE virtual QVector<int> indices(qint32 bufferIndex, const QString& ) const;
     Q_INVOKABLE virtual QVariantMap texture(qint32 bufferIndex);
     Q_INVOKABLE void setQuadId(qint32 bufferIndex, qint32 id);
+	Q_INVOKABLE bool canUse(quint64 id) override;
+	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
 
 protected:
     void DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY);
