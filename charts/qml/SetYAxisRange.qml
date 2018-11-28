@@ -88,7 +88,7 @@ Rectangle {
 
     Button {
         width : 80
-        height : 20
+        height : 25
 
         anchors.top : checkfixed.bottom
         anchors.right: yaxisrangelow.right
