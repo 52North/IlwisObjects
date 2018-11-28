@@ -52,10 +52,6 @@ Item {
             text : qsTr("Global properties of the chart")
         }
 
-        Component.onCompleted : {
-            setChartIndex()
-        }
-
         delegate : Component {
             Row {
                 width : 130
@@ -98,14 +94,17 @@ Item {
         height :    parent.height - title.height
         anchors.top : chartlabel.bottom
         model : chartspanel.chart ? chartspanel.chart.series : null
-/*        onModelChanged: {
-            setOperIndex(0)
-        }*/
-
         anchors.topMargin: 4
         x : 3
         clip : true
         highlight: attributeHighlight
+
+        onModelChanged: {
+            if (model) {
+                setChartIndex()
+            }
+        }
+
         function iconsource(name) {
             if ( name.indexOf("/") !== -1)
                 return name
@@ -152,21 +151,20 @@ Item {
     }
 
     function setOperIndex(newindex) {
+        chartlabel.currentIndex = -1
+        dataserieslist.currentIndex = newindex
         if (chart) {
-            chartlabel.currentIndex = -1
-            dataserieslist.currentIndex = newindex
             dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
-
             dataseriesOperationList.setOperation(0)
         }
     }
 
     function setChartIndex() {
         if (chart) {
-            chartlabel.currentIndex = 0
-            dataserieslist.currentIndex = -1
             dataseriesOperationList.currentSeries = chart
         }
+        dataserieslist.currentIndex = -1
+        chartlabel.currentIndex = 0
     }
 
 }
