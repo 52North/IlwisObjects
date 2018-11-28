@@ -105,7 +105,6 @@ Rectangle {
 
 		onClicked : {
 			var ids = mastercatalog.selectedIds();
-			console.debug("zzzzzzzzzzz", ids)
 			if ( ids != "") {
 				var side = "other"
 				if (b1.checked)
