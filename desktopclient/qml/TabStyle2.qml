@@ -164,7 +164,6 @@ TabViewStyle {
     
 	function panelType() {
 		var sidePanel = datapane.activeSide
-		console.debug("zzzzzzz", datapane.activeSide,sidePanel.tabview ,tabview.getTab(tabview.currentIndex))
 		if ( sidePanel){
 			var tabview = sidePanel.tabview
 			if ( tabview && tabview.getTab(tabview.currentIndex)){
