@@ -81,6 +81,7 @@ public:
     QVariantList linkProperties() const;
     virtual bool renderReady();
     virtual void renderReady(bool yesno);
+	bool canUse(quint64 id) override;
 
     static LayerModel *create(LayerManager *, QStandardItem *,const QString&, const QString&, const IOOptions&);
 

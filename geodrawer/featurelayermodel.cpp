@@ -292,3 +292,9 @@ void FeatureLayerModel::renderReady(bool yesno) {
         lyrchild->renderReady(yesno);
     }
 }
+
+bool FeatureLayerModel::canUse(quint64 id)  {
+	if (CoverageLayerModel::canUse(id))
+		return true;
+	return false;
+}
