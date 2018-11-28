@@ -328,4 +328,19 @@ void CoverageLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
     qDebug() << "gets message";
 }
 
+bool CoverageLayerModel::canUse(quint64 id) {
+	if (LayerModel::canUse(id))
+		return true;
+	IIlwisObject obj;
+	if (!obj.prepare(id))
+		return false;
+	if (obj->ilwisType() == itREPRESENTATION) {
+		IRepresentation rpr = obj.as<Representation>();
+		if (rpr->domain()->isCompatibleWith(activeAttribute()->datadefinition().domain().ptr())) {
+			return true;
+		}
+	}
+	return false;
+}
+
 

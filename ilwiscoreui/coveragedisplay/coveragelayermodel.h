@@ -48,6 +48,8 @@ public:
     Q_INVOKABLE QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> vproperties(const QString& attrName);
 	Q_INVOKABLE void setActiveAttribute(int idx);
     Q_INVOKABLE virtual void linkMessage(const QVariantMap& parms);
+	Q_INVOKABLE bool canUse(quint64 id) override;
+	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
 
 
 	CoverageLayerModel();
@@ -56,7 +58,7 @@ public:
 
     QString activeAttributeName() const;
 	void activeAttributeName(const QString& pName);
-	VisualAttribute *activeAttribute();
+
 
     virtual QVariant vproperty(const QString& pName) const;
     virtual void vproperty(const QString& pName, const QVariant& value);
