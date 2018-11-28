@@ -51,8 +51,10 @@ class ILWISCOREUISHARED_EXPORT VisualAttribute : public AttributeModel
 public:
 	Q_PROPERTY(QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> propertyEditors READ visualProperties NOTIFY propertyEditorChanged)
     Q_PROPERTY(bool isAbstractAttribute READ isAbstractAttribute CONSTANT)
+	Q_PROPERTY(Ilwis::Ui::LayerModel* layer READ layer CONSTANT)
 
 	Q_INVOKABLE Ilwis::Ui::VisualPropertyEditor *visualProperty(const QString& name) const;
+	Ilwis::Ui::LayerModel *layer() const;
 
     VisualAttribute();
     VisualAttribute(LayerModel *layer, const DataDefinition& def, const QString& attrName, const IRepresentation &rpr = IRepresentation());
@@ -74,7 +76,7 @@ public:
 
     std::vector<QColor> colors(int size=256) const;
     std::vector<QColor> stretchedColors(int size, NumericRange & displayStretchRange) const;
-    LayerModel *layer() const;
+    
 	bool isAbstractAttribute() const;
 	virtual std::pair<double, double> calcStretchRange(const std::vector<NumericStatistics::HistogramBin>& hist, double perc) const;
 

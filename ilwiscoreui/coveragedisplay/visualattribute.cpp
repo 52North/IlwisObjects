@@ -76,6 +76,9 @@ IRepresentation VisualAttribute::representation() const
 
 void VisualAttribute::representation(const IRepresentation &rpr)
 {
+	if (_representation.isValid() && rpr.isValid() && rpr->id() == _representation->id())
+		return;
+
     if ( !datadefinition().isValid())
         return;
     if ( !datadefinition().domain().isValid() || !rpr.isValid())
