@@ -16,24 +16,6 @@ Item {
     height: parent.height -10
     property alias currentIndex : dataserieslist.currentIndex
 
-    function setOperIndex(newindex) {
-        if (chart) {
-            chartlabel.currentIndex = -1
-            dataserieslist.currentIndex = newindex
-            dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
-
-            dataseriesOperationList.setOperation(0)
-        }
-    }
-
-    function setChartIndex() {
-        if (chart) {
-            chartlabel.currentIndex = 0
-            dataserieslist.currentIndex = -1
-            dataseriesOperationList.currentSeries = chart
-        }
-    }
-
     Rectangle {
         id : title
         width : parent.width - 2
@@ -70,6 +52,10 @@ Item {
             text : qsTr("Global properties of the chart")
         }
 
+        Component.onCompleted : {
+            setChartIndex()
+        }
+
         delegate : Component {
             Row {
                 width : 130
@@ -77,7 +63,7 @@ Item {
 /*                spacing : 3
                 Image{
                     id : domicon
-                    source : dataserieslist.iconsource(icon)
+                    source : chartlabel.iconsource(icon)
                     width : 16
                     height : 16
                     anchors.verticalCenter: parent.verticalCenter
@@ -99,9 +85,9 @@ Item {
             id: charthighlight
 
             Rectangle {
-                width: dataserieslist.width - 6; height: 14
+                width: chartlabel.width - 6; height: 14
                 color: Global.selectedColor; radius: 2
-                y: (dataserieslist && dataserieslist.currentItem) ? dataserieslist.currentItem.y : 0
+                y: (chartlabel && chartlabel.currentItem) ? chartlabel.currentItem.y : 0
             }
         }
     }
@@ -112,9 +98,9 @@ Item {
         height :    parent.height - title.height
         anchors.top : chartlabel.bottom
         model : chartspanel.chart ? chartspanel.chart.series : null
-        onModelChanged: {
+/*        onModelChanged: {
             setOperIndex(0)
-        }
+        }*/
 
         anchors.topMargin: 4
         x : 3
@@ -164,5 +150,24 @@ Item {
             }
         }
     }
+
+    function setOperIndex(newindex) {
+        if (chart) {
+            chartlabel.currentIndex = -1
+            dataserieslist.currentIndex = newindex
+            dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
+
+            dataseriesOperationList.setOperation(0)
+        }
+    }
+
+    function setChartIndex() {
+        if (chart) {
+            chartlabel.currentIndex = 0
+            dataserieslist.currentIndex = -1
+            dataseriesOperationList.currentSeries = chart
+        }
+    }
+
 }
 
