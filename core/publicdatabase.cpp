@@ -109,13 +109,13 @@ void PublicDatabase::prepare() {
     stmt = "create table numericdomain (  code TEXT, minv REAL, maxv REAL, resolution REAL,resolution_strict INTEGER, range_strict INTEGER,unit TEXT, parent TEXT,description TEXT)";
     doQuery(stmt, sql);
 
-    stmt = "create table representation (  code TEXT, relateddomain TEXT, representationtype TEXT, definition TEXT, description TEXT)";
+    stmt = "create table representation (  code TEXT, relateddomain TEXT, representationtype TEXT, mode TEXT, definition TEXT, description TEXT)";
     doQuery(stmt, sql);
 
     stmt = "create table itemdomain (  code TEXT, name TEXT,theme TEXT, domaintype TEXT, description TEXT)";
     doQuery(stmt, sql);
 
-    stmt = "create table domainitems (  code TEXT, itemcode TEXT, itemname TEXT, itemdescription TEXT)";
+    stmt = "create table domainitems (  code TEXT, itemcode TEXT, itemname TEXT, itemdescription TEXT)"; 
     doQuery(stmt, sql);
 
 
@@ -445,8 +445,8 @@ bool PublicDatabase::fillTeritoryRecord(const QStringList& parts, QSqlQuery &sql
 }
 
 bool PublicDatabase::fillRepresentationRecord(const QStringList& parts, QSqlQuery &sqlPublic) {
-    if ( parts.size() == 5) {
-        QString parms = QString("'%1','%2','%3','%4','%5'").arg(parts[0],parts[1],parts[2], parts[3],parts[4]);
+    if ( parts.size() == 6) {
+        QString parms = QString("'%1','%2','%3','%4','%5','%6'").arg(parts[0],parts[1],parts[2], parts[3],parts[4], parts[5]);
         QString stmt = QString("INSERT INTO representation VALUES(%1)").arg(parms);
         if(!doQuery(stmt, sqlPublic))
             return false;
