@@ -35,7 +35,7 @@ class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 	};
 public:
         ContinuousColorLookup();
-        ContinuousColorLookup(const QString& definition);
+        ContinuousColorLookup(const QString& definition, const QString& mode);
         ContinuousColorLookup(const IDomain&, const QString &rprCode="");
         QColor value2color(double value, const Ilwis::NumericRange &actualRange = NumericRange(), const Ilwis::NumericRange &stretchRange = NumericRange()) const;
         void addGroup(const ValueRange& range, const ContinuousColorRange& colorrange);
@@ -49,6 +49,7 @@ private:
         NumericRange _numericRange;
         double _step = 0;
         bool _linear = true;
+		bool _relative = true;
 
         void fromDefinition(const QString& def);
 

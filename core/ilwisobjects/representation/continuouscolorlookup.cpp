@@ -34,7 +34,7 @@ ContinuousColorLookup::ContinuousColorLookup()
 
 }
 
-ContinuousColorLookup::ContinuousColorLookup(const QString &definition)
+ContinuousColorLookup::ContinuousColorLookup(const QString &definition, const QString& mode) : _relative(mode == "relative")
 {
     fromDefinition(definition);
 }
@@ -67,17 +67,21 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
             }else{
                 if ( value >= stretchRange.center()){
                     double stretchFraction = (stretchRange.max() - value)/ stretchRange.distance();
-                    value = actualRange.max() - stretchFraction * actualRange.distance();
+                    value = actualRange.max() - stretchFraction * actualRange.distance(); 
                 }
             }
         }
     }
-    value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1
+	if (_relative)
+		value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1 
+	else
+		value = min(actualRange.max(), max(actualRange.min(), (value - actualRange.min()))); // scale it between 0..1
     for(int i = 0; i < _groups.size(); ++i){
+		double delta = std::abs(_groups[i]._last - _groups[i]._first);
+		double position = 0;
 		if (_groups[i]._reversed) {
-			if (value < _groups[i]._first && value >= _groups[i]._last) {
-				double delta = std::abs(_groups[i]._last - _groups[i]._first);
-				double position = 0;
+			if (value < _groups[i]._first && value >= _groups[i]._last) { 
+				
 				if (_step == 0) {
 					position = (value - _groups[i]._last) / delta;
 				}
@@ -88,7 +92,6 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
 				return ContinuousColorRange::valueAt(position, &_colorranges[i]);
 			}
 		} else if (value <= _groups[i]._last) {
-            double delta = std::abs(_groups[i]._last - _groups[i]._first);
             double position = 0;
             if ( _step == 0){
                 position = (value - _groups[i]._first)/ delta;
