@@ -73,7 +73,7 @@ ToolBar{
 
         MapExtentButton{
             id : zoominButton
-            icon : zoominButton.checked ? "zoomin_green.svg" : "zoomin_grey.svg"
+            icon : zoominButton.checked ? "zoomin-green.svg" : "zoomin_grey.svg"
             action : zoomClicked
             checkable: true
             checked: false
