@@ -58,7 +58,7 @@ Item {
             // AreaHeader { id : tabheader1;labeltext: "Runnable code"}
             Item {
                 id : tabheader1; width : 34; height : parent.height
-                AreaHeader { labeltext: "Console"}
+                Controls.AreaHeader { labeltext: "Console"}
             }
             TextArea {
                 id : inputArea
@@ -101,7 +101,7 @@ Item {
             //AreaHeader { id: tabheader0;labeltext: "Output"}
             Item {
                 id : tabheader0; width : 34; height : parent.height;
-                AreaHeader { labeltext: "Output"}
+                 Controls.AreaHeaderAreaHeader { labeltext: "Output"}
             }
             TextArea {
                 id : outputArea
