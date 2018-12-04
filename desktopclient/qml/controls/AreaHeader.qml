@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 BorderImage {
     property string labeltext
+	property int fontPointSize : 11
 
     source: "../../images/tab_thin_active.png"
     width: parent.height - 7
@@ -15,6 +16,6 @@ BorderImage {
     Text {
         anchors.centerIn: parent
         text : qsTr(labeltext)
-        font.pointSize: 11
+        font.pointSize: fontPointSize
     }
 }
