@@ -11,7 +11,7 @@ Row {
     height : 20
 	property var labelText
 	property int labelWidth : 0
-	property var content : datetimepicker.selectedDate.toLocaleString(Qt.locale(),"yyyy-MM-ddTHH:mm:ss" )
+	property var content : datetimepicker.selectedDate.toLocaleString(Qt.locale(),"yyyy-MM-dd" ) + "T" + timepicker.currentTime 
 	Text {
 			y : 2
 			width : labelWidth

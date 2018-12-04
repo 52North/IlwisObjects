@@ -5,31 +5,58 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import InternalDatabaseModel 1.0
 import QtGraphicalEffects 1.0
+import QtQuick.Extras 1.4
 import "../Global.js" as Global
 import "../controls" as Controls
 
 Item {
-	anchors.fill : parent
-	CircularSlider {
-		id: outer
+    property var currentTime : time.text
 
-		height : 165
-		numberOfSteps : 12
-		maximumValue : 24
-		borderImage : "../images/circularSlider.png"
-		markerImage : "../images/circularSliderHandle.png"
+	anchors.fill : parent
+	Rectangle {
+	    id : box
+		width : parent.width - 40
+		height : parent.height
 		x : 40
 
 		CircularSlider {
-		id : inner
-			height : 105
+			id: outer
+
+			height : box.height
+			numberOfSteps : 12
+			maximumValue : 12
+			overflowOffset : 12
+			overflowCount : 1
+			ringColor : Global.middlegreen
+			ringWidth : 58
+			markerImage : "../images/circularSliderHandle.png"
+			anchors.centerIn : parent 
+			
+		}
+		CircularSlider {
+			id : inner
+			height : 100
 			numberOfSteps : 60
 			maximumValue : 60
-			borderImage : "../images/circularSlider.png"
 			markerImage : "../images/circularSliderHandle.png"
-			x : 30
-			y : 29
+			ringColor : Global.lightgreen
+			ringWidth : 40
+			anchors.centerIn : box
 		}
-
+		Text {
+			id : time
+			anchors.centerIn : inner
+			//anchors.verticalCenterOffset : -10
+			text : outer.currentValue + ":" + box.leftPad(inner.currentValue,2)
+			font.pointSize : 12
+			font.bold : true
+		}
+		function leftPad(number, targetLength) {
+			var output = number + '';
+			while (output.length < targetLength) {
+				output = '0' + output;
+			}
+			return output;
+		}
 	}
 }

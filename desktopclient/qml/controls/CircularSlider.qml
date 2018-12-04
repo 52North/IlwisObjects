@@ -13,21 +13,34 @@ Item {
 	property int numberOfSteps : 10
 	property real minimumValue: 0
 	property variant maximumValue : 10
+	property variant overflowOffset : 0
+	property variant overflowCount : 0
 	property bool topValueMax : false
 	property variant value : topValueMax?maximumValue:minimumValue
 	property variant pressed : handle.pressed
-	property var borderImage
 	property var markerImage
-	Image {
-	source: borderImage //"../images/circularSlider.png"
-
-	width: height
-	height: parent.height
-	fillMode: Image.PreserveAspectFit
+	property var ringColor : Global.middlegreen
+	property var backgroundColor :  "white"
+	property var ringWidth : 60
+	property alias currentValue : val.text
+	width : height
+	Rectangle {
+		id  :ringRect
+		width: height
+		height: parent.height
+		color : ringColor
+		radius : height / 2
+		Rectangle {
+			width: height
+			height: parent.height - ringWidth
+			color : backgroundColor
+			anchors.centerIn : parent
+			radius : height / 2
+		}
 
 		Image {
 			id: rect
-			width: parent.width*0.15; height: parent.height*0.15
+			width: parent.width*0.17; height: parent.height*0.17
 			source: markerImage //"../images/circularSliderHandle.png"
 			x: -(Math.sin(value/(maximumValue-minimumValue)*-2*Math.PI)*(parent.width-width)/2)+parent.width/2-width/2
 			y: -(Math.cos(value/(maximumValue-minimumValue)*-2*Math.PI)*(parent.height-height)/2)+parent.height/2-height/2
@@ -37,6 +50,8 @@ Item {
 				anchors.centerIn: parent;
 				text: value
 				font.pixelSize: 11
+				color : "white"
+				font.bold:true
 			}
 		}
 
@@ -46,6 +61,7 @@ Item {
 			property int clickpointX
 			property int clickpointY
 			property bool isIn
+			property int offset : 0
 			anchors.fill: parent
 			onPressed: {
 				if (mouseX>rect.x&&mouseX<rect.x+rect.width&&mouseY>rect.y&&mouseY<rect.y+rect.height){
@@ -80,7 +96,15 @@ Item {
 					var roundAdjust = Math.pow(10,Math.ceil(-Math.log(range)+2))
 					if (topValueMax && currentAngle==1) value = maximumValue;
 					else value = maximumValue - currentAngle* range;
-					val.text =  Math.round(value * roundAdjust)/roundAdjust
+					var newValue = Math.round(value * roundAdjust)/roundAdjust 
+					
+					if ( (val.text == 0 + offset) && newValue  == maximumValue - 1 && overflowOffset > 0){
+						offset = offset == 0 ? 12 : 0
+					}
+					else if ( (val.text == offset + maximumValue - 1) && newValue == 0  && overflowOffset > 0){
+						offset = offset == 0 ? 12 : 0
+					}
+					val.text = newValue + offset
 				}
 			}
 			Component.onCompleted: {
@@ -92,7 +116,6 @@ Item {
 				var dx = (x - width / 2);
 				var dy = (y - height / 2);
 				var ok = (d * d > dx * dx + dy * dy)&&(ds * ds < dx * dx + dy * dy);
-				console.debug("contain", x,y,d,dx,dy,width, height)
 				return ok
 			}
 
