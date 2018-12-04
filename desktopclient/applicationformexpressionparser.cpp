@@ -1,40 +1,40 @@
 /*IlwisObjects is a framework for analysis, processing and visualization of remote sensing and gis data
 Copyright (C) 2018  52n North
 
-This program is free software: you can redistribute it and/or modify
+This program is free software: you can redistribute it and/or modify 
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
+This program is distributed in the hope that it will be useful,  
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                    
+GNU General Public License for more details.  
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+You should have received a copy of the GNU General Public License 
+along with this program.  If not, see <http://www.gnu.org/licenses/>.*/               
 
-#include "kernel.h"   
+#include "kernel.h"     
 #include "mastercatalog.h"  
-#include "models/resourcemodel.h"     
-#include "operationmetadata.h"  
+#include "models/resourcemodel.h"                                   
+#include "operationmetadata.h"        
 #include "dataformat.h"                 
-#include "uicontextmodel.h"                                                         
-#include "applicationformexpressionparser.h"                                                                  
-
+#include "uicontextmodel.h"                                                                     
+#include "applicationformexpressionparser.h"                                                                                                           
  
-using namespace Ilwis;                           
-using namespace Ui;                 
+ 
+using namespace Ilwis;                                                                           
+using namespace Ui;                                                                      
 
-ApplicationFormExpressionParser::ApplicationFormExpressionParser()                               
+ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                      
 {
-}                                                                   
+}                                                                          
 
 ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
                                                                                              quint32 index,
                                                                                                const QStringList& choices,
                                                                                              bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{
-    FormParameter parm;                             
+    FormParameter parm;                              
     QString prefix = QString("pin_%1_").arg(index + 1);     
     FieldType alternateUIType = ftNONE;   
     if ( resource.hasProperty((prefix + "validationcondition"))){
@@ -61,20 +61,20 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
                 if (hasType(parm._dataType, itCOLLECTION)){
                     parm._fieldType = ftTEXTAREA;
                 }else
-                    parm._fieldType = ftTEXTEDIT; 
+                    parm._fieldType = ftTEXTEDIT;                     
             }
-        }
+        } 
     }
-    else if ( parm._dataType == itBOOL){
+    else if ( parm._dataType == itBOOL){ 
         parm._fieldType = ftRADIOBUTTON;
-        QStringList lst = {"!yes", "no"};
+        QStringList lst = {"!yes", "no"};     
         parm._choiceList = lst; 
 
     }   
     else if (hasType(parm._dataType, itCOLLECTION)){
        parm._fieldType = ftTEXTAREA; 
     }else
-        parm._fieldType = ftTEXTEDIT;
+        parm._fieldType = ftTEXTEDIT; 
     if ( alternateUIType != ftNONE){
         parm._fieldType = alternateUIType;
     }
@@ -92,7 +92,7 @@ void ApplicationFormExpressionParser::setParameter(const Resource& resource, boo
     parameters.push_back(addParameter(resource, parmCount, choices, isOptional, optionGroup, workflowContext, defvalue));
     choices.clear();
     part = "";
-    inChoiceList = false;
+    inChoiceList = false;              
     ++parmCount;
 }
 
@@ -101,7 +101,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
     QString outparms = resource["outparameters"].toString();
     bool isService = resource["keyword"].toString().indexOf("service") != -1;
     if ( outparms == "0")
-        return parameters;
+        return parameters; 
 
     QStringList parts = outparms.split("|");
     for ( int order = 0; order < parts.last().toInt(); ++order){

@@ -200,8 +200,10 @@
     <None Include="desktopclient\qml\CommandLineArea.qml" />
     <None Include="desktopclient\qml\controls\ActionButtonH.qml" />
     <None Include="desktopclient\qml\controls\ActionButtonV.qml" />
+    <None Include="desktopclient\qml\controls\AreaHeader.qml" />
     <None Include="desktopclient\qml\controls\Busy.qml" />
     <None Include="desktopclient\qml\controls\CatalogTab.qml" />
+    <None Include="desktopclient\qml\controls\CircularSlider.qml" />
     <None Include="desktopclient\qml\controls\CollapsiblePanel.qml" />
     <None Include="desktopclient\qml\controls\ColorList.qml" />
     <None Include="desktopclient\qml\controls\ColorPicker.qml" />
@@ -211,6 +213,8 @@
     <None Include="desktopclient\qml\controls\ConsoleLineDelegate.qml" />
     <None Include="desktopclient\qml\controls\CoordinateSystemBounds.qml" />
     <None Include="desktopclient\qml\controls\CreateProjection.qml" />
+    <None Include="desktopclient\qml\controls\DateTimeCalendar.qml" />
+    <None Include="desktopclient\qml\controls\DateTimeDropDown.qml" />
     <None Include="desktopclient\qml\controls\DropableItem.qml" />
     <None Include="desktopclient\qml\controls\DropListLablePair.qml" />
     <None Include="desktopclient\qml\controls\DummySpatial.qml" />
@@ -244,6 +248,7 @@
     <None Include="desktopclient\qml\controls\TextAreaLabelPair.qml" />
     <None Include="desktopclient\qml\controls\TextEditLabelPair.qml" />
     <None Include="desktopclient\qml\controls\TextFieldDropArea.qml" />
+    <None Include="desktopclient\qml\controls\TimePicker.qml" />
     <None Include="desktopclient\qml\controls\ToolButton.qml" />
     <None Include="desktopclient\qml\controls\ToolTip.qml" />
     <None Include="desktopclient\qml\controls\ToolTipLabel.qml" />
@@ -335,7 +340,6 @@
     <None Include="desktopclient\qml\datapanel\modeller\workflow\Workflows.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTabStyle.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTools.qml" />
-    <None Include="desktopclient\qml\datapanel\script\AreaHeader.qml" />
     <None Include="desktopclient\qml\datapanel\script\ScriptActions.qml" />
     <None Include="desktopclient\qml\datapanel\script\ScriptArea.qml" />
     <None Include="desktopclient\qml\datapanel\script\ScriptMetaDataOptions.qml" />

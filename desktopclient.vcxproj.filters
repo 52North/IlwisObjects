@@ -560,9 +560,6 @@
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTools.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\script\AreaHeader.qml">
-      <Filter>Distribution Files\qml\datapanel\script</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\script\ScriptActions.qml">
       <Filter>Distribution Files\qml\datapanel\script</Filter>
     </None>
@@ -1210,6 +1207,21 @@
     </None>
     <None Include="desktopclient\qml\Tab2Menu.qml">
       <Filter>Distribution Files\qml</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\DateTimeCalendar.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\DateTimeDropDown.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\TimePicker.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\AreaHeader.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\CircularSlider.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
