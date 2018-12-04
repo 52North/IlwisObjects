@@ -1,5 +1,5 @@
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import InternalDatabaseModel 1.0
@@ -228,6 +228,15 @@ Rectangle {
         width : 370
         filterTarget: currentCatalog
     }
+	Controls.DateTimeDropDown{
+		width : 370
+		anchors.left: spatselect.right
+		anchors.leftMargin: 6
+		anchors.top : mapLabel.bottom
+		labelText : qsTr("Begin Date/Time")
+		labelWidth : 100
+	}
+
 
     function checkCatalogType(filterList, type){
         for(var i=0; i < filterList.length; ++i){
