@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisoperation.h"
 #include "operationhelper.h"
 #include "operationhelpergrid.h"
+#include "parsestackdefinition.h"
 #include "createrastercoverage.h"
 #include "ilwiscontext.h"
 
@@ -94,152 +95,6 @@ Ilwis::OperationImplementation *CreateRasterCoverage::create(quint64 metaid, con
     return new CreateRasterCoverage(metaid, expr);
 }
 
-bool CreateRasterCoverage::parseStackDefintionTimeCase(const QString& stackDef){
-    QStringList parts = stackDef.split(",");
-    if ( (parts.size() == 1 || parts.size() == 2) && stackDef.indexOf("..") > 0){
-        QStringList parts2 = parts[0].split("..");
-        if ( parts2.size() == 2){
-            Duration res(1.0);
-            Time mmin = parts2[0];
-            Time mmax = parts2[1];
-            if ( mmin > mmax) return false;
-            if ( parts.size() == 2){
-                res = parts[2];
-            }
-            if ( !mmin.isValid() || !mmax.isValid() || !res.isValid())
-                return false;
-            _stackValueNumbers.resize((mmax - mmin)/res);
-            double val = mmin;
-            for(int i=0; i < _stackValueNumbers.size(); ++i){
-                _stackValueNumbers[i] = val;
-                val += res;
-            }
-
-        }
-    }else {
-        _stackValueNumbers.resize(parts.size());
-        for(int i=0; i < _stackValueNumbers.size(); ++i){
-            _stackValueNumbers[i] = parts[i].toDouble();
-        }
-    }
-    return true;
-}
-
-bool CreateRasterCoverage::parseStackDefintionNumericCase(const QString& stackDef){
-    bool ok, ok2=true;
-    std::vector<double> items;
-    QString dd = stackDef;
-    int nr = dd.toInt(&ok);
-    if ( !ok){
-        QStringList parts = stackDef.split(",");
-
-        if ( (parts.size() == 1 || parts.size() == 2) && stackDef.indexOf("..") > 0){
-            QStringList parts2 = parts[0].split("..");
-            if ( parts2.size() == 2){
-                double res = 1;
-                double mmin = parts2[0].toDouble(&ok);
-                if (!ok) return false;
-                double mmax = parts2[1].toDouble(&ok);
-                if (!ok)
-                    mmax = _bands.size();
-
-                if ( mmin > mmax) return false;
-                if ( parts.size() == 2){
-                    res = parts[2].toDouble(&ok);
-                    if (!ok && res <= 0) return false;
-                }
-                items.resize((1 + mmax - mmin)/res);
-                double val = mmin;
-                for(int i=0; i < items.size(); ++i){
-                    items[i] = val;
-                    val += res;
-                }
-
-            }
-        }else {
-            items.resize(parts.size());
-            for(int i=0; i < items.size(); ++i){
-                items[i] = parts[i].toDouble(&ok);
-                if (!ok) {
-                    ok2= false;
-                    break;
-                }
-            }
-        }
-
-    }else {
-
-        items.resize(nr);
-        for(int i=0; i < nr; ++i)
-            items[i] = i;
-    }
-    if  (ok2){
-        int n = 0;
-        if ( items.size() > _bands.size() && _bands.size() != 0){
-            n = _bands.size();
-        }else if ( items.size() <= _bands.size())
-            n = items.size();
-        else
-            return false;
-        _stackValueNumbers.clear();
-        for(int i=0; i < n;++i)
-            _stackValueNumbers.push_back(items[i]);
-    }
-    return ok2;
-}
-
-bool CreateRasterCoverage::parseStackDefintion(const QString& stacDef){
-    QString stackDef = stacDef;
-    stackDef.remove('\"');
-    std::vector<QString> items;
-    bool ok = true;
-    if ( _stackDomain->ilwisType() == itNUMERICDOMAIN){
-        if ( hasType(_stackDomain->valueType(), itINTEGER | itFLOAT | itDOUBLE)){
-            ok = parseStackDefintionNumericCase(stackDef);
-        }else if ( hasType(_stackDomain->valueType(), itDATETIME)){
-            //TODO
-        }
-        return ok;
-    }else if ( _stackDomain->ilwisType() == itITEMDOMAIN){
-        IItemDomain itemdomain = _stackDomain.as<ItemDomain<DomainItem>>();
-        if ( stackDef == ""){ // all items
-
-            for(auto item : itemdomain){
-                items.push_back(item->name());
-            }
-        }else {
-            QStringList parts = stackDef.split(",");
-            for(const QString& part : parts){
-                if ( itemdomain->contains(part)){
-                    items.push_back(part);;
-                }else {
-                    ok = false;
-                }
-            }
-        }
-    } else if ( _stackDomain->ilwisType() == itTEXTDOMAIN){
-        QStringList parts = stackDef.split(",");
-        for(auto item : parts){
-            items.push_back(item);
-        }
-     }
-
-    if  (ok){
-        int n = 0;
-        if ( items.size() >= _bands.size() && _bands.size() != 0){
-            n = _bands.size();
-        }else if ( items.size() < _bands.size())
-            n = items.size();
-        else
-            return false;
-        _stackValueStrings.clear();
-        for(int i=0; i < n;++i)
-            _stackValueStrings.push_back(items[i]);
-    }
-    return ok;
-
-}
-
 Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionContext *ctx, const SymbolTable &st)
 {
     OperationImplementation::prepare(ctx,st);
@@ -260,7 +115,7 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
     }
     QString maps = _expression.input<QString>(2);
     if ( maps != sUNDEF && (maps.indexOf("?") != -1 || maps.indexOf("*") != -1)){
-        maps = expandWildCards(maps);
+        maps = OperationHelper::expandWildCards(maps);
     }
     if (maps != "" && maps != sUNDEF && maps != "default"){
         QStringList bands = maps.split(",");
@@ -315,7 +170,8 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
     if ( _expression.parameterCount() >= 4){
         for(int i=3; i < _expression.parameterCount(); ++i){
             if ( hasType(_expression.parm(i).valuetype(),itSTRING|itINTEGER)){
-                parseStackDefintion(_expression.input<QString>(i));
+				ParseStackDefinition parser;
+                parser.parseStackDefintion(_expression.input<QString>(i), _bands.size(), _stackDomain,_stackValueStrings, _stackValueNumbers);
             }
             else if ( hasType(_expression.parm(i).valuetype(),itDOMAIN)){
                 if (CreateStackDomain(_expression.input<QString>(i)) == sPREPAREFAILED)
@@ -346,30 +202,7 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
     return sPREPARED;
 }
 
-QString CreateRasterCoverage::expandWildCards(const QString& wildmaps){
-    QString result;
-    QString maps = wildmaps;
-    maps.replace("*","%");
-    maps.replace("?","_");
-    QString extraPath ;
-    if ( maps.indexOf("/") != -1){
-        QStringList parts = maps.split("/");
-        maps = parts.back();
-        for(int i=0; i < parts.size() - 1; ++i)
-            extraPath +=  "/" + parts[i] ;
-    }
-    QString containerPath = context()->workingCatalog()->resource().url().toString();
-    QString query = "container='" + containerPath + extraPath + "' and name LIKE '" + maps + "'";
-    std::vector<Resource> resources = mastercatalog()->select(query);
-    for(auto resource : resources){
-        if ( resource.ilwisType() == itRASTER){
-            if ( result != "")
-                result += ",";
-            result += resource.url().toString();
-        }
-    }
-    return result;
-}
+
 
 quint64 CreateRasterCoverage::createMetadata()
 {

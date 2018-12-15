@@ -37,11 +37,15 @@ public:
 private:
     IDomain _stackDomain;
     ICoordinateSystem _csy;
-    std::map<QString, IFeatureCoverage> _features;
-    std::map<int, std::vector<ColumnDefinition>> _attributeDefinitions;
+    std::vector<IFeatureCoverage> _features;
+	std::vector<QString> _stackValueStrings;
+	std::vector<double> _stackValueNumbers;
+	ITable _attTable;
+	IFeatureCoverage _outputFeatures;
+	bool _mergeLayers = true;
 
 
-    void registerColumnDefinitions(const IFeatureCoverage &fc, int stackIndex);
+ 
 };
 }
 }
