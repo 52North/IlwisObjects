@@ -232,3 +232,28 @@ IlwisTypes OperationHelper::determineType(const QString &value)
 
     return tp == itUNKNOWN ? itSTRING : tp;
 }
+
+QString OperationHelper::expandWildCards(const QString& wildmaps) {
+	QString result;
+	QString maps = wildmaps;
+	maps.replace("*", "%");
+	maps.replace("?", "_");
+	QString extraPath;
+	if (maps.indexOf("/") != -1) {
+		QStringList parts = maps.split("/");
+		maps = parts.back();
+		for (int i = 0; i < parts.size() - 1; ++i)
+			extraPath += "/" + parts[i];
+	}
+	QString containerPath = context()->workingCatalog()->resource().url().toString();
+	QString query = "container='" + containerPath + extraPath + "' and name LIKE '" + maps + "'";
+	std::vector<Resource> resources = mastercatalog()->select(query);
+	for (auto resource : resources) {
+		if (resource.ilwisType() == itRASTER) {
+			if (result != "")
+				result += ",";
+			result += resource.url().toString();
+		}
+	}
+	return result;
+}

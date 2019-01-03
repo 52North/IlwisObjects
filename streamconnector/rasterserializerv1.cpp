@@ -93,7 +93,7 @@ template<typename T> void loadBulk(const RawConverter& converter, QDataStream& s
         initBlockSize = blockSize;
 
         std::vector<T> rawdata(initBlockSize);
-        std::vector<double> realdata(initBlockSize);
+        std::vector<PIXVALUETYPE> realdata(initBlockSize);
 
         for(int i = 0; i < blockCount; ++i){
 
@@ -120,7 +120,7 @@ template<typename T> void loadBulk(const RawConverter& converter, QDataStream& s
         //    QBuffer buf(&data);
         //    buf.open(QIODevice::ReadWrite);
         //    QDataStream stream(&buf);
-        //    std::vector<double> values(grid->blockSize(0));
+        //    std::vector<PIXVALUETYPE> values(grid->blockSize(0));
         //    quint32 noItems = grid->blockSize(block);
         //    if ( noItems == iUNDEF)
         //        return 0;
@@ -204,12 +204,12 @@ bool RasterSerializerV1::storeData(IlwisObject *obj, const IOOptions &options )
     RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
     RawConverter converter;
     if ( hasType(raster->datadef().domain()->ilwisType() , itNUMERICDOMAIN)){
-        NumericStatistics& stats = raster->statistics(ContainerStatistics<double>::pBASIC);
+        NumericStatistics& stats = raster->statistics(ContainerStatistics<PIXVALUETYPE>::pBASIC);
         qint16 digits = stats.significantDigits();
-        double scale = digits >= 10 ? 0 : std::pow(10,-digits);
-        converter = RawConverter(stats[ContainerStatistics<double>::pMIN], stats[ContainerStatistics<double>::pMAX],scale);
+        PIXVALUETYPE scale = digits >= 10 ? 0 : std::pow(10,-digits);
+        converter = RawConverter(stats[ContainerStatistics<PIXVALUETYPE>::pMIN], stats[ContainerStatistics<PIXVALUETYPE>::pMAX],scale);
 
-        _stream << stats[ContainerStatistics<double>::pMIN] << stats[ContainerStatistics<double>::pMAX] << scale;
+        _stream << stats[ContainerStatistics<PIXVALUETYPE>::pMIN] << stats[ContainerStatistics<PIXVALUETYPE>::pMAX] << scale;
     }else{
         if(hasType(raster->datadef().domain()->ilwisType() ,itITEMDOMAIN) )
             converter = RawConverter("ident");
@@ -248,10 +248,12 @@ bool RasterSerializerV1::storeData(IlwisObject *obj, const IOOptions &options )
         storeBulk<quint32>(converter, _stream, _streamconnector, box, rcoverage); break;
     case itDOUBLE:
         storeBulk<double>(converter, _stream, _streamconnector, box, rcoverage); break;
+	case itFLOAT:
+		storeBulk<float>(converter, _stream, _streamconnector, box, rcoverage); break;
         break;
     case itINT64:
     default:
-        for(double v : rcoverage)
+        for(PIXVALUETYPE v : rcoverage)
             _stream << (qint64)v;
         break;
     }
@@ -353,7 +355,7 @@ bool RasterSerializerV1::loadData(IlwisObject *data, const IOOptions &options)
     BoundingBox box;
     RawConverter converter;
     if ( hasType(raster->datadef().domain()->ilwisType(), itNUMERICDOMAIN)){
-        double mmin, mmax, mscale;
+        PIXVALUETYPE mmin, mmax, mscale;
         _stream >> mmin >> mmax >> mscale;
         converter = RawConverter(mmin, mmax, mscale);
     }else {
@@ -394,6 +396,8 @@ bool RasterSerializerV1::loadData(IlwisObject *data, const IOOptions &options)
         loadBulk<quint32>(converter, _stream, _streamconnector, box, rcoverage); break;
     case itDOUBLE:
         loadBulk<double>(converter, _stream, _streamconnector, box, rcoverage); break;
+	case itFLOAT:
+		loadBulk<float>(converter, _stream, _streamconnector, box, rcoverage); break;
     case itINT64:
     default:
             loadBulk<qint64>(converter, _stream, _streamconnector, box, rcoverage); break;

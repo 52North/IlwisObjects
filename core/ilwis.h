@@ -67,6 +67,9 @@ const float flUNDEF = ((float)std::numeric_limits < float >::max() - 2);
 const qint64 i64UNDEF = std::numeric_limits < qint64 >::max() - 2;
 const double clrUNDEF2 = (std::numeric_limits < quint32 >::max() - 1);
 
+typedef double PIXVALUETYPE;
+const PIXVALUETYPE PIXVALUEUNDEF = rUNDEF;
+
 #define sUNDEF "?"
 
 

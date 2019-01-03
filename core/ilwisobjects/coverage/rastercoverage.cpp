@@ -152,7 +152,7 @@ void RasterCoverage::copyBinary(const IRasterCoverage& raster, quint32 inputInde
         ERROR2(ERR_ILLEGALE_OPERATION2, TR("copy"),TR("identical layers in same raster"));
         return;
     }
-    std::for_each(iterOut, iterOut.end(), [&](double& v){
+    std::for_each(iterOut, iterOut.end(), [&](PIXVALUETYPE& v){
          v = *iterIn;
         ++iterIn;
     });
@@ -171,7 +171,7 @@ ITable RasterCoverage::histogramAsTable()
     if ( histogramCalculated())
         hist = statistics().histogram();
     else {
-        hist = statistics(ContainerStatistics<double>::pHISTOGRAM).histogram();
+        hist = statistics(ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM).histogram();
     }
     
     int count = 0;
@@ -183,7 +183,7 @@ ITable RasterCoverage::histogramAsTable()
     histogram->addColumn("counts", IDomain("count"));
 
     count = 0;
-    double vstart = datadef().range<NumericRange>()->min();
+    PIXVALUETYPE vstart = datadef().range<NumericRange>()->min();
     for (int i = 0; i < hist.size() - 1; ++i) {
         auto& h = hist[i];
         histogram->record(count, { vstart, h._limit, h._count });
@@ -229,7 +229,7 @@ bool RasterCoverage::loadHistogram() {
 					}
 					int markerCount;
 					stream >> markerCount;
-					std::vector<double> markers(markerCount);
+					std::vector<PIXVALUETYPE> markers(markerCount);
 					for (auto& marker : markers)
 						stream >> marker;
 					statistics().setContent(bins, markers);
@@ -292,10 +292,10 @@ void RasterCoverage::storeHistogram()  {
 
 NumericStatistics &RasterCoverage::statistics(int mode, int bins)
 {
-    if ( mode == ContainerStatistics<double>::pNONE)
+    if ( mode == ContainerStatistics<PIXVALUETYPE>::pNONE)
         return Coverage::statistics(mode);
 
-    if (hasType(mode, ContainerStatistics<double>::pHISTOGRAM)) {
+    if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM)) {
         if (!histogramCalculated()) {
             if (!loadHistogram()) {
                 std::unique_ptr<Tranquilizer> trq;
@@ -310,13 +310,13 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
                         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
                     }
                 }
-                statistics().calculate(begin(), end(), trq, (ContainerStatistics<double>::PropertySets)mode, bins);
+                statistics().calculate(begin(), end(), trq, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
                 storeHistogram();
                 QApplication::restoreOverrideCursor();
             }
         }
 	} else
-		statistics().calculate(begin(), end(), (ContainerStatistics<double>::PropertySets)mode, bins);
+		statistics().calculate(begin(), end(), (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
 
     auto rng = datadefRef().range<NumericRange>();
     if ( rng){
@@ -615,7 +615,7 @@ QVariant RasterCoverage::coord2value(const Coordinate &c, const QString &attrnam
 {
     if ( _georef->isValid() && c.isValid()) {
         Pixeld pix = _georef->coord2Pixel(c);
-        double value = pix2value(pix);
+        PIXVALUETYPE value = pix2value(pix);
         if ( isNumericalUndef2(value,this))
             return QVariant();
         if ( attrname != "")
@@ -731,18 +731,18 @@ QString RasterCoverage::name() const
     return IlwisObject::name();
 }
 
-void RasterCoverage::setPseudoUndef(double v){
+void RasterCoverage::setPseudoUndef(PIXVALUETYPE v){
     if ( !hasType(datadef().domain()->ilwisType(), itNUMERICDOMAIN))
         return;
     Coverage::setPseudoUndef(v);
     IRasterCoverage raster(this);
     PixelIterator iter(raster,BoundingBox(size()));
-    double vmin=1e300, vmax = -1e300, vminlayer=1e300, vmaxlayer=-1e300;
+    PIXVALUETYPE vmin=1e300, vmax = -1e300, vminlayer=1e300, vmaxlayer=-1e300;
     auto end = iter.end();
     while(iter != end){
-        double& oldvalue = *iter;
+        PIXVALUETYPE& oldvalue = *iter;
         if ( isNumericalUndef2(oldvalue, this))
-            oldvalue = rUNDEF;
+            oldvalue = PIXVALUEUNDEF;
         else{
             vmin = std::min(vmin, oldvalue);
             vmax = std::max(vmax, oldvalue);
@@ -783,7 +783,7 @@ NumericRange RasterCoverage::calcMinMax(bool force) const
 
     if ( trq.get() != 0)
         trq->prepare("Raster values", "calculating numeric ranges of layers", size().zsize());
-    double vmin = 1e308, vmax = -1e308;
+    PIXVALUETYPE vmin = 1e308, vmax = -1e308;
     IRasterCoverage raster(id());
     PixelIterator iter(raster);
  

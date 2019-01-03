@@ -52,27 +52,27 @@ typedef std::shared_ptr<Tranquilizer> SPTranquilizer;
  *    7 }
  *
  * In line 1 a new pixeliterator is created. The simplest constructor only needs the raster-coverage as parameter. In line 2 we create the end iterator.  By definition (in c++) the end iterator is located at one container cell beyond the last valid location within the container. With the pixel iterator this means +1 layer beyond the last pixel in the last layer. The end method in line 2 is a convenience method that generates an iterator that satisfies this.
- * Line 4 is end-condition for the traversing the raster-coverage. In line 5 the data of a pixel is accessed by using the ‘*’ operator on the iterator. This operator returns a reference to a double (64-bit) numerical value that is the value of the pixels.
+ * Line 4 is end-condition for the traversing the raster-coverage. In line 5 the data of a pixel is accessed by using the ‘*’ operator on the iterator. This operator returns a reference to a PIXVALUETYPE (64-bit) numerical value that is the value of the pixels.
  *
  * A more modern way (using lambda’s)
  *
  *    1 int count = 0;
- *    2 std::for_each (begin(someraster), end(someraster) , [&](double& v)){
+ *    2 std::for_each (begin(someraster), end(someraster) , [&](PIXVALUETYPE& v)){
  *    3     if v > 100) ++count;
  *    4 });
  *
  * It becomes more interesting  when we are combining iterators. Suppose in the example above we want to create a new raster-coverage that only contains the pixels with a numerical value greater than 100
  *
  *    1 PixelIterator iterInput(someraster);
- *    2 std::for_each(begin(outputRaster), end(outputRaster) , [&](double& v)){
+ *    2 std::for_each(begin(outputRaster), end(outputRaster) , [&](PIXVALUETYPE& v)){
  *    3     if v > 100) v = *iterInput;
  *    4    ++iterInput;
  *    5 });
  *
- * In line 1 we define a iterator for the input, the output operator(invisible) is hidden behind convenience begin() and end() methods. Remember that the ‘*’operator gives a reference to the value of (in this case output) raster-coverage. ‘for_each’ uses this operator to give access to values of the container and exposes this through the double& (so also a reference). We only need to set this value to actually change values in the output raster-coverage. That’s all. Assuming that input and output have the same geometry.
+ * In line 1 we define a iterator for the input, the output operator(invisible) is hidden behind convenience begin() and end() methods. Remember that the ‘*’operator gives a reference to the value of (in this case output) raster-coverage. ‘for_each’ uses this operator to give access to values of the container and exposes this through the PIXVALUETYPE& (so also a reference). We only need to set this value to actually change values in the output raster-coverage. That’s all. Assuming that input and output have the same geometry.
  * The other interesting part is that the pixeliterator integrates with the existing STL library of C++. Giving access to a large number of existing basic algorithms. Suppose You need to copy all of the values of a raster-coverage to a vector(array) and do some operation on it. Due to memory limitations this might not always be a good idea, but there are certainly enough use cases were this is useful.
  *
- *    std::vector<double> data(someraster.size().totalSize());
+ *    std::vector<PIXVALUETYPE> data(someraster.size().totalSize());
  *    std::copy(begin(someraster), end(someraster), data.begin());
  *
  * or swapping of the pixels of two raster-coverages
@@ -85,10 +85,10 @@ typedef std::shared_ptr<Tranquilizer> SPTranquilizer;
 class KERNELSHARED_EXPORT PixelIterator   {
 public:
 	typedef std::random_access_iterator_tag iterator_category;
-    typedef double value_type;
+    typedef PIXVALUETYPE value_type;
     typedef ptrdiff_t difference_type;
-    typedef double* pointer;
-    typedef double& reference;
+    typedef PIXVALUETYPE* pointer;
+    typedef PIXVALUETYPE& reference;
     /*!
      * The possible flows, not all are implemented (yet).<br>
      * atm only xyz works
@@ -223,7 +223,7 @@ public:
      * \param index the target index
      * \return the value at the index
      */
-    double& operator[](quint32 index){
+    PIXVALUETYPE& operator[](quint32 index){
         _x = 0;
         _y = 0;
         _z = 0;
@@ -327,7 +327,7 @@ public:
      * \brief Query for a reference to the current value of the PixelIterator
      * \return reference to the currentvalue
      */
-    double& operator*() {
+    PIXVALUETYPE& operator*() {
         return _grid->value(_currentBlock, _localOffset );
     }
 
@@ -335,7 +335,7 @@ public:
      * \brief Query for a reference to the current vallue of the PixelIterator
      * \return reference to the currentvalue
      */
-    const double& operator*() const {
+    const PIXVALUETYPE& operator*() const {
         return  _grid->value(_currentBlock, _localOffset);
     }
 
@@ -343,7 +343,7 @@ public:
      * \brief Query for the current value of the PixelIterator
      * \return ->value(this(current))
      */
-    double* operator->() {
+    PIXVALUETYPE* operator->() {
         return &(_grid->value(_currentBlock, _localOffset ));
     }
 

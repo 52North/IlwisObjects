@@ -39,7 +39,7 @@ protected:
     struct ParmValue{
 
         ParmType _type = ITERATOR;
-        double _value = rUNDEF;
+        PIXVALUETYPE _value = PIXVALUEUNDEF;
         int  _link = -1;
         PixelIterator *_source; // for mapcalc
         QString _columName; // for tabcalc
@@ -53,7 +53,7 @@ protected:
 
     std::map<QString, int> _functions;
     std::map<QString, std::vector<int>> _operators;
-    std::map<int, double> _inputNumbers;
+    std::map<int, PIXVALUETYPE> _inputNumbers;
     std::map<int,IDomain> _domains;
     std::vector<Action> _actions;
     int _record = 0;
@@ -74,7 +74,7 @@ protected:
     virtual DataDefinition datadef(int index) = 0;
     IDomain collectDomainInfo(std::vector<std::vector<QString>>& rpn);
     IDomain linearize(const QStringList &tokens);
-    double  calc();
+    PIXVALUETYPE  calc();
     int checkItem(int domainCount, QString &item, QString &copy_item, std::set<QString> &domainItems);
     int checkIndexItem(int domainCount, std::vector<std::vector<QString> > &rpn, std::vector<std::vector<QString> > &copy_rpn, int index, std::set<QString> &domainItems);
     void check(bool ok, const QString& error) const;

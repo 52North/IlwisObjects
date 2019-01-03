@@ -98,7 +98,8 @@ public:
     static QString variant2string(const QVariant &v, IlwisTypes tp);
     static QString unquote(const QString &name);
     static QString quote(const QString& str, bool always=false);
-    static bool isUrl(const QString& text); 
+    static bool isUrl(const QString& text);
+	static QString expandWildCards(const QString& wildmaps);
 };
 }
 

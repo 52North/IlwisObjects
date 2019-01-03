@@ -52,7 +52,7 @@ public:
     Size<> size() const ;
     GridBlockInternal *clone(quint64 newRasterId);
 
-    double& at(quint32 index) {
+    PIXVALUETYPE& at(quint32 index) {
         if ( index < _blockSize){
             if (!_dataInMemory) {
                 init();
@@ -64,7 +64,7 @@ public:
     }
 
     char *blockAsMemory();
-    void fill(const std::vector<double>& values);
+    void fill(const std::vector<PIXVALUETYPE>& values);
     quint32 blockSize();
     bool inMemory() const { return _inMemory; }
     bool dataInMemory() const { return _dataInMemory; }
@@ -78,8 +78,8 @@ private:
     bool loadFromCache();
     void fetchFromSource();
     std::recursive_mutex _mutex;
-    std::vector<double> _data;
-    double _undef;
+    std::vector<PIXVALUETYPE> _data;
+    PIXVALUETYPE _undef;
     Size<> _size;
     quint64 _id;
     quint64 _rasterid;
@@ -99,14 +99,14 @@ public:
 
     void clear();
 
-    double& value(quint32 block, int offset );
-    double value(const Pixel& pix) ;
-    void setValue(quint32 block, int offset, double v );
+    PIXVALUETYPE& value(quint32 block, int offset );
+    PIXVALUETYPE value(const Pixel& pix) ;
+    void setValue(quint32 block, int offset, PIXVALUETYPE v );
 
     quint32 blocks() const;
     quint32 blocksPerBand() const;
 
-    void setBlockData(quint32 block, const std::vector<double>& data);
+    void setBlockData(quint32 block, const std::vector<PIXVALUETYPE>& data);
     char *blockAsMemory(quint32 block);
     void setBandProperties(RasterCoverage *raster, int n);
     bool prepare(RasterCoverage *raster, const Size<> &sz) ;
@@ -120,7 +120,7 @@ public:
     qint64 memUsed() const;
 
     //debug
-    double findBigger(double v);
+    PIXVALUETYPE findBigger(PIXVALUETYPE v);
 protected:
 
 private:

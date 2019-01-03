@@ -518,7 +518,7 @@ IDomain CalculatorOperation::linearize(const QStringList &tokens)
                         itemName = itemName.mid(1,itemName.size() - 2);
                         SPDomainItem item = dom->item(itemName);
                         // the raw is stored as this is used to compare against
-                        val._value = !item.isNull() ?  item->raw() : rUNDEF;
+                        val._value = !item.isNull() ?  item->raw() : PIXVALUEUNDEF;
                     }
                     else if ( part[0] == '\''){
                         val._type = CalculatorOperation::STRING;
@@ -528,7 +528,7 @@ IDomain CalculatorOperation::linearize(const QStringList &tokens)
                         pindex = part.mid(1,1).toInt(&ok);
                         fillValues(pindex, part, val);
                     }else {
-                        double number = part.toDouble(&ok);
+                        PIXVALUETYPE number = part.toDouble(&ok);
                         if (ok){
                             val._type = CalculatorOperation::NUMERIC;
                             val._value = number;
@@ -538,7 +538,7 @@ IDomain CalculatorOperation::linearize(const QStringList &tokens)
                             val._link = link;
                         }else if ( part == sUNDEF){
                             val._type = CalculatorOperation::NUMERIC;
-                            val._value = rUNDEF;
+                            val._value = PIXVALUEUNDEF;
                         }else {
                             kernel()->issues()->log(TR("Error in expression. Index value is not valid :") + part);
                             return IDomain();
@@ -556,8 +556,8 @@ IDomain CalculatorOperation::linearize(const QStringList &tokens)
     }
 }
 
-double CalculatorOperation::calc() {
-    auto GetValue = [&](const ParmValue& parm,const std::vector<double>& result, bool *isNumeric=0)->double{
+PIXVALUETYPE CalculatorOperation::calc() {
+    auto GetValue = [&](const ParmValue& parm,const std::vector<PIXVALUETYPE>& result, bool *isNumeric=0)->PIXVALUETYPE{
         switch(parm._type){
         case ParmType::LINK:
             return result[parm._link];break;
@@ -572,17 +572,17 @@ double CalculatorOperation::calc() {
         case ParmType::COLUMN:
             return parm._columnValues[_record].toDouble();break;
         }
-        return rUNDEF;
+        return PIXVALUEUNDEF;
     };
 
-    auto CalcBinary = [](MathAction act, double v1, double v2) ->double{
+    auto CalcBinary = [](MathAction act, PIXVALUETYPE v1, PIXVALUETYPE v2) ->PIXVALUETYPE{
         if (isNumericalUndef(v1)  || isNumericalUndef(v2))
-            return rUNDEF;
+            return PIXVALUEUNDEF;
         switch(act){
         case maADD:
             return v1+v2;
         case maDIVIDE:
-            return v2 == 0 ? rUNDEF : v1/v2;
+            return v2 == 0 ? PIXVALUEUNDEF : v1/v2;
         case maMULT:
             return v1 * v2;
         case maMINUS:
@@ -596,13 +596,13 @@ double CalculatorOperation::calc() {
 
 
         default:
-            return rUNDEF;
+            return PIXVALUEUNDEF;
         }
-        return rUNDEF;
+        return PIXVALUEUNDEF;
     };
 
-    double calcResult;
-    std::vector<double> result(_actions.size(),rUNDEF);
+    PIXVALUETYPE calcResult;
+    std::vector<PIXVALUETYPE> result(_actions.size(),PIXVALUEUNDEF);
     for(int i=0; i < _actions.size(); ++i){
         Action& action = _actions[i];
         switch(action._action){
@@ -614,162 +614,162 @@ double CalculatorOperation::calc() {
         case maMINUS:
         case maPOW:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
             calcResult = CalcBinary(action._action,v1,v2);
             break;
         }
         case maSIN:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  isNumericalUndef(v) ? rUNDEF : std::sin(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::sin(v);
             break;
         }
         case maCOS:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  isNumericalUndef(v) ? rUNDEF : std::cos(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::cos(v);
             break;
         }
         case maTAN:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  (std::abs(v) == M_PI / 2 || isNumericalUndef(v)) ? rUNDEF : std::tan(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  (std::abs(v) == M_PI / 2 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::tan(v);
             break;
         }
         case maACOS:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  ( v < -1 || v > 1 || isNumericalUndef(v)) ? rUNDEF : std::acos(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  ( v < -1 || v > 1 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::acos(v);
             break;
         }
         case maASIN:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  ( v < -1 || v > 1 || isNumericalUndef(v)) ? rUNDEF : std::asin(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  ( v < -1 || v > 1 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::asin(v);
             break;
         }
         case maATAN:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  ( v < -M_PI/2 || v > M_PI/2 || isNumericalUndef(v)) ? rUNDEF : std::acos(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  ( v < -M_PI/2 || v > M_PI/2 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::acos(v);
             break;
         }
         case maLOG10:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  ( v <= 0 && isNumericalUndef(v)) ? rUNDEF : std::log10(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  ( v <= 0 && isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log10(v);
             break;
         }
         case maLN:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  ( v <= 0 && isNumericalUndef(v)) ? rUNDEF : std::log(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  ( v <= 0 && isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log(v);
             break;
         }
         case maEXP:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  (isNumericalUndef(v)) ? rUNDEF : std::exp(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::exp(v);
             break;
         }
         case maABS:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  (isNumericalUndef(v)) ? rUNDEF : std::abs(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::abs(v);
             break;
         }
         case maSQ:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  (isNumericalUndef(v)) ? rUNDEF : v * v;
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : v * v;
             break;
         }
         case maSQRT:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  (v < 0 || isNumericalUndef(v)) ? rUNDEF : std::sqrt(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  (v < 0 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::sqrt(v);
             break;
         }
         case maFLOOR:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  isNumericalUndef(v) ? rUNDEF : std::floor(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::floor(v);
             break;
         }
         case maCEIL:
         {
-            double v = GetValue(action._values[0],result);
-            calcResult =  isNumericalUndef(v) ? rUNDEF : std::ceil(v);
+            PIXVALUETYPE v = GetValue(action._values[0],result);
+            calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::ceil(v);
             break;
         }
         case maEQ:
         {
             bool isNumeric=false;
-            double v1 = GetValue(action._values[0],result,&isNumeric);
-            double v2 = GetValue(action._values[1],result,&isNumeric);
-            calcResult = ( !isNumeric && (isNumericalUndef(v1) || isNumericalUndef(v2))) ? rUNDEF : v1 == v2;
+            PIXVALUETYPE v1 = GetValue(action._values[0],result,&isNumeric);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result,&isNumeric);
+            calcResult = ( !isNumeric && (isNumericalUndef(v1) || isNumericalUndef(v2))) ? PIXVALUEUNDEF : v1 == v2;
             break;
         }
         case maNEQ:
         {
             bool isNumeric=false;
-            double v1 = GetValue(action._values[0],result,&isNumeric);
-            double v2 = GetValue(action._values[1],result,&isNumeric);
-            calcResult = ( !isNumeric && (isNumericalUndef(v1) || isNumericalUndef(v2))) ? rUNDEF : v1 != v2;
+            PIXVALUETYPE v1 = GetValue(action._values[0],result,&isNumeric);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result,&isNumeric);
+            calcResult = ( !isNumeric && (isNumericalUndef(v1) || isNumericalUndef(v2))) ? PIXVALUEUNDEF : v1 != v2;
             break;
         }
         case maLESSEQ:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
-            calcResult =  isNumericalUndef(v1) || isNumericalUndef(v2) ? rUNDEF : ( v1 <= v2);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
+            calcResult =  isNumericalUndef(v1) || isNumericalUndef(v2) ? PIXVALUEUNDEF : ( v1 <= v2);
             break;
         }
         case maLESS:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
-            calcResult = isNumericalUndef(v1) || isNumericalUndef(v2) ? rUNDEF : ( v1 < v2);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
+            calcResult = isNumericalUndef(v1) || isNumericalUndef(v2) ? PIXVALUEUNDEF : ( v1 < v2);
             break;
         }
         case maGREATEREQ:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
-            calcResult =  isNumericalUndef(v1) ||isNumericalUndef(v2) ? rUNDEF : ( v1 >= v2);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
+            calcResult =  isNumericalUndef(v1) ||isNumericalUndef(v2) ? PIXVALUEUNDEF : ( v1 >= v2);
             break;
         }
         case maGREATER:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
-            calcResult =  isNumericalUndef(v1) || isNumericalUndef(v2) ? rUNDEF : ( v1 > v2);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
+            calcResult =  isNumericalUndef(v1) || isNumericalUndef(v2) ? PIXVALUEUNDEF : ( v1 > v2);
             break;
         }
         case maAND:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
             if (!(bool)v1 || !(bool)v2)
                 calcResult = false;
             else if (isNumericalUndef(v1) || isNumericalUndef(v2))
-                calcResult = rUNDEF;
+                calcResult = PIXVALUEUNDEF;
             else
                 calcResult = true;
             break;
         }
         case maOR:
         {
-            double v1 = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
+            PIXVALUETYPE v1 = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
             if (isNumericalUndef(v1)) {
                 if (isNumericalUndef(v2))
-                    calcResult = rUNDEF;
+                    calcResult = PIXVALUEUNDEF;
                 else
-                    calcResult = (bool)v2 ? true : rUNDEF;
+                    calcResult = (bool)v2 ? true : PIXVALUEUNDEF;
             } else if (isNumericalUndef(v2))
-                calcResult = (bool)v1 ? true : rUNDEF;
+                calcResult = (bool)v1 ? true : PIXVALUEUNDEF;
             else
                 calcResult = (bool)v1 || (bool)v2;
             break;
@@ -778,10 +778,10 @@ double CalculatorOperation::calc() {
         {
             // if the action is a iterator we can directly get its value from the iterator else if it is a
             // comparisson it will be calculated previously and its result will be in calcresult
-            double test = GetValue(action._values[0],result);
-            double v2 = GetValue(action._values[1],result);
-            double v3 = GetValue(action._values[2],result);
-            calcResult = test == rUNDEF ? rUNDEF : ((bool)test ? v2 : v3);
+            PIXVALUETYPE test = GetValue(action._values[0],result);
+            PIXVALUETYPE v2 = GetValue(action._values[1],result);
+            PIXVALUETYPE v3 = GetValue(action._values[2],result);
+            calcResult = test == PIXVALUEUNDEF ? PIXVALUEUNDEF : ((bool)test ? v2 : v3);
             break;
         }
 

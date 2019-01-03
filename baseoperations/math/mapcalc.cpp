@@ -55,7 +55,7 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
     PixelIterator iterEnd = end(iterOut);
     while(iterOut != iterEnd) {
-        double v = calc();
+        PIXVALUETYPE v = calc();
         *iterOut = v;
         ++iterOut;
         for(auto& item : _inputRasters){
@@ -65,12 +65,12 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
     }
 
     if ( _outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN){
-        double rmin = rUNDEF, rmax= rUNDEF;
+        PIXVALUETYPE rmin = PIXVALUEUNDEF, rmax= PIXVALUEUNDEF;
         bool isInt = true;
-        for(double v : _outputRaster ){
+        for(PIXVALUETYPE v : _outputRaster ){
             rmin = Ilwis::min(rmin, v);
             rmax = Ilwis::max(rmax, v);
-            if ( v != rUNDEF){
+            if ( v != PIXVALUEUNDEF){
                 isInt &=  std::abs((qint64)v - v) <EPS8;
             }
         }

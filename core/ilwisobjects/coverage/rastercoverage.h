@@ -29,6 +29,7 @@ namespace Ilwis {
 const quint32 WHOLE_RASTER = 200000;
 
 
+
 class Resource;
 class Grid;
 class PixelIterator;
@@ -179,9 +180,9 @@ public:
      * \param pix the pixel
      * \return the value at the pixel or undefined
      */
-    double pix2value(const Pixeld& pix){
+	PIXVALUETYPE pix2value(const Pixeld& pix){
         if ( _georef->isValid() && !connector().isNull()) {
-            double v = _grid->value(pix);
+			PIXVALUETYPE v = _grid->value(pix);
             return v;
         }
         return rUNDEF;
@@ -220,7 +221,7 @@ public:
     UPGrid& gridRef();
     const UPGrid &grid() const;
     void getData(quint32 blockIndex);
-    void setPseudoUndef(double v);
+    void setPseudoUndef(PIXVALUETYPE v);
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
     bool histogramCalculated() const;

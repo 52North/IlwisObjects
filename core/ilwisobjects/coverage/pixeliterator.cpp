@@ -558,7 +558,7 @@ void PixelIterator::cleanUp4PolyBoundaries(const std::vector<Pixel>& selectionPi
             prev = xpos;
         }
         for (std::pair<qint32,qint32> p : pairs) {
-            double middle = (p.first + p.second - 1) / 2.0;
+            PIXVALUETYPE middle = (p.first + p.second - 1) / 2.0;
             Pixeld position (middle + 0.5, y + 0.5); // inspect relationship with the given geometry in the middle between two borders
             Coordinate crd = _raster->georeference()->pixel2Coord(position);
             geos::geom::Point *pnt = geometryFactory->createPoint(crd);
