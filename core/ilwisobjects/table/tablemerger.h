@@ -24,6 +24,7 @@ public:
     TableMerger();
     ITable mergeMetadataTables(const ITable &tbl1, const ITable &tbl2);
     bool mergeMetadataTables(ITable &tblOut, const ITable &tblIn, const std::vector<QString> &columns);
+	bool mergeTableData(const ITable &sourceTable1, ITable &targetTable, int offset) const;
     void mergeTableData(const ITable &sourceTable1,const ITable &sourceTable2, ITable &targetTable, const std::vector<QString>& except=std::vector<QString>()) const;
     bool copyColumns(const ITable &tblSource, ITable &tbltarget, int options=0);
 private:

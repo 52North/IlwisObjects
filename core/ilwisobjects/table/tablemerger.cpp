@@ -69,7 +69,14 @@ bool TableMerger::copyColumns(const ITable &tblSource, ITable& tbltarget, int op
     return true;
 }
 
-bool TableMerger::mergeMetadataTables(ITable& tblOut, const ITable& tblIn, const std::vector<QString>& columns) {
+bool TableMerger::mergeMetadataTables(ITable& tblOut, const ITable& tblIn, const std::vector<QString>& selectedColumns) {
+	std::vector<QString> columns = selectedColumns;
+	if (selectedColumns.size() == 0) {
+		columns.clear();
+		for (int i = 0; i < tblIn->columnCount(); ++i) {
+			columns.push_back(tblIn->columndefinition(i).name());
+		}
+	}
     for(const auto colName : columns) {
         auto coldefIn = tblIn->columndefinition(colName);
         if ( !coldefIn.isValid()) {
@@ -191,6 +198,24 @@ void TableMerger::mergeTableData(const ITable &sourceTable1,const ITable &source
         }
         targetTable->column(targetColName,values, sourceTable1->recordCount());
     }
+}
+
+bool TableMerger::mergeTableData(const ITable &sourceTable1, ITable &targetTable, int offset) const
+{
+	//int offset = targetTable->recordCount();
+	for (int col = 0; col < sourceTable1->columnCount(); ++col) {
+		const auto& coldefSource = sourceTable1->columndefinition(col);
+		const auto& coldefTarget = targetTable->columndefinition(coldefSource.name());
+		if (coldefTarget.isValid()) {
+			if (!coldefTarget.datadef().domain()->isCompatibleWith(coldefSource.datadef().domain().ptr())) {
+				kernel()->issues()->log(TR("Column names clash while having different domains. Merge can not be done:") + coldefSource.name());
+				return false;
+			}
+			auto values = sourceTable1->column(coldefSource.name());
+			targetTable->column(coldefTarget.name(), values, offset);
+		}
+	}
+	return true;
 }
 
 ColumnDefinition TableMerger::mergeColumnDefinitions(const ColumnDefinition &def1, const ColumnDefinition &def2, RenumberMap *renumberer) {
