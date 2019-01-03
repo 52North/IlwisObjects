@@ -58,8 +58,6 @@
     <ClCompile Include="baseoperations\baseoperationsmodule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="baseoperations\data\aggregatetable.cpp">
       <Filter>Source Files\data</Filter>
     </ClCompile>
@@ -251,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="baseoperations\conditions\numbercondition.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\creators\parsestackdefinition.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +452,9 @@
     </ClInclude>
     <ClInclude Include="baseoperations\util\workingcatalog.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\parsestackdefinition.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
