@@ -186,7 +186,7 @@ void AttributeTable::column(const quint32 columnIndex, const std::vector<QVarian
         ERROR1(ERR_NO_INITIALIZED_1,name());
         return ;
     }
-    if ( columnIndex != iUNDEF)
+    if ( columnIndex == iUNDEF)
         return ;
 
     FeatureIterator iter(_features, _level);
@@ -286,23 +286,23 @@ std::vector<QVariant> AttributeTable::column(const QString &columnName, quint32 
 
 bool AttributeTable::addColumn(const ColumnDefinition &def)
 {
-    return WARN2(ERR_OPERATION_NOTSUPPORTED2,TR("adding columns"), TR("attributes"));
+	return _features->attributeDefinitionsRef().addColumn(def);
 }
 
 bool AttributeTable::addColumn(const QString &name, const QString &domainname, const bool readonly)
 {
-    return WARN2(ERR_OPERATION_NOTSUPPORTED2,TR("adding columns"), TR("attributes"));
+	return _features->attributeDefinitionsRef().addColumn(name, domainname, readonly);
 }
 
 
 bool AttributeTable::addColumn(const QString &nme, const IDomain &domain,const bool readonly)
 {
-    return WARN2(ERR_OPERATION_NOTSUPPORTED2,TR("adding columns"), TR("attributes"));
+	return _features->attributeDefinitionsRef().addColumn(nme, domain, readonly);
 }
 
-void AttributeTable::columndefinition(const ColumnDefinition &)
+void AttributeTable::columndefinition(const ColumnDefinition &def)
 {
-    WARN2(ERR_OPERATION_NOTSUPPORTED2,TR("setting column definitions"), TR("attributes"));
+	_features->attributeDefinitionsRef().columndefinition(def);
 }
 
 void AttributeTable::insertRecord(quint32 lowerRec)
