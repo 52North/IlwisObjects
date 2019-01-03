@@ -72,7 +72,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["geographiccoordinatesystem" ] = new IlwisObjectCreatorModel("geographiccoordinatesystem", TR("Geographic (LatLon) Coordinate System"),itCONVENTIONALCOORDSYSTEM|itLOCATION,"CreateLatLonCoordinateSystem.qml", 320, this);
     _creators["boundsonlycoordinatesystem" ] = new IlwisObjectCreatorModel("boundsonlycoordinatesystem", TR("Bounds only Coordinate System"),itBOUNDSONLYCSY,"CreateBoundsOnlyCsy.qml", 250, this);
     _creators["rastercoverage" ] = new IlwisObjectCreatorModel("rastercoverage", TR("Raster Coverage"),itRASTER,"CreateRasterCoverage.qml", 420, this);
-    _creators["featurecoverage" ] = new IlwisObjectCreatorModel("featurecoverage", TR("Feature Coverage"),itFEATURE,"UnderDevelopment.qml", 200, this);
+    _creators["featurecoverage" ] = new IlwisObjectCreatorModel("featurecoverage", TR("Feature Coverage"),itFEATURE,"CreateFeatureCoverage.qml", 420, this);
     _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"CreateTable.qml", 520, this);
     _creators["chart"] = new IlwisObjectCreatorModel("chart", TR("Chart"), itTABLE, "CreateChart.qml", 520, this);
 	_creators["supervisedclassification"] = new IlwisObjectCreatorModel("supervisedclassification", TR("Supervised Classification"), itMODEL, "CreateSupervisedClassification.qml", 320, this);
@@ -687,7 +687,9 @@ QString ObjectCreator::createObject(const QVariantMap &parms)
         return createModel(parms);
     } else if ( type == "combinationmatrix"){
         return createCombinationMatrix(parms);
-    }
+    } else if (type == "featurecoverage") {
+		return createFeatureCoverage(parms);
+	}
     else if (type == "table") {
         return createTable(parms);
     }
@@ -766,6 +768,33 @@ QObject *ObjectCreator::createModellerObject(const QVariantMap &parms, QObject *
         }
     }
     return 0;
+}
+
+QString ObjectCreator::createFeatureCoverage(const QVariantMap& parms) {
+	QString name = parms["name"].toString();
+	if (name == "")
+		return sUNDEF;
+	name = OperationHelper::quote(name);
+
+	QString expr = "createfeaturecoverage(";
+	expr += "\"" + parms["coordinatesystem"].toString() + "\"";
+	expr += ",";
+	expr += "\"" + parms["featurecoverages"].toString() + "\"";
+	expr += ",";
+	expr += "\"" + parms["stackdomain"].toString() + "\"";
+	expr += ",";
+	expr += "\"" + parms["stackdefinition"].toString() + "\"";
+	expr += ",";
+	expr += parms["merge"].toBool() ? "yes" : "no";
+
+
+	expr += ")";
+
+	QString output = QString("script %1{format(stream,\"featurecoverage\")}=").arg(name);
+	expr = output + expr;
+	executeoperation(expr);
+
+	return sUNDEF;
 }
 
 QString ObjectCreator::createRasterCoverage(const QVariantMap& parms){

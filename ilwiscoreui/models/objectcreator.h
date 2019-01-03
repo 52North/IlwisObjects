@@ -76,6 +76,7 @@ private:
     QString createCombinationMatrix(const QVariantMap &parms);
     QString createBoundsOnlyCoordinateSystem(const QVariantMap &parms);
     QString createTable(const QVariantMap &parms);
+	QString createFeatureCoverage(const QVariantMap& parms);
     void executeoperation(const QString &expr);
     QString createOperationScriptHeader(const QVariantMap &parms);
     QString createChart(const QVariantMap &parms);
