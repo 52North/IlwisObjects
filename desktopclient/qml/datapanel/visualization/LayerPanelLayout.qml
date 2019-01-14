@@ -8,6 +8,10 @@ Item {
     id : layers
     property alias source : panelLayout.source
 
+	function setSource(url, parms){
+		panelLayout.setSource(url, parms)
+	}
+
     function activePanel(){
         if (!panelLayout.item)
             return null
