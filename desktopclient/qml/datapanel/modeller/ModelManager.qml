@@ -119,8 +119,10 @@ Rectangle {
             }else if ( modellerDataPane.model.analysisCount > 0){
                 modellerViews.currentIndex = 2
                 var analysis = modellerDataPane.model.analysisPattern(subcurrentIndex)
-                analisysView.currentAnalysis = analysis
-                analysisManager.item.refreshFormArea(analysis.panel("form"))
+				if(analisysView.currentAnalysis != analysis){
+					analisysView.currentAnalysis = analysis
+					analysisManager.item.refreshFormArea(analysis.panel("form"))
+				}
                 applicationView.state = workflowView.state = "invisible"
             } else if ( modellerDataPane.model.workflowCount > 0){
                 modellerViews.currentIndex = 3
