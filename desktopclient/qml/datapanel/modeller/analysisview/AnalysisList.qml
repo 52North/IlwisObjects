@@ -71,8 +71,10 @@ Item {
                 onCurrentIndexChanged: {
                     var analysis = modellerDataPane.model.analysisPattern(analysisNamesList.currentIndex);
                     if ( analysis){
-                        analisysView.currentAnalysis = analysis
-                        analysisv.refreshFormArea(analysis.panel("form"))
+						if(analisysView.currentAnalysis != analysis) {
+							analisysView.currentAnalysis = analysis
+							analysisv.refreshFormArea(analysis.panel("form"))
+						}
                     }
                 }
                 delegate: Text{
