@@ -15,9 +15,9 @@ Model.ModellerWorkArea {
 
     onStateChanged: {
         if ( state == "visible"){
-            if ( !meme.item)
+            if ( !meme.item){
                 updateView()
-            else{
+            }else{
                meme.item.visible = true
                 meme.item.enabled = true
             }
@@ -35,7 +35,7 @@ Model.ModellerWorkArea {
     }
 
     function updateView() {
-        meme.source = currentApplication ? (uicontext.ilwisFolder + "/extensions/ui/" + currentApplication.panel("main")) : ""
+        meme.source = currentApplication ? (uicontext.ilwisFolder  + currentApplication.panel("main")) : ""
         state = "visible"
     }
 }
