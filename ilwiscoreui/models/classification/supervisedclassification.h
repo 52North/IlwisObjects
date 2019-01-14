@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "supervisedclassificationmodel.h"
 
 namespace Ilwis{
-namespace SClassification {
+namespace Ui {
 
 	const QString SCRASTERKEY = "multispectralraster";
 	const QString SCDOMAINKEY = "classifierdomain";
@@ -62,7 +62,6 @@ private:
 	IDomain _items;
 	ITable _statistics;
 
-    NEW_ANALYSISPATTERN
 };
 }
 }

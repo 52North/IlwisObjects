@@ -5,9 +5,9 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import ModelRegistry 1.0
-import "../../../../qml/Global.js" as Global
-import "../../../../qml/controls" as Controls
-import "../../../../qml/datapanel/visualization" as Vis
+import "../../../../Global.js" as Global
+import "../../../../controls" as Controls
+import "../../../../datapanel/visualization" as Vis
 
 SplitView {
     id : scMap
@@ -15,26 +15,34 @@ SplitView {
 	property var oldZoomEnvelope : ""
 
     width : parent.width
-    height : datapane.height
+    height :parent.height
+
+	onHeightChanged : {
+		ppp.height = datapane.height
+	}
 
     orientation: Qt.Horizontal
 
 	Item {
+	id : ppp
 		width : 250
-		height : parent.height
+		height : datapane.height
 	}
+
 
 	Vis.MapPanel {
-	    id : maps
-		//width : parent.width
-		height : datapane.height
-		showManager : false
+			id : maps
+			width : parent.width - 250
+			height : parent.height
+			showManager : false
 	}
 
+	
 
 	function setRaster(raster){
 	    maps.addDataSource("itemid=" + raster.id, raster.name, 'rastercoverage')
-	}
+		ppp.height = maps.height = datapane.height
+    }
 
 	function activeLayerExtentsToolbar() {
 		return maptools

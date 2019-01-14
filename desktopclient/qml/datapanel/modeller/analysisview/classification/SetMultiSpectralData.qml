@@ -4,14 +4,19 @@ import QtQuick.Controls 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
-import "../../../../qml/Global.js" as Global
-import "../../../../qml/controls" as Controls
+import "../../../../Global.js" as Global
+import "../../../../controls" as Controls
 
 Column {
     height : 200
 	width : 300
 	spacing : 3
 	id : dataSelect
+	function selectedBands() {
+		return redBand.itemModel[redband.currentIndex] + "|" +
+			greenBand.itemModel[redband.currentIndex] + "|" +
+			blueBand.itemModel[redband.currentIndex]
+	}
 	Controls.TextEditLabelPair {
 		id :multisr
 		labelText : qsTr("Multi Spectral Raster")

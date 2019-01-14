@@ -36,9 +36,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis::Ui;
 using namespace Ilwis;
-using namespace SClassification;
-
-REGISTER_ANALYSISMODEL(Ilwis::SClassification::SupervisedClassificationmodel, "supervisedclassification")
 
 SupervisedClassificationmodel::SupervisedClassificationmodel()
 {
@@ -46,8 +43,8 @@ SupervisedClassificationmodel::SupervisedClassificationmodel()
 }
 
 SupervisedClassificationmodel::SupervisedClassificationmodel(Ilwis::AnalysisPattern *p) : AnalysisModel(p){
-    _panels["main"] = "Classification/qml/SupervisedClassificationPanel.qml";
-    _panels["form"] = "Classification/qml/SupervisedClassificationForm.qml";
+    _panels["main"] = "/qml/datapanel/modeller/analysisview/classification/SupervisedClassificationPanel.qml";
+    _panels["form"] = "/qml/datapanel/modeller/analysisview/classification/SupervisedClassificationForm.qml";
 }
 
 AnalysisModel *SupervisedClassificationmodel::create(Ilwis::AnalysisPattern *pattern)

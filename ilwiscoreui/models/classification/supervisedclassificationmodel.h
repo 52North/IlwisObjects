@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "workflow/analysismodel.h"
 
 namespace Ilwis {
-    namespace SClassification {
+    namespace Ui {
         class SupervisedClassificationmodel : public Ilwis::Ui::AnalysisModel
         {
             Q_OBJECT
@@ -38,9 +38,6 @@ namespace Ilwis {
         private:
 			QString multispectralraster() ;
 			void multispectralraster(const QString& msr);
-
-            NEW_ANALYSISMODEL
-
         };
     }
 }

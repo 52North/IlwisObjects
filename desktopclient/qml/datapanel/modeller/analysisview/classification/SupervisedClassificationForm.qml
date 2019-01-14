@@ -4,8 +4,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
-import "../../../../qml/Global.js" as Global
-import "../../../../qml/controls" as Controls
+import "../../../../Global.js" as Global
+import "../../../../controls" as Controls
 
 
 Column {
@@ -18,9 +18,11 @@ Column {
 	spacing : 2
 
 
+
 	onRasterChanged : {
 	    if ( analisysView && analisysView.view() && raster)
 			analisysView.view().setRaster(raster)
+        console.debug("wwwwwwwww", data.count)
 	}
 
 	TabView {
@@ -34,6 +36,7 @@ Column {
 				active : true
 
 				SetMultiSpectralData {
+				    id : ccSelection
 					height: 200
 					width : 300
 				}
