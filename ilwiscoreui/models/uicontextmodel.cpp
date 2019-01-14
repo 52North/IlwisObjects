@@ -57,6 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "layeropacitysetter.h"
 #include "lineattributesetter.h"
 #include "linkcoverage.h"
+#include "workflow/modelbuilder.h"
 #include "mapinformationattributesetter.h"
 #include "numericrepresentationsetter.h"
 #include "openattributetable.h"
@@ -64,6 +65,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "representationelementmodel.h"
 #include "stretchlimits.h"
 #include "convertattributedomain.h"
+#include "modellerfactory.h"
+#include "classification/supervisedclassification.h"
+#include "classification/supervisedclassificationmodel.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -304,6 +308,8 @@ void UIContextModel::prepare()
 	addPropertyEditor("stretchlimits", StretchLimits::create);
 	addPropertyEditor("convertattributedomain", ConvertAttributeDomain::create);
 
+	modelbuilder()->registerAnalysisModel("supervisedclassification", SupervisedClassificationmodel::create);
+	ModellerFactory::registerAnalysisPattern("supervisedclassification", SupervisedClassification::create);
 
 
     QString url = QString("ilwis://system/coverages/country_boundaries.ilwis");
@@ -814,9 +820,9 @@ QString UIContextModel::worldmapCommand(const QString& id) const
     return "";
 }
 
-QColor UIContextModel::code2color(const QString &code) const
+QColor UIContextModel::code2color(const QString &code) const 
 {
-    auto iter = _colorCodes.find(code);
+     const    auto iter = _colorCodes.find(code);
     if ( iter != _colorCodes.end()){
         return (*iter).second;
     }
