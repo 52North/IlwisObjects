@@ -6,6 +6,7 @@ import ObjectCreator 1.0
 import IlwisObjectCreatorModel 1.0
 import "../../Global.js" as Global
 import "../../controls" as Controls
+import "../../datapanel/visualization" as Vis
 import "../.." as Base
 
 Controls.DropableItem{
