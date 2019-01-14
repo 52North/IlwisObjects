@@ -72,7 +72,7 @@ Controls.DropableItem{
                 var url = applyButton.currentCatalogCorrectUrl() + "/"+ commonpart.name
                 var res = commonpart.additionalFields.item.content
                 var createInfo = {parentdomain : commonpart.parentdomain, type : "itemdomain", valuetype : "interval", name : url, resolution : res,  items : itemstring, description : commonpart.description,strict : commonpart.strict}
-                applyButtons.createdId = objectcreator.createObject(createInfo)
+                applyButton.createdId = objectcreator.createObject(createInfo)
             }
             return true
         }
