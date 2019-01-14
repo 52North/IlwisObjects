@@ -74,11 +74,13 @@ Item {
                         if ( analysis)
                             analysis.suicide()
                     }else {
+						console.debug("moment3")
                         analysis.longName = longnamefield.content
                         layerprops.refreshAnalysisNames()
                         layerprops.selectLastListItem()
                         createForm.state = "invisible"
-                        analisysView.currentAnalysis = analysis
+						if(analisysView.currentAnalysis != analysis) // we dont want to rigger onAnalysisChanged unless needed
+							analisysView.currentAnalysis = analysis
                     }
                 }
 
