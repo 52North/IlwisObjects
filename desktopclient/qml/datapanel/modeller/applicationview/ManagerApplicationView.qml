@@ -14,7 +14,7 @@ Item {
     property string iconName : "../images/modeller_app"
 
     function refreshFormArea(form) {
-        formArea.source = uicontext.ilwisFolder + "/extensions/ui/" + form
+        formArea.source = uicontext.ilwisFolder  + form
     }
 
     SplitView {
