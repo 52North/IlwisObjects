@@ -1,9 +1,0 @@
-module Classification
-SupervisedClassificationPanel.qml 1.0 qml/SupervisedClassificationPanel.qml
-SupervisedClassificationForm.qml 1.0 qml/SupervisedClassificationForm.qml
-SupervisedClassificationPanel.qml 1.0 qml/SupervisedClassificationPanel.qml
-SetDomain.qml 1.0 qml/SetDomain.qml
-SetMultiSpectralData.qml 1.0 qml/SetMultiSpectralData.qml
-Statistics.qml 1.0 qml/Statistics.qml
-
-plugin Classification
