@@ -193,23 +193,21 @@ void PublicDatabase::prepare() {
 bool PublicDatabase::code2Record(const QString &code, const QString &table, QSqlRecord& rec)
 {
     auto query = QString("Select * from %1 where code='%2'").arg(table, code);
-    QSqlQuery db(*this);
-    if (doQuery(query, db)) {
-        if ( db.next()) {
-            rec = db.record();
-            return true;
-        }
+    InternalDatabaseConnection db(query);
+    if ( db.next()) {
+        rec = db.record();
+        return true;
     }
     return false;
 }
 
 QString PublicDatabase::findAlias(const QString &name, const QString &type, const QString &nspace)
 {
-    PublicDatabase db;
     QString query = QString("Select code from aliasses where alias='%1' and type='%2' and source='%3'").arg(name).arg(type).arg(nspace);
-    if ( db.exec(0,query)) {
-        if ( db.next(0))
-            return db.value(0,0).toString();
+    InternalDatabaseConnection db(query);
+    if ( db.exec(query)) {
+        if ( db.next())
+            return db.value(0).toString();
     }
     return sUNDEF;
 }
