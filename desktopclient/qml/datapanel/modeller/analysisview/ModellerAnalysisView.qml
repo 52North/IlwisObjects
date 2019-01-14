@@ -7,7 +7,7 @@ Model.ModellerWorkArea {
     property var currentAnalysis
 
     onCurrentAnalysisChanged: {
-        updateView()
+        updateView1()
     }
 
     width : parent.width
@@ -18,9 +18,9 @@ Model.ModellerWorkArea {
 
     onStateChanged: {
         if ( state == "visible"){
-            if ( !meme.item)
-                updateView()
-            else{
+            if ( !meme.item){
+                updateView1()
+            }else{
                meme.item.visible = true
                 meme.item.enabled = true
             }
@@ -34,6 +34,7 @@ Model.ModellerWorkArea {
 
     Loader {
         anchors.fill: parent
+
         onLoaded :{
             item.visible = true
         }
@@ -41,9 +42,8 @@ Model.ModellerWorkArea {
         id: meme
     }
 
-    function updateView() {
-        meme.source = currentAnalysis ? (uicontext.ilwisFolder + "/extensions/ui/" + currentAnalysis.panel("main")) : ""
-        state = "visible"
+    function updateView1() {
+        meme.setSource((currentAnalysis ? (uicontext.ilwisFolder  + currentAnalysis.panel("main")) : ""),  {"width" : workarea.width, "height": workarea.height}) 
     }
 
 	function view() {
@@ -51,5 +51,9 @@ Model.ModellerWorkArea {
 			return meme.item
 		return null
 	}
+
+	 Component.onCompleted: {
+	    height = parent.height
+	 }
 }
 
