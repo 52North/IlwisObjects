@@ -113,6 +113,9 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Distribution Files\qml\datapanel\modeller\analysisview\classification">
+      <UniqueIdentifier>{4285b7ff-9c64-495e-ade9-677a099bc571}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="desktopclient\applicationformexpressionparser.cpp">
@@ -1222,6 +1225,21 @@
     </None>
     <None Include="desktopclient\qml\controls\CircularSlider.qml">
       <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetDomain.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetMultiSpectralData.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\Statistics.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationForm.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationPanel.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

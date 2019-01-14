@@ -251,7 +251,7 @@
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="baseoperations\creators\parsestackdefinition.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Source Files\creator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,7 +454,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baseoperations\creators\parsestackdefinition.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

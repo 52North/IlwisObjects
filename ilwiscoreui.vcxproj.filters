@@ -87,6 +87,12 @@
     <Filter Include="Source Files\catalog\operations">
       <UniqueIdentifier>{6fc710c3-5c97-4b9d-a0d8-e80769e33bd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modeller\classification">
+      <UniqueIdentifier>{6d436c06-7b85-43da-8409-29448443c75a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\modeller\classification">
+      <UniqueIdentifier>{1ab52bc9-0656-42c9-80dd-b6cb0245084d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwiscoreui\models\workflow\applicationmodelui.cpp">
@@ -356,6 +362,12 @@
     <ClCompile Include="ilwiscoreui\menumodel.cpp">
       <Filter>Source Files\catalog</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\classification\supervisedclassification.cpp">
+      <Filter>Source Files\modeller\classification</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\classification\supervisedclassificationmodel.cpp">
+      <Filter>Source Files\modeller\classification</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -603,6 +615,12 @@
     </QtMoc>
     <QtMoc Include="ilwiscoreui\menumodel.h">
       <Filter>Header Files\catalog</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\models\classification\supervisedclassification.h">
+      <Filter>Header Files\modeller\classification</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\models\classification\supervisedclassificationmodel.h">
+      <Filter>Header Files\modeller\classification</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
