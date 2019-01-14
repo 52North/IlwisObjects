@@ -46,8 +46,8 @@ SMCESpatialAlternatives::SMCESpatialAlternatives()
 
 SMCESpatialAlternatives::SMCESpatialAlternatives(ApplicationModel *app, QObject *parent) : ApplicationModelUI(app, parent)
 {
-    _panels["main"] = "SMCE/SMCESpatialAlternativePanel.qml";
-    _panels["form"] = "SMCE/SMCEAppForm.qml";
+    _panels["main"] = "/extensions/ui/SMCE/SMCESpatialAlternativePanel.qml";
+    _panels["form"] = "/extensions/ui/SMCE/SMCEAppForm.qml";
 
 }
 
