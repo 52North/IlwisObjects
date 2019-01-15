@@ -116,6 +116,7 @@ bool TableSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options)
         std::unique_ptr<DataInterface> domainStreamer(factory->create(version, itDOMAIN,_stream));
         if ( !domainStreamer)
             return false;
+		static_cast<VersionedSerializer *>(domainStreamer.get())->connector(_streamconnector);
         IDomain systemDomain = makeSystemObject<IDomain>(url);
         IDomain dom(type | valueType);
         Range *range = 0;
@@ -135,7 +136,7 @@ bool TableSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options)
     }
     qint64 beginData;
     _stream >> beginData;
-    _streamconnector->beginDataSection(beginData);
+    _streamconnector->beginDataSection(obj->ilwisType(), beginData);
 
     return true;
 }
