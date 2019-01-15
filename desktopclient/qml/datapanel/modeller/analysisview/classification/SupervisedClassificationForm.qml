@@ -22,44 +22,37 @@ Column {
 	onRasterChanged : {
 	    if ( analisysView && analisysView.view() && raster)
 			analisysView.view().setRaster(raster)
-        console.debug("wwwwwwwww", data.count)
 	}
 
+	Component {
+        id : spectral
+        SetMultiSpectralData{}
+    }
+
+    Component {
+        id : domain
+        SetDomain{}
+    }
+
+	 Component {
+        id : stats
+        Statistics{}
+    }
 	TabView {
 	        id : data
             height: 200
             width : parent.width
 
-			Tab {
-				id : spectral
-				title : qsTr("Multi Spectral Data")
-				active : true
 
-				SetMultiSpectralData {
-				    id : ccSelection
-					height: 200
-					width : 300
-				}
+			Component.onCompleted: {
+				addTab(qsTr("Multi Spectral Data"), spectral).active = true
+				addTab(qsTr("Domain"), domain).active = true
+				addTab(qsTr("Statistics"), stats).active = true
 			}
-			Tab {
-				id : domain
-				height: parent.height
-				width : parent.width
-				title : qsTr("Domain")
+	}
 
-				SetDomain {
-				}
-			}
-
-			Tab {
-				id : stats
-				height: parent.height
-				width : parent.width
-				title : qsTr("Statistics")
-
-				Statistics {
-				}
-			}
+	function selectedBands(red,green,blue){
+		console.debug("wwww", red, green, blue)
 	}
 }
 
