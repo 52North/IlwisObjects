@@ -68,23 +68,6 @@ Item {
 			}
 		}
 
-		/*delegate : Rectangle {
-			width: control.width
-			height : 26
-			Text {
-				text: modelData
-				height : 26
-				color: "black"
-				font: control.font
-				elide: Text.ElideRight
-				verticalAlignment: Text.AlignVCenter
-			}
-			MouseArea {
-				anchors.fill : parent
-				onClicked: control.popup.close()
-			}
-		}*/
-
 		indicator: Canvas {
 			id: canvas
 			x: control.width - width - control.rightPadding
