@@ -188,6 +188,8 @@ bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &options)
 
         if(!tblstreamer->store(raster->attributeTable().ptr(), options))
             return false;
+		if (!tblstreamer->storeData(raster->attributeTable().ptr(), options))
+			return false;
         _stream << raster->primaryKey();
     }
 
@@ -327,6 +329,7 @@ bool RasterSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
         std::unique_ptr<DataInterface> tableStreamer(factory->create(version, itTABLE,_stream));
         if ( !tableStreamer)
             return false;
+		static_cast<VersionedSerializer *>(tableStreamer.get())->connector(_streamconnector);
         ITable tbl;
         tbl.prepare();
 
@@ -343,7 +346,7 @@ bool RasterSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
     }
     qint64 beginData;
     _stream >> beginData;
-    _streamconnector->beginDataSection(beginData);
+    _streamconnector->beginDataSection(itRASTER, beginData);
 
     return true;
 }
