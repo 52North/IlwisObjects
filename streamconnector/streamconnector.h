@@ -44,13 +44,13 @@ public:
     static ConnectorInterface *create(const Resource &resource, bool load, const IOOptions &options);
 
 
-    qint64 beginDataSection() const;
-    void beginDataSection(qint64 begin);
+    qint64 beginDataSection(IlwisTypes type) const;
+    void beginDataSection(IlwisTypes type, qint64 begin);
 private:
     std::unique_ptr<VersionedSerializer> _versionedConnector;
     std::unique_ptr<QIODevice> _datasource;
     QByteArray _bytes;
-    qint64 _beginDataSection = -1;
+	std::map<IlwisTypes, qint64> _beginDataSection;
 
     bool store(IlwisObject *obj,const IOOptions& options = IOOptions());
     bool openSource(bool reading);
