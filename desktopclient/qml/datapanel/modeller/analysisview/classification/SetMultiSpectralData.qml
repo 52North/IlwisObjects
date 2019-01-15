@@ -12,11 +12,10 @@ Column {
 	width : 300
 	spacing : 3
 	id : dataSelect
-	function selectedBands() {
-		return redBand.itemModel[redband.currentIndex] + "|" +
-			greenBand.itemModel[redband.currentIndex] + "|" +
-			blueBand.itemModel[redband.currentIndex]
-	}
+	property var redPart
+	property var greenPart
+	property var bluePart
+
 	Controls.TextEditLabelPair {
 		id :multisr
 		labelText : qsTr("Multi Spectral Raster")
@@ -56,6 +55,16 @@ Column {
 			onItemModelChanged : {
 			    if ( bands.length > 2){
 					dataSelect.select(redband, bands[0].name)
+					redPart = bands[0].id
+				}
+			}
+
+			Connections {
+				target:redband
+				onIndexChanged :{
+				    console.debug("ppppp", redband.currentIndex, bands[redband.currentIndex],bands[redband.currentIndex].id)
+					redPart = redband.itemModel[redband.currentIndex].id	
+					selectedBands(redPart, greenPart, bluePart)
 				}
 			}
     }
@@ -71,6 +80,15 @@ Column {
 			onItemModelChanged : {
 			    if ( bands.length > 2){
 					dataSelect.select(greenband, bands[1].name)
+					greenPart = bands[1].id
+				}
+			}
+
+			Connections {
+				target: greenband
+				onIndexChanged :{
+					greenPart = greenband.itemModel[greenband.currentIndex].id	
+					selectedBands(redPart, greenPart, bluePart)
 				}
 			}
 
@@ -86,6 +104,15 @@ Column {
 			onItemModelChanged : {
 			    if ( bands.length > 2){
 					dataSelect.select(blueband, bands[2].name)
+					bluePart = bands[0].id
+				}
+			}
+
+			Connections {
+				target:blueband
+				onIndexChanged :{
+					bluePart = blueband.itemModel[blueband.currentIndex].id	
+					selectedBands(redPart, greenPart, bluePart)
 				}
 			}
     }
