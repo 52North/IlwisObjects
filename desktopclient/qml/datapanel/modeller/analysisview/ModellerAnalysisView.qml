@@ -13,8 +13,8 @@ Model.ModellerWorkArea {
     width : parent.width
     height : parent.height - 170
 
-    color : "white"
     state : "invisible"
+
 
     onStateChanged: {
         if ( state == "visible"){
@@ -53,7 +53,7 @@ Model.ModellerWorkArea {
 	}
 
 	 Component.onCompleted: {
-	    height = parent.height
+	    //height = parent.height
 	 }
 }
 
