@@ -257,3 +257,16 @@ QString OperationHelper::expandWildCards(const QString& wildmaps) {
 	}
 	return result;
 }
+
+std::vector<bool> OperationHelper::collectRawsArray(const IDomain& dom) {
+	std::vector<bool> result;
+	if (dom->ilwisType() == itITEMDOMAIN) {
+		IItemDomain itemdomain = dom.as<ItemDomain<DomainItem>>();
+		quint32 maxRaw = 0;
+		for (auto item : itemdomain) {
+			maxRaw = std::max(maxRaw, item->raw());
+		}
+		result.resize(maxRaw+1, false);
+	}
+	return result;
+}

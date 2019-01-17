@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 
 typedef std::function<bool()> CheckCondtion;
+class Domain;
+typedef IlwisData<Domain> IDomain;
 
 class KERNELSHARED_EXPORT OperationHelper
 {
@@ -100,6 +102,7 @@ public:
     static QString quote(const QString& str, bool always=false);
     static bool isUrl(const QString& text);
 	static QString expandWildCards(const QString& wildmaps);
+	static std::vector<bool> collectRawsArray(const IDomain& dom);
 };
 }
 
