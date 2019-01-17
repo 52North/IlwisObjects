@@ -19,7 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 namespace Ilwis {
 
+	class IniFile;
 namespace Ilwis3 {
+	class ODFItem;
 
 class Ilwis3CatalogExplorer : public FolderCatalogExplorer
 {
@@ -34,6 +36,7 @@ public:
     QFileInfo toLocalFile(const QUrl &datasource) const;
 private:
     void registerNames(const QString &name, QHash<QString, quint64> &names);
+	void registerBackReferences(const ODFItem& mapList, const IniFile& kvp, std::map<QString, QString>& fileContainers) const;
 
     NEW_CATALOGEXPLORER(Ilwis3CatalogExplorer);
 };

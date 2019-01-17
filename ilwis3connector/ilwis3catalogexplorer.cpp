@@ -93,7 +93,7 @@ std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
                    finalList.push_back(res);
                }
            }
-
+		   std::map<QString, QString> fileContainers; // as maplist rasters dont always have a backreference we must fix this after we have seen all the files
            foreach(const auto& kvp, inifiles) {
                ODFItem item(kvp.second, &inifiles);
                item.modifiedTime(Time(kvp.second.modified()),true);// this is a new scan so it should take over the time of the file
@@ -107,6 +107,8 @@ std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
                    mapList.setIlwisType(itCATALOG);
                    mapList.setExtendedType(mapList.extendedType() | itRASTER);
                    odfitems.insert(mapList);
+				   registerBackReferences(mapList, kvp.second, fileContainers);
+
                }
                names[kvp.second.fileInfo().absoluteFilePath().toLower()] = item.id();
            }
@@ -121,7 +123,7 @@ std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
 
 
            for(ODFItem& item : items) {
-               if ( item.resolveNames(names)) {
+	           if ( item.resolveNames(names, fileContainers)) {
                    finalList.push_back(item);
                     trq->update(1);
                }
@@ -139,6 +141,13 @@ std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
         kernel()->issues()->silent(false);
         throw err;
     }
+}
+
+void Ilwis3CatalogExplorer::registerBackReferences(const ODFItem& mapList, const IniFile& kvp, std::map<QString, QString>& fileContainers) const {
+	std::vector<QString> rasters = kvp.mapListRasters();
+	for (auto rasterPath : rasters) {
+		fileContainers[OSHelper::neutralizeFileName(rasterPath)] = OSHelper::neutralizeFileName(mapList.url().toString());
+	}
 }
 
 bool Ilwis3CatalogExplorer::canUse(const Resource &resource) const
