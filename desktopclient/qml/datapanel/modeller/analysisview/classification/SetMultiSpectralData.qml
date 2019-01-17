@@ -62,7 +62,6 @@ Column {
 			Connections {
 				target:redband
 				onIndexChanged :{
-				    console.debug("ppppp", redband.currentIndex, bands[redband.currentIndex],bands[redband.currentIndex].id)
 					redPart = redband.itemModel[redband.currentIndex].id	
 					selectedBands(redPart, greenPart, bluePart)
 				}
