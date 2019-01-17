@@ -26,7 +26,7 @@ class ODFItem : public Resource
 {
 public:
     ODFItem(const IniFile& file, std::unordered_map<QString, IniFile> *knownInis = 0);
-    bool resolveNames(const QHash<QString, quint64>& names);
+    bool resolveNames(const QHash<QString, quint64>& names, const std::map<QString, QString>& fileContainers);
     std::vector<Resource> resolveNames();
 
     bool isMapList() const;
@@ -63,7 +63,6 @@ private:
     static bool isSystemObject(const QString &name);
     QString cleanName(const QString&) const;
     Resource resolveName(const QString &name, IlwisTypes tp);
-
 
     std::unordered_map<QString, IniFile> *_knownOdfs=0;
     QString _grfname;

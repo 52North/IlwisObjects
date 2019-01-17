@@ -159,7 +159,7 @@ bool ODFItem::isMapList() const
     return _isMapList;
 }
 
-bool ODFItem::resolveNames(const QHash<QString, quint64> &names)
+bool ODFItem::resolveNames(const QHash<QString, quint64> &names, const std::map<QString, QString>& fileContainers)
 {
     bool ok = true;
     quint64 fileid = i64UNDEF;
@@ -180,6 +180,18 @@ bool ODFItem::resolveNames(const QHash<QString, quint64> &names)
         const Resource& resource = mastercatalog()->name2Resource(_projectionName,itPROJECTION);
         _properties["projection"] = resource.id();
     }
+	if (ilwisType() == itRASTER ) {
+		if (container().toString().indexOf(".mpl") == -1) {
+			QString loc = OSHelper::neutralizeFileName(url().toString());
+			auto iter = fileContainers.find(loc);
+			if (iter != fileContainers.end()) {
+				QString path = (*iter).second;
+				addContainer(path, false);
+				//addContainer(path, false);
+				setUrl(path + "/" + name());
+			}
+		}
+	}
 
     return ok;
 }
@@ -669,3 +681,4 @@ QString  ODFItem::cleanName(const QString& name) const{
     }
     return cleanTxt.toLower();
 }
+
