@@ -76,33 +76,46 @@ bool ComboClassification::execute(ExecutionContext *ctx,SymbolTable& symTable){
         std::vector<int> raw2indexX = raw2index(CombinationMatrix::aXAXIS);
         std::vector<int> raw2indexY = raw2index(CombinationMatrix::aYAXIS);
 
+		std::vector<bool> allRaws = OperationHelper::collectRawsArray(_outputRaster->datadef().domain());
         PixelIterator iterEnd = end(iterInX);
         while(iterOut != iterEnd) {
             Raw rx = *iterInX;
             Raw ry = *iterInY;
-            *iterOut = (rx != rUNDEF && ry != rUNDEF) ? _comboMatrix->combo(raw2indexX[rx], raw2indexY[ry]) : rUNDEF;
+			double outraw = (rx != rUNDEF && ry != rUNDEF) ? _comboMatrix->combo(raw2indexX[rx], raw2indexY[ry]) : rUNDEF;
+			if (outraw < allRaws.size())
+				allRaws[(quint32)outraw] = true;
+			*iterOut = outraw;
             ++iterInX;
             ++iterInY;
             ++iterOut;
             updateTranquilizer(currentCount++, 1000);
         };
+		auto itemdom = _outputRaster->datadef().domain().as<ItemDomain<DomainItem>>();
+		for (quint32 i = 0; i < allRaws.size(); ++i) {
+			if (allRaws[i]) {
+				auto item = itemdom->item(i);
+				_outputRaster->datadef().range()->as<ItemRange>()->add(item->clone());
+			}
+		}
         return true;
     };
 
-    IFlatTable tbl;
-    tbl.prepare();
-    tbl->addColumn(COVERAGEKEYCOLUMN,_outputRaster->datadef().domain());
-    int rec = 0;
-    ItemRangeIterator iter(_outputRaster->datadef().range<>().data());
-    while (iter.isValid()) {
-        SPDomainItem item = (*iter);
-        tbl->setCell(0,rec++,item->raw());
-        ++iter;
-    }
-    _outputRaster->setAttributes(tbl);
+  
 
 
     if (OperationHelperRaster::execute(ctx, binaryMath, _outputRaster)){
+		IFlatTable tbl;
+		tbl.prepare();
+		tbl->addColumn(COVERAGEKEYCOLUMN, _outputRaster->datadef().domain());
+		int rec = 0;
+		ItemRangeIterator iter(_outputRaster->datadef().range<>().data());
+		while (iter.isValid()) {
+			SPDomainItem item = (*iter);
+			tbl->setCell(0, rec++, item->raw());
+			++iter;
+		}
+		_outputRaster->setAttributes(tbl);
+
         QVariant value;
         value.setValue<IRasterCoverage>(_outputRaster);
         logOperation(_outputRaster,_expression);
