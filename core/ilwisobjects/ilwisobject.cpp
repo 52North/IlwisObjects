@@ -66,7 +66,7 @@ IlwisObject *IlwisObject::create(const Resource& resource, const IOOptions &opti
     if ( factory)
         return factory->create(resource, options);
     else {
-        kernel()->issues()->log(TR("Cann't find suitable factory for %1 ").arg(resource.name()));
+        kernel()->issues()->log(TR("Cannot find suitable factory for %1 ").arg(resource.name()));
     }
     return 0;
 }

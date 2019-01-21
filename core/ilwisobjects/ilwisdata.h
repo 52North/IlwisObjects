@@ -239,7 +239,7 @@ public:
                 if ( data == 0) {
                     _implementation.reset((T*)0);
                     removeCurrent();
-                    return ERROR1("Couldnt create ilwisobject %1",name);
+                    return ERROR1("Could not create ilwisobject %1",name);
                 }
                 bool ok = data->prepare();
                 if ( !ok){
@@ -287,7 +287,7 @@ public:
                 if ( data == 0) {
                     _implementation.reset((T*)0);
                     removeCurrent();
-                    return ERROR1("Couldnt create ilwisobject %1",resource.name());
+                    return ERROR1("Could not create ilwisobject %1",resource.name());
                 }
                 bool ok = data->prepare(options);
                 if ( !ok){
@@ -333,7 +333,7 @@ public:
             else {
                 _implementation.reset((T*)0);
                 removeCurrent();
-                return ERROR1("Couldnt create ilwisobject %1",resource.name());
+                return ERROR1("Could not create ilwisobject %1",resource.name());
             }
             removeCurrent();
             _implementation = ESPIlwisObject(data);
