@@ -1090,6 +1090,8 @@ QVariantList IlwisObjectModel::layerInfo() const
         if ( _ilwisobject->ilwisType() == itRASTER)    {
             IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
             QVariantMap mp;
+			ICatalog cat(_ilwisobject->resource().url().toString());
+			auto items = cat->items();
             for(quint32 i=0; i < raster->size().zsize(); ++i){
                 QString name = raster->name() + " " + raster->stackDefinition().index(i);
                 if ( raster->datadefRef(i).range()){
@@ -1107,6 +1109,10 @@ QVariantList IlwisObjectModel::layerInfo() const
                     }
                     mp["name"] = name;
                     mp["range"] = rangelist;
+					if (i < items.size()) {
+						mp["id"] = items[i].id();
+						mp["url"] = items[i].url().toString();
+					}
                     results.append(mp);
                 }
             }
