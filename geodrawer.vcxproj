@@ -207,6 +207,7 @@
     <ClCompile Include="geodrawer\drawerattributesetters\basespatialattributesetter.cpp" />
     <ClCompile Include="geodrawer\operations\attributeopacity.cpp" />
     <ClCompile Include="geodrawer\operations\setactiveattribute.cpp" />
+    <ClCompile Include="geodrawer\operations\setcolorcompositebands.cpp" />
     <ClCompile Include="geodrawer\pointlayermodel.cpp" />
     <ClCompile Include="geodrawer\polygonlayermodel.cpp" />
     <ClCompile Include="geodrawer\rasterlayermodel.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h" />
     <ClInclude Include="geodrawer\operations\attributeopacity.h" />
     <ClInclude Include="geodrawer\operations\setactiveattribute.h" />
+    <ClInclude Include="geodrawer\operations\setcolorcompositebands.h" />
     <ClInclude Include="geodrawer\tesselation\bucketalloc.h" />
     <ClInclude Include="geodrawer\tesselation\dict.h" />
     <ClInclude Include="geodrawer\tesselation\geom.h" />
