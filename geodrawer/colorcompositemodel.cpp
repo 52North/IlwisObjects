@@ -71,6 +71,13 @@ ColorCompositeLayerModel::ColorCompositeLayerModel(LayerManager *manager, QStand
 	}
 }
 
+IGeoReference ColorCompositeLayerModel::georeference() const {
+	if (_ccBands.size() > 0) {
+		return  _ccBands[0]->georeference();
+	}
+	return IGeoReference();
+}
+
 LayerModel *ColorCompositeLayerModel::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
 {
 	return new ColorCompositeLayerModel(manager, parentLayer, name, desc, options);
@@ -82,6 +89,21 @@ QVariant ColorCompositeLayerModel::vproperty(const QString& pName) const {
 }
 
 void ColorCompositeLayerModel::vproperty(const QString& pName, const QVariant& value) {
+	if (pName == "colorcompositerasters") {
+		QStringList ids = value.toString().split("|");
+		if (ids.size() == 3) {
+			for (int i = 0; i < 3; ++i) {
+				auto bandId = ids[i];
+				IRasterCoverage raster;
+				if (raster.prepare(bandId.toULongLong())) {
+					_ccBands[i] = raster;
+				}
+			}
+			_texturesNeedUpdate = true;
+			requestRedraw();
+			return;
+		}
+	}
 	RasterLayerModel::vproperty(pName, value );
 }
 
@@ -119,7 +141,7 @@ void ColorCompositeLayerModel::init()
 	_maxTextureSize = 256; // = min(512, getMaxTextureSize());
 	_paletteSize = 0;
 
-	textureHeap = new TextureHeap(this, _ccBands);
+	textureHeap = new TextureHeap(this, &_ccBands);
 
 	if (_raster->georeference().isValid() && _raster->georeference()->isValid()) {
 		_imageWidth = _raster->georeference()->size().xsize();
@@ -215,7 +237,7 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 		// check which quads are in the viewport, and mark them active
 		DivideImage(0, 0, _width, _height);
 		// refresh the pixel content of the textures (for stretch)
-		bool fUpdateTextures = false;
+		bool fUpdateTextures = _texturesNeedUpdate;
 		int count = 0;
 		for (auto band : _ccBands) {
 			VisualAttribute * attr = layer(count)->activeAttribute();
@@ -249,6 +271,7 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 				}
 			}
 			refreshStretch();
+			_texturesNeedUpdate = false;
 		}
 
 		// generate "addQuads" and "removeQuads" queues

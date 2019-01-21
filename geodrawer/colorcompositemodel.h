@@ -43,6 +43,7 @@ namespace Ilwis {
 			virtual QString value2string(const QVariant& value, const QString& attrName = "") const;
 			void setActiveAttribute(int idx);
 			void fillAttributes();
+			IGeoReference georeference() const;
 
 			static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 		protected:
@@ -52,6 +53,7 @@ namespace Ilwis {
 			void requestRedraw();
 			bool usesColorData() const;
 			std::vector<IRasterCoverage> _ccBands;
+			bool _texturesNeedUpdate = false;
 			std::vector<NumericRange> _currentStretchRanges;
 
 			NEW_LAYERMODEL(ColorCompositeLayerModel);

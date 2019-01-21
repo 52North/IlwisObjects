@@ -62,6 +62,7 @@ public:
     Q_PROPERTY(QVariantMap stretch READ stretch NOTIFY stretchChanged);
 
 	void coverage(const ICoverage& cov) override;
+	ICoverage coverage() const override;
     void fillAttributes();
 	bool prepare(int);
     QString value2string(const QVariant &value, const QString &attrName) const;

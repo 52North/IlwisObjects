@@ -204,6 +204,10 @@ QString RasterLayerModel::layerData(const Coordinate &crdIn, const QString &attr
     return txt;
 }
 
+ICoverage RasterLayerModel::coverage() const {
+	return CoverageLayerModel::coverage();
+}
+
 void RasterLayerModel::coverage(const ICoverage &cov)
 {
     CoverageLayerModel::coverage(cov);

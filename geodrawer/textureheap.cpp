@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Ui;
 
-TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, std::vector<IRasterCoverage> ccBands)
+TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const std::vector<IRasterCoverage> * ccBands)
 : textureThread(0)
 , fAbortTexGen(false)
 , fStopThread(false)
