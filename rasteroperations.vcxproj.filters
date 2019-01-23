@@ -100,8 +100,9 @@
     <ClCompile Include="rasteroperations\filter\timesat_nrs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
+    <ClCompile Include="rasteroperations\aggregaterasterstatistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h">
@@ -165,6 +166,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rasteroperations\filter\timesat_nrs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\aggregaterasterstatistics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
