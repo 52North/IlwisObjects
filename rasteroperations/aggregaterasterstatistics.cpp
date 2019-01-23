@@ -108,14 +108,23 @@ double stats_skew(const std::vector<double>& data) {
 	double std = stats_sd(data);
 	for (int i = 0; i < data.size(); i++) {
 		double delta = data[i] - mean;
-		sum = delta * delta * delta;
+		sum += delta * delta * delta;
 	}
 
 	return sum / (data.size() * std * std * std );
 }
 
+// excess kurtosis: zero for normal distribution (Kenney, J. F. and Keeping, E. S. Mathematics of Statistics, Pt. 2, 2nd ed. Princeton, NJ: Van Nostrand, 1951)
 double stats_kurtosis(const std::vector<double>& data) {
-	return rUNDEF;
+    double sum = 0;
+    double mean = stats_mean(data);
+    double std = stats_sd(data);
+    for (int i = 0; i < data.size(); i++) {
+        double delta = data[i] - mean;
+        sum += delta * delta * delta * delta;
+    }
+
+    return sum / (data.size() * std * std * std * std) - 3;
 }
 
 
