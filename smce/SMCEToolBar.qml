@@ -49,7 +49,7 @@ ToolBar{
 
             onClicked: {
                 working = true
-                var analysis = modellerDataPane.model.analysisPattern(0)
+                var analysis = modellerDataPane.model.analysisModel(0)
                 var input = {}
                 var output = analysis.execute(input)
                 var operationid = operations.operationId("ilwis://operations/runpython")

@@ -45,8 +45,8 @@ Column {
                 exclusiveGroup: modeGroup
                 Layout.minimumWidth: 100
                 onClicked: {
-                    if (manager.analysisManager.item.loaderItem != null) {
-                        manager.analysisManager.item.loaderItem.setForm("defMode")
+                    if (manager.analysisManager.item.form != null) {
+                        manager.analysisManager.item.form.setForm("defMode")
                         tree.setSmceMode(Node.EditTree)
                     }
                 }
@@ -58,8 +58,8 @@ Column {
                 enabled: tree.treeEditDone
                 Layout.minimumWidth: 100
                 onClicked: {
-                    if (manager.analysisManager.item.loaderItem != null) {
-                        manager.analysisManager.item.loaderItem.setForm("evalMode")
+                    if (manager.analysisManager.item.form != null) {
+                        manager.analysisManager.item.form.setForm("evalMode")
                         tree.setSmceMode(Node.StdWeigh)
                     }
                 }
@@ -82,12 +82,12 @@ Column {
             width : parent.width
             height : parent.height
             onSelNodeChanged: {
-                if (manager.analysisManager.item.loaderItem != null)
-                    manager.analysisManager.item.loaderItem.setSelectedNode(node)
+                if (manager.analysisManager.item.form != null)
+                    manager.analysisManager.item.form.setSelectedNode(node)
             }
             onSelItemChanged: {
-                if (manager.analysisManager.item.loaderItem != null) {
-                    manager.analysisManager.item.loaderItem.setSelectedItem(item)
+                if (manager.analysisManager.item.form != null) {
+                    manager.analysisManager.item.form.setSelectedItem(item)
                 }
             }
         }
@@ -95,6 +95,6 @@ Column {
 
     Component.onCompleted: {
         manager = smcePanel.parent.parent.parent.parent.children[1];
-        form = manager.analysisManager.item.loaderItem
+        form = manager.analysisManager.item.form
     }
 }
