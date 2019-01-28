@@ -312,7 +312,8 @@ std::vector<QString> SelectionBase::bands(const IRasterCoverage& raster) const
             bands.insert(bandIndex);
         if ( epart._box.isValid()){
             for(quint32 z=epart._box.min_corner().z; z <= epart._box.max_corner().z; ++z){
-                bands.insert(raster->stackDefinition().index(z));
+				if ( z != iUNDEF)
+					bands.insert(raster->stackDefinition().index(z));
             }
         }
     }
