@@ -118,7 +118,7 @@ Rectangle {
                 analysisView.state = workflowView.state = "invisible"
             }else if ( modellerDataPane.model.analysisCount > 0){
                 modellerViews.currentIndex = 2
-                var analysis = modellerDataPane.model.analysisPattern(subcurrentIndex)
+                var analysis = modellerDataPane.model.analysisModel(subcurrentIndex)
 				if(analisysView.currentAnalysis != analysis){
 					analisysView.currentAnalysis = analysis
 					analysisManager.item.refreshFormArea(analysis.panel("form"))
