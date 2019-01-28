@@ -299,7 +299,7 @@
     <None Include="desktopclient\qml\datapanel\FloatingWindow.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisCreateForm.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisList.qml" />
-    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ConstructClasses.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetMultiSpectralData.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\Statistics.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationForm.qml" />

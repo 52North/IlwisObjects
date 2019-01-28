@@ -1226,9 +1226,6 @@
     <None Include="desktopclient\qml\controls\CircularSlider.qml">
       <Filter>Distribution Files\qml\controls</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetDomain.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetMultiSpectralData.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
@@ -1239,6 +1236,9 @@
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationPanel.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ConstructClasses.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
   </ItemGroup>
