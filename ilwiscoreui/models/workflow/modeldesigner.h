@@ -67,7 +67,7 @@ public:
 
     QStringList analysisTypes() const;
     qint32 analysisCount() const;
-    Q_INVOKABLE Ilwis::Ui::AnalysisModel *analysisPattern(qint32 index) const;
+    Q_INVOKABLE Ilwis::Ui::AnalysisModel *analysisModel(qint32 index) const;
     Q_INVOKABLE bool addAnalysisPattern(Ilwis::Ui::AnalysisModel *amodel);
     Q_INVOKABLE void removeAnalysisPattern(const QString& name);
     Q_INVOKABLE void removeAnalysisPattern(qint32 index);

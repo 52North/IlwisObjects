@@ -217,7 +217,7 @@ qint32 ModelDesigner::analysisCount() const
     return _analysismodels.size();
 }
 
-AnalysisModel *ModelDesigner::analysisPattern(qint32 index) const
+AnalysisModel *ModelDesigner::analysisModel(qint32 index) const
 {
     if ( index < _analysismodels.size()){
         return _analysismodels[index]    ;
