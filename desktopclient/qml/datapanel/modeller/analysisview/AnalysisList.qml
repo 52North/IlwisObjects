@@ -69,7 +69,7 @@ Item {
                 anchors.margins: 3
                 highlight : Rectangle{width : parent ? parent.width : 0;height : 18;color : Global.selectedColor}
                 onCurrentIndexChanged: {
-                    var analysis = modellerDataPane.model.analysisPattern(analysisNamesList.currentIndex);
+                    var analysis = modellerDataPane.model.analysisModel(analysisNamesList.currentIndex);
                     if ( analysis){
 						if(analisysView.currentAnalysis != analysis) {
 							analisysView.currentAnalysis = analysis
