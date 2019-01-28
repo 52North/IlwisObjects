@@ -103,6 +103,9 @@
     <ClCompile Include="rasteroperations\aggregaterasterstatistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rasteroperations\mannkendallsignificancetest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h">
@@ -169,6 +172,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rasteroperations\aggregaterasterstatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\mannkendallsignificancetest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

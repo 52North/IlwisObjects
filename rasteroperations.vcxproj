@@ -189,6 +189,7 @@
     <ClCompile Include="rasteroperations\distanceraster.cpp" />
     <ClCompile Include="rasteroperations\line2raster.cpp" />
     <ClCompile Include="rasteroperations\filter\linearrasterfilter.cpp" />
+    <ClCompile Include="rasteroperations\mannkendallsignificancetest.cpp" />
     <ClCompile Include="rasteroperations\mirrorrotateraster.cpp" />
     <ClCompile Include="rasteroperations\movingaverage.cpp" />
     <ClCompile Include="rasteroperations\pointtoraster.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="rasteroperations\distanceraster.h" />
     <ClInclude Include="rasteroperations\line2raster.h" />
     <ClInclude Include="rasteroperations\filter\linearrasterfilter.h" />
+    <ClInclude Include="rasteroperations\mannkendallsignificancetest.h" />
     <ClInclude Include="rasteroperations\mirrorrotateraster.h" />
     <ClInclude Include="rasteroperations\movingaverage.h" />
     <ClInclude Include="rasteroperations\pointtoraster.h" />
