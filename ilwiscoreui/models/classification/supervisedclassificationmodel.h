@@ -28,16 +28,22 @@ namespace Ilwis {
 
         public:
 			Q_PROPERTY(QString multispectralraster READ multispectralraster WRITE multispectralraster NOTIFY multispectralrasterChanged)
+
             SupervisedClassificationmodel();
             SupervisedClassificationmodel(Ilwis::AnalysisPattern *p);
             static Ilwis::Ui::AnalysisModel *create(Ilwis::AnalysisPattern *pattern);
             Q_INVOKABLE QVariantMap execute(const QVariantMap parameters);
+			Q_INVOKABLE void multispectralraster(const QString& msr);
+			Q_INVOKABLE QString selectionRaster();
+			Q_INVOKABLE void setGroupStartPoint(const QVariantMap& point);
+			Q_INVOKABLE void setSpectralDistance(double dist);
+
 
 		signals:
 			void multispectralrasterChanged();
         private:
 			QString multispectralraster() ;
-			void multispectralraster(const QString& msr);
+
         };
     }
 }

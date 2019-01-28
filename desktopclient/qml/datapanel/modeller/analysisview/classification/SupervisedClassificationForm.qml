@@ -12,16 +12,17 @@ Column {
     id : colorcomp
     y : 4
 	width : 200
-	height : 200
+	height : 340
 	property var bands : []
-	property var raster
+	property var ccRaster
 	spacing : 2
 
 
-
-	onRasterChanged : {
-	    if ( analisysView && analisysView.view() && raster)
-			analisysView.view().setRaster(raster)
+	onCcRasterChanged : {
+	    if ( analisysView && analisysView.view() && ccRaster){
+		    var options = 'createtype=colorcomposite,items=' + bands[0].id + '|' +  bands[1].id + '|' +  bands[2].id
+			analisysView.view().setRaster(ccRaster, options)
+		}
 	}
 
 	Component {
@@ -31,7 +32,7 @@ Column {
 
     Component {
         id : domain
-        SetDomain{}
+        ConstructClasses{}
     }
 
 	 Component {
@@ -40,19 +41,22 @@ Column {
     }
 	TabView {
 	        id : data
-            height: 200
+            height: parent.height
             width : parent.width
 
 
 			Component.onCompleted: {
 				addTab(qsTr("Multi Spectral Data"), spectral).active = true
-				addTab(qsTr("Domain"), domain).active = true
+				addTab(qsTr("Construct Classes"), domain).active = true
 				addTab(qsTr("Statistics"), stats).active = true
 			}
 	}
 
 	function selectedBands(red,green,blue){
-		console.debug("wwww", red, green, blue)
+		 var options = red + ',' + green + ',' + blue
+		 if ( analisysView && analisysView.view()){
+			analisysView.view().setNewBands(options)
+		}
 	}
 }
 

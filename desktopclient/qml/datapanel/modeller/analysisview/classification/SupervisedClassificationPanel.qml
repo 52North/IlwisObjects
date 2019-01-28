@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import ModelRegistry 1.0
+import AnalysisModel 1.0
 import "../../../../Global.js" as Global
 import "../../../../controls" as Controls
 import "../../../../datapanel/visualization" as Vis
@@ -35,16 +36,35 @@ SplitView {
 			width : parent.width - 250
 			height : parent.height
 			showManager : false
+			activeEditor : scMap
 	}
 
-	
+	function setRaster(newraster, options){
+		var scpModel = modellerDataPane.model.analysisModel(0)
+	    maps.addDataSource("itemid=" + newraster.id, newraster.name, 'rastercoverage', options)
+		maps.addDataSource("itemid=" + scpModel.selectionRaster(), 'selection', 'rastercoverage')
 
-	function setRaster(raster){
-	    maps.addDataSource("itemid=" + raster.id, raster.name, 'rastercoverage')
 		ppp.height = maps.height = datapane.height
-    }
+	}
+
+	function setNewBands(bands){
+		var cmd = "setcolorcompositebands(" + maps.activeLayerManager().viewid + ",5," +  bands + ")"
+		maps.activeLayerManager().addCommand(cmd)
+	}
 
 	function activeLayerExtentsToolbar() {
 		return maptools
+	}
+
+	function handleMousePressed(mx,my) {
+	    console.debug(mx,my)
+		var scpModel = modellerDataPane.model.analysisModel(0)
+		var rasterPixel = maps.activeLayerManager().rootLayer.screen2raster(analysisManager.form.ccRaster, mx,my)
+		scpModel.setGroupStartPoint(rasterPixel)
+	}
+
+	function setSpectralDistance(dist) {
+		var scpModel = modellerDataPane.model.analysisModel(0)
+		scpModel.setSpectralDistance(dist)
 	}
 }

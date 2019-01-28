@@ -27,18 +27,17 @@ Column {
 				var query = "resource='" + content +"' and type=8"
 				var items = mastercatalog.select(query,"")
 				if ( items.length == 1){
-					var obj = mastercatalog.id2object(items[0], null)
+					var obj = mastercatalog.id2object(items[0], multisr)
 					if (obj.typeName === "rastercoverage"){
 						var isint = Global.isInteger(obj.internalValuetype)
 						if ( isint){
 							var layerinf = obj.layerInfo
 							if ( layerinf.length > 1 ){
 								bands = layerinf
-								raster = obj
+								ccRaster = obj
 							}
 						}
 					}
-					obj.suicide()
 				}
 			}
 		}
@@ -48,21 +47,21 @@ Column {
             id : redband
             labelText : qsTr("Red band")
             labelWidth : 120
-            width : parent.width - 5
+            width : Math.min(350,parent.width - 5)
             role : "name"
             itemModel : bands
 
 			onItemModelChanged : {
 			    if ( bands.length > 2){
 					dataSelect.select(redband, bands[0].name)
-					redPart = bands[0].id
+					redPart = bands[0].url
 				}
 			}
 
 			Connections {
 				target:redband
 				onIndexChanged :{
-					redPart = redband.itemModel[redband.currentIndex].id	
+					redPart = redband.itemModel[redband.currentIndex].url	
 					selectedBands(redPart, greenPart, bluePart)
 				}
 			}
@@ -72,21 +71,21 @@ Column {
             id : greenband
             labelText : qsTr("Green band")
             labelWidth : 120
-            width : parent.width - 5
+            width : Math.min(350,parent.width - 5)
             role : "name"
             itemModel : bands
 
 			onItemModelChanged : {
 			    if ( bands.length > 2){
 					dataSelect.select(greenband, bands[1].name)
-					greenPart = bands[1].id
+					greenPart = bands[1].url
 				}
 			}
 
 			Connections {
 				target: greenband
 				onIndexChanged :{
-					greenPart = greenband.itemModel[greenband.currentIndex].id	
+					greenPart = greenband.itemModel[greenband.currentIndex].url
 					selectedBands(redPart, greenPart, bluePart)
 				}
 			}
@@ -96,21 +95,21 @@ Column {
             id : blueband
             labelText : qsTr("Blue band")
             labelWidth : 120
-            width : parent.width - 5
+            width : Math.min(350,parent.width - 5)
             role : "name"
             itemModel : bands
 
 			onItemModelChanged : {
 			    if ( bands.length > 2){
 					dataSelect.select(blueband, bands[2].name)
-					bluePart = bands[0].id
+					bluePart = bands[0].url
 				}
 			}
 
 			Connections {
 				target:blueband
 				onIndexChanged :{
-					bluePart = blueband.itemModel[blueband.currentIndex].id	
+					bluePart = blueband.itemModel[blueband.currentIndex].url	
 					selectedBands(redPart, greenPart, bluePart)
 				}
 			}

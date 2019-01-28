@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "modeller/analysispattern.h"
 #include "modeller/applicationmodel.h"
 #include "modeller/model.h"
+#include "ilwiscontext.h"
 #include "modeller/analysispattern.h"
 #include "workflow/modelbuilder.h"
 #include "supervisedclassification.h"
@@ -75,6 +76,18 @@ QString SupervisedClassificationmodel::multispectralraster()  {
 	return result;
 
 }
+QString SupervisedClassificationmodel::selectionRaster() {
+	if (_analysis) {
+		QVariant data = _analysis->data(SELECTIONRASTERKEY);
+		if (data.isValid()) {
+			IRasterCoverage raster = data.value<IRasterCoverage>();
+			if (raster.isValid()) {
+				return QString::number(raster->resource().id()); 
+			}
+		}
+	}
+	return sUNDEF;
+}
 
 void SupervisedClassificationmodel::multispectralraster(const QString& msr) {
 	if (_analysis) {
@@ -87,4 +100,18 @@ void SupervisedClassificationmodel::multispectralraster(const QString& msr) {
 		}
 	}
 }
+
+void SupervisedClassificationmodel::setGroupStartPoint(const QVariantMap& point) {
+	if (_analysis) {
+		_analysis->addData(SELECTEDPIXEL, point);
+	}
+}
+
+void SupervisedClassificationmodel::setSpectralDistance(double v) {
+	if (_analysis) {
+		_analysis->addData(SPECTRALDISTANCE, v);
+	}
+}
+
+
 
