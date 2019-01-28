@@ -101,7 +101,7 @@ bool CrosssectionTool::canUse(const IIlwisObject& obj, const QString& name ) con
 {
     if (!obj.isValid())
         return false;
-    if(!hasType(obj->ilwisType(), itCOVERAGE))
+    if(!hasType(obj->ilwisType(), itRASTER))
         return false;
     return name == VisualAttribute::LAYER_ONLY;
 
