@@ -34,6 +34,9 @@ namespace Ui {
 
 	const QString SCRASTERKEY = "multispectralraster";
 	const QString SCDOMAINKEY = "classifierdomain";
+	const QString SELECTIONRASTERKEY = "selectionraster";
+	const QString SELECTEDPIXEL = "selectionpixel";
+	const QString SPECTRALDISTANCE = "spectraldistance";
 
 class SupervisedClassification : public AnalysisPattern
 {
@@ -50,6 +53,7 @@ public:
 	virtual void addData(const QString& key, const QVariant& var);
 	virtual QVariant data(const QString& key) const;
    static AnalysisPattern *create(const QString& name, const QString& description, const Ilwis::IOOptions &options);
+   void setSelection(const Pixel& pix);
 
 signals:
 
@@ -59,8 +63,15 @@ private:
     void Init();
 
 	IRasterCoverage _multiSpectralRaster;
+	IRasterCoverage _multiSpectralRasterSelection;
 	IDomain _items;
 	ITable _statistics;
+	const int MARKED = -1;
+	const int SELECT = 1;
+	Pixel _selectionPoint;
+	double _spectralDistance = rUNDEF;
+
+	void generateNeighbours(const Pixel& pix, PixelIterator& iterSelect, std::vector<Pixel>& linPixelPositions);
 
 };
 }

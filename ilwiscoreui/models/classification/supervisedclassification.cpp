@@ -19,9 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "modeller/modellerfactory.h"       
 #include "commandhandler.h" 
 #include "operationmetadata.h"   
-#include "geos/geom/Coordinate.h"         
-#include "location.h"
-#include "ilwiscoordinate.h" 
+#include "raster.h"
+#include "pixeliterator.h"
+#include "operationhelpergrid.h"
 #include "box.h" 
 #include "supervisedclassification.h"      
 
@@ -64,7 +64,12 @@ void SupervisedClassification::loadMetadata(QDataStream &stream)
 	if (sraster != "") {
 		if (!_multiSpectralRaster.prepare(sraster)) {
 			kernel()->issues()->log(TR("Couldnt load model. Raster is not available: ") + sraster);
+			return;
 		}
+		OperationHelperRaster::initialize(_multiSpectralRaster, _multiSpectralRasterSelection, itDOMAIN | itGEOREF | itCOORDSYSTEM | itENVELOPE);
+		std::vector<double> indexes = { 0 };
+		_multiSpectralRasterSelection->setDataDefintions(IDomain("count"), indexes);
+		_multiSpectralRasterSelection->name("PixelSelection");
 	}
 }
 
@@ -99,14 +104,90 @@ void SupervisedClassification::addData(const QString& key, const QVariant& var) 
 		IRasterCoverage raster = var.value<IRasterCoverage>();
 		if (raster.isValid()) {
 			_multiSpectralRaster = raster;
+			OperationHelperRaster::initialize(raster, _multiSpectralRasterSelection, itDOMAIN | itGEOREF | itCOORDSYSTEM | itENVELOPE);
+			std::vector<double> indexes = { 0 };
+			_multiSpectralRasterSelection->setDataDefintions(IDomain("count"), indexes);
+			_multiSpectralRasterSelection->name("PixelSelection");
+		}
+	}
+	if (key == SELECTEDPIXEL) {
+		QVariantMap point = var.toMap();
+		Pixel p{ point["x"].toInt(), point["y"].toInt() };
+		if (p != _selectionPoint) {
+			_selectionPoint = p;
+			setSelection(_selectionPoint);
+		}
+	}
+	if (key == SPECTRALDISTANCE) {
+		auto d = var.toDouble();
+		if (d != _spectralDistance) {
+			_spectralDistance = d;
+			setSelection(_selectionPoint);
 		}
 	}
 }
 
 QVariant SupervisedClassification::data(const QString& key) const {
 	QVariant data;
-	data.setValue<IRasterCoverage>(_multiSpectralRaster);
+	if ( key == SCRASTERKEY)
+		data.setValue<IRasterCoverage>(_multiSpectralRaster);
+	if ( key == SELECTIONRASTERKEY)
+		data.setValue<IRasterCoverage> (_multiSpectralRasterSelection);
 	return data;
 }
+
+void SupervisedClassification::generateNeighbours(const Pixel& pix, PixelIterator& iterSelect, std::vector<Pixel>& linPixelPositions) {
+
+	std::vector<Pixel> basePositions;
+	basePositions.reserve(9);
+	std::vector<int> offsets = { 1,0,-1 };
+	for (int x = 0; x < 3; ++x) {
+		auto newX = pix.x + offsets[x];
+		if (newX >= 0 || newX < iterSelect.raster()->size().xsize()) {
+			for (int y = 0; x < y; ++y) {
+				auto newY = pix.y + offsets[y];
+				if (newY >= 0 || newY < iterSelect.raster()->size().ysize())
+					basePositions.push_back(Pixel(newX, newY));
+			}
+		}
+	}
+
+	for (const Pixel& basePix : basePositions) {
+		auto& neighbourLocation = *(iterSelect[basePix]);
+		if (neighbourLocation != MARKED && neighbourLocation != SELECT) {
+			linPixelPositions.push_back(basePix);
+			neighbourLocation = MARKED;
+		}
+	}
+}
+
+void SupervisedClassification::setSelection(const Pixel& pix) {
+	if (_spectralDistance == rUNDEF || _spectralDistance <=0 || !_selectionPoint.isValid() ||
+		!_multiSpectralRasterSelection.isValid() || !_multiSpectralRaster.isValid())
+		return;
+
+	PixelIterator iterSelect(_multiSpectralRasterSelection);
+	PixelIterator iterInput(_multiSpectralRaster);
+	iterSelect = pix;
+	iterInput = pix;
+	double d2 = _spectralDistance * _spectralDistance;
+    double startValue = *iterInput;
+	startValue = startValue * startValue;
+	std::vector<Pixel> linPixelPositions;
+
+	generateNeighbours(iterInput.position(), iterSelect, linPixelPositions);
+
+	while (linPixelPositions.size() > 0) {
+		Pixel linPos = linPixelPositions.back();
+		linPixelPositions.pop_back();
+		double vInput = *(iterInput[linPos]);
+		double vInput2 = vInput * vInput;
+		if (startValue - vInput2 <= d2) {
+			*(iterSelect[linPos]) = SELECT;
+			generateNeighbours(linPos, iterSelect, linPixelPositions);
+		}
+	}
+}
+
 
 
