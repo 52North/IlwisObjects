@@ -13,7 +13,7 @@ Item {
     height : parent.height
     property string iconName : "../images/modeller_analysis"
 
-    property alias loaderItem: formArea.item
+    property alias form: formArea.item
 
     signal msg(string msg)
 
