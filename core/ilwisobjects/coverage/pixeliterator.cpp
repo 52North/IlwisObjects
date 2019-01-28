@@ -200,7 +200,7 @@ void PixelIterator::init() {
     _xChanged = _yChanged = _zChanged = false;
 }
 
-bool PixelIterator::moveXY(int delta){
+bool PixelIterator::moveXY(qint64 delta){
     _zChanged = (_z - delta) %  (int)_box.zlength() != 0;
     qint32 tempx = _x + (_z - _box.min_corner().z) / _box.zlength();
     _z = _box.min_corner().z + (_z - _box.min_corner().z) % (int)_box.zlength();
@@ -224,7 +224,7 @@ bool PixelIterator::moveXY(int delta){
     return true;
 }
 
-bool PixelIterator::moveXZ(int delta)
+bool PixelIterator::moveXZ(qint64 delta)
 {
     qint32 tempy = _y;
     qint32 tempx = _x;
@@ -275,7 +275,7 @@ bool PixelIterator::move2NextBlock() {
     return true;
 }
 
-bool PixelIterator::moveYZ(int delta){
+bool PixelIterator::moveYZ(qint64 delta){
     qint32 tempy;
     if ( _x < _box.min_corner().x){
 
@@ -347,7 +347,7 @@ const BoundingBox &PixelIterator::box() const
     return _box;
 }
 
-quint32 PixelIterator::linearPosition() const
+quint64 PixelIterator::linearPosition() const
 {
    // return sz.xsize() * sz.ysize() * _z + sz.xsize() * _y + _x;
     return _linearposition;

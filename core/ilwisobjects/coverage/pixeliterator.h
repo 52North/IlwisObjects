@@ -223,7 +223,7 @@ public:
      * \param index the target index
      * \return the value at the index
      */
-    PIXVALUETYPE& operator[](quint32 index){
+    PIXVALUETYPE& operator[](qint64 index){
         _x = 0;
         _y = 0;
         _z = 0;
@@ -427,7 +427,7 @@ public:
      * \brief Query for the linearPosition of this PixelIterator
      * \return the lineairposition
      */
-    quint32 linearPosition() const;
+    quint64 linearPosition() const;
 
     /*!
      * \brief Sets the raster of this PixelIterator
@@ -453,7 +453,7 @@ public:
      * \param n the amount to be added
      * \return this iterator moved n
      */
-    PixelIterator operator+(int n) {
+    PixelIterator operator+(qint64 n) {
         PixelIterator iter(*this);
         iter.move(n);
         return iter;
@@ -511,7 +511,7 @@ protected:
     bool _insideSelection = false;
 
 
-    bool move(int n) {
+    bool move(qint64 n) {
         if ( n == 0){
             _xChanged = _yChanged = _zChanged = false;
             return true;
@@ -539,7 +539,7 @@ protected:
 private:
 
 
-    bool moveZXY(int delta){
+    bool moveZXY(qint64 delta){
         _z += delta;
         _linearposition += delta * _box.xlength() * _box.ylength();
         _zChanged = true;
@@ -553,7 +553,7 @@ private:
         return true;
     }
 
-    bool moveYXZ(int delta){
+    bool moveYXZ(qint64 delta){
         _y += delta;
         _linearposition += delta * _box.xlength();
         _localOffset += delta * _box.xlength();
@@ -570,7 +570,7 @@ private:
         return true;
     }
 
-    bool moveXYZ(int delta) {
+    bool moveXYZ(qint64 delta) {
         _x += delta;
         _linearposition += delta;
         _localOffset += delta;
@@ -602,9 +602,9 @@ private:
         return true;
     }
 
-    bool moveYZ(int delta);
-    bool moveXY(int delta);
-    bool moveXZ(int delta);
+    bool moveYZ(qint64 delta);
+    bool moveXY(qint64 delta);
+    bool moveXZ(qint64 delta);
     bool move2NextSelection(int delta);
     void cleanUp4PolyBoundaries(const std::vector<Ilwis::Pixel> &selectionPix, geos::geom::Geometry *selection);
     bool move2NextBlock();
