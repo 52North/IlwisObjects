@@ -938,6 +938,16 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
                 }
             }
         }
+		if (propertyname == "numericrange") {
+			if (hasType(_ilwisobject->ilwisType(), itRASTER)) {
+				IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
+				if (raster.isValid() && raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+					auto nrange = raster->datadef().range()->as<NumericRange>();
+					return QString("%1|%2|%3").arg(nrange->min()).arg(nrange->max()).arg(nrange->resolution());
+				}
+			}
+			return sUNDEF;
+		}
 
         return "";
     } catch(const ErrorObject& ){
