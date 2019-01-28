@@ -58,6 +58,8 @@ public:
 
      Q_INVOKABLE QVariantMap screen2Coord(const QVariantMap &var) const;
      Q_INVOKABLE QVariantMap coord2Screen(const QVariantMap &var) const;
+	 Q_INVOKABLE QVariantMap screen2raster(const QString& rasterid, int c, int r) const;
+	 Q_INVOKABLE QVariantMap raster2screen(IlwisObjectModel *obj, double x, double y) const;
      Q_INVOKABLE QVariantMap drawEnvelope(const QString &envelope) const;
      Q_INVOKABLE QString layerInfo(const QString &pixelpair) ;
      Q_INVOKABLE QVariant vproperty(const QString& attrName) const;

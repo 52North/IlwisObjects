@@ -355,6 +355,39 @@ void RootLayerModel::clearLayers()
     _layerInfoItems = QVariantList();
 }
 
+QVariantMap RootLayerModel::screen2raster(const QString& rasterid, int c, int r) const {
+
+	QVariantMap mp;
+	auto crd = screenGrf()->pixel2Coord(Pixel(c, r));
+	IRasterCoverage raster;
+	if (raster.prepare(rasterid.toULongLong())) {
+		if (raster.isValid()) {
+			if (!raster->coordinateSystem()->isCompatibleWith(screenCsy().ptr())) {
+				crd = raster->coordinateSystem()->coord2coord(screenCsy(), crd);
+			}
+			Pixel pix = raster->georeference()->coord2Pixel(crd);
+			mp["x"] = pix.x;
+			mp["y"] = pix.y;
+		}
+	}
+	return mp;
+}
+
+QVariantMap RootLayerModel::raster2screen(IlwisObjectModel *obj, double x, double y) const {
+	QVariantMap mp;
+	auto pix = screenGrf()->coord2Pixel(Coordinate(x, y));
+	auto object = obj->object();
+	if (object->ilwisType() == itRASTER) {
+		IRasterCoverage raster = object.as<RasterCoverage>();
+		if (raster.isValid()) {
+			auto crd = raster->georeference()->pixel2Coord(pix);
+			mp["column"] = crd.x;
+			mp["row"] = crd.y;
+		}
+	}
+	return mp;
+}
+
 QVariantMap RootLayerModel::coord2Screen(const QVariantMap &var) const
 {
     Envelope env(var);
