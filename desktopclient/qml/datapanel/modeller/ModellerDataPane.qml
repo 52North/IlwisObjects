@@ -101,6 +101,7 @@ Item {
         manager.applicationView= applicationView
         manager.conceptView= conceptualView
         workflowView.workflowManager = manager.workflowManager
+		analysisView.analysisManager = manager.analysisManager.item
     }
 
     function addDataSource(filter, sourceName, sourceType, options){
