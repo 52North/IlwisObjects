@@ -25,7 +25,12 @@ using namespace Ilwis;
 using namespace Ui;
 
 WorkSpaceModel::WorkSpaceModel(const QString &name, QObject *parent) :
-    CatalogModel( Ilwis::Resource("ilwis://internalcatalog/workspaces/" + name,itWORKSPACE),CatalogModel::ctINTERNAL|CatalogModel::ctDATA|(CatalogModel::ctOPERATION|name == "default" ? CatalogModel::ctFIXED : CatalogModel::ctMUTABLE),parent)
+    CatalogModel( Ilwis::Resource("ilwis://internalcatalog/workspaces/" + name,itWORKSPACE),
+        CatalogModel::ctINTERNAL |
+        CatalogModel::ctDATA |
+        CatalogModel::ctOPERATION | 
+        (name == "default" ? CatalogModel::ctFIXED : CatalogModel::ctMUTABLE),
+        parent)
 {
 }
 
