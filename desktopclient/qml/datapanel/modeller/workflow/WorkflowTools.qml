@@ -118,7 +118,7 @@ ToolBar{
             checkable: true
             exclusiveGroup: toolgroup
             iconSource: iconsource("choice20.png")
-            tooltip : qsTr("When activated the next click on the workflow panel will create a new condition item")
+            tooltip : qsTr("Create a new condition on the next click in the workflow, when activated")
             onClicked: {
                 workarea.dropCondition = checked
             }
@@ -131,6 +131,7 @@ ToolBar{
             checkable: true
             exclusiveGroup: toolgroup
             iconSource: iconsource("loop.png")
+            tooltip : qsTr("Create a new loop item on the next click in the workflow, when activated")
             onClicked: {
                 workarea.dropLoop = checked
             }
@@ -144,7 +145,7 @@ ToolBar{
             checkable: true
             exclusiveGroup: toolgroup
             iconSource: iconsource("collapse.png")
-            tooltip : qsTr("Collapses all operation to a minimized for or vice versa")
+            tooltip : qsTr("Collapses / restores all operations to a minimized / normal state")
             onClicked: {
                 colbut.collapsed = !colbut.collapsed
                 workarea.collapse(colbut.collapsed)
