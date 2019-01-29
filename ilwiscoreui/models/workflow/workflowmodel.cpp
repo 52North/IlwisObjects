@@ -753,6 +753,9 @@ QString WorkflowModel::generateScript(const QString &type, const QString& parame
             IOOptions opt("expression", value);
             _workflow->store(opt);
             result = _workflow->constConnector(IlwisObject::cmOUTPUT)->getProperty("content").toString();
+
+            // reconnect to destroyed stream connector
+            _workflow->connectTo(url, "workflow", "stream", IlwisObject::cmOUTPUT);
         }
         return result;
     }
