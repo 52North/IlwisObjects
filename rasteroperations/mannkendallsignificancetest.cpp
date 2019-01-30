@@ -15,17 +15,23 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <iostream>
+#include <tuple>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "symboltable.h"
 #include "domain.h"
 #include "raster.h"
+#include "basetable.h"
+#include "flattable.h"
 #include "pixeliterator.h"
 #include "operationExpression.h"
 #include "operationmetadata.h"
 #include "operationhelper.h"
 #include "operationhelpergrid.h"
 #include "commandhandler.h"
+#include "itemdomain.h"
+#include "interval.h"
+#include "intervalrange.h"
 #include "operation.h"
 #include "mannkendallsignificancetest.h"
 #include "boost/math/distributions/normal.hpp"
@@ -52,13 +58,13 @@ double MannKendallSignificanceTest::trendValue(const std::vector<double>& stackC
 		std::vector<int> deltaDirection(stackColumn.size(),0);
 		double init = stackColumn[i];
 		int repeats = 0;
-		for (int j = 0; j < stackColumn.size(); ++i) {
+		for (int j = 0; j < stackColumn.size(); ++j) {
 			if (j > i) {
 				double v = stackColumn[j];
 				double d = init - v;
-				if (isNumericalUndef(v)) {
+				if ( std::abs(d) < EPS8) {
 					deltaDirection[j] = 0;
-					repeats++;
+					++repeats;
 				}else
 					deltaDirection[j] = d > 0 ? 1 : -1;
 			}
@@ -75,9 +81,12 @@ double MannKendallSignificanceTest::trendValue(const std::vector<double>& stackC
 }
 
 double MannKendallSignificanceTest::calcVarS(int n, const std::vector<int>&ties) const{
-	auto lambda = [](int init, int v)->int { return v * (v - 1)*(2 * v + 5); };
-	int tieFactor = std::accumulate(ties.begin(),  ties.end(), 0, lambda);
-	int sizeFactor = lambda(0,n);
+	auto lambda = [](int v)->int { return v * (v - 1)*(2 * v + 5); };
+	int tieFactor = 0; // std::accumulate(ties.begin(), ties.end(), 0, lambda);
+	for (auto t : ties) {
+		tieFactor += lambda(t);
+	}
+	int sizeFactor = lambda(n);
 
 	return (sizeFactor - tieFactor) / 18;
 
@@ -104,13 +113,13 @@ bool MannKendallSignificanceTest::execute(ExecutionContext *ctx, SymbolTable &sy
 	zcolumn.reserve(_inputRaster->size().zsize());
 	PixelIterator iterIn(_inputRaster, BoundingBox(), PixelIterator::fZXY);
 	int count = 0;
+    std::vector<bool> usedRaws(_maxRaw + 1, false);
 	for (auto& value : _outputRaster) {
 		while (!xchanged) {
 			zcolumn.push_back(*iterIn);
 			++iterIn;
 			xchanged = iterIn.xchanged();
 		}
-		updateTranquilizer(++count, 100);
 		std::vector<int> ties;
 		double s = trendValue(zcolumn, ties);
 		zcolumn.clear(); // next column
@@ -119,11 +128,37 @@ bool MannKendallSignificanceTest::execute(ExecutionContext *ctx, SymbolTable &sy
 		double z = calcZ(s, varS);
 		normal ndis;
 		double prob = cdf(ndis, z);
-		value = prob > 0;
-
-		updateTranquilizer(iterIn.linearPosition(), 1000);
+		value = 0;
+		for (auto i : _limits) {
+			double vmin = std::get<0>(i);
+			double vmax = std::get<1>(i);
+			if (prob >= vmin && prob <= vmax) {
+				value = std::get<2>(i);
+				usedRaws[value] = true;
+				break;
+			}
+		}
+		
+		updateTranquilizer(count++, 1000);
 
 	}
+	for (int r = 0; r < usedRaws.size(); ++r) {
+		if (usedRaws[r]) {
+			auto item = _trendDomain->item(r)->clone();
+			_outputRaster->datadef().range()->as<IntervalRange>()->add(item->clone());
+		}
+	}
+	IFlatTable tbl;
+	tbl.prepare();
+	tbl->addColumn(COVERAGEKEYCOLUMN, _outputRaster->datadef().domain());
+	int rec = 0;
+	ItemRangeIterator iter(_outputRaster->datadef().range<>().data());
+	while (iter.isValid()) {
+		SPDomainItem item = (*iter);
+		tbl->setCell(0, rec++, item->raw());
+		++iter;
+	}
+	_outputRaster->setAttributes(tbl);
 
 	QVariant value;
 	value.setValue<IRasterCoverage>(_outputRaster);
@@ -148,24 +183,42 @@ Ilwis::OperationImplementation::State MannKendallSignificanceTest::prepare(Execu
 		return sPREPAREFAILED;
 	}
 
-	OperationHelper::check([&]()->bool { return _significanceDomain.prepare(_expression.input<QString>(1), itDOMAIN); },
+	IDomain dom;
+	OperationHelper::check([&]()->bool { return dom.prepare(_expression.input<QString>(1), itDOMAIN); },
 		{ ERR_COULD_NOT_LOAD_2,_expression.input<QString>(1), "" });
 
-	if (_significanceDomain->ilwisType() != itITEMDOMAIN) {
-		kernel()->issues()->log(TR("Significance domain must be an item domain"));
+	if (dom->ilwisType() != itITEMDOMAIN) {
+		kernel()->issues()->log(TR("Trend domain must be an item domain"));
 		return sPREPAREFAILED;
 	}
-
-	OperationHelper::check([&]()->bool { bool ok;  _significanceValue = _expression.input<double>(2,ok); return ok; },
-		{ ERR_NO_INITIALIZED_1,"significance value", _expression.input<QString>(2) });
-
-	OperationHelperRaster::initialize(_inputRaster, _outputRaster, itCOORDSYSTEM | itGEOREF| itENVELOPE| itRASTERSIZE);
+	if (dom->valueType() != itNUMERICITEM) {
+		kernel()->issues()->log(TR("Trend domain must be an item domain with intervals"));
+		return sPREPAREFAILED;
+	}
+	_trendDomain = dom.as<IntervalDomain>();
+	double smin=100, smax = -100;
+	for (auto item : _trendDomain) {
+		auto interval = item->as<Interval>();
+		double vmin = interval->range().min();
+		double vmax = interval->range().max();
+		int raw = interval->raw();
+		auto tup = std::make_tuple(vmin, vmax, raw);
+		_limits.push_back(tup);
+		smin = std::min(smin, vmin);
+		smax = std::max(smax, vmax);
+		_maxRaw = std::max(_maxRaw, raw);
+	}
+	if (smin < 0 || smax > 1) {
+		kernel()->issues()->log(TR("Trend domain values must be between 0 (exclusive) and 1 (exclusive)"));
+	}
+		
+	OperationHelperRaster::initialize(_inputRaster, _outputRaster, itCOORDSYSTEM | itGEOREF| itENVELOPE);
 	if (!_outputRaster.isValid()) {
 		ERROR1(ERR_NO_INITIALIZED_1, "output rastercoverage");
 		return sPREPAREFAILED;
 	}
 	std::vector<double> indexes = { 0 };
-	_outputRaster->setDataDefintions(_significanceDomain, indexes);
+	_outputRaster->setDataDefintions(_trendDomain, indexes);
 
 	initialize(_outputRaster->size().linearSize());
 
@@ -177,13 +230,12 @@ quint64 MannKendallSignificanceTest::createMetadata()
 {
 	OperationResource operation({ "ilwis://operations/mannkendallsignificancetest" });
 	operation.setLongName("Mann-Kendall Significance Test");
-	operation.setSyntax("MannKendallSignificanceTest(raster,domain,number)");
-	operation.setInParameterCount({ 3 });
+	operation.setSyntax("MannKendallSignificanceTest(raster,domain)");
+	operation.setInParameterCount({ 2 });
 	operation.addInParameter(0, itRASTER, TR("Multi-band raster"), TR("A multi band raster with a numeric domain"));
-	operation.addInParameter(1, itDOMAIN, TR("Output domain"), TR("An item domain that indicates the semantcis of signinfance for the output map"));
-	operation.addInParameter(2, itDOUBLE, TR("Significance level"), TR("The probability that a pixel(value) belongs to a certain hypothesis"));
+	operation.addInParameter(1, itDOMAIN, TR("Interval domain"), TR("An item interval domain that indicates the semantcis of trends for the output map"));
 	operation.setOutParameterCount({ 1 });
-	operation.addInParameter(6, itRASTER , TR("significance raster"), TR("A raster with pixel class values indicating the significance of a certain process"));
+	operation.addOutParameter(0, itRASTER , TR("trend raster"), TR("A raster with pixel class values indicating the trend of a certain process"));
 	operation.setKeywords("raster, statistics, trends");
 
 	mastercatalog()->addItems({ operation });

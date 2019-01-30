@@ -7,6 +7,7 @@ namespace Ilwis {
 	typedef IlwisData<RasterCoverage> IRasterCoverage;
 
 	namespace RasterOperations {
+		typedef std::vector< std::tuple<double, double, qint32> > Limits;
 
 		class MannKendallSignificanceTest : public OperationImplementation
 		{
@@ -25,8 +26,9 @@ namespace Ilwis {
 		private:
 			IRasterCoverage _inputRaster;
 			IRasterCoverage _outputRaster;
-			IDomain _significanceDomain;
-			double _significanceValue = rUNDEF;
+			IIntervalDomain _trendDomain;
+			Limits _limits;
+			int _maxRaw = -1;
 
 			double trendValue(const std::vector<double>& stackColumn, std::vector<int>& ties) const;
 			double calcVarS(int n, const std::vector<int>&ties) const;
