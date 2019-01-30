@@ -414,7 +414,6 @@ Modeller.ModellerWorkArea {
     }
 
     function zoom(amount, absolute, cx, cy){
-
         wfCanvas.oldZoomScale = wfCanvas.zoomScale;
         if ( cx === -1 || cy === -1){
             cx = width / 2.0
@@ -423,7 +422,7 @@ Modeller.ModellerWorkArea {
         if ( absolute){
             wfCanvas.zoomScale = amount / 100.0
         }else
-            wfCanvas.zoomScale = Math.min(20,wfCanvas.zoomScale + amount/100.0)
+            wfCanvas.zoomScale = Math.max(Math.min(20, wfCanvas.zoomScale + amount / 100.0), 0.01)  // zoom level 1% to 2000%
 
         var dzoom = wfCanvas.zoomScale /wfCanvas.oldZoomScale
         for(var i=0; i < operationsList.length; ++i){
