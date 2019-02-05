@@ -4,31 +4,31 @@ Copyright (C) 2018  52n North
 This program is free software: you can redistribute it and/or modify 
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+(at your option) any later version.  
 
 This program is distributed in the hope that it will be useful,  
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                    
-GNU General Public License for more details.  
+GNU General Public License for more details.     
 
 You should have received a copy of the GNU General Public License 
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/               
-
-#include "kernel.h"     
+ 
+#include "kernel.h"                               
 #include "mastercatalog.h"  
 #include "models/resourcemodel.h"                                   
 #include "operationmetadata.h"        
-#include "dataformat.h"                 
-#include "uicontextmodel.h"                                                                     
-#include "applicationformexpressionparser.h"                                                                                                           
+#include "dataformat.h"                  
+#include "uicontextmodel.h"                                                                           
+#include "applicationformexpressionparser.h"                                                                                                                 
  
  
-using namespace Ilwis;                                                                           
-using namespace Ui;                                                                      
+using namespace Ilwis;                                                                            
+using namespace Ui;                                                                               
 
 ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                      
 {
-}                                                                          
+}                                                                                                        
 
 ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
                                                                                              quint32 index,
@@ -42,17 +42,17 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
         if ( elem == OperationResource::ueCOMBO && !workflowContex){ // no comboboxes in the workflow context as the controlling field is porbably not filled in
             alternateUIType = ftCOMBOBOX;
         }
-    }
+    }   
     parm._label = resource[prefix + "name"].toString(); 
     parm._dataType = resource[prefix + "type"].toULongLong();
     parm._isOptional = optional;
     parm._optionGroup = optionGroup;
     parm._choiceList = choices;
     parm._defValue = defvalue;
-    if ( choices.size() > 4){
-        parm._fieldType = ftCOMBOBOX; 
-    }
-    else if ( choices.size() > 0){
+    if ( choices.size() > 4){  
+        parm._fieldType = ftCOMBOBOX;     
+    }                  
+    else if ( choices.size() > 0){ 
         parm._fieldType = ftRADIOBUTTON;
         quint64 bits = ~itINTEGER;
         quint64 result = parm._dataType & bits;
@@ -64,7 +64,7 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
                     parm._fieldType = ftTEXTEDIT;                     
             }
         } 
-    }
+    }  
     else if ( parm._dataType == itBOOL){ 
         parm._fieldType = ftRADIOBUTTON;
         QStringList lst = {"!yes", "no"};     
@@ -78,23 +78,23 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
     if ( alternateUIType != ftNONE){
         parm._fieldType = alternateUIType;
     }
-    return parm;
-}
+    return parm;   
+}    
 
 void ApplicationFormExpressionParser::setParameter(const Resource& resource, bool& inChoiceList,
                                                    std::vector<FormParameter>& parameters, QString& part,
                                                    QStringList& choices, int& parmCount,
                                                    bool isOptional, int optionGroup,bool workflowContext,
                                                    const QString& defvalue = "") const 
-{
-    if ( inChoiceList) 
+{ 
+    if ( inChoiceList)    
         choices << part;
     parameters.push_back(addParameter(resource, parmCount, choices, isOptional, optionGroup, workflowContext, defvalue));
     choices.clear();
     part = "";
     inChoiceList = false;              
-    ++parmCount;
-}
+    ++parmCount; 
+} 
 
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getOutputParameters(const Ilwis::Resource &resource) const{
     std::vector<FormParameter> parameters;
@@ -167,16 +167,16 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
             }else
                 choices << part.trimmed(); 
             inChoiceList = true;
-        }
-        part.clear();
-    }
+        } 
+        part.clear();  
+    } 
     // last parameter      
     if (part != ""){                                      
-        part = part.trimmed();             
+        part = part.trimmed();               
         setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional,optionGroup, workflowContext);
     }  
     if ( nodeparameters.size() == parameters.size()){     
-        for(int i=0; i < parameters.size(); ++i)     {  
+        for(int i=0; i < parameters.size(); ++i)      {  
             FormParameter& parm = parameters[i]; 
             QVariantMap props = nodeparameters[i].value<QVariantMap>();
             QString nodeLabel = props["label"].toString(); 
@@ -389,7 +389,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
     QString iconField3 = "Button{ width : 20; height:20; checkable : true;checked : false;"
              "onClicked : { eval( uicontext.showLastGeneratedResult )}"
               "Image{anchors.centerIn : parent;width : 14; height:14;source:\"../images/%1\";fillMode: Image.PreserveAspectFit}}";
-	QString comboField = "Controls.ComboxLabelPair{ id: pin_%1;property string itemType : \"combobox\";width : parent.width;fontBold : false;labelWidth : %5 - 5;Controls.ToolTip{target : pin_%1; text: operation ? operation.inputparameterDescription(%1) : \"\"}itemModel : %2;currentIndex: %3;labelText :\" %4 \"}";
+	QString comboField = "Controls.ComboxLabelPair{ id: pin_%1;objectName : \"pin_%1_\" + " + metaid + ";property string itemType : \"combobox\";width : parent.width;fontBold : false;labelWidth : %5 - 5;Controls.ToolTip{target : pin_%1; text: operation ? operation.inputparameterDescription(%1) : \"\"}itemModel : %2;currentIndex: %3;labelText :\" %4 \"}";
     //QString comboField = "ComboBox{id : pin_%1; objectName : \"pin_%1_\" + " + metaid + "; property string itemType : \"combobox\";x : %2;height:20;width : parent.width - label_pin_%1.width - 5 - %3;Controls.ToolTip{target : pin_%1; text:operation ? operation.inputparameterDescription(%1) : \"\"}model : %4;currentIndex: %5;";
     QString rowBodyChoiceHeader = "Row{ width : parent.width;Text { text: qsTr(\"%1\"); width : %2; } Column{ExclusiveGroup { id: exclusivegroup_pin_%3} %4}}";
     QString rowChoiceOption = "RadioButton{id:choice_pin_%1;text:qsTr(\"%2\");checked:%3;exclusiveGroup:exclusivegroup_pin_%4;property string value:qsTr(\"%5\")}";
@@ -606,7 +606,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
 
     }catch(...){
      }
-    return formRows;
+    return formRows; 
 }      
 
 QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
@@ -618,12 +618,12 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                                                             const std::vector<FormParameter>& parameters)      
 {
         Resource resource = mastercatalog()->id2Resource(metaid);         
-         std::vector<FormParameter> outparameters = getOutputParameters(resource);
+         std::vector<FormParameter> outparameters = getOutputParameters(resource); 
         QString results;
         QString mid = QString::number(metaid);
         QString validation = "function addValidation(e, idx, u){var r = operations.resolveValidation(metaid, u,idx);";
         validation += "if ( r){for(var k=0; k<r.length;k++){var p=r[k];var ue = \"pin_\" + p.parameterIndex + \"" + QString("_") + mid + "\"" ;
-        validation += "; var item = uicontext.getItem(ue,0); if ( item !== null) { if ( p.uielement==\"list\"){item.model=p.result}if(p.uielement==\"textfield\"){item.text=p.result}}}}}";
+        validation += "; var item = uicontext.getItem(ue,0); console.log(\"xxxxx\",item, ue);if ( item !== null) { if ( p.uielement==\"list\"){item.itemModel=p.result}if(p.uielement==\"textfield\"){item.text=p.result}}}}}";
         QString propertyMetaid = "property var metaid :" + mid + ";property var operation : operations.operation(" + mid + ");";
         QString columnStart = "import QtQuick 2.2; import QtQuick.Controls 1.1;import QtQuick.Layouts 1.1;import QtQuick.Controls.Styles 1.0;import UIContextModel 1.0;import MasterCatalogModel 1.0;import \"../controls\" as Controls;";
         columnStart += "Column { " + validation + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
