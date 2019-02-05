@@ -497,18 +497,6 @@
     <None Include="desktopclient\qml\datapanel\modeller\workflow\JunctionItem.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopItem.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
-    </None>
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopTest.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
-    </None>
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopTestRange.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
-    </None>
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\LoopTests.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ManagerWorkflowView.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
     </None>
@@ -1240,6 +1228,15 @@
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ConstructClasses.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeItem.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeJunctionItem.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeTests.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
