@@ -216,9 +216,11 @@ bool RasterSerializerV1::storeData(IlwisObject *obj, const IOOptions &options )
         NumericStatistics& stats = raster->statistics(ContainerStatistics<PIXVALUETYPE>::pBASIC);
         qint16 digits = stats.significantDigits();
         PIXVALUETYPE scale = digits >= 10 ? 0 : std::pow(10,-digits);
-        converter = RawConverter(stats[ContainerStatistics<PIXVALUETYPE>::pMIN], stats[ContainerStatistics<PIXVALUETYPE>::pMAX],scale);
+		bool hasUndefs = stats[ContainerStatistics<PIXVALUETYPE>::pCOUNT] != stats[ContainerStatistics<PIXVALUETYPE>::pNETTOCOUNT];
+        converter = RawConverter(stats[ContainerStatistics<PIXVALUETYPE>::pMIN], stats[ContainerStatistics<PIXVALUETYPE>::pMAX],scale, hasUndefs);
 
         _stream << stats[ContainerStatistics<PIXVALUETYPE>::pMIN] << stats[ContainerStatistics<PIXVALUETYPE>::pMAX] << scale;
+		_stream << (quint32) hasUndefs;
     }else{
         if(hasType(raster->datadef().domain()->ilwisType() ,itITEMDOMAIN) )
             converter = RawConverter("ident");
@@ -365,9 +367,11 @@ bool RasterSerializerV1::loadData(IlwisObject *data, const IOOptions &options)
     BoundingBox box;
     RawConverter converter;
     if ( hasType(raster->datadef().domain()->ilwisType(), itNUMERICDOMAIN)){
+		quint32 hasUndefs;
         PIXVALUETYPE mmin, mmax, mscale;
         _stream >> mmin >> mmax >> mscale;
-        converter = RawConverter(mmin, mmax, mscale);
+		_stream >> hasUndefs;
+        converter = RawConverter(mmin, mmax, mscale, (bool)hasUndefs);
     }else {
         if (  hasType(raster->datadef().domain()->ilwisType(), itITEMDOMAIN))
             converter = RawConverter("ident");
