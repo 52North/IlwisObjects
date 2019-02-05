@@ -144,10 +144,12 @@ void SupervisedClassification::generateNeighbours(const Pixel& pix, PixelIterato
 	for (int x = 0; x < 3; ++x) {
 		auto newX = pix.x + offsets[x];
 		if (newX >= 0 || newX < iterSelect.raster()->size().xsize()) {
-			for (int y = 0; x < y; ++y) {
+			for (int y = 0; y < 3; ++y) {
 				auto newY = pix.y + offsets[y];
+				if (x == 1 && y == 1) // == center position, we dont need a check on ourselves
+					continue;
 				if (newY >= 0 || newY < iterSelect.raster()->size().ysize())
-					basePositions.push_back(Pixel(newX, newY));
+					basePositions.push_back(Pixel(newX, newY,0));
 			}
 		}
 	}
@@ -182,7 +184,9 @@ void SupervisedClassification::setSelection(const Pixel& pix) {
 		linPixelPositions.pop_back();
 		double vInput = *(iterInput[linPos]);
 		double vInput2 = vInput * vInput;
-		if (startValue - vInput2 <= d2) {
+		if (isNumericalUndef(vInput))
+			continue;
+		if (std::abs(startValue - vInput2) <= d2) {
 			*(iterSelect[linPos]) = SELECT;
 			generateNeighbours(linPos, iterSelect, linPixelPositions);
 		}

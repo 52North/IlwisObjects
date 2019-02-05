@@ -59,7 +59,7 @@ SplitView {
 	function handleMousePressed(mx,my) {
 	    console.debug(mx,my)
 		var scpModel = modellerDataPane.model.analysisModel(0)
-		var rasterPixel = maps.activeLayerManager().rootLayer.screen2raster(analysisManager.form.ccRaster, mx,my)
+		var rasterPixel = maps.activeLayerManager().rootLayer.screen2raster(analysisManager.form.ccRaster.id, mx,my)
 		scpModel.setGroupStartPoint(rasterPixel)
 	}
 
