@@ -288,6 +288,8 @@ int GDALItems::handleComplexDataSet(void *handle){
         QString encodedUrl = QUrl::toPercentEncoding(iter->second,"/","\"");
         QString rawUrl = "gdal://"+ encodedUrl;
         parts = iter->second.split("\"");
+		if (parts.size() < 2) // unknow structure of url
+			return iUNDEF;
         QString normalizedUrl = OSHelper::createFileUrlFromParts(parts[1] , "/" + shortname);
         Resource gdalitem(normalizedUrl,rawUrl,itRASTER);
         gdalitem.code(iter->second);
