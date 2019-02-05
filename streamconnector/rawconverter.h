@@ -98,7 +98,7 @@ public:
             return rUNDEF;
         if ( _scale == 0)
             return raw;
-        return (raw + _offset) * MathHelper::roundTo3DecimalDigits (_scale);
+        return (raw + _offset) * _scale;
     }
     double real2raw(double real) const {
         if ( real == rUNDEF)
