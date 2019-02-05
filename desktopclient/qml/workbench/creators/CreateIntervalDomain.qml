@@ -24,6 +24,7 @@ Controls.DropableItem{
             height : 20
             width : parent.width
             regexvalidator: /^\d*(\.\d*)?$/
+			content : "0" 
         }
     }
 
