@@ -20,21 +20,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-RawConverter::RawConverter(double low, double high, double step)  {
-    _storeType =  minNeededStoreType(low, high, step);
+RawConverter::RawConverter(double low, double high, double step, bool hasUndefs)  {
+    _storeType =  minNeededStoreType(low, high, step, hasUndefs);
     _offset = determineOffset(low, high, step, _storeType);
     _scale = MathHelper::roundTo3DecimalDigits (step);
     _undefined = guessUndef();
 }
 
-IlwisTypes RawConverter::minNeededStoreType(double low, double high, double step) const{
+IlwisTypes RawConverter::minNeededStoreType(double low, double high, double step, bool hasUndefs) const{
     double minDivStep;
     double maxDivStep;
     intRange(low, high, step, minDivStep, maxDivStep );
 
     quint64 delta = rounding(abs(maxDivStep - minDivStep));//TODO change from quint32 to quint64 might change behaviour??
     if ( step != 0) {
-        if ( delta <= 255)
+        if ( delta <= 255 && !hasUndefs)
             return itUINT8;
         else if ( delta <= 65535)
             return itINT16;

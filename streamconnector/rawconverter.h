@@ -84,7 +84,7 @@ public:
         }
     }
 
-    RawConverter(double low, double high, double step);
+    RawConverter(double low, double high, double step, bool hasUndefs);
 
 
     double raw2real(double raw) const{
@@ -149,7 +149,7 @@ private:
     double determineOffset(double low, double high, double step, IlwisTypes st);
     void intRange(double low, double high, double step, double &minDivStep, double &maxDivStep) const;
     double determineScale(double low, double high, double step) const;
-    IlwisTypes minNeededStoreType(double low, double high, double step) const;
+    IlwisTypes minNeededStoreType(double low, double high, double step, bool hasUndefs) const;
 
     double _offset;
     double _scale;
