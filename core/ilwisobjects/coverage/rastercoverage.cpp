@@ -310,7 +310,17 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
                         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
                     }
                 }
-                statistics().calculate(begin(), end(), trq, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
+				auto start = begin();
+				auto done = end();
+
+				if (code().indexOf("band=") == 0 ) { // this is in reality a band and not a full raster
+					int b = code().mid(5).toInt() + 1;
+					if (b < size().zsize()) { // a virtual band coverage ( that is a band within a multiband raster) already has a size=1;
+						start = band(b);
+						done = start.end();
+					}
+				}
+                statistics().calculate(start, done, trq, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
                 storeHistogram();
                 QApplication::restoreOverrideCursor();
             }
@@ -799,6 +809,18 @@ NumericRange RasterCoverage::calcMinMax(bool force) const
 
     return NumericRange(vmin, vmax, datadef().range<NumericRange>()->resolution());
 
+}
+
+bool RasterCoverage::prepare(const IOOptions& options) {
+	if (Coverage::prepare(options)) {
+		const Resource& res = resourceRef();
+		if (res.code().indexOf("band=") == 0) {
+			size(size().twod());
+			_datadefBands.resize(1);
+		}
+		return true;
+	}
+	return false;
 }
 
 

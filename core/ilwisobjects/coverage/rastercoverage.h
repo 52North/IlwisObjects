@@ -227,6 +227,7 @@ public:
     bool histogramCalculated() const;
     ITable histogramAsTable() ;
     NumericRange calcMinMax(bool force=false) const;
+	bool prepare(const IOOptions& options = IOOptions());
 
 protected:
 
