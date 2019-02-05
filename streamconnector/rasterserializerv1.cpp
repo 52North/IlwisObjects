@@ -71,7 +71,7 @@ template<typename T> void storeBulk(const RawConverter& converter, QDataStream& 
     }
 }
 
-template<typename T> void loadBulk(const RawConverter& converter, QDataStream& stream, StreamConnector *streamconnector, const BoundingBox& box, const IRasterCoverage& raster){
+template<typename T> void loadBulk(std::vector<T>& rawdata, std::vector<PIXVALUETYPE>& realdata,const RawConverter& converter, QDataStream& stream, StreamConnector *streamconnector, const BoundingBox& box, const IRasterCoverage& raster){
 
     if ( streamconnector->isFileBased()){
         //const UPGrid& grid = raster->grid();
@@ -84,6 +84,7 @@ template<typename T> void loadBulk(const RawConverter& converter, QDataStream& s
             int extraOffsets = blockCount * layer * (sizeof(quint32) + sizeof(qint64)); // per block there is an index and a blocksize - 12 bytes;
             int seekPos = stream.device()->pos() + extraOffsets + layer * (raster->size().xsize() * raster->size().ysize() * sizeof(T));
             stream.device()->seek(seekPos);
+			qDebug() << layer << extraOffsets << seekPos;
 
         }
         quint32 blockIndex;
@@ -92,17 +93,23 @@ template<typename T> void loadBulk(const RawConverter& converter, QDataStream& s
         stream >> blockSize;
         initBlockSize = blockSize;
 
-        std::vector<T> rawdata(initBlockSize);
-        std::vector<PIXVALUETYPE> realdata(initBlockSize);
+		if (initBlockSize != rawdata.size())
+			rawdata.resize(initBlockSize);
+		if ( initBlockSize != realdata.size())
+			realdata.resize(initBlockSize);
 
         for(int i = 0; i < blockCount; ++i){
 
-            stream.readRawData((char *)&rawdata[0],blockSize * sizeof(T) );
+            int n = stream.readRawData((char *)&rawdata[0],blockSize * sizeof(T) );
 
             if (realdata.size() != blockSize )
                 realdata.resize(blockSize);
-            for( int j = 0; j < blockSize; ++j)
-                realdata[j] = converter.raw2real(rawdata[j]);
+			for (int j = 0; j < blockSize; ++j) {
+			//	if (j == 2800) {
+			//		qDebug() << "stop;";
+			//	}
+				realdata[j] = converter.raw2real(rawdata[j]);
+			}
             raster->gridRef()->setBlockData(i, realdata);
             if ( i < blockCount - 1){
                 stream >> blockIndex;
@@ -383,27 +390,51 @@ bool RasterSerializerV1::loadData(IlwisObject *data, const IOOptions &options)
             Size<> sz = raster->size();
             box = BoundingBox(Pixel(0,0,band),Pixel(sz.xsize(),sz.ysize(),band));
         }
-    }
-
+	}
+	/*else if (options.contains("blockindex")) {
+		double currentBlock = options["blockindex"].toInt();
+		int band = currentBlock / raster->grid()->blocksPerBand();
+		int relativeBlock = currentBlock - band * raster->grid()->blocksPerBand();
+		unsigned int minLine = raster->grid()->maxLines() * relativeBlock;
+		unsigned int maxLine = std::min(minLine + raster->grid()->maxLines(), raster->size().ysize());
+		box = BoundingBox(Pixel(0, minLine, band), Pixel(raster->size().xsize(), maxLine, band));
+	}*/
+	std::vector<PIXVALUETYPE> realdata;
     IRasterCoverage rcoverage(raster);
     switch (converter.storeType()){
-    case itUINT8:
-        loadBulk<quint8>(converter, _stream, _streamconnector, box, rcoverage); break;
-    case itINT16:
-        loadBulk<qint16>(converter, _stream, _streamconnector, box, rcoverage); break;
-    case itUINT16:
-        loadBulk<quint16>(converter, _stream, _streamconnector, box, rcoverage); break;
-    case itINT32:
-        loadBulk<qint32>(converter, _stream, _streamconnector, box, rcoverage); break;
-    case itUINT32:
-        loadBulk<quint32>(converter, _stream, _streamconnector, box, rcoverage); break;
-    case itDOUBLE:
-        loadBulk<double>(converter, _stream, _streamconnector, box, rcoverage); break;
-	case itFLOAT:
-		loadBulk<float>(converter, _stream, _streamconnector, box, rcoverage); break;
+	case itUINT8: {
+		std::vector<quint8> rawdata;
+		loadBulk<quint8>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
+	case itINT16: {
+		std::vector<qint16> rawdata;
+		loadBulk<qint16>(rawdata, realdata,converter, _stream, _streamconnector, box, rcoverage); break;
+	}
+	case itUINT16: {
+		std::vector<quint16> rawdata;
+		loadBulk<quint16>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
+	case itINT32: {
+		std::vector<qint32> rawdata;
+		loadBulk<qint32>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
+	case itUINT32: {
+		std::vector<qint32> rawdata;
+		loadBulk<qint32>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
+	case itDOUBLE: {
+		std::vector<double> rawdata;
+		loadBulk<double>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
+	case itFLOAT: {
+		std::vector<float> rawdata;
+		loadBulk<float>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
     case itINT64:
-    default:
-            loadBulk<qint64>(converter, _stream, _streamconnector, box, rcoverage); break;
+	default: {
+		std::vector<qint64> rawdata;
+		loadBulk<qint64>(rawdata, realdata, converter, _stream, _streamconnector, box, rcoverage); break;
+	}
     }
     _dataLoaded = true;
     return true;
