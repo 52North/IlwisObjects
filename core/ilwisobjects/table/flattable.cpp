@@ -443,8 +443,12 @@ bool FlatTable::initLoad(){
 
 void FlatTable::recordCount(quint32 r)
 {
+    quint32 old_r = BaseTable::recordCount();
     BaseTable::recordCount(r);
-    _datagrid.resize(r);
+    _datagrid.resize(r);        // add records, with zero columns
+    if (BaseTable::columnCount() > 0)
+        for (int i = old_r; i < r; ++i) // add empty columns, for the new reords
+            _datagrid[i] = std::vector<QVariant>(BaseTable::columnCount());
 }
 
 quint32 Ilwis::FlatTable::recordCount() const
