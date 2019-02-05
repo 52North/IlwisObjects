@@ -172,7 +172,7 @@ void DownloadManager::readReadyRaster()
                 double mmin,  mmax, mscale;
                 stream >> mmin >> mmax >> mscale;
                 int pos = stream.device()->pos();
-                _converter = RawConverter(mmin, mmax, mscale);
+                _converter = RawConverter(mmin, mmax, mscale, true);
                 switch (_converter.storeType()){ // calculate true blocksize in bytes
                 case itUINT8:
                     break;
