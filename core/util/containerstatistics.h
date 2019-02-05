@@ -169,16 +169,14 @@ public:
         kernel()->startClock();
         for (auto iter = begin; iter != end; ++iter) {
             DataType sample = *iter;
-            if (sample != undefined) {
+			++pcount;
+            if (!isNumericalUndef(sample)) {
                 rest = fabs(sample - (qint64)sample);
                 sigDigits = std::max(sigDigits, rest - sigDigits);
                 pmin = Ilwis::min(pmin, sample);
                 pmax = Ilwis::max(pmax, sample);
-                if (!isNumericalUndef(sample)) {
-                    ++pnetcount;
-                    psum += sample;
-                }
-                ++pcount;
+                ++pnetcount;
+                psum += sample;
 
                 if (hasType(mode, pVARIANCE))
                     var(sample);
