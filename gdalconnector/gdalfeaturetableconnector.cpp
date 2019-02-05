@@ -91,12 +91,10 @@ bool GdalFeatureTableConnector::loadData(IlwisObject * data, const IOOptions &){
             quint32 index = 0;
             while( (hFeature = gdal()->getNextFeature(hLayer)) != NULL){
                 loader.loadRecord(attTable, hFeature, record);
-                attTable->record(attTable->recordCount(), record);
-                gdal()->destroyFeature( hFeature );
                 attTable->record(index++, record);
+                gdal()->destroyFeature( hFeature );
             }
             _binaryIsLoaded = true;
-            return true;
         } catch (FeatureCreationError& ) {
             gdal()->destroyFeature( hFeature );
             ok = false;

@@ -57,7 +57,6 @@ void GdalTableLoader::loadMetaData(Table *attTable, OGRLayerH hLayer) {
     int temp = gdal()->getFeatureCount(hLayer, FALSE);//TRUE to FORCE databases to scan whole layer, FALSe can end up in -1 for unknown result
     int recordCount = attTable->recordCount();
     recordCount = (temp == -1) ? 0 : temp;
-    attTable->recordCount(recordCount);
 
     OGRFeatureDefnH hLayerDef = gdal()->getLayerDef(hLayer);
     int fieldCount = gdal()->getFieldCount(hLayerDef);
@@ -112,6 +111,8 @@ void GdalTableLoader::loadMetaData(Table *attTable, OGRLayerH hLayer) {
         ColumnDefinition colDef(name, domain,i+1);
         attTable->addColumn(colDef);
     }
+
+    attTable->recordCount(recordCount); // set at end, so datagrid can be created with the right number of columns
 
 }
 
