@@ -968,14 +968,16 @@ void WorkflowModel::acceptMessage(const QString &type, const QString &subtype, c
         bool ok;
         quint64 id = parameters["runid"].toLongLong(&ok);
         if ( ok && id == _runid){ // check if this was meant for this workflow
-            if ( subtype == "outputdata"){
+            if (subtype == "outputdata") {
                 _outputsCurrentOperation = parameters;
                 QVariantList newlist = _outputsCurrentOperation["results"].value<QVariantList>();
-                _lastOperationNode = newlist[0].toMap()["node"].toInt();
+                if (newlist.size() > 0) {
+                    _lastOperationNode = newlist[0].toMap()["node"].toInt();
 
-                _outputs.append(newlist);
-                emit outputCurrentOperationChanged();
-                emit operationNodeChanged();
+                    _outputs.append(newlist);
+                    emit outputCurrentOperationChanged();
+                    emit operationNodeChanged();
+                }
             }else if ( subtype == "lastrunnode"){
                 bool ok;
                 quint64 conditionid = parameters["condtionid"].toULongLong(&ok);
