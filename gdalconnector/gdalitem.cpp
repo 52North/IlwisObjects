@@ -119,15 +119,17 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
     if (!handle) {
         // try sentinel
         if (file.suffix().toLower() == "zip") {
-            QuaZip zip(file.absoluteFilePath());
-            zip.open(QuaZip::Mode::mdUnzip);
-            QuaZipDir nav(&zip);
-            QStringList filters;
-            filters.append("*.xml");
-            QList<QuaZipFileInfo64> entries = nav.entryInfoList64();
-//            QList<QuaZipFileInfo> allitems = zip.getFileInfoList();
-            int err = zip.getZipError();
-            zip.close();
+            if (file.baseName().left(4).toLower() == "s2a_") { // sentinel 2 candidate
+                QuaZip zip(file.absoluteFilePath());
+                zip.open(QuaZip::Mode::mdUnzip);
+                QuaZipDir nav(&zip);
+                QStringList filters;
+                filters.append("*.xml");
+                QList<QuaZipFileInfo64> entries = nav.entryInfoList64();
+                //            QList<QuaZipFileInfo> allitems = zip.getFileInfoList();
+                int err = zip.getZipError();
+                zip.close();
+            }
         }
     }
     if (handle){
