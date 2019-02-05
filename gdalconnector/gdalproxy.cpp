@@ -253,7 +253,11 @@ bool GDALProxy::prepare() {
                 QString create2 = getMetaDataItem(driverH,GDAL_DCAP_CREATECOPY,NULL);//raster extensions only
                 QString access = create1.size() == 0 && create2.size() == 0 ? "r" : "rc";
                 DataFormat frm("gdal", getShortName(driverH), getLongName(driverH), cext, access, itRASTER);
-                frm.store();
+				frm.store();
+				if (cext == "tif") {
+					DataFormat frm("gdal", getShortName(driverH), getLongName(driverH), "tiff", access, itRASTER);
+					frm.store();
+				}
             }
         }
 
