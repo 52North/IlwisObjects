@@ -102,7 +102,7 @@ bool GridBlockInternal::save2Cache() {
     _inMemory = false;
     _dataInMemory = false;
     _data = std::vector<PIXVALUETYPE>();
-
+	
     return true;
 }
 
@@ -446,7 +446,8 @@ bool Grid::update(quint32 block, bool loadDiskData) {
         _blocks[block]->init(); // the data will be overwritten entirely by either loadFromCache or setBlockData
         if (loadDiskData)
             _blocks[block]->loadDiskDataToMemory();
-        _cache.insert(_cache.begin(), GridBlockNrPair(this, block));
+		if (_blocks[block]->dataInMemory())
+			_cache.insert(_cache.begin(), GridBlockNrPair(this, block));
     }
     return true;
 
