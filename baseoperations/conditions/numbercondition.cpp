@@ -121,14 +121,15 @@ quint64 NumberCondition::createMetadata()
     OperationResource operation({"ilwis://operations/numbercondition"});
     operation.setLongName("conditions to compare/check integers");
     operation.setSyntax("numbercondition(FirstValue, Condition=!greater than|smaller than|greater or equals|smaller or equals|equals|not equals, SecondValue)");
-    operation.setDescription(TR("generates a rastercoverage where the atmospheric errors are corrected"));
+    operation.setDescription(TR("checks if a boolean numeric condition holds true for the two inputs"));
     operation.setInParameterCount({3});
     operation.addInParameter(0,itNUMBER, TR("first number value"),TR("the first value used in the condition"));
     operation.addInParameter(1,itSTRING, TR("the condition"),TR("the condition which has to be checked. 'greater than', 'equals', 'not equals'"));
     operation.addInParameter(2,itNUMBER, TR("second number value"),TR("the first value used in the condition"));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itBOOL, TR("valid"), TR("true if condition is met"));
-    operation.setKeywords("condition, numeric, internal");
+    operation.setKeywords("condition, numeric");
+	operation.parameterNeedsQuotes(1);
 
     mastercatalog()->addItems({operation});
     return operation.id();
