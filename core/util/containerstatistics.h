@@ -196,7 +196,8 @@ public:
 
             }
         }
-
+		kernel()->endClock();
+		kernel()->startClock();
         bool isUndefined = pnetcount == 0;
         std::fill(_markers.begin(), _markers.end(), rUNDEF);
         if (!isUndefined) {
@@ -222,13 +223,14 @@ public:
                 double ncount = prop(pNETTOCOUNT);
                 if (ncount > 1) {
                     if (bins == 0 && _binCount == iUNDEF) {
-                        if (prop(pSTDEV) == rUNDEF) {
+                     /*   if (prop(pSTDEV) == rUNDEF) {
                             _markers[index(pSTDEV)] = calcStdDev(begin, end, undefined);
                         }
                         if (_markers[index(pSTDEV)] != rUNDEF) {
                             double h = 3.5 * _markers[index(pSTDEV)] / pow(ncount, 0.3333);
                             _binCount = prop(pDISTANCE) / h;
-                        }
+                        }*/
+						_binCount = 5 * std::sqrt(std::sqrt(pnetcount)) + 1;
                     }
                     else if (bins != 0) {
                         _binCount = bins - 1;
@@ -243,14 +245,15 @@ public:
                 _bins[_binCount] = HistogramBin(prop(pMAX));
                 double rmin = prop(pMIN);
                 double rdelta = prop(pDELTA);
+				int binsize = _bins.size();
                 for (auto iter = begin; iter != end; ++iter) {
                     DataType sample = *iter;
-                    quint16 index = (quint16)_bins.size() - 1;
+                    quint16 index = (quint16)binsize - 1;
                     if (!isNumericalUndef(sample)) {
-                        index = _bins.size() * (double)(sample - rmin) / rdelta;
-                        index =  index == _bins.size() ? index - 1 : index;
+                        index = binsize * (double)(sample - rmin) / rdelta;
+                        index =  index == binsize ? index - 1 : index;
                     }
-                    _bins[index]._count++;
+                    _bins.at(index)._count++;
                 }
             }
         }
