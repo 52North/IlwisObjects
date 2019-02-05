@@ -234,7 +234,7 @@ double MathHelper::round(double r)
 
 
 double MathHelper::roundTo3DecimalDigits(const double value) {
-    return round(value * 1000.0) / 1000.0 ;
+    return ((qint64)(value * 1000.0)) / 1000.0 ;
 }
 
 quint8 MathHelper::lenDecimalDigits(double number) {
