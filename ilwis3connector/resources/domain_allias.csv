@@ -9,3 +9,4 @@ NDVI,NDVI
 percentage,perc
 boolean,bool
 text,string
+integer,value
