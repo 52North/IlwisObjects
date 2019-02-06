@@ -623,7 +623,7 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
         QString mid = QString::number(metaid);
         QString validation = "function addValidation(e, idx, u){var r = operations.resolveValidation(metaid, u,idx);";
         validation += "if ( r){for(var k=0; k<r.length;k++){var p=r[k];var ue = \"pin_\" + p.parameterIndex + \"" + QString("_") + mid + "\"" ;
-        validation += "; var item = uicontext.getItem(ue,0); console.log(\"xxxxx\",item, ue);if ( item !== null) { if ( p.uielement==\"list\"){item.itemModel=p.result}if(p.uielement==\"textfield\"){item.text=p.result}}}}}";
+        validation += "; var item = uicontext.getItem(ue,0); if ( item !== null) { if ( p.uielement==\"list\"){item.itemModel=p.result}if(p.uielement==\"textfield\"){item.text=p.result}}}}}";
         QString propertyMetaid = "property var metaid :" + mid + ";property var operation : operations.operation(" + mid + ");";
         QString columnStart = "import QtQuick 2.2; import QtQuick.Controls 1.1;import QtQuick.Layouts 1.1;import QtQuick.Controls.Styles 1.0;import UIContextModel 1.0;import MasterCatalogModel 1.0;import \"../controls\" as Controls;";
         columnStart += "Column { " + validation + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
