@@ -63,8 +63,10 @@ bool InternalTableConnector::loadData(IlwisObject *obj, const IOOptions &)
 {
     Table *table = static_cast<Table *>(obj);
 
-    if(!table->createTable())
-        return false;
+    if (!table->isDataLoaded()) {
+        if (!table->createTable())
+            return false;
+    }
     _binaryIsLoaded = true;
     return true;
 }
