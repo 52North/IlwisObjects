@@ -93,7 +93,7 @@ void WorkFlowNode::addInput(const WorkFlowParameter &param, int index)
 void WorkFlowNode::setFlow(const SPWorkFlowNode &fromNode, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom, int attachRctIndxTo)
 {
     if ( fromNode->type() == WorkFlowNode::ntRANGEJUNCTION) {
-        if (owner()->id() == fromNode->owner()->id() ){
+        if (owner() && owner()->id() == fromNode->owner()->id() ){
             inputRef(inParmIndex).inputLink(fromNode,RangeNode::rpOUTPUT);
             inputRef(inParmIndex).attachement(attachRctIndxFrom, true);
             inputRef(inParmIndex).attachement(attachRctIndxTo, false);
