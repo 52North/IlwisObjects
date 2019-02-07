@@ -182,6 +182,8 @@
     <ClCompile Include="baseoperations\data\addcolumn.cpp" />
     <ClCompile Include="baseoperations\data\addrasterband.cpp" />
     <ClCompile Include="baseoperations\data\aggregatetable.cpp" />
+    <ClCompile Include="baseoperations\data\number2string.cpp" />
+    <ClCompile Include="baseoperations\data\systemproperty.cpp" />
     <ClCompile Include="baseoperations\math\aggregation.cpp" />
     <ClCompile Include="baseoperations\data\assignment.cpp" />
     <ClCompile Include="baseoperations\baseoperationsmodule.cpp" />
@@ -250,6 +252,8 @@
     <ClInclude Include="baseoperations\data\addcolumn.h" />
     <ClInclude Include="baseoperations\data\addrasterband.h" />
     <ClInclude Include="baseoperations\data\aggregatetable.h" />
+    <ClInclude Include="baseoperations\data\number2string.h" />
+    <ClInclude Include="baseoperations\data\systemproperty.h" />
     <ClInclude Include="baseoperations\math\aggregation.h" />
     <ClInclude Include="baseoperations\data\assignment.h" />
     <ClInclude Include="baseoperations\baseoperations_global.h" />

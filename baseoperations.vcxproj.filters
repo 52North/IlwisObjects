@@ -253,6 +253,12 @@
     <ClCompile Include="baseoperations\creators\parsestackdefinition.cpp">
       <Filter>Source Files\creator</Filter>
     </ClCompile>
+    <ClCompile Include="baseoperations\data\systemproperty.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="baseoperations\data\number2string.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseoperations\data\addcolumn.h">
@@ -454,6 +460,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baseoperations\creators\parsestackdefinition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\systemproperty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\data\number2string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
