@@ -5,6 +5,7 @@ import ".." as Model
 Model.ModellerWorkArea {
     id : workarea
     property var currentAnalysis
+	property var analysisManager
 
     onCurrentAnalysisChanged: {
         updateView1()
