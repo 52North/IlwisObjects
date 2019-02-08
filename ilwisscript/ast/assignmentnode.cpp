@@ -83,10 +83,13 @@ IIlwisObject AssignmentNode::getObject(const Symbol& sym) const {
         return sym._var.value<Ilwis::IRasterCoverage>().as<IlwisObject>();
     if ( tp & itFEATURE)
         return sym._var.value<Ilwis::IFeatureCoverage>().as<IlwisObject>();
+    if (hasType(tp, itTABLE | itCOLUMN)) {
+        auto obj = sym._var.value<Ilwis::ITable>().as<IlwisObject>();
+        if (obj.isValid())
+            return obj;
+    }
     if (hasType(tp, itFLATTABLE))
         return sym._var.value<Ilwis::IFlatTable>().as<IlwisObject>();
-    if ( hasType(tp , itTABLE|itCOLUMN))
-        return sym._var.value<Ilwis::ITable>().as<IlwisObject>();
     if ( hasType(tp , itDOMAIN))
         return sym._var.value<Ilwis::IDomain>().as<IlwisObject>();
     if ( hasType(tp , itGEOREF))
@@ -245,9 +248,9 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                     } else if ( hasType(tp, itGEOREF)){
                         ok &= copyObject<GeoReference>(sym, result,symbols);
                     } else if (hasType(tp, itTABLE | itCOLUMN)){
-                        if ( tp == itTABLE)
-                            ok &= copyObject<Table>(sym, result,symbols,false);
-                        else if ( tp == itFLATTABLE)
+                        // try generic type first (Table); if failed try specific type (FlatTable)
+                        ok &= copyObject<Table>(sym, result,symbols,false);
+                        if (!ok && tp == itFLATTABLE)
                             ok &= copyObject<FlatTable>(sym, result,symbols,false);
                         QSharedPointer<Selector> selector = _outParms->selector(result);
                         if (!selector.isNull()){
