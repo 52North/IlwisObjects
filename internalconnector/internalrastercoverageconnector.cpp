@@ -41,8 +41,7 @@ InternalRasterCoverageConnector::InternalRasterCoverageConnector(const Resource 
 
 bool InternalRasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
     RasterCoverage *gcoverage = static_cast<RasterCoverage *>(data);
-    if(_dataType == gcoverage->datadef().range().isNull())
-        return false;
+
     if ( !gcoverage->datadef().range().isNull())
         _dataType = gcoverage->datadef().range()->valueType();
 
