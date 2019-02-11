@@ -179,7 +179,7 @@ public:
      * \return This iterator moved 1
      */
     PixelIterator& operator++() {
-        move(1);
+        move(_step);
         return *this;
     }
 
@@ -189,7 +189,7 @@ public:
      * \return This iterator moved -1
      */
     PixelIterator& operator--() {
-        move(-1);
+        move(-_step);
         return *this;
     }
 
@@ -375,6 +375,8 @@ public:
      * \return true when the pixel is in this PixelIterator
      */
     bool contains(const Pixel& pix) ;
+	int step() const { return _step; }
+	void step(int n) { if (n != isNumericalUndef(n)) _step = n; }
 
     /*!
      * \brief Checks if the x coordinate has changed in the last step taken
@@ -509,6 +511,7 @@ protected:
     std::vector<std::vector<qint32>> _selectionPixels;
     qint32 _selectionIndex = -1;
     bool _insideSelection = false;
+	int _step = 1;
 
 
     bool move(qint64 n) {
