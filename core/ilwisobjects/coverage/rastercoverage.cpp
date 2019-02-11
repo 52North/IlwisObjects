@@ -295,7 +295,7 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
     if ( mode == ContainerStatistics<PIXVALUETYPE>::pNONE)
         return Coverage::statistics(mode);
 
-    if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM)) {
+    if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM)) {
         if (!histogramCalculated()) {
             if (!loadHistogram()) {
                 std::unique_ptr<Tranquilizer> trq;
@@ -320,7 +320,12 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
 						done = start.end();
 					}
 				}
-                statistics().calculate(start, done, trq, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
+				if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM)) {
+					qint64 sz = done.linearPosition() - start.linearPosition();
+					int step = sz / 1e6 + 1;
+					start.step(step);
+				}
+				statistics().calculate(start, done, trq, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
                 storeHistogram();
                 QApplication::restoreOverrideCursor();
             }
