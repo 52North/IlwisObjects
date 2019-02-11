@@ -213,7 +213,7 @@ void RasterLayerModel::coverage(const ICoverage &cov)
     CoverageLayerModel::coverage(cov);
     _raster = CoverageLayerModel::coverage().as<RasterCoverage>();
     if (!_raster->histogramCalculated()) {
-        _raster->statistics(ContainerStatistics<double>::pHISTOGRAM).histogram();
+        _raster->statistics(ContainerStatistics<double>::pQUICKHISTOGRAM).histogram();
     }
     fillAttributes();
 }
