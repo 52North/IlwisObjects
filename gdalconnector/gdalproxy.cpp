@@ -346,11 +346,11 @@ bool GDALProxy::isValid() const
 
 QStringList GDALProxy::getExtensions(IlwisTypes tp) const
 {
+    if (tp == itTABLE) {
+        return { "*.csv" };
+    }
     if ( tp == itRASTER)
         return _rasterExtensions;
-    if ( tp == itTABLE){
-        return {"*.csv"};
-    }
     else if ( tp == itFEATURE)
         return _featureExtensions;
     else if ( tp == (itFEATURE | itRASTER))

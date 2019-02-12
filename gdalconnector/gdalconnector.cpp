@@ -63,7 +63,10 @@ IlwisTypes GdalConnector::ilwisType(const QString &name)
 
     QString ext = inf.suffix();
     QString filter = "*." + ext;
-	if (gdal()->getExtensions(itFEATURE).contains(filter, Qt::CaseInsensitive))
+    if (gdal()->getExtensions(itTABLE).contains(filter, Qt::CaseInsensitive))
+        return itTABLE;
+
+    if (gdal()->getExtensions(itFEATURE).contains(filter, Qt::CaseInsensitive))
 		return itFEATURE | itCOORDSYSTEM | itTABLE;
 
     if ( gdal()->getExtensions(itRASTER).contains(filter,Qt::CaseInsensitive))
