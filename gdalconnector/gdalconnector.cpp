@@ -54,7 +54,7 @@ IlwisTypes GdalConnector::ilwisType(const QString &name)
         return itUNKNOWN;
 
     QString filename = name;
-    if (name.contains("?") == 0) {
+    if (name.contains("?")) {
         filename = name.split("?").front();
     }
     QFileInfo inf(filename);
