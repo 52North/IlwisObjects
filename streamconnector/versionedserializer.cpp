@@ -112,7 +112,7 @@ bool VersionedSerializer::store(IlwisObject *obj, const IOOptions &options)
 {
     double mtime = (double)obj->modifiedTime();
     double ctime = (double)obj->createTime();
-    Resource res = obj->resource();
+    Resource res = obj->resource(IlwisObject::cmOUTPUT);
     QString nm =  res.hasProperty("longname") ? obj->name() + "|" + res["longname"].toString() : obj->name();
     _stream <<  obj->ilwisType() << Version::interfaceVersion << obj->extendedType() << nm << obj->code() << obj->description() << obj->isReadOnly()  << mtime << ctime;
 
