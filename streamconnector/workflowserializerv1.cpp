@@ -188,7 +188,11 @@ bool WorkflowSerializerV1::storeNode(const SPWorkFlowNode& node, const IOOptions
 bool WorkflowSerializerV1::store(IlwisObject *obj, const IOOptions &options)
 {
     Workflow *workflow = static_cast<Workflow *>(obj);
-    workflow->resourceRef(IlwisObject::cmOUTPUT).addProperty("longname", workflow->name()); // for now use same name as disk name; there is no other way yet to change it.
+    QString longname = workflow->name();
+    int lastPoint = longname.lastIndexOf(".");
+    if (lastPoint != -1)
+        longname = longname.left(lastPoint);
+    workflow->resourceRef(IlwisObject::cmINPUT).addProperty("longname", longname); // for now use same name as disk name; there is no other way yet to change it.
 
     if (!OperationMetadataSerializerV1::store(obj, options))
         return false;
