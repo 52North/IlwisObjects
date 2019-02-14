@@ -388,14 +388,19 @@ void BinaryIlwis3Table::storeRecord(std::ofstream& output_file, const std::vecto
         if ( conv.isValid()) {
             if ( conv.isNeutral()) {
                 if ( conv.storeType() == itINT32 && tp == itITEMDOMAIN) {
-                    qint32 val = rec[x].value<qint32>() + 1;
-                    if ( isNumericalUndef(val) )
+                    quint32 val;
+                    if (isNumericalUndef(rec[x]))
                         val = -1;
+                    else
+                        val = rec[x].value<qint32>() + 1;
                     output_file.write((char *)&val, 4);
                 }
                 else if ( conv.storeType() != itDOUBLE)    {
-                    qint32 val = rec[x].value<qint32>();
-                    val = ( isNumericalUndef(val) ) ? iILW3UNDEF : val;
+                    qint32 val;
+                    if (isNumericalUndef(rec[x]))
+                        val = iILW3UNDEF;
+                    else
+                        val = rec[x].value<qint32>();
                     output_file.write((char *)&val, 4);
                 } else {
                     double val = rec[x].value<double>();
