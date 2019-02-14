@@ -101,7 +101,7 @@ Item {
             //AreaHeader { id: tabheader0;labeltext: "Output"}
             Item {
                 id : tabheader0; width : 34; height : parent.height;
-                 Controls.AreaHeaderAreaHeader { labeltext: "Output"}
+                 Controls.AreaHeader { labeltext: "Output"}
             }
             TextArea {
                 id : outputArea
