@@ -101,10 +101,9 @@ template<class DomainType, class RangeType> bool translate2ItemColumn(ITable& in
         if ( item)
             v = item->raw();
         else{
-            v = rUNDEF;
+            v = iUNDEF;     // cannot use rUNDEF: this will map to zero when storing
         }
     }
-    outputTable->column(colName, values);
     return true;
 }
 
@@ -177,7 +176,6 @@ bool ConvertColumnDomain::execute(ExecutionContext *ctx, SymbolTable &symTable)
     }
     if (ok){
        outputTable->column(_columnName, values);
-       //_inputTable->columndefinitionRef(_columnName).datadef().domain()->name(_domainName);
 
        QVariant value;
        value.setValue<ITable>(outputTable);
