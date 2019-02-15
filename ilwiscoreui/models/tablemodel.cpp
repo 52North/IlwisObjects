@@ -150,7 +150,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
             }
             quint32 ind = _order[ index.row()];
             v = _table->cell(role - baseRole - 1 ,ind, false);
-            if ( v.toDouble() == rUNDEF || v.toDouble() == iUNDEF)
+            if (!v.isValid() || v.toDouble() == rUNDEF || v.toDouble() == iUNDEF)
                 v = sUNDEF;
         }
     }
