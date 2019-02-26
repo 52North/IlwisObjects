@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 
 class SymbolTable;
-class ExecutionContext;
+struct ExecutionContext;
 
 namespace RemoteDataAccess {
 
