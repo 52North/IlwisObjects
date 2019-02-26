@@ -67,7 +67,6 @@ IWorkflow WorkflowImplementation::workflow()
 }
 
 void WorkflowImplementation::initStepMode(ExecutionContext *ctx){
-    QThread *current = QThread::currentThread();
     QVariantMap values;
     if (ctx) {
         values = QMap<QString, QVariant>(ctx->_additionalInfo);
