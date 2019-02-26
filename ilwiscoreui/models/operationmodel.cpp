@@ -59,7 +59,7 @@ QString OperationModel::inputparameterTypeNames(quint32 index) const
     quint64 ilwtype = getProperty("pin_" + QString::number(index + 1) + "_type").toULongLong();
     QString type;
     for(quint64 i =0; i < 64; ++i){
-       quint64 result = 1 << i;
+       quint64 result = 1LL << i;
         if ( hasType(ilwtype, result)) {
             if ( type != "")
                 type += ",";
