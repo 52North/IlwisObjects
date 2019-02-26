@@ -43,7 +43,7 @@ public:
     QString toString() const;
     bool canConvert(int index, int targetTypeId) const;
     qint64 toLongLong(int index, bool *ok=0) const;
-    qint64 toBool(int index) const;
+    bool toBool(int index) const;
     double toDouble(int index, bool *ok=0) const;
     int toInt(int index, bool *ok=0) const;
     QString toString(int index) const;

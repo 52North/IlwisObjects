@@ -112,7 +112,7 @@ qint64 NodeValue::toLongLong(int index, bool *ok) const
     return i64UNDEF;
 }
 
-qint64 NodeValue::toBool(int index) const
+bool NodeValue::toBool(int index) const
 {
     if ( index < size()) {
         return at(index).toBool();

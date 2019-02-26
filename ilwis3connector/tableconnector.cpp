@@ -80,7 +80,7 @@ bool TableConnector::loadMetaData(IlwisObject *data, const IOOptions &options)
     if ( key.isValid()) {
         if ( !options.contains("attributetable")) {
             _primaryKey = key.name();
-        }else if (!options["attributetable"].toBool() == true){
+        }else if (!options["attributetable"].toBool()){
              _primaryKey = key.name();
         }
 

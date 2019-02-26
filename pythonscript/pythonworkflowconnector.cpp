@@ -40,7 +40,7 @@ PythonWorkflowConnector::PythonWorkflowConnector(const Ilwis::Resource &resource
 
 bool PythonWorkflowConnector::openTarget() {
 
-    if ( ioOptions().contains("inmemory") && ioOptions()["inmemory"].toBool() == true){
+    if ( ioOptions().contains("inmemory") && ioOptions()["inmemory"].toBool()){
         _data.clear();
         _data.resize(100000);
         QBuffer *buf=  new QBuffer(&_data);
