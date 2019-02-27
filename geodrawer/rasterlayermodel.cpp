@@ -250,6 +250,11 @@ QVariant RasterLayerModel::vproperty(const QString& pName) const {
 }
 
 void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
+	if (pName == "updatetextures") {
+		_texturesNeedUpdate = true;
+		requestRedraw();
+		return;
+	}
 	CoverageLayerModel::vproperty(pName, value);
 }
 
@@ -289,7 +294,8 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
             quad->active = false;
         // check which quads are in the viewport, and mark them active
         DivideImage(0, 0, _width, _height);
-        // refresh the pixel content of the textures (for stretch)
+        // refresh the pixel content of the textures
+		bool fUpdateTextures = _texturesNeedUpdate;
         VisualAttribute * attr = activeAttribute();
         if (attr != 0) {
 			auto rng = attr->stretchRange(true);
@@ -305,16 +311,22 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 			}
             if ((attr->stretchRange().min() != _currentStretchRange.min()) || (attr->stretchRange().max() != _currentStretchRange.max())) {
                 _currentStretchRange = attr->stretchRange(); // refresh the stretch range to be used for the pixel data
-                textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are refreshed
-                for (qint32 i = 0; i < _quads.size(); ++i) {
-                    if (_quads[i].active) {
-                        _quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
-                    }
-                }
                 _refreshPaletteAtNextCycle = true;
-                refreshStretch();
+				fUpdateTextures = true;
             }
         }
+
+		if (fUpdateTextures) {
+			textureHeap->ReGenerateAllTextures(); // this ensures the quads will receive new pixel data the next time they are refreshed
+			for (qint32 i = 0; i < _quads.size(); ++i) {
+				if (_quads[i].active) {
+					_quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
+				}
+			}
+			refreshStretch();
+			_texturesNeedUpdate = false;
+		}
+
         // generate "addQuads" and "removeQuads" queues
 
         for (int i = 0; i < _quads.size(); ++i) {
@@ -659,10 +671,10 @@ void RasterLayerModel::refreshPalette() {
             VisualAttribute * attr = activeAttribute();
             IDomain dom = attr->datadefinition().domain();
             IlwisData<ItemDomain<DomainItem>> itemdom = dom.as<ItemDomain<DomainItem>>();
-            quint32 count = min(_paletteSize, (itemdom->count() + 1));
+            quint32 count = min(_paletteSize, itemdom->count());
             if (count > 0)
                 addPaletteColor(0, 0, 0, 0); // first index: undef --> first color: transparent
-            for (int i = 1; i < count; ++i) {
+            for (int i = 0; i < count; ++i) {
                 QColor color = attr->value2color(i);
                 addPaletteColor(color.red(), color.green(), color.blue(), color.alpha());
             }

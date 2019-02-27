@@ -18,31 +18,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define SCMODEL_H
 
 #include <QObject>
+#include <QQmlListProperty>
 #include "workflow/analysismodel.h"
 
 namespace Ilwis {
     namespace Ui {
+		class RepresentationElementModel;
+
         class SupervisedClassificationmodel : public Ilwis::Ui::AnalysisModel
         {
             Q_OBJECT
 
         public:
 			Q_PROPERTY(QString multispectralraster READ multispectralraster WRITE multispectralraster NOTIFY multispectralrasterChanged)
+			Q_PROPERTY(QString classficationDomainId READ classficationDomainId NOTIFY classficationDomainIdChanged)
+			Q_PROPERTY(bool needUpdate READ needUpdate WRITE needUpdate NOTIFY needUpdateChanged)
 
             SupervisedClassificationmodel();
             SupervisedClassificationmodel(Ilwis::AnalysisPattern *p);
             static Ilwis::Ui::AnalysisModel *create(Ilwis::AnalysisPattern *pattern);
             Q_INVOKABLE QVariantMap execute(const QVariantMap parameters);
-			Q_INVOKABLE void multispectralraster(const QString& msr);
-			Q_INVOKABLE QString selectionRaster();
+			Q_INVOKABLE void multispectralraster(const QString& msr) ;
+			Q_INVOKABLE QString selectionRaster() const;
+			Q_INVOKABLE QString classRaster() const;
 			Q_INVOKABLE void setGroupStartPoint(const QVariantMap& point);
 			Q_INVOKABLE void setSpectralDistance(double dist);
-
-
+			Q_INVOKABLE QVariantList classificationItems() const;
+			Q_INVOKABLE void calcStats(double r);
+			
 		signals:
 			void multispectralrasterChanged();
+			void classficationDomainIdChanged();
+			void needUpdateChanged();
+			void itemsChanged();
         private:
-			QString multispectralraster() ;
+			QString multispectralraster() const;
+			QString classficationDomainId() const;
+			bool needUpdate() const;
+			void needUpdate(bool yesno);
+			QQmlListProperty<RepresentationElementModel> representationElements();
+
 
         };
     }

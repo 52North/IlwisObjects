@@ -13,17 +13,11 @@ Column {
     y : 4
 	width : 200
 	height : 340
-	property var bands : []
-	property var ccRaster
+
 	spacing : 2
 
 
-	onCcRasterChanged : {
-	    if ( analisysView && analisysView.view() && ccRaster){
-		    var options = 'createtype=colorcomposite,items=' + bands[0].id + '|' +  bands[1].id + '|' +  bands[2].id
-			analisysView.view().setRaster(ccRaster, options)
-		}
-	}
+
 
 	Component {
         id : spectral
@@ -35,10 +29,6 @@ Column {
         ConstructClasses{}
     }
 
-	 Component {
-        id : stats
-        Statistics{}
-    }
 	TabView {
 	        id : data
             height: parent.height
@@ -48,7 +38,6 @@ Column {
 			Component.onCompleted: {
 				addTab(qsTr("Multi Spectral Data"), spectral).active = true
 				addTab(qsTr("Construct Classes"), domain).active = true
-				addTab(qsTr("Statistics"), stats).active = true
 			}
 	}
 

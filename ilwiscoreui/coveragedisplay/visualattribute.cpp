@@ -120,6 +120,9 @@ NumericRange VisualAttribute::stretchRange(bool useActual) const
 void VisualAttribute::stretchRange(const NumericRange &rng)
 {
     _stretchRange = rng;
+	if (!_actualRange.contains(&rng)) {
+		_actualRange = rng;
+	}
 }
 
 quint32 tovalue2(const QString& name){
@@ -227,17 +230,19 @@ std::pair<double, double> VisualAttribute::calcStretchRange(const std::vector<Nu
 	double seen = 0;
 	double startV = rUNDEF, endV = rUNDEF;
 
-	for (int i = 0; i < hist.size() - 1; ++i) {
-		sum2 += (hist[i]._count);
-	}
-	for (int i = 0; i < hist.size() - 1; ++i) {
-		auto& bin = hist[i];
-		seen += bin._count;
-		if (seen >= sum2 * perc && startV == rUNDEF) {
-			startV = bin._limit;
+	if (hist.size() > 0) {
+		for (int i = 0; i < hist.size() - 1; ++i) {
+			sum2 += (hist[i]._count);
 		}
-		if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
-			endV = bin._limit;
+		for (int i = 0; i < hist.size() - 1; ++i) {
+			auto& bin = hist[i];
+			seen += bin._count;
+			if (seen >= sum2 * perc && startV == rUNDEF) {
+				startV = bin._limit;
+			}
+			if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
+				endV = bin._limit;
+			}
 		}
 	}
 	return std::pair<double, double>(startV, endV);

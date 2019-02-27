@@ -102,6 +102,7 @@ protected:
     unsigned long _imageHeight;
     bool _initDone;
     bool _linear;
+	bool _texturesNeedUpdate = false;
 	QVariantMap _stretch;
 
 private:

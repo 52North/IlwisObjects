@@ -89,6 +89,7 @@ public:
 	Q_INVOKABLE void viewArea(QQuickItem *area);
 	Q_INVOKABLE void wholeMap();
 	Q_INVOKABLE  Ilwis::Ui::LayerModel* findLayer(int nodeid);
+	Q_INVOKABLE  Ilwis::Ui::LayerModel* findLayerByName(const QString& name);
     Q_INVOKABLE int nodeid(QModelIndex idx) const;
     Q_INVOKABLE void move(int nodeId, const QModelIndex& targetLocation);
     Q_INVOKABLE quint32 modelId() const;

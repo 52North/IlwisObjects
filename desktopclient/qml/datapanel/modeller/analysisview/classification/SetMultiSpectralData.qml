@@ -21,26 +21,6 @@ Column {
 		labelText : qsTr("Multi Spectral Raster")
 		labelWidth : 120
 		checkFunction : testDrop
-
-		onContentChanged : {
-			if ( content != "" && content.indexOf("://") != -1){
-				var query = "resource='" + content +"' and type=8"
-				var items = mastercatalog.select(query,"")
-				if ( items.length == 1){
-					var obj = mastercatalog.id2object(items[0], multisr)
-					if (obj.typeName === "rastercoverage"){
-						var isint = Global.isInteger(obj.internalValuetype)
-						if ( isint){
-							var layerinf = obj.layerInfo
-							if ( layerinf.length > 1 ){
-								bands = layerinf
-								ccRaster = obj
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
     Controls.ComboxLabelPair {
@@ -49,12 +29,12 @@ Column {
             labelWidth : 120
             width : Math.min(350,parent.width - 5)
             role : "name"
-            itemModel : bands
+            itemModel : analisysView.view().bands
 
 			onItemModelChanged : {
-			    if ( bands.length > 2){
-					dataSelect.select(redband, bands[0].name)
-					redPart = bands[0].url
+			    if ( analisysView.view().bands.length > 2){
+					dataSelect.select(redband, analisysView.view().bands[0].name)
+					redPart = analisysView.view().bands[0].url
 				}
 			}
 
@@ -73,12 +53,12 @@ Column {
             labelWidth : 120
             width : Math.min(350,parent.width - 5)
             role : "name"
-            itemModel : bands
+            itemModel : analisysView.view().bands
 
 			onItemModelChanged : {
-			    if ( bands.length > 2){
-					dataSelect.select(greenband, bands[1].name)
-					greenPart = bands[1].url
+			    if ( analisysView.view().bands.length > 2){
+					dataSelect.select(greenband, analisysView.view().bands[1].name)
+					greenPart = analisysView.view().bands[1].url
 				}
 			}
 
@@ -97,12 +77,12 @@ Column {
             labelWidth : 120
             width : Math.min(350,parent.width - 5)
             role : "name"
-            itemModel : bands
+            itemModel : analisysView.view().bands
 
 			onItemModelChanged : {
-			    if ( bands.length > 2){
-					dataSelect.select(blueband, bands[2].name)
-					bluePart = bands[0].url
+			    if ( analisysView.view().bands.length > 2){
+					dataSelect.select(blueband, analisysView.view().bands[2].name)
+					bluePart = analisysView.view().bands[0].url
 				}
 			}
 
@@ -145,7 +125,4 @@ Column {
         }
         return ok
     }
-	Component.onCompleted : {
-		multisr.content = modelmanager.analisysView.currentAnalysis.multispectralraster
-	}
 }

@@ -198,13 +198,13 @@ public:
 		kernel()->startClock();
         bool isUndefined = pnetcount == 0;
         std::fill(_markers.begin(), _markers.end(), rUNDEF);
+		_markers[index(pCOUNT)] = pcount;
+		_markers[index(pNETTOCOUNT)] = pnetcount;
         if (!isUndefined) {
             _markers[index(pMIN)] = pmin;
             _markers[index(pMAX)] = pmax;
             _markers[index(pDISTANCE)] = std::abs(prop(pMAX) - prop(pMIN));
             _markers[index(pDELTA)] = prop(pMAX) - prop(pMIN);
-            _markers[index(pNETTOCOUNT)] = pnetcount;
-            _markers[index(pCOUNT)] = pcount;
             _markers[index(pSUM)] = psum;
             _markers[index(pMEAN)] = pnetcount > 0 ? psum / pnetcount : rUNDEF;
             _markers[index(pMEDIAN)] = boost::accumulators::median(median);

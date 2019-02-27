@@ -104,32 +104,32 @@ void Model::removeWorkflow(qint32 index)
     }
 }
 
-SPAnalysisPattern Model::analysisPattern(qint32 index) const
+UPAnalysisPattern& Model::analysisPattern(qint32 index)
 {
     if ( index < _analysisPatterns.size())
         return _analysisPatterns[index];
-    return SPAnalysisPattern();
+    throw ErrorObject(TR("illegal analysis index used"));
 }
 
-SPAnalysisPattern Model::analysisPattern(const QString &name) const
+UPAnalysisPattern& Model::analysisPattern(const QString &name)
 {
-    for(SPAnalysisPattern pattern : _analysisPatterns){
+    for(UPAnalysisPattern& pattern : _analysisPatterns){
         if ( pattern->name() == name)
             return pattern;
     }
-    return SPAnalysisPattern();
+	throw ErrorObject(TR("illegal analysis name used"));
 }
 
 bool Model::addAnalysisPattern(AnalysisPattern *pattern)
 {
-      for(SPAnalysisPattern existingPattern : _analysisPatterns){
+      for(UPAnalysisPattern& existingPattern : _analysisPatterns){
           if ( existingPattern->name() == pattern->name()){
               kernel()->issues()->log(TR("No duplicate names allowed as Analysis name:") + pattern->name());
               return false;
           }
       }
       pattern->attachedModel(id());
-      _analysisPatterns.push_back(SPAnalysisPattern(pattern));
+      _analysisPatterns.push_back(UPAnalysisPattern(pattern));
       return true;
 }
 

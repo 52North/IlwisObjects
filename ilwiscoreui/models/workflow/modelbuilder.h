@@ -49,7 +49,7 @@ public:
     Q_PROPERTY(QVariantList analysisModels READ analysisModels CONSTANT)
 
     Q_INVOKABLE Ilwis::Ui::ModelDesigner * createModel(Ilwis::Ui::ResourceModel *rmodel, QObject *parent);
-    Q_INVOKABLE Ilwis::Ui::AnalysisModel * createAnalysisModel(Ilwis::AnalysisPattern *pattern);
+    Q_INVOKABLE Ilwis::Ui::AnalysisModel * createAnalysisModel(Ilwis::AnalysisPattern *pattern, QObject * par);
   
     ApplicationModelUI *createApplicationModelUI(Ilwis::ApplicationModel *appmodel, QObject *parent);
 

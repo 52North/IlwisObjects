@@ -180,6 +180,19 @@ LayerModel * LayerManager::findLayer(int nodeid)
     return 0;
 }
 
+Ilwis::Ui::LayerModel* LayerManager::findLayerByName(const QString& name) {
+	QStandardItem *rootItem = _tree->invisibleRootItem();
+	for (int layerIndex = 0; layerIndex < rootItem->rowCount(); ++layerIndex) {
+		LayerModel *layer = static_cast<LayerModel *>(rootItem->child(layerIndex));
+		if (layer->text() == name)
+			return layer;
+		layer = layer->findLayerByName(name);
+		if (layer)
+			return layer;
+	}
+	return 0;
+}
+
 int LayerManager::nodeid(QModelIndex idx) const
 {
     if (idx.isValid()) {

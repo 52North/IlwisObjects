@@ -241,13 +241,13 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
     if (hasType(domain, itNUMERICDOMAIN)) {
         VisualAttribute * attr = _rasterLayerModel->activeAttribute();
         if (attr != 0) {
-            NumericRange & actualRange = attr->actualRange();
-            NumericRange & stretchRange = attr->stretchRange();
+            NumericRange actualRange = attr->actualRange();
+            NumericRange stretchRange = attr->stretchRange();
 
             if (*fDrawStop)
                 return false;
 
-            auto end = pixIter.end();
+		    auto end = pixIter.end();
             quint32 position = 0;
             while (pixIter != end && position < size) {
                 double value = *pixIter;

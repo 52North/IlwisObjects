@@ -270,11 +270,12 @@ public:
 
     bool prepare(const Resource& resource1,const IOOptions& options=IOOptions()){
         if (resource1.isValid()) {
-            quint64 id = iUNDEF;
+            //quint64 id = iUNDEF;
             //if ( mastercatalog()->usesContainers(resource1.url())) // containers dont make sense for services
             //    mastercatalog()->addContainer(resource1.container());
-            id = mastercatalog()->url2id(resource1.url(), resource1.ilwisType());
-            Resource resource = mastercatalog()->id2Resource(id);
+            //id = mastercatalog()->url2id(resource1.url(), resource1.ilwisType());
+
+            Resource resource = mastercatalog()->id2Resource(resource1.id()); // is this one already in the catalog
             if (!resource.isValid())
                 resource = resource1;
             IlwisTypes objecttp = class2name();

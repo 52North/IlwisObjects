@@ -246,14 +246,12 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 				bool k1 = rng.isValid();
 				bool k2 = band->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
 				if (!k1 && k2) {
-
 					auto hist = band->statistics().histogram();   // make sure we have a reasonable number of bins.
 					auto limits = attr->calcStretchRange(hist, 0.02);
 					if (limits.first != rUNDEF && limits.second != rUNDEF) {
 						attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
 						visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());
 					}
-
 				}
 				if ((attr->stretchRange().min() != _currentStretchRanges[count].min()) || (attr->stretchRange().max() != _currentStretchRanges[count].max())) {
 					_currentStretchRanges[count] = attr->stretchRange(); // refresh the stretch range to be used for the pixel data

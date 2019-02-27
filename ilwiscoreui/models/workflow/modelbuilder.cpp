@@ -61,11 +61,13 @@ ModelDesigner *ModelBuilder::createModel(ResourceModel *rmodel,QObject *parent)
     return 0;
 }
 
-AnalysisModel *ModelBuilder::createAnalysisModel(AnalysisPattern *pattern)
+AnalysisModel *ModelBuilder::createAnalysisModel(AnalysisPattern *pattern, QObject * par)
 {
     auto iter = _analysisModelCreators.find(pattern->type());
     if ( iter != _analysisModelCreators.end()){
-         return (*iter).second(pattern);
+         auto *p = (*iter).second(pattern);
+		 p->setParent(par);
+		 return p;
     }
     return 0;
 }

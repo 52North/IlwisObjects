@@ -30,19 +30,19 @@ RepresentationElementModel::RepresentationElementModel()
 
 }
 
-RepresentationElementModel::RepresentationElementModel(VisualPropertyEditor *p) : QObject(p)
+RepresentationElementModel::RepresentationElementModel(QObject *p) : QObject(p)
 {
 }
 
-RepresentationElementModel::RepresentationElementModel(const QString &label, VisualPropertyEditor *p) : QObject(p), Identity(label)
+RepresentationElementModel::RepresentationElementModel(const QString &label, QObject *p) : QObject(p), Identity(label)
 {
 }
 
-RepresentationElementModel::RepresentationElementModel(const QString& label, double fract, VisualPropertyEditor *p) : QObject(p), Identity(label), _fraction(fract) {
+RepresentationElementModel::RepresentationElementModel(const QString& label, double fract, QObject *p) : QObject(p), Identity(label), _fraction(fract) {
 
 }
 
-RepresentationElementModel::RepresentationElementModel(const IRepresentation& rpr, Raw raw, const QString &label, VisualPropertyEditor *parent) : QObject(parent), Identity(label), _rpr(rpr), _raw(raw)
+RepresentationElementModel::RepresentationElementModel(const IRepresentation& rpr, Raw raw, const QString &label, QObject *parent) : QObject(parent), Identity(label), _rpr(rpr), _raw(raw)
 {
 }
 

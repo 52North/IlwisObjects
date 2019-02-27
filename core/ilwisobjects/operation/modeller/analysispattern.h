@@ -55,7 +55,7 @@ private:
     IModel _attachedModel;
 };
 
-typedef std::shared_ptr<AnalysisPattern> SPAnalysisPattern;
+typedef std::unique_ptr<AnalysisPattern> UPAnalysisPattern;
 }
 
 #endif // ANALYSISPATTERN_H

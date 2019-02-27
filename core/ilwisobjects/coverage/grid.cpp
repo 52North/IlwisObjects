@@ -136,7 +136,7 @@ void GridBlockInternal::init() {
         if (_inMemory) // may happen due to multithreading
             return;
         try{
-        _data.resize(blockSize());
+        _data.resize(blockSize(), _undef);
         _inMemory = true;
         } catch(const std::bad_alloc& ) {
             qDebug() << "err mem ";

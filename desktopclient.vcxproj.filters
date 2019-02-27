@@ -1238,6 +1238,18 @@
     <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeTests.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaces.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\LayerList.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaceDelegate.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SubPanelBox.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

@@ -62,7 +62,7 @@ QVariantMap SupervisedClassificationmodel::execute(const QVariantMap parameters)
     return output;
 }
 
-QString SupervisedClassificationmodel::multispectralraster()  {
+QString SupervisedClassificationmodel::multispectralraster() const {
 	QString result;
 	if (_analysis) {
 		QVariant data = _analysis->data(SCRASTERKEY);
@@ -76,13 +76,26 @@ QString SupervisedClassificationmodel::multispectralraster()  {
 	return result;
 
 }
-QString SupervisedClassificationmodel::selectionRaster() {
+QString SupervisedClassificationmodel::selectionRaster() const {
 	if (_analysis) {
 		QVariant data = _analysis->data(SELECTIONRASTERKEY);
 		if (data.isValid()) {
 			IRasterCoverage raster = data.value<IRasterCoverage>();
 			if (raster.isValid()) {
 				return QString::number(raster->resource().id()); 
+			}
+		}
+	}
+	return sUNDEF;
+}
+
+QString SupervisedClassificationmodel::classRaster() const {
+	if (_analysis) {
+		QVariant data = _analysis->data(CLASSRASTER);
+		if (data.isValid()) {
+			IRasterCoverage raster = data.value<IRasterCoverage>();
+			if (raster.isValid()) {
+				return QString::number(raster->resource().id());
 			}
 		}
 	}
@@ -104,14 +117,47 @@ void SupervisedClassificationmodel::multispectralraster(const QString& msr) {
 void SupervisedClassificationmodel::setGroupStartPoint(const QVariantMap& point) {
 	if (_analysis) {
 		_analysis->addData(SELECTEDPIXEL, point);
+		needUpdate(true);
 	}
 }
 
 void SupervisedClassificationmodel::setSpectralDistance(double v) {
 	if (_analysis) {
 		_analysis->addData(SPECTRALDISTANCE, v);
+		needUpdate(true);
 	}
 }
+
+QString SupervisedClassificationmodel::classficationDomainId() const {
+	if (_analysis) {
+		QVariant data = _analysis->data(SCDOMAINID);
+		return data.toString();
+	}
+	return sUNDEF;
+}
+
+QVariantList SupervisedClassificationmodel::classificationItems() const {
+	if (_analysis) {
+		QVariant data = _analysis->data(CLASSIFIERITEMS);
+		return data.toList();
+	}
+	return QVariantList();
+}
+
+void SupervisedClassificationmodel::calcStats(double r) {
+	if (_analysis) {
+		_analysis->addData(ITEMSTATS, r);
+	}
+}
+
+bool SupervisedClassificationmodel::needUpdate() const {
+	return true;
+}
+void SupervisedClassificationmodel::needUpdate(bool yesno) {
+	emit needUpdateChanged();
+}
+
+
 
 
 

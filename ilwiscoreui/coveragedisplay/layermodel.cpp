@@ -90,7 +90,7 @@ QVariant LayerModel::vproperty(const QString &key) const
 
     if ( key.indexOf("visualattribute") == 0){
         QStringList parts = key.split("|");
-        if ( parts.size() == 3){
+        if ( parts.size() >= 3){
             auto *attr = visualAttribute(parts[2]);
             if ( attr){
                 if ( parts[1] == "representation")
@@ -100,6 +100,9 @@ QVariant LayerModel::vproperty(const QString &key) const
                 } else if ( parts[1] == "domain"){
                     var.setValue<IDomain>(attr->attributeDomain());
                 }
+				else if (parts[1] == "color") {
+					var.setValue<QColor>(attr->value2color(parts[3].toInt()));
+				}
             }
         }
     }
@@ -136,7 +139,14 @@ void LayerModel::vproperty(const QString &key, const QVariant &value)
                 if ( dom.isValid()){
                     vattr->domain(dom);
                 }
-            }
+			}
+			else if (parts[2] == "stretchrange") {
+
+				if (parts.size() == 3) {
+					NumericRange rng(value.toString());
+					vattr->stretchRange(rng);
+				} 
+			}
         }
     }
 }
@@ -285,11 +295,6 @@ bool Ilwis::Ui::LayerModel::hasFixedStructure() const
 
 LayerModel * LayerModel::findLayer(int nodeid)
 {
-   /* for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
-        QStandardItem *it = child(layerIndex);
-        if (it)
-            qDebug() << "yyyyy" << it->text();
-    }*/
     for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
         LayerModel *layer = static_cast<LayerModel *>(child(layerIndex));
         if (layer->nodeId() == nodeid)

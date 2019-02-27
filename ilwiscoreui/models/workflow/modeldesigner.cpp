@@ -61,7 +61,7 @@ ModelDesigner::ModelDesigner(ResourceModel *rmodel, QObject *parent) : ResourceM
             }
         }
         for(int i=0; i < _model->analysisCount(); ++i){
-            AnalysisModel *amodel = modelbuilder()->createAnalysisModel(_model->analysisPattern(i).get());
+            AnalysisModel *amodel = modelbuilder()->createAnalysisModel(_model->analysisPattern(i).get(), this);
             if ( amodel){
                 _analysismodels.push_back(amodel);
             }

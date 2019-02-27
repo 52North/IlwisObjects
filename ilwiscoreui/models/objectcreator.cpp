@@ -613,6 +613,7 @@ QString ObjectCreator::createSupervisedClassification(const QVariantMap &parms) 
 	analysisParms["description"] = parms["description"];
 	analysisParms["pattername"] = name;
 	analysisParms["multispectralraster"] = parms["raster"];
+	analysisParms["classificationdomain"] = parms["domain"];
 
 	createModellerObject(analysisParms, model.ptr());
 
@@ -740,8 +741,8 @@ QObject *ObjectCreator::createModellerObject(const QVariantMap &parms, QObject *
                     AnalysisPattern * pattern = factory->createAnalysisPattern(subtype, patternName, desc, opt);
                     if ( pattern){
                         currentModel->addAnalysisPattern(pattern);
-                        AnalysisModel *amodel = modelbuilder()->createAnalysisModel(pattern);
-                        return amodel; // the ownership of this model is in the modeldesigner to which this analysis will be added
+                        AnalysisModel *amodel = modelbuilder()->createAnalysisModel(pattern, parent);
+                        return amodel; 
                     }
                 }else
                     kernel()->issues()->log(TR("An analysis must have a name"), IssueObject::itWarning);

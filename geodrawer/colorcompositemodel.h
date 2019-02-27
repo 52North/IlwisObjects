@@ -53,7 +53,6 @@ namespace Ilwis {
 			void requestRedraw();
 			bool usesColorData() const;
 			std::vector<IRasterCoverage> _ccBands;
-			bool _texturesNeedUpdate = false;
 			std::vector<NumericRange> _currentStretchRanges;
 
 			NEW_LAYERMODEL(ColorCompositeLayerModel);

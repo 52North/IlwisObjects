@@ -223,8 +223,8 @@ Item {
     }
 
     function setActiveEditor(editor){
-        if (activeEditor){
-            activeEditor.editor.postDrawerActive = false
+        if (activeEditor ){
+			activeEditor.editor.postDrawerActive = false
         }
         activeEditor = editor
         if ( activeEditor){
@@ -289,7 +289,6 @@ Item {
     }
 
    function mousePressed(mx,my){
-     
         if ( activeEditor ){
             if ( typeof activeEditor.handleMousePressed == 'function'){
                 activeEditor.handleMousePressed(mx,my)

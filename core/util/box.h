@@ -236,7 +236,7 @@ public:
         return ok;
     }
 
-    bool intersects(const Box<PointType>& box){
+    bool intersects(const Box<PointType>& box) const{
         return contains(box.min_corner()) || contains(box.max_corner());
     }
 

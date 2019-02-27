@@ -38,8 +38,8 @@ public:
 
 
     qint32 analysisCount() const;
-    SPAnalysisPattern analysisPattern(qint32 index) const;
-    SPAnalysisPattern analysisPattern(const QString& name) const;
+	UPAnalysisPattern& analysisPattern(qint32 index) ;
+	UPAnalysisPattern& analysisPattern(const QString& name) ;
     bool addAnalysisPattern(AnalysisPattern *pattern);
     void removeAnalysisPattern(const QString& name);
     void removeAnalysisPattern(qint32 index);
@@ -53,7 +53,7 @@ public:
 
 private:
     std::vector<IWorkflow> _workflows;
-    std::vector<SPAnalysisPattern> _analysisPatterns;
+    std::vector<UPAnalysisPattern> _analysisPatterns;
     std::vector<SPModelApplication> _applications;
 };
 

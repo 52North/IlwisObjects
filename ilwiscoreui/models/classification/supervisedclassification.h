@@ -27,22 +27,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "workflownode.h"
 #include "modeller/workflow.h"
 #include "modeller/analysispattern.h"
+#include "itemdomain.h"
+#include "domainitem.h"
+#include "thematicitem.h"
 #include "supervisedclassificationmodel.h"
 
 namespace Ilwis{
 namespace Ui {
 
+	class RepresentationElementModel;
+
 	const QString SCRASTERKEY = "multispectralraster";
 	const QString SCDOMAINKEY = "classifierdomain";
+	const QString SCDOMAINID = "classifierdomainid";
+	const QString CLASSIFIERITEMS = "classifieritems";
 	const QString SELECTIONRASTERKEY = "selectionraster";
 	const QString SELECTEDPIXEL = "selectionpixel";
 	const QString SPECTRALDISTANCE = "spectraldistance";
+	const QString ITEMSTATS = "itemstats";
+	const QString CLASSRASTER = "classraster";
+
+	typedef std::pair<std::vector<BoundingBox>, std::vector<double>> ClassificationEntry;
 
 class SupervisedClassification : public AnalysisPattern
 {
 	Q_OBJECT
 public:
-
+	enum Stats { stMEAN=0, stSTDDEV=1, stCOUNT=2, stPREDOM=3, stSUM=4};
     explicit SupervisedClassification();
     SupervisedClassification(const QString& name, const QString& description);
     bool execute(const QVariantMap& inputParameters, QVariantMap& outputParameters);
@@ -53,7 +64,8 @@ public:
 	virtual void addData(const QString& key, const QVariant& var);
 	virtual QVariant data(const QString& key) const;
    static AnalysisPattern *create(const QString& name, const QString& description, const Ilwis::IOOptions &options);
-   void setSelection(const Pixel& pix);
+   int setSelection();
+   void calcStats(Raw rw);
 
 signals:
 
@@ -64,14 +76,25 @@ private:
 
 	IRasterCoverage _multiSpectralRaster;
 	IRasterCoverage _multiSpectralRasterSelection;
-	IDomain _items;
+	IRasterCoverage _classRaster;
+	IThematicDomain _items;
+	std::map < Raw,RepresentationElementModel *> _rprElements;
+	std::map<Raw, ClassificationEntry> _stats;
 	ITable _statistics;
 	const int MARKED = -1;
 	const int SELECT = 1;
 	Pixel _selectionPoint;
 	double _spectralDistance = rUNDEF;
+	BoundingBox _bbSelection;
 
 	void generateNeighbours(const Pixel& pix, PixelIterator& iterSelect, std::vector<Pixel>& linPixelPositions);
+	void makeBasePositions(const Pixel& pix, std::vector<Pixel>& basePositions);
+	void clearSelection();
+	void clearMarked();
+	void calcBasic(const BoundingBox& box, double rw, std::vector<double>& stats, std::map<double, quint32>& predom) const;
+	void calcVariance(const BoundingBox& box, Raw rw, const std::vector<double>& stats, double& var) const;
+	void findPredom(const std::map<double, quint32>& predom, std::vector<double>& stats) const;
+	std::vector<BoundingBox> mergeBoxes(const std::vector<BoundingBox>& boxes) const;
 
 };
 }

@@ -16,6 +16,7 @@ Controls.DropableItem{
     x : 4
     clip:true
 	property var raster
+	property var classDomain
 	Column {
         x : 5
         height : 250
@@ -38,6 +39,7 @@ Controls.DropableItem{
 					return false
 				var ok = false
 				var obj = mastercatalog.id2object(id, null)
+
 				if ( obj) {
 					if (obj.typeName === "rastercoverage"){
 						var isint = Global.isInteger(obj.internalValuetype)
@@ -51,7 +53,34 @@ Controls.DropableItem{
 					}
 					if (!ok)
 						obj.suicide()
+
 				}
+				
+				return ok
+			}
+		}
+		Controls.TextEditLabelPair {
+		    id :msdomain
+			labelText : qsTr("Classification domain")
+			labelWidth : 120
+			checkFunction : msdomain.testDrop
+
+			function testDrop(id){
+				if (!id)
+					return false
+				var ok = false
+				var obj = mastercatalog.id2object(id, null)
+				console.debug("kkkk", obj, obj.id, obj.typeName, obj.internalValuetype)
+				if ( obj) {
+					if (obj.typeName === "itemdomain"){
+							classDomain = obj
+							ok = true
+					}
+					if (!ok)
+						obj.suicide()
+
+				}
+				
 				return ok
 			}
 		}
@@ -69,11 +98,12 @@ Controls.DropableItem{
     }
 
 	 function apply(overwrite) {
-		if( raster){
+		if( raster && classDomain){
 			var rurl = mspectral.content
+			var durl = classDomain.url
 			var murl = applyBut.currentCatalogCorrectUrl() + "/"+ objectcommon.itemname
 			if ( rurl != "" && objectcommon.itemname != ""){
-				var createInfo = {type : "supervisedclassification", url : murl, raster : rurl, name : objectcommon.itemname, description : objectcommon.description}
+				var createInfo = {type : "supervisedclassification", url : murl, domain : durl, raster : rurl, name : objectcommon.itemname, description : objectcommon.description}
 				var modelid = objectcreator.createObject(createInfo)
 				var filter = "itemid=" + modelid
 				bigthing.newCatalog(filter, "model", "","other")

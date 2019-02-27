@@ -34,10 +34,10 @@ class ILWISCOREUISHARED_EXPORT RepresentationElementModel : public QObject, publ
 
 public:
     RepresentationElementModel();
-    explicit RepresentationElementModel(VisualPropertyEditor *p);
-    RepresentationElementModel(const QString& label, VisualPropertyEditor *parent=0);
-	RepresentationElementModel(const QString& label, double fract, VisualPropertyEditor *parent);
-    RepresentationElementModel(const IRepresentation& rpr, Raw raw,const QString& label, VisualPropertyEditor *parent=0);
+    explicit RepresentationElementModel(QObject *p);
+    RepresentationElementModel(const QString& label, QObject *parent=0);
+	RepresentationElementModel(const QString& label, double fract, QObject *parent);
+    RepresentationElementModel(const IRepresentation& rpr, Raw raw,const QString& label, QObject *parent=0);
     Q_PROPERTY(QColor ecolor READ color WRITE color NOTIFY ecolorChanged)
     Q_PROPERTY(QString label READ name CONSTANT)
     Q_PROPERTY(double eopacity READ opacity NOTIFY eopacityChanged)
