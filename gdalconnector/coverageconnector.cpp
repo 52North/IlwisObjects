@@ -78,7 +78,7 @@ bool CoverageConnector::loadMetaData(Ilwis::IlwisObject *data,const IOOptions& o
         if (!csy.isValid()){
             QString resource = QString("code=csy:unknown");
             if (!csy.prepare(resource)) {
-                kernel()->issues()->log(TR("Fallback to 'unknown' failed, corrupt system files defintion"));
+                kernel()->issues()->log(TR("Fallback to 'unknown' failed, corrupt system files definition"));
                 return false;
             }
         }

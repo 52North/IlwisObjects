@@ -134,13 +134,13 @@ void RangeNode::setRangeDefinition(const QString &val, const Workflow* workflow)
         NodeId nid = i64UNDEF;
         int outPIndex = iUNDEF;
         if(!checkLinkDefintion(_rangeDef, nid, outPIndex)){
-            kernel()->issues()->log(TR("illegal link defintion in  rangedefinition:") +_rangeDef );
+            kernel()->issues()->log(TR("illegal link definition in range definition:") +_rangeDef );
             _rangeDef = "";
             return;
         }
         SPWorkFlowNode node = workflow->nodeById(nid);
         if ( !node){
-            kernel()->issues()->log(TR("illegal node in link defintion in  rangedefinition:") +_rangeDef );
+            kernel()->issues()->log(TR("illegal node in link definition in range definition:") +_rangeDef );
             _rangeDef = "";
         }else
             _inputParameters1[0].inputLink(node, outPIndex);

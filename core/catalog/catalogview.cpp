@@ -170,7 +170,7 @@ void CatalogView::storeFilters() const
     for(auto filter : _filters) {
         QString basekey = "users/" + Ilwis::context()->currentUser() + "/filters-" + QString::number(count++);
         context()->configurationRef().addValue(basekey + "/filter-name", filter.first);
-        context()->configurationRef().addValue(basekey + "/filter-defintion", filter.second._filter.toString());
+        context()->configurationRef().addValue(basekey + "/filter-definition", filter.second._filter.toString());
     }
     context()->configurationRef().addValue("users/" + Ilwis::context()->currentUser() + "/filter-count", QString::number(count));
 

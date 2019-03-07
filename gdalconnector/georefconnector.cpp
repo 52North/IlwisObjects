@@ -66,7 +66,7 @@ bool GeorefConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
     if(!csy.isValid()) {
         QString resource = QString("code=csy:unknown");
         if (!csy.prepare(resource)) {
-            kernel()->issues()->log(TR("Fallback to 'unknown' failed, corrupt system files defintion"));
+            kernel()->issues()->log(TR("Fallback to 'unknown' failed, corrupt system files definition"));
             return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "coordinatesystem", grf->name());
         }
     }
