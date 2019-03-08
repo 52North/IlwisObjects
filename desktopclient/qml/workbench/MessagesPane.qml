@@ -70,6 +70,7 @@ WorkBenchShifter {
                             delegate : Item{
                                 id : shorttimeitem
                                 width : messageTable.width
+                                clip : true
                                 Text {
                                     text : styleData.value
                                     font.pointSize: 8
@@ -141,6 +142,7 @@ WorkBenchShifter {
                         role : "shorttime"
                         title : "Time"
                         width : 60
+                        clip : true
                         delegate : Item{
                             id : shorttimeitemcommand
                             width : parent.width
