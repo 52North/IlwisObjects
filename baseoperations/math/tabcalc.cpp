@@ -94,9 +94,10 @@ OperationImplementation::State TabCalc::prepare(ExecutionContext *ctx, const Sym
 
     _outputColumn = _expression.input<QString>(2);
 
-     _createNewTable = _expression.input<bool>(_expression.parameterCount() - 1);
+    _createNewTable = _expression.input<bool>(3);
 
-    for(int parmIndex = 3 ; parmIndex < _expression.parameterCount()-1; ++parmIndex){
+    int first_col = 4;
+    for(int parmIndex = first_col ; parmIndex < _expression.parameterCount(); ++parmIndex){
         Parameter parm = _expression.parm(parmIndex);
         if ( hasType(parm.valuetype(), itSTRING)){
             QString columnName = parm.value();
@@ -105,14 +106,14 @@ OperationImplementation::State TabCalc::prepare(ExecutionContext *ctx, const Sym
                 kernel()->issues()->log(TR("Column ") + columnName + " " + TR(" does not exist in ") + _inputTable->name());
                 return sPREPAREFAILED;
             }
-            _inputColumns[parmIndex - 2] =columnName; // index starts at three but the variables are a 1 based index system ( e.g @1+@2)
+            _inputColumns[parmIndex - first_col + 1] =columnName; // index does not start at zero unlike the variables are a 1 based index system ( e.g @1+@2)
         }else if ( hasType(parm.valuetype(), itNUMBER)){
             bool ok;
             double v = parm.value().toDouble(&ok);
             if (!ok){
                 return sPREPAREFAILED;
             }
-            _inputNumbers[parmIndex-2] = v;
+            _inputNumbers[parmIndex - first_col + 1] = v;
         }
     }
     _outputTable = _createNewTable ? _inputTable->copyTable(sUNDEF) : _inputTable ;
@@ -174,15 +175,15 @@ quint64 TabCalc1::createMetadata()
 {
     OperationResource operation({"ilwis://operations/tabcalc"});
     operation.setLongName("TabCalc 1");
-    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,true|!false, inputcolumn)");
+    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,yes|!no, inputcolumn)");
     operation.setDescription(TR("Generates a table with a new column based on the expression. The column is either in a new table or in the original table"));
     operation.setInParameterCount({5});
     operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itTABLE, TR("input table"), TR("The table that contains the input column(s)"));
     operation.addInParameter(2,itSTRING, TR("output column"), TR("Name of the new column or a number"));
-    operation.addInParameter(3,itSTRING|itNUMBER, TR("input column/number"), TR("first column to be used in teh expression"));
-     operation.addInParameter(4,itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(3, itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number"), TR("first column to be used in the expression"));
 
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"));
@@ -206,16 +207,16 @@ quint64 TabCalc2::createMetadata()
 {
     OperationResource operation({"ilwis://operations/tabcalc"});
     operation.setLongName("TabCalc 2");
-    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,true|!false, inputcolumn, inputcolumn)");
+    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,yes|!no, inputcolumn, inputcolumn)");
     operation.setDescription(TR("Generates a table with a new column based on the expression. The column is either in a new table or in the original table"));
     operation.setInParameterCount({6});
     operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itTABLE, TR("input table"), TR("The table that contains the input column(s)"));
     operation.addInParameter(2,itSTRING, TR("output column"), TR("Name of the new column"));
-    operation.addInParameter(3,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in teh expression or a number"));
-    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in teh expression or a number"));
-     operation.addInParameter(5,itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(3, itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in the expression or a number"));
+    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in the expression or a number"));
 
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"));
@@ -239,17 +240,17 @@ quint64 TabCalc3::createMetadata()
 {
     OperationResource operation({"ilwis://operations/tabcalc"});
     operation.setLongName("TabCalc 3");
-    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,true|!false, inputcolumn, inputcolumn, inputcolumn)");
+    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,yes|!no, inputcolumn, inputcolumn, inputcolumn)");
     operation.setDescription(TR("Generates a table with a new column based on the expression. The column is either in a new table or in the original table"));
     operation.setInParameterCount({7});
     operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itTABLE, TR("input table"), TR("The table that contains the input column(s)"));
     operation.addInParameter(2,itSTRING, TR("output column"), TR("Name of the new column"));
-    operation.addInParameter(3,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in teh expression or a number"));
-    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in teh expression or a number"));
-     operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in teh expression or a number"));
-     operation.addInParameter(6,itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(3, itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in the expression or a number"));
+    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in the expression or a number"));
+    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in the expression or a number"));
 
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"));
@@ -273,18 +274,18 @@ quint64 TabCalc4::createMetadata()
 {
     OperationResource operation({"ilwis://operations/tabcalc"});
     operation.setLongName("TabCalc 4");
-    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,true|!false, inputcolumn, inputcolumn, inputcolumn, inputcolumn)");
+    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,yes|!no, inputcolumn, inputcolumn, inputcolumn, inputcolumn)");
     operation.setDescription(TR("Generates a table with a new column based on the expression. The column is either in a new table or in the original table"));
     operation.setInParameterCount({8});
     operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itTABLE, TR("input table"), TR("The table that contains the input column(s)"));
     operation.addInParameter(2,itSTRING, TR("output column"), TR("Name of the new column"));
-    operation.addInParameter(3,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in teh expression or a number"));
-    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in teh expressionor a number"));
-    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in teh expression or a number"));
-    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 4"), TR("Name of the fourth column to be used in teh expressionor a number"));
-     operation.addInParameter(7,itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(3, itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in the expression or a number"));
+    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in the expressionor a number"));
+    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in the expression or a number"));
+    operation.addInParameter(7,itSTRING|itNUMBER, TR("input column/number 4"), TR("Name of the fourth column to be used in the expressionor a number"));
 
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"));
@@ -307,19 +308,19 @@ quint64 TabCalc5::createMetadata()
 {
     OperationResource operation({"ilwis://operations/tabcalc"});
     operation.setLongName("TabCalc 5");
-    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,true|!false, inputcolumn, inputcolumn, inputcolumn, inputcolumn, inputcolumn)");
+    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,yes|!no, inputcolumn, inputcolumn, inputcolumn, inputcolumn, inputcolumn)");
     operation.setDescription(TR("Generates a table with a new column based on the expression. The column is either in a new table or in the original table"));
     operation.setInParameterCount({9});
     operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itTABLE, TR("input table"), TR("The table that contains the input column(s)"));
     operation.addInParameter(2,itSTRING, TR("output column"), TR("Name of the new column"));
-    operation.addInParameter(3,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in teh expression or a number"));
-    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in teh expressionor a number"));
-    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in teh expression or a number"));
-    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 4"), TR("Name of the fourth column to be used in teh expressionor a number"));
-    operation.addInParameter(7,itSTRING|itNUMBER, TR("input column/number 5"), TR("Name of the fifth column to be used in teh expressionor a number"));
-     operation.addInParameter(8,itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(3, itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in the expression or a number"));
+    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in the expressionor a number"));
+    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in the expression or a number"));
+    operation.addInParameter(7,itSTRING|itNUMBER, TR("input column/number 4"), TR("Name of the fourth column to be used in the expressionor a number"));
+    operation.addInParameter(8,itSTRING|itNUMBER, TR("input column/number 5"), TR("Name of the fifth column to be used in the expressionor a number"));
 
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"));
@@ -342,20 +343,20 @@ quint64 TabCalc6::createMetadata()
 {
     OperationResource operation({"ilwis://operations/tabcalc"});
     operation.setLongName("TabCalc 6");
-    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,true|!false, inputcolumn, inputcolumn, inputcolumn, inputcolumn, inputcolumn, inputcolumn)");
+    operation.setSyntax("tabcalc(expression,inputtable,outputcolumn,yes|!no, inputcolumn, inputcolumn, inputcolumn, inputcolumn, inputcolumn, inputcolumn)");
     operation.setDescription(TR("Generates a table with a new column based on the expression. The column is either in a new table or in the original table"));
     operation.setInParameterCount({10});
     operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itTABLE, TR("input table"), TR("The table that contains the input column(s)"));
     operation.addInParameter(2,itSTRING, TR("output column"), TR("Name of the new column"));
-    operation.addInParameter(3,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in teh expression or a number"));
-    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in teh expressionor a number"));
-    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in teh expression or a number"));
-    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 4"), TR("Name of the fourth column to be used in teh expressionor a number"));
-    operation.addInParameter(7,itSTRING|itNUMBER, TR("input column/number 5"), TR("Name of the fifth column to be used in teh expressionor a number"));
-    operation.addInParameter(8,itSTRING|itNUMBER, TR("input column/number 6"), TR("Name of the sixth column to be used in teh expressionor a number"));
-     operation.addInParameter(9,itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(3, itBOOL, TR("Create new table"), TR("The column is either in a new table or in the original table"));
+    operation.addInParameter(4,itSTRING|itNUMBER, TR("input column/number 1"), TR("Name of the first column to be used in the expression or a number"));
+    operation.addInParameter(5,itSTRING|itNUMBER, TR("input column/number 2"), TR("Name of the second column to be used in the expressionor a number"));
+    operation.addInParameter(6,itSTRING|itNUMBER, TR("input column/number 3"), TR("Name of the third column to be used in the expression or a number"));
+    operation.addInParameter(7,itSTRING|itNUMBER, TR("input column/number 4"), TR("Name of the fourth column to be used in the expressionor a number"));
+    operation.addInParameter(8,itSTRING|itNUMBER, TR("input column/number 5"), TR("Name of the fifth column to be used in the expressionor a number"));
+    operation.addInParameter(9,itSTRING|itNUMBER, TR("input column/number 6"), TR("Name of the sixth column to be used in the expressionor a number"));
 
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE, TR("output table"));
