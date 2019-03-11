@@ -124,8 +124,6 @@
     <ClCompile Include="pythonapi\pythonapi_vertexiterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="pythonapi\ilwisobjects_wrap.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -245,6 +243,9 @@
       <Filter>Other Files</Filter>
     </None>
     <None Include="pythonapi\UPDATE">
+      <Filter>Other Files</Filter>
+    </None>
+    <None Include="pythonapi\createpythoninstaller.bat">
       <Filter>Other Files</Filter>
     </None>
   </ItemGroup>
