@@ -36,7 +36,7 @@ Var verifyDir
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuGroup
 !define MUI_COMPONENTSPAGE_NODESC
 !insertmacro MUI_PAGE_COMPONENTS
-!define MUI_DIRECTORYPAGE_TEXT_TOP "Please select the directory of you Python 3.5 (32bit) installation! $\n Here you can download Python: $\n$\n $\t http://www.python.org/downloads/"
+!define MUI_DIRECTORYPAGE_TEXT_TOP "Please select the directory of you Python 3.6 (64bit) installation! $\n Here you can download Python: $\n$\n $\t http://www.python.org/downloads/"
 !define MUI_DIRECTORYPAGE_VARIABLE $pythonDir
 !define MUI_PAGE_CUSTOMFUNCTION_PRE preparePythonDirVerify
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE leavePythonDirVerify
@@ -50,8 +50,8 @@ Var verifyDir
 !insertmacro MUI_LANGUAGE English
 
 #=======Installer attributes=================
-OutFile "ILWISObjects-beta3.0-forPython3.5-32bit.exe"
-InstallDir $PROGRAMFILES32\n52\ILWISObjects
+OutFile "ILWISObjects-beta3.0-forPython3.6-64bit.exe"
+InstallDir $PROGRAMFILES64\n52\ILWISObjects
 #InstallDirRegKey HKLM "${REGKEY}" "InstallPath" <-- doesn't work!
 CRCCheck on
 XPStyle on
@@ -70,7 +70,8 @@ RequestExecutionLevel admin
 #======Callback functions====================
 Function .onInit
     # ReadRegStr $pythonDir HKLM "SOFTWARE\Wow6432Node\Python\PythonCore\3.4\InstallPath" ""
-    ReadRegStr $pythonDir HKCU "SOFTWARE\Python\PythonCore\3.5-32\InstallPath" ""
+    # ReadRegStr $pythonDir HKCU "SOFTWARE\Python\PythonCore\3.5-32\InstallPath" ""
+    ReadRegStr $pythonDir HKCU "SOFTWARE\Python\PythonCore\3.6\InstallPath" ""
     ReadRegStr $0 HKLM "${REGKEY}" "InstallPath" # workaround for InstallDirRegKey!!
     StrCmp $0 "" done
         StrCpy $Instdir $0
@@ -97,7 +98,7 @@ Function .onVerifyInstDir
         IfErrors NoNext
         FileRead $0 $1
         FileClose $0
-        StrCmpS $1 "This is Python version 3.5.1$\r$\n" Next Next
+        StrCmpS $1 "This is Python version 3.6.1$\r$\n" Next Next
 
     NoNext:
         Abort
@@ -152,14 +153,43 @@ Section "ILWIS Objects (required)" IOSecID
     WriteRegStr HKLM "${REGKEY}" "InstallPath" $Instdir
 
     SetOverwrite on
-    SetOutPath "$Instdir\extensions"
-    File /r bin\extensions\*
+    SetOutPath "$Instdir\extensions\baseoperations"
+    File /r bin\extensions\baseoperations\*
+    SetOutPath "$Instdir\extensions\featureoperations"
+    File /r bin\extensions\featureoperations\*
+    SetOutPath "$Instdir\extensions\gdalconnector"
+    File /r bin\extensions\gdalconnector\*
+    #SetOutPath "$Instdir\extensions\gslconnector"
+    #File /r bin\extensions\gslconnector\*
+    SetOutPath "$Instdir\extensions\ilwis3connector"
+    File /r bin\extensions\ilwis3connector\*
+    SetOutPath "$Instdir\extensions\ilwisscript"
+    File /r bin\extensions\ilwisscript\*
+    SetOutPath "$Instdir\extensions\internalconnector"
+    File /r bin\extensions\internalconnector\*
+    #SetOutPath "$Instdir\extensions\opencvconnector"
+    #File /r bin\extensions\opencvconnector\*
+    SetOutPath "$Instdir\extensions\postgresqlconnector"
+    File /r bin\extensions\postgresqlconnector\*
+    SetOutPath "$Instdir\extensions\proj4impl"
+    File /r bin\extensions\proj4impl\*
+    SetOutPath "$Instdir\extensions\rasteroperations"
+    File /r bin\extensions\rasteroperations\*
+    SetOutPath "$Instdir\extensions\remotedataaccesshandler"
+    File /r bin\extensions\remotedataaccesshandler\*
+    #SetOutPath "$Instdir\extensions\spreadsheetconnectors"
+    #File /r bin\extensions\spreadsheetconnectors\*
+    SetOutPath "$Instdir\extensions\streamconnector"
+    File /r bin\extensions\streamconnector\*
+    SetOutPath "$Instdir\extensions\wfsconnector"
+    File /r bin\extensions\wfsconnector\*
+    SetOutPath "$Instdir\extensions\workflowconnector"
+    File /r bin\extensions\workflowconnector\*
     SetOutPath "$Instdir\plugins"
     File /r bin\plugins\*
     SetOutPath "$Instdir\resources"
     File /r bin\resources\*
     SetOutPath "$Instdir"
-    File bin\libgeos*.dll
     File bin\httpserver.dll
     File bin\icudt51.dll
     File bin\icuin51.dll
@@ -284,7 +314,7 @@ FunctionEnd
 Function leavePythonDirVerify
     IntOp $verifyDir 0 &
 
-    # ExecShell "open" "http://www.python.org/ftp/python/3.5.1/python-3.5.1.msi"
+    # ExecShell "open" "http://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe"
 
 FunctionEnd
 
