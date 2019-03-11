@@ -70,7 +70,7 @@ quint64 TransformCoordinates::createMetadata()
     operation.setDescription(TR("transforms the coordinates of all vertices of the features from one coordinate system to another"));
     operation.setInParameterCount({2});
     operation.addInParameter(0,itFEATURE,  TR("Source feature coverage"),TR("The feature coverage to be transformed to another coordinate system"));
-    operation.addInParameter(1,itSTRING, TR("coordinate system definition"),TR("defintion of new projection in terms of epsg or proj4 or the url of an existing coordinate system"));
+    operation.addInParameter(1,itSTRING, TR("coordinate system definition"),TR("definition of new projection in terms of epsg or proj4 or the url of an existing coordinate system"));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itFEATURE, TR("output feature coverage"), TR("output feature coverage where all vertices have new coordinates"));
     operation.setKeywords("features, vector, coordinatesystem,internal"); // internal for the moment as there is no implementation

@@ -98,12 +98,14 @@ public:
             return rUNDEF;
         if (raw == _undefined)
             return rUNDEF;
-        return (raw + _offset) * MathHelper::roundTo3DecimalDigits (_scale);
+        return MathHelper::roundTo3DecimalDigits ((raw + _offset) * _scale);
     }
     double real2raw(double real) const {
         if ( real == rUNDEF)
             return _undefined;
-        return real / MathHelper::roundTo3DecimalDigits (_scale)   - _offset;
+        if (_scale == 0)
+            return real;
+        return MathHelper::roundTo3DecimalDigits (real / _scale)   - _offset;
     }
     bool isNeutral() const{
         if ( _storeType == itDOUBLE )

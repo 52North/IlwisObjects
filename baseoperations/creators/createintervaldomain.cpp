@@ -144,7 +144,7 @@ quint64 CreateIntervalDomain::createMetadata()
     resource.setLongName("Create Interval Domain");
     resource.setSyntax("createintervaldomain(intervaldefinition, resolution, strict,description[,parentdomain])");
     resource.setInParameterCount({4,5});
-    resource.addInParameter(0, itSTRING,TR("Item defintion"), TR("A '|' seperate list of item definition for the items of the domain, each item consist always of 3 parts, the last 2 parts maybe empty"));
+    resource.addInParameter(0, itSTRING,TR("Item defintion"), TR("A '|' separate list of item definition for the items of the domain, each item consist always of 3 parts, the last 2 parts maybe empty"));
     resource.addInParameter(1, itDOUBLE,TR("Resolution"), TR("The resolution of numbers in the intervals used. All intervals have the same resolution "));
     resource.addInParameter(2, itBOOL,TR("Strictness"), TR("Indicates how strict the realtion between domain and parent is; true for all domains without parents"));
     resource.addInParameter(3, itSTRING,TR("Description"), TR("Extra information about the new domain"));

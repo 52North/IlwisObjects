@@ -164,7 +164,7 @@ bool CoverageConnector::loadMetaData(Ilwis::IlwisObject *data,const IOOptions& o
             kernel()->issues()->log(csyName,TR("Coordinate system couldnt be initialized, defaulting to 'unknown'"),IssueObject::itWarning);
             QString resource = QString("code=csy:unknown");
             if (!csy.prepare(resource)) {
-                kernel()->issues()->log(TR("Fallback to 'unknown' failed, corrupt system files defintion"));
+                kernel()->issues()->log(TR("Fallback to 'unknown' failed, corrupt system files definition"));
                 return false;
             }
         }

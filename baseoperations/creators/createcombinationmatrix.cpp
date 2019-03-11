@@ -153,9 +153,9 @@ quint64 CreateCombinationMatrix::createMetadata()
     resource.addInParameter(0, itDOMAIN,TR("X Axis Domain"), TR("Domain used for the values on the x-axis"));
     resource.addInParameter(1, itDOMAIN,TR("Y Axis Domain"), TR("Domain used for the values on the y-axis"));
     resource.addInParameter(2, itDOMAIN,TR("Combo Domain"), TR("Domain used for the combinations of the values on x and y axis"));
-    resource.addInParameter(3, itSTRING,TR("X Axis values"), TR("The values on X axis, a list seperated by '|' "));
-    resource.addInParameter(4, itSTRING,TR("Y Axis values"), TR("The values on Y axis, a list seperated by '|' "));
-    resource.addInParameter(5, itSTRING,TR("Combo values"), TR("The values of the combo cells organized in rows, a list seperated by '|' "));
+    resource.addInParameter(3, itSTRING,TR("X Axis values"), TR("The values on X axis, a list separated by '|' "));
+    resource.addInParameter(4, itSTRING,TR("Y Axis values"), TR("The values on Y axis, a list separated by '|' "));
+    resource.addInParameter(5, itSTRING,TR("Combo values"), TR("The values of the combo cells organized in rows, a list separated by '|' "));
     resource.addInParameter(6, itSTRING,TR("Description"), TR("Short text explaining the use of the this combination matrix"));
     resource.setOutParameterCount({1});
     resource.addOutParameter(0, itCOMBINATIONMATRIX, TR("output matrix"), TR("The newly created combination matrix"));

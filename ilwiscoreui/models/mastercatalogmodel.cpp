@@ -569,7 +569,7 @@ CatalogModel *MasterCatalogModel::newCatalog(const QString &inpath, const QStrin
             for(int i = 0; i < n; ++i){
                 QString basekey = "users/" + Ilwis::context()->currentUser() + "/filters-" + QString::number(i);
                 QString name = context()->configurationRef()(basekey + "/filter-name", QString(""));
-                QString newfilter = context()->configurationRef()(basekey + "/filter-defintion", QString(""));
+                QString newfilter = context()->configurationRef()(basekey + "/filter-definition", QString(""));
                 model->filter(name,newfilter);
             }
         }

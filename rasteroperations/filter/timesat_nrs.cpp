@@ -325,7 +325,7 @@ quint64 Timesat::createMetadata()
 {
     OperationResource operation({"ilwis://operations/timesat"});
     operation.setLongName("Timesat filtering");
-    operation.setSyntax("timesat(inputgridcoverage,iterationcount,upperenvelop,fitlastiteration,extendwindow");
+    operation.setSyntax("timesat(inputgridcoverage,iterationcount,upperenvelop,fitlastiteration,extendwindow)");
     operation.setDescription(TR("iteratively filters a rastercoverage with a Savitzky-Golay moving filter"));
     operation.setInParameterCount({5});
     operation.addInParameter(0,itRASTER, TR("Input rastercoverage"),TR("Input rastercoverage with value domain"));

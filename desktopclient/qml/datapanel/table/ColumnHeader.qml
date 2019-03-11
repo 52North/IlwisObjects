@@ -14,6 +14,7 @@ Rectangle {
     border.color:  Global.headerdark
     width: defaultWidth(styleData.column)
     height: Global.rowHeight
+    clip : true
     property bool selected : false
     Text {
         id: text

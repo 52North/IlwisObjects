@@ -346,7 +346,7 @@ QString SubFeatureDefinition::insert(const QString& di)
     auto iter = _subFeature2Index.find(domainItem) ;
     if ( iter == _subFeature2Index.end()) { // insert one item
         _index2subFeature.push_back(domainItem);
-        _subFeature2Index[domainItem] = ((quint32)_subFeature2Index.size()) - 1;
+        _subFeature2Index[domainItem] = ((quint32)_subFeature2Index.size());
     }
     return domainItem;
 }
@@ -377,10 +377,10 @@ double SubFeatureDefinition::insert(double domainItem)
     if ( iter == _subFeature2Index.end()) { // insert one item
         if ( _subFeatureDomain->valueType() == itINTEGER){
             _index2subFeature.push_back(QString::number((qint64)domainItem));
-            _subFeature2Index[QString::number((qint64)domainItem)] = (quint32)_subFeature2Index.size() - 1;
+            _subFeature2Index[QString::number((qint64)domainItem)] = (quint32)_subFeature2Index.size();
         }else {
             _index2subFeature.push_back(QString::number(domainItem));
-            _subFeature2Index[QString::number(domainItem)] = (quint32)_subFeature2Index.size() - 1;
+            _subFeature2Index[QString::number(domainItem)] = (quint32)_subFeature2Index.size();
         }
     }
     return domainItem;
