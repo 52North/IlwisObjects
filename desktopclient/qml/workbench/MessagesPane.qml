@@ -163,6 +163,7 @@ WorkBenchShifter {
                             width : parent.width
                             TextInput {
                                 id :commandmessage
+                                autoScroll : false
                                 anchors.fill: parent
                                 text : styleData.value
                                 font.pointSize: 8
