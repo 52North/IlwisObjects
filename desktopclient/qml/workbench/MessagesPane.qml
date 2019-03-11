@@ -142,7 +142,6 @@ WorkBenchShifter {
                         role : "shorttime"
                         title : "Time"
                         width : 60
-                        clip : true
                         delegate : Item{
                             id : shorttimeitemcommand
                             width : parent.width
@@ -150,6 +149,7 @@ WorkBenchShifter {
                                 text : styleData.value
                                 font.pointSize: 8
                                 color : model[styleData.row].color
+                                clip : true
                             }
                         }
                     }
