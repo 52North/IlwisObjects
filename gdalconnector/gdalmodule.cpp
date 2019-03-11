@@ -100,17 +100,19 @@ void GdalModule::prepare()
     cfactory->addCreator(itTABLE,"gdal", GdalFeatureTableConnector::create);
     cfactory->addCreator(itCATALOG,"gdal", CatalogConnector::create);
 
-
-    for(int i=0; i < gdal()->getDriverCount(); ++i) {
-        GDALDriverH driv = gdal()->getDriver(i);
-        if ( driv) {
-            QString shortName = gdal()->getShortName(driv);
-            cfactory->addCreator(shortName,"gdal", RasterCoverageConnector::create);
-        }
-    }
+    int driverCount = gdal()->getDriverCount(); // calls GdalProxy::prepare() to initialize gdal()
+    // add all vector creators
     QVariantList names = DataFormat::getFormatProperties(DataFormat::fpCODE,itFEATURE,"gdal");
     for(const QVariant& name : names)
         cfactory->addCreator(name.toString(),"gdal", GdalFeatureConnector::create);
+    // then add all raster creators (all formats are looped, the ones that aren't added in the previous loop are raster formats)
+    for (int i = 0; i < driverCount; ++i) {
+        GDALDriverH driv = gdal()->getDriver(i);
+        if (driv) {
+            QString shortName = gdal()->getShortName(driv);
+            cfactory->addCreator(shortName, "gdal", RasterCoverageConnector::create);
+        }
+    }
 
     IlwisObject::addTypeFunction(GdalConnector::ilwisType);
 
