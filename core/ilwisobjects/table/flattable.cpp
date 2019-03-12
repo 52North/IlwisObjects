@@ -235,7 +235,7 @@ void FlatTable::column(const QString &nme, const std::vector<QVariant> &vars, qu
             _datagrid.push_back(std::vector<QVariant>(_attributeDefinition.definitionCount()));
             _datagrid[rec].changed(true);
             _datagrid[rec++].cell(index,checkInput(var,index));
-            recordCount((quint32)_datagrid.size());
+            BaseTable::recordCount((quint32)_datagrid.size());
         }
     }
 
