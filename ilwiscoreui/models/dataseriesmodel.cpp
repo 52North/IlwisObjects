@@ -39,9 +39,11 @@ DataseriesModel::DataseriesModel(const QString name) : _name(name) {
 
 }
 
-DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color)
-	: QObject(chartModel), _xaxis(xaxis), _yaxis(yaxis), _zaxis(zaxis), _color(color)
+DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extra)
+	: QObject(chartModel), _xaxis(xaxis), _yaxis(yaxis), _zaxis(zaxis)
 {
+	if (extra.contains("color"))
+		_color = extra["color"].value<QColor>();
     _seriesIndex = 0;
 }
 
@@ -53,7 +55,7 @@ QVariantList DataseriesModel::points() const {
 	return _points;
 }
 
-bool DataseriesModel::setData(const ITable& inputTable) {
+bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra) {
     _points.clear();
     _name = inputTable->columndefinition(_yaxis).name();	// use Y-axis for the name
     _dataDefinitions[0] = inputTable->columndefinition(_xaxis).datadef();
@@ -73,8 +75,8 @@ bool DataseriesModel::setData(const ITable& inputTable) {
     auto totalRangeX = _dataDefinitions[0].domain()->range();
     std::map<QString, int> lookup;
     if (xtype == itNUMERICDOMAIN) {
-        _minx = actualRangeX->as<NumericRange>()->min();
-        _maxx = actualRangeX->as<NumericRange>()->max();
+        _minx = extra.contains("minx") ? extra["minx"].toDouble() : actualRangeX->as<NumericRange>()->min();
+        _maxx = extra.contains("maxx") ? extra["maxx"].toDouble() : actualRangeX->as<NumericRange>()->max();
     }
     else if (xtype == itITEMDOMAIN) {
         ItemRangeIterator iter(totalRangeX->as<ItemRange>());
@@ -94,8 +96,8 @@ bool DataseriesModel::setData(const ITable& inputTable) {
 
 	auto actualRangeY = _dataDefinitions[1].range();
 	auto totalRangeY = _dataDefinitions[1].domain()->range();
-	_miny = actualRangeY->as<NumericRange>()->min();
-	_maxy = actualRangeY->as<NumericRange>()->max();
+	_miny = extra.contains("miny") ? extra["miny"].toDouble() : actualRangeY->as<NumericRange>()->min();
+	_maxy = extra.contains("miny") ? extra["miny"].toDouble() : actualRangeY->as<NumericRange>()->max();
 
 	QVariant v;
 	double vx = 0.0, vy = 0.0;
