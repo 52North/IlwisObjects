@@ -14,6 +14,7 @@ Rectangle {
 	width : parent.width/2
 	height : parent.height
 	border.width : 1
+
 	border.color : Global.edgecolor
 		ScrollView{
 		id : control
@@ -36,5 +37,9 @@ Rectangle {
                 }
 			}
 		}
+	}
+	
+	function selectedBand() {
+		return list.currentIndex
 	}
 }

@@ -34,15 +34,14 @@ SplitView {
     orientation: Qt.Horizontal
 
 	FeatureSpaces {
-	id : ppp
-		width : 250
-		height : datapane.height
+		id : ppp
+		width : 300
 	}
 
 
 	Vis.MapPanel {
 			id : maps
-			width : parent.width - 250
+			width : parent.width - 300
 			height : parent.height
 			showManager : false
 			activeEditor : scMap
@@ -71,7 +70,6 @@ SplitView {
 	}
 
 	function handleMousePressed(mx,my) {
-	    console.debug("xxxxxxx", mx,my)
 		var scpModel = modellerDataPane.model.analysisModel(0)
 		var rasterPixel = maps.activeLayerManager().rootLayer.screen2raster(ccRaster.id, mx,my)
 		scpModel.setGroupStartPoint(rasterPixel)
