@@ -45,9 +45,11 @@ namespace Ui {
 	const QString SELECTEDPIXEL = "selectionpixel";
 	const QString SPECTRALDISTANCE = "spectraldistance";
 	const QString ITEMSTATS = "itemstats";
+	const QString CALCITEMSTATS = "calcitemstats";
 	const QString CLASSRASTER = "classraster";
+	const QString TABLEID = "tableid";
 
-	typedef std::pair<std::vector<BoundingBox>, std::vector<double>> ClassificationEntry;
+	typedef std::pair<std::vector<BoundingBox>, std::vector<std::vector<double>>> ClassificationEntry;
 
 class SupervisedClassification : public AnalysisPattern
 {
@@ -66,6 +68,10 @@ public:
    static AnalysisPattern *create(const QString& name, const QString& description, const Ilwis::IOOptions &options);
    int setSelection();
    void calcStats(Raw rw);
+   QVariantList bandstats(qint32) const;
+   void calcFeatureSpace(int bandX, int bandY) ;
+   QVariantList tableColumns(int band1, int band2) const;
+   QColor raw2Color(Raw r) const;
 
 signals:
 
@@ -80,7 +86,9 @@ private:
 	IThematicDomain _items;
 	std::map < Raw,RepresentationElementModel *> _rprElements;
 	std::map<Raw, ClassificationEntry> _stats;
-	ITable _statistics;
+	
+	// per band combination a collection of raws with for each raws a table that contains the x/y combination value for the two bands
+	ITable _featureSpaces;
 	const int MARKED = -1;
 	const int SELECT = 1;
 	Pixel _selectionPoint;
@@ -91,10 +99,12 @@ private:
 	void makeBasePositions(const Pixel& pix, std::vector<Pixel>& basePositions);
 	void clearSelection();
 	void clearMarked();
-	void calcBasic(const BoundingBox& box, double rw, std::vector<double>& stats, std::map<double, quint32>& predom) const;
+	void calcBasic(const BoundingBox& box, int z, double rw, std::vector<double>& stats, std::map<double, quint32>& predom) const;
 	void calcVariance(const BoundingBox& box, Raw rw, const std::vector<double>& stats, double& var) const;
 	void findPredom(const std::map<double, quint32>& predom, std::vector<double>& stats) const;
 	std::vector<BoundingBox> mergeBoxes(const std::vector<BoundingBox>& boxes) const;
+
+	std::pair<int, int> columnIndexes(Raw raw, int band1, int band2);
 
 };
 }

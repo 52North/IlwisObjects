@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define SCMODEL_H
 
 #include <QObject>
+#include <QColor>
 #include <QQmlListProperty>
 #include "workflow/analysismodel.h"
 
@@ -45,6 +46,12 @@ namespace Ilwis {
 			Q_INVOKABLE void setSpectralDistance(double dist);
 			Q_INVOKABLE QVariantList classificationItems() const;
 			Q_INVOKABLE void calcStats(double r);
+			Q_INVOKABLE QVariantList bandstats(qint32 raw) const;
+			Q_INVOKABLE void calcFeatureSpace(int bandx, int bandy);
+			Q_INVOKABLE QVariantList tableColumns(int band1, int band2) const;
+			Q_INVOKABLE QString featureSpaceTable() const;
+			Q_INVOKABLE QColor raw2color(qint32 raw) const;
+
 			
 		signals:
 			void multispectralrasterChanged();
