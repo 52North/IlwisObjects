@@ -188,7 +188,6 @@ ESPIlwisObject MasterCatalog::get(quint64 id) const
 bool MasterCatalog::contains(const QUrl& url, IlwisTypes type) const{
     Locker<std::recursive_mutex> lock(_guard);
 
-
     auto hash = Ilwis::qHash2(url, type);
     auto  iter = _knownHashes.find(hash);
     if ( iter != _knownHashes.end()) {
@@ -201,7 +200,6 @@ bool MasterCatalog::contains(const QUrl& url, IlwisTypes type) const{
 
 bool MasterCatalog::contains(quint64 iid) const
 {
-    //Locker<std::recursive_mutex> lock(_guard);
     auto query = QString("select * from mastercatalog where itemid = %1").arg(iid);
     InternalDatabaseConnection db(query);
     return db.next();
@@ -209,6 +207,7 @@ bool MasterCatalog::contains(quint64 iid) const
 
 bool MasterCatalog::knownCatalogContent(const QUrl &path) const
 {
+
     Locker<std::recursive_mutex> lock(_guard);
 
     return _catalogs.find(path) != _catalogs.end();
@@ -370,7 +369,6 @@ bool MasterCatalog::updateItems(const std::vector<Resource>& iteme, bool silent)
 
 quint64 MasterCatalog::url2id(const QUrl &url, IlwisTypes tp, bool casesensitive) const
 {
-    //Locker<std::recursive_mutex> lock(_guard);
     QString query = QString("select itemid,type from mastercatalog where (resource = '%1' or rawresource = '%1')").arg(url.toString());
     if (!casesensitive)
         query = QString("select itemid,type from mastercatalog where lower(resource) = '%1' or lower(rawresource) = '%1'").arg(url.toString().toLower()) ;
@@ -388,7 +386,6 @@ quint64 MasterCatalog::url2id(const QUrl &url, IlwisTypes tp, bool casesensitive
 }
 
 Resource MasterCatalog::id2Resource(quint64 iid) const {
-   // Locker<std::recursive_mutex> lock(_guard);
 	{ // scopes the InternalDatabaseConnection; it will unlock when done
 		auto query = QString("select * from mastercatalog where itemid = %1").arg(iid);
 		InternalDatabaseConnection db(query);
@@ -407,7 +404,6 @@ Resource MasterCatalog::id2Resource(quint64 iid) const {
 
 quint64 MasterCatalog::name2id(const QString &name, IlwisTypes tp) const
 {
-    //Locker<std::recursive_mutex> lock(_guard);
     quint64 id = IlwisObject::internalname2id(name);
     if ( id == i64UNDEF){
         Resource resource = name2Resource(name,tp);
@@ -418,7 +414,6 @@ quint64 MasterCatalog::name2id(const QString &name, IlwisTypes tp) const
 
 bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, const QVariant &var, bool extended)
 {
-    //Locker<std::recursive_mutex> lock(_guard);
     auto setExtended = [](quint64 objectid, const QString &attribute, const QVariant &var)->QString{
         QString statement;
         Resource res = mastercatalog()->id2Resource(objectid);
@@ -462,7 +457,6 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
 }
 
 IlwisTypes MasterCatalog::id2type(quint64 iid) const {
-   // Locker<std::recursive_mutex> lock(_guard);
     QString query = QString("select type from mastercatalog where itemid = %1").arg(iid);
     InternalDatabaseConnection results(query);
     if ( results.next()) {
@@ -474,8 +468,6 @@ IlwisTypes MasterCatalog::id2type(quint64 iid) const {
 
 Resource MasterCatalog::name2Resource(const QString &nm, IlwisTypes tp) const
 {
-    //Locker<std::recursive_mutex> lock(_guard);
-
     if ( nm == sUNDEF)
         return Resource();
     QString name = OSHelper::neutralizeFileName(nm);
@@ -535,8 +527,6 @@ Resource MasterCatalog::name2Resource(const QString &nm, IlwisTypes tp) const
 }
 
 QUrl MasterCatalog::name2url(const QString &name, IlwisTypes tp) const{
-   //Locker<std::recursive_mutex> lock(_guard);
-
     if ( name.contains(QRegExp("\\\\|/"))) { // is there already path info; then assume it is already a unique resource
         bool ok = OSHelper::isAbsolute(name); // name might be a partial path
         if ( ok && !OSHelper::isFileName(name))
@@ -649,7 +639,6 @@ bool MasterCatalog::unregister(quint64 id)
 
 std::vector<Resource> MasterCatalog::select(const QString &filter) const
 {
-   // Locker<std::recursive_mutex> lock(_guard);
     if ( filter == "" || filter == sUNDEF)
         return std::vector<Resource>();
 	QStringList filters;
@@ -708,7 +697,6 @@ QString MasterCatalog::replaceSymbols(const QString& s) const{
 
 std::vector<Resource> MasterCatalog::select(const QUrl &resource, const QString &selection) const
 {
-   // Locker<std::recursive_mutex> lock(_guard);
     QString newselection = replaceSymbols(selection);
 
     if ( resource == MASTERCATALOG)
