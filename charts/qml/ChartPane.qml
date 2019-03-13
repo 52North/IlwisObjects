@@ -16,6 +16,8 @@ Rectangle {
 	property ChartModel chart : chartspanel.chart
     property var updateChart : chart ? chart.updateSeries : 0
 
+	signal click(int mx,int my)
+
     onUpdateChartChanged : {
         visibleGraphs.removeAllSeries()
         loadGraphs()    
@@ -83,6 +85,16 @@ Rectangle {
         dropShadowEnabled : true
         legend.visible : chart ? chart.legendVisible : true
         legend.alignment : chart ? aligntoint(chart.legendAlignment) : aligntoint("top")
+
+		   MouseArea {
+            id : chartMouseArea
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+
+			onClicked : {
+				click(mouseX, mouseY)
+			}
+        }
 
         DropArea {
             anchors.fill: parent
