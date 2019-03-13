@@ -23,10 +23,6 @@ Item {
     Loader {
          id : panelLayout
          anchors.fill: parent
-
-         onLoaded : {
-		  console.debug("bbbbb", panelLayout.item)
-         }
     }
     states: [
         State { name: "visible"
