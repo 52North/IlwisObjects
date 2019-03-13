@@ -14,4 +14,9 @@ FeatureSpaceDelegate {
 	function activePanel() {
 		return fs;
 	}
+
+	function deActivateAll(){
+		fs.active = false
+	}
+
 }

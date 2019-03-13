@@ -12,6 +12,7 @@ Rectangle {
     id : chartManagement
     width: parent.width
     height: showManager ? 24 : 0
+	//Layout.minimumHeight: 24
 
     TabView {
         width : parent.width

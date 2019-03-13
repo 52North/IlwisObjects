@@ -67,7 +67,8 @@ quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const Q
 	extra["color"] = extraParameters.contains("color") ? extraParameters["color"].value<QColor>() : clr;
 	insertDataSeries(tbl, 0, xaxis, yaxis, zaxis, extra);		// add the first dataseries
 	TableMerger merger;
-	merger.simpleCopyColumns(tbl, _datatable);
+	std::vector<QString> columnsToBeConsidered = { xaxis, yaxis };
+	merger.simpleCopyColumns(tbl, _datatable, columnsToBeConsidered);
 	merger.mergeTableData(tbl, _datatable, 0);
 
     return modelId(); 
@@ -225,6 +226,11 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
             return false;
         }
     }
+	std::vector<QString> columns = { xcolumn, ycolumn };
+	TableMerger merger;
+	merger.simpleCopyColumns(tbl, _datatable, columns);
+	merger.mergeTableData(tbl, _datatable, 0);
+
     if (_series.size() > 0) {
         if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::Axis::AXAXIS)) {
             if (ycolumn == sUNDEF) {
@@ -264,6 +270,9 @@ void ChartModel::clearChart() {
 	_tickCountX = 5;
 	_tickCountY = 5;
 	_name = sUNDEF;
+	if (_datatable.isValid()) {
+		_datatable.prepare();
+	}
 }
 void ChartModel::assignParent(QObject * parent)
 {

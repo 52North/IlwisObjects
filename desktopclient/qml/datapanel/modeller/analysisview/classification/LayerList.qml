@@ -11,6 +11,7 @@ import "../../../../Global.js" as Global
 import "../../../../controls" as Controls
 
 Rectangle {
+    property alias currentIndex : list.currentIndex
 	width : parent.width/2
 	height : parent.height
 	border.width : 1
@@ -33,6 +34,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         list.currentIndex = index
+						updateChart()
                     }
                 }
 			}

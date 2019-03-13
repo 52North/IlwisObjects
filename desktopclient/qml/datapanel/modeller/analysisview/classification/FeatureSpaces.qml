@@ -15,6 +15,7 @@ Column {
 	id : choiceLists
 	height : parent.height
 	spacing : 4
+
 	Text {
 		width : parent.width
 		height : 25
@@ -26,22 +27,13 @@ Column {
 	Row {
 		width : parent.width
 		height : 130
+
+	
 		LayerList {
 			id : xlayers
 		}
 		LayerList {
 			id : ylayers
-		}
-	}
-	Button {
-		width : 200
-		height : 22
-		text : qsTr("Set Feature Space");
-		onClicked : {
-			var activePanel = layouts.activePanel()
-			if ( activePanel) {
-				activePanel.setBands(xlayers.selectedBand(), ylayers.selectedBand())
-			}
 		}
 	}
 	Row {
@@ -118,5 +110,26 @@ Column {
     }
 	Component.onCompleted : {
 		layouts.source = "FeatureSpace1.qml"
+	}
+
+	function updateChart(){
+		var activePanel = layouts.activePanel()
+		if ( activePanel) {
+			activePanel.setBands(xlayers.selectedBand(), ylayers.selectedBand())
+		}		
+	}
+
+	function selectedXBand(){
+		return xlayers.selectedBand()
+	}
+
+	function selectedYBand(){
+		return ylayers.selectedBand()
+	}
+
+	function setLayerList(bx, by) {
+		console.debug("a1", bx, by)
+		xlayers.currentIndex = bx
+		ylayers.currentIndex = by
 	}
 }
