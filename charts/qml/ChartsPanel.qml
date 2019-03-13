@@ -20,6 +20,8 @@ Item {
     property TableModel tabledata
 	property var showManager : true
 
+	signal click(int mx,int my)
+
     TabView {
         id : chartarea
         anchors.fill : parent
@@ -32,6 +34,13 @@ Item {
                 orientation: Qt.Vertical
                 height : parent.height
                 ChartPane {
+				  Connections {
+						target: chartpane
+						onClick: {
+							click(mx,my)
+						 }
+					}
+
                     id : chartpane
                     height : parent.height - propertiespanel.height
                 }
@@ -61,9 +70,14 @@ Item {
         chart.assignParent(chartspanel);
 		tabmodel.displayName = chart.name
 
+		setDataTabTableData()
+    }
+
+	function setDataTabTableData(){
 		var filter = "itemid=" + chart.dataTableId()
         datatab.item.addDataSource(filter, chart.dataTableUrl(), "table")
-    }
+	}
+
 
 	Component.onDestruction :{
 		models.unRegisterModel(chart.modelId())
