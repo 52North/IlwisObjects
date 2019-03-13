@@ -27,7 +27,7 @@ public:
 	bool mergeTableData(const ITable &sourceTable1, ITable &targetTable, int offset) const;
     void mergeTableData(const ITable &sourceTable1,const ITable &sourceTable2, ITable &targetTable, const std::vector<QString>& except=std::vector<QString>()) const;
     bool copyColumns(const ITable &tblSource, ITable &tbltarget, int options=0);
-	int simpleCopyColumns(const ITable &tblSource, ITable& tbltarget) const;
+	int simpleCopyColumns(const ITable &tblSource, ITable& tbltarget, const std::vector<QString>& columns) const;
 private:
     std::map<QString, RenumberMap> _renumberers;
     std::map<QString, QString> _columnRenames;
