@@ -256,9 +256,9 @@ std::pair<int, int> Workflow::translation() const
 void Workflow::translation(double x, double y, bool relative)
 {
     if ( relative)
-        _translation = std::pair<int,int>(_translation.first + x, _translation.second + y);
+        _translation = std::pair<int,int>(int(_translation.first + x), int(_translation.second + y));
     else
-        _translation = std::pair<int, int>(x,y);
+        _translation = std::pair<int, int>(int(x),int(y));
 }
 
 quint32 Workflow::generateId()
