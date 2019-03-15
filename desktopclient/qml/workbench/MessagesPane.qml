@@ -145,11 +145,11 @@ WorkBenchShifter {
                         delegate : Item{
                             id : shorttimeitemcommand
                             width : parent.width
+                            clip : true
                             Text {
                                 text : styleData.value
                                 font.pointSize: 8
-                                color : model[styleData.row].color
-                                clip : true
+                                color : commandsTable.model[styleData.row] ? commandsTable.model[styleData.row].color : "black"
                             }
                         }
                     }
@@ -168,8 +168,7 @@ WorkBenchShifter {
                                 text : styleData.value
                                 font.pointSize: 8
                                 readOnly: true;
-                                clip : true
-                                color : model[styleData.row].color
+                                color : commandsTable.model[styleData.row] ? commandsTable.model[styleData.row].color : "black"
                                 wrapMode: Text.WordWrap
                                 MouseArea{
                                     anchors.fill: parent
