@@ -46,10 +46,11 @@ Rectangle {
 
 	}
 	function setBands(bx, by){
+	    
 		if ( bandX != bx || bandY != by) {
 			bandX = bx
 			bandY = by
-			updateChart()
+			updateChart2()
 		}
 	}
 
@@ -58,8 +59,8 @@ Rectangle {
 		return parts[parts.length - 1]
 	}
 
-	function updateChart() {
-		var scpModel = modellerDataPane.model.analysisModel(0)
+	function updateChart2() {
+	    var scpModel = modellerDataPane.model.analysisModel(0)
 		if ( scpModel && bandX != bandY){
 			scpModel.calcFeatureSpace(bandX, bandY)
 			var firstTime = tableColumns.length == 0
@@ -72,11 +73,11 @@ Rectangle {
 	}
 
 	function setChart(scpModel) {
-		chartArea.item.chart.clearChart()
+	    chartArea.item.chart.clearChart()
 		for(var i=0; i < tableColumns.length; ++i) {
 			var raw = column2raw(tableColumns[i].xbandname)
 			var pcolor = scpModel.raw2color(raw)
-			var extraParameters = {name : 'fs1', chartType : 'points', color : pcolor}
+			var extraParameters = {name : 'fs1', chartType : 'points', color : pcolor,minx : 0, maxx : 255,miny : 0, maxy : 255}
 			chartArea.item.chart.addDataTable(scpModel.featureSpaceTable(),tableColumns[i].xbandname,tableColumns[i].ybandname, extraParameters)
 			//chartArea.item.setDataTabTableData()
 		}
