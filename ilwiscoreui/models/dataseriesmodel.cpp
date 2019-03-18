@@ -97,7 +97,7 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 	auto actualRangeY = _dataDefinitions[1].range();
 	auto totalRangeY = _dataDefinitions[1].domain()->range();
 	_miny = extra.contains("miny") ? extra["miny"].toDouble() : actualRangeY->as<NumericRange>()->min();
-	_maxy = extra.contains("miny") ? extra["miny"].toDouble() : actualRangeY->as<NumericRange>()->max();
+	_maxy = extra.contains("maxy") ? extra["maxy"].toDouble() : actualRangeY->as<NumericRange>()->max();
 
 	QVariant v;
 	double vx = 0.0, vy = 0.0;
