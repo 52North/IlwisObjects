@@ -28,12 +28,29 @@ Column {
 		width : parent.width
 		height : 130
 
-	
-		LayerList {
-			id : xlayers
+		Column {
+		    width : parent.width /2 
+			height : parent.height
+			Text {
+				width : parent.width
+				height : 20
+				text : qsTr("x axis")
+			}
+			LayerList {
+				id : xlayers
+			}
 		}
-		LayerList {
-			id : ylayers
+		Column {
+		    width : parent.width/2 
+			height : parent.height
+			Text {
+				width : parent.width
+				height : 20
+				text : qsTr("y axis")
+			}
+			LayerList {
+				id : ylayers
+			}
 		}
 	}
 	Row {
@@ -131,5 +148,14 @@ Column {
 		console.debug("a1", bx, by)
 		xlayers.currentIndex = bx
 		ylayers.currentIndex = by
+	}
+
+
+	function updateCharts(){
+	    console.debug("qqqqq")
+		if ( layouts.item){
+		console.debug("qqqqq")
+			layouts.item.updateFS()
+		}
 	}
 }
