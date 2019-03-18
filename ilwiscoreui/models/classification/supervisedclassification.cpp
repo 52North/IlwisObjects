@@ -204,6 +204,7 @@ void SupervisedClassification::addData(const QString& key, const QVariant& var) 
 	}
 	if (key == CALCITEMSTATS) {
 		calcStats(var.toDouble());
+		//clearSelection();
 	}
 }
 
@@ -545,40 +546,13 @@ void SupervisedClassification::calcFeatureSpace(int bandX, int bandY)  {
 		maxRaw = std::max(item->raw(), maxRaw);
 		minRaw = std::min(item->raw(), minRaw);
 	}
-	std::vector<std::vector<std::pair<double, double>>> b1b2perraw(maxRaw - minRaw + 1);
+	FeatureSpaceAccumulator b1b2perraw(maxRaw - minRaw + 2);
 	for (const auto& item : _items) {
-		auto iter = _stats.find(item->raw());
-		if (iter != _stats.end()) {
-			ClassificationEntry& entry = (*iter).second;
-			std::vector<BoundingBox>& boxes = entry.first;
-			auto mergedBoxes = mergeBoxes(boxes);
-			for (auto& box : mergedBoxes) {
-				BoundingBox bbBaseX = box;
-				BoundingBox bbBaseY = box;
-				bbBaseX.min_corner().z = bandX;
-				bbBaseX.max_corner().z = bandX;
-				bbBaseY.min_corner().z = bandY;
-				bbBaseY.max_corner().z = bandY;
-				PixelIterator iterX(_multiSpectralRaster, bbBaseX);
-				PixelIterator iterY(_multiSpectralRaster, bbBaseY);
-				PixelIterator iterClassMap(_classRaster, box);
-				auto xend = iterX.end();
-				while (iterX != xend) {
-					Raw raw = (*iterClassMap);
-					if (raw != rUNDEF) {
-						int vx = (*iterX);
-						int vy = (*iterY);
-						if (vx != rUNDEF && vy != rUNDEF) {
-							b1b2perraw[raw - minRaw].push_back(std::pair<int, int>(vx, vy));
-						}
-					}
-					++iterX;
-					++iterY;
-					++iterClassMap;
-				}
-			}
-		}	
+		Raw r = item->raw();
+		calcFSperValue(r, bandX, bandY, b1b2perraw, r - minRaw); // class training pixels
 	}
+	calcFSperValue(-1, bandX, bandY, b1b2perraw, b1b2perraw.size() - 1); // selection
+
 	for (int r = 0; r < b1b2perraw.size(); ++r) {
 		auto& pairs = b1b2perraw[r];
 		if (pairs.size() > 0) {
@@ -593,50 +567,94 @@ void SupervisedClassification::calcFeatureSpace(int bandX, int bandY)  {
 	}
 }
 
-QVariantList SupervisedClassification::tableColumns(int band1, int band2) const {
-	QVariantList result;
-	QString baseName1 = QString("band_%1_").arg(band1);
-	QString baseName2 = QString("band_%1_").arg(band2);
-	QVariantMap pair;
-	int enough = 0;
-	for (int c = 0; c < _featureSpaces->columnCount(); ++c) {
+void Ilwis::Ui::SupervisedClassification::calcFSperValue(Raw r, int bandX, int bandY, FeatureSpaceAccumulator &b1b2perraw, const quint32 b1b2Index)
+{
+	auto iter = _stats.find(r);
+	if (iter != _stats.end()) {
+		bool useSelection = b1b2Index == b1b2perraw.size() - 1;
+		ClassificationEntry& entry = (*iter).second;
+		std::vector<BoundingBox>& boxes = entry.first;
+		std::vector<BoundingBox> mergedBoxes;
+		if (useSelection) {
+			if (_bbSelection.isValid()) {
+				mergedBoxes.push_back(_bbSelection);
+			}
+		}
+		else
+			mergedBoxes = mergeBoxes(boxes);
 
-		if (_featureSpaces->columndefinitionRef(c).name().indexOf(baseName1) == 0) {
+		for (auto& box : mergedBoxes) {
+			BoundingBox bbBaseX = box;
+			BoundingBox bbBaseY = box;
+			bbBaseX.min_corner().z = bandX;
+			bbBaseX.max_corner().z = bandX;
+			bbBaseY.min_corner().z = bandY;
+			bbBaseY.max_corner().z = bandY;
+			PixelIterator iterX(_multiSpectralRaster, bbBaseX);
+			PixelIterator iterY(_multiSpectralRaster, bbBaseY);
+			PixelIterator iterClassMap(useSelection ? _multiSpectralRasterSelection : _classRaster, box);
+			auto xend = iterX.end();
+			while (iterX != xend) {
+				Raw raw = (*iterClassMap);
+				if (raw != rUNDEF) {
+					int vx = (*iterX);
+					int vy = (*iterY);
+					if (vx != rUNDEF && vy != rUNDEF) {
+						b1b2perraw[b1b2Index].push_back(std::pair<int, int>(vx, vy));
+					}
+				}
+				++iterX;
+				++iterY;
+				++iterClassMap;
+			}
+		}
+	}
+}
+
+QVariantList SupervisedClassification::tableColumns(int bandX, int bandY) const {
+	QVariantList result;
+	QString baseNameX = QString("band_%1_").arg(bandX);
+	QString baseNameY = QString("band_%1_").arg(bandY);
+	QString yName;
+	QVariantMap pair;
+	for (int c = 0; c < _featureSpaces->columnCount(); ++c) {
+		if (_featureSpaces->columndefinitionRef(c).name().indexOf(baseNameX) == 0) {
 			pair["xband"] = c;
 			pair["xbandname"] = _featureSpaces->columndefinitionRef(c).name();
-			++enough;
-		}
-		if (_featureSpaces->columndefinitionRef(c).name().indexOf(baseName2) == 0) {
-			pair["yband"] = c;
-			pair["ybandname"] = _featureSpaces->columndefinitionRef(c).name();
-			++enough;
-		}
-		if (enough == 2) {
-			result.push_back(pair);
-			enough = 0;
+			auto parts = pair["xbandname"].toString().split("_");
+			QString raw = parts[2];
+			yName = baseNameY + raw;
+			for (int yc = 0; yc < _featureSpaces->columnCount(); ++yc) {
+				if (_featureSpaces->columndefinitionRef(yc).name().indexOf(yName) == 0) {
+					pair["yband"] = yc;
+					pair["ybandname"] = yName;
+					result.push_back(pair);
+				}
+			}
+			
 		}
 	}
 	return result;
 }
 
-std::pair<int, int> SupervisedClassification::columnIndexes(Raw raw, int band1, int band2) {
+std::pair<int, int> SupervisedClassification::columnIndexes(Raw raw, int bandX, int bandY) {
 	bool comboExists = false;
 
 	comboExists = true;
-	QString bandName1 = QString("band_%1_%2").arg(band1).arg(raw);
-	QString bandName2 = QString("band_%1_%2").arg(band2).arg(raw);
-	int columnIndex1 = _featureSpaces->columnIndex(bandName1);
-	int columnIndex2 = _featureSpaces->columnIndex(bandName2);
+	QString bandNameX = QString("band_%1_%2").arg(bandX).arg(raw);
+	QString bandNameY = QString("band_%1_%2").arg(bandY).arg(raw);
+	int columnIndexX = _featureSpaces->columnIndex(bandNameX);
+	int columnIndexY = _featureSpaces->columnIndex(bandNameY);
 
-	if (columnIndex1 == iUNDEF) {
-		columnIndex1 = _featureSpaces->columnCount();
-		_featureSpaces->addColumn(bandName1, IDomain("integer"));
+	if (columnIndexX == iUNDEF) {
+		columnIndexX = _featureSpaces->columnCount();
+		_featureSpaces->addColumn(bandNameX, IDomain("integer"));
 	}
-	if (columnIndex2 == iUNDEF) {
-		columnIndex2 = _featureSpaces->columnCount();
-		_featureSpaces->addColumn(bandName2, IDomain("integer"));
+	if (columnIndexY == iUNDEF) {
+		columnIndexY = _featureSpaces->columnCount();
+		_featureSpaces->addColumn(bandNameY, IDomain("integer"));
 	}
-	return std::pair<int, int>(columnIndex1, columnIndex2);
+	return std::pair<int, int>(columnIndexX, columnIndexY);
 }
 
 

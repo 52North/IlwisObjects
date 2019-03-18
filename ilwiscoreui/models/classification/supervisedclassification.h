@@ -50,6 +50,7 @@ namespace Ui {
 	const QString TABLEID = "tableid";
 
 	typedef std::pair<std::vector<BoundingBox>, std::vector<std::vector<double>>> ClassificationEntry;
+	typedef std::vector<std::vector<std::pair<double, double>>> FeatureSpaceAccumulator;
 
 class SupervisedClassification : public AnalysisPattern
 {
@@ -70,6 +71,7 @@ public:
    void calcStats(Raw rw);
    QVariantList bandstats(qint32) const;
    void calcFeatureSpace(int bandX, int bandY) ;
+   void calcFSperValue(Raw r, int bandX, int bandY, FeatureSpaceAccumulator &b1b2perraw, const quint32 idx);
    QVariantList tableColumns(int band1, int band2) const;
    QColor raw2Color(Raw r) const;
 
