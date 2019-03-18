@@ -27,14 +27,15 @@ SplitView {
     width : parent.width
     height :parent.height
 
+
 	onHeightChanged : {
-		ppp.height = datapane.height
+		fspaces.height = datapane.height
 	}
 
     orientation: Qt.Horizontal
 
 	FeatureSpaces {
-		id : ppp
+		id : fspaces
 		width : 300
 	}
 
@@ -57,7 +58,7 @@ SplitView {
 		if(layer){
 			layer.vproperty("opacity", 0.6)
 		}
-		ppp.height = maps.height = datapane.height
+		fspaces.height = maps.height = datapane.height
 	}
 
 	function setNewBands(bands){
@@ -89,6 +90,7 @@ SplitView {
 		if(layer){
 		    layer.vproperty("visualattribute|Pixel value|stretchrange", "numericrange:-1|1|1");
 			layer.vproperty("updatetextures","?")
+			fspaces.updateCharts()
 		}
 	}
 
