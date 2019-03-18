@@ -12,8 +12,8 @@ import "../../../../controls" as Controls
 
 Rectangle {
     property alias currentIndex : list.currentIndex
-	width : parent.width/2
-	height : parent.height
+	width : parent.width
+	height : parent.height - 22
 	border.width : 1
 
 	border.color : Global.edgecolor
