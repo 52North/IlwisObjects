@@ -11,9 +11,6 @@ Model.ModellerWorkArea {
         updateView1()
     }
 
-    width : parent.width
-    height : parent.height - 170
-
     state : "invisible"
 
 
@@ -44,7 +41,7 @@ Model.ModellerWorkArea {
     }
 
     function updateView1() {
-        meme.setSource((currentAnalysis ? (uicontext.ilwisFolder  + currentAnalysis.panel("main")) : ""),  {"width" : workarea.width, "height": workarea.height}) 
+        meme.setSource((currentAnalysis ? (uicontext.ilwisFolder  + currentAnalysis.panel("main")) : "")) 
     }
 
 	function view() {
@@ -54,7 +51,7 @@ Model.ModellerWorkArea {
 	}
 
 	 Component.onCompleted: {
-	   // height = parent.height
+	    height = parent.height
 	 }
 }
 
