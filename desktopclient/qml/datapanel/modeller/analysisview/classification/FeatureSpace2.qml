@@ -9,20 +9,20 @@ import "../../../../Global.js" as Global
 import "../../../../controls" as Controls
 
 SplitView {
-    orientation: Qt.Horizontal
+    orientation: Qt.Vertical
 
 	FeatureSpaceDelegate {
 		id : fs1
-	    width : parent.width / 2
-        height : parent.height
+	    width : parent.width
+        height : parent.height / 2
 		fsIndex : 0
 
 	}
 
 	FeatureSpaceDelegate {
 		id : fs2
-	    width : parent.width / 2
-        height : parent.height
+	    width : parent.width
+        height : parent.height / 2
 		fsIndex : 1
 
 	}
@@ -39,6 +39,11 @@ SplitView {
 		fs1.active = true
 		fs2.active = false
 
+		fs1.setBands(selectedXBand(), selectedYBand())
+		fs2.setBands(selectedXBand(), selectedYBand())
+	}
+
+	function updateFS(){
 		fs1.setBands(selectedXBand(), selectedYBand())
 		fs2.setBands(selectedXBand(), selectedYBand())
 	}

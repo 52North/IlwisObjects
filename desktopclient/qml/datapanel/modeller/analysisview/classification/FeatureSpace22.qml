@@ -16,14 +16,20 @@ SplitView {
 		height : parent.height / 2
 		orientation: Qt.Horizontal
 
-		Item{
-				width : parent.width  / 2
+		FeatureSpaceDelegate {
+				id : fs1
+				width : parent.width / 2
 				height : parent.height
-			}
+				fsIndex : 1
 
-		Item{
-			width : parent.width / 2
-			height : parent.height
+		}
+
+		FeatureSpaceDelegate {
+				id : fs2
+				width : parent.width / 2
+				height : parent.height
+				fsIndex : 1
+
 		}
 	}
 
@@ -32,14 +38,51 @@ SplitView {
 		height : parent.height / 2
 		orientation: Qt.Horizontal
 
-		Item{
-			width : parent.width / 2
-			height : parent.height
-		}
+		FeatureSpaceDelegate {
+				id : fs3
+				width : parent.width / 2
+				height : parent.height
+				fsIndex : 1
 
-		Item{
-			width : parent.width / 2
-			height : parent.height
+			}
+
+		FeatureSpaceDelegate {
+				id : fs4
+				width : parent.width / 2
+				height : parent.height
+				fsIndex : 1
+
 		}
+	}
+	function activePanel() {
+		if ( fs1.active) return fs1
+		if ( fs2.active) return fs2
+		if ( fs3.active) return fs3
+		if ( fs4.active) return fs4
+	}
+
+	function deActivateAll(){
+		fs1.active = false
+		fs2.active = false
+		fs3.active = false
+		fs4.active = false
+	}
+
+	Component.onCompleted : {
+		fs1.active = true
+		fs2.active = false
+		fs3.active = false
+		fs4.active = false
+
+		fs1.setBands(selectedXBand(), selectedYBand())
+		fs2.setBands(selectedXBand(), selectedYBand())
+		fs3.setBands(selectedXBand(), selectedYBand())
+		fs4.setBands(selectedXBand(), selectedYBand())
+	}
+	function updateFS(){
+		fs1.setBands(selectedXBand(), selectedYBand())
+		fs2.setBands(selectedXBand(), selectedYBand())
+		fs3.setBands(selectedXBand(), selectedYBand())
+		fs4.setBands(selectedXBand(), selectedYBand())
 	}
 }

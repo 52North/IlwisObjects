@@ -19,4 +19,9 @@ FeatureSpaceDelegate {
 		fs.active = false
 	}
 
+	function updateFS(){
+	    console.debug("xxxxxxxxxxxxxxxxxxxxxxxx")
+		updateChart2()
+	}
+
 }
