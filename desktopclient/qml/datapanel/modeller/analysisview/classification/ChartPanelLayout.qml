@@ -7,6 +7,7 @@ import "../../../../Global.js" as Global
 Item {
     id : panels
     property alias source : panelLayout.source
+	property alias source : panelLayout.item
 
 	function setSource(url, parms){
 		panelLayout.setSource(url, parms)
