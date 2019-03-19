@@ -32,34 +32,49 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "intervalrange.h"
 #include "ilwiscoreui_global.h"
 
-class ILWISCOREUISHARED_EXPORT DomainItemModel : public QObject
-{
-    Q_OBJECT
+namespace Ilwis {
+	namespace Ui {
+		class ILWISCOREUISHARED_EXPORT DomainItemModel : public QObject
+		{
+			Q_OBJECT
 
-    Q_PROPERTY(QString name READ name CONSTANT)
-    Q_PROPERTY(QString code READ code CONSTANT)
-    Q_PROPERTY(QString description READ description CONSTANT)
-    Q_PROPERTY(QString minimum READ min CONSTANT)
-    Q_PROPERTY(QString maximum READ max CONSTANT)
+				Q_PROPERTY(QString name READ name WRITE name NOTIFY nameChanged)
+				Q_PROPERTY(QString code READ code WRITE code NOTIFY codeChanged)
+				Q_PROPERTY(QString description READ description WRITE description NOTIFY descriptionChanged)
+				Q_PROPERTY(QString minimum READ min WRITE min NOTIFY minChanged)
+				Q_PROPERTY(QString maximum READ max WRITE max NOTIFY maxChanged)
 
-public:
-    DomainItemModel();
-    explicit DomainItemModel(Ilwis::SPItemRange _range, const QString &name, QObject *parent = 0);
+		public:
+			DomainItemModel();
+			explicit DomainItemModel(Ilwis::SPItemRange _range, const QString &name, QObject *parent = 0);
 
-    QString name() const;
-    QString code() const;
-    QString description() const;
-    QString min() const;
-    QString max() const;
+			QString name() const;
+			QString code() const;
+			QString description() const;
+			QString min() const;
+			QString max() const;
 
-signals:
+			void name(const QString& n);
+			void  code(const QString& c);
+			void description(const QString& desc);
+			void min(const QString& m);
+			void max(const QString& m);
 
-public slots:
+		signals:
+			void nameChanged();
+			void codeChanged();
+			void descriptionChanged();
+			void minChanged();
+			void maxChanged();
 
-private:
-    Ilwis::SPItemRange _range;
-    QString _itemname;
+		public slots:
 
-};
+		private:
+			Ilwis::SPItemRange _range;
+			QString _itemname;
+
+		};
+	}
+}
 
 #endif // DomainItemModel_H

@@ -14,8 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
+#include "kernel.h"
 #include "domainitemmodel.h"
 
+using namespace Ilwis;
+using namespace Ui;
 
 DomainItemModel::DomainItemModel()
 {
@@ -97,4 +100,75 @@ QString DomainItemModel::max() const
         }
     }
     return "";
+}
+
+void DomainItemModel::name(const QString& n) {
+	if (n == _itemname)
+		return;
+	if (hasType(_range->valueType(), itTHEMATICITEM | itNAMEDITEM | itNUMERICITEM | itTIMEITEM | itPALETTECOLOR)) {
+		Ilwis::SPDomainItem item = _range->item(_itemname);
+		if (!item.isNull() && n != sUNDEF && n != "") {
+			bool duplicate = _range->contains(n);
+			if (!duplicate) {
+				_range->item(_itemname)->as<Ilwis::NamedIdentifier>()->setName(n);
+				_itemname = n;
+			}
+			else
+				kernel()->issues()->log(TR("trying to add duplicate item to domain:") + n);
+		}
+	}
+}
+void  DomainItemModel::code(const QString& c){
+	if (hasType(_range->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM)) {
+		Ilwis::SPDomainItem item = _range->item(_itemname);
+		if (!item.isNull() && c != sUNDEF && c != "") {
+			_range->item(_itemname)->as<Ilwis::ThematicItem>()->code(c);
+		}
+	}
+}
+void DomainItemModel::description(const QString& desc) {
+	if (hasType(_range->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM)) {
+		Ilwis::SPDomainItem item = _range->item(_itemname);
+		if (!item.isNull() && desc != sUNDEF && desc != "") {
+			_range->item(_itemname)->as<Ilwis::ThematicItem>()->description(desc);
+		}
+	}
+}
+void DomainItemModel::min(const QString& m) {
+	if (hasType(_range->valueType(), itNUMERICITEM)) {
+		Ilwis::IntervalRange *irange = _range->as<Ilwis::IntervalRange>();
+		if (irange) {
+			Ilwis::SPDomainItem item = irange->item(_itemname);
+			if (!item.isNull()) {
+				double max = irange->item(_itemname)->as<Ilwis::Interval>()->range().max();
+				double min = irange->item(_itemname)->as<Ilwis::Interval>()->range().min();
+				bool ok;
+				double mi = m.toDouble(&ok);
+				if (ok && mi < max && mi != min) {
+					irange->item(_itemname)->as<Ilwis::Interval>()->range().min(mi);
+				}
+
+			}
+
+		}
+	}
+}
+void DomainItemModel::max(const QString& m) {
+	if (hasType(_range->valueType(), itNUMERICITEM)) {
+		Ilwis::IntervalRange *irange = _range->as<Ilwis::IntervalRange>();
+		if (irange) {
+			Ilwis::SPDomainItem item = irange->item(_itemname);
+			if (!item.isNull()) {
+				double min = irange->item(_itemname)->as<Ilwis::Interval>()->range().min();
+				double max = irange->item(_itemname)->as<Ilwis::Interval>()->range().max();
+				bool ok;
+				double ma = m.toDouble(&ok);
+				if (ok && ma > min && ma != max) {
+					irange->item(_itemname)->as<Ilwis::Interval>()->range().max(ma);
+				}
+
+			}
+
+		}
+	}
 }
