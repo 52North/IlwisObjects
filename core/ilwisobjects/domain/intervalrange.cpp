@@ -82,7 +82,7 @@ SPDomainItem IntervalRange::item(const QString &item) const
         ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
         return SPDomainItem();
     }
-    if (parts.size() > 1) {
+    if (parts.size() > 1 && ok) {
         double v2 = index(parts[1].toDouble(&ok));
         if ( !ok || ((int)v1 - (int)v2 != 0)) {
             ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
