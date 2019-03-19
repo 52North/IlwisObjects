@@ -330,6 +330,43 @@ QQmlListProperty<AttributeModel> IlwisObjectModel::attributes()
 
 }
 
+
+void IlwisObjectModel::removeDomainItem(const QString& itemName) {
+	IlwisTypes objectype = _ilwisobject->ilwisType();
+	if (hasType(objectype, itDOMAIN)) {
+		IDomain domain = _ilwisobject.as<Domain>();
+		if (hasType(domain->ilwisType(), itITEMDOMAIN)) {
+			IItemDomain idomain = domain.as<ItemDomain<DomainItem>>();
+			idomain->removeItem(itemName);
+			emit domainItemsChanged();
+		}
+	}
+}
+
+void IlwisObjectModel::store() {
+	if (_ilwisobject.isValid()) {
+		_ilwisobject->store();
+	}
+}
+
+void IlwisObjectModel::newItemDomainItem() {
+	IlwisTypes objectype = _ilwisobject->ilwisType();
+	if (hasType(objectype, itDOMAIN)) {
+		IDomain domain = _ilwisobject.as<Domain>();
+		if (hasType(domain->ilwisType(), itITEMDOMAIN)) {
+			IItemDomain idomain = domain.as<ItemDomain<DomainItem>>();
+			if (domain->valueType() == itNAMEDITEM)
+				idomain->addItem(new NamedIdentifier(sUNDEF));
+			else if (domain->valueType() == itTHEMATICITEM) {
+				idomain->addItem(new ThematicItem(sUNDEF, sUNDEF, "empty item"));
+			}
+			else if (domain->valueType() == itNUMERICITEM) {
+				idomain->addItem(new Interval("undefined item", NumericRange(0,1,1)));
+			}
+			emit domainItemsChanged();
+		}
+	}
+}
 QQmlListProperty<DomainItemModel> IlwisObjectModel::domainitems()
 {
     try{

@@ -64,7 +64,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
     Q_PROPERTY(bool isProjected READ isProjectedCoordinateSystem CONSTANT)
     Q_PROPERTY(QString projectionInfo READ projectionInfo NOTIFY projectionInfoChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::AttributeModel> attributes READ attributes CONSTANT)
-    Q_PROPERTY(QQmlListProperty<DomainItemModel> domainitems READ domainitems CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DomainItemModel> domainitems READ domainitems NOTIFY domainItemsChanged)
     Q_PROPERTY(QQmlListProperty<ProjectionParameterModel> projectionItems READ projectionItems CONSTANT)
     Q_PROPERTY(QVariantList layerInfo READ layerInfo NOTIFY layerInfoChanged)
     Q_PROPERTY(QStringList quickProps READ quickProps CONSTANT)
@@ -87,6 +87,9 @@ public:
 	Q_INVOKABLE void unload();
 	Q_INVOKABLE QString copy(const QString& newUrl, const QString& format, const QString& provider);
 	Q_INVOKABLE void recalcLayers();
+	Q_INVOKABLE void newItemDomainItem();
+	Q_INVOKABLE void removeDomainItem(const QString& itemName);
+	Q_INVOKABLE void store();
 
     QString creationDate() const;
     QString modifiedDate() const;
@@ -102,7 +105,7 @@ public:
 
     QStringList test101();
     QQmlListProperty<AttributeModel> attributes();
-    QQmlListProperty<DomainItemModel> domainitems();
+    QQmlListProperty<Ilwis::Ui::DomainItemModel> domainitems();
     QQmlListProperty<ProjectionParameterModel> projectionItems();
     QString valuetype() const;
 	QString internalValuetype() const;
@@ -124,6 +127,8 @@ signals:
     void readOnlyChanged();
     void layerInfoChanged();
     void projectionInfoChanged();
+	void domainItemsChanged();
+
 private slots:
     QString valueType() const;
 private:
