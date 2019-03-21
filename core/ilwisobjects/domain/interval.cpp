@@ -72,6 +72,11 @@ NumericRange Interval::range() const
     return _valuerange;
 }
 
+NumericRange& Interval::rangeRef() 
+{
+	return _valuerange;
+}
+
 void Interval::range(const NumericRange &valuerange)
 {
     _valuerange = valuerange;
