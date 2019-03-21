@@ -564,20 +564,22 @@ void RasterCoverageConnector::loadNumericBlock(GDALRasterBandH layerHandle,
     if ( noItems == iUNDEF)
         return ;
     std::vector<double> values(noItems, rUNDEF);
-    bool hasScaleOffset = _offsetScales[bandIndex].offset != rUNDEF && _offsetScales[bandIndex].scale != rUNDEF;
-    for(quint32 i=0; i < noItems; ++i) {
-        double v = value(block, i);
-        if ( std::isnan(v) || std::isinf(v) )
-            continue;
+    if (bandIndex < _offsetScales.size()) {
+        bool hasScaleOffset = _offsetScales[bandIndex].offset != rUNDEF && _offsetScales[bandIndex].scale != rUNDEF;
+        for (quint32 i = 0; i < noItems; ++i) {
+            double v = value(block, i);
+            if (std::isnan(v) || std::isinf(v))
+                continue;
 
-        if (hasScaleOffset)
-            v = v * _offsetScales[bandIndex].scale + _offsetScales[bandIndex].offset;
+            if (hasScaleOffset)
+                v = v * _offsetScales[bandIndex].scale + _offsetScales[bandIndex].offset;
 
-        if ( ok == 0)
-            values[i] = v;
-        else
-            values[i] = (ok && (nodata == v))  ? rUNDEF : v;
-    }
+            if (ok == 0)
+                values[i] = v;
+            else
+                values[i] = (ok && (nodata == v)) ? rUNDEF : v;
+        }
+    } // else we are trying to read beyond the available data, perhaps because a new band was added; just return the undef block
     grid->setBlockData(index, values);
 }
 

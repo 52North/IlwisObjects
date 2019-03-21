@@ -339,18 +339,21 @@ void RasterCoverageConnector::loadBlock(UPGrid& grid,QFile& file, quint32 blockI
     if (file.seek(seekPos)) {
         QByteArray bytes = file.read(blockSizeBytes);
         quint32 noItems = grid->blockSize(blockIndex);
-        vector<double> values(noItems);
-        for(quint32 i=0; i < noItems; ++i) {
-            double v = value(bytes.constData(), i);
-            if ( _converter.isNeutral()){
-                if ( v != iILW3UNDEF && v != shILW3UNDEF)
-                    values[i] = v;
+        if (noItems != iUNDEF) {
+            vector<double> values(noItems);
+            for (quint32 i = 0; i < noItems; ++i) {
+                double v = value(bytes.constData(), i);
+                if (_converter.isNeutral()) {
+                    if (v != iILW3UNDEF && v != shILW3UNDEF)
+                        values[i] = v;
+                    else
+                        values[i] = rUNDEF;
+                }
                 else
-                    values[i] = rUNDEF;
-            }else
-                values[i] = _converter.raw2real(v);
-        }
-        grid->setBlockData(blockIndex, values);
+                    values[i] = _converter.raw2real(v);
+            }
+            grid->setBlockData(blockIndex, values);
+        } // else we are trying to read beyond the available data, perhaps because a new band was added; just return
     }else
         ERROR2(ERR_COULD_NOT_OPEN_READING_2,file.fileName(),TR("seek failed"));
 
