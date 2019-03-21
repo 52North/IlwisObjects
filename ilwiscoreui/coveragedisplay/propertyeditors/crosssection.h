@@ -66,16 +66,22 @@ namespace Ui{
         PinDataSource(quint64 objid, QObject *parent);
 
         Q_PROPERTY(QString source READ sourcePrivate CONSTANT)
-            Q_PROPERTY(QVariantList bands READ bands CONSTANT)
+        Q_PROPERTY(QVariantList bands READ bands NOTIFY bandsChanged)
 
-            void active(int index, bool yesno);
+		Q_INVOKABLE void setStackDomain(const QString& id);
+
+        void active(int index, bool yesno);
         bool active(int index) const;
 
         QVariantList bands() const;
         quint64 coverageId() const;
+
+	signals:
+		void bandsChanged();
     private:
         quint64 _objid;
         QList<QVariant> _actives;
+		IDomain _stackDomain;
 
         QString sourcePrivate() const;
 
@@ -119,6 +125,7 @@ public:
     Q_INVOKABLE void deletePin(int index);
     Q_INVOKABLE void addPin();
     Q_INVOKABLE void addDataSource(const QString& id);
+	
     
     Q_INVOKABLE void setActive(int bandIndex, bool yesno);
     Q_INVOKABLE QString pinDataColumn(int index) const;
