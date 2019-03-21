@@ -90,6 +90,8 @@ public:
 	Q_INVOKABLE void newItemDomainItem();
 	Q_INVOKABLE void removeDomainItem(const QString& itemName);
 	Q_INVOKABLE void store();
+	Q_INVOKABLE bool isValid() const;
+	Q_INVOKABLE quint32 modelId() const;
 
     QString creationDate() const;
     QString modifiedDate() const;
@@ -111,10 +113,9 @@ public:
 	QString internalValuetype() const;
     QString value2string(const QVariant& value, const QString& attrName="");
   
-    bool isValid() const;
+
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
-    Q_INVOKABLE quint32 modelId() const;
 
 public slots:
     void recalcDone();

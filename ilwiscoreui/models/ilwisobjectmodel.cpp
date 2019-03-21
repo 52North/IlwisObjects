@@ -344,7 +344,7 @@ void IlwisObjectModel::removeDomainItem(const QString& itemName) {
 }
 
 void IlwisObjectModel::store() {
-	if (_ilwisobject.isValid()) {
+	if (isValid()) {
 		_ilwisobject->store();
 	}
 }
@@ -1121,7 +1121,7 @@ void IlwisObjectModel::recalcDone() {
 
 bool IlwisObjectModel::isValid() const
 {
-    return _ilwisobject.isValid();
+    return _ilwisobject.isValid() &&  _ilwisobject->isValid();
 }
 
 IIlwisObject IlwisObjectModel::object() const
