@@ -245,6 +245,7 @@
     <None Include="desktopclient\qml\controls\SpatialSelectionDropDown.qml" />
     <None Include="desktopclient\qml\controls\SpatialSelectionToolbar.qml" />
     <None Include="desktopclient\qml\controls\SplitHandle.qml" />
+    <None Include="desktopclient\qml\controls\TableTextField.qml" />
     <None Include="desktopclient\qml\controls\TextAreaLabelPair.qml" />
     <None Include="desktopclient\qml\controls\TextEditLabelPair.qml" />
     <None Include="desktopclient\qml\controls\TextFieldDropArea.qml" />
@@ -400,6 +401,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSources.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionPinManager.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionTool.qml" />

@@ -1265,6 +1265,12 @@
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SampleStatistics.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\TableTextField.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
