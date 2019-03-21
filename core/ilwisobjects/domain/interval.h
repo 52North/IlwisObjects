@@ -60,6 +60,7 @@ public:
      * @return the NumericRange of this
      */
     NumericRange range() const;
+	NumericRange& rangeRef() ;
 
     /**
      * Sets a new NumericRange on this Interval.<br>
