@@ -11,6 +11,7 @@ import "../../Global.js" as Global
 Item {
     function storeData() {
         if ( propertyForm.editable){
+			store()
         }
     }
 

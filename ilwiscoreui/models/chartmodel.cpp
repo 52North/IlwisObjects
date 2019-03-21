@@ -30,8 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "dataseriesmodel.h"
 #include "colorrange.h"
 #include "mathhelper.h"
+#include "tablemerger.h"
 #include "raster.h"
-#include "ilwiscontext.h"
+#include "ilwiscontext.h" 
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -55,14 +56,20 @@ ChartModel::~ChartModel()
     modelregistry()->unRegisterModel(modelId());
 }
 
-quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis)
+quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extraParameters)
 {
     _name = name;
     chartType(cType);
      
 	_series = QList<DataseriesModel *>(); 
     QColor clr = newColor();
-	insertDataSeries(tbl, 0, xaxis, yaxis, zaxis, clr);		// add the first dataseries
+	auto extra = extraParameters;
+	extra["color"] = extraParameters.contains("color") ? extraParameters["color"].value<QColor>() : clr;
+	insertDataSeries(tbl, 0, xaxis, yaxis, zaxis, extra);		// add the first dataseries
+	TableMerger merger;
+	std::vector<QString> columnsToBeConsidered = { xaxis, yaxis };
+	merger.simpleCopyColumns(tbl, _datatable, columnsToBeConsidered);
+	merger.mergeTableData(tbl, _datatable, 0);
 
     return modelId(); 
 }
@@ -84,7 +91,9 @@ QString ChartModel::name() const
 
 QString ChartModel::mainPanelUrl()
 {
-    return "../../extensions/ui/Charts/qml/ChartsPanel.qml";
+	auto baseLoc = context()->ilwisFolder();
+	QString loc = baseLoc.absoluteFilePath() + "/extensions/ui/Charts/qml/ChartsPanel.qml";
+	return QUrl::fromLocalFile(loc).toString();
 }
 
 QString ChartModel::minimalPanelUrl() {
@@ -177,7 +186,7 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
-bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color) {
+bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QVariantMap& extraParams) {
     bool ok;
     quint64 id = objid.toULongLong(&ok);
     if (!ok) {
@@ -217,26 +226,53 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
             return false;
         }
     }
+	std::vector<QString> columns = { xcolumn, ycolumn };
+	TableMerger merger;
+	merger.simpleCopyColumns(tbl, _datatable, columns);
+	merger.mergeTableData(tbl, _datatable, 0);
+
     if (_series.size() > 0) {
         if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::Axis::AXAXIS)) {
             if (ycolumn == sUNDEF) {
                 for (int c = 1; c < tbl->columnCount(); ++c) {
                     if (axisCompatible(tbl->columndefinition(c).datadef(), ChartModel::Axis::AYAXIS)) {
-                        insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, color);
+                        insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(c).name(), sUNDEF, extraParams);
                     }
                 }
             }
             else {
-                insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(ycIndex).name(), sUNDEF, color);
+                insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(ycIndex).name(), sUNDEF, extraParams);
             }
             emit updateSeriesChanged();
         }
     }
     else {
-        createChart("histogram", tbl, "line", xcolumn, ycolumn, sUNDEF);
-        emit updateSeriesChanged();
+		if (extraParams.size() > 0) {
+			QString name = extraParams["name"].toString();
+			QString type = extraParams["chartType"].toString();
+			createChart(name, tbl, type, xcolumn, ycolumn, sUNDEF, extraParams);
+			emit updateSeriesChanged();
+		}
     }
     return true;
+}
+
+void ChartModel::clearChart() {
+	_series = QList<DataseriesModel *>();
+	_minx = _maxx = _miny = _maxy = rUNDEF;
+	_fixedY = false;
+	_fixedX = false;
+	_niceNumbersY = false;
+	_legendVisible = true;
+	_alignment = "top";
+
+	_chartType = sUNDEF;
+	_tickCountX = 5;
+	_tickCountY = 5;
+	_name = sUNDEF;
+	if (_datatable.isValid()) {
+		_datatable.prepare();
+	}
 }
 void ChartModel::assignParent(QObject * parent)
 {
@@ -244,7 +280,7 @@ void ChartModel::assignParent(QObject * parent)
 }
 bool ChartModel::addDataTable(const QString & objid)
 {
-    return addDataTable(objid, sUNDEF, sUNDEF, sUNDEF);
+    return addDataTable(objid, sUNDEF, sUNDEF, QVariantMap());
 }
 
 DataseriesModel* ChartModel::getSeriesByName(const QString name) const
@@ -269,10 +305,11 @@ bool ChartModel::isValidSeries(const ITable& inputTable, const QString columnNam
 
 void ChartModel::updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) {
     auto *serie = getSeries(xcolumn, ycolumn, zcolumn);
-    bool contPin = ycolumn == "contineous_pin";
     QColor currentColor = serie ? serie->color() : newColor(); 
     quint32 index = deleteSerie(ycolumn, zcolumn);
-    insertDataSeries(inputTable, index, xcolumn, ycolumn, zcolumn, currentColor);
+	QVariantMap extra;
+	extra["color"] = currentColor;
+    insertDataSeries(inputTable, index, xcolumn, ycolumn, zcolumn, extra);
     emit updateSeriesChanged();
 }
 
@@ -379,7 +416,7 @@ bool ChartModel::yAxisVisble()
 }
 
 QColor ChartModel::newColor() const
-{
+{ 
      for (QColor clr : _graphColors) {
         bool found = false;
         for (auto *serie : _series) {
@@ -397,9 +434,9 @@ QColor ChartModel::newColor() const
      return  dis(gen);
 }
 
-quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QColor& color) {
-    auto newseries = new DataseriesModel(this, xcolumn, ycolumn, zcolumn, color);
-    if (!newseries->setData(inputTable))
+quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QVariantMap& extra) {
+    auto newseries = new DataseriesModel(this, xcolumn, ycolumn, zcolumn, extra);
+    if (!newseries->setData(inputTable, extra))
         return _series.size();
 
     if (_series.size() == 0) {
@@ -541,6 +578,13 @@ QColor ChartModel::seriesColor(int seriesIndex) {
     if (seriesIndex < _series.size())
         return _series[seriesIndex]->color();
     return QColor();
+}
+
+QString ChartModel::dataTableId() const {
+	if (_datatable.isValid()) {
+		return QString::number(_datatable->id());
+	}
+	return QString();
 }
 
 QColor ChartModel::seriesColorItem(int seriesIndex, double v) {

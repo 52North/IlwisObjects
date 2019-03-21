@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
 #include "usermessagehandler.h"
+#include "uicontextmodel.h"
 
 using namespace Ilwis;
 using namespace Ui;
@@ -71,14 +72,14 @@ void UserMessageHandler::addMessage(const IssueObject& issue)
 		emit messageChanged();
 	}
 
-	emit messageIconChanged();
+	emit colorChanged();
 }
 
-QString UserMessageHandler::messageIcon() const {
+QColor UserMessageHandler::color() const {
 	if (_messages.size() > 0) {
-		return static_cast<MessageModel *>(_messages.first())->messageIcon();
+		return static_cast<MessageModel *>(_messages.first())->color();
 	}
-	return "message40.png";
+	return uicontext()->middleColor();
 }
 
 void UserMessageHandler::resetColor(int index)
@@ -92,7 +93,7 @@ void UserMessageHandler::resetColor(int index)
 		else
 			static_cast<MessageModel *>(_messages[index])->resetColor();
 		emit messageChanged();
-		emit messageIconChanged();
+		emit colorChanged();
 	}
 }
 
@@ -100,7 +101,7 @@ void UserMessageHandler::clearResults()
 {
 	_results.clear();
 	emit resultsChanged();
-	emit messageIconChanged();
+	emit colorChanged();
 }
 
 //---------------------------------------------------

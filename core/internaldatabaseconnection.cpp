@@ -28,6 +28,13 @@ InternalDatabaseConnection::InternalDatabaseConnection()
 	_index = kernel()->database()->freeConnectionIndex(); 
 }
 
+InternalDatabaseConnection::InternalDatabaseConnection(int debugN)
+{
+	_guard.lock();
+	_index = kernel()->database()->freeConnectionIndex();
+}
+
+
 InternalDatabaseConnection::InternalDatabaseConnection(const QString &query)
 {
 	_guard.lock();
@@ -40,57 +47,97 @@ InternalDatabaseConnection::InternalDatabaseConnection(const QString &query)
 
 InternalDatabaseConnection::~InternalDatabaseConnection()
 {
+	closeConnection();
+}
+
+void InternalDatabaseConnection::closeConnection() {
 	kernel()->database()->freeConnectionIndex(_index);
-	_guard.unlock();
+	if (_index != iUNDEF) {
+		_index = iUNDEF;
+		_guard.unlock();
+	}
 }
 
 bool InternalDatabaseConnection::exec(const QString &query)
 {
-     return kernel()->database()->exec(_index, query);
+	if ( isValid())
+		return kernel()->database()->exec(_index, query);
+	warning();
+	return false;
 }
 
 bool InternalDatabaseConnection::next()
 {
-     return kernel()->database()->next(_index);
+	if ( isValid())
+		return kernel()->database()->next(_index);
+	warning();
+	return false;
 }
 
 QSqlError InternalDatabaseConnection::lastError() const
 {
-    return kernel()->database()->lastError(_index);
+	if ( isValid())
+		return kernel()->database()->lastError(_index);
+	warning();
+	return QSqlError();
 }
 
 QVariant InternalDatabaseConnection::value(int i) const
 {
-     return kernel()->database()->value(_index,i);
+	if ( isValid())
+		return kernel()->database()->value(_index,i);
+	warning();
+	return QVariant();
 }
 
 QVariant InternalDatabaseConnection::value(const QString &name) const
 {
-    return kernel()->database()->value(_index,name);
+	if ( isValid())
+		return kernel()->database()->value(_index,name);
+	warning();
+	return QVariant();
 }
 
 QSqlRecord InternalDatabaseConnection::record() const
 {
-    return kernel()->database()->record(_index);
+	if ( isValid())
+		return kernel()->database()->record(_index);
+	warning();
+	return QSqlRecord();
 }
 
 bool InternalDatabaseConnection::exec()
 {
-     return kernel()->database()->exec(_index);
+	if ( isValid())
+		return kernel()->database()->exec(_index);
+	warning();
+	return false;
 }
 
 bool InternalDatabaseConnection::prepare(const QString &query)
 {
-	return kernel()->database()->prepare(_index, query);
+	if ( isValid())
+		return kernel()->database()->prepare(_index, query);
+	warning();
+	return false;
 }
 
 void InternalDatabaseConnection::bindValue(const QString &placeholder, const QVariant &val, QSql::ParamType type)
 {
-    return kernel()->database()->bindValue(_index, placeholder, val, type);
+	if ( isValid())
+		return kernel()->database()->bindValue(_index, placeholder, val, type);
+	warning();
 }
 
 bool InternalDatabaseConnection::isValid() const
 {
-     //  Locker<std::recursive_mutex> lock(_guard);
-    return kernel()->database()->isValid(_index);
+	return _index != iUNDEF;
+	/*if ( _index != iUNDEF)
+		return kernel()->database()->isValid(_index);
+	warning();
+	return false;*/
+}
+
+void InternalDatabaseConnection::warning() const {
+	kernel()->issues()->log(TR("Using closed connection"), IssueObject::itWarning);
 }

@@ -28,6 +28,7 @@ class KERNELSHARED_EXPORT InternalDatabaseConnection
 public:
     InternalDatabaseConnection();
     InternalDatabaseConnection(const QString& query);
+	InternalDatabaseConnection(int debugN);
     ~InternalDatabaseConnection();
     bool exec(const QString& query);
     bool next();
@@ -38,11 +39,14 @@ public:
     bool exec();
     bool prepare(const QString& query);
     void bindValue(const QString& placeholder, const QVariant& val,
-                   QSql::ParamType type = QSql::In);
+    QSql::ParamType type = QSql::In);
     bool isValid() const;
+	void closeConnection();
 private:
-	int _index = 0;
+	int _index = iUNDEF;
 	static std::recursive_mutex _guard;
+
+	void warning() const;
 };
 }
 

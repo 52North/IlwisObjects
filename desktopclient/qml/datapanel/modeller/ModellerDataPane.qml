@@ -24,6 +24,7 @@ Item {
     property double factor : 1.1
     property bool canSeparate : true
     property bool workflowOnly: false
+	property var deltaHeight : Global.actionBarMaxHeight
 
     signal exit;
 
@@ -36,7 +37,7 @@ Item {
         Item {
             id : datapane
             width : parent.width
-            height : parent.height - 340
+            height : parent.height - deltaHeight
 
             function changeDataPane(index, newState){
                 datapane.state = newState
@@ -60,7 +61,7 @@ Item {
             }
 
             WorkFlow.ModellerWorkflowView { id: workflowView }
-            Analysis.ModellerAnalysisView{ id : analysisView} // panel
+            Analysis.ModellerAnalysisView{ id : analysisView; anchors.fill : datapane} // panel
             Apps.ModellerApplicationView{ id : applicationView}
             Concepts.ModellerConceptualView{ id : conceptualView}
 
@@ -68,7 +69,7 @@ Item {
                 State { name: "smaller"
                     PropertyChanges {
                         target: datapane
-                        height : parent.height - 340
+                        height : parent.height - deltaHeight
                     }
                 },
                 State {
@@ -89,7 +90,7 @@ Item {
         // form
         ModelManager{
             id : manager
-            height : 340
+            height : deltaHeight
             anchors.left: parent.left
             anchors.right: parent.right
         }

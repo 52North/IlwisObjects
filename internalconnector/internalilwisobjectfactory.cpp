@@ -530,13 +530,13 @@ NumericDomain* InternalIlwisObjectFactory::createNumericDomain(const QString& co
         if ( db.next()){
             QSqlRecord rec = db.record();
             NumericDomain *dv = createFromResource<NumericDomain>(resource, options);
-
             dv->fromInternal(rec);
             double vmin = rec.field("minv").value().toDouble();
             double vmax = rec.field("maxv").value().toDouble();
             double step = rec.field("resolution").value().toDouble();
             int range_strict = rec.field("range_strict").value().toInt();
-            // TODO:, implement unit stuff
+			QString parent = rec.field("parent").value().toString();
+			db.closeConnection();
             QString unit = rec.field("unit").value().toString();
             if (unit == "Days"){
                 if ( fmod(step,1.0) == 0 && step != 0)
@@ -549,9 +549,7 @@ NumericDomain* InternalIlwisObjectFactory::createNumericDomain(const QString& co
                 else
                     dv->range(new NumericRange(vmin, vmax));
             }
-
             dv->setStrict(range_strict ? true : false);
-            QString parent = rec.field("parent").value().toString();
             if ( parent != "" && parent !=  code) { // no parenting to itself
                 IDomain dom;
                 dom.prepare(parent, options);
@@ -588,11 +586,12 @@ IlwisObject *InternalIlwisObjectFactory::createDomain(const Resource& resource, 
     bool readonlyState = false;
     if ( code != sUNDEF) {
 
-        InternalDatabaseConnection db;
+		InternalDatabaseConnection db;
         QString query = QString("Select linkedtable from codes where code = '%1'").arg(code);
         if (db.exec(query)) {
             if ( db.next()){
                 QString table = db.value(0).toString();
+			
                 if ( table == "numericdomain"){
                     newdomain = createNumericDomain(code, db, options, resource);
 
@@ -945,7 +944,7 @@ IlwisObject *InternalIlwisObjectFactory::createEllipsoidFromQuery(const QString 
         return createFromResource<Ellipsoid>(resource, IOOptions());
     }
 
-    InternalDatabaseConnection db;
+    InternalDatabaseConnection db(24);
     if (db.exec(query) && db.next()) {
         Ellipsoid *ellipsoid = createFromResource<Ellipsoid>(resource, IOOptions());
         ellipsoid->fromInternal(db.record());

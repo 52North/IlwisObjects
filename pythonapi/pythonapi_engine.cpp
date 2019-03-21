@@ -124,8 +124,8 @@ qint64 Engine::_do2(std::string output_name, std::string operation, std::string 
             } else {
                 auto list = result._var.toList();
                 if ( list.size() > 0)
-                    return list[0].toDouble();
-                return rUNDEF;
+                    return list[0].toInt();
+                return iUNDEF;
             }
         }
         /*
@@ -152,6 +152,7 @@ qint64 Engine::_do2(std::string output_name, std::string operation, std::string 
         else
             throw Ilwis::ErrorObject(QString("Command \"%1\" does not exist; See ilwis.Engine.operations() for the full list.").arg(operation.c_str()));
     }
+    return iUNDEF;
 }
 
 Object* Engine::_do(std::string output_name, std::string operation, std::string c3, std::string c4, std::string c5,std::string c6, std::string c7, std::string c8, std::string c9, std::string c10, std::string c11){

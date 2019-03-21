@@ -11,9 +11,11 @@ import "../../../../Global.js" as Global
 import "../../../../controls" as Controls
 
 Rectangle {
-	width : parent.width/2
-	height : parent.height
+    property alias currentIndex : list.currentIndex
+	width : parent.width
+	height : parent.height - 22
 	border.width : 1
+
 	border.color : Global.edgecolor
 		ScrollView{
 		id : control
@@ -32,9 +34,14 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         list.currentIndex = index
+						updateChart()
                     }
                 }
 			}
 		}
+	}
+	
+	function selectedBand() {
+		return list.currentIndex
 	}
 }

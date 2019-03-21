@@ -69,6 +69,32 @@ bool TableMerger::copyColumns(const ITable &tblSource, ITable& tbltarget, int op
     return true;
 }
 
+int TableMerger::simpleCopyColumns(const ITable &tblSource, ITable& tblTarget, const std::vector<QString>& columnsToBeConsidered) const {
+	if (!tblSource.isValid() || !tblTarget.isValid()) {
+		kernel()->issues()->log(TR("tables not correctly initialized for merge"));
+		return iUNDEF;
+	}
+	int count = 0;
+	for (int c1 = 0; c1 < tblSource->columnCount(); ++c1) {
+		auto coldef1 = tblSource->columndefinition(c1);
+		if (columnsToBeConsidered.size() > 0) {
+			auto coldef = tblTarget->columndefinition(c1);
+			if (std::find(columnsToBeConsidered.begin(), columnsToBeConsidered.end(), coldef.name()) != columnsToBeConsidered.end()) {
+				continue;
+			}
+		}
+		ColumnDefinition coldef2;
+		if (tblTarget->columndefinition(coldef1.name()).isValid()) {
+				continue;
+		}
+		else {
+			++count;
+			tblTarget->addColumn(coldef1);
+		}
+	}
+	return count;
+}
+
 bool TableMerger::mergeMetadataTables(ITable& tblOut, const ITable& tblIn, const std::vector<QString>& selectedColumns) {
 	std::vector<QString> columns = selectedColumns;
 	if (selectedColumns.size() == 0) {

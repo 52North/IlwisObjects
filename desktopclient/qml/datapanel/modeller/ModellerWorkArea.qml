@@ -4,6 +4,7 @@ Rectangle {
     id : workarea
     width : parent.width
     height : 0
+
     states: [
         State { name: "visible"
 

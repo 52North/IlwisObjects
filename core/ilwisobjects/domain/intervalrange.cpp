@@ -82,7 +82,7 @@ SPDomainItem IntervalRange::item(const QString &item) const
         ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
         return SPDomainItem();
     }
-    if (parts.size() > 1) {
+    if (parts.size() > 1 && ok) {
         double v2 = index(parts[1].toDouble(&ok));
         if ( !ok || ((int)v1 - (int)v2 != 0)) {
             ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
@@ -107,7 +107,7 @@ SPDomainItem IntervalRange::itemByOrder(quint32 index) const
 
 double IntervalRange::index(double v) const
 {
-    if (!isValid())
+    if (_items.size() == 0)
         return rUNDEF;
 
     for(quint32 ind = 0; ind < _items.size(); ++ind) {
@@ -166,7 +166,41 @@ bool IntervalRange::contains(const QVariant &name, bool ) const
 
 bool IntervalRange::isValid() const
 {
-    return _items.size() != 0;
+	if (_items.size() == 0)
+		return false;
+	std::map<double, SPInterval> ordered;
+	for (auto interval : _items) {
+		ordered[interval->range().min()] = interval;
+	}
+	if (ordered.size() < _items.size()) {
+		kernel()->issues()->log(TR("overlapping interval defintion"), IssueObject::itWarning);
+		return false;
+	}
+	double prevmax=rUNDEF;
+	for (auto ordItem : ordered) {
+		double omin = ordItem.second->range().min();
+		double omax = ordItem.second->range().max();
+		if (prevmax == rUNDEF) {
+			prevmax = omax;
+			if (omin > prevmax) {
+				kernel()->issues()->log(TR("wrong order of min/max in interval"), IssueObject::itWarning);
+				return false;
+			}
+		}
+		else {
+			if (prevmax >omin ) {
+				kernel()->issues()->log(TR("wrong order of min/max in interval"), IssueObject::itWarning);
+				return false;
+			}
+			if (omin > omax) {
+				kernel()->issues()->log(TR("wrong order of min/max in interval"), IssueObject::itWarning);
+				return false;
+			}
+			prevmax = ordItem.second->range().max();
+		}
+	}
+	return true;
+
 }
 
 void IntervalRange::add(DomainItem *item)

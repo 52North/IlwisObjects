@@ -974,7 +974,7 @@ void WorkflowModel::acceptMessage(const QString &type, const QString &subtype, c
                 if (newlist.size() > 0) {
                     _lastOperationNode = newlist[0].toMap()["node"].toInt();
 
-                    _outputs.append(newlist);
+                    _outputs.insert(0, newlist[0]);
                     emit outputCurrentOperationChanged();
                     emit operationNodeChanged();
                 }

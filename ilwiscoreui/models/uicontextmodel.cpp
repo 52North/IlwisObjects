@@ -422,13 +422,16 @@ void UIContextModel::setCurrentWorkSpace(WorkSpaceModel *cws)
 void UIContextModel::initializeDataPane()
 {
      QObject *datapane = rootObject()->findChild<QObject*>("datapane_container_mainui");
-     if ( datapane ){
+     if ( datapane && context()->workingCatalog().isValid()){
          QUrl urlWorkingCatalog = context()->workingCatalog()->resource().url();
          QString filter="container='" + urlWorkingCatalog.toString() + "'";
          bool ok = QMetaObject::invokeMethod(datapane,"newCatalog",Q_ARG(QVariant, filter),Q_ARG(QVariant,"catalog"),Q_ARG(QVariant,urlWorkingCatalog.toString()),Q_ARG(QVariant,"left"));
          if ( !ok)
              qDebug() << "failed";
-     }
+	 }
+	 else {
+		 kernel()->issues()->log(TR("Initialization failed"));
+	 }
 
 }
 

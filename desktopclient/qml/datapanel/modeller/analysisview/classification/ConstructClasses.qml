@@ -11,6 +11,7 @@ import "../../../../controls" as Controls
 Column {
     id : domainForm
 	anchors.fill : parent
+	property var currentAnalysis : 0
 	property var domainItems
 	property var classification
 	property var update : classification ? classification.needUpdate : false
@@ -18,12 +19,12 @@ Column {
 
 	onUpdateChanged : {
 		if ( classification){
-			items.model = classification.classificationItems()
+			selection.model = modellerDataPane.model.analysisModel(currentAnalysis).bandstats(-1)
 		}
 	}
 
 	onDomidChanged : {
-		classification = modellerDataPane.model.analysisModel(0)
+		classification = modellerDataPane.model.analysisModel(currentAnalysis)
 		if ( classification) {
 			var obj = mastercatalog.id2object(classification.classficationDomainId, domainForm)
 			if ( obj) {
@@ -35,7 +36,7 @@ Column {
 				spDistance.to = act.maxv
 				spDistance.from = act.minv
 				classification.classficationDomainUrl = obj.url
-				items.model = classification.classificationItems()
+				//items.model = classification.classificationItems()
 			}
 		}
 	}
@@ -51,7 +52,7 @@ Column {
 
 		Row {
 			id : act
-		    width : 390
+		    width : 300
 			height : 20
 			spacing : 8
 			property var minv : 0
@@ -101,122 +102,80 @@ Column {
 				height : 20
 				text : act.maxv
 			}
+
 		}
 	}
+	Row { 
+		width : parent.width
+		height : 220
+		Column {
+			width : parent.width / 2
+			height : parent.height
+			spacing : 2
+			Row {
+				width : parent.width
+				height : 25
 
-	TableView {
-		width : 570
-		height : 180
-		id : items
-		model : domainitems
-		TableViewColumn{
-			title : qsTr("Color")
-			width : 50
-			role : "color"
-			delegate: 
-				Rectangle {
-					width : 50
-					height : 20
-					border.width : 1
-					color : styleData.value
+				Connections {
+						target: classes
+						onIndexChanged :{
+							currentClass.model = modellerDataPane.model.analysisModel(currentAnalysis).bandstats(classes.itemModel[classes.currentIndex].raw)	
+						}
 				}
-				
-		}
-		TableViewColumn{
-			title : qsTr("Add Selection")
-			width : 80
-			delegate: 
+				Controls.ComboxLabelPair {
+						id : classes
+						width : 200
+						labelWidth : 70
+						labelText : qsTr("Class")
+						itemModel : modellerDataPane.model.analysisModel(currentAnalysis) ? modellerDataPane.model.analysisModel(currentAnalysis).classificationItems() : null
+						role : 'name'
+						height : 22
+
+				}
 				Button {
-					text: qsTr("Add pixels")
-					width : 70
-					height : 20
+					width : 140
+					height : 22
+					text : qsTr("Clear Current Class")
+				}
+			}
+			SampleStatistics {
+				id : currentClass
+				width : parent.width
+				height : parent.height - 45
+			}
+		}
+		Column {
+			width : parent.width / 2
+			height : parent.height
+			Row {
+				width : parent.width
+				height : 25
+
+				Text {
+					width : 100
+					height : 22
+					text : qsTr("Selected Pixels")
+				}
+				Button {
+				    y : -3
+					width : 180
+					height : 22
+					text : qsTr("Add Selection to Current Class")
+
 					onClicked : {
-						classification.calcStats(items.model[styleData.row].raw)
-						items.model = classification.classificationItems()
+					    var raw = classes.itemModel[classes.currentIndex].raw
+						modellerDataPane.model.analysisModel(currentAnalysis).calcStats(raw)
+						currentClass.model = modellerDataPane.model.analysisModel(currentAnalysis).bandstats(raw)
 						analisysView.view().updateClassLayer()
+
 					}
 				}
-		}
-		TableViewColumn{
-			title : qsTr("Clear class")
-			width : 50
-			delegate: 
-				Button {
-					text: qsTr("clear")
-					width : 50
-					height : 20
-				}
-				
-		}
-		TableViewColumn{
-			title : qsTr("Item name")
-			role : "name"
-			width : 140
-			delegate: Component{
-				Text {
-					text: styleData.value
-					verticalAlignment:Text.AlignVCenter
-					font.pixelSize: 12
-					elide: Text.ElideMiddle
-				}
 			}
-		}
-		TableViewColumn{
-			title : qsTr("Mean")
-			role : "mean"
-			width : 60
-			delegate: Component{
-				Text {
-					text: styleData.value
-					verticalAlignment:Text.AlignVCenter
-					font.pixelSize: 12
-					elide: Text.ElideMiddle
-				}
+			SampleStatistics {
+				id : selection
+				width : parent.width
+				height : parent.height - 45
 			}
-		}
-		TableViewColumn{
-			title : qsTr("STDEV")
-			role : "stdev"
-			width : 60
-			delegate: Component{
-				Text {
-					text: styleData.value
-					verticalAlignment:Text.AlignVCenter
-					font.pixelSize: 12
-					elide: Text.ElideMiddle
-				}
-			}
-		}
-		TableViewColumn{
-			title : qsTr("Predom")
-			role : "predominant"
-			width : 60
-			delegate: Component{
-				Text {
-					text: styleData.value
-					verticalAlignment:Text.AlignVCenter
-					font.pixelSize: 12
-					elide: Text.ElideMiddle
-				}
-			}
-		}
-		TableViewColumn{
-			title : qsTr("Count")
-			role : "count"
-			width : 60
-			delegate: Component{
-				Text {
-					text: styleData.value
-					verticalAlignment:Text.AlignVCenter
-					font.pixelSize: 12
-					elide: Text.ElideMiddle 
-				}
-			}
-		}
-		rowDelegate: Rectangle {
-			id : rowdelegate
-			height : 20
-			color : styleData.selected ? Global.selectedColor : (styleData.alternate? "#eee" : "#fff")
 		}
 	}
 }

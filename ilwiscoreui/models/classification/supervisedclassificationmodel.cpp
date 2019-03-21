@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
+#include <QColor>
 #include "ilwisdata.h"
 #include "symboltable.h"
 #include "commandhandler.h"
@@ -76,6 +77,12 @@ QString SupervisedClassificationmodel::multispectralraster() const {
 	return result;
 
 }
+
+void SupervisedClassificationmodel::calcFeatureSpace(int bandx, int bandy) {
+	if ( _analysis)
+		static_cast<SupervisedClassification *>(_analysis)->calcFeatureSpace(bandx, bandy);
+}
+
 QString SupervisedClassificationmodel::selectionRaster() const {
 	if (_analysis) {
 		QVariant data = _analysis->data(SELECTIONRASTERKEY);
@@ -146,8 +153,15 @@ QVariantList SupervisedClassificationmodel::classificationItems() const {
 
 void SupervisedClassificationmodel::calcStats(double r) {
 	if (_analysis) {
-		_analysis->addData(ITEMSTATS, r);
+		_analysis->addData(CALCITEMSTATS, r);
 	}
+}
+
+QVariantList SupervisedClassificationmodel::bandstats(qint32 r) const {
+	if (_analysis) {
+		return static_cast<SupervisedClassification *>(_analysis)->bandstats(r);
+	}
+	return QVariantList();
 }
 
 bool SupervisedClassificationmodel::needUpdate() const {
@@ -155,6 +169,27 @@ bool SupervisedClassificationmodel::needUpdate() const {
 }
 void SupervisedClassificationmodel::needUpdate(bool yesno) {
 	emit needUpdateChanged();
+}
+
+QString SupervisedClassificationmodel::featureSpaceTable() const {
+	if (_analysis) {
+		return _analysis->data(TABLEID).toString();
+	}
+	return sUNDEF;
+}
+
+QVariantList SupervisedClassificationmodel::tableColumns(int band1, int band2) const {
+	if (_analysis) {
+		return static_cast<SupervisedClassification *>(_analysis)->tableColumns(band1, band2);
+	}
+	return QVariantList();
+}
+
+QColor SupervisedClassificationmodel::raw2color(qint32 raw) const {
+	if (_analysis) {
+		return static_cast<SupervisedClassification *>(_analysis)->raw2Color(raw);
+	}
+	return QColor();
 }
 
 

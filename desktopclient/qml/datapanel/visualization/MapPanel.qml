@@ -201,7 +201,7 @@ Item {
         }
         ViewManager{
             id : viewmanager
-            height : showManager ? Global.actionBarHeight : 0
+            height : showManager ? Global.actionBarMaxHeight : 0
             anchors.left: parent.left
             anchors.leftMargin: 5
             anchors.right: parent.right

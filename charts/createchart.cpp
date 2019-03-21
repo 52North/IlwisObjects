@@ -51,7 +51,7 @@ bool CreateChart::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false; 
 
-    quint32 modelid = _chartmodel->createChart(_name, _table, _chartType, _xaxis, _yaxis, _zaxis);
+    quint32 modelid = _chartmodel->createChart(_name, _table, _chartType, _xaxis, _yaxis, _zaxis, QVariantMap());
 
     logOperation(_expression);
     ctx->setOutput(symTable, modelid, "modelid", itNUMBER, Resource());
@@ -122,8 +122,5 @@ quint64 CreateChart::createMetadata()
     mastercatalog()->addItems({ operation });
     return operation.id();
 }
-
-
-
 
 

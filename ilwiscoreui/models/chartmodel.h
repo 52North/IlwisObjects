@@ -61,37 +61,39 @@ namespace Ilwis {
             Q_PROPERTY(bool legendVisible READ legendVisible            WRITE setLegendVisible    NOTIFY legendChanged)
             Q_PROPERTY(QString legendAlignment    READ legendAlignment  WRITE setLegendAlignment  NOTIFY legendChanged)
 
-                Q_PROPERTY(quint16 xaxisType   READ xaxisType)
-                Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
-                Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
-                Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
-                Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
-                Q_PROPERTY(bool fixedY         READ fixedYAxis   WRITE setFixedYAxis   NOTIFY yAxisChanged)
-                Q_PROPERTY(bool niceNumbersY   READ niceNumbersY WRITE setNiceNumbersY NOTIFY yAxisChanged)
+            Q_PROPERTY(quint16 xaxisType   READ xaxisType)
+            Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
+            Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
+            Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
+            Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
+            Q_PROPERTY(bool fixedY         READ fixedYAxis   WRITE setFixedYAxis   NOTIFY yAxisChanged)
+            Q_PROPERTY(bool niceNumbersY   READ niceNumbersY WRITE setNiceNumbersY NOTIFY yAxisChanged)
 
-                Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
-                Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
-                Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
-                Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
-                Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
+            Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
+            Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
+            Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
+            Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
+            Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
 
-                Q_PROPERTY(bool xAxisVisible   READ xAxisVisble   NOTIFY chartTypeChanged)
-                Q_PROPERTY(bool yAxisVisible   READ yAxisVisble   NOTIFY chartTypeChanged)
+            Q_PROPERTY(bool xAxisVisible   READ xAxisVisble   NOTIFY chartTypeChanged)
+            Q_PROPERTY(bool yAxisVisible   READ yAxisVisble   NOTIFY chartTypeChanged)
 
-                Q_INVOKABLE QColor seriesColor(int seriesIndex);
-                Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
-                Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
-                Q_INVOKABLE bool addDataTable(const QString& objid);
-                Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QString& color);
-                Q_INVOKABLE void assignParent(QObject *parent);
-                Q_INVOKABLE quint32 modelId() const;
-                Q_INVOKABLE QString dataTableUrl();
+            Q_INVOKABLE QColor seriesColor(int seriesIndex);
+            Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
+            Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
+            Q_INVOKABLE bool addDataTable(const QString& objid);
+            Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QVariantMap& extraParams);
+            Q_INVOKABLE void assignParent(QObject *parent);
+            Q_INVOKABLE quint32 modelId() const;
+            Q_INVOKABLE QString dataTableUrl();
+			Q_INVOKABLE QString dataTableId() const;
+			Q_INVOKABLE void clearChart();
 
             ChartModel();
             ChartModel(QObject *parent);
             ~ChartModel();
 
-            quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis);
+            quint32 createChart(const QString& name, const Ilwis::ITable& tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extra);
 
             QVariantList linkProperties() const;
             QString name() const;
@@ -108,7 +110,7 @@ namespace Ilwis {
             DataseriesModel* getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const;
             quint32 deleteSerie(const QString& ycolumn, const QString& zcolumn);
 			bool isValidSeries(const ITable& inputTable, const QString columnName) const;	// check if column with column name exists
-            quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QColor& color);
+            quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QVariantMap& extra);
             void updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
             bool updateSeries() const;
             void tickCountX(int tc);

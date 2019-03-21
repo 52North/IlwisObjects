@@ -471,6 +471,7 @@ int CrosssectionTool::addContineousPin() {
 
 //---------------------------------
 PinDataSource::PinDataSource() {
+	_stackDomain = IDomain("count");
 
 }
 
@@ -480,6 +481,7 @@ PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
     if (!raster.isValid())
         return;
     _objid = objid;
+	_stackDomain = raster->stackDefinition().domain();
     CrosssectionTool *tool = static_cast<CrosssectionTool *>(parent);
     IRasterCoverage rasterPanel = tool->coverage().as<RasterCoverage>();
     if (!rasterPanel.isValid()) {
@@ -488,14 +490,34 @@ PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
     if (!raster->georeference()->isCompatible(rasterPanel->georeference())) {
         throw ErrorObject(TR("Rasters must have compatible georeferences"));
     }
-    const RasterStackDefinition&  stack = raster->stackDefinition();
-    for (quint32 i = 0; i < stack.count(); ++i) {
-        QString name = QString::number(i + 1); // stack.index(i+1);
-        QVariantMap data;
-        data["name"] = name;
-        data["active"] = true;
-        _actives.push_back(data);
-    }
+	setStackDomain( QString::number(_objid));
+}
+
+void PinDataSource::setStackDomain(const QString& id) {
+	IRasterCoverage raster;
+	raster.prepare(_objid);
+	const RasterStackDefinition&  stack = raster->stackDefinition();
+	for (quint32 i = 0; i < stack.count(); ++i) {
+		QString name = QString::number(i + 1); // stack.index(i+1);
+		QVariantMap data;
+		data["name"] = name;
+		data["active"] = true;
+		if (_stackDomain->valueType() != itNUMERICITEM) {
+			data["minvalue"] = "?";
+			data["maxvalue"] = "?";
+		}
+		else {
+			IIntervalDomain idomain = _stackDomain.as<IntervalDomain>();
+			if (idomain->count() == stack.count()) {
+				auto item = idomain->item(i)->as<Interval>();;
+				auto range = item->range().as<NumericRange>();
+				data["minvalue"] = QString::number(range->min());
+				data["maxvalue"] = QString::number(range->max());
+			}
+		}
+		_actives.push_back(data);
+	}
+	emit bandsChanged();
 }
 
 QVariantList PinDataSource::bands() const

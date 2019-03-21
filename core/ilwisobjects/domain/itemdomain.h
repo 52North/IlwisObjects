@@ -427,7 +427,7 @@ public:
      * \return true if this domain is valid
      */
     bool isValid() const {
-        return !_range.isNull();
+        return !_range.isNull() && _range->isValid();
     }
 
     bool isOrdered() const{

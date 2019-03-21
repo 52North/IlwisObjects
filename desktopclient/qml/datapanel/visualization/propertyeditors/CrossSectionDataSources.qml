@@ -34,40 +34,10 @@ Column {
         border.color: Global.edgecolor
         radius : 5
 
-        ScrollView {
-            anchors.fill: parent
-            ListView {
-                id : bands
+		CrossSectionDataSourceEditor {
+		        id : bands
                 anchors.fill : parent
 				model : editor.bands
-
-                delegate : Row {
-                    width : parent.width
-                    height : 20
-                    CheckBox {
-                        height : 20
-                        width : 20
-                        checked : modelData.active
-                        style : Base.CheckBoxStyle1{}
-                        onClicked : {
-                            editor.setActive(index, checked)
-							var chartModel = models.model(modelid)
-							if ( chartModel){
-								for(var i=0; i < editor.pinCount; ++i){
-									var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(i+1) + ")"
-									layerview.activeLayerManager().addCommand(expr);
-								}
-							}
-						}
-                    } 
-                    Text {
-                        text : modelData.name
-                        width : parent.width -20
-                        height : 18
-                        y : 5
-                    }
-                }
-            }
-        } 
+		}
     }     
 }

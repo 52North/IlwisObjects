@@ -27,22 +27,22 @@ SplitView {
     width : parent.width
     height :parent.height
 
+
 	onHeightChanged : {
-		ppp.height = datapane.height
+		fspaces.height = datapane.height
 	}
 
     orientation: Qt.Horizontal
 
 	FeatureSpaces {
-	id : ppp
-		width : 250
-		height : datapane.height
+		id : fspaces
+		width : 300
 	}
 
 
 	Vis.MapPanel {
 			id : maps
-			width : parent.width - 250
+			width : parent.width - 300
 			height : parent.height
 			showManager : false
 			activeEditor : scMap
@@ -58,7 +58,7 @@ SplitView {
 		if(layer){
 			layer.vproperty("opacity", 0.6)
 		}
-		ppp.height = maps.height = datapane.height
+		fspaces.height = maps.height = datapane.height
 	}
 
 	function setNewBands(bands){
@@ -71,7 +71,6 @@ SplitView {
 	}
 
 	function handleMousePressed(mx,my) {
-	    console.debug("xxxxxxx", mx,my)
 		var scpModel = modellerDataPane.model.analysisModel(0)
 		var rasterPixel = maps.activeLayerManager().rootLayer.screen2raster(ccRaster.id, mx,my)
 		scpModel.setGroupStartPoint(rasterPixel)
@@ -91,6 +90,7 @@ SplitView {
 		if(layer){
 		    layer.vproperty("visualattribute|Pixel value|stretchrange", "numericrange:-1|1|1");
 			layer.vproperty("updatetextures","?")
+			fspaces.updateCharts()
 		}
 	}
 

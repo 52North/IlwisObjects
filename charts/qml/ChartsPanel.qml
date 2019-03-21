@@ -18,6 +18,9 @@ Item {
     property string iconName : "../images/graph"
     property TabModel tabmodel
     property TableModel tabledata
+	property var showManager : true
+
+	signal click(int mx,int my)
 
     TabView {
         id : chartarea
@@ -31,14 +34,22 @@ Item {
                 orientation: Qt.Vertical
                 height : parent.height
                 ChartPane {
+				  Connections {
+						target: chartpane
+						onClick: {
+							click(mx,my)
+						 }
+					}
+
                     id : chartpane
-                    height : parent.height - 270
+                    height : parent.height - propertiespanel.height
                 }
 
                 ChartManagement {
                     id : propertiespanel
-                    height : 270
-                    width : parent.height
+                    height : showManager ? Global.actionBarMaxHeight : 0
+                    width : parent.width
+					visible : showManager
                 }
             }
         }
@@ -49,11 +60,6 @@ Item {
 
             TablePanel.TablePane {
                 id : chartTable
-
-                Component.onCompleted : {
-                    if (chart)
-                        chartTable.addDataSource("", chart.dataTableUrl(), "table")
-                }
             }
         }
     }
@@ -64,10 +70,14 @@ Item {
         chart.assignParent(chartspanel);
 		tabmodel.displayName = chart.name
 
-        tabledata = models.createTableModel(chartspanel, chart.dataTableUrl(), "table")
-//        chartTable.addDataSource(filter, chart.dataTableUrl(), "table")
-//        chartspanel.chartarea.datatab.chartTable.table = tabledata
+		setDataTabTableData()
     }
+
+	function setDataTabTableData(){
+		var filter = "itemid=" + chart.dataTableId()
+        datatab.item.addDataSource(filter, chart.dataTableUrl(), "table")
+	}
+
 
 	Component.onDestruction :{
 		models.unRegisterModel(chart.modelId())

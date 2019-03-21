@@ -66,7 +66,7 @@ namespace Ilwis {
 				Q_PROPERTY(QList<QObject *> messages READ messages NOTIFY messageChanged)
 				Q_PROPERTY(QQmlListProperty<Ilwis::Ui::MessageModel> commands READ commands NOTIFY commandsChanged)
 				Q_PROPERTY(QString results READ results NOTIFY resultsChanged)
-				Q_PROPERTY(QString messageIcon READ messageIcon NOTIFY messageIconChanged)
+				Q_PROPERTY(QColor color READ color NOTIFY colorChanged)
 
 		public:
 			explicit UserMessageHandler(QObject *parent = 0);
@@ -74,13 +74,13 @@ namespace Ilwis {
 			QList<QObject *> messages();
 			QQmlListProperty<MessageModel> commands();
 			QString results();
-			QString messageIcon() const;
+			QColor color() const;
 			Q_INVOKABLE void resetColor(int index);
 			Q_INVOKABLE void clearResults();
 
 		signals:
 			void messageChanged();
-			void messageIconChanged();
+			void colorChanged();
 			void resultsChanged();
 			void commandsChanged();
 

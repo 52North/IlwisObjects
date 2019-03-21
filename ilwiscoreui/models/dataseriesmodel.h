@@ -64,8 +64,8 @@ namespace  Ilwis {
 
 		public:
 
-			DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QColor& color);
-			bool setData(const ITable& inputTable);
+			DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extraParameters);
+			bool setData(const ITable& inputTable, const QVariantMap& extra);
 			explicit DataseriesModel(const QString name = "");
 
 			void setColor(const QColor color);

@@ -11,12 +11,15 @@ import "../../../../qml/datapanel" as DataPanel
 Rectangle {
     id : chartManagement
     width: parent.width
-    Layout.minimumHeight: 24
+    height: showManager ? 24 : 0
+	//Layout.minimumHeight: 24
 
     TabView {
-        anchors.fill: parent
+        width : parent.width
+		height : showManager ? parent.height : 0
         id : charttabs
         tabPosition: Qt.BottomEdge
+		visible : showManager
 
         Tab {
             title : qsTr("Actions for Charts")

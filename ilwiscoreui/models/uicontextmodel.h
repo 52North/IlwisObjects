@@ -135,6 +135,31 @@ public:
     void uiBusy(bool yesno);
     bool uiBusy() const;
 
+	QString paleColor() const;
+	void paleColor(const QString& clr);
+	QString middleColor() const;
+	void middleColor(const QString& clr);
+	QString darkColor() const;
+	void darkColor(const QString& clr);
+	QString darkestColor() const;
+	void darkestColor(const QString& clr);
+	QString lightColor() const;
+	void lightColor(const QString& clr);
+	QString lighterColor() const;
+	void lighterColor(const QString& clr);
+	QString lightestColor() const;
+	void lightestColor(const QString& clr);
+	QString workbenchBGColor() const;
+	void workbenchBGColor(const QString& clr);
+	QString catalogBGColor() const;
+	void catalogBGColor(const QString& clr);
+	QString genericBGColor() const;
+	void genericBGColor(const QString& clr);
+	QString actionColor() const;
+	void actionColor(const QString& clr);
+	QString actionHeaderColor() const;
+	void actionHeaderColor(const QString& clr);
+
 signals:
     void activeSplitChanged();
     void currentWorkSpaceChanged();
@@ -180,30 +205,7 @@ private:
 
     static std::unique_ptr<UIContextModel>_uicontext;
 
-    QString paleColor() const;
-    void paleColor(const QString& clr);
-    QString middleColor() const;
-    void middleColor(const QString& clr);
-    QString darkColor() const;
-    void darkColor(const QString& clr);
-    QString darkestColor() const;
-    void darkestColor(const QString& clr);
-    QString lightColor() const;
-    void lightColor(const QString& clr);
-    QString lighterColor() const;
-    void lighterColor(const QString& clr);
-    QString lightestColor() const;
-    void lightestColor(const QString& clr);
-    QString workbenchBGColor() const;
-    void workbenchBGColor(const QString& clr);
-    QString catalogBGColor() const;
-    void catalogBGColor(const QString& clr);
-    QString genericBGColor() const;
-    void genericBGColor(const QString& clr);
-    QString actionColor() const;
-    void actionColor(const QString& clr);
-    QString actionHeaderColor() const;
-    void actionHeaderColor(const QString& clr);
+
 
     QStringList typeNames() const;
     bool debugMode() const;

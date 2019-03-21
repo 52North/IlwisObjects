@@ -1247,8 +1247,29 @@
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaceDelegate.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SubPanelBox.qml">
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ChartPanelLayout.qml">
       <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace1.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace2.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace12.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace22.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SampleStatistics.qml">
+      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\TableTextField.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

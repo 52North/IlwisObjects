@@ -245,6 +245,7 @@
     <None Include="desktopclient\qml\controls\SpatialSelectionDropDown.qml" />
     <None Include="desktopclient\qml\controls\SpatialSelectionToolbar.qml" />
     <None Include="desktopclient\qml\controls\SplitHandle.qml" />
+    <None Include="desktopclient\qml\controls\TableTextField.qml" />
     <None Include="desktopclient\qml\controls\TextAreaLabelPair.qml" />
     <None Include="desktopclient\qml\controls\TextEditLabelPair.qml" />
     <None Include="desktopclient\qml\controls\TextFieldDropArea.qml" />
@@ -299,13 +300,18 @@
     <None Include="desktopclient\qml\datapanel\FloatingWindow.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisCreateForm.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisList.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ChartPanelLayout.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ConstructClasses.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace1.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace12.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace2.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace22.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaceDelegate.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaces.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\LayerList.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SampleStatistics.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetMultiSpectralData.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\Statistics.qml" />
-    <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SubPanelBox.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationForm.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationPanel.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\ManagerAnalysisView.qml" />
@@ -395,6 +401,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSources.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionPinManager.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionTool.qml" />

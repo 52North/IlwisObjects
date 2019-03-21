@@ -134,7 +134,7 @@ void StartIlwis::init() {
         qmlRegisterType<IlwisObjectModel>("IlwisObjectModel",1,0,"IlwisObjectModel");
         qmlRegisterType<AttributeModel>("AttributeModel",1,0,"AttributeModel");
         qmlRegisterType<VisualAttribute>("VisualAttribute",1,0,"VisualAttribute");
-        qmlRegisterType<DomainItemModel>("DomainItemModel",1,0,"DomainItemModel");
+        qmlRegisterType<Ilwis::Ui::DomainItemModel>("DomainItemModel",1,0,"DomainItemModel");
         qmlRegisterType<OperationsByKeyModel>("OperationsByKeyModel",1,0,"OperationsByKeyModel");
         qmlRegisterType<UIContextModel>("UIContextModel", 1,0, "UIContextModel");
         qmlRegisterType<VisualPropertyEditor>("VisualPropertyEditor", 1,0, "VisualPropertyEditor");
