@@ -51,7 +51,7 @@ Model.ModellerWorkArea {
 	}
 
 	 Component.onCompleted: {
-	    height = parent.height
+	    //height = parent.height
 	 }
 }
 
