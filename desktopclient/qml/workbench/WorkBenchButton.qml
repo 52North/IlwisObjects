@@ -10,6 +10,7 @@ ToolButton{
     id : button
     property string label
     width : parent.width
+	property var bgcolor :  uicontext.middleColor
 
     checkable: true
     checked: false
@@ -52,7 +53,7 @@ ToolButton{
     style : ButtonStyle{
         background: Rectangle {
             anchors.fill: parent
-            color : uicontext.middleColor
+            color : bgcolor
         }
     }
     states: [

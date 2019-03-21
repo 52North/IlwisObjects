@@ -127,7 +127,9 @@ Rectangle {
                 iconname : checked ? "message_green.svg" : "message_white.svg"
                 label: qsTr("Messages")
 				height : butColumn.butheight
+				bgcolor :  messagehandler.color != "#008000" ?  messagehandler.color : uicontext.middleColor
                 function mouseClicked() {
+					console.debug(messagehandler.color, uicontext.middleColor)
                     toggle(errors)
                     transitionInfoPane("messages","toggle")
                 }
