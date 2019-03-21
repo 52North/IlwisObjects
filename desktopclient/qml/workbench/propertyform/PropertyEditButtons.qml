@@ -8,26 +8,24 @@ Row {
         checkable: true
         checked : false
         onClicked: {
-            applyBut.enabled = !applyBut.enabled
+      		if ( checked){
+				propertyForm.storeData()
+			}
             checked = !checked
             propertyForm.editable = !propertyForm.editable
             mastercatalog.metadataEditMode = (text === qsTr("Edit"))
-            text = (text === qsTr("Edit")) ? qsTr("Cancel") : qsTr("Edit")
-
-
+            text = (text === qsTr("Edit")) ? qsTr("Store") : qsTr("Edit")
+	
         }
     }
     Button {
         id : applyBut
-        text : qsTr("Apply")
-        enabled: false
+        text : qsTr("Cancel")
+        visible : propertyForm.editable
         onClicked: {
-            if ( enabled && propertyForm.editable){
-                propertyForm.storeData()
-                enabled = false
-                 mastercatalog.metadataEditMode = false
-            }
-
+			mastercatalog.metadataEditMode = false
+			propertyForm.editable = false
+			propertyFormContainer.reset()
         }
     }
 }
