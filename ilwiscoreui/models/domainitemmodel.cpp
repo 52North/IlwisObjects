@@ -145,7 +145,7 @@ void DomainItemModel::min(const QString& m) {
 				bool ok;
 				double mi = m.toDouble(&ok);
 				if (ok && mi < max && mi != min) {
-					irange->item(_itemname)->as<Ilwis::Interval>()->range().min(mi);
+					irange->item(_itemname)->as<Ilwis::Interval>()->rangeRef().min(mi);
 				}
 
 			}
@@ -164,7 +164,7 @@ void DomainItemModel::max(const QString& m) {
 				bool ok;
 				double ma = m.toDouble(&ok);
 				if (ok && ma > min && ma != max) {
-					irange->item(_itemname)->as<Ilwis::Interval>()->range().max(ma);
+					irange->item(_itemname)->as<Ilwis::Interval>()->rangeRef().max(ma);
 				}
 
 			}
