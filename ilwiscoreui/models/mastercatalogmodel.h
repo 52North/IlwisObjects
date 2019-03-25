@@ -97,6 +97,7 @@ public:
     Q_INVOKABLE QString getUrl(const QString& id);
     Q_INVOKABLE QString id2type(const QString& id) const;
     Q_INVOKABLE Ilwis::Ui::IlwisObjectModel *id2object(const QString& objectid, QQuickItem *parent);
+	Q_INVOKABLE Ilwis::Ui::IlwisObjectModel *url2object(const QString& url, const QString& type, QQuickItem *parent);
     Q_INVOKABLE QStringList select(const QString &filter, const QString& property);
     Q_INVOKABLE QString filter(const QString& source) const;
     QQmlListProperty<IlwisObjectModel> selectedData();
