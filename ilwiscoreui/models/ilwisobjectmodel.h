@@ -80,6 +80,7 @@ public:
 	Q_INVOKABLE QString rangeDefinition(bool defaultRange, bool calc, const QString &columnName);
 	Q_INVOKABLE QString shortRangeDefinition();
 	Q_INVOKABLE QString getProperty(const QString& propertyname) const;
+	Q_INVOKABLE void setProperty(const QString& propertyname, const QVariantMap& values) ;
 	Q_INVOKABLE bool canUse(const QString& id);
 	Q_INVOKABLE void setAttribute(const QString& attrname, const QString& value, const QString& extra = "");
 	Q_INVOKABLE Ilwis::Ui::OperationModel *operation(const QString& id);
