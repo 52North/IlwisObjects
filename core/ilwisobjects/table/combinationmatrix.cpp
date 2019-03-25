@@ -103,9 +103,9 @@ double CombinationMatrix::combo(int x, int y) const
 void CombinationMatrix::combo(int x, int y, double v)
 {
     if ( _combos.size() == 0 ){
-        _combos.resize(_axisValues[aYAXIS].size());
+        _combos.resize(_axisValues[aXAXIS].size());
         for(auto& data : _combos){
-            data.resize(_axisValues[aXAXIS].size(),rUNDEF);
+            data.resize(_axisValues[aYAXIS].size(),rUNDEF);
         }
     }
     if ( v == rUNDEF)
