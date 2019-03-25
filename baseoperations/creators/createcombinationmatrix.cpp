@@ -61,9 +61,9 @@ bool CreateCombinationMatrix::execute(ExecutionContext *ctx, SymbolTable &symTab
     std::copy(_yAxisValues.begin(), _yAxisValues.end(), std::back_inserter(values));
     matrix->axisValues(CombinationMatrix::aYAXIS, values);
 
-    for(int y=0; y < _yAxisValues.size(); ++y){
-        for(int x=0; x < _xAxisValues.size(); ++x){
-            matrix->combo(x,y,_values[x +  _yAxisValues.size()*y]);
+	for (int x = 0; x < _xAxisValues.size(); ++x) {
+		for(int y=0; y < _yAxisValues.size(); ++y){
+            matrix->combo(x,y,_values[x +  _xAxisValues.size()*y]);
         }
     }
     QVariant value;
@@ -133,7 +133,7 @@ Ilwis::OperationImplementation::State CreateCombinationMatrix::prepare(Execution
             if ( _xAxisValues[j] == items[i])   {
                 for(int k=0;k < _yAxisValues.size(); ++k){
                     if ( _yAxisValues[k] == items[i+1])   {
-                        _values[k * _yAxisValues.size() + j] = _comboDomain->impliedValue(item).toDouble();
+                        _values[k * _xAxisValues.size() + j] = _comboDomain->impliedValue(item).toDouble();
                         k = j = 100000;
                     }
                 }
