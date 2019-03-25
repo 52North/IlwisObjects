@@ -7,6 +7,7 @@ import IlwisObjectModel 1.0
 import DomainItemModel 1.0
 
 import "../../Global.js" as Global
+import "../../controls" as Controls
 
 Item {
     function storeData() {
@@ -37,8 +38,9 @@ Item {
         id : domainItems
         anchors.top: parentDomainItem.bottom
         width : parent.width
-        height : parent.height - 20
+        height : parent.height - 40
         TableView {
+			id : itemtable
             anchors.fill: parent
             model : domainitems
             TableViewColumn{
@@ -46,42 +48,93 @@ Item {
                 role : "name"
                 width : 100
                 delegate: Component{
-                    Text {
-                        text: styleData.value
-                        verticalAlignment:Text.AlignVCenter
-                        font.pixelSize: 10
-                        elide: Text.ElideMiddle
-                    }
+					Controls.TableTextField {
+						readOnly : !propertyForm.editable
+						onAccepted : {
+							if(!readOnly){
+								domainitems[styleData.row].name = text
+							}
+						}
+						onActiveFocusChanged : {
+							if ( activeFocus){
+								itemtable.currentRow = styleData.row
+							}
+						}
+					}
                 }
             }
             TableViewColumn{
                 title : qsTr("Code");
                 role : "code"
                 width : 40
-                delegate: Component{
-                    Text {
-                        text: styleData.value
-                        verticalAlignment:Text.AlignVCenter
-                        font.pixelSize: 10
-                        elide: Text.ElideMiddle
-                    }
+               delegate: Component{
+					Controls.TableTextField {
+						readOnly : !propertyForm.editable
+						sel  : styleData.row == itemtable.currentRow
+						onAccepted : {
+							if(!readOnly){
+								domainitems[styleData.row].code = text
+							}
+						}
+						onActiveFocusChanged : {
+							if ( activeFocus){
+								itemtable.currentRow = styleData.row
+							}
+						}
+					}
                 }
             }
-            TableViewColumn{
+             TableViewColumn{
                 title : qsTr("Description");
                 role : "description"
-                width : parent.width - 140
-                delegate: Component{
-                    Text {
-                        text: styleData.value
-                        verticalAlignment:Text.AlignVCenter
-                        font.pixelSize: 10
-                        elide: Text.ElideMiddle
-                    }
-                }
+                width : parent ? parent.width - 140 : 0
+					delegate: Component{
+					Controls.TableTextField {
+						readOnly : !propertyForm.editable
+						sel  : styleData.row == itemtable.currentRow
+						onAccepted :  {
+							if(!readOnly){
+								domainitems[styleData.row].description = text
+							}
+						}
+						onActiveFocusChanged : {
+							if ( activeFocus){
+								itemtable.currentRow = styleData.row
+							}
+						}
+					}
+				}
             }
+			rowDelegate: Rectangle {
+				id : rowdelegate
+				height : 20
+				color : styleData.selected ? Global.selectedColor : (styleData.alternate? uicontext.lightestColor: "white")
+			}
 
         }
+		Row{
+			anchors.top : domainItems.bottom
+			spacing : 5
+			visible : propertyForm.editable
+			Button {
+				width :120
+				height : 20
+				text : qsTr("add new item")
+
+				onClicked : {
+					newItemDomainItem()
+				}
+			}
+			Button {
+				width :120
+				height : 20
+				text : qsTr("Remove selected item")
+				onClicked : {
+					if ( itemtable.currentRow >= 0)
+						removeDomainItem(domainitems[itemtable.currentRow].name)	
+				}
+			}
+		}
     }
 
 
