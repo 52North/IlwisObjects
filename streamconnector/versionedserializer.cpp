@@ -70,7 +70,7 @@ bool VersionedSerializer::loadMetaData(IlwisObject *obj, const IOOptions &)
     // and not the actual object embedded in the container
  IlwisTypes tp;
     _stream >> tp;
-    if (!skip)
+    if (!skip && obj->extendedType() == itUNKNOWN)
         obj->extendedType(tp);
     QString var,code;
     _stream >> var;

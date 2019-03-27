@@ -789,6 +789,22 @@ QString IlwisObjectModel::valueType() const {
     }
     return "";
 }
+void IlwisObjectModel::setProperty(const QString& propertyname, const QVariantMap& values) {
+	if (!_ilwisobject.isValid())
+		return;
+	if (propertyname == "combinationmatrixvalues") {
+		if (hasType(_ilwisobject->ilwisType(), itCOMBINATIONMATRIX)) {
+			ICombinationMatrix matrix = _ilwisobject.as<CombinationMatrix>();
+			int x = values["x"].toInt();
+			int y = values["y"].toInt();
+			auto v = matrix->combinationDef().domain()->impliedValue(values["value"].toString());
+			matrix->combo(x, y, v.toDouble());
+		}
+	}
+
+
+}
+
 QString IlwisObjectModel::getProperty(const QString &propertyname) const
 {
     try{
@@ -921,6 +937,18 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
                 return matrix->combinationDef().domain()->resource().url().toString();
             }
         }
+		if (propertyname == "combodomainitems") {
+			if (hasType(_ilwisobject->ilwisType(), itCOMBINATIONMATRIX)) {
+				ICombinationMatrix matrix = _ilwisobject.as<CombinationMatrix>();
+				auto itemDom = matrix->combinationDef().domain().as<ItemDomain<DomainItem>>();
+				QString result;
+				for (auto item : itemDom) {
+					if (result != "") result += "|";
+					result += item->name();
+				}
+				return result;
+			}
+		}
         if ( propertyname == "combinationmatrix"){
             if ( hasType(_ilwisobject->ilwisType(), itCOMBINATIONMATRIX)){
                 ICombinationMatrix matrix = _ilwisobject.as<CombinationMatrix>();

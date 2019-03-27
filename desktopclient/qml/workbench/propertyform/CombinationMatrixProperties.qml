@@ -9,10 +9,11 @@ import "../../controls" as Controls
 Rectangle {
     function storeData() {
         if ( propertyForm.editable){
-
+			store()
         }
     }
     color : uicontext.lightestColor
+
 
     Column {
         id : texts
@@ -36,32 +37,80 @@ Rectangle {
         height: 20* (parseInt(getProperty("yaxisvalueslength")) + 1)
         cellWidth: 120
         cellHeight: 20
+		property var currentPos
         model : getProperty("combinationmatrix").split("|")
-        delegate: Rectangle {
-            width : 120
-            height : 20
-            border.width: 1
-            border.color: Global.edgecolor
-            color : index == 0 ? uicontext.lightColor :  "white"
-            Text{
-                x: 2
-                y : 2
-                height : 18
-                width : parent.width - 3
-                text : modelData
-                clip : true
-                elide : Text.ElideMiddle
-            }
-        }
+        delegate: Item {
+			id : delg
+			width : 120
+			height : 20
+			Rectangle {
+				id : readOnlyField
+				anchors.fill : parent
+				border.width: 1
+				border.color: Global.edgecolor
+				color : index == 0 ? uicontext.lightColor :  "white"
+				visible : !writeField.visible
+				enabled : visible
+				Text{
+				    id : readField
+					x: 2
+					y : 2
+					height : 18
+					width : parent.width - 3
+					text : modelData
+					clip : true
+					elide : Text.ElideMiddle
+
+					Component.onCompleted : {
+						text : modelData
+					}
+				}
+				MouseArea {
+				    id : mouseArea
+					anchors.fill : parent
+					onClicked : {
+						if ( propertyForm.editable) {
+							writeField.visible = true
+							var point = grid.mapFromItem(mouseArea, mouseX, mouseY)
+							grid.currentPos = currentPosition( point)
+							var items = getProperty("combodomainitems")
+							writeField.model = items.split("|")
+							var ci = writeField.find(readField.text)
+							if ( ci >= 0){
+								writeField.currentIndex = ci
+							}
+						}
+					}
+				}
+			}
+			ComboBox {
+			    id : writeField
+				anchors.fill : parent
+				visible : false && propertyForm.editable
+				enabled : visible
+
+				onActivated: {
+					currentIndex = index
+					readField.text = currentText
+					if ( grid.currentPos) {
+						var values = { "x": grid.currentPos.x, "y" : grid.currentPos.y, "value" : currentText}
+						setProperty("combinationmatrixvalues",values)
+						grid.currentPos = null
+					}
+					writeField.visible = false
+				}
+			}
+		}
 
     }
-
-//    Text { id : line1; text : qsTr("X Axis Domain"); width: 100; font.italic: true }
-//    Text { text : getProperty("xaxisdomain");  height : 20;width: parent.width - line1.width - 2; anchors.left: line1.right}
-//    Text { id : line2; text : qsTr("Y Axis Domain"); width: 100; font.italic: true; anchors.top : line1.bottom }
-//    Text { text : getProperty("yaxisdomain"); width: parent.width - line2.width - 2; anchors.left: line2.right; anchors.top : line1.bottom}
-//    Text { id : line3; text : qsTr("Combination domain"); width: 100; font.italic: true; anchors.top : line2.bottom }
-//    Text { text : getProperty("combodomain"); width: parent.width - line3.width - 2; anchors.left: line3.right; anchors.top : line2.bottom}
-
+	function currentPosition(point){
+		var xsz = parseInt(getProperty("xaxisvalueslength")) + 1
+		var ysz = parseInt(getProperty("yaxisvalueslength")) + 1
+		var idx = grid.indexAt(point.x,point.y)
+		var x = idx % xsz - 1 // -1 because of header row/column
+		var y = Math.floor(idx/xsz) - 1
+		console.debug(x,y,xsz, ysz, idx, point.x,point.y)
+		return { "x" : x, "y" : y}
+	}
 
 }

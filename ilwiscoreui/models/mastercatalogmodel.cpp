@@ -452,6 +452,18 @@ QQmlListProperty<IlwisObjectModel> MasterCatalogModel::selectedData()
     return  QQmlListProperty<IlwisObjectModel>(this, _selectedObjects);
 }
 
+IlwisObjectModel *MasterCatalogModel::url2object(const QString& url, const QString& type, QQuickItem *parent) {
+	IlwisTypes tp = TypeHelper::name2type(type);
+	auto resource = mastercatalog()->name2Resource(url, tp);
+	if (resource.isValid()) {
+		IlwisObjectModel *ioModel = new IlwisObjectModel(resource, parent);
+		if (ioModel->isValid()) {
+			return ioModel;
+		}
+	}
+	return 0;
+}
+
 IlwisObjectModel *MasterCatalogModel::id2object(const QString &objectid, QQuickItem *parent)
 {
     bool ok;
