@@ -91,6 +91,7 @@ Function .onVerifyInstDir
     PyCheck:
     IntCmp $verifyDir 2 0 Next Next ; only if python directory is about to be selected
         IfFileExists "$pythondir\*.*" 0 NoNext
+        IfFileExists "$pythondir\python.exe" Next NoNext
         IfFileExists "$pythondir\python.exe" 0 NoNext
         IfFileExists "$pythondir\README.txt" 0 NoNext
 	ClearErrors
