@@ -144,6 +144,10 @@ ColumnDefinition &BaseTable::columndefinitionRef(const QString &columnname)
     return _attributeDefinition.columndefinitionRef(columnname);
 }
 
+void BaseTable::renameColumn(quint32 index, const QString&newName) {
+	_attributeDefinition.renameColumn(index, newName);
+}
+
 void BaseTable::columndefinition(const ColumnDefinition &coldef)
 {
     _attributeDefinition.columndefinition(coldef);
