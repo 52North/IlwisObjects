@@ -44,20 +44,10 @@ public:
     SPDomainItem item(quint32 index) const ;
 
     //@override
-    SPDomainItem item(const QString &def) const ;
+    SPDomainItem item(const QString &def, int itemIndex = iUNDEF) const ;
 
     //@override
     SPDomainItem itemByOrder(quint32 index) const;
-
-    /**
-     * Calculates the index of a certain value v in this NumericItemRange.<br>
-     * Will return iUNDEF if this item range is not valid.<br>
-     * returns a double because of some interpolation.
-     *
-     * @param v the value
-     * @return the index of this value
-     */
-    virtual double index(double v) const;
 
     //@override
     bool contains(const QVariant& name, bool inclusive = true) const ;
@@ -119,6 +109,9 @@ public:
     //@override
     qint32 gotoIndex(qint32 index, qint32 step) const;
     IlwisTypes valueType() const;
+	quint32 overlapCount(const QString& item);
+	bool hasOverlaps() const;
+	NumericRange totalRange() const;
 
     static SPDomainItem valueAt(quint32 index, const Ilwis::Range *rng);
     static QString valueAsString(quint32 index, const Range *rng);
@@ -129,6 +122,16 @@ private:
     std::vector<SPInterval> _items;
     bool validNumber(QString value) const;
     bool alignWithParent(const IDomain& dom);
+
+	/**
+	   * Calculates the index of a certain value v in this NumericItemRange.<br>
+	   * Will return iUNDEF if this item range is not valid.<br>
+	   * returns a double because of some interpolation.
+	   *
+	   * @param v the value
+	   * @return the index of this value
+	   */
+	virtual std::vector<int> IntervalRange::index(double v, int itemIndex=iUNDEF) const;
 };
 
 typedef QSharedPointer<IntervalRange> SPIntervalRange;
