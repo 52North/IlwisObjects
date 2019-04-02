@@ -32,11 +32,7 @@ DomainItem::DomainItem(double d){
 }
 
 bool DomainItem::__bool__() const{
-    if(this->_ilwisItem != NULL && this->_ilwisItem->isValid()){
-        return this->ptr()->isValid();
-    } else{
-        return false;
-    }
+    return this->_ilwisItem != NULL && this->_ilwisItem->isValid();
 }
 
 std::string DomainItem::__str__(){
