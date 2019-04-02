@@ -94,33 +94,23 @@ Ilwis::OperationImplementation::State CreateIntervalDomain::prepare(ExecutionCon
     }
     QString items = _expression.input<QString>(0);
     items.remove("\"");
+	QStringList itemsTemp; // note that the editor delivers items in the reverse order (last item first)
     if ( !_parentdomain.isValid()){ // each item must contain name/code/description in the case of non parented domains
-        _items = items.split("|");
+		itemsTemp = items.split("|");
 
     }else { // in the case there is a parent domain only item names are expected as the rest of the info is already in the parent. still the list must be complete as the execute expects it; empty code/description are sufficient though
         QStringList shortlist = items.split("|");
         for(auto item : shortlist){
-            _items.push_back(item);
-            _items.push_back(""); //code
-            _items.push_back(""); //desc
-            _items.push_back(""); //min
-            _items.push_back(""); //max
+			itemsTemp.push_back(item);
+			itemsTemp.push_back(""); //code
+			itemsTemp.push_back(""); //desc
+			itemsTemp.push_back(""); //min
+			itemsTemp.push_back(""); //max
         }
     }
-    if (_items.size() % 5 != 0) {
+    if (itemsTemp.size() % 5 != 0) {
         kernel()->issues()->log(QString(TR("%1 item definition is not correct; do all items have name, code(may be empty), description (may be empty)?")).arg(_expression.input<QString>(3)));
         return sPREPAREFAILED;
-    }
-    //check if no ranges overlap
-    double last = rUNDEF;
-    for(int i=0; i < _items.size(); i+=5){
-       double currentMin = _items[i+1].toDouble();
-       double currentMax = _items[i+2].toDouble();
-       if ( last != rUNDEF && currentMax > last){
-           kernel()->issues()->log(TR("Domain items overlap which is not allowed"));
-           return sPREPAREFAILED;
-       }
-       last = currentMin;
     }
     if ( _parentdomain.isValid()){
         for(int i =0; i < _items.size(); i+=5){
@@ -131,6 +121,12 @@ Ilwis::OperationImplementation::State CreateIntervalDomain::prepare(ExecutionCon
 
         }
     }
+	// reverse the item order
+	for (int i = itemsTemp.size() - 5; i >= 0; i-=5) {
+		for (int j = 0; j < 5; ++j) {
+			_items.push_back(itemsTemp[i + j]);
+		}
+	}
     _resolution = _expression.input<double>(1);
     _strict = _expression.input<bool>(2);
     _domaindesc = _expression.input<QString>(3);
