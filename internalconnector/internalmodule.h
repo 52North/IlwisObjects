@@ -45,6 +45,7 @@ private:
     bool createSpecialDomains();
     bool createPcs(InternalDatabaseConnection &db);
     bool createItems(InternalDatabaseConnection &db, const QString &sqltable, const QString &folder, IlwisTypes type, const QString internalname="");
+	bool loadSpectralLibrary();
 
     Q_PLUGIN_METADATA(IID "n52.ilwis.internalconnector" FILE  "internalconnector.json")
 

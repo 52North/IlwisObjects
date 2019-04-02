@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlError>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 #include "kernel.h"
 #include "geos/geom/Coordinate.h"
 #include "ilwiscoordinate.h"
@@ -108,6 +111,7 @@ void InternalModule::prepare()
     ok &= createItems(db,"numericdomain", "domains", itNUMERICDOMAIN, "domain");
     ok &= createItems(db,"representation", "representations",itREPRESENTATION);
     ok &= createPcs(db);
+	ok &= loadSpectralLibrary();
     ok &= createSpecialDomains();
 
     QString url = QString("ilwis://system/coordinatesystems/unknown");
@@ -191,6 +195,55 @@ bool InternalModule::createSpecialDomains() {
     }
 
     return mastercatalog()->addItems(resources);
+}
+
+bool InternalModule::loadSpectralLibrary() {
+	QString metadatafile = context()->ilwisFolder().absoluteFilePath() + "/resources/spectral_library_metadata.json";
+	QFile file;
+	file.setFileName(metadatafile);
+	if (file.open(QIODevice::ReadOnly)) {
+		QString settings = file.readAll();
+		QJsonDocument doc = QJsonDocument::fromJson(settings.toUtf8());
+		if (!doc.isNull()) {
+			QJsonObject obj = doc.object();
+			QJsonValue osses = obj.value("Spectral Library");
+			if (osses.isArray()) {
+				QJsonArray arrOsses = osses.toArray();
+				std::vector<Resource> resources;
+				for (auto jvalue : arrOsses) {
+					QJsonObject os = jvalue.toObject();
+					QString url = "ilwis://system/tables/splib_" + os["name"].toString();
+					url.replace(" ","_");
+					url.replace("(", "_");
+					url.replace(")", "");
+					Resource res(url, itTABLE);
+					QString code = os["code"].toString();
+					res.code(code);
+					QString description = os["description"].toString();
+					res.setDescription(description);
+					QString wl = os["wavelength range"].toString();
+					res.addProperty("metadata.spectral.wavelengthrange", wl);
+					QJsonObject os2 = os["provenance"].toObject();
+					res.addProperty("metadata.provenance.source", os2["source"].toString());
+					res.addProperty("metadata.provenance.owner", os2["owner"].toString());
+					res.addProperty("metadata.provenance.origin", os2["origin"].toString());
+					res.addProperty("metadata.provenance.collection", os2["collection"].toString());
+					os2 = os["characterization"].toObject();
+					res.addProperty("metadata.characterization.theme", os2["theme"].toString());
+					res.addProperty("metadata.characterization.type", os2["type"].toString());
+					res.addProperty("metadata.characterization.class", os2["class"].toString());
+					res.addProperty("metadata.characterization.subclass", os2["subclass"].toString());
+					res.addProperty("field", "spectrallibrary");
+					res.addContainer({ "ilwis://system/tables" });
+					res.modifiedTime(Time::now());
+					resources.push_back(res);
+				}
+				mastercatalog()->addItems(resources);
+			}
+		}
+	}
+	return true;
+
 }
 
 bool InternalModule::createPcs(InternalDatabaseConnection &db) {
