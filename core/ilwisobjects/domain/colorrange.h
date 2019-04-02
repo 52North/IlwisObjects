@@ -95,7 +95,7 @@ public:
     QVariant impliedValue(const QVariant& v) const;
 
     SPDomainItem item(quint32 raw) const;
-    SPDomainItem item(const QString &nam) const;
+    SPDomainItem item(const QString &nam, int itemIndex = iUNDEF) const;
     SPDomainItem itemByOrder(quint32 index) const;
     QColor color(int index) const;
     QString toString() const;
