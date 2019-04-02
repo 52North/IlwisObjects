@@ -268,6 +268,10 @@ ColumnDefinition &AttributeTable::columndefinitionRef(const QString &columnName)
     return _features->attributeDefinitionsRef().columndefinitionRef(columnName);
 }
 
+void AttributeTable::renameColumn(quint32 index, const QString&newName) {
+	_features->attributeDefinitionsRef().renameColumn(index, newName);
+}
+
 quint32 AttributeTable::columnIndex(const QString &columnName) const
 {
 
