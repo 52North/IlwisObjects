@@ -58,6 +58,13 @@ Rectangle {
         }
     }
 
+   Component {
+        id : contextData
+        Loader {
+            source : "ContextPropertyPane.qml"
+        }
+    }
+
     Component {
         id : dataData
         Loader {

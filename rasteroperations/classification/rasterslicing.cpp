@@ -123,6 +123,10 @@ OperationImplementation::State RasterSlicing::prepare(ExecutionContext *ctx, con
         ERROR2(ERR_COULD_NOT_LOAD_2,domainName,"");
         return sPREPAREFAILED;
     }
+	if (_numericItems->hasOverlaps()) {
+		kernel()->issues()->log(TR("domain contains overlappeing items which is not allowed"));
+		return sPREPAREFAILED;
+	}
     _bounds.resize(_numericItems->count());
     int  i =0;
     for(auto& v : _bounds){

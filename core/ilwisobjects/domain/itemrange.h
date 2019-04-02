@@ -62,7 +62,7 @@ public:
      * @param nam the name of the item
      * @return the item
      */
-    virtual SPDomainItem item(const QString &nam) const = 0;
+    virtual SPDomainItem item(const QString &nam, int itemIndex = iUNDEF) const = 0;
 
     /**
      * Query for an item based on the index of that item
@@ -186,6 +186,8 @@ public:
      * @param nr2 the second ItemRange to be merged
      * @return
      */
+	virtual quint32 overlapCount(const QString& item);
+	virtual bool hasOverlaps() const;
     static ItemRange *merge(const QSharedPointer<ItemRange>& nr1, const QSharedPointer<ItemRange>& nr2);
 
     static SPDomainItem valueAt(quint32& index, const Range *rng);

@@ -223,10 +223,17 @@ Rectangle {
                 catalogViews.tabmodel.selectTab()
         }
         onDoubleClicked: {
-            if ( currentRow != -1){
-                catalogViews.showObject(model[currentRow].id)
+            //if ( currentRow != -1){
+            //    catalogViews.showObject(model[currentRow].id)
 
-            }
+            //}
+				console.debug("ccccccc", model[currentRow].name)
+                if ( model[currentRow].name == "..")
+                    catalogViews.showObject(-1)
+                else {
+                    model[currentRow].isSelected = true
+                    catalogViews.showObject(model[currentRow].id)
+                }
         }
 
         model : setResources()

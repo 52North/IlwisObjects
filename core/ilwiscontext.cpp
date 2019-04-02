@@ -160,6 +160,7 @@ void IlwisContext::init(const QString &ilwisDir)
     mastercatalog()->addContainer(QUrl("ilwis://system/datums"));
     mastercatalog()->addContainer(QUrl("ilwis://system/coverages"));
     mastercatalog()->addContainer(QUrl("ilwis://system/scripts"));
+	mastercatalog()->addContainer(QUrl("ilwis://system/tables"));
 
     loc = _configuration("users/" + currentUser() + "/workingcatalog",QString(""));
     if ( loc == ""){

@@ -23,6 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "raster.h"
 #include "attributedefinition.h"
 #include "table.h"
+#include "itemdomain.h"
+#include "domainitem.h"
 #include "crosssection.h"
 #include "ilwiscontext.h"
 
@@ -117,13 +119,6 @@ void CrosssectionTool::prepare(const Ilwis::IIlwisObject& bj, const DataDefiniti
     auto *lm = vpmodel()->layer()->layerManager();
     QString path = context()->ilwisFolder().absoluteFilePath();
     QUrl url = QUrl::fromLocalFile(path);
-    /*if (_panelCoverage.isValid() && _panelCoverage->ilwisType() == itRASTER) {
-        IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
-        if (raster.isValid()) {
-            _dataSource = new PinDataSource(raster->id(), this);
-            emit bandsChanged();
-        }
-    }*/
     associatedUrl(url.toString() + "/qml/datapanel/visualization/propertyeditors/PostDrawerCrossSection.qml");
     lm->addPostDrawer(this);
 }
@@ -139,19 +134,33 @@ bool CrosssectionTool::labelExists(const QString& newlabel) const{
     }
     return false;
 }
+
+QString CrosssectionTool::pinLabel(int row) const{
+	if (row < _pins.size()) {
+		return _pins[row]->label();
+	}
+	return sUNDEF;
+}
+
+void CrosssectionTool::pinLabel(int row, const QString& newlabel) {
+	for (int r = 0; r < _pins.size(); ++r) {
+		if (_pins[r]->label() == newlabel && row != r) {
+			kernel()->issues()->log(TR("Label already exists:") + newlabel);
+		}
+	}
+	if (row < _pins.size()) {
+		QString oldname = _pins[row]->label();
+		_pins[row]->label(newlabel);
+		int idx = _pinData->columnIndex(oldname);
+		if (idx != iUNDEF) {
+			_pinData->renameColumn(idx, newlabel);
+			vpmodel()->layer()->layerManager()->updatePostDrawers();
+		}
+	}
+}
+
 QQmlListProperty<Ilwis::Ui::CrossSectionPin> Ilwis::Ui::CrosssectionTool::pins()
 {
-   /* QVariantList result;
-    IGeoReference grf = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf();
-    if (_coverage.isValid()) {
-            if (_coverage->ilwisType() == itRASTER) {
-            IRasterCoverage raster = _coverage.as<RasterCoverage>();
-            if (raster.isValid() && raster->size().zsize() > 1) {
-                grf = raster->georeference();
-            }
-        }
-    }*/
-
    return QQmlListProperty<CrossSectionPin>(this, _pins);
 }
 
@@ -181,27 +190,27 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
 
     std::vector<QVariant> empty(_pinData->recordCount());
     _pinData->column(index+1, empty);  // index == 0 is the band value which we dont want to change
-    IRasterCoverage raster;
-    raster.prepare(_dataSource->coverageId());
+    if ( !_raster.isValid())
+		_raster.prepare(_dataSource->coverageId());
     
-    if (raster.isValid()) {
-        if (raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
-            if (!raster->datadef().range<NumericRange>()->isValid()) {
+    if (_raster.isValid()) {
+        if (_raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+            if (!_raster->datadef().range<NumericRange>()->isValid()) {
                 //QGuiApplication *app = static_cast<QGuiApplication *>(QApplication::instance());
                 QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-                raster->statistics(Ilwis::NumericStatistics::pBASIC);
+                _raster->statistics(Ilwis::NumericStatistics::pBASIC);
                 QApplication::restoreOverrideCursor();
             }
         }
   
-        QString ycolName = columnName(index, raster->name());
-        Pixel pix = raster->georeference()->coord2Pixel(crd);
+        QString ycolName = columnName(index, _raster->name());
+        Pixel pix = _raster->georeference()->coord2Pixel(crd);
         int col = 0;
         if ((col = _pinData->columnIndex(ycolName)) != iUNDEF) {
             int rec = 0;
-            for (int z = 0; z < raster->size().zsize(); ++z) {
+            for (int z = 0; z < _raster->size().zsize(); ++z) {
                 if (_dataSource->active(z)) {
-                    double v = raster->pix2value(Pixel(pix.x, pix.y, z));
+                    double v = _raster->pix2value(Pixel(pix.x, pix.y, z));
                     _pinData->setCell(col, rec++, v);
                 }
             }
@@ -367,19 +376,20 @@ void CrosssectionTool::addPinPrivate() {
 	if (!_dataSource)
 		return;
 
-    IRasterCoverage raster;
-    raster.prepare(_dataSource->coverageId());
+	if (!_raster.isValid())
+		_raster.prepare(_dataSource->coverageId());
 
     if (_pinData->columnIndex("bands") == iUNDEF) { // empty table
-        _pinData->addColumn(ColumnDefinition("bands", IDomain("count")));
-        for (int z = 0; z < raster->size().zsize(); ++z) {
-            if (_dataSource->active(z))
-                _pinData->setCell(0, z, z+1);
+        _pinData->addColumn(ColumnDefinition("bands", _raster->stackDefinition().domain()));
+        for (int z = 0; z < _raster->size().zsize(); ++z) {
+			if (_dataSource->active(z)) {
+				_pinData->setCell(0, z, z + 1);
+			}
         }
     }
-    QString ycolName = columnName(_pins.size() - 1, raster->name());
+    QString ycolName = columnName(_pins.size() - 1, _raster->name());
     if (_pinData->columnIndex(ycolName) == iUNDEF) {
-        _pinData->addColumn(ColumnDefinition(ycolName, raster->datadef(), _pinData->columnCount() - 1));
+        _pinData->addColumn(ColumnDefinition(ycolName, _raster->datadef(), _pinData->columnCount() - 1));
     }
 
     _pins.back()->update();
@@ -469,10 +479,46 @@ int CrosssectionTool::addContineousPin() {
     return _pins.size() - 1;
 }
 
+void CrosssectionTool::setStackDomain(const QString& id) {
+	if (_dataSource) {
+		if (_dataSource->setStackDomain(id)) {
+			if (!_raster.isValid())
+				_raster.prepare(_dataSource->coverageId());
+			_pinData->deleteColumn("bands");
+			_pinData->addColumn(ColumnDefinition("bands", _dataSource->stackDomain()));
+			if (_dataSource->stackDomain()->ilwisType() == itITEMDOMAIN) {
+				IItemDomain itemdom = _dataSource->stackDomain().as< ItemDomain<DomainItem>>();
+				if (itemdom->count() == _raster->size().zsize()) {
+					std::vector<QString> items;
+					int z = 0;
+					for (auto item : itemdom) {
+						items.push_back(item->name());
+						if (_dataSource->active(z)) {
+							_pinData->setCell(0, z++, item->raw());
+						}
+					}
+				}
+			}
+			else {
+				for (int z = 0; z < _raster->size().zsize(); ++z) {
+					if (_dataSource->active(z)) {
+						_pinData->setCell(0, z, z + 1);
+					}
+				}
+			}
+			emit bandsChanged();
+		}
+	}
+}
+
 //---------------------------------
 PinDataSource::PinDataSource() {
 	_stackDomain = IDomain("count");
 
+}
+
+IDomain PinDataSource::stackDomain() const {
+	return _stackDomain;
 }
 
 PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
@@ -490,13 +536,39 @@ PinDataSource::PinDataSource(quint64 objid, QObject *parent) : QObject(parent) {
     if (!raster->georeference()->isCompatible(rasterPanel->georeference())) {
         throw ErrorObject(TR("Rasters must have compatible georeferences"));
     }
-	setStackDomain( QString::number(_objid));
+	setStackDomain( QString::number(_stackDomain->id()));
 }
 
-void PinDataSource::setStackDomain(const QString& id) {
+bool PinDataSource::setStackDomain(const QString& id) {
 	IRasterCoverage raster;
 	raster.prepare(_objid);
-	const RasterStackDefinition&  stack = raster->stackDefinition();
+
+	bool ok;
+	_actives.clear();
+	quint64 oid = id.toULongLong(&ok);
+	if (!ok) {
+		kernel()->issues()->log(TR("No valid object id used: ") + id);
+		return false;
+	}
+	RasterStackDefinition&  stack = raster->stackDefinitionRef();
+
+	IDomain dom;
+	if (dom.prepare(oid) && dom->ilwisType() == itITEMDOMAIN) {
+		_stackDomain = dom;
+		IItemDomain itemdom = dom.as< ItemDomain<DomainItem>>();
+		if (itemdom->count() == raster->size().zsize()) {
+			std::vector<QString> items;
+			for (auto item : itemdom) {
+				items.push_back(item->name());
+			}
+			stack.setSubDefinition(itemdom, items);
+		}
+		else {
+			kernel()->issues()->log(TR("Item domain must have same size as tjhe number of bands in the container"));
+			return false;
+		}
+	}
+
 	for (quint32 i = 0; i < stack.count(); ++i) {
 		QString name = QString::number(i + 1); // stack.index(i+1);
 		QVariantMap data;
@@ -509,7 +581,8 @@ void PinDataSource::setStackDomain(const QString& id) {
 		else {
 			IIntervalDomain idomain = _stackDomain.as<IntervalDomain>();
 			if (idomain->count() == stack.count()) {
-				auto item = idomain->item(i)->as<Interval>();;
+				auto item = idomain->item(i)->as<Interval>();
+				data["name"] = item->name();
 				auto range = item->range().as<NumericRange>();
 				data["minvalue"] = QString::number(range->min());
 				data["maxvalue"] = QString::number(range->max());
@@ -517,7 +590,7 @@ void PinDataSource::setStackDomain(const QString& id) {
 		}
 		_actives.push_back(data);
 	}
-	emit bandsChanged();
+	return true;
 }
 
 QVariantList PinDataSource::bands() const
@@ -557,6 +630,8 @@ bool Ilwis::Ui::PinDataSource::active(int index) const
     }
     return false;
 }
+
+
 
 
 

@@ -186,7 +186,7 @@ DataseriesModel* ChartModel::getSeries(int seriesIndex) const {
 	return NULL;
 }
 
-bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QVariantMap& extraParams) {
+bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, QVariantMap extraParams) {
     bool ok;
     quint64 id = objid.toULongLong(&ok);
     if (!ok) {
@@ -231,6 +231,9 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
 	merger.simpleCopyColumns(tbl, _datatable, columns);
 	merger.mergeTableData(tbl, _datatable, 0);
 
+	if (tbl->name().indexOf("splib_") == 0) {
+		extraParams["chartType"] = "line";
+	}
     if (_series.size() > 0) {
         if (axisCompatible(tbl->columndefinition(xcIndex).datadef(), ChartModel::Axis::AXAXIS)) {
             if (ycolumn == sUNDEF) {
@@ -280,7 +283,17 @@ void ChartModel::assignParent(QObject * parent)
 }
 bool ChartModel::addDataTable(const QString & objid)
 {
-    return addDataTable(objid, sUNDEF, sUNDEF, QVariantMap());
+	if (addDataTable(objid, sUNDEF, sUNDEF, QVariantMap()))
+		return true;
+	kernel()->issues()->log(TR("Axis do not have a compatible domain with the existing chart"), IssueObject::itWarning);
+	return false;
+}
+
+void ChartModel::changeDataSeriesName(const QString& oldName, const QString& newName) {
+	auto * serie = getSeriesByName(oldName);
+	if (serie) {
+		serie->name(newName);
+	}
 }
 
 DataseriesModel* ChartModel::getSeriesByName(const QString name) const
@@ -443,7 +456,8 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
         _xaxisType = ChartModel::AxisType(newseries->xAxisType());
     }
 
-    newseries->setType(_chartType);
+	if ( newseries->charttype() ==  sUNDEF)
+		newseries->setType(_chartType);
 
     _series.insert(index, newseries);
 
@@ -483,7 +497,12 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         double dist = std::abs(_minx - _maxx);
 
         if (std::floor(res) == res) {
-            IntegerTicks(res, dist, _tickCountX, _minx, _maxx);
+			NumericRange rng = MathHelper::roundRange(_minx, _maxx);
+			_tickCountX = rng.distance() / rng.resolution();
+			_minx = rng.min();
+			_maxx = rng.max();
+
+           // IntegerTicks(res, dist, _tickCountX, _minx, _maxx);
         }
     }
     else if (_xaxisType == AxisType::AT_CATEGORIES) {
@@ -551,27 +570,58 @@ quint16 ChartModel::xaxisType() const
 
 bool ChartModel::axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck)
 {
-    if (basicCheck && _series.size() > 0) {
-        // in the basic check we only check if it fits the first dataseries (axis)
-        DataseriesModel *serie = _series[0];
-        DataDefinition datadef = serie->datadefinition(axis);
-        if (inputDef.domain()->isCompatibleWith(datadef.domain().ptr())) {
-            if (datadef.domain()->ilwisType() == itNUMERICDOMAIN) {
-                double deltaMin = datadef.range<NumericRange>()->min() - inputDef.range<NumericRange>()->min();
-                double deltaMax = datadef.range<NumericRange>()->max() - inputDef.range<NumericRange>()->max();
-                double deltaMinMax = datadef.range<NumericRange>()->max() - datadef.range<NumericRange>()->min();
-                if (deltaMin <= 0 && deltaMax >= 0)
-                    return true;
-                if (deltaMin > 0 && deltaMinMax * 0.25 < std::abs(deltaMin))
-                    return true;
-                if (deltaMax < 0 && std::abs(deltaMax) < deltaMinMax * 0.25)
-                    return true;
+	if (basicCheck && _series.size() > 0) {
+		// in the basic check we only check if it fits the first dataseries (axis)
+		DataseriesModel *serie = _series[0];
+		DataDefinition datadef = serie->datadefinition(axis);
+		if (inputDef.domain()->isCompatibleWith(datadef.domain().ptr())) {
+			if (datadef.domain()->ilwisType() == itNUMERICDOMAIN) {
+				return  checkRanges(datadef.range<NumericRange>().get(), inputDef.range<NumericRange>().get());
+			}
+			else
+				return true;
+		}
+		else { // special case of compatibility (in this case). IntervalDomain and NumericDomain
+			if (hasType(itNUMERICDOMAIN | itITEMDOMAIN, datadef.domain()->ilwisType()) &&
+				hasType(itNUMERICDOMAIN | itITEMDOMAIN, inputDef.domain()->ilwisType())) {
+				if (hasType(itNUMERIC, datadef.domain()->valueType()) &&
+					hasType(itNUMERIC, inputDef.domain()->valueType())) {
+					SPNumericRange numrange1;
+					NumericRange numrange2;
+					if (datadef.domain()->ilwisType() == itNUMERICDOMAIN) {
+						numrange1 = datadef.range<NumericRange>();
+					}
+					if (inputDef.domain()->ilwisType() == itNUMERICDOMAIN) {
+						numrange1 = inputDef.range<NumericRange>();
+					}
+					if (datadef.domain()->valueType() == itNUMERICITEM) {
+						numrange2 = datadef.range<IntervalRange>()->totalRange();
+					}
+					if (inputDef.domain()->valueType() == itNUMERICITEM) {
+						numrange2 = inputDef.range<IntervalRange>()->totalRange();
+					}
+					return checkRanges(numrange1.get(), &numrange2);
+				}
+			}
 
-            }else
-                return true;
-        }
-    }
+		}
+	}
     return false;
+}
+
+bool ChartModel::checkRanges(const NumericRange *range1, const NumericRange *range2) const
+{
+	double deltaMin = range1->min() - range2->min();
+	double deltaMax = range1->max() - range2->max();
+	double deltaMinMax = range1->max() - range1->min();
+	if (deltaMin <= 0 && deltaMax >= 0)
+		return true;
+	//if (deltaMin > 0 && deltaMinMax * 0.25 < std::abs(deltaMin))
+	if (deltaMin > 0 && std::abs(deltaMin) < deltaMinMax * 0.5)
+		return true;
+	if (deltaMax < 0 && std::abs(deltaMax) < deltaMinMax * 0.5)
+		return true;
+	return false;
 }
 
 QColor ChartModel::seriesColor(int seriesIndex) {

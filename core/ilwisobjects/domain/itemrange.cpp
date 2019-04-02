@@ -102,4 +102,12 @@ QString ItemRange::valueAsString(quint32 &index, const Range *rng)
     return item->name();
 }
 
+quint32 ItemRange::overlapCount(const QString& item) {
+	return 0;
+}
+
+bool ItemRange::hasOverlaps() const {
+	return false;
+}
+
 

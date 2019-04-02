@@ -195,7 +195,7 @@ public:
      * \param a name that must be in the range of the domain. If not a 0 pointer will be returned
      * \return a (pointer to) domain item or 0 if no items are defined
      */
-    SPDomainItem item(const QString& nam) const{
+    SPDomainItem item(const QString& nam, int itemIndex=iUNDEF) const{
         if (_range.isNull()) {
             ERROR1(ERR_NO_INITIALIZED_1, name());
             return SPDomainItem();
@@ -332,6 +332,22 @@ public:
         }
         return _range->count();
     }
+
+	quint32 overlapCount(const QString& item) {
+		if (_range.isNull()) {
+			ERROR1(ERR_NO_INITIALIZED_1, name());
+			return iUNDEF;
+		}
+		return _range->overlapCount(item);
+	}
+
+	bool hasOverlaps() const {
+		if (_range.isNull()) {
+			ERROR1(ERR_NO_INITIALIZED_1, name());
+			return iUNDEF;
+		}
+		return _range->hasOverlaps();
+	}
 
     /*!
      * Query for the theme of this ItemDomain

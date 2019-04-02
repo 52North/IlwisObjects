@@ -14,28 +14,29 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-#ifndef INTERNALTABLECONNECTOR_H
-#define INTERNALTABLECONNECTOR_H
+#pragma once
 
 namespace Ilwis {
-	class Table;
-namespace Internal {
+	namespace Ui {
 
-class InternalTableConnector : public IlwisObjectConnector
-{
-public:
-    InternalTableConnector(const Resource &resource, bool load,const IOOptions& options=IOOptions());
+		class ChangeDataSeriesName : public ChartOperation
+		{
+		public:
+			ChangeDataSeriesName();
+			ChangeDataSeriesName(quint64 metaid, const Ilwis::OperationExpression &expr);
 
-    bool loadMetaData(IlwisObject* data,const IOOptions&);
-    QString type() const;
-    virtual IlwisObject *create() const;
-    static ConnectorInterface *create(const Ilwis::Resource &resource, bool load=true,const IOOptions& options=IOOptions());
-    bool loadData(IlwisObject *, const IOOptions& options = IOOptions());
-    QString provider() const;
-private:
-	bool loadSpectralLibrary(Table *table, const QString& code);
-};
+			bool execute(ExecutionContext *ctx, SymbolTable& symTable);
+			static Ilwis::OperationImplementation *create(quint64 metaid, const Ilwis::OperationExpression& expr);
+			Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
+
+			static quint64 createMetadata();
+
+		private:
+			QString _oldName = sUNDEF;
+			QString _newName = sUNDEF;
+
+
+			NEW_OPERATION(ChangeDataSeriesName);
+		};
+	}
 }
-}
-
-#endif // INTERNALTABLECONNECTOR_H

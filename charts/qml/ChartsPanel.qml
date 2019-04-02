@@ -8,6 +8,8 @@ import TabModel 1.0
 import TableModel 1.0
 import "../../../../qml" as Base
 import "../../../../qml/datapanel/table" as TablePanel
+import "../../../../qml/Global.js" as Global
+import "../../../../qml/controls" as Controls
 
 Item {
     id : chartspanel
@@ -42,7 +44,7 @@ Item {
 					}
 
                     id : chartpane
-                    height : parent.height - propertiespanel.height
+                    //height : parent.height - propertiespanel.height
                 }
 
                 ChartManagement {
