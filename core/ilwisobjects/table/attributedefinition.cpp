@@ -44,6 +44,19 @@ bool AttributeDefinition::addColumn(const ColumnDefinition& def){
     return true;
 }
 
+void AttributeDefinition::renameColumn(quint32 index, const QString&newName) {
+
+	if (index < _columnDefinitionsByIndex.size()) {
+		QString name = _columnDefinitionsByIndex[index].name();
+		_columnDefinitionsByIndex[index].name(newName);
+		auto iter = _columnDefinitionsByName.find(name);
+		if (iter != _columnDefinitionsByName.end()) {
+			_columnDefinitionsByName.erase(iter);
+			_columnDefinitionsByName[newName] = index;
+		}
+	}
+}
+
 void AttributeDefinition::deleteColumn(const QString& name) {
     auto iter = _columnDefinitionsByName.find(name);
     if (iter != _columnDefinitionsByName.end()) {
@@ -113,8 +126,7 @@ ColumnDefinition &AttributeDefinition::columndefinitionRef(const QString &column
 {
     auto iter = _columnDefinitionsByName.find(columnname);
     if ( iter != _columnDefinitionsByName.end()) {
-       ColumnDefinition& coldef = _columnDefinitionsByIndex[(*iter).second];
-       return coldef;
+       return _columnDefinitionsByIndex[(*iter).second];
     }
     throw ErrorObject(TR(QString("Invalid column name %1 used").arg(columnname)));
 }

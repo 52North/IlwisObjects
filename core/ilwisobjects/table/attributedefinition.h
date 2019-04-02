@@ -45,6 +45,7 @@ public:
     std::vector<IlwisTypes> ilwisColumnTypes() const;
     void clearAttributeDefinitions();
     void deleteColumn(const QString& name);
+	void renameColumn(quint32 index, const QString&newName);
 
     QVariant checkInput(const QVariant &inputVar, quint32 columnIndex) const;
     quint32 definitionCount() const;
