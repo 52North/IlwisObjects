@@ -104,7 +104,7 @@ bool IndexedIdentifierRange::alignWithParent(const IDomain &dom)
     return false;
 }
 
-SPDomainItem IndexedIdentifierRange::item(const QString& nam) const{
+SPDomainItem IndexedIdentifierRange::item(const QString& nam, int itemIndex) const{
     return SPDomainItem();
 }
 
@@ -394,7 +394,7 @@ SPDomainItem NamedIdentifierRange::item(quint32 iraw) const {
 
 }
 
-SPDomainItem NamedIdentifierRange::item(const QString& nam) const{
+SPDomainItem NamedIdentifierRange::item(const QString& nam, int itemIndex) const{
     auto iter = _byName.find(nam);
     if (iter != _byName.end())
         return (*iter).second;

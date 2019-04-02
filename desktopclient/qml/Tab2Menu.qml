@@ -35,6 +35,9 @@ Menu {
 		if (qsTr("Scripts") == label){
 			url = "ilwis://system/scripts"
 		}
+		if (qsTr("Tables") == label){
+			url = "ilwis://system/tables"
+		}
 		return url
 	}
 	function openCatalog(label, side, currentMenu){
@@ -55,6 +58,7 @@ Menu {
 		Action { text: qsTr("Projections") }
 		Action { text: qsTr("Representations") }
 		Action { text: qsTr("Scripts") }
+		Action { text: qsTr("Tables") }
 		delegate: Tab2MenuItemDelegate{ 
 			actionFunc : openCatalog
 

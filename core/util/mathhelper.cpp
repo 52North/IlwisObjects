@@ -209,6 +209,9 @@ NumericRange MathHelper::roundRange(double rmin, double rmax)
     double intpart;
     double r = modf (rmax / step , &intpart);
     double upper = step * round(r ==0 ? intpart : 1 + intpart );
+	while (upper < rmax) {
+		upper += step;
+	}
     return NumericRange(lower, upper, step);
 }
 

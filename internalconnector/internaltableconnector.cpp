@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobjectconnector.h"
 #include "catalogexplorer.h"
 #include "catalogconnector.h"
+#include "ilwiscontext.h"
 #include "internaltableconnector.h"
 
 using namespace Ilwis;
@@ -48,8 +49,14 @@ InternalTableConnector::InternalTableConnector(const Resource &resource, bool lo
 {
 }
 
-bool InternalTableConnector::loadMetaData(IlwisObject *data, const IOOptions &)
+bool InternalTableConnector::loadMetaData(IlwisObject *obj, const IOOptions &)
 {
+	if (sourceRef().hasProperty("field")) {
+		if (sourceRef()["field"] == "spectrallibrary") {
+			Table *table = static_cast<Table *>(obj);
+			loadSpectralLibrary(table, sourceRef().code());
+		}
+	}
     return true;
 }
 
@@ -74,4 +81,39 @@ bool InternalTableConnector::loadData(IlwisObject *obj, const IOOptions &)
 QString InternalTableConnector::provider() const
 {
     return "internal";
+}
+
+bool InternalTableConnector::loadSpectralLibrary(Table *table, const QString& code) {
+	if (dataIsLoaded())
+		return true;
+
+	QString metadatafile = context()->ilwisFolder().absoluteFilePath() + "/resources/spectral_library_data.txt";
+	QFile file;
+	file.setFileName(metadatafile);
+	if (file.open(QIODevice::ReadOnly)) {
+		QString prefix;
+		if (sourceRef().hasProperty("metadata.characterization.class")) {
+			prefix = sourceRef()["metadata.characterization.class"].toString() + "_";
+		}
+		table->addColumn("wavelength", "value");
+		QString cname = prefix + code;
+		cname.replace(" ","_");
+		table->addColumn(cname, "value");
+		
+		QString data = file.readAll();
+		QString beginMark = ":" + code + "=";
+		int indexStart = data.indexOf(beginMark);
+		int indexEnd = data.lastIndexOf(":" + code);
+		QString mdata = data.mid(indexStart + beginMark.size(), indexEnd - indexStart - beginMark.size() );
+		QStringList parts = mdata.split("|");
+		table->recordCount(parts.size()/(2*5));
+		int r = 0;
+		for (int i = 0; i < parts.size(); i += 2*5) {
+			r = i / (2 * 5);
+			table->setCell(0, i / (2*5), parts[i]);
+			table->setCell(1, i / (2*5), (parts[i + 1].toDouble()/100.0));
+		}
+		_binaryIsLoaded = true;
+	}
+	return true;
 }

@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "chartmodel.h"
 #include "chartoperationfactory.h"
 #include "chartoperationeditor.h"
+#include "intervalrange.h"
 #include "dataseriesmodel.h"
 
 using namespace Ilwis;
@@ -45,6 +46,8 @@ DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, c
 	if (extra.contains("color"))
 		_color = extra["color"].value<QColor>();
     _seriesIndex = 0;
+	if (extra.contains("chartType"))
+		_type = extra["chartType"].toString();
 }
 
 QString DataseriesModel::name() const {
@@ -53,6 +56,12 @@ QString DataseriesModel::name() const {
 
 QVariantList DataseriesModel::points() const {
 	return _points;
+}
+
+void DataseriesModel::name(const QString& newName) {
+	_name = newName;
+	_yaxis = newName;
+	emit isNameChanged();
 }
 
 bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra) {
@@ -66,6 +75,7 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
     }
 
     auto xtype = _dataDefinitions[0].domain()->ilwisType();
+	auto valueType = _dataDefinitions[0].domain()->valueType();
     if (xtype != itNUMERICDOMAIN && xtype != itITEMDOMAIN)
         return false;
     if (_dataDefinitions[1].domain()->ilwisType() != itNUMERICDOMAIN)
@@ -80,18 +90,33 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
     }
     else if (xtype == itITEMDOMAIN) {
         ItemRangeIterator iter(totalRangeX->as<ItemRange>());
-        std::vector<int> ids;
-        while (iter.isValid()) {
-            SPDomainItem item = (*iter);
-            QString label = item->name();
-            quint32 ix = item->raw();
-            lookup[label] = ix;
-            ids.push_back(ix);
-            ++iter;
-        }
-        auto res = std::minmax_element(ids.begin(), ids.end());
-        _minID = ids[res.first - ids.begin()];
-        _maxID = ids[res.second - ids.begin()];
+		if (valueType == itNUMERICITEM) {
+			double rmin = rUNDEF, rmax = rUNDEF;
+			while (iter.isValid()) {
+				SPDomainItem item = (*iter);
+				Interval *interval = item->as<Interval>();
+				rmin = Ilwis::min(interval->range().min(), rmin);
+				rmax = Ilwis::max(interval->range().max(), rmax);
+				QString label = item->name();
+				++iter;
+			}
+			_minx = extra.contains("minx") ? extra["minx"].toDouble() : rmin;
+			_maxx = extra.contains("maxx") ? extra["maxx"].toDouble() : rmax;
+		}
+		else {
+			std::vector<int> ids;
+			while (iter.isValid()) {
+				SPDomainItem item = (*iter);
+				QString label = item->name();
+				quint32 ix = item->raw();
+				lookup[label] = ix;
+				ids.push_back(ix);
+				++iter;
+			}
+			auto res = std::minmax_element(ids.begin(), ids.end());
+			_minID = ids[res.first - ids.begin()];
+			_maxID = ids[res.second - ids.begin()];
+		}
     }
 
 	auto actualRangeY = _dataDefinitions[1].range();
@@ -103,9 +128,18 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 	double vx = 0.0, vy = 0.0;
 	for (int row = 0; row < inputTable->recordCount(); row++) {
 		v = inputTable->cell(_xaxis, row, false);
-        if (xtype == itITEMDOMAIN)
-            vx = lookup[v.toString()];
-        else if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
+		if (xtype == itITEMDOMAIN) {
+			if (valueType == itNUMERICITEM) {
+				IIntervalDomain idom = _dataDefinitions[0].domain().as<IntervalDomain>();
+				auto item = idom->item(v.toString());
+				vx = (item->as<Interval>()->range().min() + item->as<Interval>()->range().max()) / 2.0;
+			}
+			else {
+				vx = lookup[v.toString()];
+			}
+		}
+
+		else if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vx = v.toDouble();
 		v = inputTable->cell(_yaxis, row, false);
 		if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
@@ -123,6 +157,10 @@ int tickResolution(const DataDefinition& datadef) {
         if (datadef.domain()->ilwisType() == itNUMERICDOMAIN)
             return datadef.domain()->range<NumericRange>()->resolution();
         if (datadef.domain()->ilwisType() == itITEMDOMAIN)
+			if (datadef.domain()->valueType() == itNUMERICITEM) {
+				auto rng = datadef.range<IntervalRange>()->totalRange();
+				return rng.resolution();
+			}
             return 1;
     }
     return 0;
@@ -234,7 +272,8 @@ quint16 DataseriesModel::axisType(ChartModel::Axis at) const
 {
     int ddix = (int)at - 1;
     auto xtype = _dataDefinitions[ddix].domain()->ilwisType();
-    if (xtype == itITEMDOMAIN)
+	auto valueType = _dataDefinitions[ddix].domain()->valueType();
+    if (xtype == itITEMDOMAIN && valueType != itNUMERICITEM)
         return static_cast<quint16>(ChartModel::AxisType::AT_CATEGORIES);
 
     return static_cast<quint16>(ChartModel::AxisType::AT_VALUE);      // TODO: datetime domain

@@ -98,7 +98,7 @@ public:
      * empty function
      *
      */
-    SPDomainItem item(const QString &nam) const;
+    SPDomainItem item(const QString &nam, int itemIndex = iUNDEF) const;
 
     /**
      * returns the item at the given index
@@ -284,7 +284,7 @@ public:
      * @param nam the name seached for
      * @return the requested NamedIdentifier or an empty SPDomainItem
      */
-    SPDomainItem item(const QString &nam) const;
+    SPDomainItem item(const QString &nam, int itemIndex = iUNDEF) const;
 
     /**
      * Query for the NamedIdentifier at the given index

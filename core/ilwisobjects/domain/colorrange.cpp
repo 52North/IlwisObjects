@@ -577,7 +577,7 @@ SPDomainItem ColorPalette::item(quint32 raw) const
     return SPDomainItem();
 }
 
-SPDomainItem ColorPalette::item(const QString &nam) const
+SPDomainItem ColorPalette::item(const QString &nam, int idx) const
 {
     //TODO not sure if there is a usefull implementation;
     return SPDomainItem();

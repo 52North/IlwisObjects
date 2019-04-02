@@ -259,7 +259,7 @@ PyObject* NumericItemRange::listAll(){
 
 double NumericItemRange::index(double v)
 {
-    return static_cast<Ilwis::IntervalRange*>(_range.get())->index(v);
+	return rUNDEF; // static_cast<Ilwis::IntervalRange*>(_range.get())->index(v);
 }
 
 qint32 NumericItemRange::gotoIndex(qint32 index, qint32 step) const

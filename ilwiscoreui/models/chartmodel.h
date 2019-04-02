@@ -82,7 +82,7 @@ namespace Ilwis {
             Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
             Q_INVOKABLE Ilwis::Ui::DataseriesModel* getSeries(int seriesIndex) const;
             Q_INVOKABLE bool addDataTable(const QString& objid);
-            Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn, const QVariantMap& extraParams);
+            Q_INVOKABLE bool addDataTable(const QString & objid, const QString& xcolumn, const QString& ycolumn,QVariantMap extraParams);
             Q_INVOKABLE void assignParent(QObject *parent);
             Q_INVOKABLE quint32 modelId() const;
             Q_INVOKABLE QString dataTableUrl();
@@ -138,6 +138,7 @@ namespace Ilwis {
             void setLegendVisible(bool show);
             QString legendAlignment() const;
             void setLegendAlignment(const QString& align);
+			void changeDataSeriesName(const QString& oldName, const QString& newName);
 
             bool xAxisVisble();
             bool yAxisVisble();
@@ -163,6 +164,8 @@ namespace Ilwis {
             QString formatXAxis() const;
             QString formatYAxis() const;
             bool axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck=true);
+
+			bool checkRanges(const NumericRange *nrange1, const NumericRange *nrange2) const;
 
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             bool _fixedY = false;

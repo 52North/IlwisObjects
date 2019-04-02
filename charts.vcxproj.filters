@@ -76,8 +76,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    
-    
     <ClCompile Include="charts\ilwischarts_plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,16 +106,12 @@
     <ClCompile Include="charts\setseriestype.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="charts\chartyaxisnumrange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="charts\setyaxisrange.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="charts\deleteChartSeries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,8 +121,9 @@
     <ClCompile Include="charts\setlegendproperties.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    
-    
+    <ClCompile Include="charts\changedataseriesname.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="charts\ilwischarts_plugin.h">
@@ -170,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="charts\chartlegendproperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charts\changedataseriesname.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

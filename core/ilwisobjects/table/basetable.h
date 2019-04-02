@@ -86,6 +86,7 @@ public:
     //@override
     ColumnDefinition& columndefinitionRef(quint32 columnindex);
     ColumnDefinition &columndefinitionRef(const QString &columnname);
+	void renameColumn(quint32 index, const QString&newName);
 
 
     //@override

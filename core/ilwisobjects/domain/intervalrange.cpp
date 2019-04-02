@@ -69,7 +69,38 @@ SPDomainItem IntervalRange::item(quint32 index) const
        return SPDomainItem();
 }
 
-SPDomainItem IntervalRange::item(const QString &item) const
+quint32 IntervalRange::overlapCount(const QString& item) {
+	int count = 0;
+	for (quint32 ind = 0; ind < _items.size(); ++ind) {
+		const NumericRange& rng = _items[ind]->range();
+		for (quint32 ind2 = 0; ind2 < _items.size(); ++ind2) {
+			if (ind != ind2) {
+				if (_items[ind2]->range().overlaps(&rng))
+					++count;
+
+			}
+		}
+	}
+	return count;
+}
+
+bool IntervalRange::hasOverlaps() const {
+	if (_items.size() == 0)
+		return false;
+
+	for (quint32 ind = 0; ind < _items.size(); ++ind) {
+		const NumericRange& rng = _items[ind]->range();
+		for (quint32 ind2 = 0; ind2 < _items.size(); ++ind2) {
+			if (ind != ind2) {
+				if (_items[ind2]->range().overlaps(&rng))
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+SPDomainItem IntervalRange::item(const QString &item, int itemIndex) const
 {
     QStringList parts = item.split(" ");
     if ( parts.size() == 0 || parts.size() > 3){
@@ -77,17 +108,28 @@ SPDomainItem IntervalRange::item(const QString &item) const
         return SPDomainItem();
     }
     bool ok;
-    double v1 = index(parts[0].toDouble(&ok));
-    if ( v1 == rUNDEF  && ok) {
+    auto v1 = index(parts[0].toDouble(&ok));
+    if ( v1.size() == 0  && ok) {
         ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
         return SPDomainItem();
     }
     if (parts.size() > 1 && ok) {
-        double v2 = index(parts[1].toDouble(&ok));
-        if ( !ok || ((int)v1 - (int)v2 != 0)) {
+        auto v2 = index(parts[1].toDouble(&ok));
+        if ( !ok ) {
             ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
             return SPDomainItem();
         }
+		else if (v1.size() == 0 && v2.size() != 0) {
+			v1 = v2;
+		}
+		else if (v1.size() != 0 && v2.size() != 0) {
+			for (int v : v2) {
+				auto iter = std::find(v1.begin(), v1.end(), v);
+				if (iter != v1.end())
+					v1.push_back(v);
+			}
+		}
+
     }
     if (!ok){
         for(auto val : _items) {
@@ -97,7 +139,12 @@ SPDomainItem IntervalRange::item(const QString &item) const
         }
         return SPDomainItem();
     }
-    return _items[(int)v1];
+	if ( itemIndex == iUNDEF)
+		return _items[v1[0]];
+	if (itemIndex < v1.size()) {
+		return _items[v1[itemIndex]];
+	}
+	return SPDomainItem();
 }
 
 SPDomainItem IntervalRange::itemByOrder(quint32 index) const
@@ -105,29 +152,20 @@ SPDomainItem IntervalRange::itemByOrder(quint32 index) const
     return item(index);
 }
 
-double IntervalRange::index(double v) const
+std::vector<int> IntervalRange::index(double v, int itemIndex) const
 {
-    if (_items.size() == 0)
-        return rUNDEF;
-
-    for(quint32 ind = 0; ind < _items.size(); ++ind) {
-        quint32 mark1=iUNDEF, mark2=iUNDEF;
-        const NumericRange& rng = _items[ind]->range();
-        if ( v >= rng.min()){
-            mark1 = ind;
-        }
-        if ( v <= rng.max()){
-            mark2 = ind;
-        }
-        if ( mark1 != iUNDEF && mark2 != iUNDEF) {
-            bool ok = isContinuous();
-            if (ok ) {
-                return ind + (v - rng.min()) / rng.distance();
-            }
-            return ind;
-        }
-    }
-    return rUNDEF;
+	std::vector<int> result;
+	if (_items.size() != 0) {
+		std::vector<int> result;
+		for (int ind = 0; ind < _items.size(); ++ind) {
+			if (_items[ind]->range().contains(v)) {
+				if (itemIndex == iUNDEF)
+					return { ind };
+				result.push_back(ind);
+			}
+		}
+	}
+    return result;
 }
 
 bool IntervalRange::validNumber(QString value) const{
@@ -137,7 +175,7 @@ bool IntervalRange::validNumber(QString value) const{
         return false;
     }
 
-    return index(v) != rUNDEF;
+    return index(v).size() != 0;
 
 }
 
@@ -168,7 +206,7 @@ bool IntervalRange::isValid() const
 {
 	if (_items.size() == 0)
 		return false;
-	std::map<double, SPInterval> ordered;
+	/*std::map<double, SPInterval> ordered;
 	for (auto interval : _items) {
 		ordered[interval->range().min()] = interval;
 	}
@@ -198,7 +236,7 @@ bool IntervalRange::isValid() const
 			}
 			prevmax = ordItem.second->range().max();
 		}
-	}
+	}*/
 	return true;
 
 }
@@ -263,6 +301,20 @@ void IntervalRange::add(const QVariant &iditem)
         add(new Interval(parts[0], NumericRange(parts[1].toDouble(), parts[2].toDouble())));
     }
 
+}
+
+NumericRange IntervalRange::totalRange() const {
+	NumericRange result;
+	double rmin = 1e308, rmax = -1e308, res=0;
+	for (auto item : _items) {
+		rmin = std::min(rmin, item->rangeRef().min());
+		rmax = std::max(rmax, item->rangeRef().max());
+		res = item->rangeRef().resolution();
+	}
+	if (rmin != rUNDEF) {
+		result = NumericRange(rmin, rmax, res);
+	}
+	return result;
 }
 
 bool IntervalRange::alignWithParent(const IDomain &dom)

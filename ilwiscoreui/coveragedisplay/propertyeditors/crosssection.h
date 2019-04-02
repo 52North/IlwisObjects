@@ -68,13 +68,14 @@ namespace Ui{
         Q_PROPERTY(QString source READ sourcePrivate CONSTANT)
         Q_PROPERTY(QVariantList bands READ bands NOTIFY bandsChanged)
 
-		Q_INVOKABLE void setStackDomain(const QString& id);
+		bool setStackDomain(const QString& id);
 
         void active(int index, bool yesno);
         bool active(int index) const;
 
         QVariantList bands() const;
         quint64 coverageId() const;
+		IDomain stackDomain() const;
 
 	signals:
 		void bandsChanged();
@@ -125,6 +126,8 @@ public:
     Q_INVOKABLE void deletePin(int index);
     Q_INVOKABLE void addPin();
     Q_INVOKABLE void addDataSource(const QString& id);
+	Q_INVOKABLE void pinLabel(int row, const QString& newlabel);
+	Q_INVOKABLE QString pinLabel(int row) const;
 	
     
     Q_INVOKABLE void setActive(int bandIndex, bool yesno);
@@ -132,6 +135,7 @@ public:
     Q_INVOKABLE bool contineousMode() const;
     Q_INVOKABLE void contineousMode(bool yesno);
     Q_INVOKABLE int addContineousPin();
+	Q_INVOKABLE void setStackDomain(const QString& id);
 
     int pinCount() const;
     QVariantList bands();
@@ -164,6 +168,7 @@ private:
 
     QList<CrossSectionPin *> _pins;
     PinDataSource * _dataSource = 0;
+	IRasterCoverage _raster;
     ITable _pinData;
     ITable _activePinData; // shadows pindata but only contains records that are active
     bool _contineousMode = false;

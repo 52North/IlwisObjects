@@ -100,6 +100,8 @@ namespace  Ilwis {
             QQmlListProperty<ChartOperationEditor> operations();
             Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
             Q_INVOKABLE QVariantMap categories(QString axis, bool unique);
+			void name(const QString& newName);
+
 
 
 		signals:
@@ -122,7 +124,7 @@ namespace  Ilwis {
 
             QString _name = sUNDEF;
 			QColor _color = QColor();
-            QString _type = "line";
+            QString _type = sUNDEF;
 			bool _selected = false;
 			quint32 _seriesIndex;
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;

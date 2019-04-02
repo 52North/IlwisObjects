@@ -594,7 +594,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                 results += QString("pin_%1.comboText").arg(i);
             }
 
-            formRows += operationRowEnd;
+            formRows += operationRowEnd; 
         }
         if ( !input){
             formRows.replace("pin_","pout_");
@@ -618,8 +618,8 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                                                             const std::vector<FormParameter>& parameters)      
 {
         Resource resource = mastercatalog()->id2Resource(metaid);         
-         std::vector<FormParameter> outparameters = getOutputParameters(resource); 
-        QString results; 
+         std::vector<FormParameter> outparameters = getOutputParameters(resource);   
+        QString results;                               
         QString mid = QString::number(metaid);
         QString validation = "function addValidation(e, idx, u){var r = operations.resolveValidation(metaid, u,idx);";
         validation += "if ( r){for(var k=0; k<r.length;k++){var p=r[k];var ue = \"pin_\" + p.parameterIndex + \"" + QString("_") + mid + "\"" ;
@@ -629,7 +629,7 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
         columnStart += "Column { " + validation + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
         QString exclusiveGroup = "ExclusiveGroup { id : sourceFilterGroup; onCurrentChanged: {}}";
         columnStart += exclusiveGroup;    
-        int width = 0;   
+        int width = 0;    
         for(int i = 0; i < parameters.size(); ++i){
             width = std::max(parameters[i]._label.size(), width);    
         }  
@@ -658,10 +658,10 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                     results += QString(";property alias format_%1 :  pout_format_%1").arg(i);
                 }
             }     
-            results += ";"; 
+            results += ";";  
             if(operationNames.isEmpty()){ 
                 seperator = "Rectangle{width : parent.width - 12; x: 6; height:2;color : \"#2E8D63\"}";
-            }else{
+            }else{  
                 seperator = "Rectangle{width : parent.width - 12; x: 6; height:5;color : \"#2E8D63\"}";
             }
               

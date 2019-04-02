@@ -19,7 +19,6 @@ Column {
 		content : editor.dataSource ? editor.dataSource.source : ""
 		onContentChanged : {
                 editor.addDataSource(ilwisobjectid)
-                bands.model = editor.bands	
 		}
     }
     Text {
@@ -37,7 +36,7 @@ Column {
 		CrossSectionDataSourceEditor {
 		        id : bands
                 anchors.fill : parent
-				model : editor.bands
+				model :editor.bands
 		}
     }     
 }

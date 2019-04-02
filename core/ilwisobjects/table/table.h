@@ -150,6 +150,7 @@ public:
      */
     virtual ColumnDefinition& columndefinitionRef(quint32 index) = 0;
     virtual ColumnDefinition &columndefinitionRef(const QString &nme) = 0;
+	virtual void renameColumn(quint32 index, const QString&newName) = 0;
 
      /**
      * sets a new column definition. The new definition must be valid.

@@ -1,0 +1,157 @@
+{
+	"Spectral Library" : [ 
+	{
+		"name" : "Tree(acer)",
+		"code" : "acerrubrum",
+		"description" : "Acer rubrum (commonly knows as red maple) is one of the most common deciduous trees in North America used for the production of maple syrup",
+		"wavelength range" : "VSWIR",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "UCB",
+				"origin" : "USA; Massachusetts; Harvard Forest",
+				"collection" : "7/8/2013"
+		},
+		"characterization" : {
+			"theme" : "vegetation",
+			"class" : "tree",
+			"subclass" : "Acer rubrum"
+		}
+	},
+	{
+		"name" : "Brown to dark brown sand",
+		"code" : "brownsand",
+		"description" : "This curve corresponds to a brown to dark brown sand. The parent material is alluvium from mixed material found in upland slopes in coastal plains",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "JHU",
+				"origin" : "Dorchester Co., Md. via USDA Soil Conservation service",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "soil",
+			"class" : "entisol",
+			"subclass" : "quartzipsamment"
+		}		
+	},
+	{
+		"name" : "Brown to dark brown clay",
+		"code" : "brownclay",
+		"description" : "This curve corresponds specifically to a brown to dark brow soil, with a high content of expansive clay minerals, many of them known as montmorillonite.",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "JHU",
+				"origin" : "Settat, Morocco, 7 km N of Settat on Casablanca highway, 30 m east offield Rd near cemetary via USDA Soil Conserviation service",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "soil",
+			"class" : "vertisol",
+			"subclass" : "chromoxerert"
+		}		
+	},
+	{
+		"name" : "grass(Avena fatua)",
+		"code" : "avenafatuna",
+		"description" : "Avena fatua is a species of grass in the oat genus. It is known as the common wild oat. This oat is native to the Mediterranean but it has been introduced to most of the other temperate regions of the world",
+		"wavelength range" : "VSWIR",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "UCSB",
+				"origin" : "34.5143; -119.798367; WGS84",
+				"collection" : "3/18/2015"
+		},
+		"characterization" : {
+			"theme" : "vegetation",
+			"class" : "grass",
+			"subclass" : "Avena fatua"
+		}		
+	},
+	{
+		"name" : "granite",
+		"code" : "granite",
+		"description" : "Powder derived from a grey, medium-grained rock consisting of white feldspar grains, some of which contain red or pinkish cores, quartz, and minor biotite. Granite outcrop can be observed e.g. in satellite imagery of the the Piedmont and Appalachian Mountain regions (USA) or in Western Australia",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "JHU",
+				"origin" : "From Santa Rita Mountains, Arizona via Smithsonian (Cat. No.NMNH 113640-17)",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "rock",
+			"class" : "igneous",
+			"subclass" : "Felsic"
+		}		
+	},
+	{
+		"name" : "tap water",
+		"code" : "tapwater",
+		"description" : "This curve corresponds to normal tap water not commonly observed in satellite imagery but used as a reference. This curve corresponds to normal tap water not commonly observed in satellite imagery but used as a reference.",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "Dept. of Earth and Planetary Science, John Hopkins University",
+				"origin" : "JHU IR Spectroscopy Lab. Original filename TAPWATER",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "water",
+			"class" : "tap water",
+			"subclass" : "?"
+		}		
+	},
+	{
+		"name" : "Asphaltic concrete",
+		"code" : "asphalt",
+		"description" : " This curve corresponds to asphaltic concrete with mostly limestone and some quartz aggregate.  This material can be found in paveds road and runway side strips. ",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : " National Photographic Interpretation Center",
+				"origin" : "Spectra obtained from the Noncoventional Exploitation FactorsData System of the National Photographic Interpretation Center",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "manmade",
+			"class" : "concrete",
+			"subclass" : "concrete paving"
+		}		
+	},	
+	{
+		"name" : "Aluminum metal",
+		"code" : "aluminnum",
+		"description" : "Bare aluminium metal that is weathered and scratched/scored. This material is commonly found in house roofing especially in rural areas.",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : " National Photographic Interpretation Center",
+				"origin" : "Spectra obtained from the Noncoventional Exploitation FactorsData System of the National Photographic Interpretation Center",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "manmade",
+			"class" : "roofing",
+			"subclass" : "roofing material"
+		}		
+	},	
+	{
+		"name" : "Coarse Granular Snow",
+		"code" : "coarsesnow",
+		"description" : "Snow covers most of the Earth’s polar regions throughout the year, but at lower latitudes its presence depends on season and elevation. Snow can be found almost year around at high-altitude landscapes such as the Tibetan Plateau and the Andes and Rocky Mountains",
+		"wavelength range" : "all",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "Dept. of Earth and Planetary Science, John Hopkins University",
+				"origin" : "Collected at John Hopkins University IR Spectroscopy Lab",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "water",
+			"class" : "snow",
+			"subclass" : "coarse granular"
+		}		
+	}		
+	]
+}

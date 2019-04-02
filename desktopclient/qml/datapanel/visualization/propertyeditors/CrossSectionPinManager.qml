@@ -88,9 +88,14 @@ Item {
 								}    
 							}
 							onEditingFinished : {
-								//editor.pinlabel = label.text
-								//var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
-								//layerview.activeLayerManager().addCommand(expr);
+							    var oldLabel = editor.pinLabel(styleData.row)
+								editor.pinLabel(styleData.row,label.text)
+								if ( oldLabel != label.text) {
+									var expr = "changedataseriesname(" + modelid + ","+ oldLabel + "," + label.text + ")"
+									layerview.activeLayerManager().addCommand(expr);
+									expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+									layerview.activeLayerManager().addCommand(expr);
+								}
 							}
 						}
 				}

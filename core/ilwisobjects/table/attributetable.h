@@ -51,6 +51,7 @@ public:
     ColumnDefinition columndefinition(quint32 index) const;
     ColumnDefinition& columndefinitionRef(quint32 index);
     ColumnDefinition &columndefinitionRef(const QString &columnName);
+	void renameColumn(quint32 index, const QString&newName);
     quint32 columnIndex(const QString& columnName) const;
     std::vector<QVariant> column(const QString& nme, quint32 start=0, quint32 stop=2e9) const;
     std::vector<QVariant> column(quint32 index, quint32 start=0, quint32 stop=2e9) const;
