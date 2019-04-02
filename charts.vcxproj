@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="charts\addchartseries.cpp" />
+    <ClCompile Include="charts\changedataseriesname.cpp" />
     <ClCompile Include="charts\chartdataseriestype.cpp" />
     <ClCompile Include="charts\chartlegendproperties.cpp" />
     <ClCompile Include="charts\chartseriescolor.cpp" />
@@ -38,45 +39,23 @@
     <ClCompile Include="charts\setyaxisrange.cpp" />
     <ClCompile Include="charts\updatechart.cpp" />
     <ClCompile Include="charts\setseriescolor.cpp" />
-    
-    
     <ClCompile Include="GeneratedFiles\Debug\moc_SetSeriesColor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    
-    
-    
-    
     <ClCompile Include="GeneratedFiles\Release\moc_SetSeriesColor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    
-    
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="charts\ilwischarts_plugin.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="charts\addchartseries.h" />
     <QtMoc Include="charts\setseriescolor.h">
-      
-      
-      
-      
-      
-      
-      
-      
-    <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource><DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource></QtMoc>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+    </QtMoc>
     <CustomBuild Include="charts\chartdataseriestype.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </Message>
@@ -91,40 +70,17 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </Command>
     </CustomBuild>
+    <ClInclude Include="charts\changedataseriesname.h" />
     <ClInclude Include="charts\chartlegendproperties.h" />
     <ClInclude Include="charts\chartseriescolor.h" />
     <ClInclude Include="charts\chartyaxisnumrange.h" />
     <ClInclude Include="charts\createchart.h" />
     <QtMoc Include="charts\setseriestype.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="charts\setyaxisrange.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="charts\deleteChartSeries.h" />
     <QtMoc Include="charts\setlegendproperties.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="charts\updatechart.h" />
   </ItemGroup>
@@ -153,7 +109,16 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>Charts</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -194,7 +159,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Charts.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -223,7 +189,16 @@ xcopy charts\qml\*.qml ..\output\win32release\bin\extensions\ui\charts\qml\* /s 
       </Command>
       <Message>Copy Charts.dll to ..\output\win32release\bin\extensions\ui\Charts</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;ilwiscoreui;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui\drawers;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core\geos\include;core\ilwisobjects\operation\modeller;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\representation;core\catalog;ilwiscoreui/drawers;..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</AdditionalIncludeDirectories>
@@ -243,7 +218,8 @@ xcopy charts\qml\*.qml ..\output\win32release\bin\extensions\ui\charts\qml\* /s 
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;..\libraries\win32debug\ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quickd.lib;$(QTDIR)\lib\Qt5OpenGLd.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Qmld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -271,8 +247,20 @@ xcopy charts\qml\*.qml ..\output\win32debug\bin\extensions\ui\charts\qml\* /s /y
 </Command>
       <Message>Copy Charts.dll to ..\output\win32debug\bin\extensions\ui\Charts</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath></QtMoc></ItemDefinitionGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath>
+    </QtMoc>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>
