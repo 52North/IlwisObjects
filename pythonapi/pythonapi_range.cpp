@@ -18,6 +18,7 @@
 #include "pythonapi_pyobject.h"
 #include "pythonapi_range.h"
 #include "pythonapi_qvariant.h"
+#include "pythonapi_domainitem.h"
 
 #include "pythonapi_error.h"
 
@@ -257,9 +258,11 @@ PyObject* NumericItemRange::listAll(){
     return list;
 }
 
-double NumericItemRange::index(double v)
+DomainItem* NumericItemRange::item(quint32 index)
 {
-	return rUNDEF; // static_cast<Ilwis::IntervalRange*>(_range.get())->index(v);
+    DomainItem * newItem = new DomainItem();
+    newItem->_ilwisItem.reset(static_cast<Ilwis::IntervalRange*>(_range.get())->item(index).get());
+    return newItem;
 }
 
 qint32 NumericItemRange::gotoIndex(qint32 index, qint32 step) const

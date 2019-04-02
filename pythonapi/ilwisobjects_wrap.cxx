@@ -32527,38 +32527,38 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_NumericItemRange_index(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_NumericItemRange_item(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   pythonapi::NumericItemRange *arg1 = (pythonapi::NumericItemRange *) 0 ;
-  double arg2 ;
+  quint32 arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  double val2 ;
+  unsigned int val2 ;
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  double result;
+  pythonapi::DomainItem *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:NumericItemRange_index",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:NumericItemRange_item",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_pythonapi__NumericItemRange, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NumericItemRange_index" "', argument " "1"" of type '" "pythonapi::NumericItemRange *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "NumericItemRange_item" "', argument " "1"" of type '" "pythonapi::NumericItemRange *""'"); 
   }
   arg1 = reinterpret_cast< pythonapi::NumericItemRange * >(argp1);
-  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NumericItemRange_index" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "NumericItemRange_item" "', argument " "2"" of type '" "quint32""'");
   } 
-  arg2 = static_cast< double >(val2);
+  arg2 = static_cast< quint32 >(val2);
   {
     try {
-      result = (double)(arg1)->index(arg2);
+      result = (pythonapi::DomainItem *)(arg1)->item(arg2);
     }catch (std::exception& e) {
       PyErr_SetString(pythonapi::translate_Exception_type(e),pythonapi::get_err_message(e));
       SWIG_fail;
     }
   }
-  resultobj = SWIG_From_double(static_cast< double >(result));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pythonapi__DomainItem, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -40948,7 +40948,7 @@ static PyMethodDef SwigMethods[] = {
 		"NumericItemRange_add(NumericItemRange self, PyObject * item)\n"
 		""},
 	 { (char *)"NumericItemRange_listAll", _wrap_NumericItemRange_listAll, METH_VARARGS, (char *)"NumericItemRange_listAll(NumericItemRange self) -> PyObject *"},
-	 { (char *)"NumericItemRange_index", _wrap_NumericItemRange_index, METH_VARARGS, (char *)"NumericItemRange_index(NumericItemRange self, double arg3) -> double"},
+	 { (char *)"NumericItemRange_item", _wrap_NumericItemRange_item, METH_VARARGS, (char *)"NumericItemRange_item(NumericItemRange self, quint32 index) -> DomainItem"},
 	 { (char *)"NumericItemRange_gotoIndex", _wrap_NumericItemRange_gotoIndex, METH_VARARGS, (char *)"NumericItemRange_gotoIndex(NumericItemRange self, qint32 index, qint32 step) -> qint32"},
 	 { (char *)"NumericItemRange_clone", _wrap_NumericItemRange_clone, METH_VARARGS, (char *)"NumericItemRange_clone(NumericItemRange self) -> NumericItemRange"},
 	 { (char *)"delete_NumericItemRange", _wrap_delete_NumericItemRange, METH_VARARGS, (char *)"delete_NumericItemRange(NumericItemRange self)"},

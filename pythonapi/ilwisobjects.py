@@ -3658,9 +3658,9 @@ class NumericItemRange(ItemRange):
         return _ilwisobjects.NumericItemRange_listAll(self)
 
 
-    def index(self, arg2):
-        """index(NumericItemRange self, double arg2) -> double"""
-        return _ilwisobjects.NumericItemRange_index(self, arg2)
+    def item(self, index):
+        """item(NumericItemRange self, quint32 index) -> DomainItem"""
+        return _ilwisobjects.NumericItemRange_item(self, index)
 
 
     def gotoIndex(self, index, step):
