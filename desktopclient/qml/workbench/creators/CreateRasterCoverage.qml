@@ -96,7 +96,7 @@ Controls.DropableItem{
                 filterType: "domain"
                 width : parent.width
                 useCreateButton: true
-                content : "count"
+                content : "positiveInteger"
             }
 
             Controls.TextEditLabelPair{
