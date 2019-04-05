@@ -163,7 +163,7 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
         }
     }
     else {
-        _stackDomain = IDomain("count");
+        _stackDomain = IDomain("positiveInteger");
         _stackValueStrings = { "1" };
         _stackValueNumbers = { 1 };
     }
@@ -208,7 +208,7 @@ quint64 CreateRasterCoverage::createMetadata()
 {
      OperationResource resource({"ilwis://operations/createrastercoverage"});
      resource.setLongName("Create Raster Coverage");
-     resource.setSyntax("createrastercoverage(georeference, domain,bands,stackdomain=count, stack-defintion=1..,auto-resample)");
+     resource.setSyntax("createrastercoverage(georeference, domain,bands,stackdomain=positiveInteger, stack-defintion=1..,auto-resample)");
      resource.setInParameterCount({6});
      resource.addInParameter(0, itGEOREF,TR("Georeference"), TR("Geometry of the new rastercoverage"));
      resource.addInParameter(1, itDOMAIN|itSTRING,TR("Domain"), TR("Domain used by the raster coverage"));
