@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "numericdomain.h"
 #include "itemdomain.h"
 #include "ilwiscontext.h"
+#include "natural_sorting.h"
 #include "operationhelper.h"
 
 using namespace Ilwis;
@@ -233,6 +234,7 @@ IlwisTypes OperationHelper::determineType(const QString &value)
     return tp == itUNKNOWN ? itSTRING : tp;
 }
 
+
 QString OperationHelper::expandWildCards(const QString& wildmaps) {
 	QString result;
 	QString maps = wildmaps;
@@ -248,13 +250,21 @@ QString OperationHelper::expandWildCards(const QString& wildmaps) {
 	QString containerPath = context()->workingCatalog()->resource().url().toString();
 	QString query = "container='" + containerPath + extraPath + "' and name LIKE '" + maps + "'";
 	std::vector<Resource> resources = mastercatalog()->select(query);
+	std::vector<std::string> names;
 	for (auto resource : resources) {
 		if (resource.ilwisType() == itRASTER) {
-			if (result != "")
-				result += ",";
-			result += resource.url().toString();
+			names.push_back(resource.url().toString().toStdString());
 		}
+
 	}
+	SI::natural::sort<std::vector<std::string>>(names);
+	for (auto s : names) {
+		if (result != "") {
+			result += ",";
+		}
+		result += QString::fromStdString(s);
+	}
+
 	return result;
 }
 
