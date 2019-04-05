@@ -184,12 +184,14 @@ ITable RasterCoverage::histogramAsTable()
 
     count = 0;
     PIXVALUETYPE vstart = datadef().range<NumericRange>()->min();
-    for (int i = 0; i < hist.size() - 1; ++i) {
-        auto& h = hist[i];
-        histogram->record(count, { vstart, h._limit, h._count });
-        vstart = h._limit;
-        ++count;
-    }
+	if (hist.size() > 0) {
+		for (int i = 0; i < hist.size() - 1; ++i) {
+			auto& h = hist[i];
+			histogram->record(count, { vstart, h._limit, h._count });
+			vstart = h._limit;
+			++count;
+		}
+	}
 
     return histogram;
 }
