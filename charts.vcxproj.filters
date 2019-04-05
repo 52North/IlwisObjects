@@ -35,6 +35,9 @@
     <None Include="charts\qml\SetLegendProperties.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\RemoveDataSeries.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -124,6 +127,9 @@
     <ClCompile Include="charts\changedataseriesname.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="charts\removedataseries.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="charts\ilwischarts_plugin.h">
@@ -142,6 +148,9 @@
       <Filter>Header Files\PropertyForms</Filter>
     </QtMoc>
     <QtMoc Include="charts\setlegendproperties.h">
+      <Filter>Header Files\PropertyForms</Filter>
+    </QtMoc>
+    <QtMoc Include="charts\removedataseries.h">
       <Filter>Header Files\PropertyForms</Filter>
     </QtMoc>
   </ItemGroup>
