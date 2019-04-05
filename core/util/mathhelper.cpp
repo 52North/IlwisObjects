@@ -198,7 +198,7 @@ NumericRange MathHelper::roundRange(double rmin, double rmax)
     double step = range / pow(10.0,abs(d));
     int i = 0;
     while(i < 6) {
-        if ( step < tickLimits[i]) {
+        if (step <= tickLimits[i] + EPS5) {
             step = tickLimits[i];
             break;
         }
