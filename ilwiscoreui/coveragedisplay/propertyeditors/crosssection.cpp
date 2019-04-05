@@ -471,6 +471,10 @@ void CrosssectionTool::contineousMode(bool yesno) {
 }
 
 int CrosssectionTool::addContineousPin() {
+	for (auto pin : _pins) {
+		if (pin->label() == "contineous_pin")
+			return _pins.size() - 1;
+	}
     _pins.push_back(new CrossSectionPin("contineous_pin", Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
     addPinPrivate();
     _pins.back()->update();
