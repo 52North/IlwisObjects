@@ -110,6 +110,8 @@ private:
     QStringList dataProviders() const;
 	bool isFileBased() const;
 
+	void sortItems(QList<ResourceModel *>& items);
+
 public slots:
     void contentChanged2(const UrlSet& locs);
      void containerContentChanged();

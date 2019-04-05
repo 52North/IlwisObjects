@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "uicontextmodel.h"
 #include "mastercatalogmodel.h"
 #include "catalogviewmanager.h"
+#include "natural_sorting.h"
 #include "oshelper.h"
 
 using namespace Ilwis;
@@ -154,6 +155,32 @@ int CatalogModel::level() const
     return _level;
 }
 
+void CatalogModel::sortItems(QList<ResourceModel *>& items) {
+	if (items.size() == 0)
+		return;
+
+	std::vector<std::string> names;
+	std::set<std::string> uniqueNames;
+	std::map<std::string, std::vector<ResourceModel*>> lookup;
+	for (auto *item : items) {
+		uniqueNames.insert(item->displayName().toStdString());
+		lookup[item->displayName().toStdString()].push_back(item);
+	}
+	names.resize(uniqueNames.size());
+	int count = 0;
+	for (auto uniqueName : uniqueNames)
+		names[count++] = uniqueName;
+
+	items.clear();
+	SI::natural::sort<std::vector<std::string>>(names);
+	for (auto name : names) {
+		std::vector<ResourceModel *> vitems = lookup[name];
+		for (auto *res : vitems)
+			items.push_back(res);
+	}
+
+}
+
 QQmlListProperty<ResourceModel> CatalogModel::resources() {
 
     try{
@@ -166,9 +193,10 @@ QQmlListProperty<ResourceModel> CatalogModel::resources() {
             _objectCounts[resource->type()]+= 1;
         }
         _filteredItems.clear();
-        if ( _view.filterCount() == 1) // only base filter
-            return  QQmlListProperty<ResourceModel>(this, _allItems);
-        if ( _view.isActiveFilter("spatial"))
+		if (_view.filterCount() == 1) {// only base filter
+			sortItems(_allItems);
+			return  QQmlListProperty<ResourceModel>(this, _allItems);
+		}if (_view.isActiveFilter("spatial"))
             fillSpatialFilter();
         if ( _view.isActiveFilter("object")){
             fillObjectFilter();
@@ -182,6 +210,7 @@ QQmlListProperty<ResourceModel> CatalogModel::resources() {
         if (_view.isActiveFilter("epsg")) {
             fillEPSGFilter();
         }
+		sortItems(_filteredItems);
         return QQmlListProperty<ResourceModel>(this, _filteredItems);
     }
     catch(const ErrorObject& ){
@@ -393,6 +422,7 @@ void CatalogModel::gatherItems() {
         if ( previousContainer.toString() == "ilwis://")
             hasParent = false;
     }
+	sortItems(_allItems);
 	if (hasParent) {
 		if (!previousContainer.isValid()) {
 			QString scheme = item().container().scheme();
