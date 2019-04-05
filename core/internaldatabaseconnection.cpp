@@ -16,28 +16,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
 #include "publicdatabase.h"
+#include "mastercatalog.h"
+#include "locker.h"
 #include "internaldatabaseconnection.h"
 
 using namespace Ilwis;
 
-std::recursive_mutex InternalDatabaseConnection::_guard;
+//std::recursive_mutex InternalDatabaseConnection::_guard;
 
 InternalDatabaseConnection::InternalDatabaseConnection()
 {
-	_guard.lock();
+	mastercatalog()->_guard.lock();
 	_index = kernel()->database()->freeConnectionIndex(); 
 }
 
 InternalDatabaseConnection::InternalDatabaseConnection(int debugN)
 {
-	_guard.lock();
+	mastercatalog()->_guard.lock();
 	_index = kernel()->database()->freeConnectionIndex();
 }
 
 
 InternalDatabaseConnection::InternalDatabaseConnection(const QString &query)
 {
-	_guard.lock();
+	mastercatalog()->_guard.lock();
 	_index = kernel()->database()->freeConnectionIndex();
     if(!kernel()->database()->exec(_index, query)){
          kernel()->issues()->logSql(lastError());
@@ -54,7 +56,7 @@ void InternalDatabaseConnection::closeConnection() {
 	kernel()->database()->freeConnectionIndex(_index);
 	if (_index != iUNDEF) {
 		_index = iUNDEF;
-		_guard.unlock();
+		mastercatalog()->_guard.unlock();
 	}
 }
 

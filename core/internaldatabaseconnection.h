@@ -44,7 +44,7 @@ public:
 	void closeConnection();
 private:
 	int _index = iUNDEF;
-	static std::recursive_mutex _guard;
+	//static std::recursive_mutex _guard;
 
 	void warning() const;
 };

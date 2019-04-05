@@ -49,6 +49,7 @@ class KERNELSHARED_EXPORT MasterCatalog : public QObject
     Q_OBJECT
 
     friend KERNELSHARED_EXPORT MasterCatalog* mastercatalog();
+	friend class InternalDatabaseConnection;
 
 public:
     /**
