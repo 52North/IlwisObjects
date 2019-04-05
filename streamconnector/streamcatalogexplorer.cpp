@@ -57,6 +57,26 @@ StreamCatalogExplorer::StreamCatalogExplorer(const Ilwis::Resource &resource, co
 
 }
 
+void collectBands(const IRasterCoverage& raster, std::vector<Resource>& items) {
+	RasterStackDefinition defs = raster->stackDefinition();
+	bool namedLayers = !hasType(raster->stackDefinition().domain()->ilwisType(), itNUMBER);
+	for (quint32 band = 0; band < raster->size().zsize(); ++band) {
+		Resource resBand = raster->resource();
+		resBand.newId();
+		resBand.createTime(Time::now());
+		resBand.modifiedTime(Time::now());
+		QUrl newUrl = resBand.url().toString();
+		QString newName = resBand.name() + "_" + defs.index(band);
+		if (namedLayers)
+			newName = defs.index(band);
+		newName.remove(".ilwis");
+		resBand.setUrl(newUrl.toString() + "/" + newName);
+		resBand.code("band=" + QString::number(band));
+		resBand.setExtendedType(resBand.extendedType() & ~itCATALOG);
+		items.push_back(resBand);
+	}
+}
+
 void createCatalog(const IRasterCoverage& raster,std::vector<Resource>& items){
     Resource resCatalog = raster->resource();
     resCatalog.newId();
@@ -66,33 +86,28 @@ void createCatalog(const IRasterCoverage& raster,std::vector<Resource>& items){
     resCatalog.setIlwisType(itCATALOG);
     resCatalog.setExtendedType(resCatalog.extendedType() | itRASTER);
     items.push_back(resCatalog);
-    RasterStackDefinition defs = raster->stackDefinition();
-    bool namedLayers = !hasType(raster->stackDefinition().domain()->ilwisType(), itNUMBER);
-    for(quint32 band=0; band < raster->size().zsize(); ++band){
-        Resource resBand = raster->resource();
-        resBand.newId();
-        resBand.createTime(Time::now());
-        resBand.modifiedTime(Time::now());
-        QUrl newUrl = resBand.url().toString();
-        QString newName = resBand.name() + "_" + defs.index(band);
-        if ( namedLayers)
-            newName = defs.index(band);
-        newName.remove(".ilwis");
-        resBand.setUrl(newUrl.toString() + "/" + newName);
-        resBand.code("band="+QString::number(band));
-        resBand.setExtendedType(resBand.extendedType() & ~itCATALOG);
-        items.push_back(resBand);
-    }
+	collectBands(raster, items);
 }
 
 std::vector<Resource> StreamCatalogExplorer::loadItems(const IOOptions &)
 {
     QStringList sfilters;
     sfilters << "*.ilwis" ;
-    std::vector<QUrl> files = FolderCatalogExplorer::loadFolders(source(),
+	std::vector<Resource> items;
+	Resource res = source();
+	QString path = res.url(true).toLocalFile();
+	if (path.indexOf(".ilwis") > 0 && hasType(res.ilwisType(),itCATALOG)) {
+		IRasterCoverage raster(res.url().toString());
+		if (raster.isValid()) {
+			collectBands(raster, items);
+			return items;
+		}
+	}
+
+    std::vector<QUrl> files = FolderCatalogExplorer::loadFolders(res,
                                                                  sfilters,
                                                                  CatalogConnector::foFULLPATHS | CatalogConnector::foEXTENSIONFILTER);
-    std::vector<Resource> items;
+
     for(auto url : files){
         QString path = url.toLocalFile();
 
