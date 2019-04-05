@@ -184,6 +184,8 @@ bool ColorCompositeLayerModel::usesColorData() const
 
 void ColorCompositeLayerModel::setActiveAttribute(int idx)
 {
+	_prepared = ptNONE;
+	updateGeometry(true);
 	RasterLayerModel::setActiveAttribute(idx);
 	for (int i = 0; i < 3; ++i) {
 		layer(i)->setActiveAttribute(idx);
@@ -312,15 +314,15 @@ void ColorCompositeLayerModel::refreshStretch() {
 	attr = layer(1)->activeAttribute();
 	if (attr != 0) {
 		if ((attr->stretchRange().min() != _currentStretchRanges[1].min()) || (attr->stretchRange().max() != _currentStretchRanges[1].max())) {
-			scale_r = _currentStretchRanges[1].distance() / attr->stretchRange().distance();
-			offset_r = (_currentStretchRanges[1].min() - attr->stretchRange().min()) / attr->stretchRange().distance();
+			scale_g = _currentStretchRanges[1].distance() / attr->stretchRange().distance();
+			offset_g = (_currentStretchRanges[1].min() - attr->stretchRange().min()) / attr->stretchRange().distance();
 		}
 	}
 	attr = layer(2)->activeAttribute();
 	if (attr != 0) {
 		if ((attr->stretchRange().min() != _currentStretchRanges[2].min()) || (attr->stretchRange().max() != _currentStretchRanges[2].max())) {
-			scale_r = _currentStretchRanges[2].distance() / attr->stretchRange().distance();
-			offset_r = (_currentStretchRanges[2].min() - attr->stretchRange().min()) / attr->stretchRange().distance();
+			scale_b = _currentStretchRanges[2].distance() / attr->stretchRange().distance();
+			offset_b = (_currentStretchRanges[2].min() - attr->stretchRange().min()) / attr->stretchRange().distance();
 		}
 	}
 
