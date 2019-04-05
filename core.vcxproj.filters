@@ -1634,32 +1634,6 @@
     <ClCompile Include="core\util\xpathparser.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <ClCompile Include="core\geos\src\index\intervalrtree\IntervalRTreeBranchNode.cpp">
       <Filter>Source Files\geos\src\index\intervalrtree</Filter>
     </ClCompile>
@@ -1696,8 +1670,6 @@
     <ClCompile Include="core\ilwisobjects\representation\shapelookup.cpp">
       <Filter>Source Files\ilwisobjects\representation</Filter>
     </ClCompile>
-    
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\geos\include\geos\index\strtree\AbstractNode.h">
@@ -3262,6 +3234,9 @@
     </ClInclude>
     <ClInclude Include="core\ilwisobjects\representation\shapelookup.h">
       <Filter>Header Files\ilwisobjects\representation</Filter>
+    </ClInclude>
+    <ClInclude Include="core\util\natural_sorting.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

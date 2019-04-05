@@ -1104,6 +1104,7 @@ xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
     <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\projectionfactory.h" />
     <ClInclude Include="core\ilwisobjects\geometry\coordinatesystem\projectionimplementation.h" />
     <ClInclude Include="core\publicdatabase.h" />
+    <ClInclude Include="core\util\natural_sorting.h" />
     <ClInclude Include="core\util\range.h" />
     <ClInclude Include="core\ilwisobjects\domain\rangeiterator.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\rangejunctionnode.h" />
