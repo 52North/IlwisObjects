@@ -336,8 +336,11 @@ bool CoverageLayerModel::canUse(quint64 id) {
 		return false;
 	if (obj->ilwisType() == itREPRESENTATION) {
 		IRepresentation rpr = obj.as<Representation>();
-		if (rpr->domain()->isCompatibleWith(activeAttribute()->datadefinition().domain().ptr())) {
-			return true;
+		auto def = activeAttribute()->datadefinition();
+		if (rpr->domain().isValid() && def.isValid()) {
+			if (rpr->domain()->isCompatibleWith(def.domain().ptr())) {
+				return true;
+			}
 		}
 	}
 	return false;
