@@ -640,7 +640,7 @@ QString ObjectCreator::createChart(const QVariantMap &parms) {
     QString ctype = parms["ctype"].toString();
     QString xaxis = parms["xaxis"].toString();
     QString yaxis = parms["yaxis"].toString();
-    QString zaxis = parms["zaxis"].toString();
+	QString zaxis = "?";  // parms["zaxis"].toString(); the combobox contains a value; not used at this moment
     QString expr  = QString("createchart(%1,%2,%3,%4,%5,%6,%7)").arg(iUNDEF).arg(name).arg(url).arg(ctype).arg(xaxis).arg(yaxis).arg(zaxis);
 
     QString output = QString("script dummy1=");
