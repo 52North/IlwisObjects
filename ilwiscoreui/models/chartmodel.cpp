@@ -497,12 +497,11 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
         double dist = std::abs(_minx - _maxx);
 
         if (std::floor(res) == res) {
-			NumericRange rng = MathHelper::roundRange(_minx, _maxx);
-			_tickCountX = rng.distance() / rng.resolution();
+			 NumericRange rng = MathHelper::roundRange(_minx, _maxx);
+			_tickCountX = 1 + rng.distance() / rng.resolution();
 			_minx = rng.min();
 			_maxx = rng.max();
 
-           // IntegerTicks(res, dist, _tickCountX, _minx, _maxx);
         }
     }
     else if (_xaxisType == AxisType::AT_CATEGORIES) {
