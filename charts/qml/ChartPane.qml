@@ -7,6 +7,8 @@ import QtQuick 2.5
 import QtCharts 2.1
 import ChartModel 1.0
 import DataseriesModel 1.0
+import "../../../../qml/Global.js" as Global
+import "../../../../qml/controls" as Controls
 
 Rectangle {
     id : chartView
@@ -37,6 +39,11 @@ Rectangle {
             }
         }
     }
+
+    Controls.FloatingRectangle{
+        id : floatrect
+    }
+
 	ValueAxis {
 		id : xas
 		min : chart != null ? chart.minX : 0
@@ -91,8 +98,23 @@ Rectangle {
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton
 
-			onClicked : {
+			onPressed : {
 				click(mouseX, mouseY)
+				if ( visibleGraphs.count > 0){
+					info(mouse.x, mouse.y)
+				}
+			}
+			onReleased : {
+				floatrect.enabled = false
+				floatrect.opacity = 0
+				floatrect.x = 0
+				floatrect.y = 0
+			}
+
+			onPositionChanged : {
+				if ( floatrect.opacity > 0){
+					info(mouse.x, mouse.y)
+		        }
 			}
         }
 
@@ -197,6 +219,16 @@ Rectangle {
 
         return 0x20 // fallback
     }
+
+	function info(mx,my){
+		var pnt = visibleGraphs.mapToValue(Qt.point(mx,my),visibleGraphs.series(0))
+		var text = pnt.x.toFixed(3) + " " + pnt.y.toFixed(3)
+		floatrect.enabled = true
+		floatrect.opacity = 1
+		floatrect.x = mx
+		floatrect.y = my
+		floatrect.text = text
+	}
 
     function createSeries(ctype, name, xas, yas){
         if ( ctype == "line") {
