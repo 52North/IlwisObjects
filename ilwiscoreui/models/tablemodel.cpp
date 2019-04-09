@@ -86,6 +86,16 @@ TableModel::TableModel(const Ilwis::Resource &resource, QObject *parent): QAbstr
     }
 }
 
+void TableModel::setNewTable(const Ilwis::ITable& tbl) {
+	if (tbl.isValid()) {
+		_table = tbl;
+		setColumns();
+		_selectedRecords = std::set<quint32>();
+		emit columnsChanged();
+		emit recordCountChanged();
+
+	}
+}
 int TableModel::rowCount(const QModelIndex &parent) const
 {
     if ( _table.isValid())    {
