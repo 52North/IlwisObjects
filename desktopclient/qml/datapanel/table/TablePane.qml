@@ -20,6 +20,13 @@ Item {
 
     property TableModel table
 
+	function setTable(t){
+	    console.debug("aaaaaa", t)
+		table = t
+		tableView.model = null
+		tableView.model = t
+
+	}
     Component{
         id : column
         TableColumn{
