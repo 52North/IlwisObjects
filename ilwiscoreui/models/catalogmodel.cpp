@@ -103,18 +103,20 @@ void CatalogModel::scanContainer(bool threading, bool forceScan)
     bool inmainThread = QThread::currentThread() == QCoreApplication::instance()->thread();
     bool useThread = threading && inmainThread;
     if ( useThread){
-        if ( forceScan || !mastercatalog()->knownCatalogContent(OSHelper::neutralizeFileName(resource().url().toString()))){
-            QUrl url = resource().url();
-            QThread* thread = new QThread;
-            CatalogWorker2* worker = new CatalogWorker2(url, context()->workingCatalog()->resource().url(), forceScan);
-            worker->moveToThread(thread);
-            thread->connect(thread, &QThread::started, worker, &CatalogWorker2::process);
-            thread->connect(worker, &CatalogWorker2::finished, thread, &QThread::quit);
-            thread->connect(worker, &CatalogWorker2::finished, worker, &CatalogWorker2::deleteLater);
-            thread->connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-            thread->connect(worker, &CatalogWorker2::updateContainer, this, &CatalogModel::containerContentChanged);
-            thread->start();
-        }
+		if (context()->initializationFinished()) {
+			if (forceScan || !mastercatalog()->knownCatalogContent(OSHelper::neutralizeFileName(resource().url().toString()))) {
+				QUrl url = resource().url();
+				QThread* thread = new QThread;
+				CatalogWorker2* worker = new CatalogWorker2(url, context()->workingCatalog()->resource().url(), forceScan);
+				worker->moveToThread(thread);
+				thread->connect(thread, &QThread::started, worker, &CatalogWorker2::process);
+				thread->connect(worker, &CatalogWorker2::finished, thread, &QThread::quit);
+				thread->connect(worker, &CatalogWorker2::finished, worker, &CatalogWorker2::deleteLater);
+				thread->connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+				thread->connect(worker, &CatalogWorker2::updateContainer, this, &CatalogModel::containerContentChanged);
+				thread->start();
+			}
+		}
     }else{
         mastercatalog()->addContainer(resource().url(), forceScan);
         if ( forceScan)
