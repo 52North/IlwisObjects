@@ -291,6 +291,7 @@ void MasterCatalogModel::scanBookmarks()
     // search for the workspace that represents this and copy its view
     setDefaultView();
 
+	catalogResources.push_back(context()->workingCatalog()->resource());
     QList<CatalogModel *> models = startBackgroundScans(catalogResources);
 
     for(auto iter = models.begin(); iter != models.end(); ++iter){
