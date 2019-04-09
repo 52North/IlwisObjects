@@ -66,6 +66,7 @@ Item {
 		var pc = editor.pinCount
 		var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn('bands'), yaxis : editor.pinDataColumn(1), zaxis : ''}
 		modelid = objectcreator.createObject(createInfo)
+		editor.chartModelId = modelid
 		var filter = "itemid=" + modelid
 		bigthing.newCatalog(filter, "chart", "",layerview.tabmodel.side == "left" ? "right" : "left")
 		for(var i=0; i < editor.pinCount; ++i){
@@ -78,9 +79,11 @@ Item {
         if (!editor.contineousMode()){
             if ( tab1.item.selectedRow >= 0){
                 editor.changeCoords(tab1.item.selectedRow, mx, my, true)
-                if ( modelid == null){
+				modelid = editor.chartModelId
+                if ( modelid == 0){
                     var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis : editor.pinDataColumn(1), zaxis : ''}
                     modelid = objectcreator.createObject(createInfo)
+					editor.chartModelId = modelid
                     var filter = "itemid=" + modelid
                     bigthing.newCatalog(filter, "chart", "","other")
                  }else {
