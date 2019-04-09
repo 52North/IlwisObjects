@@ -226,10 +226,50 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
             return false;
         }
     }
-	std::vector<QString> columns = { xcolumn, ycolumn };
-	TableMerger merger;
-	merger.simpleCopyColumns(tbl, _datatable, columns);
-	merger.mergeTableData(tbl, _datatable, 0);
+	std::map<Raw, double> raw2value;
+	if (_datatable->columnIndex(tbl->columndefinition(1).name()) == iUNDEF) {
+		_datatable->addColumn(tbl->columndefinition(1));
+
+
+		//merger.mergeTableData(tbl, _datatable, 0); 
+		if (hasType(_datatable->columndefinition(0).datadef().domain()->ilwisType(), itITEMDOMAIN)) {
+			if (_datatable->columndefinition(0).datadef().domain()->valueType() == itNUMERICITEM) {
+				IIntervalDomain idomain = _datatable->columndefinition(0).datadef().domain().as<IntervalDomain>();
+				for (auto item : idomain) {
+					auto interval = item->as<Interval>();
+					double mid = interval->range().center();
+					raw2value[item->raw()] = mid;
+				}
+			}
+		}
+		std::map<double, std::vector<QVariant>> records;
+		for (int i = 0; i < _datatable->recordCount(); ++i) {
+			std::vector<QVariant> record = _datatable->record(i);
+			if (raw2value.size() == 0)
+				records[record[0].toDouble()] = record;
+			else
+				records[raw2value[record[0].toDouble()]] = record;
+		}
+		for (int i = 0; i < tbl->recordCount(); ++i) {
+			std::vector<QVariant> srecord = tbl->record(i);
+			auto iter = records.find(srecord[0].toDouble());
+			if (iter != records.end()) {
+				(*iter).second.back() = srecord[1];
+			}
+			else {
+				std::vector<QVariant> record(_datatable->columnCount(), rUNDEF);
+				record.back() = srecord[1];
+				record[0] = srecord[0].toDouble();
+				records[srecord[0].toDouble()] = record;
+			}
+		}
+		_datatable->recordCount(0);
+		for (auto item : records) {
+			_datatable->newRecord() = item.second;
+		}
+		if ( _dataTableModel)
+			_dataTableModel->setNewTable(_datatable);
+	}
 
 	if (tbl->name().indexOf("splib_") == 0) {
 		extraParams["chartType"] = "line";
@@ -247,6 +287,7 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
                 insertDataSeries(tbl, _series.size(), tbl->columndefinition(xcIndex).name(), tbl->columndefinition(ycIndex).name(), sUNDEF, extraParams);
             }
             emit updateSeriesChanged();
+			emit dataTableChanged();
         }
     }
     else {
@@ -255,9 +296,14 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
 			QString type = extraParams["chartType"].toString();
 			createChart(name, tbl, type, xcolumn, ycolumn, sUNDEF, extraParams);
 			emit updateSeriesChanged();
+			emit dataTableChanged();
 		}
     }
     return true;
+}
+
+bool ChartModel::updateDataTable() const {
+	return true;
 }
 
 void ChartModel::clearChart() {
@@ -494,7 +540,6 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
             if (!_fixedX) _maxx = std::max(_maxx, newseries->maxx());
         }
         double res = newseries->resolutionX();
-        double dist = std::abs(_minx - _maxx);
 
         if (std::floor(res) == res) {
 			 NumericRange rng = MathHelper::roundRange(_minx, _maxx);
@@ -634,6 +679,14 @@ QString ChartModel::dataTableId() const {
 		return QString::number(_datatable->id());
 	}
 	return QString();
+}
+
+TableModel *ChartModel::tableModel() const {
+	return _dataTableModel;
+}
+
+void ChartModel::tableModel(TableModel *tbl)  {
+	_dataTableModel = tbl;
 }
 
 QColor ChartModel::seriesColorItem(int seriesIndex, double v) {
