@@ -65,7 +65,7 @@ WorkBenchShifter {
         }
 
         Preferences.PreferencesButton{
-            imageSource : "../images/settingsdock-users.svg"
+            imageSource : "../images/settingsdock_users.svg"
             labelText : qsTr("Users")
         }
         Preferences.PreferencesButton{

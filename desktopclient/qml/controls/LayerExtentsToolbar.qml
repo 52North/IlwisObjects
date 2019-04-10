@@ -73,7 +73,7 @@ ToolBar{
 
         MapExtentButton{
             id : zoominButton
-            icon : zoominButton.checked ? "zoomin-green.svg" : "zoomin_grey.svg"
+            icon : zoominButton.checked ? "zoomin_green.svg" : "zoomin_grey.svg"
             action : zoomClicked
             checkable: true
             checked: false
@@ -107,7 +107,7 @@ ToolBar{
 		}
         MapExtentButton{
             id : zoomoutButton
-            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout-green.svg" : "zoomout_grey.svg") : "zoomout_grey.svg"
+            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout_green.svg" : "zoomout_grey.svg") : "zoomout_grey.svg"
             action : zoomOutClicked
             checkable: true
             checked: false
