@@ -114,6 +114,7 @@ public:
     void dataLoaded(bool yesno);
     bool isDataLoaded() const;
     void initValuesColumn(const QString& colname);
+	void clearTable(bool includeDefintion);
 
 protected:
      AttributeDefinition _attributeDefinition;
