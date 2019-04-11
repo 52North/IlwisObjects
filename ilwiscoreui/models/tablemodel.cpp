@@ -44,6 +44,7 @@ TableModel::~TableModel()
 
 void TableModel::setColumns()
 {
+	removeColumns(0, _columns.size());
     _columns = QList<ColumnModel *>();
     _columns.push_back(new ColumnModel(this, TR("record"),"first"));
     _order.resize(_table->recordCount());
@@ -52,6 +53,7 @@ void TableModel::setColumns()
     for(int i=0; i < _table->columnCount(); ++i){
         _columns.push_back(new ColumnModel(this, i));
     }
+	insertColumns(0, _columns.size());
 }
 
 TableModel::TableModel(const Ilwis::ITable& tbl, QObject *parent) : QAbstractTableModel(parent){
@@ -93,6 +95,8 @@ void TableModel::setNewTable(const Ilwis::ITable& tbl) {
 		_selectedRecords = std::set<quint32>();
 		emit columnsChanged();
 		emit recordCountChanged();
+		QModelIndex topLeft = createIndex(0, 0);
+		emit dataChanged(topLeft, topLeft);
 
 	}
 }
