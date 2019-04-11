@@ -26,6 +26,7 @@ ToolBar{
         spacing : 2
         MapExtentButton{
             icon  :"full_green.svg"
+            pushed : pressed
             id : entireMap
             action : entireClicked
             onClicked: {
@@ -48,7 +49,8 @@ ToolBar{
 
         MapExtentButton{
             id : panButton
-            icon : panButton.enabled ? (panButton.checked ? "pan_green.svg" : "pan_grey.svg") : "pan_grey.svg"
+            icon : panButton.enabled ? "pan_green.svg" : "pan_grey.svg"
+            pushed : panButton.enabled ? panButton.checked : false
             action : panningClicked
             checkable: true
             checked: false
@@ -73,7 +75,8 @@ ToolBar{
 
         MapExtentButton{
             id : zoominButton
-            icon : zoominButton.checked ? "zoomin_green.svg" : "zoomin_grey.svg"
+            icon : zoominButton.enabled ? "zoomin_green.svg" : "zoomin_grey.svg" // obsolete; zoomIn is always "enabled"
+            pushed : zoominButton.enabled ? zoominButton.checked : false
             action : zoomClicked
             checkable: true
             checked: false
@@ -107,7 +110,8 @@ ToolBar{
 		}
         MapExtentButton{
             id : zoomoutButton
-            icon : zoomoutButton.enabled ? (zoomoutButton.checked ? "zoomout_green.svg" : "zoomout_grey.svg") : "zoomout_grey.svg"
+            icon : zoomoutButton.enabled ? "zoomout_green.svg" : "zoomout_grey.svg"
+            pushed : zoomoutButton.enabled ? zoomoutButton.checked : false
             action : zoomOutClicked
             checkable: true
             checked: false
@@ -131,7 +135,8 @@ ToolBar{
         }
         MapExtentButton{
             id : normalButton
-            icon : normalButton.checked ? "getinfo_a.png" : "getinfo_i.png"
+            icon : normalButton.enabled ? "pointinfo_green.svg" : "pointinfo_grey.svg" // obsolete; normalButton is always "enabled"
+            pushed : normalButton.enabled ? normalButton.checked : false
             action : normalClicked
             checkable: true
             checked: true

@@ -23,8 +23,9 @@ Rectangle {
         id : zoomClicked
         onTriggered : {
             if ( worldmapcontainer.manager){
-                zoominButton.checked = zoominButton.checked ? false : true
-                worldmapcontainer.manager.zoomInMode = zoominButton.checked
+                worldmapcontainer.manager.zoomInMode = !worldmapcontainer.manager.zoomInMode
+                worldmapcontainer.manager.zoomOutMode = false
+                worldmapcontainer.manager.panningMode = false
             }
         }
     }
@@ -33,16 +34,22 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( worldmapcontainer.manager){
-                var envelope = manager.rootLayer.zoomEnvelope;
-                var zoomposition = {x: 0.5, y: 0.5};
-                envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, worldmapcontainer.manager,0.707);
-                worldmap.newExtent(envelope.minx + " " + envelope.miny + " " + envelope.maxx + " " + envelope.maxy);
+                worldmapcontainer.manager.zoomOutMode = !worldmapcontainer.manager.zoomOutMode
+                worldmapcontainer.manager.zoomInMode = false
+                worldmapcontainer.manager.panningMode = false
             }
         }
     }
 	Action {
         id : panningClicked
-		}
+        onTriggered : {
+            if ( worldmapcontainer.manager){
+                worldmapcontainer.manager.panningMode = !worldmapcontainer.manager.panningMode
+                worldmapcontainer.manager.zoomInMode = false
+                worldmapcontainer.manager.zoomOutMode = false
+            }
+        }
+    }
 
     Column{
         spacing : 2
@@ -50,50 +57,45 @@ Rectangle {
         height : parent.height
         anchors.horizontalCenter: parent.horizontalCenter
         MapExtentButton{
-            id : normalButton
-            icon : "full_map_a.png"
+            id : entireMap
+            icon : "full_green.svg"
+            pushed: pressed
             onClicked: {
                 worldmap.addCommand("setviewextent("+ worldmap.viewid + ",entiremap)");
                 worldmap.update()
                 if ( currentCatalog)
                     currentCatalog.filter("spatial","")
 
-				panButton1.enabled = false
                 panButton1.checked = false
-                zoomoutButton1.enabled = false
                 zoomoutButton1.checked = false
-                if (!zoominButton.checked) {
-                     normalButton.checked = true
-                }
                 toolbarClicked()
             }
         }
 
         MapExtentButton{
             id : zoominButton1
-            icon : checked ? "zoom_a.png" : "zoom_i.png"
+            icon : enabled ? "zoomin_green.svg" : "zoomin_grey.svg"
+            pushed : checked
             checkable: true
             checked: false
             action : zoomClicked
 
 			onClicked: {
                 checked = !checked
-                normalButton.checked = !checked
                 zoomoutButton1.checked = false
                 panButton1.checked = false
                 toolbarClicked()
-
             }
         }
         MapExtentButton{
             id : zoomoutButton1
-            icon : zoomoutButton1.enabled ? (zoomoutButton1.checked ? "zoom_out_a.png" : "zoom_out_i.png") : "zoom_out_i.png"
+            icon : zoomoutButton1.enabled ? "zoomout_green.svg" : "zoomout_grey.svg"
+            pushed : zoomoutButton1.enabled ? zoomoutButton1.checked : false
             action : zoomOutClicked
 
 			onClicked: {
                if ( enabled){
                     checked = !checked
-                    normalButton.checked = !checked
                     zoominButton1.checked = false
                     panButton1.checked = false
                     toolbarClicked()
@@ -103,20 +105,17 @@ Rectangle {
 		MapExtentButton{
             id : panButton1
 			checkable: true
-            icon : panButton1.enabled ? (panButton1.checked ? "pan_a.png" : "pan_i.png") : "pan_i.png"
+            icon : panButton1.enabled ? "pan_green.svg" : "pan_grey.svg"
+            pushed : panButton1.enabled ? panButton1.checked : false
             action : panningClicked
 			onClicked: {
                if ( enabled){
                     checked = !checked
-                    normalButton.checked = !checked
                     zoominButton1.checked = false
                     zoomoutButton1.checked = false
                     toolbarClicked()
                 }
-
             }
         }
     }
 }
-
-

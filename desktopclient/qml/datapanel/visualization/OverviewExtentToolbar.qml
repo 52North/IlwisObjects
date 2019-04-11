@@ -14,36 +14,20 @@ Rectangle {
     color : Global.alternatecolor1
 
     Action {
+        id : entiremapClicked
+        onTriggered : {
+            if ( metatdata.manager){
+                layerview.entireMap()
+                //metatdata.manager.wholeMap() // this performs entireMap() on the overview window; obsolete
+            }
+        }
+    }
+    Action {
         id : zoomClicked
         onTriggered : {
             if ( metatdata.manager){
-                zoominButton1.checked = zoominButton1.checked ? false : true
+                zoominButton1.checked = !zoominButton1.checked
                 metatdata.manager.zoomInMode = zoominButton1.checked
-                panButton1.checked = false
-            }
-        }
-    }
-
-    Action {
-        id : zoomOutClicked
-        onTriggered : {
-            if ( manager){
-                var envelope = manager.rootLayer.zoomEnvelope;
-                var zoomposition = {x: 0.5, y: 0.5};
-                envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, viewmanager,0.707);
-                layers.newExtent(envelope.minx + " " + envelope.miny + " " + envelope.maxx + " " + envelope.maxy);
-            }
-        }
-    }
-
-    Action {
-        id : panningClicked
-        onTriggered : {
-            if ( manager){
-                panButton1.checked = !panButton1.checked
-                zoominButton1.checked = false
-                manager.panningMode = !manager.panningMode
-                manager.zoomInMode = false
             }
         }
     }
@@ -53,25 +37,22 @@ Rectangle {
         width : parent.width
         height : parent.height
         anchors.horizontalCenter: parent.horizontalCenter
-        Controls.MapExtentButton{
-            id : panButton1
-            checkable: true
-            checked: false
-            icon : checked ? "pan_a.png" : "pan_i.png"
-            action : panningClicked
-        }
 
         Controls.MapExtentButton{
-            id : zoominButton1
-            icon : checked ? "zoom_out_a.png" : "zoom_out_i.png"
+            id : entiremapButton1
+            icon : enabled ? "full_green.svg" : "full_grey.svg"
             checkable: true
             checked: false
-            action : zoomClicked
+            pushed : pressed
+            action : entiremapClicked
         }
         Controls.MapExtentButton{
-            id : zoomoutButton1
-            icon :"zoomout20.png"
-            action : zoomOutClicked
+            id : zoominButton1
+            icon : enabled ? "zoomin_green.svg" : "zoomin_grey.svg"
+            checkable: true
+            checked: false
+            pushed : checked
+            action : zoomClicked
         }
     }
 }

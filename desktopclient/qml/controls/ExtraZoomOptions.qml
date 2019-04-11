@@ -11,8 +11,24 @@ DropableItem {
     width : 155
     maxHeight: 190
 	property var layermanager
-
     property var panelCallBack
+
+    function setZoomPanButton (enablePanAndZoomOut) {
+		if (typeof layerview !== 'undefined'){
+			if (layerview.activeLayerExtentsToolbar()){
+				layerview.activeLayerExtentsToolbar().panButton.enabled = enablePanAndZoomOut
+				layerview.activeLayerExtentsToolbar().zoomoutButton.enabled = enablePanAndZoomOut
+			}
+		}
+    }
+
+    function setButtons() {
+        if ( layermanager){
+            var enablePanAndZoomOut = layermanager.rootLayer.scrollInfo.xsizeperc < 1.0 || layermanager.rootLayer.scrollInfo.ysizeperc < 1.0
+            setZoomPanButton(enablePanAndZoomOut)
+        }
+    }
+
     Rectangle {
 	    anchors.fill: parent
         color : "white"
@@ -34,13 +50,14 @@ DropableItem {
 
 				onClicked : {
 					if ( layerview.oldZoomEnvelope != ""){
-					     var command = "setviewextent("+ layermanager.viewid + "," + layerview.oldZoomEnvelope + ")"
+					    var command = "setviewextent("+ layermanager.viewid + "," + layerview.oldZoomEnvelope + ")"
 						layermanager.addCommand(command);
                         layerview.broadCastNewExtent(layermanager, layerview.oldZoomEnvelope)
 						toggle()
 					}else {
 						layerview.entireMap()
 					}
+					setButtons()
 				}
 			}
 			Item {
@@ -94,6 +111,7 @@ DropableItem {
 												layermanager.addCommand(command);
 												layerview.broadCastNewExtent(layermanager, newEnv)
 												toggle()
+												setButtons()
 											}
 										}
 										Row {
