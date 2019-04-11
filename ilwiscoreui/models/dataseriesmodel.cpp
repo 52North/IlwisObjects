@@ -193,7 +193,7 @@ double DataseriesModel::resolutionZ()
 }
 
 
-DataDefinition DataseriesModel::datadefinition(ChartModel::Axis axis)
+DataDefinition DataseriesModel::datadefinition(ChartModel::Axis axis) const
 {
     if (axis == ChartModel::Axis::AXAXIS)
         return _dataDefinitions[0];
@@ -286,7 +286,6 @@ quint16 DataseriesModel::xAxisType() const {
 quint16 DataseriesModel::yAxisType() const {
     return axisType(ChartModel::Axis::AYAXIS);
 }
-
 
 QVariantMap DataseriesModel::categories(QString axis, bool unique)
 {

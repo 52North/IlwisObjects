@@ -95,7 +95,7 @@ namespace  Ilwis {
             double resolutionX();
             double resolutionY();
             double resolutionZ();
-            DataDefinition datadefinition(ChartModel::Axis axis);
+            DataDefinition datadefinition(ChartModel::Axis axis) const;
 
             QQmlListProperty<ChartOperationEditor> operations();
             Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
