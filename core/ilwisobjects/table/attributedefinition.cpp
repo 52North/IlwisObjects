@@ -300,7 +300,7 @@ void SubFeatureDefinition::setSubDefinition(const IDomain &dom, const std::vecto
 void SubFeatureDefinition::setSubDefinition(quint32 number)
 {
     _index2subFeature.clear();
-    _subFeatureDomain = IDomain("count");
+	_subFeatureDomain.prepare("count");
     for(quint32 i = 0; i < number; ++i){
         QString key = QString::number(i);
         _index2subFeature.push_back(key);

@@ -292,6 +292,7 @@ public:
     virtual bool isDataLoaded() const = 0;
     virtual void initValuesColumn(const QString& colname) = 0;
     virtual IlwisData<Table> copyTable(const QString& name=sUNDEF)  = 0;
+	virtual void clearTable(bool includeDefintion) = 0;
 
 protected:
     Table(const Resource& resource) :

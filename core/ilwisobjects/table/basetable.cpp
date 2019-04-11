@@ -341,6 +341,15 @@ void BaseTable::removeRecord(quint32 rec)
     --_rows;
 }
 
+void BaseTable::clearTable(bool includeDefintion) {
+	recordCount(0);
+	if (includeDefintion) {
+		_attributeDefinition.clearAttributeDefinitions();
+		_columns = 0;
+		_dataloaded = false;
+	}
+}
+
 
 
 

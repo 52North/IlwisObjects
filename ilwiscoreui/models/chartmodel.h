@@ -60,6 +60,8 @@ namespace Ilwis {
             Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
             Q_PROPERTY(bool legendVisible READ legendVisible            WRITE setLegendVisible    NOTIFY legendChanged)
             Q_PROPERTY(QString legendAlignment    READ legendAlignment  WRITE setLegendAlignment  NOTIFY legendChanged)
+            Q_PROPERTY(bool updateDataTable READ updateDataTable NOTIFY dataTableChanged)
+			Q_PROPERTY(Ilwis::Ui::TableModel * tableModel READ tableModel WRITE tableModel NOTIFY dataTableChanged)
 
             Q_PROPERTY(quint16 xaxisType   READ xaxisType)
             Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
@@ -155,6 +157,7 @@ namespace Ilwis {
             void tickCountXChanged();
             void tickCountYChanged();
             void legendChanged();
+			void dataTableChanged();
 
         private:
 			QQmlListProperty<DataseriesModel> series();
@@ -166,6 +169,10 @@ namespace Ilwis {
             bool axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck=true);
 
 			bool checkRanges(const NumericRange *nrange1, const NumericRange *nrange2) const;
+			void tableModel(TableModel *t);
+			TableModel* tableModel() const;
+			bool updateDataTable() const;
+			void fillTableData();
 
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             bool _fixedY = false;
@@ -181,6 +188,7 @@ namespace Ilwis {
             quint32 _modelId;
             QString _name = sUNDEF;
             ITable _datatable;
+			TableModel *_dataTableModel = 0;
 
 			QList<DataseriesModel *> _series;
             QList<ChartOperationEditor *> _operations;

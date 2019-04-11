@@ -56,6 +56,48 @@ ChartModel::~ChartModel()
     modelregistry()->unRegisterModel(modelId());
 }
 
+
+void ChartModel::fillTableData() {
+
+	_datatable->clearTable(true);
+	if (_series.size() > 0) {
+		// reconstruct the column structure
+		DataseriesModel *dataserie = getSeries(0);
+		IDomain domX = dataserie->datadefinition(Axis::AXAXIS).domain();
+		if (domX->ilwisType() == itITEMDOMAIN && domX->valueType() == itNUMERICITEM)
+			domX = IDomain("value");
+		_datatable->addColumn(dataserie->xColumn(), domX);
+		for (int s = 0; s < _series.size(); ++s) {
+			DataseriesModel *dataserie = getSeries(s);
+			_datatable->addColumn(dataserie->yColumn(), dataserie->datadefinition(Axis::AYAXIS).domain());
+		}
+
+		// gather data
+		std::map<double, std::vector<QVariant>> values;
+		int seriesSize = _series.size();
+		for (int s = 0; s < seriesSize; ++s) {
+			DataseriesModel *dataserie = getSeries(s);
+			QVariantList points = dataserie->points();
+			for (int r = 0; r < points.size(); ++r) { 
+				QPointF pnt = points[r].toPointF();
+				double x = pnt.rx();
+				double y = pnt.ry();
+				auto &data = values[x];
+				if (data.size() == 0) {
+					data.resize(seriesSize + 1, rUNDEF);  // +1 because there apart from all Y columns also 1 X column
+				}
+				values[x][0] = x;
+				data[s+1] = y;
+			}
+		}
+		// copy data to table
+		for (auto item : values) {
+			auto &rec = _datatable->newRecord();
+			rec = item.second;
+		}
+	}
+}
+
 quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extraParameters)
 {
     _name = name;
@@ -66,11 +108,8 @@ quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const Q
 	auto extra = extraParameters;
 	extra["color"] = extraParameters.contains("color") ? extraParameters["color"].value<QColor>() : clr;
 	insertDataSeries(tbl, 0, xaxis, yaxis, zaxis, extra);		// add the first dataseries
-	TableMerger merger;
-	std::vector<QString> columnsToBeConsidered = { xaxis, yaxis };
-	merger.simpleCopyColumns(tbl, _datatable, columnsToBeConsidered);
-	merger.mergeTableData(tbl, _datatable, 0);
-
+	fillTableData();
+	emit dataTableChanged();
     return modelId(); 
 }
 
@@ -168,6 +207,7 @@ quint32 ChartModel::deleteSerie(const QString& ycolumn, const QString& zcolumn) 
         if (series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
             _series.removeAt(i);
             emit updateSeriesChanged();
+			emit chartModelChanged();
             return i;
         }
     }
@@ -226,10 +266,7 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
             return false;
         }
     }
-	std::vector<QString> columns = { xcolumn, ycolumn };
-	TableMerger merger;
-	merger.simpleCopyColumns(tbl, _datatable, columns);
-	merger.mergeTableData(tbl, _datatable, 0);
+
 
 	if (tbl->name().indexOf("splib_") == 0) {
 		extraParams["chartType"] = "line";
@@ -257,7 +294,15 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
 			emit updateSeriesChanged();
 		}
     }
+	fillTableData();
+	if ( _dataTableModel)
+		_dataTableModel->setNewTable(_datatable);
+	emit dataTableChanged();
     return true;
+}
+
+bool ChartModel::updateDataTable() const {
+	return true;
 }
 
 void ChartModel::clearChart() {
@@ -494,7 +539,6 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
             if (!_fixedX) _maxx = std::max(_maxx, newseries->maxx());
         }
         double res = newseries->resolutionX();
-        double dist = std::abs(_minx - _maxx);
 
         if (std::floor(res) == res) {
 			 NumericRange rng = MathHelper::roundRange(_minx, _maxx);
@@ -634,6 +678,14 @@ QString ChartModel::dataTableId() const {
 		return QString::number(_datatable->id());
 	}
 	return QString();
+}
+
+TableModel *ChartModel::tableModel() const {
+	return _dataTableModel;
+}
+
+void ChartModel::tableModel(TableModel *tbl)  {
+	_dataTableModel = tbl;
 }
 
 QColor ChartModel::seriesColorItem(int seriesIndex, double v) {

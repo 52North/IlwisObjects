@@ -77,6 +77,7 @@ public:
     Ilwis::ITable table() const;
     QString url() const;
     QString id() const;
+	void setNewTable(const Ilwis::ITable& tbl);
 
     virtual QVariantList linkProperties() const;
     quint32 currentSelection() const;

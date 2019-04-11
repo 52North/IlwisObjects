@@ -105,6 +105,7 @@ class ILWISCOREUISHARED_EXPORT CrosssectionTool : public VisualPropertyEditor
         Q_PROPERTY(int pinCount READ pinCount NOTIFY pinCountChanged)
         Q_PROPERTY(QVariantList bands READ bands NOTIFY bandsChanged)
 		Q_PROPERTY(bool hasData READ hasData NOTIFY hasDataChanged)
+		Q_PROPERTY(quint32 chartModelId READ chartModelId WRITE chartModelId NOTIFY chartModelIdChanged)
 
 public:
     CrosssectionTool();
@@ -148,6 +149,7 @@ signals:
     void pinCountChanged();
     void bandsChanged();
 	void hasDataChanged();
+	void chartModelIdChanged();
 
 private:
     int maxR() const;
@@ -163,6 +165,8 @@ private:
     QString columnName(int index, const QString& coverageName) const;
     int decimalsCrds() const;
 	bool hasData() const;
+	void chartModelId(quint32 newId);
+	quint32 chartModelId() const;
 
 
 
@@ -172,6 +176,7 @@ private:
     ITable _pinData;
     ITable _activePinData; // shadows pindata but only contains records that are active
     bool _contineousMode = false;
+	quint32 _chartModelId = 0;
 
     ICoverage _panelCoverage;  // the map were location info is comming from. Might be identical(initialy it will) to the coverage inthe datasource
 };

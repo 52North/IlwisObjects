@@ -483,6 +483,13 @@ int CrosssectionTool::addContineousPin() {
     return _pins.size() - 1;
 }
 
+void CrosssectionTool::chartModelId(quint32 newId) {
+	_chartModelId = newId;
+}
+quint32 CrosssectionTool::chartModelId() const {
+	return _chartModelId;
+}
+
 void CrosssectionTool::setStackDomain(const QString& id) {
 	if (_dataSource) {
 		if (_dataSource->setStackDomain(id)) {
@@ -634,6 +641,8 @@ bool Ilwis::Ui::PinDataSource::active(int index) const
     }
     return false;
 }
+
+
 
 
 

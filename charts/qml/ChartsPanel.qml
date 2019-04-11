@@ -21,6 +21,13 @@ Item {
     property TabModel tabmodel
     property TableModel tabledata
 	property var showManager : true
+	property var updateDataTable : chart ? chart.updateDataTable : false
+
+	onUpdateDataTableChanged : {
+		if ( datatab.item){
+			datatab.item.setTable(chart.tableModel)
+		}
+	}
 
 	signal click(int mx,int my)
 
@@ -78,6 +85,7 @@ Item {
 	function setDataTabTableData(){
 		var filter = "itemid=" + chart.dataTableId()
         datatab.item.addDataSource(filter, chart.dataTableUrl(), "table")
+		chart.tableModel = datatab.item.table
 	}
 
 

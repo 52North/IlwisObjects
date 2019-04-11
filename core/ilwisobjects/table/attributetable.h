@@ -72,6 +72,7 @@ public:
     void dataLoaded(bool yesno);
     virtual bool isDataLoaded() const;
     virtual void initValuesColumn(const QString& ) {}
+	void clearTable(bool includeDefintion) {}
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
 private:
