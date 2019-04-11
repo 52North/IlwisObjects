@@ -172,6 +172,7 @@ namespace Ilwis {
 			void tableModel(TableModel *t);
 			TableModel* tableModel() const;
 			bool updateDataTable() const;
+			void fillTableData();
 
 			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             bool _fixedY = false;
