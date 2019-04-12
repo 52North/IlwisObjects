@@ -17,12 +17,6 @@ WorkBenchShifter {
         }
     }
 
-	function reset() {
-		props.model = null
-		props.model = mastercatalog.selectedData
-
-	}
-
     clip : true
     state : "invisible"
     height : parent.height
