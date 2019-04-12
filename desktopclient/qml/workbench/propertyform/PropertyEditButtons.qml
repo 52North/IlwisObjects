@@ -25,7 +25,7 @@ Row {
         onClicked: {
 			mastercatalog.metadataEditMode = false
 			propertyForm.editable = false
-			propertyFormContainer.reset()
+			//propertyFormContainer.reset()
         }
     }
 }
