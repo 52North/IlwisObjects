@@ -711,10 +711,12 @@ WorkSpaceModel *MasterCatalogModel::workspace(const QString &name)
 
 
 void MasterCatalogModel::deleteBookmark(quint32 index){
-    if ( index < _bookmarks.size() && index > 1)  { // can not delete internal , system catalog, operations
-        _bookmarks.erase(_bookmarks.begin() + index);
+    if ( index < _bookmarks.size() && 
+		 index > 1 && 
+		((index - 3) < _bookmarkids.size()))  { // can not delete internal , system catalog, operations
         QString key = "users/" + Ilwis::context()->currentUser() + "/data-catalog-" + _bookmarkids[index - 3];
         context()->configurationRef().eraseChildren(key);
+		_bookmarks.erase(_bookmarks.begin() + index);
         _bookmarkids.erase(_bookmarkids.begin() + index - 3);
         if ( _bookmarkids.size() > 0)
             _selectedBookmarkIndex = 2;
