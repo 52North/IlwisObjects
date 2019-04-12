@@ -50,10 +50,12 @@ void IlwisConfiguration::eraseChildren(const QString &key)
 {
     QString tempkey = key;
     tempkey.replace("/",".");
-    auto ptree = _configuration.get_child(tempkey.toStdString());
-    for(auto it = ptree.begin();it != ptree.end();){
-        it = ptree.erase(it);
-    }
+	if (_configuration.find(key.toStdString()) != _configuration.not_found()) {
+		auto ptree = _configuration.get_child(tempkey.toStdString());
+		for (auto it = ptree.begin(); it != ptree.end();) {
+			it = ptree.erase(it);
+		}
+	}
 
     _modified = true;
 }
