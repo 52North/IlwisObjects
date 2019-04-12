@@ -54,7 +54,8 @@ Item {
         width: parent.width - szbut.width - 5
         onDropped:{
             var createParameters = drop.source.sourcePanel.createParameters
-            if ( createParameters.isArray){
+			console.debug(createParameters[0],createParameters[1],createParameters[2], typeof createParameters )
+            if ( typeof createParameters != 'array'){
                 var tab = datapanesplit.newPanel(createParameters[0],createParameters[2],createParameters[1],side==1 ? "left" : "right")
             } else {
                 var newTab
