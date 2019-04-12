@@ -37,6 +37,7 @@ Item {
             if ( modelid == null){
                 var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis :'contineous_pin', zaxis : ''}
                 modelid = objectcreator.createObject(createInfo)
+				editor.chartModelId = modelid
                 var filter = "itemid=" + modelid
                 bigthing.newCatalog(filter, "chart", "","other")
             }else {
@@ -80,6 +81,7 @@ Item {
             if ( tab1.item.selectedRow >= 0){
                 editor.changeCoords(tab1.item.selectedRow, mx, my, true)
 				modelid = editor.chartModelId
+				console.debug("xxxxxxxxxxxxx", modelid)
                 if ( modelid == 0){
                     var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis : editor.pinDataColumn(1), zaxis : ''}
                     modelid = objectcreator.createObject(createInfo)
