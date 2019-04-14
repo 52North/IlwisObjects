@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QQmlContext>
 #include <QThread>
 #include <QDir>
+#include <QCollator>
 #include <QCoreApplication>
 #include "coverage.h"
 #include "representation.h"
@@ -161,26 +162,26 @@ void CatalogModel::sortItems(QList<ResourceModel *>& items) {
 	if (items.size() == 0)
 		return;
 
-	std::vector<std::string> names;
-	std::set<std::string> uniqueNames;
-	std::map<std::string, std::vector<ResourceModel*>> lookup;
+	std::set<QString> uniqueNames;
+	std::map<QString, std::vector<ResourceModel*>> lookup;
 	for (auto *item : items) {
-		uniqueNames.insert(item->displayName().toStdString());
-		lookup[item->displayName().toStdString()].push_back(item);
+		uniqueNames.insert(item->displayName());
+		lookup[item->displayName()].push_back(item);
 	}
-	names.resize(uniqueNames.size());
-	int count = 0;
+	QStringList names;
 	for (auto uniqueName : uniqueNames)
-		names[count++] = uniqueName;
+		names.push_back(uniqueName);
 
+	QCollator coll;
+	coll.setNumericMode(true);
+
+	std::sort(names.begin(), names.end(), [&](const QString& s1, const QString& s2) { return coll.compare(s1, s2) < 0; });
 	items.clear();
-	SI::natural::sort<std::vector<std::string>>(names);
 	for (auto name : names) {
 		std::vector<ResourceModel *> vitems = lookup[name];
 		for (auto *res : vitems)
 			items.push_back(res);
 	}
-
 }
 
 QQmlListProperty<ResourceModel> CatalogModel::resources() {

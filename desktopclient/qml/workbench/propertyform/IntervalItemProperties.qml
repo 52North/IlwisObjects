@@ -58,6 +58,9 @@ Item {
 						onActiveFocusChanged : {
 							if ( activeFocus){
 								itemtable.currentRow = styleData.row
+							}else {
+								if ( text != styleData.value)
+									domainitems[styleData.row].name = text
 							}
 						}
 					}
@@ -79,6 +82,9 @@ Item {
 						onActiveFocusChanged : {
 							if ( activeFocus){
 								itemtable.currentRow = styleData.row
+							}else {
+								if ( text != styleData.value)
+									domainitems[styleData.row].code = text
 							}
 						}
 					}
@@ -100,6 +106,9 @@ Item {
 						onActiveFocusChanged : {
 							if ( activeFocus){
 								itemtable.currentRow = styleData.row
+							}else {
+								if ( text != styleData.value)
+									domainitems[styleData.row].minimum = text
 							}
 						}
 					}
@@ -121,6 +130,9 @@ Item {
 						onActiveFocusChanged : {
 							if ( activeFocus){
 								itemtable.currentRow = styleData.row
+							}else {
+								if ( text != styleData.value)
+									domainitems[styleData.row].maximum = text
 							}
 						}
 					}
@@ -142,6 +154,9 @@ Item {
 						onActiveFocusChanged : {
 							if ( activeFocus){
 								itemtable.currentRow = styleData.row
+							}else {
+								if ( text != styleData.value)
+									domainitems[styleData.row].description = text
 							}
 						}
 					}
