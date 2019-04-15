@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.0
 import QtGraphicalEffects 1.0
 import MasterCatalogModel 1.0
 import TranquilizerHandler 1.0
+import QtQuick.Window 2.12
 import UIContextModel 1.0
 import "../Global.js" as Global
 import "../controls" as Controls
@@ -39,7 +40,7 @@ Rectangle {
         Column {
             id : butColumn
             width : 70
-            height : 900 // Math.min(1100,parent.height)
+            height : Math.min(Screen.height,parent.height)
             property bool initial : true
             z: buttonB.z + 1
 			property var butheight : (height - aArea.height) / (children.length - 1)

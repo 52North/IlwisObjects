@@ -244,6 +244,7 @@ void MasterCatalogModel::scanBookmarks()
     _currentUrl = urlWorkingCatalog.toString();
     int count = 3;
     std::vector<Resource> catalogResources;
+	bool workingCatIsBookmark = false;
     for(auto id : _bookmarkids){
         QString query = QString("users/" + Ilwis::context()->currentUser() + "/data-catalog-%1").arg(id);
         QString label = ilwisconfig(query + "/label", QString(""));
@@ -263,6 +264,7 @@ void MasterCatalogModel::scanBookmarks()
                 }else
                     model = new CatalogModel(res, CatalogModel::getCatalogType(res, CatalogModel::ctBOOKMARK));
                 model->scanContainer(false, false);
+				workingCatIsBookmark = true;
                 _bookmarks.push_back(model);
 
             }else{
@@ -291,7 +293,8 @@ void MasterCatalogModel::scanBookmarks()
     // search for the workspace that represents this and copy its view
     setDefaultView();
 
-	catalogResources.push_back(context()->workingCatalog()->resource());
+	if(!workingCatIsBookmark)
+		catalogResources.push_back(context()->workingCatalog()->resource());
     QList<CatalogModel *> models = startBackgroundScans(catalogResources);
 
     for(auto iter = models.begin(); iter != models.end(); ++iter){
