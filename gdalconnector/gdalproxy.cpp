@@ -254,10 +254,6 @@ bool GDALProxy::prepare() {
                 QString access = create1.size() == 0 && create2.size() == 0 ? "r" : "rc";
                 DataFormat frm("gdal", getShortName(driverH), getLongName(driverH), cext, access, itRASTER);
 				frm.store();
-				if (cext == "tif") {
-					DataFormat frm("gdal", getShortName(driverH), getLongName(driverH), "tiff", access, itRASTER);
-					frm.store();
-				}
             }
         }
 
