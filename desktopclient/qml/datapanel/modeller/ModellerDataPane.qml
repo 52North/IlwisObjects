@@ -111,7 +111,6 @@ Item {
             if (sourceType === "model" ) {
                 var resource = mastercatalog.id2Resource(filter.split('=')[1],modellerDataPane);
                 if ( resource){
-				    console.debug("abababab", resource.name)
                     modellerDataPane.model = modelbuilder.createModel(resource, modellerDataPane)
                     if ( modellerDataPane.model){
                         if ( resource.typeName === "workflow"){
