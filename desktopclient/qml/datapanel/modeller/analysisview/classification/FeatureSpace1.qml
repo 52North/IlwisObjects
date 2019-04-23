@@ -20,8 +20,6 @@ FeatureSpaceDelegate {
 	}
 
 	function updateFS(){
-	    console.debug("xxxxxxxxxxxxxxxxxxxxxxxx")
 		updateChart2()
 	}
-
 }

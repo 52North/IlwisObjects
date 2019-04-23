@@ -66,7 +66,10 @@ SplitView {
 
 	function updateFS(){
 		fs1.setBands(selectedXBand(), selectedYBand())
+		fs1.updateChart2() 
 		fs2.setBands(selectedXBand(), selectedYBand())
+		fs2.updateChart2() 
 		fs3.setBands(selectedXBand(), selectedYBand())
+		fs3.updateChart2() 
 	}
 }
