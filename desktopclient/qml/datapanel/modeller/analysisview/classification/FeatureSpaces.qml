@@ -152,9 +152,7 @@ Column {
 
 
 	function updateCharts(){
-	    console.debug("qqqqq")
 		if ( layouts.item){
-		console.debug("qqqqq")
 			layouts.item.updateFS()
 		}
 	}
