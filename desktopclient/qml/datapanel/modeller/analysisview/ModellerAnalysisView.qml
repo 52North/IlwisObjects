@@ -4,16 +4,15 @@ import ".." as Model
 
 Model.ModellerWorkArea {
     id : workarea
-    property var currentAnalysis
+    property var currentAnalysis 
+	property int currentAnalysisIndex : 0 
 	property var analysisManager
 
     onCurrentAnalysisChanged: {
         updateView1()
     }
-
     state : "invisible"
-
-
+	
     onStateChanged: {
         if ( state == "visible"){
             if ( !meme.item){
@@ -42,6 +41,9 @@ Model.ModellerWorkArea {
 
     function updateView1() {
         meme.setSource((currentAnalysis ? (uicontext.ilwisFolder  + currentAnalysis.panel("main")) : "")) 
+		state = "visible"
+		workarea.visible = true
+		meme.item.visible = true
     }
 
 	function view() {
@@ -51,7 +53,8 @@ Model.ModellerWorkArea {
 	}
 
 	 Component.onCompleted: {
-	    //height = parent.height
+	   if ( state == "invisible")
+			workarea.visible = false
 	 }
 }
 
