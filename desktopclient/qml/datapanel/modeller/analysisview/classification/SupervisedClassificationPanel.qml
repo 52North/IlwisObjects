@@ -16,6 +16,8 @@ SplitView {
 	property var oldZoomEnvelope : ""
 	property var bands : []
 	property var ccRaster
+	//property var editor : scMap // dummy value
+	//property var postDrawerActive : false
 
 	onCcRasterChanged : {
 	    if ( ccRaster){
@@ -46,6 +48,10 @@ SplitView {
 			height : parent.height
 			showManager : false
 			activeEditor : scMap
+	}
+
+	function updateFS() {
+			fspaces.updateCharts()
 	}
 
 	function setRaster(newraster, options){
@@ -80,6 +86,7 @@ SplitView {
 			layer.vproperty("visualattribute|Pixel value|stretchrange", "numericrange:-1|1|1");
 			layer.vproperty("updatetextures","?")
 			scpModel.needUpdate = true
+			//updateFS()
 		}
 	}
 
@@ -106,6 +113,7 @@ SplitView {
 		}
 	}
 	Component.onCompleted : {
+	
 	    if ( currentAnalysis){
 			var content = currentAnalysis.multispectralraster
 			var query = "resource='" + content +"' and type=8"
@@ -118,6 +126,7 @@ SplitView {
 						var layerinf = obj.layerInfo
 						if ( layerinf.length > 1 ){
 							bands = layerinf
+							scMap.visible = true
 							ccRaster = obj
 						}
 					}
