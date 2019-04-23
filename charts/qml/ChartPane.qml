@@ -13,7 +13,7 @@ import "../../../../qml/controls" as Controls
 Rectangle {
     id : chartView
     width : parent.width
-    height : parent.height - 270
+    height : parent.height - (chartspanel.showManager ? 270 : 0)
     color : "blue"
 	property ChartModel chart : chartspanel.chart
     property var updateChart : chart ? chart.updateSeries : 0
