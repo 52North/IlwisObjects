@@ -249,7 +249,7 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 				bool k2 = band->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
 				if (!k1 && k2) {
 					auto hist = band->statistics().histogram();   // make sure we have a reasonable number of bins.
-					auto limits = attr->calcStretchRange(hist, 0.02);
+					auto limits = band->statistics().calcStretchRange(0.02);
 					if (limits.first != rUNDEF && limits.second != rUNDEF) {
 						attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
 						visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());
