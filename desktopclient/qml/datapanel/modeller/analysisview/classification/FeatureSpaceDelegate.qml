@@ -74,12 +74,14 @@ Rectangle {
 
 	function setChart(scpModel) {
 	    chartArea.item.chart.clearChart()
-		for(var i=0; i < tableColumns.length; ++i) {
+		// order is reversed as the selection is always the last column and selection and 'real' classes might cover each other; so by reversing the order we ensure that the 'real'class will always be on top
+		for(var i=tableColumns.length-1; i >=0; --i) {
 			var raw = column2raw(tableColumns[i].xbandname)
 			var pcolor = scpModel.raw2color(raw)
-			var extraParameters = {name : 'fs1', chartType : 'points', color : pcolor,minx : 0, maxx : 255,miny : 0, maxy : 255}
+			var scpModel = modellerDataPane.model.analysisModel(0)
+			var stretch = scpModel.stretchLimits()
+			var extraParameters = {name : 'fs1', chartType : 'points', color : pcolor,minx : stretch.min, maxx : stretch.max,miny : stretch.min, maxy : stretch.max}
 			chartArea.item.chart.addDataTable(scpModel.featureSpaceTable(),tableColumns[i].xbandname,tableColumns[i].ybandname, extraParameters)
-			//chartArea.item.setDataTabTableData()
 		}
 	}
  }
