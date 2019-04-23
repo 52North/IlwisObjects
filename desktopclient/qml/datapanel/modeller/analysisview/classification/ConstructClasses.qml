@@ -11,20 +11,21 @@ import "../../../../controls" as Controls
 Column {
     id : domainForm
 	anchors.fill : parent
-	property var currentAnalysis : 0
+
 	property var domainItems
-	property var classification
 	property var update : classification ? classification.needUpdate : false
 	property var domid : classification ? classification.classficationDomainId : null
+	property int curAnalysis : modelmanager.analisysView.currentAnalysisIndex
 
 	onUpdateChanged : {
 		if ( classification){
-			selection.model = modellerDataPane.model.analysisModel(currentAnalysis).bandstats(-1)
+			selection.model = modellerDataPane.model.analysisModel(curAnalysis).bandstats(-1)
+			modelmanager.analisysView.view().updateFS()
 		}
 	}
 
 	onDomidChanged : {
-		classification = modellerDataPane.model.analysisModel(currentAnalysis)
+		//classification = modellerDataPane.model.analysisModel(curAnalysis)
 		if ( classification) {
 			var obj = mastercatalog.id2object(classification.classficationDomainId, domainForm)
 			if ( obj) {
@@ -119,7 +120,7 @@ Column {
 				Connections {
 						target: classes
 						onIndexChanged :{
-							currentClass.model = modellerDataPane.model.analysisModel(currentAnalysis).bandstats(classes.itemModel[classes.currentIndex].raw)	
+							currentClass.model = modellerDataPane.model.analysisModel(curAnalysis).bandstats(classes.itemModel[classes.currentIndex].raw)	
 						}
 				}
 				Controls.ComboxLabelPair {
@@ -127,7 +128,7 @@ Column {
 						width : 200
 						labelWidth : 70
 						labelText : qsTr("Class")
-						itemModel : modellerDataPane.model.analysisModel(currentAnalysis) ? modellerDataPane.model.analysisModel(currentAnalysis).classificationItems() : null
+						itemModel : modellerDataPane.model.analysisModel(curAnalysis) ? modellerDataPane.model.analysisModel(curAnalysis).classificationItems() : null
 						role : 'name'
 						height : 22
 
@@ -158,14 +159,14 @@ Column {
 				}
 				Button {
 				    y : -3
-					width : 180
+					width : 200
 					height : 22
 					text : qsTr("Add Selection to Current Class")
 
 					onClicked : {
 					    var raw = classes.itemModel[classes.currentIndex].raw
-						modellerDataPane.model.analysisModel(currentAnalysis).calcStats(raw)
-						currentClass.model = modellerDataPane.model.analysisModel(currentAnalysis).bandstats(raw)
+						modellerDataPane.model.analysisModel(curAnalysis).calcStats(raw)
+						currentClass.model = modellerDataPane.model.analysisModel(curAnalysis).bandstats(raw)
 						analisysView.view().updateClassLayer()
 
 					}
