@@ -13,11 +13,9 @@ Column {
     y : 4
 	width : 200
 	height : 340
+	property var classification
 
 	spacing : 2
-
-
-
 
 	Component {
         id : spectral
@@ -38,6 +36,7 @@ Column {
 			Component.onCompleted: {
 				addTab(qsTr("Multi Spectral Data"), spectral).active = true
 				addTab(qsTr("Construct Classes"), domain).active = true
+				classification = modellerDataPane.model.analysisModel(0)
 			}
 	}
 
