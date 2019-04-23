@@ -78,7 +78,6 @@ public:
     std::vector<QColor> stretchedColors(int size, NumericRange & displayStretchRange) const;
     
 	bool isAbstractAttribute() const;
-	virtual std::pair<double, double> calcStretchRange(const std::vector<NumericStatistics::HistogramBin>& hist, double perc) const;
 
     void addVisualPropertyEditor(VisualPropertyEditor* property);
     QQmlListProperty<Ilwis::Ui::VisualPropertyEditor> visualProperties();

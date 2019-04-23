@@ -74,6 +74,7 @@ public:
    void calcFSperValue(Raw r, int bandX, int bandY, FeatureSpaceAccumulator &b1b2perraw, const quint32 idx);
    QVariantList tableColumns(int band1, int band2) const;
    QColor raw2Color(Raw r) const;
+   QVariantMap stretchLimits() const;
 
 signals:
 

@@ -150,9 +150,7 @@ void StretchLimits::setStretchLimit(double perc) {
     if (raster.isValid()) {
         _zoomLevel = perc;  // persist zoomlevel
 
-        auto hist = raster->statistics().histogram();
-
-		auto limits = vpmodel()->calcStretchRange(hist, perc);
+		auto limits = raster->statistics().calcStretchRange(perc);
         if (limits.first != rUNDEF && limits.second != rUNDEF)
             setMarkers({ limits.first, limits.second });
     }

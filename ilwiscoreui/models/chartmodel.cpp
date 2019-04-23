@@ -531,8 +531,8 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
 
     if (_xaxisType == AxisType::AT_VALUE) {
         if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
-            _minx = newseries->minx();
-            _maxx = newseries->maxx();
+            setMinX(newseries->minx());
+            setMaxX(newseries->maxx());
         }
         else {
             if (!_fixedX) _minx = std::min(_minx, newseries->minx());
@@ -542,9 +542,9 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
 
         if (std::floor(res) == res) {
 			 NumericRange rng = MathHelper::roundRange(_minx, _maxx);
-			_tickCountX = 1 + rng.distance() / rng.resolution();
-			_minx = rng.min();
-			_maxx = rng.max();
+			tickCountX(1 + rng.distance() / rng.resolution());
+		    setMinX(rng.min());
+			setMaxX(rng.max());
 
         }
     }

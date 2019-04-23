@@ -83,6 +83,13 @@ void SupervisedClassificationmodel::calcFeatureSpace(int bandx, int bandy) {
 		static_cast<SupervisedClassification *>(_analysis)->calcFeatureSpace(bandx, bandy);
 }
 
+QVariantMap SupervisedClassificationmodel::stretchLimits() const {
+	if (_analysis) {
+		return static_cast<SupervisedClassification *>(_analysis)->stretchLimits();
+	}
+	return QVariantMap();
+}
+
 QString SupervisedClassificationmodel::selectionRaster() const {
 	if (_analysis) {
 		QVariant data = _analysis->data(SELECTIONRASTERKEY);

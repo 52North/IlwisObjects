@@ -51,6 +51,7 @@ namespace Ilwis {
 			Q_INVOKABLE QVariantList tableColumns(int band1, int band2) const;
 			Q_INVOKABLE QString featureSpaceTable() const;
 			Q_INVOKABLE QColor raw2color(qint32 raw) const;
+			Q_INVOKABLE QVariantMap stretchLimits() const;
 
 			
 		signals:

@@ -302,8 +302,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 			bool k1 = rng.isValid();
 			bool k2 = _raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
 			if (!k1 && k2) {
-				auto hist = _raster->statistics().histogram();   // make sure we have a reasonable number of bins.
-				auto limits = attr->calcStretchRange(hist, 0.02);
+				auto limits = _raster->statistics().calcStretchRange(0.02);
 				if (limits.first != rUNDEF && limits.second != rUNDEF) {
 					attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
 					visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());

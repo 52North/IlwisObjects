@@ -481,26 +481,26 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                 xshift = 0;
             }
             int checkWidth = check == "" ? 0 : 20;
-            int imagewidth = 0;
+            int imagewidth = 0;      
             if ( (hasType(parameters[i]._fieldType,ftTEXTEDIT | ftTEXTAREA)) || (parameters[i]._fieldType == (ftTEXTEDIT | ftRADIOBUTTON))){
                 QString imagePart = input ? setInputIcons( iconField1 , iconField2, parameters, i,imagewidth) :  setoutputIcons(iconField3 , iconField2, parameters, i,imagewidth);
                 QString checkEffects;
-                if ( check != ""){
+                if ( check != ""){        
                     checkEffects=QString(";enabled: check_pin_%1.checked;opacity:check_pin_%1.checked?1 :0.25").arg(i);
-                }
-                QString textFieldPart;
+                }      
+                QString textFieldPart;  
                 if (hasType(parameters[i]._fieldType,ftTEXTEDIT))
                     textFieldPart = textField.arg(i).
                         arg(width).
                         arg(checkWidth).
-                        arg(imagewidth). 
+                        arg(imagewidth).  
                         arg(xshift).       
                         arg(input ? dropKeys(parameters[i]._dataType) : "\"?\"").
                         arg(constantValue == "" ? parameters[i]._defValue : constantValue).
                         arg(checkEffects).    
                         arg(parameters[i]._placeHolderValue);      
-                else {
-                    textFieldPart = textArea.arg(i). 
+                else {     
+                    textFieldPart = textArea.arg(i).  
                         arg(width).
                         arg(checkWidth).
                         arg(imagewidth).
@@ -552,22 +552,22 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     if (choice[0] == '!') {
                         choice = choice.mid(1);
                         if (noChoice) state = "true";
-                    }
+                    }  
                     if (validConstant && (constantValue == choice)) {
-                        state = "true";
-                    }
+                        state = "true";  
+                    } 
                     buttons += QString(rowChoiceOption).arg(QString::number(i) + choice, choice, state, QString::number(i), choice);
-                }
+                } 
                 formRows += QString(rowBodyChoiceHeader).arg(parameters[i]._label).arg(width).arg(i).arg(buttons);
                 if ( results != "")
                     results +=  "+ \"|\" +";
                 QString field = QString("exclusivegroup_pin_%1.current.value").arg(i);
                 results += field;
-            }
-            if ( parameters[i]._fieldType == ftCOMBOBOX){
+            }   
+            if ( parameters[i]._fieldType == ftCOMBOBOX){ 
                 QString choices = "[";
                 int j = showEmptyOptionInList ? 1 : 0;
-                int inputIndex = 0;
+                int inputIndex = 0;  
                 for(QString choiceString : parameters[i]._choiceList){
                     if ( choiceString[0] == '!'){
                         choiceString = choiceString.mid(1);
@@ -594,17 +594,17 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                 results += QString("pin_%1.comboText").arg(i);
             }
 
-            formRows += operationRowEnd; 
-        }
-        if ( !input){
-            formRows.replace("pin_","pout_");
+            formRows += operationRowEnd;   
+        }      
+        if ( !input){             
+            formRows.replace("pin_","pout_"); 
             formRows.replace("optionalOutputMarker",";");
     //        formRows.replace("optionalOutputMarker",";text : outputfield_0;onTextChanged:{ if( text !== outputfield_0){ outputfield_0=text}}");
-        }else {
+        }else {    
             formRows.replace("optionalOutputMarker","");
-        }
+        }   
 
-    }catch(...){
+    }catch(...){ 
      }
     return formRows; 
 }      

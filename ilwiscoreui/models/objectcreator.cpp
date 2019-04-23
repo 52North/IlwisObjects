@@ -101,8 +101,9 @@ QStringList ObjectCreator::createableObjects() const
 
 QString ObjectCreator::createCombinationMatrix(const QVariantMap &parms){
     QString expression;
+	QString v = OperationHelper::quote(parms["name"].toString());
     expression = QString("script %1{format(stream,\"combinationmatrix\")}=createcombinationmatrix(%2,%3,%4,\"%5\",\"%6\",\"%7\",\"%8\")")
-            .arg(parms["name"].toString())
+            .arg(v)
             .arg(parms["xaxisdomain"].toString())
             .arg(parms["yaxisdomain"].toString())
             .arg(parms["combodomain"].toString())
@@ -142,8 +143,9 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             kernel()->issues()->log(TR("Domain must have a valid name"));
             return sUNDEF;
         }
+		QString v = OperationHelper::quote(parms["name"].toString());
         expression = QString("script %1{format(stream,\"domain\")}=createidentifierdomain(\"%2\",%3,\"%4\"")
-                .arg(parms["name"].toString())
+                .arg(v)
                 .arg(parms["items"].toString())
                 .arg(parms["strict"].toBool() ? "yes" : "no")
                 .arg(parms["description"].toString());
@@ -156,8 +158,9 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             kernel()->issues()->log(TR("Domain must have a valid name"));
             return sUNDEF;
         }
+		QString v = OperationHelper::quote(parms["name"].toString());
         expression = QString("script %1{format(stream,\"domain\")}=createpalettedomain(\"%2\",%3,\"%4\"")
-                .arg(parms["name"].toString())
+                .arg(v)
                 .arg(parms["items"].toString())
                 .arg(parms["strict"].toBool() ? "yes" : "no")
                 .arg(parms["description"].toString());
@@ -170,8 +173,9 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             kernel()->issues()->log(TR("Domain must have a valid name"));
             return sUNDEF;
         }
+		QString v = OperationHelper::quote(parms["name"].toString());
         expression = QString("script %1{format(stream,\"domain\")}=createintervaldomain(\"%2\",%3,%4,\"%5\"")
-                .arg(parms["name"].toString())
+                .arg(v)
                 .arg(parms["items"].toString())
                 .arg(parms["resolution"].toDouble())
                 .arg(parms["strict"].toBool() ? "yes" : "no")
@@ -197,8 +201,9 @@ QString ObjectCreator::createNumericDomain(const QVariantMap &parms)
         return QString::number(i64UNDEF);
     }
 
+	QString v = OperationHelper::quote(parms["name"].toString());
     QString expression = QString("script %1{format(stream,\"domain\")}=createnumericdomain(%2,%3,%4,%5,\"%6\"")
-            .arg(parms["name"].toString())
+            .arg(v)
             .arg(parms["minvalue"].toDouble())
             .arg(parms["maxvalue"].toDouble())
             .arg(parms["resolutionvalue"].toDouble())
@@ -219,7 +224,8 @@ QString ObjectCreator::createNumericDomain(const QVariantMap &parms)
 
 QString ObjectCreator::createBoundsOnlyCoordinateSystem(const QVariantMap &parms){
     QString expression;
-    expression = QString("script %1{format(stream,\"coordinatesystem\")}=createboundsonlycsy(%2,%3,%4,%5,\"%6\")").arg(parms["name"].toString())
+	QString v = OperationHelper::quote(parms["name"].toString());
+    expression = QString("script %1{format(stream,\"coordinatesystem\")}=createboundsonlycsy(%2,%3,%4,%5,\"%6\")").arg(v)
             .arg(parms["minx"].toDouble())
             .arg(parms["miny"].toDouble())
             .arg(parms["maxx"].toDouble())
@@ -239,7 +245,8 @@ QString ObjectCreator::createBoundsOnlyCoordinateSystem(const QVariantMap &parms
 QString ObjectCreator::createGeoreference(const QVariantMap &parms){
     QString expression;
     if (parms["subtype"].toString() == "corners") {
-        expression = QString("script %1{format(stream,\"georeference\")}=createcornersgeoreference(%2,%3,%4,%5,%6,%7,%8,\"%9\")").arg(parms["name"].toString())
+		QString v = OperationHelper::quote(parms["name"].toString());
+        expression = QString("script %1{format(stream,\"georeference\")}=createcornersgeoreference(%2,%3,%4,%5,%6,%7,%8,\"%9\")").arg(v)
             .arg(parms["minx"].toDouble())
             .arg(parms["miny"].toDouble())
             .arg(parms["maxx"].toDouble())
@@ -284,14 +291,16 @@ QString ObjectCreator::createGeoreference(const QVariantMap &parms){
 QString ObjectCreator::createProjectedCoordinateSystemFromCode(const QVariantMap &parms){
     QString expression;
     if ( parms.contains("epsg")){
+		QString v = OperationHelper::quote(parms["name"].toString());
         expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(%2)").
-                arg(parms["name"].toString()).
+                arg(v).
                 arg(parms["epsg"].toString());
 
     }
     if ( parms.contains("proj4")){
+		QString v = OperationHelper::quote(parms["name"].toString());
         expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\")").
-                arg(parms["name"].toString()).
+                arg(v).
                 arg(parms["proj4"].toString());
 
     }
@@ -335,8 +344,9 @@ QString ObjectCreator::createProjectedCoordinateSystemFromBase(const QVariantMap
             kvps  += p + "= " + currentParms[currentIndex++].toString();
         }
     }
+	QString v = OperationHelper::quote(parms["name"].toString());
     expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\",\"%3\",\"%4\"").
-            arg(parms["name"].toString()).
+            arg(v).
             arg(proj).
             arg(kvps).
             arg(parms["ellipsoid"].toString());
@@ -583,7 +593,7 @@ QString ObjectCreator::createTable(const QVariantMap &parms) {
             return sUNDEF;
 
         QString expr = "createtable('" + parms["columns"].toString() + "')";
-
+		name = OperationHelper::quote(name);
         QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
         expr = output + expr;
         executeoperation(expr);

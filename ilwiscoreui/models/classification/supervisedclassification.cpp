@@ -231,6 +231,19 @@ QVariantList SupervisedClassification::bandstats(qint32 r) const {
 
 }
 
+QVariantMap SupervisedClassification::stretchLimits() const {
+	QVariantMap result;
+	if (_multiSpectralRaster.isValid()) {
+		if (!_multiSpectralRaster->histogramCalculated()){
+			_multiSpectralRaster->statistics(ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM).histogram();
+		}
+		auto pair = _multiSpectralRaster->statistics().calcStretchRange(0.02);
+		result["min"] = pair.first;
+		result["max"] = pair.second;
+	}
+	return result;
+}
+
 
 QVariant SupervisedClassification::data(const QString& key) const {
 	QVariant data;
@@ -420,8 +433,8 @@ void SupervisedClassification::calcVariance(const BoundingBox& box, Raw rw, cons
 		if (rw != -1) {
 			classV = rw;
 		}
-		if (rw != -1)
-			selectV = rUNDEF;
+		//if (rw != -1)
+		//	selectV = rUNDEF;
 	};
 
 	BoundingBox bbBase = box;
@@ -553,6 +566,7 @@ void SupervisedClassification::calcFeatureSpace(int bandX, int bandY)  {
 	}
 	calcFSperValue(-1, bandX, bandY, b1b2perraw, b1b2perraw.size() - 1); // selection
 
+	_featureSpaces->clearTable(true);
 	for (int r = 0; r < b1b2perraw.size(); ++r) {
 		auto& pairs = b1b2perraw[r];
 		if (pairs.size() > 0) {
@@ -616,19 +630,23 @@ QVariantList SupervisedClassification::tableColumns(int bandX, int bandY) const 
 	QString baseNameX = QString("band_%1_").arg(bandX);
 	QString baseNameY = QString("band_%1_").arg(bandY);
 	QString yName;
-	QVariantMap pair;
+	QVariantMap data;
 	for (int c = 0; c < _featureSpaces->columnCount(); ++c) {
 		if (_featureSpaces->columndefinitionRef(c).name().indexOf(baseNameX) == 0) {
-			pair["xband"] = c;
-			pair["xbandname"] = _featureSpaces->columndefinitionRef(c).name();
-			auto parts = pair["xbandname"].toString().split("_");
+			data["xband"] = c;
+			data["xbandname"] = _featureSpaces->columndefinitionRef(c).name();
+			data["minx"] = _featureSpaces->columndefinitionRef(c).datadef().range<NumericRange>()->min();
+			data["maxx"] = _featureSpaces->columndefinitionRef(c).datadef().range<NumericRange>()->max();
+			auto parts = data["xbandname"].toString().split("_");
 			QString raw = parts[2];
 			yName = baseNameY + raw;
 			for (int yc = 0; yc < _featureSpaces->columnCount(); ++yc) {
 				if (_featureSpaces->columndefinitionRef(yc).name().indexOf(yName) == 0) {
-					pair["yband"] = yc;
-					pair["ybandname"] = yName;
-					result.push_back(pair);
+					data["yband"] = yc;
+					data["ybandname"] = yName;
+					data["miny"] = _featureSpaces->columndefinitionRef(yc).datadef().range<NumericRange>()->min();
+					data["maxy"] = _featureSpaces->columndefinitionRef(yc).datadef().range<NumericRange>()->max();
+					result.push_back(data);
 				}
 			}
 			
