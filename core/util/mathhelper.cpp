@@ -204,11 +204,21 @@ NumericRange MathHelper::roundRange(double rmin, double rmax)
         }
         ++i;
     }
-    step = step * pow(10.0,d - 1);
-    double lower = step * round(rmin / step);
+	int side = rmin >= 0 ? 1 : -1;
+	double mult = pow(10.0, d - 1);
+    step *= mult;
+    double lowerGuess = step * round(rmin / step);
+	double lower;
+	for(int j=0; j < 6; ++j) {
+		lower = tickLimits[j] * mult * side;
+		if (side * lowerGuess < (lower - EPS5)) {
+			lower = j == 0 ? 0 :(tickLimits[j-1] * mult * side);
+			break;
+		}
+	}
+
     double intpart;
-    double r = modf (rmax / step , &intpart);
-    double upper = step * round(r ==0 ? intpart : 1 + intpart );
+	double upper = lower;
 	while (upper < rmax) {
 		upper += step;
 	}
