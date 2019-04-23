@@ -299,6 +299,29 @@ public:
             return std::pair<double,double>(newLower,newUpper);
         }
 
+		std::pair<double, double> calcStretchRange(double perc) const {
+			double sum2 = 0;
+			double seen = 0;
+			double startV = rUNDEF, endV = rUNDEF;
+
+			if (_bins.size() > 0) {
+				for (int i = 0; i < _bins.size() - 1; ++i) {
+					sum2 += (_bins[i]._count);
+				}
+				for (int i = 0; i < _bins.size() - 1; ++i) {
+					auto& bin = _bins[i];
+					seen += bin._count;
+					if (seen >= sum2 * perc && startV == rUNDEF) {
+						startV = bin._limit;
+					}
+					if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
+						endV = bin._limit;
+					}
+				}
+			}
+			return std::pair<double, double>(startV, endV);
+		}
+
         private:
         std::vector<double> _markers;
 
