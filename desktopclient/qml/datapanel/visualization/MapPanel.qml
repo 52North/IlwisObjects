@@ -223,6 +223,9 @@ Item {
     }
 
     function setActiveEditor(editor){
+	    
+		if ( activeEditor && !( 'editor' in activeEditor))
+			return
         if (activeEditor ){
 			activeEditor.editor.postDrawerActive = false
         }
