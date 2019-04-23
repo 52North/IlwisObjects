@@ -33,8 +33,7 @@ Modeller.ModellerWorkArea {
         tools.dropCondition(false)
         tools.dropLoop(dropLoop)
     }
-
-    state : "visible"
+    state : "invisible"
 
     WorkflowTools{
         id : tools
@@ -738,5 +737,8 @@ Modeller.ModellerWorkArea {
             rangesList[i].storeRangeDefinition();
         }
     }
-
+	Component.onCompleted : {
+		if ( state == "invisible")
+			workarea.visible = false
+	}
 }
