@@ -31,9 +31,46 @@ Item {
 
 	signal click(int mx,int my)
 
+	ChartToolBar {
+		id : toolbar1
+		visible : showManager
+	}
+
+	Rectangle {
+	    id : zoomRectangle
+	    x : 0
+	    y : 0
+	    width : 0
+	    height : 0
+	    visible : false
+	    border.width : 1
+	    border.color : "#e6f9ff"
+	    color : "transparent"
+	    z : 100
+
+		function disable() {
+			x = 0
+		    y = 0
+		    width = 0
+		    height = 0
+		    visible = false
+			activeToolBar().zoomMode = false
+		}
+
+	}
+
+	Rectangle {
+		anchors.fill : zoomRectangle
+		color : "grey"
+		opacity : 0.2
+		z: 101
+	}
+
     TabView {
         id : chartarea
-        anchors.fill : parent
+        anchors.top : toolbar1.bottom
+		anchors.bottom : parent.bottom
+		width : parent.width
         Tab {
             id : charttab
             title: "Chart"
@@ -42,6 +79,9 @@ Item {
                 anchors.fill: parent
                 orientation: Qt.Vertical
                 height : parent.height
+				function zoomReset(){
+					chartpane.zoomReset()
+				}
                 ChartPane {
 				  Connections {
 						target: chartpane
@@ -88,6 +128,13 @@ Item {
 		chart.tableModel = datatab.item.table
 	}
 
+	function activeToolBar() {
+		return toolbar1
+	}
+
+	function zoomReset(){
+		chartarea.getTab(0).item.zoomReset()
+	}
 
 	Component.onDestruction :{
 		models.unRegisterModel(chart.modelId())

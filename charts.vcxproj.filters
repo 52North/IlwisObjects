@@ -38,6 +38,9 @@
     <None Include="charts\qml\RemoveDataSeries.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\ChartToolBar.qml">
+      <Filter>qml</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

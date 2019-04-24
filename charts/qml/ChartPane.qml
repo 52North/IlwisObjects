@@ -18,7 +18,8 @@ Rectangle {
 	property ChartModel chart : chartspanel.chart
     property var updateChart : chart ? chart.updateSeries : 0
 
-	signal click(int mx,int my)
+
+	signal click(int mx,int my, var object)
 
     onUpdateChartChanged : {
         visibleGraphs.removeAllSeries()
@@ -97,10 +98,17 @@ Rectangle {
             id : chartMouseArea
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton
+			hoverEnabled: true
 
 			onPressed : {
-				click(mouseX, mouseY)
-				if ( visibleGraphs.count > 0){
+				click(mouseX, mouseY,visibleGraphs)
+				if ( activeToolBar().zoomMode){
+					console.debug("zoom is pressed", mouseX, mouseY)
+					var newPoint = mapToItem(chartspanel, mouseX, mouseY)
+					zoomRectangle.x = newPoint.x
+					zoomRectangle.y = newPoint.y
+					zoomRectangle.visible = true
+				} else if ( visibleGraphs.count > 0){
 					info(mouse.x, mouse.y)
 				}
 			}
@@ -109,14 +117,32 @@ Rectangle {
 				floatrect.opacity = 0
 				floatrect.x = 0
 				floatrect.y = 0
+				if ( activeToolBar().zoomMode){
+					var newRect = chartspanel.mapToItem(visibleGraphs, zoomRectangle.x, zoomRectangle.y,zoomRectangle.width, zoomRectangle.height)
+					visibleGraphs.zoomIn(newRect) 
+					zoomRectangle.disable()
+				}
 			}
 
 			onPositionChanged : {
-				if ( floatrect.opacity > 0){
+
+				if ( activeToolBar().zoomMode && zoomRectangle.visible){
+					var newPoint = mapToItem(chartspanel, mouseX, mouseY)
+					if ( newPoint.x < zoomRectangle.x)
+						zoomRectangle.x = newPoint.x
+					else if ( newPoint.x > zoomRectangle.x)
+						zoomRectangle.width = newPoint.x - zoomRectangle.x
+					if ( newPoint.y < zoomRectangle.y)
+						zoomRectangle.y = newPoint.y
+					else if ( newPoint.y > zoomRectangle.y)
+						zoomRectangle.height = newPoint.y - zoomRectangle.y
+
+					//console.debug("zoom is moved", mouseX, mouseY,zoomRectangle.width,zoomRectangle.height)
+				}else if ( floatrect.opacity > 0){
 					info(mouse.x, mouse.y)
 		        }
 			}
-        }
+		}
 
         DropArea {
             anchors.fill: parent
@@ -252,4 +278,8 @@ Rectangle {
             return visibleGraphs.createSeries(ChartView.SeriesTypeArea, name, xas, yas);
         return visibleGraphs.createSeries(ChartView.SeriesTypeLine, name, xas, yas);
     }
+
+	function zoomReset() {
+		visibleGraphs.zoomReset()
+	}
 }
