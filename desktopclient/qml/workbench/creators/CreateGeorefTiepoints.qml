@@ -65,7 +65,7 @@ Controls.DropableItem{
             height : 20
             Controls.TextEditLabelPair {
                 id : refraster
-                labelText : qsTr("Reference Raster")
+                labelText : qsTr("Master Raster")
                 labelWidth : 120
                 width : parent.width - 20
                 height : 20
@@ -74,8 +74,8 @@ Controls.DropableItem{
                     ilwisobjectid = drag.source.ilwisobjectid
                     var filter = "itemid=" + ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "right")
-                    tiepointstable.editor.linkModels(tab.item.manager)
-                    tab.item.tabmodel.displayName = "Reference Raster"
+                    tiepointstable.editor.linkModels(tab.item.layermanagers[0])
+                    tab.item.tabmodel.displayName = "Master Raster"
                 }
             }
             Button {
@@ -86,8 +86,8 @@ Controls.DropableItem{
                 onClicked : {
                     var filter = "itemid="+ refraster.ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
-                    tiepointstable.editor.linkModels(tab.item.manager)
-                    tab.item.tabmodel.displayName = "Reference Raster"
+                    tiepointstable.editor.linkModels(tab.item.layermanagers[0])
+                    tab.item.tabmodel.displayName = "Master Raster"
                 }
             }
         }
@@ -96,7 +96,7 @@ Controls.DropableItem{
             height : 20
             Controls.TextEditLabelPair {
                 id : backraster
-                labelText : qsTr("Background Raster")
+                labelText : qsTr("Slave raster")
                 labelWidth : 120
                 width : parent.width - 20
                 height : 20
@@ -105,11 +105,11 @@ Controls.DropableItem{
                     ilwisobjectid = drag.source.ilwisobjectid
                     var filter = "itemid=" + ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
-                    if ( "manager" in tab.item){
-                        tiepointstable.editor.associatedBackgroundMap(tab.item.manager,ilwisobjectid)
+                    if ( "layermanagers" in tab.item){
+                        tiepointstable.editor.slaveLayerManager(tab.item.layermanagers[0],ilwisobjectid)
                         tab.item.setActiveEditor(tiepointstable)
                         tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
-                        tab.item.tabmodel.displayName = "Background Raster"
+                        tab.item.tabmodel.displayName = "Slave Raster"
                     }
 
                 }
@@ -122,10 +122,10 @@ Controls.DropableItem{
                 onClicked : {
                     var filter = "itemid="+ backraster.ilwisobjectid
                     var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left")
-                    tiepointstable.editor.associatedBackgroundMap(tab.item.manager,backraster.ilwisobjectid)
+                    tiepointstable.editor.slaveLayerManager(tab.item.manager,backraster.ilwisobjectid)
                     tab.item.setActiveEditor(tiepointstable)
                     tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
-                    tab.item.tabmodel.displayName = "Background Raster"
+                    tab.item.tabmodel.displayName = "Slave Raster"
                 }
             }
         }

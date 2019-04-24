@@ -57,7 +57,7 @@ namespace Ilwis {
             Q_INVOKABLE int tiePointColumn(int index) const;
             Q_INVOKABLE double tiePointX(int index) const;
             Q_INVOKABLE double tiePointY(int index) const;
-            Q_INVOKABLE void associatedBackgroundMap(Ilwis::Ui::LayerManager *lm, const QString& objid);
+            Q_INVOKABLE void slaveLayerManager(Ilwis::Ui::LayerManager *lm, const QString& objid);
             Q_INVOKABLE void linkModels(Ilwis::Ui::LayerManager *lm);
             Q_INVOKABLE void setCoordinateSystem(const QString& id);
             Q_INVOKABLE QString controlPointLabel(int index);
@@ -88,8 +88,8 @@ namespace Ilwis {
             PlanarCTPGeoReference *_planarCTP = 0;
             QString _associatedUrl = sUNDEF;
             bool _postDrawerActive = false;
-            Ilwis::Ui::LayerManager *_associatedBackgroundMap = 0;
-            IRasterCoverage _backgroundRaster;
+            Ilwis::Ui::LayerManager *_slaveLayerManager = 0;
+            IRasterCoverage _slaveRaster;
             int _selectedRow = -1;
             const int ILLEGALVALUE = -1000000;
 

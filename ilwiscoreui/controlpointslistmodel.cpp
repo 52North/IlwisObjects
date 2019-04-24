@@ -66,26 +66,26 @@ QQmlListProperty<ControlPointModel> ControlPointsListModel::controlPoints() {
 }
 
 void ControlPointsListModel::addTiepoint() {
-    if (!_associatedBackgroundMap)
+    if (!_slaveLayerManager)
         return;
 
-    _controlPoints.push_back(new ControlPointModel(_associatedBackgroundMap, QString::number(_controlPoints.size() + 1), true, 0, 0, 0, 0, 0, 0, this));
+    _controlPoints.push_back(new ControlPointModel(_slaveLayerManager, QString::number(_controlPoints.size() + 1), true, 0, 0, 0, 0, 0, 0, this));
     _planarCTP->setControlPoint(_controlPoints.back()->controlPoint());
     emit controlPointsChanged();
 }
 
 void Ilwis::Ui::ControlPointsListModel::removeTiepoint(int index)
 {
-    if (_associatedBackgroundMap && index >= 0 && index < _controlPoints.size()) {
+    if (_slaveLayerManager && index >= 0 && index < _controlPoints.size()) {
         _controlPoints.removeAt(index);
         int ret = _planarCTP->compute();
         handleComputeResult(ret);
-        _associatedBackgroundMap->updatePostDrawers();
+        _slaveLayerManager->updatePostDrawers();
     }
 }
 
 void ControlPointsListModel::changeTiePointCoord(int index, double x, double y) {
-    if (_associatedBackgroundMap && index >= 0 && index < _controlPoints.size()) {
+    if (_slaveLayerManager && index >= 0 && index < _controlPoints.size()) {
         ControlPointModel *pnt = _controlPoints[index];
         pnt->x(x);
         pnt->y(y);
@@ -93,24 +93,24 @@ void ControlPointsListModel::changeTiePointCoord(int index, double x, double y) 
         int ret = _planarCTP->compute();
         pnt->update();
         handleComputeResult(ret);
-        _associatedBackgroundMap->updatePostDrawers();
+        _slaveLayerManager->updatePostDrawers();
 
     }
 }
 void ControlPointsListModel::changeTiePointPixel(int index, double x, double y, bool editFromTable) {
-    if (_associatedBackgroundMap && index >= 0 && index < _controlPoints.size()) {
-        auto sz = _backgroundRaster->size();
+    if (_slaveLayerManager && index >= 0 && index < _controlPoints.size()) {
+        auto sz = _slaveRaster->size();
         ControlPointModel *pnt = _controlPoints[index];
         if (editFromTable) {
             pnt->column(x);
             pnt->row(y);
-            auto pix = _associatedBackgroundMap->rootLayer()->screenGrf()->coord2Pixel(Coordinate(x, sz.ysize() - y));
+            auto pix = _slaveLayerManager->rootLayer()->screenGrf()->coord2Pixel(Coordinate(x, sz.ysize() - y));
             pnt->screenPosition(pix.x, pix.y);
         }
         else {
             // rowcols in the model are in terms of the screengrf so we need to adapt 5to positions in the background map 
             // which has georefnone. as coords and pixellocation are similar for georefnone we convert
-            auto crd = _associatedBackgroundMap->rootLayer()->screenGrf()->pixel2Coord(Pixel(x, y));
+            auto crd = _slaveLayerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(x, y));
 
             pnt->column((int)(crd.x + 0.5));
             pnt->row((int)(sz.ysize() - crd.y  + 0.5));
@@ -120,7 +120,7 @@ void ControlPointsListModel::changeTiePointPixel(int index, double x, double y, 
         int ret = _planarCTP->compute();
         pnt->update();
         handleComputeResult(ret);
-            _associatedBackgroundMap->updatePostDrawers();
+            _slaveLayerManager->updatePostDrawers();
 
     }
 }
@@ -149,20 +149,20 @@ double ControlPointsListModel::tiePointY(int index) const {
     return 0;
 }
 
-void ControlPointsListModel::associatedBackgroundMap(LayerManager * lm, const QString& objid)
+void ControlPointsListModel::slaveLayerManager(LayerManager * lm, const QString& objid)
 {
-    _associatedBackgroundMap = lm;
+    _slaveLayerManager = lm;
     quint64 id = objid.toULongLong();
-    _backgroundRaster.prepare(id);
-    _associatedBackgroundMap->addPostDrawer(this);
+    _slaveRaster.prepare(id);
+    _slaveLayerManager->addPostDrawer(this);
     for (ControlPointModel *cp : _controlPoints) {
         cp->_layerManager = lm;
     }
-    connect(_associatedBackgroundMap, &QObject::destroyed, this, &ControlPointsListModel::removeBackgroundLayer);
+    connect(_slaveLayerManager, &QObject::destroyed, this, &ControlPointsListModel::removeBackgroundLayer);
 }
 
 void ControlPointsListModel::removeBackgroundLayer() {
-    _associatedBackgroundMap = 0;
+    _slaveLayerManager = 0;
     for (ControlPointModel *cp : _controlPoints) {
         cp->_layerManager = 0;
     }
@@ -357,8 +357,8 @@ bool Ilwis::Ui::ControlPointsListModel::postDrawerActive() const
 void Ilwis::Ui::ControlPointsListModel::postDrawerActive(bool yesno)
 {
     _postDrawerActive = yesno;
-    if (_associatedBackgroundMap)
-        _associatedBackgroundMap->updatePostDrawers();
+    if (_slaveLayerManager)
+        _slaveLayerManager->updatePostDrawers();
 }
 
 void ControlPointsListModel::selectedRow(int r) {
@@ -412,10 +412,10 @@ QString ControlPointsListModel::controlPointLabel(int index) {
     return sUNDEF;
 }
 void ControlPointsListModel::controlPointLabel(int index, const QString& newLabel) {
-    if (_associatedBackgroundMap && index < _controlPoints.size()) {
+    if (_slaveLayerManager && index < _controlPoints.size()) {
         _controlPoints[index]->label(newLabel);
         _controlPoints[index]->update();
-        _associatedBackgroundMap->updatePostDrawers();
+        _slaveLayerManager->updatePostDrawers();
     }
 
 
