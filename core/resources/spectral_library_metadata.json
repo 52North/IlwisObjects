@@ -116,7 +116,7 @@
 		"characterization" : {
 			"theme" : "manmade",
 			"class" : "concrete",
-			"subclass" : "concrete paving"
+			"subclass" : "asphalt"
 		}		
 	},	
 	{
@@ -133,7 +133,7 @@
 		"characterization" : {
 			"theme" : "manmade",
 			"class" : "roofing",
-			"subclass" : "roofing material"
+			"subclass" : "Aluminum"
 		}		
 	},	
 	{
@@ -152,6 +152,57 @@
 			"class" : "snow",
 			"subclass" : "coarse granular"
 		}		
-	}		
+	},
+	{
+		"name" : "California live oak",
+		"code" : "califoak",
+		"description" : "Samples were collected as part of the HyspIRI Airborne Campaign. 48 individual plants were sampled in three times in 2013 - spring  summer  and fall. The name of the sample includes a 1  2  or 3 which references a different individual of the species. ",
+		"wavelength range" : "VSWIR",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : "UCSB",
+				"origin" : "34.7153; -120.0601; WGS84",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "vegetation",
+			"class" : "tree",
+			"subclass" : "Quercus agrifolia"
+		}		
+	},
+	{
+		"name" : "Terra cotta Tiles",
+		"code" : "terracottatiles",
+		"description" : "Weathered terra cotta roofing tile of ceramic composite construction. Tile was baked clay, orange in color. Original ASTER Spectral Library name was jhu.becknic.manmade.roofing.tile.solid.0484uuu.spectrum.txt",
+		"wavelength range" : "All",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : " National Photographic Interpretation Center",
+				"origin" : "Spectra obtained from the Noncoventional Exploitation FactorsData System of the National Photographic Interpretation Center.",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "manmade",
+			"class" : "roofing",
+			"subclass" : "terra cotta"
+		}		
+	},
+	{
+		"name" : "Galvanized Steel Metal",
+		"code" : "galvanizedsteel",
+		"description" : "Weathered, galvanized steel from roof and vent covers. Original ASTER Spectral Library name was jhu.becknic.manmade.roofing.metal.solid.0525uuua.spectrum.txt",
+		"wavelength range" : "All",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : " National Photographic Interpretation Center",
+				"origin" : "Spectra obtained from the Noncoventional Exploitation FactorsData System of the National Photographic Interpretation Center.",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "manmade",
+			"class" : "roofing",
+			"subclass" : "galvanized steel"
+		}		
+	}
 	]
 }
