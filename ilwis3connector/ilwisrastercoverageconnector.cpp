@@ -214,17 +214,20 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
     Locker<> lock(_mutex);
 
     QFileInfo inf(_resource.toLocalFile());
-    if(!setDataType(data, options))
-        return false;
-    _dataFiles.clear();
 
     bool isMapList  = inf.suffix().toLower() == "mpl";
 
     if (isMapList ){
         return loadMapList(data, options);
     }
-    else if(!CoverageConnector::loadMetaData(data, options))
-        return false;
+    else {
+        if (!setDataType(data, options))
+            return false;
+        _dataFiles.clear();
+
+        if (!CoverageConnector::loadMetaData(data, options))
+            return false;
+    }
 
     RasterCoverage *gcoverage = static_cast<RasterCoverage *>(data);
 
