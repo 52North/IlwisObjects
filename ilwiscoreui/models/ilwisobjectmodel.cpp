@@ -30,6 +30,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationmetadata.h"
 #include "catalogmodel.h"
 #include "raster.h"
+#include "georeference.h"
+#include "georefimplementation.h"
+#include "simpelgeoreference.h"
+#include "cornersgeoreference.h"
+#include "controlpoint.h"
+#include "ctpgeoreference.h"
+#include "eigen3/Eigen/LU"
+#include "mathhelper.h"
+#include "planarctpgeoreference.h"
+#include "undeterminedgeoreference.h"
 #include "pixeliterator.h"
 #include "ilwiscontext.h"
 #include "tranquilizer.h"
@@ -149,6 +159,15 @@ bool IlwisObjectModel::externalReadOnly() const
     return true;
 }
 
+QString IlwisObjectModel::subType() const {
+	if (_ilwisobject.isValid()) {
+		if (_ilwisobject->ilwisType() == itGEOREF) {
+			IGeoReference grf = _ilwisobject.as<GeoReference>();
+			return grf->grfType();
+		}
+		// todo item domains
+	}
+}
 bool IlwisObjectModel::isProjectedCoordinateSystem() const
 {
     try {

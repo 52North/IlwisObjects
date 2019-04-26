@@ -93,6 +93,7 @@ public:
 	Q_INVOKABLE void store();
 	Q_INVOKABLE bool isValid() const;
 	Q_INVOKABLE quint32 modelId() const;
+	Q_INVOKABLE QString subType() const;
 
     QString creationDate() const;
     QString modifiedDate() const;
