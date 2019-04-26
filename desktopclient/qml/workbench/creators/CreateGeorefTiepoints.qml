@@ -198,6 +198,10 @@ Controls.DropableItem{
         return refraster.content != "" && backraster.content != "" && csysystem.content != ""
     }
 
+	function georefUrl(){
+		return ""
+	}
+
 }
 
 

@@ -14,11 +14,12 @@ Column {
   width : parent.width
   spacing : 4
   property var editor
+  property bool readOnly : false
  
     TableView {
         id : tableview
         width : parent.width
-        height : 160
+        height : parent.height - 65
         selectionMode : SelectionMode.SingleSelection
         property var doUpdate : true
         model : editor ? editor.controlPoints : null
@@ -50,6 +51,7 @@ Column {
                     height : 18
                     checked : styleData.value
                     style : Base.CheckBoxStyle1{}
+					enabled : !readOnly
                 }
         }
         TableViewColumn{
@@ -61,6 +63,7 @@ Column {
                 TextField {
                     text: styleData.value
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
@@ -81,6 +84,7 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.decimalsCrds)
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
@@ -102,6 +106,7 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.decimalsCrds)
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
@@ -123,6 +128,7 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.subPixelPrecision ? 1 : 0)
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
 
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -145,6 +151,7 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.subPixelPrecision ? 1 : 0)
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
 
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -166,6 +173,7 @@ Column {
                 Text {
                     text: styleData.value != -1000000 ? styleData.value.toFixed(2) : '?'
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
 
                     color : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -180,6 +188,7 @@ Column {
                 Text {
                     text: styleData.value != -1000000 ? styleData.value.toFixed(2) : '?'
                     height : 20
+					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
                     color : editor.selectedRow == styleData.row  ? "blue" : "black"
 
@@ -197,7 +206,8 @@ Column {
             }
 
         Component.onCompleted : {
-            editor = objectcreator.createControlPointsList(tableview)
+			var url = { 'url' :georefUrl()}
+            editor = objectcreator.createControlPointsList(url, tableview)
          }
   
     }
