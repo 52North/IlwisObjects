@@ -47,6 +47,7 @@ namespace Ilwis {
 
         public:
             ControlPointsListModel(QObject *parent=0);
+			ControlPointsListModel(const QVariantMap& parms, QObject *parent);
             ~ControlPointsListModel();
 
             Q_INVOKABLE void addTiepoint();

@@ -57,6 +57,29 @@ ControlPointsListModel::ControlPointsListModel(QObject *parent)
     _planarCTP->transformation(PlanarCTPGeoReference::tAFFINE);
 }
 
+ControlPointsListModel::ControlPointsListModel(const QVariantMap& parms, QObject *parent) : QObject(parent) {
+	QString path = context()->ilwisFolder().absoluteFilePath();
+	QUrl lurl = QUrl::fromLocalFile(path);
+	_associatedUrl = lurl.toString() + "/qml/workbench/creators/PostDrawerTiepointEditor.qml";
+	if (parms.contains("url")) {
+		QString url = parms["url"].toString();
+		if (url != "") {
+			if (!_georef.prepare(url)) {
+				kernel()->issues()->log(TR("Couldn't load: ") + url);
+				return;
+			}
+			auto grf = _georef->as<PlanarCTPGeoReference>();
+			_planarCTP = grf.get();
+			for (int i = 0; i < _planarCTP->nrControlPoints(); ++i) {
+				auto& pnt = _planarCTP->controlPoint(i);
+				_controlPoints.push_back(new ControlPointModel(0, QString::number(i + 1), pnt.isActive(),
+					pnt.x, pnt.y, pnt.gridLocation().x, pnt.gridLocation().y,
+					pnt.errorColumn(), pnt.errorRow(), this));
+			}
+		}
+	}
+}
+
 ControlPointsListModel::~ControlPointsListModel()
 {
 }
