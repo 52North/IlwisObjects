@@ -38,6 +38,7 @@ public:
     std::vector<double> matrix() const;
     std::vector<double> support() const;
     static QString typeName();
+	QString grfType() const;
 protected:
     void copyTo(GeoRefImplementation *impl);
     void clear();

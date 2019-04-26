@@ -29,9 +29,13 @@ GeoRefImplementation *UndeterminedGeoReference::create()
     return new UndeterminedGeoReference();
 }
 
+QString UndeterminedGeoReference::grfType() const {
+	return UndeterminedGeoReference::typeName();
+}
+
 QString UndeterminedGeoReference::typeName()
 {
-    return "UndeterminedGeoReference";
+    return "undeterminedGeoReference";
 }
 
 UndeterminedGeoReference::UndeterminedGeoReference() : GeoRefImplementation("undetermined")

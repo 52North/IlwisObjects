@@ -37,6 +37,7 @@ public:
     void subPixelPrecision(bool yesno);
     bool subPixelPrecision() const;
     static QString typeName();
+	QString grfType() const;
 
 protected slots:
     void copyTo(GeoRefImplementation *impl);

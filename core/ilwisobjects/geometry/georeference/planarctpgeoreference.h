@@ -40,6 +40,7 @@ public:
     Transformation transformation() const;
     GeoRefImplementation *clone();
     static QString typeName();
+	QString grfType() const;
     int minimumPointsNeeded() const;
     double sigma() const;
     void sigma(double s);

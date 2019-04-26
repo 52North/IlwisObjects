@@ -91,6 +91,10 @@ std::vector<double> SimpelGeoReference::support() const {
     return {_b1, _b2};
 }
 
+QString SimpelGeoReference::grfType() const {
+	return SimpelGeoReference::typeName();
+}
+
 QString SimpelGeoReference::typeName()
 {
     return "simple";

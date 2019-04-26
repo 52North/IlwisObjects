@@ -423,6 +423,10 @@ GeoRefImplementation *PlanarCTPGeoReference::clone()
     return impl;
 }
 
+QString PlanarCTPGeoReference::grfType() const {
+	return PlanarCTPGeoReference::typeName();
+}
+
 QString PlanarCTPGeoReference::typeName()
 {
     return "planartiepoints";

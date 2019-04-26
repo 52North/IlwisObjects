@@ -78,6 +78,8 @@ public:
     template<typename GrfT> bool grfType() const {
         return dynamic_cast<GrfT *>(_georefImpl.data()) != 0;
     }
+
+	QString grfType() const;
     IlwisObject *clone();
     void copyTo(IlwisObject *obj);
 

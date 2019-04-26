@@ -97,6 +97,10 @@ GeoRefImplementation *CornersGeoReference::clone()
     return impl;
 }
 
+QString CornersGeoReference::grfType() const {
+	return CornersGeoReference::typeName();
+}
+
 QString CornersGeoReference::typeName()
 {
     return "corners";

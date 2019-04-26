@@ -95,6 +95,10 @@ int CTPGeoReference::compute()
     return 1;
 }
 
+QString CTPGeoReference::grfType() const {
+	return CTPGeoReference::typeName();
+}
+
 QString CTPGeoReference::typeName()
 {
     return "CTPGeoReference";

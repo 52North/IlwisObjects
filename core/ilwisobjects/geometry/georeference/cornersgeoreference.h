@@ -36,6 +36,7 @@ public:
     GeoRefImplementation *clone();
     static QString typeName();
     bool isCompatible(const IlwisData<GeoReference>& georefOther) const;
+	QString grfType() const;
 
 
     static GeoRefImplementation *create();

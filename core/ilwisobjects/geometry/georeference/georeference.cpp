@@ -231,3 +231,10 @@ bool GeoReference::isLinear() const
         return _georefImpl->isLinear();
     return false;
 }
+
+QString GeoReference::grfType() const {
+	if (!_georefImpl.isNull()) {
+		return _georefImpl->grfType();
+	}
+	return sUNDEF;
+}

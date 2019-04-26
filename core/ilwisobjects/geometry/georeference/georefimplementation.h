@@ -34,6 +34,7 @@ public:
     int compute();
     virtual bool isLinear() const;
     virtual GeoRefImplementation *clone() = 0;
+	virtual QString grfType() const = 0;
 
     virtual bool isCompatible(const IGeoReference &georefOther) const;
 protected:
