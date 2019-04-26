@@ -52,6 +52,13 @@ Rectangle {
     }
 
     Component {
+        id : controlPoints
+        Loader{
+            source : "ControlPoints.qml"
+        }
+    }
+
+    Component {
         id : generalData
         Loader {
             source : "GeneralPropertyPane.qml"
@@ -127,7 +134,9 @@ Rectangle {
                 if ( isProjected){
                     addTab(qsTr("Projection"), projectionData)
                 }
-            }
+            } else if ( typeName == "georeference" && subType() == "planartiepoints"){
+				addTab(qsTr("Control points"), controlPoints)	
+			}
             if ( props.lastIndex < count)
                 currentIndex = props.lastIndex
         }
