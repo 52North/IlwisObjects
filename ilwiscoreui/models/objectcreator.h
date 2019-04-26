@@ -49,7 +49,7 @@ public:
     Q_INVOKABLE QString createObject(const QVariantMap& parms);
     Q_INVOKABLE QVariantMap creatorInfo(const QString &name)  const;
     Q_INVOKABLE QObject * createModellerObject(const QVariantMap& parms, QObject *parent);
-    Q_INVOKABLE Ilwis::Ui::ControlPointsListModel *createControlPointsList(QObject *parent);
+    Q_INVOKABLE Ilwis::Ui::ControlPointsListModel *createControlPointsList(const QVariantMap& parms, QObject *parent);
 
     QStringList createableObjects() const;
 
