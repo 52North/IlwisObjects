@@ -98,6 +98,9 @@ QVariant CoverageLayerModel::vproperty(const QString &pName) const
         Envelope env = coverage()->envelope();
         return env.toMap();
     }
+	if (pName == "id") {
+		return _coverage->id();
+	}
     return QVariant();
 }
 
@@ -220,7 +223,8 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
     item["name"] = "Layer";
     item["value"] = coverage()->name();
     item["icon"] = ResourceModel::icon(coverage()->resource());
-    item["header"] = true;
+    item["color"] =  QObject::parent() ? "darkblue" : "green";
+	item["header"] = true;
     items.push_back(item);
 
     std::vector<QString> texts;
@@ -250,6 +254,7 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
                     QVariantMap vitem;
                     vitem["name"] = item.key();
                     vitem["value"] = attTxt;
+					vitem["color"] = QObject::parent() ? "black" : "darkgreen";
                     items.push_back(vitem);
                 }
             }
