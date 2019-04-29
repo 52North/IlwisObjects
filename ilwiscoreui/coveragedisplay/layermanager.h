@@ -102,6 +102,7 @@ public:
     Q_INVOKABLE void linkTo(QObject *obj, bool bidrectional, const QString& type);
     Q_INVOKABLE void unLinkTo(QObject *target, const QString& type);
 	Q_INVOKABLE void reset();
+	Q_INVOKABLE void addInfoLayer(const QString& objid) ;
 
     RootLayerModel *rootLayer() const;
     
@@ -184,6 +185,7 @@ private:
     QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
     QList<LayerModel *> _coverages; //this list is filled on the fly in  allCoveragesPrivate, don't rely on it to have contents
     QList<QObject *> _postDrawers;
+	std::vector<std::unique_ptr<LayerModel>> _mapInfoExtraLayer;
 
     static void addLayer(QStandardItem * parentLayer, LayerModel * layer, LayerManager * lm, int lowernodid);
     QQmlListProperty<LayerModel> childLayersPrivate();

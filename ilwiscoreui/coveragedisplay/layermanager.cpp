@@ -163,7 +163,34 @@ QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrNa
             result += txt;
 		}
 	}
+	for (auto& cov : _mapInfoExtraLayer) {
+		QString txt = cov->layerData(crdIn, attrName, items);
+		if (result != "" && txt != "")
+			result += ";";
+		result += txt;
+	}
 	return result;
+}
+
+void LayerManager::addInfoLayer(const QString& sobjid)  {
+	quint64 objid = sobjid.toULongLong();
+	for (auto& cov : _mapInfoExtraLayer) {
+		if (cov->vproperty("id") .toULongLong() == objid)
+			return;
+	}
+	ICoverage cov;
+	if (!cov.prepare(objid, {"mustexist", true})) {
+		return;
+	}
+	auto iter = _createLayers.find(TypeHelper::type2name(cov->ilwisType()));
+	if (iter != _createLayers.end()) {
+		auto createFunc = (*iter).second;
+		QString layername = cov->name();
+		CoverageLayerModel *layer = static_cast<CoverageLayerModel *>(createFunc(this, 0, layername, cov->description(),IOOptions()));
+		layer->coverage(cov);
+		_mapInfoExtraLayer.emplace_back(layer);
+	}
+
 }
 
 LayerModel * LayerManager::findLayer(int nodeid)
