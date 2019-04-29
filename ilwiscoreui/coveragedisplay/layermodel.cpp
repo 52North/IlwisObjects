@@ -39,11 +39,13 @@ Ilwis::Ui::LayerModel::LayerModel()
 }
 
 LayerModel::LayerModel(LayerManager *manager, QStandardItem *parent, const QString& name, const QString& desc, const IOOptions& opt) : QStandardItem(name), _layerManager(manager){
-    if (parent->index().isValid()) { // the invisiblerootitem has by definition an invalid index, so we can not use it as parent, but this parent is only true for all layers directly under the root. The layermanager can then act as parent
-        setParent(static_cast<LayerModel *>(parent));
-    }
-    else
-        setParent(manager);
+	if (parent) {
+		if (parent->index().isValid()) { // the invisiblerootitem has by definition an invalid index, so we can not use it as parent, but this parent is only true for all layers directly under the root. The layermanager can then act as parent
+			setParent(static_cast<LayerModel *>(parent));
+		}
+		else
+			setParent(manager);
+	}
     _modelId = modelregistry()->newModelId();
 	if (opt.contains("virtual")) {
 		_isVirtual = opt["virtual"].toBool();
