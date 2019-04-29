@@ -89,19 +89,19 @@ protected:
     void init();
     QVariantMap stretch(); // for "live" RGB stretching of a Color Composite; thus not for Palette rasters (Palette rasters "live" stretch their palette)
     virtual void refreshStretch();
-    TextureHeap * textureHeap;
+    TextureHeap * textureHeap = 0;
     std::vector<Quad> _quads;
     std::vector<qint32> _addQuads;
     QVector<qint32> _removeQuads;
     IRasterCoverage _raster;
-    int _maxTextureSize;
-    int _paletteSize;
-    unsigned long _width;
-    unsigned long _height;
-    unsigned long _imageWidth;
-    unsigned long _imageHeight;
-    bool _initDone;
-    bool _linear;
+    int _maxTextureSize = 0;
+    int _paletteSize = 0;
+	unsigned long _width = 0;
+    unsigned long _height = 0;
+    unsigned long _imageWidth = 0;
+    unsigned long _imageHeight = 0;
+    bool _initDone = false;
+    bool _linear = true;
 	bool _texturesNeedUpdate = false;
 	QVariantMap _stretch;
 
