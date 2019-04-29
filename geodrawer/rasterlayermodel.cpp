@@ -199,6 +199,7 @@ QString RasterLayerModel::layerData(const Coordinate &crdIn, const QString &attr
     QVariantMap vitem;
     vitem["name"] = "Pixel";
     vitem["value"] = pixtxt;
+	vitem["color"] = QObject::parent() ? "black" : "darkgreen";
     items.push_back(vitem);
 
     return txt;
