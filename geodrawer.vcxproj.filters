@@ -210,6 +210,9 @@
     <ClCompile Include="geodrawer\operations\setcolorcompositebands.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
+    <ClCompile Include="geodrawer\operations\goto.cpp">
+      <Filter>Source Files\operations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h">
@@ -345,6 +348,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="geodrawer\operations\setcolorcompositebands.h">
+      <Filter>Header Files\operations</Filter>
+    </ClInclude>
+    <ClInclude Include="geodrawer\operations\goto.h">
       <Filter>Header Files\operations</Filter>
     </ClInclude>
   </ItemGroup>
