@@ -34,50 +34,57 @@ Column {
             anchors.verticalCenter: parent.verticalCenter
         }
     }
-    GridView{
-        width : parent.width
-        height : parent.height - header.height - 2
-        model : activeLayerManager().rootLayer.layerInfoItems //manager ? manager.rootLayer.layerInfoItems : null
+	DropArea {
+		width : parent.width
+		height : parent.height - header.height - 2
+		onDropped: {
+			activeLayerManager().addInfoLayer(drag.source.ilwisobjectid)
+		}
+		GridView{
+			anchors.fill : parent
+			model : activeLayerManager().rootLayer.layerInfoItems //manager ? manager.rootLayer.layerInfoItems : null
 
-        cellWidth : 240
-        cellHeight : 15
-        flow: GridView.FlowTopToBottom
-        clip : true
-        delegate: Component{
-            Item{
-                width : 260
-                height : 15
-                Row {
-					width : parent.width
+			cellWidth : 240
+			cellHeight : 15
+			flow: GridView.FlowTopToBottom
+			clip : true
+			delegate: Component{
+				Item{
+					width : 260
 					height : 15
-                    spacing: 3
-                    Image {
-                        source : iconSource(modelData.icon)
-                        width : 14
-                        height : 14
-                    }
-
-                    Text{
-                        text : modelData.name
-                        width : 100
+					Row {
+						width : parent.width
 						height : 15
-                        font.bold : true
-                        color: modelData.header ? "darkblue" : "black"
-                        elide: Text.ElideMiddle
-                    }
-                    Text {
-                        text : modelData.value
-                        width : 140
-						height : 15
-                        clip : true
-                        color: modelData.header ? "darkblue" : "black"
-                        font.bold : modelData.header ? true : false
-                        elide: Text.ElideMiddle
+						spacing: 3
+						Image {
+							source : iconSource(modelData.icon)
+							width : 14
+							height : 14
+						}
 
-                    }
-                }
-            }
-        }
-    }
+						Text{
+							text : modelData.name
+							width : 100
+							height : 15
+							font.bold : true
+							color: modelData.color
+							elide: Text.ElideMiddle
+						}
+						Text {
+							text : modelData.value
+							width : 140
+							height : 15
+							clip : true
+							color: modelData.color 
+							font.bold : modelData.header ? true : false
+							elide: Text.ElideMiddle
+
+						}
+					}
+				}
+			}
+		}
+
+	}
 }
 
