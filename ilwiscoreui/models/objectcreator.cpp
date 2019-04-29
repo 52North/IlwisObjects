@@ -859,7 +859,7 @@ void ObjectCreator::executeoperation(const QString& expr) {
 }
 
 ControlPointsListModel *ObjectCreator::createControlPointsList(const QVariantMap& parms, QObject *parent) {
-	if (parms.size() == 0)
+	if (parms.size() <= 1)
 		return new ControlPointsListModel(parent);
 	else
 		return new ControlPointsListModel(parms, parent);
