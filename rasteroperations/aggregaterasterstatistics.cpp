@@ -129,10 +129,7 @@ double stats_kurtosis(const std::vector<double>& data) {
 
 
 double stats_sum(const std::vector<double>& data) {
-	double sum = rUNDEF;
-	for (double v : data) {
-		sum += v;
-	}
+    double sum = std::accumulate(data.begin(), data.end(), 0.0);
 	return sum;
 }
 
