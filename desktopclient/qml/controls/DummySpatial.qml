@@ -7,9 +7,10 @@ Rectangle {
     property LayerManager layermanager
     property var viewid : layermanager ? layermanager.viewid : 0
 	property var postRenderCallBack
-
+	objectName : uicontext.uniqueName()
 
 	onLayermanagerChanged : {
+		layermanager.qmlDrawer(objectName)
 		updateView()
 	}
 
