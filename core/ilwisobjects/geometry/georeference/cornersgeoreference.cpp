@@ -71,13 +71,13 @@ int CornersGeoReference::compute()
         _b2 = - _a22 * _envelope.max_corner().y;
     }
     else { // center of corner pixels
-        _a11 = (size().xsize() - 1) / vec[0];
-        double v1 = size().ysize() - 1;
+        _a11 = size().xsize() / vec[0];
+        double v1 = size().ysize();
         double v2 = vec[1];
         double v3 = -v1/v2;
         _a22 = v3;
-        _b1 = 0.5 - _a11 * _envelope.min_corner().x;
-        _b2 = 0.5 - _a22 * _envelope.max_corner().y;
+        _b1 = -_a11 * _envelope.min_corner().x;
+        _b2 = -_a22 * _envelope.max_corner().y;
     }
     _det = _a11 * _a22;
 
