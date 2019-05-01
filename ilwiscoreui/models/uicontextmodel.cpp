@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QThread>
+#include <QCursor>
 #include <QGenericReturnArgument>
 #include "kernel.h"
 #include "ilwisdata.h"
@@ -859,6 +860,11 @@ void UIContextModel::uiBusy(bool yesno) {
 }
 bool UIContextModel::uiBusy() const {
     return _uiBusy;
+}
+
+void UIContextModel::setMousePos(int x, int y) {
+	QCursor cur;
+	cur.setPos(500, 500);
 }
 
 

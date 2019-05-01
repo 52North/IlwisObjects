@@ -119,7 +119,7 @@ bool GeorefSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
         double minx, miny, maxx, maxy;
         _stream >> minx >> miny >> maxx >> maxy;
         CornersGeoReference *cornersgrf = new CornersGeoReference();
-        cornersgrf->envelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
+        cornersgrf->internalEnvelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
         grf->impl(cornersgrf);
     } else if ( typeName == CTPGeoReference::typeName() ){
         PlanarCTPGeoReference *ctpgrf = new PlanarCTPGeoReference();

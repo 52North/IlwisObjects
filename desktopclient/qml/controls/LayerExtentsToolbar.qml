@@ -39,6 +39,8 @@ ToolBar{
                         normalButton.checked = true
                     }
                     toolbarClicked()
+					var  p = entireMap.mapToGlobal(x,y)
+					console.debug(p.x, p.y)
                 }
             }
             Controls.ToolTip{

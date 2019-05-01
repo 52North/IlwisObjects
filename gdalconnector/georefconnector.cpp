@@ -106,11 +106,12 @@ bool GeorefConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
                 grf->create("corners"); // let GDAL fallback to "corners"?
                 cMin = Coordinate( 0, 0 );
                 cMax = Coordinate( sz.xsize() - 1, sz.ysize() - 1);
+				QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+				spGrf->internalEnvelope(Envelope(cMin, cMax));
             }
         }
         grf->coordinateSystem(csy);
         grf->size(sz);
-        grf->envelope(Envelope(cMin, cMax));
         grf->compute();
     }else{
         return ERROR2(ERR_INVALID_PROPERTY_FOR_2, "Georeference", grf->name());

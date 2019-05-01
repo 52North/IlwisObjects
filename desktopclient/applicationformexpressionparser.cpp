@@ -519,7 +519,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                 if ( !input){
                     QString query = QString("(datatype & %1)!=0 and (readwrite='rc' or readwrite='rcu')").arg(parameters[i]._dataType);
                     QString formatList = formats(query, parameters[i]._dataType);
-                    if ( formatList != ""){
+                    if ( formatList != ""){    
 
 
                         //QString formatLabel = QString("Row{height:20;width:parent.width;Text { x:5;text: qsTr(\"Output format\"); id:label_pout_format_%2; width :%1;}").arg(width).arg(i);
@@ -527,7 +527,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
 						QString formats = QString("Controls.ComboxLabelPair{ id: pout_format_%1; width : parent.width  - 5;fontBold : false;labelWidth : %2 - 5;itemModel : %3;labelText :qsTr(\"Output format\")}").
 							arg(i).arg(width).arg(formatList);
                         results += "+\"@@\"+"  + QString("pout_format_%1.comboText").arg(i);
-                        formRows += formats;
+                        formRows += formats;  
                     }
                 }
 

@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "featureiterator.h"
 #include "symboltable.h"
 #include "ilwisoperation.h"
+#include "georefimplementation.h"
+#include "simpelgeoreference.h"
+#include "cornersgeoreference.h"
 #include "movingaverage.h"
 
 using namespace Ilwis;
@@ -172,7 +175,9 @@ Ilwis::OperationImplementation::State MovingAverage::prepare(ExecutionContext *c
         grf->create("corners");
         grf->size(Size<>(xsize, ysize,1));
         grf->coordinateSystem(_inputfeatures->coordinateSystem());
-        grf->envelope(_inputfeatures->envelope());
+		QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+		spGrf->internalEnvelope(_inputfeatures->envelope());
+
         grf->compute();
         _inputgrf = grf;
     }

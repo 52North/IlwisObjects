@@ -119,12 +119,6 @@ Envelope GeoReference::envelope() const
     return Envelope();
 }
 
-void GeoReference::envelope(const Envelope &env)
-{
-    if ( isValid())
-        _georefImpl->envelope(env);
-}
-
 bool GeoReference::centerOfPixel() const
 {
     if ( isValid())

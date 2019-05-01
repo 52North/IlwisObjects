@@ -14,7 +14,7 @@
     <ProjectGuid>{ABD5D06D-8B79-3C5E-B745-6F3E5D412FDA}</ProjectGuid>
     <RootNamespace>remotedataaccesshandler</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -35,7 +35,16 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>remotedataaccesshandler</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -76,7 +85,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;..\libraries\win32release\extensions\httpserver\httpserver.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\Projects\Ilwis\ilwisobjects\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -102,7 +112,16 @@
       <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\remotedataaccesshandler\* /s /y /i</Command>
       <Message>Copy remotedataaccesshandler.dll to ..\output\win32release\bin\extensions\remotedataaccesshandler</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><Define>_WINDOWS;UNICODE;WIN32;WIN64;REMOTEDATAACCESSHANDLER_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver\httpserver;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;REMOTEDATAACCESSHANDLER_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver\httpserver;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;D:/Projects/Ilwis/ilwisobjects/projects/../external/geos;D:/Projects/Ilwis/ilwisobjects/projects/extensions/httpserver;D:/Projects/Ilwis/ilwisobjects/projects/extensions/httpserver/httpserver;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
@@ -122,7 +141,8 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;..\libraries\win32debug\extensions\httpserver\httpserver.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -147,14 +167,17 @@
       <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\remotedataaccesshandler\* /s /y /i</Command>
       <Message>Copy remotedataaccesshandler.dll to ..\output\win32debug\bin\extensions\remotedataaccesshandler</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><Define>_WINDOWS;UNICODE;WIN32;WIN64;REMOTEDATAACCESSHANDLER_LIBRARY;QT_PLUGIN;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><DynamicSource>output</DynamicSource><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver\httpserver;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;REMOTEDATAACCESSHANDLER_LIBRARY;QT_PLUGIN;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <DynamicSource>output</DynamicSource>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver;D:\Projects\Ilwis\ilwisobjects\projects\extensions\httpserver\httpserver;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    
-    
-    
-    
-    
-    
     <ClCompile Include="remotedataaccesshandler\remotedataaccesshandlermodule.cpp" />
     <ClCompile Include="remotedataaccesshandler\remotedataaccessrequesthandler.cpp" />
     <ClCompile Include="remotedataaccesshandler\remoteoperation.cpp" />
@@ -162,38 +185,17 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="remotedataaccesshandler\remotedataaccesshandlermodule.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="remotedataaccesshandler\remotedataaccessrequesthandler.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <QtMoc Include="remotedataaccesshandler\remoteoperation.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="remotedataaccesshandler\remoteoperationrequesthandler.h" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>

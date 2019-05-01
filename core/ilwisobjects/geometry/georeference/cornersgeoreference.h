@@ -28,11 +28,11 @@ class KERNELSHARED_EXPORT CornersGeoReference : public SimpelGeoReference
 public:
     CornersGeoReference();
     CornersGeoReference(const Resource& resource);
-    void envelope(const Envelope& env);
+	void internalEnvelope(const Envelope& env);
     int compute();
     QSize computeGridSize() const;
     bool isCornersOfCorners() const;
-    Envelope envelope() const;
+    Envelope internalEnvelope() const;
     GeoRefImplementation *clone();
     static QString typeName();
     bool isCompatible(const IlwisData<GeoReference>& georefOther) const;
@@ -42,7 +42,7 @@ public:
     static GeoRefImplementation *create();
 private:
     void copyTo(GeoRefImplementation *impl);
-    Envelope _envelope;
+    Envelope _internalEnvelope;
 };
 
 typedef IlwisData<CornersGeoReference> ICornersGeoReference;

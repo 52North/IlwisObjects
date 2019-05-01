@@ -69,6 +69,7 @@ public:
      Q_INVOKABLE void reset(int pixwidth, int pixheight);
      Q_INVOKABLE QVariantMap coord2coord(LayerModel* source, double x, double y) const;
 
+
 	 //void setEnvelopeView(const BoundingBox& pixelArea);
 
 

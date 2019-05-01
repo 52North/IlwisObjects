@@ -105,7 +105,8 @@ bool GeorefConnector::loadGeoref(const IniFile &odf, IlwisObject *data ) {
             pixStart += Pixeld(columns, lines);
             Coordinate crd2 = grf->pixel2Coord(pixStart);
             Envelope env(crd1, crd2);
-            grf->envelope(env);
+			QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+			spGrf->internalEnvelope(env);
         } else if (grf->grfType<CTPGeoReference>()) { // relationship rc/crd is non-linear: "translate" the raster-location of the controlpoints, instead of translating the coordinates
             QSharedPointer<PlanarCTPGeoReference> ctpgrf = grf->as<PlanarCTPGeoReference>();
             quint32 nrOfControlPoints = ctpgrf->nrControlPoints();
@@ -292,15 +293,8 @@ bool GeorefConnector::loadGeorefCorners(const IniFile& odf, IlwisObject *data) {
         return false;
     }
 	bool centerOfCornerPixels = (odf.value("GeoRefCorners", "CornersOfCorners").compare("No") == 0);
-	if (centerOfCornerPixels) {
-		double xextra = 0.5 *(maxx - minx) / (grf->size().xsize() - 1);
-		double yextra = 0.5 *(maxy - miny) / (grf->size().ysize() - 1);
-		maxx += xextra;
-		minx -= xextra;
-		maxy += yextra;
-		miny -= yextra;
-	}
-    grf->envelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
+	QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+	spGrf->internalEnvelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
     grf->centerOfPixel(centerOfCornerPixels);
     grf->compute();
     return true;

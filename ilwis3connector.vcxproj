@@ -14,7 +14,7 @@
     <ProjectGuid>{5C8A53B2-8D0F-3CAE-9A5E-54A70F671020}</ProjectGuid>
     <RootNamespace>ilwis3connector</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -35,7 +35,16 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>ilwis3connector</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -76,7 +85,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\Projects\Ilwis\ilwisobjects\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -103,7 +113,16 @@
 xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32release\bin\extensions\ilwis3connector\resources\* /s /y /i</Command>
       <Message>Copy ilwis3connector.dll to ..\output\win32release\bin\extensions\ilwis3connector</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath><Define>_WINDOWS;UNICODE;WIN32;WIN64;ILWIS3CONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;ILWIS3CONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
@@ -123,7 +142,8 @@ xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32release\bin\exte
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -149,10 +169,17 @@ xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32release\bin\exte
 xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32debug\bin\extensions\ilwis3connector\resources\* /s /y /i</Command>
       <Message>Copy ilwis3connector.dll to ..\output\win32debug\bin\extensions\ilwis3connector</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath><Define>_WINDOWS;UNICODE;WIN32;WIN64;ILWIS3CONNECTOR_LIBRARY;QT_PLUGIN;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;ILWIS3CONNECTOR_LIBRARY;QT_PLUGIN;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    
-    
     <ClCompile Include="ilwis3connector\RawConverter.cpp" />
     <ClCompile Include="ilwis3connector\binaryilwis3table.cpp" />
     <ClCompile Include="ilwis3connector\coordinatesystemconnector.cpp" />
@@ -187,14 +214,6 @@ xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32debug\bin\extens
     <ClInclude Include="ilwis3connector\ilwis3connector.h" />
     <ClInclude Include="ilwis3connector\ilwis3featureconnector.h" />
     <QtMoc Include="ilwis3connector\ilwis3module.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="ilwis3connector\ilwis3objectfactory.h" />
     <ClInclude Include="ilwis3connector\ilwis3projectionconnector.h" />
@@ -206,7 +225,10 @@ xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\win32debug\bin\extens
     <ClInclude Include="ilwis3connector\rawconverter.h" />
     <ClInclude Include="ilwis3connector\tableconnector.h" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>

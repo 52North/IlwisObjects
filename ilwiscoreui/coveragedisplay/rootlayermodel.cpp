@@ -26,6 +26,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "util/size.h"
 #include "rootlayermodel.h"
 #include "coveragelayermodel.h"
+#include "georefimplementation.h"
+#include "simpelgeoreference.h"
+#include "cornersgeoreference.h"
 #include "modelregistry.h"
 #include "raster.h"
 
@@ -106,7 +109,8 @@ void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
 
     _zoomEnvelope = cb;
     if (_screenGrf.isValid()) {
-        _screenGrf->envelope(_zoomEnvelope);
+		QSharedPointer< CornersGeoReference> spGrf = _screenGrf->as< CornersGeoReference>();
+		spGrf->internalEnvelope(_zoomEnvelope);
         _screenGrf->compute();
     }
     SetCameraPosition();
@@ -320,7 +324,8 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
             _viewEnvelope = Envelope(Coordinate(env.min_corner().x - deltax /2.0,env.min_corner().y - delta,0), Coordinate(env.max_corner().x + deltax /2.0,env.max_corner().y  + delta,0));
         }
         _zoomEnvelope = _viewEnvelope;
-		_screenGrf->envelope(_zoomEnvelope);
+		QSharedPointer< CornersGeoReference> spGrf = _screenGrf->as< CornersGeoReference>();
+		spGrf->internalEnvelope(_zoomEnvelope);
 		_screenGrf->compute();
         SetCameraPosition();
         LayerModel *layer = findLayerByName("Grid");
@@ -508,6 +513,8 @@ QVariantMap RootLayerModel::drawEnvelope(const QString& envelope) const{
 	
 }*/
 
+
+
 QString RootLayerModel::layerInfo(const QString& pixelpair)  
 {
     try {
@@ -630,7 +637,8 @@ void RootLayerModel::initSizes(int newwidth, int newheight, bool initial) {
             modifyZoomY((double)newheight / sz.ysize());
         }
         _screenGrf->size(Size<>(newwidth, newheight, 1));
-        _screenGrf->envelope(_zoomEnvelope);
+		QSharedPointer< CornersGeoReference> spGrf = _screenGrf->as< CornersGeoReference>();
+		spGrf->internalEnvelope(_zoomEnvelope);
         _screenGrf->compute();
         SetCameraPosition();
         emit viewEnvelopeChanged();

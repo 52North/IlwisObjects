@@ -74,11 +74,6 @@ Envelope GeoRefImplementation::envelope() const
     return env;
 }
 
-void GeoRefImplementation::envelope(const Envelope &)
-{
-
-}
-
 bool GeoRefImplementation::centerOfPixel() const
 {
     return _centerOfPixel;

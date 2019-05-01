@@ -40,54 +40,54 @@ GeoRefImplementation *CornersGeoReference::create()
 void CornersGeoReference::copyTo(GeoRefImplementation *impl)
 {
     SimpelGeoReference::copyTo(impl);
-    static_cast<CornersGeoReference *>(impl)->_envelope = _envelope;
+    static_cast<CornersGeoReference *>(impl)->_internalEnvelope = _internalEnvelope;
 }
 
-void CornersGeoReference::envelope(const Envelope &env)
+void CornersGeoReference::internalEnvelope(const Envelope &env)
 {
-    _envelope = env;
+	_internalEnvelope = env;
 }
 
 int CornersGeoReference::compute()
 {
     bool a = size().isNull();
-    bool b = _envelope.isValid();
+    bool b = _internalEnvelope.isValid();
     if (a || !b)
         return 0;
-
+//dummy
     _a12 = _a21 = 0;
-    std::vector<double> vec = _envelope.max_corner() - _envelope.min_corner();
+    std::vector<double> vec = _internalEnvelope.max_corner() - _internalEnvelope.min_corner();
 
     bool deltaxSmall = (std::abs(vec[0]) < 0.0000001);
     bool deltaySmall = (std::abs(vec[1]) < 0.0000001);
     if ( deltaxSmall || deltaySmall) {
         return 0;
     }
-    if (!_centerOfPixel) { // corners of corner pixels
-        _a11  = size().xsize() / vec[0];
-        double tempy = size().ysize();
-        _a22 = - tempy / vec[1];
-        _b1 = - _a11 * _envelope.min_corner().x;
-        _b2 = - _a22 * _envelope.max_corner().y;
-    }
-    else { // center of corner pixels
-        _a11 = size().xsize() / vec[0];
-        double v1 = size().ysize();
-        double v2 = vec[1];
-        double v3 = -v1/v2;
-        _a22 = v3;
-        _b1 = -_a11 * _envelope.min_corner().x;
-        _b2 = -_a22 * _envelope.max_corner().y;
-    }
+	if (!_centerOfPixel) { // corners of corner pixels
+		_a11 = size().xsize() / vec[0];
+		double tempy = size().ysize();
+		_a22 = -tempy / vec[1];
+		_b1 = -_a11 * _internalEnvelope.min_corner().x;
+		_b2 = -_a22 * _internalEnvelope.max_corner().y;
+	}
+	else { // center of corner pixels
+		_a11 = (size().xsize() - 1) / vec[0];
+		double v1 = size().ysize() - 1;
+		double v2 = vec[1];
+		double v3 = -v1 / v2;
+		_a22 = v3;
+		_b1 = 0.5 - _a11 * _internalEnvelope.min_corner().x;
+		_b2 = 0.5 - _a22 * _internalEnvelope.max_corner().y;
+	}
     _det = _a11 * _a22;
 
 
-    return 1;
+    return 1; 
 }
 
-Envelope CornersGeoReference::envelope() const
+Envelope CornersGeoReference::internalEnvelope() const
 {
-    return _envelope;
+    return _internalEnvelope;
 }
 
 GeoRefImplementation *CornersGeoReference::clone()

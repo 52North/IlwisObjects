@@ -14,7 +14,7 @@
     <ProjectGuid>{AFE6E7B4-C454-3D80-9118-BDED41ED40DC}</ProjectGuid>
     <RootNamespace>postgresqlconnector</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -35,7 +35,16 @@
     <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>postgresqlconnector</PrimaryOutput>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /><PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')"><QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild></PropertyGroup><Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')"><Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." /></Target><ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')"><Import Project="$(QtMsBuild)\qt.props" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
@@ -76,7 +85,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32release\ilwiscore.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Concurrent.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\Projects\Ilwis\ilwisobjects\libraries\win32release;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -102,7 +112,16 @@
       <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\postgresqlconnector\* /s /y /i</Command>
       <Message>Copy postgresqlconnector.dll to ..\output\win32release\bin\extensions\postgresqlconnector</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\..\external\postgresql;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath><Define>_WINDOWS;UNICODE;WIN32;WIN64;POSTGRESSQLCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\..\external\postgresql;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;POSTGRESSQLCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;D:/Projects/Ilwis/ilwisobjects/projects/../external/geos;D:/Projects/Ilwis/ilwisobjects/projects/../external/postgresql;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
@@ -122,7 +141,8 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\win32debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -147,10 +167,17 @@
       <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\postgresqlconnector\* /s /y /i</Command>
       <Message>Copy postgresqlconnector.dll to ..\output\win32debug\bin\extensions\postgresqlconnector</Message>
     </PostBuildEvent>
-  <QtMoc><QTDIR>$(QTDIR)</QTDIR><InputFile>%(FullPath)</InputFile><OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile><IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\..\external\postgresql;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath><Define>_WINDOWS;UNICODE;WIN32;WIN64;POSTGRESSQLCONNECTOR_LIBRARY;QT_PLUGIN;_WINDLL</Define><ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription><DynamicSource>output</DynamicSource></QtMoc></ItemDefinitionGroup>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;D:\Projects\Ilwis\ilwisobjects\projects\..\external\geos;D:\Projects\Ilwis\ilwisobjects\projects\..\external\postgresql;$(QTDIR)\include;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT)\.;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;POSTGRESSQLCONNECTOR_LIBRARY;QT_PLUGIN;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    
-    
     <ClCompile Include="postgresqlconnector\PostgresqlDatabaseUtil.cpp" />
     <ClCompile Include="postgresqlconnector\postgresqlcatalogexplorer.cpp" />
     <ClCompile Include="postgresqlconnector\postgresqlconnection.cpp" />
@@ -173,14 +200,6 @@
     <ClInclude Include="postgresqlconnector\postgresqlfeatureconnector.h" />
     <ClInclude Include="postgresqlconnector\postgresqlfeaturecoverageloader.h" />
     <QtMoc Include="postgresqlconnector\postgresqlmodule.h">
-      
-      
-      
-      
-      
-      
-      
-      
     </QtMoc>
     <ClInclude Include="postgresqlconnector\postgresqlobjectfactory.h" />
     <ClInclude Include="postgresqlconnector\postgresqlparameters.h" />
@@ -189,7 +208,10 @@
     <ClInclude Include="postgresqlconnector\postgresqltableloader.h" />
     <ClInclude Include="postgresqlconnector\sqlstatementhelper.h" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /><ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')"><Import Project="$(QtMsBuild)\qt.targets" /></ImportGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
     <VisualStudio>

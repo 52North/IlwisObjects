@@ -60,7 +60,6 @@ public:
     Size<> size() const;
     void size(const Size<>& sz);
     Envelope envelope() const;
-    void envelope(const Envelope& env);
     bool centerOfPixel() const;
     void centerOfPixel(bool yesno);
     bool isCompatible(const IlwisData<GeoReference>& georefOther) const;

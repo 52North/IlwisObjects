@@ -148,7 +148,6 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
                 if(!georeference.prepare("code=georef:undetermined"))
                     return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2,"Georeference",raster->name() );
                 georeference->coordinateSystem(raster->coordinateSystem()); // the grf.prepare() for internal ilwis georeferences (among others "undetermined") does not autmatically set its csy
-                georeference->envelope(Envelope(cMin, cMax));
             }
         }
 

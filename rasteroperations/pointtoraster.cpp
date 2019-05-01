@@ -24,6 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "featureiterator.h"
 #include "symboltable.h"
 #include "ilwisoperation.h"
+#include "georefimplementation.h"
+#include "simpelgeoreference.h"
+#include "cornersgeoreference.h"
 #include "pointtoraster.h"
 using namespace Ilwis;
 using namespace RasterOperations;
@@ -155,7 +158,8 @@ Ilwis::OperationImplementation::State PointToRaster::prepare(ExecutionContext *c
         grf->create("corners");
         grf->size(Size<>(xsize, ysize,1)); // sets the bounding box
         grf->coordinateSystem(_inputfeatures->coordinateSystem());
-        grf->envelope(_inputfeatures->envelope());
+		QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+		spGrf->internalEnvelope(_inputfeatures->envelope());
         grf->compute(); // all members are set, now the initialization can take place
         _inputgrf = grf;
     }

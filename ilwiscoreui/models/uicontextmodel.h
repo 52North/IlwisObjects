@@ -103,6 +103,7 @@ public:
     Q_INVOKABLE QString type2icon(const QString& typeName);
     Q_INVOKABLE void addMessage(const QString& message, const QString& type);
     Q_INVOKABLE bool keyPressed(int key) const;
+	Q_INVOKABLE void setMousePos(int x, int y);
 
     int addPropertyEditor(const QString& propertyName, CreatePropertyEditor func);
     QList<VisualPropertyEditor *> propertyEditors(VisualAttribute *vattrib, const IIlwisObject &obj, const DataDefinition& datadef) ;
