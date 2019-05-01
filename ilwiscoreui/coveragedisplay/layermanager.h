@@ -103,6 +103,8 @@ public:
     Q_INVOKABLE void unLinkTo(QObject *target, const QString& type);
 	Q_INVOKABLE void reset();
 	Q_INVOKABLE void addInfoLayer(const QString& objid) ;
+	Q_INVOKABLE void qmlDrawer(const QString& objectname);
+	Q_INVOKABLE QString qmlDrawer() const;
 
     RootLayerModel *rootLayer() const;
     
@@ -179,6 +181,7 @@ private:
 	int _nodeCounter = 0;
     static quint32 _baseViewId;
     ManagerType _managerType = mtUNKNOWN;
+	QString _qmlDrawerName = sUNDEF;
 
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;

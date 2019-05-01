@@ -744,3 +744,11 @@ void LayerManager::doPostRenderCallBack(bool yesno) {
         lyr->renderReady(yesno);
     }
 }
+
+void LayerManager::qmlDrawer(const QString& objectname) {
+	_qmlDrawerName = objectname;
+}
+
+QString LayerManager::qmlDrawer() const {
+	return _qmlDrawerName;
+}
