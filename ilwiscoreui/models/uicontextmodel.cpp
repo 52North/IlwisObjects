@@ -66,6 +66,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "stretchlimits.h"
 #include "convertattributedomain.h"
 #include "modellerfactory.h"
+#include "mousegotopixeleditor.h"
 #include "classification/supervisedclassification.h"
 #include "classification/supervisedclassificationmodel.h"
 #include "ilwiscontext.h"
@@ -307,6 +308,8 @@ void UIContextModel::prepare()
 	addPropertyEditor("polygonpropertysetter", PolygonPropertySetter::create);
 	addPropertyEditor("stretchlimits", StretchLimits::create);
 	addPropertyEditor("convertattributedomain", ConvertAttributeDomain::create);
+	addPropertyEditor("mousegotopixeleditor", MouseGotoPixelEditor::create);
+
 
 	modelbuilder()->registerAnalysisModel("supervisedclassification", SupervisedClassificationmodel::create);
 	ModellerFactory::registerAnalysisPattern("supervisedclassification", SupervisedClassification::create);
