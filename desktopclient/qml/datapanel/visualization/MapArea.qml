@@ -17,6 +17,10 @@ DropArea {
         return {"width" : renderer.width , "height" : renderer.height}
     }
 
+	function drawer() {
+		return renderer
+	}
+
     onDropped: {
         var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
 		if ( resource.typeName == "representation"){
@@ -339,6 +343,7 @@ DropArea {
     function assignLayerManager(newmanager){
         localmanager = newmanager
     }
+
 
     function initGeoDrawer() {
         if (!renderer.layermanager )

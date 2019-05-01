@@ -247,6 +247,10 @@ Item {
     }
 
 
+	function activePanel() {
+		return layouts.activePanel()
+	}
+
     function addDataSource(filter, sourceName, sourceType, options){
         if ( filter !== ""){
             if (filter.indexOf("layouttype=")!= -1){
