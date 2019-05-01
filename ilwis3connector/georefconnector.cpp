@@ -291,9 +291,16 @@ bool GeorefConnector::loadGeorefCorners(const IniFile& odf, IlwisObject *data) {
         kernel()->issues()->log(TR("Uninitialized boundaries for georeference %1").arg(_resource.name()));
         return false;
     }
-
+	bool centerOfCornerPixels = (odf.value("GeoRefCorners", "CornersOfCorners").compare("No") == 0);
+	if (centerOfCornerPixels) {
+		double xextra = 0.5 *(maxx - minx) / (grf->size().xsize() - 1);
+		double yextra = 0.5 *(maxy - miny) / (grf->size().ysize() - 1);
+		maxx += xextra;
+		minx -= xextra;
+		maxy += yextra;
+		miny -= yextra;
+	}
     grf->envelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
-    bool centerOfCornerPixels = (odf.value("GeoRefCorners","CornersOfCorners").compare("No") == 0);
     grf->centerOfPixel(centerOfCornerPixels);
     grf->compute();
     return true;
