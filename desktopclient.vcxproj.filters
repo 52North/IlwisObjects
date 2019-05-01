@@ -1274,6 +1274,9 @@
     <None Include="desktopclient\qml\workbench\propertyform\ControlPoints.qml">
       <Filter>Distribution Files\qml\workbench\metadata</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MouseGoToPixelEditor.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

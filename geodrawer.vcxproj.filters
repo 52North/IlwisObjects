@@ -210,7 +210,7 @@
     <ClCompile Include="geodrawer\operations\setcolorcompositebands.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
-    <ClCompile Include="geodrawer\operations\goto.cpp">
+    <ClCompile Include="geodrawer\operations\mousegotopixel.cpp">
       <Filter>Source Files\operations</Filter>
     </ClCompile>
   </ItemGroup>
@@ -350,7 +350,7 @@
     <ClInclude Include="geodrawer\operations\setcolorcompositebands.h">
       <Filter>Header Files\operations</Filter>
     </ClInclude>
-    <ClInclude Include="geodrawer\operations\goto.h">
+    <ClInclude Include="geodrawer\operations\mousegotopixel.h">
       <Filter>Header Files\operations</Filter>
     </ClInclude>
   </ItemGroup>

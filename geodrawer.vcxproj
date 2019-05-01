@@ -206,7 +206,7 @@
     <ClCompile Include="geodrawer\operations\adddrawer.cpp" />
     <ClCompile Include="geodrawer\drawerattributesetters\basespatialattributesetter.cpp" />
     <ClCompile Include="geodrawer\operations\attributeopacity.cpp" />
-    <ClCompile Include="geodrawer\operations\goto.cpp" />
+    <ClCompile Include="geodrawer\operations\mousegotopixel.cpp" />
     <ClCompile Include="geodrawer\operations\setactiveattribute.cpp" />
     <ClCompile Include="geodrawer\operations\setcolorcompositebands.cpp" />
     <ClCompile Include="geodrawer\pointlayermodel.cpp" />
@@ -256,7 +256,7 @@
     <ClInclude Include="geodrawer\operations\adddrawer.h" />
     <ClInclude Include="geodrawer\drawerattributesetters\basespatialattributesetter.h" />
     <ClInclude Include="geodrawer\operations\attributeopacity.h" />
-    <ClInclude Include="geodrawer\operations\goto.h" />
+    <ClInclude Include="geodrawer\operations\mousegotopixel.h" />
     <ClInclude Include="geodrawer\operations\setactiveattribute.h" />
     <ClInclude Include="geodrawer\operations\setcolorcompositebands.h" />
     <ClInclude Include="geodrawer\tesselation\bucketalloc.h" />
