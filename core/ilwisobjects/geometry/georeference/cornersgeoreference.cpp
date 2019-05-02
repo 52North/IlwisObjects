@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "coordinatesystem.h"
 #include "ilwiscoordinate.h"
 #include "georeference.h"
-#include "georefimplementation.h"
+#include "georefimplementation.h" 
 #include "simpelgeoreference.h"
 #include "cornersgeoreference.h"
 
@@ -54,7 +54,7 @@ int CornersGeoReference::compute()
     bool b = _internalEnvelope.isValid();
     if (a || !b)
         return 0;
-//dummy
+
     _a12 = _a21 = 0;
     std::vector<double> vec = _internalEnvelope.max_corner() - _internalEnvelope.min_corner();
 
@@ -82,7 +82,7 @@ int CornersGeoReference::compute()
     _det = _a11 * _a22;
 
 
-    return 1; 
+    return 1;
 }
 
 Envelope CornersGeoReference::internalEnvelope() const
