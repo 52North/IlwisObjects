@@ -76,6 +76,8 @@ ControlPointsListModel::ControlPointsListModel(const QVariantMap& parms, QObject
 					pnt.x, pnt.y, pnt.gridLocation().x, pnt.gridLocation().y,
 					pnt.errorColumn(), pnt.errorRow(), this));
 			}
+			int ret = _planarCTP->compute();
+			handleComputeResult(ret);
 		}
 	}
 }
