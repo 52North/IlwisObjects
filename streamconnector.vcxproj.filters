@@ -82,9 +82,6 @@
     <ClCompile Include="streamconnector\rawconverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="streamconnector\remotecatalogexplorer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="streamconnector\scriptserializerv1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,10 +109,6 @@
     <ClCompile Include="streamconnector\workflowserializerv1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
-    
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="streamconnector\catalogconnection.h">
@@ -161,9 +154,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="streamconnector\rawconverter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="streamconnector\remotecatalogexplorer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="streamconnector\scriptserializerv1.h">

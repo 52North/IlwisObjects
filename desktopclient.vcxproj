@@ -490,6 +490,7 @@
     <None Include="desktopclient\qml\workbench\creators\ItemDomainCommonPart.qml" />
     <None Include="desktopclient\qml\workbench\creators\ItemList.qml" />
     <None Include="desktopclient\qml\workbench\creators\ItemTable.qml" />
+    <None Include="desktopclient\qml\workbench\creators\MasterSlaveFields.qml" />
     <None Include="desktopclient\qml\workbench\creators\ObjectList.qml" />
     <None Include="desktopclient\qml\workbench\creators\PaletteColorList.qml" />
     <None Include="desktopclient\qml\workbench\creators\ParameterDetails.qml" />
