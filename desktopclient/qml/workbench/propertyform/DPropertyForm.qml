@@ -11,7 +11,7 @@ import "../../Global.js" as Global
 Rectangle {
     id : propertyForm
     property var editValues : []
-    property bool editable : false
+    property bool editable : isEditable
     function iconsource(name) {
         if ( name.indexOf("/") !== -1)
             return name
@@ -19,7 +19,7 @@ Rectangle {
         var iconP = "../../images/" + name
         return iconP
     }
-    color : propertyForm.editable ? "#DCDCDC" : uicontext.lightestColor
+    color : isEditable ? "#DCDCDC" : uicontext.lightestColor
 
     function storeData() {
         if ( editable){

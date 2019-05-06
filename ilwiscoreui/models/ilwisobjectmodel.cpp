@@ -1285,6 +1285,15 @@ QString IlwisObjectModel::value2string(const QVariant &value, const QString &att
     return QString::number(value.toDouble(), 'f', 3);
 
 }
+
+bool IlwisObjectModel::editable() const {
+	return _editState;
+
+}
+void IlwisObjectModel::editable(bool yesno) {
+	_editState = yesno;
+	emit editableChanged();
+}
 //---------------------------------------------------------------------------------
 CalcRangesWorker::CalcRangesWorker(quint64 rasterid) : _rasterid(rasterid){
 

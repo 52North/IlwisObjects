@@ -4,7 +4,7 @@ import QtQuick.Controls 1.0
 Row {
     Button {
         id : editBut
-        text : qsTr("Edit")
+        text : isEditable ? qsTr("Store") : qsTr("Edit")
         checkable: true
         checked : false
         onClicked: {
@@ -12,20 +12,17 @@ Row {
 				propertyForm.storeData()
 			}
             checked = !checked
-            propertyForm.editable = !propertyForm.editable
-            mastercatalog.metadataEditMode = (text === qsTr("Edit"))
-            text = (text === qsTr("Edit")) ? qsTr("Store") : qsTr("Edit")
-	
+            isEditable = !isEditable
+            mastercatalog.metadataEditMode = isEditable
         }
     }
     Button {
         id : applyBut
         text : qsTr("Cancel")
-        visible : propertyForm.editable
+        visible : isEditable
         onClicked: {
 			mastercatalog.metadataEditMode = false
-			propertyForm.editable = false
-			//propertyFormContainer.reset()
+			isEditable = false
         }
     }
 }

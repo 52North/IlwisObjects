@@ -69,6 +69,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
     Q_PROPERTY(QVariantList layerInfo READ layerInfo NOTIFY layerInfoChanged)
     Q_PROPERTY(QStringList quickProps READ quickProps CONSTANT)
     Q_PROPERTY(bool hasAttributes READ hasAttributes CONSTANT)
+	Q_PROPERTY(bool isEditable READ editable WRITE editable NOTIFY editableChanged)
 
 
 public:
@@ -106,6 +107,8 @@ public:
     bool isCoverage() const;
     QString projectionInfo() const;
     bool isAnonymous() const;
+	bool editable() const;
+	void editable(bool yesno);
 
     QStringList test101();
     QQmlListProperty<AttributeModel> attributes();
@@ -131,6 +134,7 @@ signals:
     void layerInfoChanged();
     void projectionInfoChanged();
 	void domainItemsChanged();
+	void editableChanged();
 
 private slots:
     QString valueType() const;
@@ -145,6 +149,7 @@ private:
     QStringList quickProps() const;
     bool hasAttributes() const;
 	IlwisTypes valueTypePrivate() const;
+	bool _editState = false;
 };
 }
 }
