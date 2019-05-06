@@ -859,7 +859,8 @@ void ObjectCreator::executeoperation(const QString& expr) {
 }
 
 ControlPointsListModel *ObjectCreator::createControlPointsList(const QVariantMap& parms, QObject *parent) {
-	if (parms.size() <= 1)
+	QString url = parms["url"].toString();
+	if (url == "")
 		return new ControlPointsListModel(parent);
 	else
 		return new ControlPointsListModel(parms, parent);
