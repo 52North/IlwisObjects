@@ -40,7 +40,7 @@ bool RemoteOperation::execute(ExecutionContext *ctx, SymbolTable &symTable)
             return false;
 
     QString ss = _operationRequest.toString();
-    QNetworkRequest request(_operationRequest);
+    /*QNetworkRequest request(_operationRequest);
 
     QNetworkReply *reply = kernel()->network().get(request);
 
@@ -53,7 +53,7 @@ bool RemoteOperation::execute(ExecutionContext *ctx, SymbolTable &symTable)
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
-    delete reply;
+    delete reply;*/
 
     return true;
 }

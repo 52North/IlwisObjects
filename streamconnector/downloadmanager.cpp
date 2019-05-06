@@ -44,7 +44,7 @@ DownloadManager::DownloadManager(const Resource& resource) : _resource(resource)
 std::vector<Resource> DownloadManager::loadItems(){
     QUrl url = _resource.url(true);
 
-    QNetworkRequest request(url);
+   /* QNetworkRequest request(url);
 
     QNetworkReply *reply = kernel()->network().get(request);
 
@@ -57,7 +57,7 @@ std::vector<Resource> DownloadManager::loadItems(){
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
-    delete reply;
+    delete reply;*/
 
     return _items;
 }
@@ -82,7 +82,7 @@ bool DownloadManager::loadData(IlwisObject *object, const IOOptions &options){
     url.setQuery(query);
     QString urltxt = url.toString();
     _object = object;
-    QNetworkRequest request(url);
+  /*  QNetworkRequest request(url);
 
     QNetworkReply *reply = kernel()->network().get(request);
 
@@ -98,7 +98,7 @@ bool DownloadManager::loadData(IlwisObject *object, const IOOptions &options){
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
-    delete reply;
+    delete reply;*/
 
     return true;
 }
@@ -113,7 +113,7 @@ bool DownloadManager::loadMetaData(IlwisObject *object, const IOOptions &options
     query.addQueryItem("ilwistype",ilwtype);
     url.setQuery(query);
     _object = object;
-    QNetworkRequest request(url);
+   /* QNetworkRequest request(url);
 
     QNetworkReply *reply = kernel()->network().get(request);
 
@@ -126,7 +126,7 @@ bool DownloadManager::loadMetaData(IlwisObject *object, const IOOptions &options
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
-    delete reply;
+    delete reply;*/
 
     return true;
 }
