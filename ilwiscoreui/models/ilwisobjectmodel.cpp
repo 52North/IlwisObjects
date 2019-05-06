@@ -1022,6 +1022,15 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
                 }
             }
         }
+		if (propertyname == "controlpointransformation") {
+			if (hasType(_ilwisobject->ilwisType(), itGEOREF)) {
+				IGeoReference grf = _ilwisobject.as<GeoReference>();
+				if (grf.isValid() && grf->grfType<PlanarCTPGeoReference>()) {
+					QSharedPointer< PlanarCTPGeoReference> ptr = grf->as<PlanarCTPGeoReference>();
+					return ptr->transformation();
+				}
+			}
+		}
 		if (propertyname == "numericrange") {
 			if (hasType(_ilwisobject->ilwisType(), itRASTER)) {
 				IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
