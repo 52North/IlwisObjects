@@ -202,7 +202,7 @@ public:
     //for debugging
     void startClock();
     void endClock(const QString &label="");
-    QNetworkAccessManager& network();
+    //QNetworkAccessManager& network();
     void newTranquilizer(quint64 id, const QString &title, const QString &description, qint64 start, qint64 end);
     const Module* module(const QString& name) const;
     const ModuleMap& modules() const;
@@ -217,7 +217,7 @@ private:
     ModuleMap _modules;
     SPVersion _version;
     std::unique_ptr<PublicDatabase> _dbPublic;
-    QNetworkAccessManager _networkmanager;
+    //QNetworkAccessManager _networkmanager;
     QScopedPointer<IssueLogger> _issues;
     QHash<QString, FactoryInterface * > _masterfactory;
     mutable std::chrono::high_resolution_clock::time_point _start_clock;

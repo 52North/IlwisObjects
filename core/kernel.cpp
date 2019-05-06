@@ -300,10 +300,10 @@ void Kernel::endClock(const QString& label){
 
 }
 
-QNetworkAccessManager &Kernel::network()
+/*QNetworkAccessManager &Kernel::network()
 {
     return _networkmanager;
-}
+}*/
 
 void Kernel::newTranquilizer(quint64 id, const QString &title, const QString &description, qint64 start, qint64 end)
 {
