@@ -60,75 +60,8 @@ Controls.DropableItem{
             }
         }
  
-        Row {
-            width : parent.width
-            height : 20
-            Controls.TextEditLabelPair {
-                id : refraster
-                labelText : qsTr("Master Raster")
-                labelWidth : 120
-                width : parent.width - 20
-                height : 20
-                checkFunction : testDrop
-                onDropped : {
-                    ilwisobjectid = drag.source.ilwisobjectid
-                    var filter = "itemid=" + ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "right")
-                    tiepointstable.editor.linkModels(tab.item.layermanagers[0])
-                    tab.item.tabmodel.displayName = "Master Raster"
-                }
-            }
-            Button {
-                width : 20
-                height : 20
-                iconSource : "../../images/view.png"
-
-                onClicked : {
-                    var filter = "itemid="+ refraster.ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
-                    tiepointstable.editor.linkModels(tab.item.layermanagers[0])
-                    tab.item.tabmodel.displayName = "Master Raster"
-                }
-            }
-        }
-       Row {
-            width : parent.width
-            height : 20
-            Controls.TextEditLabelPair {
-                id : backraster
-                labelText : qsTr("Slave raster")
-                labelWidth : 120
-                width : parent.width - 20
-                height : 20
-                checkFunction : testDrop
-                onDropped : {
-                    ilwisobjectid = drag.source.ilwisobjectid
-                    var filter = "itemid=" + ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
-                    if ( "layermanagers" in tab.item){
-                        tiepointstable.editor.slaveLayerManager(tab.item.layermanagers[0],ilwisobjectid)
-                        tab.item.setActiveEditor(tiepointstable)
-                        tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
-                        tab.item.tabmodel.displayName = "Slave Raster"
-                    }
-
-                }
-            }
-            Button {
-                width : 20
-                height : 20
-                iconSource : "../../images/view.png"
-
-                onClicked : {
-                    var filter = "itemid="+ backraster.ilwisobjectid
-                    var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left")
-                    tiepointstable.editor.slaveLayerManager(tab.item.manager,backraster.ilwisobjectid)
-                    tab.item.setActiveEditor(tiepointstable)
-                    tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
-                    tab.item.tabmodel.displayName = "Slave Raster"
-                }
-            }
-        }
+		MasterSlaveFields {
+		}
 
         Controls.ComboxLabelPair {
             labelText : qsTr("Transformation")
@@ -174,15 +107,7 @@ Controls.DropableItem{
         return true
     }
 
-    function testDrop(id){
-        if (!id)
-            return false
-        var obj = mastercatalog.id2object(id, dropItem)
-        if ( obj && obj.typeName === "rastercoverage"){
-            return true
-        }
-        return false
-    }
+
 
     function testDropCsy(id){
         if (!id)

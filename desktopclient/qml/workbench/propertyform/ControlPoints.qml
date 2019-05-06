@@ -14,10 +14,22 @@ Rectangle {
     }
     color : uicontext.lightestColor
 
-	Creators.TiePointsTable {
-		height : 280
-	}
+	Column {
+		anchors.fill : parent
+		spacing : 4
+		Text {
+			width : parent.width
+			height : 20
+			text : getProperty("controlpointransformation")
+		}
+		Creators.MasterSlaveFields {
+		}
+		Creators.TiePointsTable {
+			id : tiepointstable
+			height : 280
+		}
 
+	}
 	function georefUrl(){
 		return rawUrl
 	}
