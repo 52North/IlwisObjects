@@ -129,6 +129,10 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
             if (raster->coordinateSystem().isValid()) {
                 georeference->coordinateSystem(raster->coordinateSystem());
             }
+			QSharedPointer<CornersGeoReference> cgrf = georeference->as<CornersGeoReference>();
+			cgrf->centerOfPixel(false);
+			Envelope envInternal(Coordinate(cMin.x ,cMin.y), Coordinate(cMax.x , cMax.y));
+			cgrf->internalEnvelope(envInternal);
         } else {
             int iNrTiePoints = gdal()->getGCPCount(_handle->handle());
             if (iNrTiePoints > 0) {
