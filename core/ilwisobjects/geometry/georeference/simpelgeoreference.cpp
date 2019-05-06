@@ -58,6 +58,9 @@ Coordinate SimpelGeoReference::pixel2Coord(const Pixeld &pix) const
     if (pix.x == iUNDEF || pix.y == iUNDEF)
         return Coordinate();
 
+	if (_a11 == rUNDEF || _a22 == rUNDEF || _a12 == rUNDEF || _a21 == rUNDEF || _b1 == rUNDEF || _b2 == rUNDEF || _det == 0)
+		return Coordinate();
+
     Coordinate c((_a22 * (pix.x - _b1) - _a12 * (pix.y - _b2)) / _det,
                  (-_a21 * (pix.x - _b1) + _a11 * (pix.y - _b2)) / _det );
     return c;
