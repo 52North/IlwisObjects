@@ -37,7 +37,6 @@ ControlPointModel::ControlPointModel(LayerManager *manager, const QString lab, b
     rowError(prowError);
     label(lab);
     _layerManager = manager;
-
 }
 
 ControlPointModel::~ControlPointModel()
@@ -75,6 +74,8 @@ void ControlPointModel::column(double c) {
 int ControlPointModel::rowScreen() const {
     if (!_layerManager)
         return iUNDEF;
+	if (!_layerManager->rootLayer()->screenGrf().isValid())
+		return iUNDEF;
 
     Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
     return pix.y;
@@ -83,14 +84,24 @@ int ControlPointModel::rowScreen() const {
 int ControlPointModel::columnScreen() const {
     if (!_layerManager)
         return iUNDEF;
+	if (!_layerManager->rootLayer()->screenGrf().isValid())
+		return iUNDEF;
+
     Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
     return pix.x;
 }
 void ControlPointModel::screenPosition(double c, double r) {
     if (!_layerManager)
         return ;
+	if (!_layerManager->rootLayer()->screenGrf().isValid())
+		return;
+
     Coordinate crd = _layerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
     _screenCrd = crd;
+}
+
+void ControlPointModel::screenCrd(const Coordinate& crd) {
+	_screenCrd = crd;
 }
 
 double ControlPointModel::rowError() const {
@@ -145,5 +156,5 @@ void ControlPointModel::color(const QColor& clr) {
 
 bool Ilwis::Ui::ControlPointModel::isValid() const
 {
-    return x() != 0 && y() != 0 && _screenCrd.isValid();
+	return x() != 0 && y() != 0; // && _screenCrd.isValid();
 }
