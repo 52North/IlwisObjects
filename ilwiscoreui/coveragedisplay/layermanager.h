@@ -105,6 +105,7 @@ public:
 	Q_INVOKABLE void addInfoLayer(const QString& objid) ;
 	Q_INVOKABLE void qmlDrawer(const QString& objectname);
 	Q_INVOKABLE QString qmlDrawer() const;
+	Q_INVOKABLE void updatePostDrawers();
 
     RootLayerModel *rootLayer() const;
     
@@ -144,8 +145,6 @@ public:
     QVariantList yGridAxisLeft() const;
 	bool doPostRenderCallBack();
 	void doPostRenderCallBack(bool yesno);
-
-    void updatePostDrawers();
 
 public slots:
         //void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);
