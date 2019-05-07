@@ -75,9 +75,18 @@ ControlPointsListModel::ControlPointsListModel(const QVariantMap& parms, QObject
 				_controlPoints.push_back(new ControlPointModel(0, QString::number(i + 1), pnt.isActive(),
 					pnt.x, pnt.y, pnt.gridLocation().x, pnt.gridLocation().y,
 					pnt.errorColumn(), pnt.errorRow(), this));
+				_controlPoints.back()->screenCrd(Coordinate(pnt.gridLocation().x, grf->size().ysize() - pnt.gridLocation().y));
 			}
 			int ret = _planarCTP->compute();
 			handleComputeResult(ret);
+			QString slaveRaster = _georef->resource()["slaveraster"].toString();
+			if (slaveRaster != "") {
+				QFileInfo inf(QUrl(slaveRaster).toLocalFile());
+				if (inf.exists()) {
+					_slaveRaster.prepare(slaveRaster);
+					emit slaveChanged();
+				}
+			}
 		}
 	}
 }
@@ -145,7 +154,7 @@ void ControlPointsListModel::changeTiePointPixel(int index, double x, double y, 
         int ret = _planarCTP->compute();
         pnt->update();
         handleComputeResult(ret);
-            _slaveLayerManager->updatePostDrawers();
+        _slaveLayerManager->updatePostDrawers();
 
     }
 }
@@ -176,16 +185,33 @@ double ControlPointsListModel::tiePointY(int index) const {
 
 void ControlPointsListModel::slaveLayerManager(LayerManager * lm, const QString& objid)
 {
-    _slaveLayerManager = lm;
-    quint64 id = objid.toULongLong();
-    _slaveRaster.prepare(id);
-    _slaveLayerManager->addPostDrawer(this);
-    for (ControlPointModel *cp : _controlPoints) {
-        cp->_layerManager = lm;
-    }
-    connect(_slaveLayerManager, &QObject::destroyed, this, &ControlPointsListModel::removeBackgroundLayer);
+	if (lm) {
+		_slaveLayerManager = lm;
+		quint64 id = objid.toULongLong();
+		_slaveRaster.prepare(id);
+		_slaveLayerManager->addPostDrawer(this);
+		for (ControlPointModel *cp : _controlPoints) {
+			cp->_layerManager = lm;
+		}
+		_georef->resourceRef().addProperty("slaveraster", _slaveRaster->resource().url(true).toString());
+		connect(_slaveLayerManager, &QObject::destroyed, this, &ControlPointsListModel::removeBackgroundLayer);
+		emit slaveChanged();
+	}
 }
 
+QString ControlPointsListModel::slaveRaster() const {
+	if (_slaveRaster.isValid()) {
+		return _slaveRaster->resource().url(true).toString();
+	}
+	return "";
+}
+
+QString ControlPointsListModel::slaveid() const {
+	if (_slaveRaster.isValid()) {
+		return QString::number(_slaveRaster->id());
+	}
+	return "";
+}
 void ControlPointsListModel::removeBackgroundLayer() {
     _slaveLayerManager = 0;
     for (ControlPointModel *cp : _controlPoints) {

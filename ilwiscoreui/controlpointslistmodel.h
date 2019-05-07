@@ -43,7 +43,8 @@ namespace Ilwis {
             Q_PROPERTY(int selectedRow READ selectedRow WRITE selectedRow NOTIFY selectedRowChanged)
             Q_PROPERTY(int decimalsCrds READ decimalsCrds CONSTANT)
             Q_PROPERTY(bool subPixelPrecision READ subPixelPrecision WRITE subPixelPrecision NOTIFY subPixePrecisionChanged)
-            Q_PROPERTY(QString georefid READ georefid CONSTANT)
+            Q_PROPERTY(QString georefid READ georefid CONSTANT)		
+			Q_PROPERTY(QString slave READ slaveRaster NOTIFY slaveChanged)
 
         public:
             ControlPointsListModel(QObject *parent=0);
@@ -63,12 +64,13 @@ namespace Ilwis {
             Q_INVOKABLE void setCoordinateSystem(const QString& id);
             Q_INVOKABLE QString controlPointLabel(int index);
             Q_INVOKABLE void controlPointLabel(int index, const QString& newLabel);
-
+			Q_INVOKABLE QString slaveid() const;
             Q_INVOKABLE QString associatedUrl() const;
             bool postDrawerActive() const;
             void postDrawerActive(bool yesno);
             void subPixelPrecision(bool yesno);
             bool subPixelPrecision() const;
+			QString slaveRaster() const;
 
             signals:
                 void controlPointsChanged();
@@ -77,6 +79,7 @@ namespace Ilwis {
                 void postDrawerActiveChanged();
                 void selectedRowChanged();
                 void subPixePrecisionChanged();
+				void slaveChanged();
 
         public slots:
               void linkAcceptMessage(const QVariantMap& parameters);
