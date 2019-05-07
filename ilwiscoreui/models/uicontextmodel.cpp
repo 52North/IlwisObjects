@@ -429,7 +429,8 @@ void UIContextModel::initializeDataPane()
      if ( datapane && context()->workingCatalog().isValid()){
          QUrl urlWorkingCatalog = context()->workingCatalog()->resource().url();
          QString filter="container='" + urlWorkingCatalog.toString() + "'";
-         bool ok = QMetaObject::invokeMethod(datapane,"newCatalog",Q_ARG(QVariant, filter),Q_ARG(QVariant,"catalog"),Q_ARG(QVariant,urlWorkingCatalog.toString()),Q_ARG(QVariant,"left"));
+		 QString options;
+         bool ok = QMetaObject::invokeMethod(datapane,"newCatalog",Q_ARG(QVariant, filter),Q_ARG(QVariant,"catalog"),Q_ARG(QVariant,urlWorkingCatalog.toString()),Q_ARG(QVariant,"left"), Q_ARG(QVariant, options));
          if ( !ok)
              qDebug() << "failed";
 	 }
