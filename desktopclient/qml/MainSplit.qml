@@ -41,8 +41,8 @@ Rectangle {
         }
     }
 
-    function newCatalog(filter, outputtype, url,side){
-         var a =  dataPanel.newCatalog(filter, outputtype, url,side)
+    function newCatalog(filter, outputtype, url,side, options){
+         var a =  dataPanel.newCatalog(filter, outputtype, url,side, options)
          return a
     }
 

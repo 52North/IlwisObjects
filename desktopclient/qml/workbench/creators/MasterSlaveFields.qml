@@ -24,7 +24,7 @@ Column {
 			height : 20
 			checkFunction : testDrop
 			onDropped : {
-				var ilwisobjectid = drag.source.ilwisobjectid
+				ilwisobjectid = drag.source.ilwisobjectid
 				var filter = "itemid=" + ilwisobjectid
 				var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "right")
 				tiepointstable.editor.linkModels(tab.item.layermanagers[0])
@@ -37,10 +37,12 @@ Column {
 			iconSource : "../../images/view.png"
 
 			onClicked : {
-				var filter = "itemid="+ refraster.ilwisobjectid
-				var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
-				tiepointstable.editor.linkModels(tab.item.layermanagers[0])
-				tab.item.tabmodel.displayName = "Master Raster"
+				if ( refraster.ilwisobjectid) {
+					var filter = "itemid="+ refraster.ilwisobjectid
+					var tab = bigthing.newCatalog(filter ,"rastercoverage",refraster.content, "right")
+					tiepointstable.editor.linkModels(tab.item.layermanagers[0])
+					tab.item.tabmodel.displayName = "Master Raster"
+				}
 			}
 		}
 	}
@@ -54,8 +56,9 @@ Column {
 			width : parent.width - 20
 			height : 20
 			checkFunction : testDrop
+			content : tiepointstable.editor.slave
 			onDropped : {
-				var ilwisobjectid = drag.source.ilwisobjectid
+				ilwisobjectid = drag.source.ilwisobjectid
 				var filter = "itemid=" + ilwisobjectid
 				var tab = bigthing.newCatalog(filter ,"rastercoverage",drag.source.url, "left")
 				if ( "layermanagers" in tab.item){
@@ -73,12 +76,16 @@ Column {
 			iconSource : "../../images/view.png"
 
 			onClicked : {
-				var filter = "itemid="+ backraster.ilwisobjectid
-				var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left")
-				tiepointstable.editor.slaveLayerManager(tab.item.manager,backraster.ilwisobjectid)
-				tab.item.setActiveEditor(tiepointstable)
-				tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
-				tab.item.tabmodel.displayName = "Slave Raster"
+				if ( tiepointstable.editor.slaveid() !== "") {
+					var options = "forcegeorefundetermined=true";
+					var filter = "itemid="+ tiepointstable.editor.slaveid()
+					var tab = bigthing.newCatalog(filter ,"rastercoverage",backraster.content, "left", options)
+					tiepointstable.editor.slaveLayerManager(tab.item.layermanagers[0],tiepointstable.editor.slaveid())
+					tab.item.setActiveEditor(tiepointstable)
+					tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
+					tab.item.activeLayerManager().updatePostDrawers();
+					tab.item.tabmodel.displayName = "Slave Raster"
+				}
 			}
 		}
 	}

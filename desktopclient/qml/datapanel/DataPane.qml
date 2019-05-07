@@ -112,7 +112,6 @@ Rectangle {
         function newPanel(filter,outputtype, url,side, options) {
             var id = -1
             var insertetTab
-			console.debug("xxxxx", filter, outputtype, url)
             var allNew = datapane.leftSide.tabCount === 0 && datapane.rightSide.tabCount === 0
             var newPanel = datapane.createPanel(filter,outputtype, url, side)
             if ( newPanel){
@@ -194,8 +193,8 @@ Rectangle {
         }
     }
 
-    function newCatalog(filter,outputtype, url,side){
-        return datapanesplit.newPanel(filter, outputtype, url,side)
+    function newCatalog(filter,outputtype, url,side, options){
+        return datapanesplit.newPanel(filter, outputtype, url,side, options)
     }
 
     function setCatalogByIndex(currentTab, tabindex){

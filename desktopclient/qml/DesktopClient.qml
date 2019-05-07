@@ -55,9 +55,9 @@ Rectangle {
 
     }
 
-    function newCatalog(filter, outputtype, url, side){
+    function newCatalog(filter, outputtype, url, side, options){
 
-        var a =  mainSplit.newCatalog(filter, outputtype, url, side)
+        var a =  mainSplit.newCatalog(filter, outputtype, url, side, options)
         return a;
     }
 
