@@ -182,7 +182,12 @@ bool GeorefConnector::loadGeorefTiepoints(const IniFile& odf, GeoReference *grf)
       transformation =  PlanarCTPGeoReference::tPROJECTIVE;
     grfctp->transformation(transformation);
     grfctp->compute();
-
+	
+	QString slave = odf.value("GeoRefCTP", "Reference Map");
+	if (slave != sUNDEF) {
+		slave = grf->resource().container(true).toString() + "/" + slave;
+		grf->resourceRef().addProperty("slaveraster", slave);
+	}
     return true;
 }
 
