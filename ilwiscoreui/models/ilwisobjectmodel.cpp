@@ -167,6 +167,7 @@ QString IlwisObjectModel::subType() const {
 		}
 		// todo item domains
 	}
+	return "";
 }
 bool IlwisObjectModel::isProjectedCoordinateSystem() const
 {
@@ -1287,12 +1288,14 @@ QString IlwisObjectModel::value2string(const QVariant &value, const QString &att
 }
 
 bool IlwisObjectModel::editable() const {
-	return _editState;
+	return _editState && !_ilwisobject->isReadOnly();
 
 }
 void IlwisObjectModel::editable(bool yesno) {
-	_editState = yesno;
-	emit editableChanged();
+	if (!_ilwisobject->isReadOnly()) {
+		_editState = yesno;
+		emit editableChanged();
+	}
 }
 //---------------------------------------------------------------------------------
 CalcRangesWorker::CalcRangesWorker(quint64 rasterid) : _rasterid(rasterid){
