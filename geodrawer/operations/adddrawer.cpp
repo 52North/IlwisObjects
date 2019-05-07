@@ -59,11 +59,25 @@ bool AddDrawer::execute(ExecutionContext *ctx, SymbolTable &symTable)
             return false;
 
     if (_coverage.isValid()) {
+		if (_options.contains("forcegeorefundetermined") && _coverage->ilwisType() == itRASTER) {
+			bool v = _options["forcegeorefundetermined"].toBool();
+			if (v) {
+				IRasterCoverage raster = _coverage.as<RasterCoverage>();
+				IGeoReference grf;
+				grf.prepare("code=georef:undetermined");
+				ICoordinateSystem csyUnknowm("code=csy:unknown");
+				grf->coordinateSystem(csyUnknowm);
+				grf->size(raster->size());
+				raster->georeference(grf);
+			}
+		}
+
         CoverageLayerModel *ldrawer = static_cast<CoverageLayerModel *>(LayerManager::create(_parentLayer, _coverage, layerManager(), _options));
         if (!ldrawer) {
             kernel()->issues()->log(TR("Couldn't create layer for :") + _coverage->resource().url().toString());
             return false;
         }
+	
 
         ldrawer->coverage(_coverage);
 
