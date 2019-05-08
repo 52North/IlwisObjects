@@ -35,6 +35,11 @@ Modeller.ModellerWorkArea {
     }
     state : "invisible"
 
+    onWorkflowChanged : {
+        state = "visible"
+        workarea.visible = true
+    }
+
     WorkflowTools{
         id : tools
         z : 10
@@ -738,7 +743,10 @@ Modeller.ModellerWorkArea {
         }
     }
 	Component.onCompleted : {
-		if ( state == "invisible")
+		if ( state == "visible") {
+			workarea.visible = true
+		} else if ( state == "invisible") {
 			workarea.visible = false
+        }
 	}
 }
