@@ -10,6 +10,7 @@ import "../creators" as Creators
 Rectangle {
     function storeData() {
         if ( propertyForm.editable){
+			store()
         }
     }
     color : uicontext.lightestColor
