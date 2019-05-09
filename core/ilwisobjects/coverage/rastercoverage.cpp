@@ -252,7 +252,7 @@ void RasterCoverage::storeHistogram()  {
 	}
 	QDir dir(path + "/.ilwis");
 	if (!dir.exists()) {
-		if (!QDir(inf.absoluteFilePath()).mkdir(".ilwis"))
+		if (!QDir(path).mkdir(".ilwis"))
 			return;
 	}
 	if (!QDir(path + "/.ilwis/stats").exists()){
