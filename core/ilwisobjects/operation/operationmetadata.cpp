@@ -460,7 +460,9 @@ void OperationResource::addInParameter(quint32 order, IlwisTypes type, const QSt
     QString prefix = "pin_" + QString::number(order + 1) + "_";
     addProperty(prefix + "type", type);
     addProperty(prefix + "name", nme);
-    addProperty(prefix + "desc", description);
+	QString d = description;
+	d.replace("'", " ");
+    addProperty(prefix + "desc", d);
     addProperty(prefix + "optional", false);
     if (hasType(type, itILWISOBJECT)) // safer to put urls around urls in case there are spaces in the url
         needsQuotes = true;
@@ -521,7 +523,9 @@ void OperationResource::addOutParameter(quint32 order, IlwisTypes type, const QS
     QString prefix = "pout_" + QString::number(order + 1) + "_";
     addProperty(prefix + "type", type);
     addProperty(prefix + "name", nme);
-    addProperty(prefix + "desc", description);
+	QString d = description;
+	d.replace("'", " ");
+	addProperty(prefix + "desc", d);
     addProperty(prefix + "optional", false);
 }
 
@@ -530,7 +534,9 @@ void OperationResource::addOptionalOutParameter(quint32 order, IlwisTypes type, 
     QString prefix = "pout_" + QString::number(order + 1) + "_";
     addProperty(prefix + "type", type);
     addProperty(prefix + "name", name);
-    addProperty(prefix + "desc", description);
+	QString d = description;
+	d.replace("'", " ");
+    addProperty(prefix + "desc", d);
     addProperty(prefix + "optional", true);
 }
 
@@ -549,7 +555,9 @@ void OperationResource::addValidation(quint32 parent, quint32 child, const QStri
 {
     QString prefix = "pin_" + QString::number(child + 1) + "_";
     addProperty(prefix + "validationsource", parent);
-    addProperty(prefix + "validationcondition", validationCondition);
+	QString d = validationCondition;
+	d.replace("'", " ");
+    addProperty(prefix + "validationcondition", d);
 }
 
 
