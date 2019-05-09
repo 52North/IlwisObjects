@@ -213,7 +213,7 @@ quint64 CreateRasterCoverage::createMetadata()
      resource.addInParameter(0, itGEOREF,TR("Georeference"), TR("Geometry of the new rastercoverage"));
      resource.addInParameter(1, itDOMAIN|itSTRING,TR("Domain"), TR("Domain used by the raster coverage"));
      resource.addInParameter(2, itSTRING, TR("Bands"), TR("parameter defining a the bands that will be copied to the new raster coverage, Note that the bands maybe empty in which case an empty raster will be created"));
-     resource.addInParameter(3, itDOMAIN | itSTRING,TR("Stack domain"), TR("Option Domain of the z direction (stack), default is 'count'"));
+     resource.addInParameter(3, itDOMAIN | itSTRING,TR("Stack domain"), TR("Option Domain of the z direction (stack), default is count"));
      resource.addInParameter(4, itSTRING|itINTEGER|itRASTER,TR("Stack definition"), TR("Content of the stack, numbers, elements of item domain,raster bands or sets of numbers"));
      resource.addInParameter(5, itBOOL,TR("Auto resample"), TR("Checking this option will automatically resample all bands to the input georeference"));
      resource.setOutParameterCount({1});
