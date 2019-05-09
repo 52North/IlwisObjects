@@ -29,6 +29,7 @@ Rectangle {
             width : parent.width
             content: isAnonymous ? "internal" : geoReferenceName
             readOnly: !propertyForm.editable
+			callbackFunction : setGrf
         }
 
         Controls.TextEditLabelPair{
@@ -48,4 +49,7 @@ Rectangle {
             readOnly : true
         }
     }
+	function setGrf(url){
+		
+	}
 }
