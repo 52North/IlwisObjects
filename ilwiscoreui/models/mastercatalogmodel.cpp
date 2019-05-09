@@ -508,7 +508,9 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
             if (!ok)
                 continue;
 
+			mastercatalog()->noRefreshCatalog(true);
             IlwisObjectModel *ioModel = new IlwisObjectModel(resource, this);
+			mastercatalog()->noRefreshCatalog(false);
             _selectedObjects.append(ioModel);
             emit selectionChanged();
 			emit catalogOperationEditorsChanged();
