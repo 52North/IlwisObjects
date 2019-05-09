@@ -616,22 +616,17 @@ bool Resource::store(InternalDatabaseConnection &queryItem, InternalDatabaseConn
         kernel()->issues()->logSql(queryProperties.lastError());
         return false;
     }
-
+	queryProperties.exec("DELETE from catalogitemproperties WHERE itemid=" + QString::number(id()));
+	QString queryP = "INSERT INTO catalogitemproperties (propertyname, propertyvalue, itemid) VALUES('%1','%2',%3)";
     for(QHash<QString, QVariant>::const_iterator  iter = _properties.constBegin(); iter != _properties.constEnd(); ++iter) {
-        queryProperties.bindValue(":itemid", id());
-        QString nameItem = iter.key();
-        queryProperties.bindValue(":propertyname",nameItem);
-        QString v;
-        if ( iter.value().type() == QVariant::StringList)
-            v = "STRINGLIST:" + iter.value().toStringList().join(",");
-        v = iter.value().toString();
-        queryProperties.bindValue(":propertyvalue", v);
-        ok = queryProperties.exec();
-        if (!ok) {
-            kernel()->issues()->logSql(queryProperties.lastError());
-        }
+		QString fullq = QString(queryP).arg(iter.key()).arg(iter.value().toString()).arg(id());
+		bool ok = queryProperties.exec(fullq);
+		if (!ok) {
+			kernel()->issues()->logSql(queryProperties.lastError());
+		}
+
     }
-    return ok;
+	return ok;
 
 }
 
