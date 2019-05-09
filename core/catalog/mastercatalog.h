@@ -211,6 +211,8 @@ public:
 
     bool usesContainers(const QUrl &scheme) const;
     void addContainerException(const QString& scheme);
+	bool noRefreshCatalog() const;
+	void noRefreshCatalog(bool yesno);
 
 
 #ifdef QT_DEBUG
@@ -232,6 +234,7 @@ private:
     std::set<QString> _containerExceptions; // for some schemes the mastercatelog shouldnt try to find containers as they dont make sense;
     mutable std::recursive_mutex _guard;
     QString replaceSymbols(const QString &selection) const;
+	bool _noRefresh = false; // temporarily blocks refreshes ( selections trigger a refresh which is unwanted)
 };
 
 //typedef QHash<IlwisResource, QList<CatalogCreate>  > CatalogCollection;

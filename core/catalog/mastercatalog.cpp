@@ -307,6 +307,13 @@ bool MasterCatalog::addItems(const std::vector<Resource>& items, bool silent)
 
 }
 
+bool MasterCatalog::noRefreshCatalog() const {
+	return _noRefresh;
+}
+void MasterCatalog::noRefreshCatalog(bool yesno) {
+	_noRefresh = yesno;
+}
+
 bool MasterCatalog::updateItems(const std::vector<Resource>& iteme, bool silent)
 {
     Locker<std::recursive_mutex> lock(_guard);
@@ -338,9 +345,6 @@ bool MasterCatalog::updateItems(const std::vector<Resource>& iteme, bool silent)
     }
 
     UrlSet containers;
-    ok = queryProperties.prepare("INSERT INTO catalogitemproperties VALUES(\
-                                 :propertyvalue,:propertyname,:itemid\
-                                 )" );
     if (!ok) {
         kernel()->issues()->logSql(queryItem.lastError());
         return false;
@@ -349,16 +353,14 @@ bool MasterCatalog::updateItems(const std::vector<Resource>& iteme, bool silent)
     for(const Resource &resource : iteme) {
         if (!resource.isValid() || !resource.hasChanged())
             continue;
-
-        InternalDatabaseConnection deleteQuery;
-        deleteQuery.exec("DELETE from catalogitemproperties WHERE itemid=" + QString::number(resource.id())) ;
+	
         resource.store(queryItem, queryProperties);
-        containers.insert(resource.container());
+	    containers.insert(resource.container());
     }
     // db.exec("COMMIT TRANSACTION");
 
     // dont start sending message when the whole system is starting and dont send when we are not using a UI
-    if ( hasType(context()->runMode() ,rmDESKTOP) && context()->initializationFinished() && containers.size() > 0 && !silent){
+    if ( hasType(context()->runMode() ,rmDESKTOP) && context()->initializationFinished() && containers.size() > 0 && !silent && _noRefresh == false){
             if ( iteme.size() > 0)
                 emit contentChanged(containers);
     }
@@ -419,11 +421,15 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
         Resource res = mastercatalog()->id2Resource(objectid);
         if (res.isValid() && res.hasProperty(attribute)) {
             if (var != res[attribute]){
-                statement = QString("update catalogitemproperties set propertyname='%1', propertyvalue='%2' where itemid=%3").arg(attribute).arg(var.toString()).arg(objectid);
+                statement = QString("update catalogitemproperties set propertyvalue='%2' where itemid=%3 and propertyname='%1'").arg(attribute).arg(var.toString()).arg(objectid);
             }
         }
-        else
-            statement = QString("insert into catalogitemproperties (propertyvalue,propertyname,itemid) values('%1','%2',%3)").arg(var.toString()).arg(attribute).arg(objectid);
+		else {
+			InternalDatabaseConnection sqlPublic;
+			statement = QString("DELETE from catalogitemproperties WHERE itemid=%1 and propertyname='%2'").arg(objectid).arg(attribute);
+			bool ok = sqlPublic.exec(statement);
+			statement = QString("insert into catalogitemproperties (propertyvalue,propertyname,itemid) values('%1','%2',%3)").arg(var.toString()).arg(attribute).arg(objectid);
+		}
         return statement;
 
     };
@@ -448,11 +454,13 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
     if (statement != "") {
         InternalDatabaseConnection sqlPublic;
         bool ok = sqlPublic.exec(statement);
+
+
         if (!ok) {
             kernel()->issues()->logSql(sqlPublic.lastError());
             return false;
         }
-    }
+	}
     return true;
 }
 
@@ -570,7 +578,7 @@ QUrl MasterCatalog::name2url(const QString &name, IlwisTypes tp) const{
 
     } else if ( name.left(11) == "code=proj4:") {
         auto code = name.right(name.size() - 5);
-        return QString("ilwis://projections/%1").arg(code);
+        return QString("ilwis://system/projections/%1").arg(code);
     } else if ( name.left(12) == "code=domain:") {
         QString shortname = name.mid(name.indexOf(":") + 1);
         if ( shortname == "text" || shortname == "color" || shortname == "colorpalette")
