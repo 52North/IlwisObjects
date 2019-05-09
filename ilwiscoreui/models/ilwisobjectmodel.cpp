@@ -821,8 +821,18 @@ void IlwisObjectModel::setProperty(const QString& propertyname, const QVariantMa
 			matrix->combo(x, y, v.toDouble());
 		}
 	}
-
-
+	if (propertyname == "georef") {
+		if (hasType(_ilwisobject->ilwisType(), itRASTER)) {
+			IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
+			QString url = values["url"].toString();
+			IGeoReference grf;
+			if (!grf.prepare(url, { "mustexist", true })) {
+				kernel()->issues()->log(TR("Not a valid georeference:") + url);
+				return;
+			}
+			raster->georeference(grf);
+		}
+	}
 }
 
 QString IlwisObjectModel::getProperty(const QString &propertyname) const
