@@ -243,12 +243,15 @@ Modeller.ModellerWorkArea {
 
     function recreateFlow(parm,kvp,item, index){
         if ( parm && item && parm.outputIndex !== -1){
-            //console.debug("from", index, "to", parm.outputIndex)
             var flowPoints = { "fromParameterIndex" :  parm.outputIndex, "toParameterIndex" : index};
             var sourceItem = kvp[parm.outputNodeId]
-            var sourceRect = sourceItem.attachementRectangles[parm.sourceRect]
-            var targetRect = parm.targetRect
-            sourceItem.addFlowConnection(item, sourceItem, targetRect, sourceRect, flowPoints, -1,-1)
+            if (sourceItem) {
+                var sourceRect = sourceItem.attachementRectangles[parm.sourceRect]
+                var targetRect = parm.targetRect
+                sourceItem.addFlowConnection(item, sourceItem, targetRect, sourceRect, flowPoints, -1,-1)
+            } else {
+                console.debug("Workflow: error node:" + parm.outputNodeId )
+            }
        }
     }
 
