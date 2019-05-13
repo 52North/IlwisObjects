@@ -168,6 +168,7 @@ WorkBenchShifter {
                                 text : styleData.value
                                 font.pointSize: 8
                                 readOnly: true;
+                                clip : true
                                 color : commandsTable.model[styleData.row] ? commandsTable.model[styleData.row].color : "black"
                                 wrapMode: Text.WordWrap
                                 MouseArea{
