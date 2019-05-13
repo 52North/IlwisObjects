@@ -337,3 +337,59 @@ QString OperationModel::specialIcon() const
     }
     return "";
 }
+
+QString OperationModel::fullDescription() const {
+
+	auto breakLine = [](const QString& inp, int maxLine)->QString {
+		QString result;
+		bool possibleBreak = false;
+		bool breakNeeded = false;
+		int count = 0;
+		for (int i = 0; i < inp.size(); ++i) {
+			QChar c = inp[i];
+			if (breakNeeded && (c == ' ' || c == ',')) {
+				possibleBreak = true;
+			}
+			if (count > 50) {
+				breakNeeded = true;
+			}
+			result += c;
+			++count;
+			if (breakNeeded && possibleBreak) {
+				result += "<br>";
+				possibleBreak = breakNeeded = false;
+				count = 0;
+			}
+		}
+		return result;
+	};
+
+	QString result = "<p><table>";
+	result += QString("<tr><td><b>Name</b></td>") + "<td>" + name() + "</td></tr>";
+	if (name() != displayName()) {
+		result += QString("<tr><td><b>Display Name</b></td>") + "<td>" + displayName() + "</td></tr>";
+	}
+
+	result += QString("<tr><td><b>Description</b></td>") + "<td>" + breakLine(description(), 50) + "</td></tr>";
+	result += QString("<tr><td><b>Python Syntax</b></td>") + "<td>" + pythonSyntax() + "</td></tr>";
+	result += QString("<tr><td><b>Provider</b></td>") + "<td>" + provider() + "</td></tr>";
+	result += QString("<tr><td><b>Keywords</b></td>") + "<td>" + keywords() + "</td></tr>";
+	result += "<hr>";
+	result += QString("<tr><td><b>Input parameters</b></td>") + "<td>" + QString::number(maxParameterCount(true)) + "</td></tr>";
+
+	for (int i = 0; i < maxParameterCount(true); ++i) {
+		result += QString("<tr><td><b>Parameter</b></td>") + "<td>" + QString::number(i) + "</td></tr>";
+		result += QString("<tr><td><b>Name</b></td>") + "<td><i>" + inputparameterName(i) + "</i></td></tr>";
+		result += QString("<tr><td><b>Types</b></td>") + "<td><i>" + breakLine(inputparameterTypeNames(i),50) + "</i></td></tr>";
+		result += QString("<tr><td><b>Descrption</b></td>") + "<td><i>" + breakLine(inputparameterDescription(i), 50) + "</i></td></tr>";
+	}
+	result += "<hr>";
+	result += QString("<tr><td><b>Output parameters</b></td>") + "<td>" + QString::number(maxParameterCount(false)) + "</td></tr>";
+	for (int i = 0; i < maxParameterCount(false); ++i) {
+		result += QString("<tr><td><b>Parameter</b></td>") + "<td>" + QString::number(i) + "</td></tr>";
+		result += QString("<tr><td><b>Name</b></td>") + "<td><i>" + outputparameterName(i) + "</i></td></tr>";
+		result += QString("<tr><td><b>Types</b></td>") + "<td><i>" + breakLine(outputparameterTypeNames(i), 50) + "</i></td></tr>";
+		result += QString("<tr><td><b>Descrption</b></td>") + "<td><i>" + breakLine(outputparameterTypeNames(i), 50) + "</i></td></tr>";
+	}
+	return result + "</table></p>";
+}

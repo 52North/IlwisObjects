@@ -65,6 +65,7 @@ public:
     Q_INVOKABLE bool isLegalFlow(Ilwis::Ui::OperationModel * from, Ilwis::Ui::OperationModel *to) const;
     Q_INVOKABLE QStringList choiceList(quint32 paramIndex) const;
     Q_INVOKABLE QStringList parameterIndexes(const QString &typefilter, bool fromOperation);
+	Q_INVOKABLE QString fullDescription() const;
 
 
     QStringList inParamNames() const;
