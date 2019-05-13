@@ -756,15 +756,15 @@ QString Time::toString(bool local, IlwisTypes tp) const{
         else if ( tp == itDATETIME)
             return QString("%1-%2-%3T%4:%5:%6").arg(year,4, 10, QLatin1Char('0')).arg(timeinfo->tm_mon + 1,2,10,QLatin1Char('0')).arg(timeinfo->tm_mday,2,10,QLatin1Char('0')).arg(timeinfo->tm_hour,2,10,QLatin1Char('0')).arg(timeinfo->tm_min,2,10,QLatin1Char('0')).arg(timeinfo->tm_sec,2,10,QLatin1Char('0'));
         else if ( tp == itTIME)
-            return QString("%1:%2:%3").arg(timeinfo->tm_hour,2,10,QLatin1Char('0')).arg(timeinfo->tm_min,2,10,QLatin1Char('0')).arg(seconds,2 ,'f',2 ,QLatin1Char('0'));
+            return QString("%1:%2:%3").arg(timeinfo->tm_hour,2,10,QLatin1Char('0')).arg(timeinfo->tm_min,2,10,QLatin1Char('0')).arg(timeinfo->tm_sec, 2, 10, QLatin1Char('0'));
     } else {
         //struct tm *timeinfo = gmtime(& t);
         if ( tp == itDATE)
             return QString("%1-%2-%3").arg(year,4, 10, QLatin1Char('0')).arg(month,2,10,QLatin1Char('0')).arg(day,2,10,QLatin1Char('0'));
         else if ( tp == itDATETIME)
-            return QString("%1-%2-%3T%4:%5:%6").arg(year,4,10,QLatin1Char('0')).arg(month,2,10,QLatin1Char('0')).arg(day,2,10,QLatin1Char('0')).arg(hour,2,10,QLatin1Char('0')).arg(minutes,2,10,QLatin1Char('0')).arg(seconds,2, 'f',2 ,QLatin1Char('0'));
+            return QString("%1-%2-%3T%4:%5:%6").arg(year,4,10,QLatin1Char('0')).arg(month,2,10,QLatin1Char('0')).arg(day,2,10,QLatin1Char('0')).arg(hour,2,10,QLatin1Char('0')).arg(minutes,2,10,QLatin1Char('0')).arg((int)seconds, 2, 10, QLatin1Char('0'));
         else if ( tp == itTIME)
-            return QString("%1:%2:%3").arg(hour,2, 10, QLatin1Char('0')).arg(minutes,2,10,QLatin1Char('0')).arg(seconds,2,'f',2 ,QLatin1Char('0'));
+            return QString("%1:%2:%3").arg(hour,2, 10, QLatin1Char('0')).arg(minutes,2,10,QLatin1Char('0')).arg((int)seconds, 2, 10, QLatin1Char('0'));
     }
     return "?";
 }
