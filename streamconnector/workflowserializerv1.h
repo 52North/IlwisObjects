@@ -35,7 +35,7 @@ public:
     static VersionedSerializer *create(QDataStream &stream);
 private:
     bool storeNode(const Ilwis::SPWorkFlowNode &node, const IOOptions &options=IOOptions());
-    void loadNode(Ilwis::SPWorkFlowNode &node, Workflow *workflow, const IOOptions &options=IOOptions());
+    bool loadNode(Ilwis::SPWorkFlowNode &node, Workflow *workflow, const IOOptions &options=IOOptions());
     void storeNodeLinks(const Ilwis::SPWorkFlowNode &node);
     void loadNodeLinks(SPWorkFlowNode &node, Workflow *workflow);
 };

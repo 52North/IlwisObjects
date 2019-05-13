@@ -260,7 +260,7 @@ void WorkflowSerializerV1::loadNodeLinks(SPWorkFlowNode& node,Workflow *workflow
     }
 }
 
-void WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, const IOOptions &options){
+bool WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, const IOOptions &options){
 
     QString nm, lbl;
     qint32 collapsed, type;
@@ -277,12 +277,16 @@ void WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, con
     _stream >> provider;
     _stream >> type;
     _stream >> collapsed;
+
+    bool valid = true;
     if ( type == (qint32)WorkFlowNode::ntRANGEJUNCTION){
         auto opNode = new RangeJunctionNode(nodeid);
         opNode->name(nm);
         opNode->setDescription(ds);
         node.reset(opNode);
     }else  if ( type == (qint32)WorkFlowNode::ntOPERATION){
+        if (syntax.size() <= 1)     // invalid operation
+            valid = false;      // mark as such; a bit of a hack!
         auto opNode = new OperationNode(nm, ds,nodeid);
         opNode->operation(provider, syntax, isWorkflow);
         node.reset(opNode);
@@ -393,10 +397,12 @@ void WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, con
         IOOptions opt = options;
         opt.addOption("mustexist", true);
         if(!VersionedSerializer::loadMetaData(opt, tp, v))
-            return;
+            return true;
         wp.value(v, tp);
         node->addInput(wp,j);
     }
+
+    return valid;
 }
 
 bool WorkflowSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options)
@@ -414,16 +420,22 @@ bool WorkflowSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &optio
     qint32 sz;
     _stream >> sz;
     std::vector<SPWorkFlowNode> independenNodes;
-    for(qint32 i = 0; i < sz ; ++i){
+    std::vector<quint64> invalids;
+    for (qint32 i = 0; i < sz; ++i) {
         SPWorkFlowNode node;
-        loadNode(node, workflow);
+        bool valid = loadNode(node, workflow);
 
+        if (!valid)
+            invalids.push_back(node->id());
         workflow->addNode(node);
         independenNodes.push_back(node);
     }
     for(SPWorkFlowNode& node : independenNodes){
         loadNodeLinks(node, workflow);
     }
+
+    for (qint32 i = 0; i < invalids.size(); i++)
+        workflow->removeNode(invalids[i]);
 
     workflow->updateIdCounter();
 
