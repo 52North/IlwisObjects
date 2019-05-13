@@ -34,7 +34,7 @@ Rectangle {
 
     y : 4
     x : 4
-    height :464
+    height :484
     width : parent.width
 
     Component {
