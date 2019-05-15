@@ -399,6 +399,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\OverViewDrawer.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\OverviewExtentToolbar.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\AddColorComposite.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml" />
