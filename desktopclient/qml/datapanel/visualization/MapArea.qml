@@ -1,10 +1,11 @@
-import QtQuick 2.1
+import QtQuick 2.3
 import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.1
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import VisualAttribute 1.0
+import QtQuick.Dialogs 1.1
 import "../../controls" as Controls
 import "../../Global.js" as Global
 
@@ -27,10 +28,54 @@ DropArea {
 			changeRepresentation(resource)
 		}else {
 			layerview.activeSubPanel  = layerContainer.panelSubIndex
-			var filter = "itemid=" + resource.id
-			addDataSource(filter, resource.name, resource.typeName)   
+			var idslist = drag.source.ids.split("|")
+			var done = false
+			if ( idslist.length == 3){
+				if ( operations.testIfSuitableforCC(drag.source.ids)){
+					ccquestion.ids = drag.source.ids
+					ccquestion.visible = true
+					done = true
+				}
+			} 
+			if(!done){
+				var idlist = drag.source.ids.split("|")
+				for(var i=0 ; i < idlist.length; ++i){
+					var resource= mastercatalog.id2Resource(idlist[i])
+					if ( resource.typeName == "rastercoverage" || 
+						resource.typeName == "featurecoverage" ||
+						resource.typeName == "pointcoverage" ||
+						resource.typeName == "linecoverage" ||
+						resource.typeName == "polygoncoverage"){
+
+						var filter = "itemid=" + resource.id
+						addDataSource(filter, resource.name, resource.typeName) 
+					}
+					resource.suicide()
+				}
+			}
 		}
     }
+
+	MessageDialog {
+		property var ids
+		id : ccquestion
+		title: "Use as Color Composite?"
+		icon: StandardIcon.Question
+		text: "Use dragged bands as Color Composite"
+		standardButtons: StandardButton.Yes |StandardButton.No | StandardButton.Abort
+		Component.onCompleted: visible = false
+		onYes: {
+			addDataSource("", "\"\"", 'rastercoverage','createtype=colorcomposite,items=' + ids)
+		}
+		onNo: {
+			var idlist = ids.split("|")
+			for(var i=0 ; i < idlist.length; ++i){
+				var resource= mastercatalog.id2Resource(idlist[i])
+				var filter = "itemid=" + resource.id
+				addDataSource(filter, resource.name, resource.typeName)   
+			}
+		}
+	}
 
     Rectangle {
         id : backArea
