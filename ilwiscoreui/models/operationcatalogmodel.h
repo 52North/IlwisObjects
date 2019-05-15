@@ -65,6 +65,7 @@ public:
    Q_INVOKABLE void refresh();
    Q_INVOKABLE void refreshAllOperationCatalogs();
    Q_INVOKABLE QVariantList resolveValidation(const QString& metaid, const QString &objectid, int sourceParameterIndex);
+   Q_INVOKABLE bool testIfSuitableforCC(const QString& idlist);
 
    void gatherItems();
 

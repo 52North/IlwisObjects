@@ -549,3 +549,38 @@ void OperationCatalogModel::workerFinished()
 {
     emit operationFinished();
 }
+
+bool OperationCatalogModel::testIfSuitableforCC(const QString& idlist) {
+	QStringList parts = idlist.split("|");
+	if (parts.size() != 3)
+		return false;
+	IRasterCoverage redBand;
+	if (!redBand.prepare(parts[0].toULongLong(), { "mustexist", true })) {
+		return false;
+	}
+
+	IRasterCoverage greenBand;
+	if (!greenBand.prepare(parts[1].toULongLong(), { "mustexist", true })) {
+		return false;
+	}
+
+	IRasterCoverage blueBand;
+	if (!blueBand.prepare(parts[2].toULongLong(), { "mustexist", true })) {
+		return false;
+	}
+	if (redBand->datadef().domain()->ilwisType() != itNUMERICDOMAIN)
+		return false;
+	if (greenBand->datadef().domain()->ilwisType() != itNUMERICDOMAIN)
+		return false;
+	if (blueBand->datadef().domain()->ilwisType() != itNUMERICDOMAIN)
+		return false;
+
+	if (!redBand->georeference()->isCompatible(greenBand->georeference()))
+		return false;
+	if (!redBand->georeference()->isCompatible(blueBand->georeference()))
+		return false;
+	if (!greenBand->georeference()->isCompatible(blueBand->georeference()))
+		return false;
+
+	return true;
+}
