@@ -371,6 +371,9 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\mousegotopixeleditor.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\addcolorcomposite.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -626,6 +629,9 @@
       <Filter>Header Files\modeller\classification</Filter>
     </QtMoc>
     <QtMoc Include="ilwiscoreui\coveragedisplay\propertyeditors\mousegotopixeleditor.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\coveragedisplay\propertyeditors\addcolorcomposite.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
     </QtMoc>
   </ItemGroup>
