@@ -70,6 +70,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "mousegotopixeleditor.h"
 #include "classification/supervisedclassification.h"
 #include "classification/supervisedclassificationmodel.h"
+#include "addcolorcomposite.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -310,6 +311,7 @@ void UIContextModel::prepare()
 	addPropertyEditor("stretchlimits", StretchLimits::create);
 	addPropertyEditor("convertattributedomain", ConvertAttributeDomain::create);
 	addPropertyEditor("mousegotopixeleditor", MouseGotoPixelEditor::create);
+	addPropertyEditor("addcolorcomposite", AddColorComposite::create);
 
 
 	modelbuilder()->registerAnalysisModel("supervisedclassification", SupervisedClassificationmodel::create);
