@@ -172,6 +172,29 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
 			}
 		}
 	}
+	if (!_coverage.isValid() && _options.contains("createtype")) {
+		if (_options["createtype"].toString() == "colorcomposite") {
+			QString items = _options["items"].toString();
+			auto parts = items.split("|");
+			if (parts.size() > 0) {
+				IRasterCoverage redBand;
+				if (!redBand.prepare(parts[0].toULongLong(), { "mustexist", true })) {
+					kernel()->issues()->log(TR("Could't create band for color composite:") + parts[0]);
+					return sPREPAREFAILED;
+				}
+				IRasterCoverage colorcomposite;
+				colorcomposite.prepare();
+				colorcomposite->resourceRef().name("colorcomposite_" + QString::number(colorcomposite->id()), false, false);
+				colorcomposite->coordinateSystem(redBand->coordinateSystem());
+				colorcomposite->georeference(redBand->georeference());
+				std::vector<double> indexes = { 0 };
+				colorcomposite->setDataDefintions(redBand->datadef().domain(), indexes);
+				colorcomposite->store();
+				mastercatalog()->addItems({ colorcomposite->resource() });
+				_coverage = colorcomposite;
+			}
+		}
+	}
 
     return sPREPARED;
 }
