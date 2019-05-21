@@ -346,11 +346,12 @@ bool Resource::hasProperty(const QString &prop) const
     return iter != _properties.end();
 }
 
-void Resource::addProperty(const QString &key, const QVariant &value)
+void Resource::addProperty(const QString &key, const QVariant &value, bool extended)
 {
     if ( _properties[key.toLower()] == value)
         return;
     changed(true);
+	mastercatalog()->changeResource(id(), key, value, extended);
     _properties[key.toLower()] = value;
 }
 
@@ -624,7 +625,6 @@ bool Resource::store(InternalDatabaseConnection &queryItem, InternalDatabaseConn
 		if (!ok) {
 			kernel()->issues()->logSql(queryProperties.lastError());
 		}
-
     }
 	return ok;
 

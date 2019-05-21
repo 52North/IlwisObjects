@@ -154,7 +154,7 @@ public:
      * @param key
      * @param value
      */
-    void addProperty(const QString& key, const QVariant& value );
+    void addProperty(const QString& key, const QVariant& value, bool extended = false);
 
     /**
      * Removes a property and its value from this resource.
