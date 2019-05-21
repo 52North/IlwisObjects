@@ -68,7 +68,7 @@ std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
 
     std::unordered_map<QString, IniFile> inifiles;
     std::set<ODFItem> odfitems;
-    QHash<QString, quint64> names;
+    QHash<QString, Resource> names;
     std::vector<Resource> finalList;
     UPTranquilizer trq(Tranquilizer::create(context()->runMode()));
     trq->prepare("ilwis3 connector",source().toLocalFile(),files.size());
@@ -110,10 +110,10 @@ std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
 				   registerBackReferences(mapList, kvp.second, fileContainers);
 
                }
-               names[kvp.second.fileInfo().absoluteFilePath().toLower()] = item.id();
+               names[kvp.second.fileInfo().absoluteFilePath().toLower()] = item;
            }
            for(auto& resource : finalList){
-               names[OSHelper::neutralizeFileName(resource.url(true).toLocalFile())] = resource.id();
+               names[OSHelper::neutralizeFileName(resource.url(true).toLocalFile())] = resource;
            }
            std::vector<ODFItem> items;
            trq->prepare(TR("Organizing data"),"",odfitems.size()*2);
