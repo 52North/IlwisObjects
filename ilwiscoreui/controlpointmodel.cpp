@@ -90,13 +90,13 @@ int ControlPointModel::columnScreen() const {
     Pixel pix = _layerManager->rootLayer()->screenGrf()->coord2Pixel(_screenCrd);
     return pix.x;
 }
-void ControlPointModel::screenPosition(double c, double r) {
+void ControlPointModel::screenPosition(const Coordinate& crd) {
     if (!_layerManager)
         return ;
 	if (!_layerManager->rootLayer()->screenGrf().isValid())
 		return;
 
-    Coordinate crd = _layerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
+   // Coordinate crd = _layerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
     _screenCrd = crd;
 }
 

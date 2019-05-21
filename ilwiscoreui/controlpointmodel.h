@@ -68,7 +68,7 @@ namespace Ilwis {
             void update();
             int rowScreen() const;
             int columnScreen() const;
-            void screenPosition(double c, double r);
+            void screenPosition(const Coordinate& crd);
 			void screenCrd(const Coordinate& crd);
             QString label() const;
             void label(const QString& l);
