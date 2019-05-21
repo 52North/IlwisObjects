@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "coordinatesystem.h"
 #include "proj4parameters.h"
 #include "conventionalcoordinatesystem.h"
+#include "boundsonlycoordinatesystem.h"
 #include "gdalproxy.h"
 #include "dataformat.h"
 #include "gdalconnector.h"
@@ -52,6 +53,8 @@ IlwisObject *CoordinateSystemConnector::create() const{
     IlwisObject *object = 0;
     if ( type() == itCONVENTIONALCOORDSYSTEM)
         object = new ConventionalCoordinateSystem(_resource);
+	if (hasType(type(), itBOUNDSONLYCSY))
+		object = new BoundsOnlyCoordinateSystem(_resource);
     return object;
 }
 
@@ -119,6 +122,9 @@ std::vector<double> CoordinateSystemConnector::getShifts(QString & filename, QSt
 
 bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
 
+	if (data->code() == "csy:unknown") {
+		return true;
+	}
     if (!GdalConnector::loadMetaData(data, options))
         return false;
     bool ret = true;
@@ -199,7 +205,10 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
 
         }
     }else{
-        ret = ERROR2(ERR_INVALID_PROPERTY_FOR_2,"OGRSpatialReference",data->name());
+		CoordinateSystem *csy = dynamic_cast<CoordinateSystem *>(data);
+		if ( !csy || csy->ilwisType() != itBOUNDSONLYCSY)
+			ret = ERROR2(ERR_INVALID_PROPERTY_FOR_2,"OGRSpatialReference",data->name());
+		csy->code("csy:unknown");
     }
     gdal()->releaseSrsHandle(_handle, srshandle, data->name());
     QFileInfo fileinf(sourceRef().toLocalFile());
