@@ -269,6 +269,7 @@ bool CatalogConnector::loadDataThreaded(IlwisObject *obj, const IOOptions &optio
         mastercatalog()->updateItems(updateableItems);
 
     if ( items.size() > 0){
+		mastercatalog()->addItems(items);
         CalcLatLon::calculatelatLonEnvelopes(items, items[0].container(true).url());
         mastercatalog()->updateItems(items);
     }
