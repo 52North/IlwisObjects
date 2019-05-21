@@ -46,7 +46,7 @@ Rectangle {
     }
    Loader {
         anchors.fill: parent
-        id: postDrawers
+        id: postDrawers 
     }
     Canvas {
         id : canvas
@@ -62,7 +62,7 @@ Rectangle {
                 var ctx = canvas.getContext('2d');
                 ctx.reset();
                 ctx.beginPath()
-                ctx.clearRect(0,0,width, height);
+               ctx.clearRect(0,0,width, height);
                 var postDrawersList = layermanager.postDrawers;
                 for(var i=0; i < postDrawersList.length; ++i){
                     if ( postDrawersList[i].postDrawerActive){

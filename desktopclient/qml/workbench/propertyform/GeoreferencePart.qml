@@ -12,7 +12,7 @@ Rectangle {
     color : uicontext.lightestColor
     function storeData() {
         if ( propertyForm.editable){
-            setAttribute("georeference", georef.content,"")
+            setAttribute("georeference", grf.content,"")
         }
     }
 
@@ -21,7 +21,7 @@ Rectangle {
         height : 60
 
         Controls.FilteredTextEditLabelPair{
-            id : line1
+            id : grf
             labelWidth: 120
             labelText: qsTr("Georeference")
             filterImage: "../images/georeference.png"

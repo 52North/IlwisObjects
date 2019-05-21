@@ -51,7 +51,7 @@ Column {
 		height : 20
 		Controls.TextEditLabelPair {
 			id : backraster
-			labelText : qsTr("Slave raster")
+			labelText : qsTr("Slave Raster")
 			labelWidth : 120
 			width : parent.width - 20
 			height : 20

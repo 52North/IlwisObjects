@@ -60,14 +60,14 @@ Item {
     }
     Text {
         id : wronglocation
-        width :180
+        width :280
         height : 20
         y: 4
-        text : qsTr("Location can't be used for writing")
+        text : qsTr("warning: Active Data panel can't be used for writing")
         anchors.right: parent.right
         anchors.rightMargin: 5
         visible : currentCatalogCorrectUrl() === "" ? true : false
-        color : "red"
+        color : "orange"
 
     }
     Rectangle {

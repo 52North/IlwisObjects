@@ -11,15 +11,16 @@ import "../../controls" as Controls
 import "../.." as Base
 
 Column {
+  id : abc
   width : parent.width
   spacing : 4
   property var editor
-  property bool readOnly : false
- 
+
+
     TableView {
         id : tableview
         width : parent.width
-        height : parent.height - 65
+        height : parent.height - 85
         selectionMode : SelectionMode.SingleSelection
         property var doUpdate : true
         model : editor ? editor.controlPoints : null
@@ -51,7 +52,7 @@ Column {
                     height : 18
                     checked : styleData.value
                     style : Base.CheckBoxStyle1{}
-					enabled : !readOnly
+					enabled : isEditable
                 }
         }
         TableViewColumn{
@@ -63,12 +64,13 @@ Column {
                 TextField {
                     text: styleData.value
                     height : 20
-					enabled : !readOnly
+					enabled : isEditable
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+						 editor.controlPointLabel(styleData.row,text)
                     }
                     onEditingFinished : {
                         editor.controlPointLabel(styleData.row,text)
@@ -84,14 +86,15 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.decimalsCrds)
                     height : 20
-					enabled : !readOnly
+					enabled : isEditable
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+						editor.changeTiePointCoord(styleData.row, text, editor.tiePointY(styleData.row))
                     }
-                    onEditingFinished : {
+					onEditingFinished : {
                         editor.changeTiePointCoord(styleData.row, text, editor.tiePointY(styleData.row))
                     }
                 }
@@ -106,14 +109,15 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.decimalsCrds)
                     height : 20
-					enabled : !readOnly
+					enabled : isEditable
                     verticalAlignment:Text.AlignVCenter
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+						editor.changeTiePointCoord(styleData.row, editor.tiePointX(styleData.row), text)
                     }
-                    onEditingFinished : {
+					onEditingFinished : {
                         editor.changeTiePointCoord(styleData.row, editor.tiePointX(styleData.row), text)
                     }
              }
@@ -128,15 +132,16 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.subPixelPrecision ? 1 : 0)
                     height : 20
-					enabled : !readOnly
+					enabled : isEditable
                     verticalAlignment:Text.AlignVCenter
 
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+						editor.changeTiePointPixel(styleData.row, text, editor.tiePointRow(styleData.row), true)
                     }
-                    onEditingFinished : {
+					onEditingFinished : {
                         editor.changeTiePointPixel(styleData.row, text, editor.tiePointRow(styleData.row), true)
                     }
              }
@@ -151,15 +156,16 @@ Column {
                 TextField {
                     text: styleData.value.toFixed(editor.subPixelPrecision ? 1 : 0)
                     height : 20
-					enabled : !readOnly
+					enabled : isEditable
                     verticalAlignment:Text.AlignVCenter
 
                     textColor : editor.selectedRow == styleData.row  ? "blue" : "black"
 
                     onActiveFocusChanged : {
                         tableview.setSelection(styleData.row )
+						editor.changeTiePointPixel(styleData.row, editor.tiePointColumn(styleData.row), text, true)
                     }
-                    onEditingFinished : {
+					onEditingFinished : {
                         editor.changeTiePointPixel(styleData.row, editor.tiePointColumn(styleData.row), text, true)
                     }
              }
@@ -173,7 +179,6 @@ Column {
                 Text {
                     text: styleData.value != -1000000 ? styleData.value.toFixed(2) : '?'
                     height : 20
-					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
 
                     color : editor.selectedRow == styleData.row  ? "blue" : "black"
@@ -188,7 +193,6 @@ Column {
                 Text {
                     text: styleData.value != -1000000 ? styleData.value.toFixed(2) : '?'
                     height : 20
-					enabled : !readOnly
                     verticalAlignment:Text.AlignVCenter
                     color : editor.selectedRow == styleData.row  ? "blue" : "black"
 
@@ -211,6 +215,14 @@ Column {
          }
   
     }
+	Controls.TextEditLabelPair{
+		width : parent.width
+		height : 22
+		labelWidth : 100
+		content : editor.sigma
+		readOnly : true
+		labelText : qsTr("Sigma")
+	}
     TextArea {
         id : errors
         width : parent.width 
@@ -237,7 +249,7 @@ Column {
          Button {
              width : 90
              height : 22
-             text : qsTr("Add Add tiepoint")
+             text : qsTr("Add Tiepoint")
              onClicked : {
                  editor.addTiepoint()
                  editor.selectedRow = editor.controlPoints.length - 1

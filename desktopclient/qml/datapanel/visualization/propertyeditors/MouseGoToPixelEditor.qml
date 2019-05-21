@@ -36,7 +36,7 @@ Item {
 
 			onClicked : {
 			    var pix = editor.screenPixel(parseFloat(columnField.content), parseFloat(rowField.content))
-				var mp = layerview.activePanel().map()
+				var mp = layerview.activePanel().maparea()
 				var drw = mp.drawer()
 				var pnt = drw.mapToGlobal(pix.x, pix.y)
 				editor.moveCursor(pnt.x, pnt.y) 

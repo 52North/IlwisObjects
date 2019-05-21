@@ -68,7 +68,7 @@ Item {
     }
 
     Component.onDestruction: {
-        currentCatalog.makeParent(0)
+        currentCatalog.makeParent(null)
     }
 
   function showObject(objectids,options){

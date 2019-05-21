@@ -62,7 +62,7 @@ DropArea {
 		title: "Use as Color Composite?"
 		icon: StandardIcon.Question
 		text: "Use dragged bands as Color Composite"
-		standardButtons: StandardButton.Yes |StandardButton.No | StandardButton.Abort
+		standardButtons: StandardButton.Yes |StandardButton.No
 		Component.onCompleted: visible = false
 		onYes: {
 			addDataSource("", "\"\"", 'rastercoverage','createtype=colorcomposite,items=' + ids)

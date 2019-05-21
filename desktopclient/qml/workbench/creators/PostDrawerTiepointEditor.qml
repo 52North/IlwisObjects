@@ -12,10 +12,11 @@ Item {
        // ctx.strokeStyle = Qt.rgba(255,0, 0, 1);
        // ctx.fillStyle = Qt.rgba(0,255, 0, 1);
        // ctx.lineWidth = 1;
-        ctx.font = '12px sans-serif'
+        ctx.font = '14px sans-serif'
         var points = editor.controlPoints
         for(var i=0; i < points.length; ++i){
             var p = points[i]
+			console.debug("zzzzz", p.columnScreen, p.rowScreen, p.color)
             ctx.beginPath();
             ctx.fillStyle = p.color
             ctx.fillRect(p.columnScreen - 3, p.rowScreen-3, 6,6)
