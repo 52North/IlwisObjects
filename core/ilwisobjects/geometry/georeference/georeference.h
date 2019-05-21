@@ -66,6 +66,7 @@ public:
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
     void adapter(GeoRefAdapter* adapt);
     bool isValid() const;
+	bool impValid() const;
     virtual bool isLinear() const;
     void impl(GeoRefImplementation *impl);
     template<typename GrfT> QSharedPointer<GrfT> as(){
