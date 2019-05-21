@@ -238,6 +238,12 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
         kernel()->issues()->log(TR(ERR_COULDNT_CREATE_OBJECT_FOR_2).arg("Georeference",grfName));
         return false;
     }
+	if (gcoverage->resourceRef().hasProperty("georeference")) {
+		QString altUrl = gcoverage->resourceRef()["georeference"].toString();
+		if (altUrl != grf->resourceRef().url(true).toString()) {
+			grf.prepare(altUrl);
+		}
+	}
     if ( grf->code() == "undetermined"){ // grf none comes from the internal factory; it doesnt read some properties
         grf->name(data->name().left(data->name().indexOf(".")));
         QString szstr = _odf->value("Map","Size");
