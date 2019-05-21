@@ -32,6 +32,8 @@ public:
     static GeoRefImplementation *create();
     static QString typeName();
 	QString grfType() const;
+	bool isValid() const;
+	
 };
 }
 

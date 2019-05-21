@@ -39,6 +39,7 @@ public:
     std::vector<double> support() const;
     static QString typeName();
 	QString grfType() const;
+	bool isValid() const;
 protected:
     void copyTo(GeoRefImplementation *impl);
     void clear();

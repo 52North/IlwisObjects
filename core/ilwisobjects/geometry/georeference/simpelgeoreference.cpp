@@ -53,6 +53,10 @@ void SimpelGeoReference::clear() {
     _det = 0;
 }
 
+bool SimpelGeoReference::isValid() const {
+	return _a11 != rUNDEF && _a12 != rUNDEF && _a22 != rUNDEF && _a21 != rUNDEF &&	_b1 != rUNDEF && _b2 != rUNDEF;
+}
+
 Coordinate SimpelGeoReference::pixel2Coord(const Pixeld &pix) const
 {
     if (pix.x == iUNDEF || pix.y == iUNDEF)

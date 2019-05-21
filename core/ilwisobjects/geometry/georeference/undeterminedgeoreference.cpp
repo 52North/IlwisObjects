@@ -70,4 +70,8 @@ GeoRefImplementation *UndeterminedGeoReference::clone()
     return new UndeterminedGeoReference();
 }
 
+bool UndeterminedGeoReference::isValid() const {
+	return true;
+}
+
 
