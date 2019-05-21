@@ -46,7 +46,7 @@ Item {
         return maparea.manager
     }
 
-    function map(){
+    function maparea(){
         return maparea
     }
 
