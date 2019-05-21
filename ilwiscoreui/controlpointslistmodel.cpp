@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "georeference.h"
 #include "georefimplementation.h"
 #include "factory.h"
+#include "catalog.h"
 #include "abstractfactory.h"
 #include "georefimplementationfactory.h"
 #include "controlpoint.h"
@@ -68,6 +69,18 @@ ControlPointsListModel::ControlPointsListModel(const QVariantMap& parms, QObject
 				kernel()->issues()->log(TR("Couldn't load: ") + url);
 				return;
 			}
+
+			QString slaveRaster = _georef->resource()["slaveraster"].toString();
+			if (slaveRaster != "") {
+				int idx = slaveRaster.lastIndexOf("/");
+				if (idx > 4) {
+					QString container = slaveRaster.left(idx);
+					mastercatalog()->addContainer(QUrl(container), true);
+				}
+				_slaveRaster.prepare(slaveRaster, { "mustexist", true });
+				emit slaveChanged();
+			}
+
 			auto grf = _georef->as<PlanarCTPGeoReference>();
 			_planarCTP = grf.get();
 			for (int i = 0; i < _planarCTP->nrControlPoints(); ++i) {
@@ -75,18 +88,11 @@ ControlPointsListModel::ControlPointsListModel(const QVariantMap& parms, QObject
 				_controlPoints.push_back(new ControlPointModel(0, QString::number(i + 1), pnt.isActive(),
 					pnt.x, pnt.y, pnt.gridLocation().x, pnt.gridLocation().y,
 					pnt.errorColumn(), pnt.errorRow(), this));
-				_controlPoints.back()->screenCrd(Coordinate(pnt.gridLocation().x, grf->size().ysize() - pnt.gridLocation().y));
+				_controlPoints.back()->screenCrd(Coordinate(pnt.gridLocation().x, _slaveRaster->size().ysize() - pnt.gridLocation().y));
 			}
 			int ret = _planarCTP->compute();
 			handleComputeResult(ret);
-			QString slaveRaster = _georef->resource()["slaveraster"].toString();
-			if (slaveRaster != "") {
-				QFileInfo inf(QUrl(slaveRaster).toLocalFile());
-				if (inf.exists()) {
-					_slaveRaster.prepare(slaveRaster);
-					emit slaveChanged();
-				}
-			}
+		
 		}
 	}
 }
@@ -132,23 +138,28 @@ void ControlPointsListModel::changeTiePointCoord(int index, double x, double y) 
     }
 }
 void ControlPointsListModel::changeTiePointPixel(int index, double x, double y, bool editFromTable) {
+	if (index == _lastIndex && x == _lastX && y == _lastY)
+		return;
+	_lastIndex = index;
+	_lastX = x;
+	_lastY = y;
     if (_slaveLayerManager && index >= 0 && index < _controlPoints.size()) {
         auto sz = _slaveRaster->size();
         ControlPointModel *pnt = _controlPoints[index];
         if (editFromTable) {
             pnt->column(x);
             pnt->row(y);
-            auto pix = _slaveLayerManager->rootLayer()->screenGrf()->coord2Pixel(Coordinate(x, sz.ysize() - y));
-            pnt->screenPosition(pix.x, pix.y);
+			auto pix = _slaveLayerManager->rootLayer()->screenGrf()->coord2Pixel(Coordinate(x, sz.ysize() - y));
+			pnt->screenPosition(Coordinate(pix.x, pix.y));
         }
         else {
             // rowcols in the model are in terms of the screengrf so we need to adapt 5to positions in the background map 
             // which has georefnone. as coords and pixellocation are similar for georefnone we convert
-            auto crd = _slaveLayerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(x, y));
+			auto crd = _slaveLayerManager->rootLayer()->screenGrf()->pixel2Coord(Pixel(x, y));
 
-            pnt->column((int)(crd.x + 0.5));
-            pnt->row((int)(sz.ysize() - crd.y  + 0.5));
-            pnt->screenPosition(x,y);
+			pnt->column((int)(crd.x + 0.5));
+			pnt->row((int)(sz.ysize() - crd.y + 0.5));
+            pnt->screenPosition(crd);
         }
         _planarCTP->controlPoint(index) = pnt->controlPoint();
         int ret = _planarCTP->compute();
@@ -195,6 +206,7 @@ void ControlPointsListModel::slaveLayerManager(LayerManager * lm, const QString&
 		}
 		_georef->resourceRef().addProperty("slaveraster", _slaveRaster->resource().url(true).toString());
 		connect(_slaveLayerManager, &QObject::destroyed, this, &ControlPointsListModel::removeBackgroundLayer);
+		_planarCTP->size(_slaveRaster->size().twod());
 		emit slaveChanged();
 	}
 }
@@ -203,6 +215,7 @@ QString ControlPointsListModel::slaveRaster() const {
 	if (_slaveRaster.isValid()) {
 		return _slaveRaster->resource().url(true).toString();
 	}
+
 	return "";
 }
 
@@ -393,6 +406,7 @@ void ControlPointsListModel::handleComputeResult(int res) {
     }
 
     emit errorChanged();
+	emit sigmaChanged();
 }
 
 QString Ilwis::Ui::ControlPointsListModel::associatedUrl() const
@@ -469,6 +483,13 @@ void ControlPointsListModel::controlPointLabel(int index, const QString& newLabe
         _slaveLayerManager->updatePostDrawers();
     }
 
+}
 
-
+QString ControlPointsListModel::sigma() const {
+	if (_planarCTP) {
+		double v = _planarCTP->sigma();
+		if (v != rUNDEF)
+			return QString::number(_planarCTP->sigma());
+	}
+	return "";
 }

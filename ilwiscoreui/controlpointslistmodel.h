@@ -45,6 +45,7 @@ namespace Ilwis {
             Q_PROPERTY(bool subPixelPrecision READ subPixelPrecision WRITE subPixelPrecision NOTIFY subPixePrecisionChanged)
             Q_PROPERTY(QString georefid READ georefid CONSTANT)		
 			Q_PROPERTY(QString slave READ slaveRaster NOTIFY slaveChanged)
+			Q_PROPERTY(QString sigma READ sigma NOTIFY sigmaChanged)
 
         public:
             ControlPointsListModel(QObject *parent=0);
@@ -80,6 +81,7 @@ namespace Ilwis {
                 void selectedRowChanged();
                 void subPixePrecisionChanged();
 				void slaveChanged();
+				void sigmaChanged();
 
         public slots:
               void linkAcceptMessage(const QVariantMap& parameters);
@@ -96,6 +98,7 @@ namespace Ilwis {
             IRasterCoverage _slaveRaster;
             int _selectedRow = -1;
             const int ILLEGALVALUE = -1000000;
+			double _lastX = rUNDEF, _lastY = rUNDEF, _lastIndex = rUNDEF; // block against too many superflous UI calls on this function
 
             QQmlListProperty<ControlPointModel> controlPoints();
             QString errors() const;
@@ -108,6 +111,7 @@ namespace Ilwis {
             void urlCsy(const QString& csy);
             QString urlCsy() const;
             QString georefid() const;
+			QString sigma() const;
 
         };
     }
