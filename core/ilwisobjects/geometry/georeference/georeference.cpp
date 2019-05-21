@@ -90,8 +90,7 @@ ICoordinateSystem GeoReference::coordinateSystem() const
 {
      if ( isValid() && csy.isValid()){
         _georefImpl->coordinateSystem(csy);
-        resourceRef().addProperty("coordinatesystem",csy->id());
-        mastercatalog()->changeResource(id(),"coordinatesystem",csy->id(), true);
+        resourceRef().addProperty("coordinatesystem",csy->resourceRef().url(true).toString(),true);
      }
 
  }
@@ -188,7 +187,11 @@ BoundingBox GeoReference::coord2Pixel(const Envelope &box) const
 
 bool GeoReference::isValid() const
 {
-    return !_georefImpl.isNull();
+	return !_georefImpl.isNull();
+}
+
+bool GeoReference::impValid() const {
+	return isValid() && _georefImpl->isValid();
 }
 
 void GeoReference::impl(GeoRefImplementation *impl)

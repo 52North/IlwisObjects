@@ -134,12 +134,12 @@ std::vector<Resource> ODFItem::resolveNames(){
     }
     resource =  resolveName(_grfname, itGEOREF);
     if ( resource.isValid()){
-        _properties["georeference"] = resource.id();
+        _properties["georeference"] = resource.url(true);
         resources.push_back(resource);
     }
     resource =  resolveName(_csyname, itCOORDSYSTEM);
     if ( resource.isValid()){
-        _properties["coordinatesystem"] = resource.id();
+        _properties["coordinatesystem"] = resource.url(true);
         resources.push_back(resource);
     }
     if ( _datumName != sUNDEF) {
@@ -159,26 +159,26 @@ bool ODFItem::isMapList() const
     return _isMapList;
 }
 
-bool ODFItem::resolveNames(const QHash<QString, quint64> &names, const std::map<QString, QString>& fileContainers)
+bool ODFItem::resolveNames(const QHash<QString, Resource> &names, const std::map<QString, QString>& fileContainers)
 {
     bool ok = true;
-    quint64 fileid = i64UNDEF;
-    ok &= setFileId(names, _domname.toLower(), fileid);
-    if ( fileid != i64UNDEF)
-        _properties["domain"] = fileid;
-    ok &= setFileId(names, _grfname.toLower(), fileid);
-    if ( fileid != i64UNDEF)
-        _properties["georeference"] = fileid;
-    ok &= setFileId(names, _csyname.toLower(), fileid);
-    if ( fileid != i64UNDEF)
-        _properties["coordinatesystem"] = fileid;
+	Resource res;
+    ok &= setFileId(names, _domname.toLower(), res);
+    if ( res.isValid())
+        _properties["domain"] = res.url(true);
+    ok &= setFileId(names, _grfname.toLower(), res);
+    if ( res.isValid())
+        _properties["georeference"] = res.url(true);
+    ok &= setFileId(names, _csyname.toLower(), res);
+    if ( res.isValid())
+        _properties["coordinatesystem"] = res.url(true);
     if ( _datumName != sUNDEF) {
         const Resource& resource = mastercatalog()->name2Resource(_datumName,itGEODETICDATUM);
-        _properties["geodeticdatum"] = resource.id();
+        _properties["geodeticdatum"] = resource.url(true);
     }
     if (_projectionName != sUNDEF) {
         const Resource& resource = mastercatalog()->name2Resource(_projectionName,itPROJECTION);
-        _properties["projection"] = resource.id();
+        _properties["projection"] = resource.url(true);
     }
 	if (ilwisType() == itRASTER ) {
 		if (container().toString().indexOf(".mpl") == -1) {
@@ -196,59 +196,54 @@ bool ODFItem::resolveNames(const QHash<QString, quint64> &names, const std::map<
     return ok;
 }
 
-bool ODFItem::setFileId(const QHash<QString, quint64> &names, const QString& value, quint64 &fileid) const {
+bool ODFItem::setFileId(const QHash<QString, Resource> &names, const QString& value, Resource& outResource) const {
     if ( value == sUNDEF) {
-        fileid = i64UNDEF;
+		outResource = Resource();;
         return true; // legal; some properties might not have a value(name)
     }
     if ( Ilwis3Connector::ilwisType(value) & itCOORDSYSTEM) {
         if ( value == "latlonwgs84.csy" ) {
-            Resource resource = mastercatalog()->name2Resource("code=epsg:4326", itCOORDSYSTEM);
-            if ( !resource.isValid()) {
+			outResource = mastercatalog()->name2Resource("code=epsg:4326", itCOORDSYSTEM);
+            if ( !outResource.isValid()) {
                return ERROR1(ERR_FIND_SYSTEM_OBJECT_1, "Wgs 84");
             }
-            fileid = resource.id();
             return true;
         }
         if ( value == "unknown.csy" ) {
-            Resource resource = mastercatalog()->name2Resource("code=csy:unknown", itCOORDSYSTEM);
-            if ( !resource.isValid()) {
+			outResource = mastercatalog()->name2Resource("code=csy:unknown", itCOORDSYSTEM);
+            if ( !outResource.isValid()) {
                 return ERROR1(ERR_FIND_SYSTEM_OBJECT_1, "'Unknown' coordinate system");
             }
-            fileid = resource.id();
             return true;
         }
     }
     if ( Ilwis3Connector::ilwisType(value) & itGEOREF) {
         if ( value == "none.grf" ) {
-            Resource resource = mastercatalog()->name2Resource("code=georef:undetermined", itGEOREF);
-            if ( !resource.isValid()) {
+			outResource = mastercatalog()->name2Resource("code=georef:undetermined", itGEOREF);
+            if ( !outResource.isValid()) {
                 return ERROR1(ERR_FIND_SYSTEM_OBJECT_1, "'undetermined' georeference");
             }
-            fileid = resource.id();
             return true;
         }
     }
     QString completeName =  (value.contains(QRegExp("\\\\|/"))) ? value : _ini.fileInfo().canonicalPath() + "/" + value;
-    QHash<QString, quint64>::const_iterator iter = names.find(completeName.toLower());
+    QHash<QString, Resource>::const_iterator iter = names.find(completeName.toLower());
     if (iter != names.end()){
-        fileid = iter.value();
+		outResource = iter.value();
     } else {
         // at this time we can't rely on the working catalog to be set(if we are initializing it), so no normal resolve
         // the mastercatalog will contain system items at this moment so we can check these first
         QString baseName = value.left(value.indexOf("."));
         IlwisTypes tp = Ilwis3Connector::ilwisType(value);
-        Resource resource = mastercatalog()->name2Resource(baseName, tp);
-        if ( resource.isValid()) {
-            fileid = resource.id();
-        } else {
+		outResource = mastercatalog()->name2Resource(baseName, tp);
+        if (!outResource.isValid()) {
             QUrl url = QUrl::fromLocalFile(completeName);
-            fileid = mastercatalog()->url2id(url, tp);
+            auto fileid = mastercatalog()->url2id(url, tp);
             if ( fileid == i64UNDEF) {
                 kernel()->issues()->log(TR(ERR_MISSING_1).arg(completeName));
-                fileid = i64UNDEF;
                 return false;
             }
+			outResource = mastercatalog()->id2Resource(fileid);
         }
     }
     return true;

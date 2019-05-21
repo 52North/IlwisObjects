@@ -1084,9 +1084,8 @@ void IlwisObjectModel::setAttribute(const QString &attrname, const QString &valu
                 IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
                 if ( dom->id() != raster->datadefRef().domain()->id()){
                     raster->datadefRef().domain(dom);
-                    raster->resourceRef().addProperty("domain", dom->id());
+                    raster->resourceRef().addProperty("domain", dom->id(), true);
                     raster->changed(true);
-                    mastercatalog()->changeResource(raster->id(),"domain",dom->id(), true);
                 }
             }
         }else if ( attrname == "coordinatesystem"){
@@ -1105,7 +1104,6 @@ void IlwisObjectModel::setAttribute(const QString &attrname, const QString &valu
                 ICoverage coverage = _ilwisobject.as<Coverage>();
                 if ( coverage.isValid()){
                     coverage->coordinateSystem(csy);
-
                 }
             }
         }
@@ -1114,8 +1112,10 @@ void IlwisObjectModel::setAttribute(const QString &attrname, const QString &valu
                 IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
                 IGeoReference grf;
                 if (grf.prepare(value, itGEOREF)) {
-                    if ( grf->size() == raster->size())
-                        raster->georeference(grf);
+					if (grf->size() == raster->size()) {
+						raster->georeference(grf);
+					}
+
                 }
             }
         }

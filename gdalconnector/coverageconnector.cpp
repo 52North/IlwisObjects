@@ -64,7 +64,7 @@ bool CoverageConnector::loadMetaData(Ilwis::IlwisObject *data,const IOOptions& o
     ICoordinateSystem csy;
     QFileInfo fileinf = sourceRef().toLocalFile();
     if ( data->resource().hasProperty("coordinatesystem"))
-        csy.prepare(data->resource()["coordinatesystem"].toULongLong());
+        csy.prepare(data->resource()["coordinatesystem"].toString());
     if ( !csy.isValid())
         csy = setObject<ICoordinateSystem>("coordinatesystem", QUrl::fromLocalFile(fileinf.absoluteFilePath()));
 

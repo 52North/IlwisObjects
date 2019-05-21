@@ -26,7 +26,7 @@ class ODFItem : public Resource
 {
 public:
     ODFItem(const IniFile& file, std::unordered_map<QString, IniFile> *knownInis = 0);
-    bool resolveNames(const QHash<QString, quint64>& names, const std::map<QString, QString>& fileContainers);
+    bool resolveNames(const QHash<QString, Resource>& names, const std::map<QString, QString>& fileContainers);
     std::vector<Resource> resolveNames();
 
     bool isMapList() const;
@@ -46,7 +46,7 @@ private:
 
      \return true if the operation was succesfull. Error messages can be found on the issue stack.
     */
-    bool setFileId(const QHash<QString, quint64> &names, const QString &unboundName, quint64 &fileid) const;
+    bool setFileId(const QHash<QString, Resource> &names, const QString &unboundName, Resource& outResource) const;
 
     QString findDomainName(const QString &path) const;
     IlwisTypes findDomainType(const QString &path) const;

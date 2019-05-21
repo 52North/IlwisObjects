@@ -65,8 +65,8 @@ void RasterCoverage::georeference(const IGeoReference &grf, bool resetData)
     if ( _georef.isValid() ) {
         _georef->compute();
         coordinateSystem(grf->coordinateSystem()); // mandatory
-        resourceRef().addProperty("coordinatesystem",coordinateSystem()->id());
-        resourceRef().addProperty("georeference",_georef->id());
+        resourceRef().addProperty("coordinatesystem",coordinateSystem()->resourceRef().url(true).toString(),true);
+        resourceRef().addProperty("georeference",_georef->resourceRef().url(true).toString(),true);
         if ( coordinateSystem()->envelope(true).isValid())
             resourceRef().addProperty("latlonenvelop", coordinateSystem()->envelope(true).toString());
         if ( _size.isValid() && !_size.isNull() && !resetData)
@@ -379,7 +379,7 @@ Resource RasterCoverage::resource(int mode) const
 {
     Resource resource = Coverage::resource(mode);
     if ( mode & IlwisObject::cmEXTENDED) {
-        resource.addProperty("georeference", georeference()->id());
+        resource.addProperty("georeference", georeference()->resourceRef().url(true).toString(),true);
         resource.addProperty("domain", _datadefCoverage.domain()->id());
         resource.setExtendedType( resource.extendedType() | itDOMAIN |  itGEOREF);
     }

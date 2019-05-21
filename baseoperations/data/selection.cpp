@@ -224,7 +224,7 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
          resource.addProperty("size", IVARIANT(_box.size()));
          auto envelope = inputRaster->georeference()->pixel2Coord(_box);
          resource.addProperty("envelope", IVARIANT(envelope));
-         resource.addProperty("coordinatesystem", IVARIANT(inputRaster->coordinateSystem()));
+         resource.addProperty("coordinatesystem", inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);
          resource.addProperty("name", _outputObj->name());
          resource.addProperty("centerofpixel",inputRaster->georeference()->centerOfPixel());
          IGeoReference  grf;

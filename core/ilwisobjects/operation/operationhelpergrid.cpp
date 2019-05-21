@@ -49,7 +49,7 @@ BoundingBox OperationHelperRaster::initialize(const IRasterCoverage &inputRaster
         resource.addProperty("envelope", IVARIANT(bounds.toString()));
     }
     if ( what & itCOORDSYSTEM) {
-        resource.addProperty("coordinatesystem", IVARIANT(inputRaster->coordinateSystem()->id()));
+        resource.addProperty("coordinatesystem",inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);
     }
 
     if ( what & itGEOREF) {
@@ -58,7 +58,7 @@ BoundingBox OperationHelperRaster::initialize(const IRasterCoverage &inputRaster
             box  = BoundingBox(sz);
         }
         if ( sz.xsize() == box.xlength() && sz.ysize() == box.ylength())
-            resource.addProperty("georeference", IVARIANT(inputRaster->georeference()->id()));
+            resource.addProperty("georeference", IVARIANT(inputRaster->georeference()->resourceRef().url(true).toString()),true);
     }
     if ( what & itDOMAIN) {
         resource.addProperty("domain", IVARIANT(inputRaster->datadef().domain<>()->id()));
@@ -98,14 +98,14 @@ IIlwisObject OperationHelperRaster::initialize(const IIlwisObject &inputObject, 
                 resource.addProperty("size", IVARIANT(box.size()));
             }
             if ( what & itGEOREF) {
-                resource.addProperty("georeference", IVARIANT(gcInput->georeference()));
+                resource.addProperty("georeference", gcInput->georeference()->resourceRef().url(true).toString(),true);
             }
             if ( what & itDOMAIN) {
                 resource.addProperty("domain", IVARIANT(gcInput->datadef().domain()));
             }
         }
         if ( what & itCOORDSYSTEM) {
-            resource.addProperty("coordinatesystem", IVARIANT(cov->coordinateSystem()));
+            resource.addProperty("coordinatesystem", cov->coordinateSystem()->resourceRef().url(true).toString(),true);
         }
 
      }

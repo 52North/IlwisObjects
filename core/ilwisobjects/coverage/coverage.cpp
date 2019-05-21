@@ -51,8 +51,7 @@ void Coverage::coordinateSystem(const ICoordinateSystem &csy)
     changed(true);
 
     _coordinateSystem = csy;
-    resourceRef().addProperty("coordinatesystem",coordinateSystem()->id());
-    mastercatalog()->changeResource(id(),"coordinatesystem",csy->id(), true);
+    resourceRef().addProperty("coordinatesystem",coordinateSystem()->resourceRef().url(true).toString(), true);
 }
 
 Envelope Coverage::envelope(bool tolatlon) const
@@ -97,7 +96,7 @@ Resource Coverage::resource(int mode) const
 {
     Resource resource = IlwisObject::resource(mode);
     if ( mode & IlwisObject::cmEXTENDED) {
-        resource.addProperty("coordinatesystem", coordinateSystem()->id());
+        resource.addProperty("coordinatesystem", coordinateSystem()->resourceRef().url(true).toString(),true);
         resource.setExtendedType( resource.extendedType() | itCOORDSYSTEM);
     }
     return resource;
