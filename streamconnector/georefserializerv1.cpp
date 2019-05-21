@@ -78,6 +78,7 @@ bool GeorefSerializerV1::store(IlwisObject *obj, const IOOptions &options)
             _stream << ctpgrf->controlPoint(i).isActive();
         }
         _stream << (int)ctpgrf->transformation();
+		_stream << grf->resourceRef()["slaveraster"].toString();
     } else if ( grf->grfType<UndeterminedGeoReference>()){
          _stream << UndeterminedGeoReference::typeName();
     }
@@ -148,6 +149,9 @@ bool GeorefSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
         _stream >> transformation;
         ctpgrf->transformation((PlanarCTPGeoReference::Transformation)transformation);
         grf->impl(ctpgrf);
+		QString slave;
+		_stream >> slave;
+		grf->resourceRef().addProperty("slaveraster", slave);
     }else{
         grf->impl( new UndeterminedGeoReference());
     }
