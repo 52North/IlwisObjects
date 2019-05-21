@@ -623,10 +623,14 @@ void ResourceModel::setIsSelected(bool yesno)
 QString ResourceModel::propertyName( const QString& property) const{
     if ( itemRef().isValid()) {
         bool ok;
-        quint64 iddomain =  itemRef()[property].toLongLong(&ok);
+		QVariant value = itemRef()[property];
+        quint64 iddomain =  value.toLongLong(&ok);
         if ( ok) {
             return Ilwis::mastercatalog()->id2Resource(iddomain).name();
-        }
+		}
+		else {
+			return itemRef()[property].toString();
+		}
     }
     return "";
 
@@ -636,11 +640,19 @@ QString  ResourceModel::propertyTypeName(quint64 typ, const QString& propertyNam
     if ( itemRef().isValid()) {
         if (itemRef().extendedType() & typ) {
             bool ok;
-            quint64 idprop =  itemRef()[propertyName].toLongLong(&ok);
+			const QVariant& value = itemRef()[propertyName];
+            quint64 idprop =  value.toLongLong(&ok);
             if ( ok) {
                 quint64 tp = Ilwis::mastercatalog()->id2Resource(idprop).ilwisType();
                 return Ilwis::IlwisObject::type2Name(tp);
-            }
+			}
+			else {
+				auto res = mastercatalog()->name2Resource(value.toString());
+				if (res.isValid()) {
+					return Ilwis::IlwisObject::type2Name(res.ilwisType());
+				}
+
+			}
         }
     }
     return "";
@@ -697,6 +709,5 @@ void ResourceModel::keywords(const QString &pkeys)
         _item.addProperty("keyword", keywrds)   ;
     }
 
-    mastercatalog()->changeResource(itemRef().id(), "keyword",keywrds,true);
     emit keywordsChanged();
 }
