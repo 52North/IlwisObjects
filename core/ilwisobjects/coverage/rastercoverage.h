@@ -228,10 +228,13 @@ public:
     ITable histogramAsTable() ;
     NumericRange calcMinMax(bool force=false) const;
 	bool prepare(const IOOptions& options = IOOptions());
+	void storeAdjustment(const QString& property, const QString& value) override;
+
 
 protected:
 
     void copyTo(IlwisObject *obj);
+	void applyAdjustments(const std::map<QString, QString>& adjustments) override;
 
 private:
     std::unique_ptr<Grid> _grid;

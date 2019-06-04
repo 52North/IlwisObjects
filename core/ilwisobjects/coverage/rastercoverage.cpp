@@ -76,6 +76,15 @@ void RasterCoverage::georeference(const IGeoReference &grf, bool resetData)
         Envelope env = grf->envelope();
         if ( env.isValid() && !env.isNull())
             envelope(grf->envelope());
+		if (_size.zsize() > 1) {
+			auto resources = mastercatalog()->select(QString("container = '%1'").arg(resourceRef().url().toString()));
+			for (auto res : resources) {
+				IRasterCoverage raster;
+				if (raster.prepare(res)) {
+					raster->georeference(_georef);
+				}
+			}
+		}
 
     }
     else
@@ -828,6 +837,24 @@ bool RasterCoverage::prepare(const IOOptions& options) {
 		return true;
 	}
 	return false;
+}
+
+void RasterCoverage::storeAdjustment(const QString& property, const QString& value) {
+	Coverage::storeAdjustment(property, value);
+	if (property == "georeference") {
+		changeData(property, value);
+	}
+}
+
+void RasterCoverage::applyAdjustments(const std::map<QString, QString>& adjustments) {
+	Coverage::applyAdjustments(adjustments);
+	auto iter = adjustments.find("georeference");
+	if (iter != adjustments.end()) {
+		IGeoReference grf;
+		if (grf.prepare((*iter).second)) {
+			georeference(grf);
+		}
+	}
 }
 
 
