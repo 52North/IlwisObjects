@@ -48,6 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "abstractfactory.h"
 #include "tranquilizerfactory.h"
 #include "modelregistry.h"
+#include <QSQLField>
 #include "script.h"
 
 using namespace Ilwis;
@@ -64,6 +65,7 @@ IlwisObjectModel::IlwisObjectModel(const Ilwis::Resource &source, QObject *paren
             if (_ilwisobject.prepare(source)) {
                 _modelId = modelregistry()->newModelId();
                 modelregistry()->registerModel(modelId(), "ilwisobject", this);
+				applyAdjustments();
             }
         }
     } catch (const ErrorObject& ){
@@ -1205,9 +1207,21 @@ QVariantList IlwisObjectModel::layerInfo() const
             IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
             QVariantMap mp;
 			ICatalog cat(_ilwisobject->resource().url().toString());
+			cat->scan();
 			auto items = cat->items();
             for(quint32 i=0; i < raster->size().zsize(); ++i){
-                QString name = raster->name() + " " + raster->stackDefinition().index(i);
+				QString name = raster->name();
+				if (name.indexOf(".") > 0) {
+					name = name.left(name.indexOf("."));
+				}
+				QString idx = raster->stackDefinition().index(i);
+				bool ok;
+				int nidx = idx.toInt(&ok);
+				if (ok) {
+					nidx += 1;
+					idx = QString::number(nidx);
+				}
+				name += "_" + idx;
                 if ( raster->datadefRef(i).range()){
                     QString range = raster->datadefRef(i).range()->toString();
                     QString rangelist;
@@ -1223,9 +1237,12 @@ QVariantList IlwisObjectModel::layerInfo() const
                     }
                     mp["name"] = name;
                     mp["range"] = rangelist;
-					if (i < items.size()) {
-						mp["id"] = items[i].id();
-						mp["url"] = items[i].url().toString();
+					for (int j = 0; j < items.size(); ++j) {
+						if (items[j].name() == name && items[j].ilwisType() == raster->resourceRef().ilwisType()) {
+							mp["id"] = items[j].id();
+							mp["url"] = items[j].url().toString();
+							break;
+						}
 					}
                     results.append(mp);
                 }
@@ -1306,6 +1323,56 @@ void IlwisObjectModel::editable(bool yesno) {
 		_editState = yesno;
 		emit editableChanged();
 	}
+}
+
+void IlwisObjectModel::applyAdjustments(const std::map<QString, QString>& adjustments) {
+	auto iter = adjustments.find("displayname");
+	if (iter != adjustments.end()) {
+		setDisplayName((*iter).second);
+	}
+}
+
+void IlwisObjectModel::applyAdjustments() {
+	InternalDatabaseConnection db;
+	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=1").arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(resourceRef().ilwisType()));
+	bool ok = db.exec(query);
+	if (ok) {
+		std::map<QString, QString> adjustments;
+		while (db.next()) {
+			QSqlRecord record = db.record();
+			QString property = record.field("propertyname").value().toString();
+			QString value = record.field("propertyvalue").value().toString();
+			adjustments[property] = value;
+		}
+		if (adjustments.size() > 0)
+			applyAdjustments(adjustments);
+	}
+}
+
+QString IlwisObjectModel::storeAdjustment(const QString& property, const QString& value) {
+	auto changeData = [&](const QString& property, const QString& value)->void {
+		InternalDatabaseConnection db;
+		QString stmt = QString("DELETE FROM objectadjustments where objecturl = '%1' and ilwistype='%2' and propertyname='%3' and ismodel=1")
+			.arg(resourceRef().url(true).toString())
+			.arg(TypeHelper::type2name(item().ilwisType())
+				.arg(property));
+		if (!db.exec(stmt)) {
+			kernel()->issues()->logSql(db.lastError());
+			return;
+		}
+		stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
+			.arg(property).arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(item().ilwisType())).arg(value).arg(1);
+		if (!db.exec(stmt)) {
+			kernel()->issues()->logSql(db.lastError());
+			return;
+		}
+	};
+	if (property == "displayname") {
+		changeData(property, value);
+	}else
+		_ilwisobject->storeAdjustment(property, value);
+
+	return value;
 }
 //---------------------------------------------------------------------------------
 CalcRangesWorker::CalcRangesWorker(quint64 rasterid) : _rasterid(rasterid){

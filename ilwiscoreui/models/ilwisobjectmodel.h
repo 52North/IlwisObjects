@@ -95,6 +95,7 @@ public:
 	Q_INVOKABLE bool isValid() const;
 	Q_INVOKABLE quint32 modelId() const;
 	Q_INVOKABLE QString subType() const;
+	Q_INVOKABLE QString storeAdjustment(const QString& property, const QString& value);
 
     QString creationDate() const;
     QString modifiedDate() const;
@@ -117,7 +118,7 @@ public:
     QString valuetype() const;
 	QString internalValuetype() const;
     QString value2string(const QVariant& value, const QString& attrName="");
-  
+	virtual void applyAdjustments(const std::map<QString, QString>& adjustments);
 
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
@@ -150,6 +151,8 @@ private:
     bool hasAttributes() const;
 	IlwisTypes valueTypePrivate() const;
 	bool _editState = false;
+
+	void applyAdjustments();
 };
 }
 }
