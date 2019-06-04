@@ -427,7 +427,7 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
 		else {
 			InternalDatabaseConnection sqlPublic;
 			statement = QString("DELETE from catalogitemproperties WHERE itemid=%1 and propertyname='%2'").arg(objectid).arg(attribute);
-			bool ok = sqlPublic.exec(statement);
+			sqlPublic.exec(statement);
 			statement = QString("insert into catalogitemproperties (propertyvalue,propertyname,itemid) values('%1','%2',%3)").arg(var.toString()).arg(attribute).arg(objectid);
 		}
         return statement;
