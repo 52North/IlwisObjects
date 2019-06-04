@@ -141,8 +141,10 @@ public:
     virtual bool hasAttributes() const;
 
     bool prepare(const IOOptions& options=IOOptions());
+	void storeAdjustment(const QString& property, const QString& value) override;
 protected:
     void copyTo(IlwisObject *obj) ;
+	void applyAdjustments(const std::map<QString, QString>& adjustments) override;
 private:
 
     ICoordinateSystem _coordinateSystem;

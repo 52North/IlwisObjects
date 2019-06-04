@@ -136,4 +136,21 @@ void Coverage::copyTo(IlwisObject *obj)
     cov->_statistics = _statistics;
 }
 
+void Coverage::storeAdjustment(const QString& property, const QString& value) {
+	IlwisObject::storeAdjustment(property, value);
+	if (property == "coordinatesystem") {
+		changeData(property, value);
+	}
+}
+
+void Coverage::applyAdjustments(const std::map<QString, QString>& adjustments) {
+	IlwisObject::applyAdjustments(adjustments);
+	auto iter = adjustments.find("coordinatesystem");
+	if (iter != adjustments.end()) {
+		ICoordinateSystem csy;
+		if (csy.prepare((*iter).second)) {
+			coordinateSystem(csy);
+		}
+	}
+}
 
