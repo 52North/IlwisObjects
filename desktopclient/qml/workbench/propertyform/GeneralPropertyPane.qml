@@ -13,11 +13,13 @@ Rectangle {
     anchors.margins: 2
     function storeData() {
         if ( propertyForm.editable){
-            displayName = objectDisplayName.content
-            description = descarea.text
+            displayName = storeAdjustment("displayname", objectDisplayName.content)
+            description = storeAdjustment("description", descarea.text)
             isReadonly = readOnlyStatus1.checked
             keywords = keys.content
             mastercatalog.currentCatalog.refresh()
+
+
         }
     }
     color : uicontext.lightestColor
