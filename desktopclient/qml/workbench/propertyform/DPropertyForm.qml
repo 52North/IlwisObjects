@@ -10,7 +10,7 @@ import "../../Global.js" as Global
 
 Rectangle {
     id : propertyForm
-    property var editValues : []
+    property var editValues : {}
     property bool editable : isEditable
     function iconsource(name) {
         if ( name.indexOf("/") !== -1)
