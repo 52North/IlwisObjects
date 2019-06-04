@@ -1115,9 +1115,8 @@ void CatalogWorker::calculatelatLonEnvelopes(){
     int count = 0;
     for(Resource& resource : resources){
         if ( hasType(resource.ilwisType(), itCOVERAGE)){
-            bool ok;
             auto url = resource["coordinatesystem"].toString();
-            if ( ok && url != csyUnknowm->resourceRef().url(true).toString()){
+            if (url != csyUnknowm->resourceRef().url(true).toString()){
                 calcLatLon(csyWgs84, resource, updatedResources);
                 if(!trq->update(1))
                     return;
