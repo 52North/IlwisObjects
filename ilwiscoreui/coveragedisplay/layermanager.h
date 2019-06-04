@@ -70,7 +70,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(QVariantList xGridAxisBottom READ xGridAxisBottom NOTIFY axisValuesChanged)
     Q_PROPERTY(QVariantList yGridAxisLeft READ yGridAxisLeft NOTIFY axisValuesChanged)
     Q_PROPERTY(QVariantList yGridAxisRight READ yGridAxisRight NOTIFY axisValuesChanged)
-    Q_PROPERTY(bool updatePostDrawers READ updatePostDrawersPrivate NOTIFY updatePostDrawersChanged)
+    Q_PROPERTY(bool updateNeededPostDrawers READ updatePostDrawersPrivate NOTIFY updatePostDrawersChanged)
 	Q_PROPERTY(QString layerListName READ layerListName WRITE setLayerListName NOTIFY layerListNameChanged)
 	Q_PROPERTY(bool doPostRenderCallBack READ doPostRenderCallBack WRITE doPostRenderCallBack)
 
