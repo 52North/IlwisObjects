@@ -12,7 +12,7 @@ Rectangle {
     color : uicontext.lightestColor
     function storeData() {
         if ( propertyForm.editable){
-            setAttribute("georeference", grf.content,"")
+            setAttribute("georeference", storeAdjustment("georeference",grf.content),"")
         }
     }
 
