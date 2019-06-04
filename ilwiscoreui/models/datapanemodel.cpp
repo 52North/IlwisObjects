@@ -247,25 +247,34 @@ TabModel *SidePanelModel::createPanel(quint32 index, const QString &filter, cons
 
     }else {
         std::vector<Ilwis::Resource> resources = Ilwis::mastercatalog()->select(Ilwis::OSHelper::neutralizeFileName(filter));
-        if ( resources.size() > 0 ){
-            if (hasType(resources[0].ilwisType(), itCOVERAGE)) {
+		if (resources.size() > 0) {
+			if (hasType(resources[0].ilwisType(), itCOVERAGE)) { // case of opening coverage's attribute table;
 				if (outputtype == "table")
 					tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
 				else {
 					tab = new TabModel(url, modelregistry()->mainPanelUrl("coverage"), outputtype, this);
 				}
-            }
-            else if (hasType(resources[0].ilwisType(), itTABLE)) {
-                tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
-            } else if (hasType(resources[0].ilwisType(), itWORKFLOW|itMODEL)){
-                tab = new TabModel(url,"modeller/ModellerDataPane.qml", outputtype, this);
-            } else if (hasType(resources[0].ilwisType(), itSCRIPT)){
-                tab = new TabModel(url,"script/ScriptPane.qml", outputtype, this);
-            } else if (hasType(resources[0].ilwisType(), itSINGLEOPERATION)){
-                if ( resources[0].url(true).toString().indexOf(".py") != -1)
-                    tab = new TabModel(url,"script/ScriptPane.qml", outputtype, this);
-            }
-        }
+			}
+		}
+		if (!tab) { // if no tab has been created it is a regular openign through outputtype
+			quint64 ilwType = TypeHelper::name2type(outputtype);
+			if (hasType(ilwType, itTABLE)) {
+				tab = new TabModel(url, modelregistry()->mainPanelUrl("table"), outputtype, this);
+			}
+			else if (hasType(ilwType, itWORKFLOW | itMODEL)) {
+				tab = new TabModel(url, "modeller/ModellerDataPane.qml", outputtype, this);
+			}
+			else if (hasType(ilwType, itSCRIPT)) {
+				tab = new TabModel(url, "script/ScriptPane.qml", outputtype, this);
+			}
+			else if (hasType(ilwType, itSINGLEOPERATION)) {
+				if (resources[0].url(true).toString().indexOf(".py") != -1)
+					tab = new TabModel(url, "script/ScriptPane.qml", outputtype, this);
+			}
+			else if (hasType(ilwType, itCOVERAGE)) {
+				tab = new TabModel(url, modelregistry()->mainPanelUrl("coverage"), outputtype, this);
+			}
+		}
     }
     if ( tab){
         if ( index >= _tabs.size())
