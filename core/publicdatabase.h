@@ -85,6 +85,7 @@ private:
     void insertItemDomains(QSqlQuery &sqlPublic);
     bool fillTeritoryRecord(const QStringList &parts, QSqlQuery &sqlPublic);
     void addRegionallEnvelopes();
+	void loadAdjustments();
 
 	std::vector<QSqlQuery> _connection;
 	std::vector<bool> _usedConnections;

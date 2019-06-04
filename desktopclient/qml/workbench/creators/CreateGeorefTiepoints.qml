@@ -25,8 +25,9 @@ Controls.DropableItem{
         }
 
         width : parent.width - 5
-        height : 410
+        height : 420 + masterslave.height
         spacing : 4
+		clip : true
         EditorHeader{}
         IlwisObjectCommon{
             id : objectcommon
@@ -61,6 +62,9 @@ Controls.DropableItem{
         }
  
 		MasterSlaveFields {
+			id : masterslave
+
+        }
 		}
 
         Controls.ComboxLabelPair {
@@ -81,7 +85,8 @@ Controls.DropableItem{
         TiePointsTable {
             id : tiepointstable
             width : parent.width
-            height : 220
+            height : 270 - masterslave.height
+
         }
 
     }

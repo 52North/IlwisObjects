@@ -51,7 +51,7 @@ Rectangle {
     Canvas {
         id : canvas
         anchors.fill : parent
-        property var needUpdate : layermanager ? layermanager.updatePostDrawers : false
+        property var needUpdate : layermanager ? layermanager.updateNeededPostDrawers : false
 
         onNeedUpdateChanged : {
             canvas.requestPaint()

@@ -380,9 +380,9 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
             anchors.fill : parent optionalOutputMarker %8}}";
     QString textArea = "DropArea{ x : %2; height : 65; width : parent.width - label_pin_%1.width - 5 - %3 - %4 - %5; keys: [%6];\
            onDropped : {pin_%1.text = pin_%1.text === \"\" ? drag.source.message : ( pin_%1.text + \"\\n\" + drag.source.message) }\
-        TextArea{ id : pin_%1; property string itemType : \"textarea\";text: \"%7\"; wrapMode:%9;anchors.fill : parent optionalOutputMarker %8}}";
-
-    QString iconField1 = "Button{ width : 20; height:20; checkable : true;checked : false;"
+        TextArea{ id : pin_%1; property string itemType : \"textarea\";text: \"%7\"; wrapMode:%9;anchors.fill : parent optionalOutputMarker %8}}"; 
+	 
+    QString iconField1 = "Button{ width : 20; height:20; checkable : true;checked : false;"    
             "onClicked : {mastercatalog.currentCatalog.filterChanged(\"%2|exclusive\" , checked)}"
             "Image{anchors.centerIn : parent;width : 14; height:14;source:\"../images/%1\";fillMode: Image.PreserveAspectFit}}";
     QString iconField2 = "Image{width : 14; height:14;source:\"../images/%1\";fillMode: Image.PreserveAspectFit}";
@@ -395,9 +395,9 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
     QString rowChoiceOption = "RadioButton{id:choice_pin_%1;text:qsTr(\"%2\");checked:%3;exclusiveGroup:exclusivegroup_pin_%4;property string value:qsTr(\"%5\")}";
     QString formRows;
     int oldOptionGroup = -1;
-    int xshift = 0;
+    int xshift = 0;                                   
 
-    try{
+    try{                
         //Variables for workflow form
         QVariantList::iterator operationIndex = operationNames.begin();
         int operationParameterCount = 1;
@@ -420,7 +420,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     parameterCount = map.value("inParameterCount").toInt();
                 }else{
                     parameterCount = map.value("outParameterCount").toInt();
-                }
+                }    
 
                 while(parameterCount<=0 ){
                     ++operationIndex;

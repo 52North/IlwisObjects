@@ -37,6 +37,7 @@ public:
     const static QString interfaceVersion;
     const static QString IlwisShortName;
     const static QString cacheVersion;
+	const static QString adjustmentVersion;
 
     QString buildType() const;
     QString verionNumber() const;

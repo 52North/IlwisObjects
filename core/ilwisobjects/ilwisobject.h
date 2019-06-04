@@ -344,6 +344,7 @@ public:
     virtual bool canUse(const IlwisObject *obj, bool strict=false) const;
     virtual bool isCompatibleWith( const IlwisObject* obj, bool strict=false) const;
     virtual quint64 copy(const QString &newUrl, const QString &format, const QString &provider) ;
+	void applyAdjustments();
 
     template<typename T> static T create(const QString& def){
         T object;
@@ -407,6 +408,7 @@ public:
     virtual void setPseudoUndef(double v);
     const QScopedPointer<ConnectorInterface> &constConnector(int mode=cmINPUT | cmOUTPUT) const;
     void resetOutputConnector();
+	virtual void storeAdjustment(const QString& property, const QString& value);
 
 
 protected:
@@ -414,6 +416,8 @@ protected:
 
    bool setValid(bool yesno);
    void copyTo(IlwisObject *obj);
+   virtual void applyAdjustments(const std::map<QString, QString>& adjustments);
+   void changeData(const QString& property, const QString& value);
 
    std::recursive_mutex _mutex;
    std::mutex _loadforstore;

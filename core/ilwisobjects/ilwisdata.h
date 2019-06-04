@@ -256,8 +256,15 @@ public:
             }
             return true;
         } else {
-            if ( mustExist)
-                return false;
+			if (mustExist && !options.contains("retryexist")) {
+				QString container = nme.left(nme.lastIndexOf("/"));
+				if (mastercatalog()->addContainer(container)) {
+					auto newoptions = options;
+					newoptions.addOption("retryexist", true);
+					return prepare(nme, tp, newoptions);
+				}
+				return false;
+			}
             Resource resNew = Resource(name, tp);
             if (options.contains("extendedtype"))
                 resNew.setExtendedType(options["extendedtype"].toULongLong());

@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "errorobject.h"
 #include "publicdatabase.h"
 #include "proj4parameters.h"
+#include "version.h"
 #include "geometries.h"
 
 using namespace Ilwis;
@@ -118,6 +119,9 @@ void PublicDatabase::prepare() {
     stmt = "create table domainitems (  code TEXT, itemcode TEXT, itemname TEXT, itemdescription TEXT)"; 
     doQuery(stmt, sql);
 
+
+	stmt = "create table objectadjustments (  propertyname TEXT, propertyvalue TEXT, objecturl TEXT, ilwistype TEXT, ismodel INTEGER)";
+	doQuery(stmt, sql);
 
     stmt = "create table mastercatalog \
             (\
@@ -226,6 +230,38 @@ void PublicDatabase::loadPublicTables() {
     insertItemDomains(sqlPublic);
 
     addRegionallEnvelopes();
+	loadAdjustments();
+}
+
+void PublicDatabase::loadAdjustments() {
+	QUrl url = context()->cacheLocation();
+	QString filename = url.toLocalFile() + "/objectadjustments.dump";
+	QFile adjFile(filename);
+	if (adjFile.open(QFile::ReadOnly)) {
+		QDataStream stream(&adjFile);
+		int vers;
+		stream >> vers;
+		stream.setVersion(vers);
+		QString v;
+		stream >> v;
+		InternalDatabaseConnection db;
+		while (!stream.atEnd()) {
+			QString property, value, ilwisType, objUrl;
+			int ism;
+			stream >> property >> value >> ilwisType >> objUrl >> ism;
+
+			QString stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
+				.arg(property)
+				.arg(objUrl)
+				.arg(ilwisType)
+					.arg(value)
+					.arg(ism);
+			if (!db.exec(stmt)) {
+				kernel()->issues()->logSql(db.lastError());
+				return;
+			}
+		}
+	}
 }
 
 void PublicDatabase::addRegionallEnvelopes() {

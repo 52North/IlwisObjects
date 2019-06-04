@@ -416,8 +416,12 @@ bool IlwisObject::setConnector(ConnectorInterface *connector, int mode, const IO
             if ( !_connector.isNull()){
                 bool ok = true;
                 connector->addProperty("connectormode",IlwisObject::cmINPUT);
-                if ( !(options.contains("create") && options.find("create").value().toBool() == true))
-                    ok = _connector->loadMetaData(this, options);
+				if (!(options.contains("create") && options.find("create").value().toBool() == true)) {
+					ok = _connector->loadMetaData(this, options);
+					if (context()->initializationFinished()) {
+						applyAdjustments();
+					}
+				}
                 changed(false);
                 return ok;
             }
@@ -917,4 +921,56 @@ IlwisTypes IlwisObject::findType(const QString &resource)
     return itUNKNOWN;
 }
 
+void IlwisObject::changeData(const QString& property, const QString& value) {
+	InternalDatabaseConnection db;
+	QString stmt = QString("DELETE FROM objectadjustments where objecturl = '%1' and ilwistype='%2' and propertyname='%3'  and ismodel=0")
+		.arg(resourceRef().url(true).toString())
+		.arg(TypeHelper::type2name(ilwisType())
+			.arg(property));
+	if (!db.exec(stmt)) {
+		kernel()->issues()->logSql(db.lastError());
+		return;
+	}
+	stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
+		.arg(property).arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(ilwisType())).arg(value).arg(0);
+	if (!db.exec(stmt)) {
+		kernel()->issues()->logSql(db.lastError());
+		return;
+	}
+}
 
+void IlwisObject::storeAdjustment(const QString& property, const QString& value) {
+	if (property == "description") {
+		if (description() != value) {
+			changeData(property, value);
+		}
+	}
+}
+
+void IlwisObject::applyAdjustments(const std::map<QString, QString>& adjustments) {
+	auto iter = adjustments.find("name");
+	if (iter != adjustments.end()) {
+		name((*iter).second);
+	}
+	iter = adjustments.find("description");
+	if (iter != adjustments.end()) {
+		setDescription((*iter).second);
+	}
+}
+
+void IlwisObject::applyAdjustments() {
+	InternalDatabaseConnection db;
+	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=0").arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(ilwisType()));
+	bool ok = db.exec(query);
+	if (ok) {
+		std::map<QString, QString> adjustments;
+		while (db.next()) {
+			QSqlRecord record = db.record();
+			QString property = record.field("propertyname").value().toString();
+			QString value = record.field("propertyvalue").value().toString();
+			adjustments[property] = value;
+		}
+		if ( adjustments.size() > 0)
+			this->applyAdjustments(adjustments);
+	}
+}

@@ -120,11 +120,13 @@ Rectangle {
                     console.log("Error loading component:", component.errorString());
                 var sidePanel = datapane.activeSide
                 var tabview = sidePanel.tabview
+
                 if ( tabview){
                     var data= newPanel.displayName
                     insertetTab = tabview.addTab(data, component)
                     insertetTab.active = true
                     insertetTab.item.tabmodel = newPanel
+					console.debug("qqqqqqqq", insertetTab.item)
                     id = insertetTab.item.addDataSource(filter, url, outputtype, options)
                     activeItem = insertetTab.item
 

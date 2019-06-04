@@ -252,18 +252,15 @@ Item {
 	}
 
     function addDataSource(filter, sourceName, sourceType, options){
-        if ( filter !== ""){
-            if (filter.indexOf("layouttype=")!= -1){
-                var parts = filter.split("and")
-                filter = parts[0].trim()
-                var layouttype = parts.substring(4)
-                panelLayout = layouttype.trim()
-            }
-            var id = layouts.activePanel().addDataSource(filter, sourceName, sourceType, options)
-           
-            return id
+        if (filter.indexOf("layouttype=")!= -1){
+            var parts = filter.split("and")
+            filter = parts[0].trim()
+            var layouttype = parts.substring(4)
+            panelLayout = layouttype.trim()
         }
-        return -1
+        var id = layouts.activePanel().addDataSource(filter, sourceName, sourceType, options)
+           
+        return id
     }
 
     function entireMap() {

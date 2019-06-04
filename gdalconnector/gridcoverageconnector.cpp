@@ -112,54 +112,56 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
             return false;
 
         IGeoReference georeference;
-        double geosys[6];
-        CPLErr err = gdal()->getGeotransform(_handle->handle(), geosys) ;
-        if ( err == CE_None) {
-            double a1 = geosys[0];
-            double b1 = geosys[3];
-            double a2 = geosys[1];
-            double b2 = geosys[5];
-            Coordinate crdLeftup( a1 , b1);
-            Coordinate crdRightDown(a1 + rastersize.xsize() * a2, b1 + rastersize.ysize() * b2 ) ;
-            cMin = Coordinate( min(crdLeftup.x, crdRightDown.x), min(crdLeftup.y, crdRightDown.y));
-            cMax = Coordinate( max(crdLeftup.x, crdRightDown.x), max(crdLeftup.y, crdRightDown.y));
+				double geosys[6];
+			CPLErr err = gdal()->getGeotransform(_handle->handle(), geosys);
+			if (err == CE_None) {
+				double a1 = geosys[0];
+				double b1 = geosys[3];
+				double a2 = geosys[1];
+				double b2 = geosys[5];
+				Coordinate crdLeftup(a1, b1);
+				Coordinate crdRightDown(a1 + rastersize.xsize() * a2, b1 + rastersize.ysize() * b2);
+				cMin = Coordinate(min(crdLeftup.x, crdRightDown.x), min(crdLeftup.y, crdRightDown.y));
+				cMax = Coordinate(max(crdLeftup.x, crdRightDown.x), max(crdLeftup.y, crdRightDown.y));
 
-            if(!georeference.prepare(_resource.url().toString()))
-                return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2,"Georeference",raster->name() );
-            if (raster->coordinateSystem().isValid()) {
-                georeference->coordinateSystem(raster->coordinateSystem());
-            }
-			QSharedPointer<CornersGeoReference> cgrf = georeference->as<CornersGeoReference>();
-			cgrf->centerOfPixel(false);
-			Envelope envInternal(Coordinate(cMin.x ,cMin.y), Coordinate(cMax.x , cMax.y));
-			cgrf->internalEnvelope(envInternal);
-        } else {
-            int iNrTiePoints = gdal()->getGCPCount(_handle->handle());
-            if (iNrTiePoints > 0) {
-                const GDAL_GCP* amtp = gdal()->getGCPs(_handle->handle());
-                Envelope envTieLimits;
-                for (int i = 0; i < iNrTiePoints; i++) {
-                    Coordinate crdtiep(amtp[i].dfGCPX,amtp[i].dfGCPY,0);
-                    envTieLimits += crdtiep;
-                }
-                cMin = envTieLimits.min_corner();
-                cMax = envTieLimits.max_corner();
-                if(!georeference.prepare(_resource.url().toString()))
-                    return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2,"Georeference",raster->name() );
-            } else {
-                cMin = Coordinate( 0, 0 );
-                cMax = Coordinate( rastersize.xsize() - 1, rastersize.ysize() - 1);
-                if(!georeference.prepare("code=georef:undetermined"))
-                    return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2,"Georeference",raster->name() );
-                georeference->coordinateSystem(raster->coordinateSystem()); // the grf.prepare() for internal ilwis georeferences (among others "undetermined") does not autmatically set its csy
-            }
-        }
-
+				if (!georeference.prepare(_resource.url().toString()))
+					return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "Georeference", raster->name());
+				if (raster->coordinateSystem().isValid()) {
+					georeference->coordinateSystem(raster->coordinateSystem());
+				}
+				QSharedPointer<CornersGeoReference> cgrf = georeference->as<CornersGeoReference>();
+				cgrf->centerOfPixel(false);
+				Envelope envInternal(Coordinate(cMin.x, cMin.y), Coordinate(cMax.x, cMax.y));
+				cgrf->internalEnvelope(envInternal);
+			}
+			else {
+				int iNrTiePoints = gdal()->getGCPCount(_handle->handle());
+				if (iNrTiePoints > 0) {
+					const GDAL_GCP* amtp = gdal()->getGCPs(_handle->handle());
+					Envelope envTieLimits;
+					for (int i = 0; i < iNrTiePoints; i++) {
+						Coordinate crdtiep(amtp[i].dfGCPX, amtp[i].dfGCPY, 0);
+						envTieLimits += crdtiep;
+					}
+					cMin = envTieLimits.min_corner();
+					cMax = envTieLimits.max_corner();
+					if (!georeference.prepare(_resource.url().toString()))
+						return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "Georeference", raster->name());
+				}
+				else {
+					cMin = Coordinate(0, 0);
+					cMax = Coordinate(rastersize.xsize() - 1, rastersize.ysize() - 1);
+					if (!georeference.prepare("code=georef:undetermined"))
+						return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "Georeference", raster->name());
+					georeference->coordinateSystem(raster->coordinateSystem()); // the grf.prepare() for internal ilwis georeferences (among others "undetermined") does not autmatically set its csy
+				}
+			}
+		raster->envelope(Envelope(cMin, cMax));
+		raster->coordinateSystem()->envelope(raster->envelope());
         georeference->size(rastersize);
         georeference->compute();
 
-        raster->envelope(Envelope(cMin, cMax));
-        raster->coordinateSystem()->envelope(raster->envelope());
+
         raster->georeference(georeference);
         //if (!raster->gridRef()->prepare(raster,rastersize))
         //    return false;

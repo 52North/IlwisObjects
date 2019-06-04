@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QStringList>
 #include <QSqlRecord>
 #include <QUrl>
+#include <QSqlField>
 #include <QThread>
 #include <QDir>
 #ifdef COMPILER_GCC
@@ -108,6 +109,30 @@ bool Ilwis::initIlwis(int mode, const QString & ilwisDir){
 void Ilwis::exitIlwis(){
     MasterCatalogCache cache;
     cache.store();
+	QUrl url = context()->cacheLocation();
+	QString filename = url.toLocalFile() + "/objectadjustments.dump";
+	QFile adjFile(filename);
+	if (adjFile.open(QFile::WriteOnly)) {
+		QDataStream stream(&adjFile);
+		stream << stream.version();
+		stream << Ilwis::kernel()->version()->adjustmentVersion;
+		QString query = QString("Select * from objectadjustments");
+		InternalDatabaseConnection db;
+
+		bool ok = db.exec(query);
+		if (ok) {
+			while (db.next()) {
+				QSqlRecord record = db.record();
+				QString property = record.field("propertyname").value().toString();
+				QString value = record.field("propertyvalue").value().toString();
+				QString ilwisType = record.field("ilwistype").value().toString();
+				QString objUrl  = record.field("objecturl").value().toString();
+				int ismodel = record.field("ismodel").value().toInt();
+				stream << property << value << ilwisType << objUrl << ismodel;
+			}
+		}
+
+	}
     delete kernel();
 }
 

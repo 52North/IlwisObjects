@@ -110,8 +110,8 @@ Rectangle {
 
         Connections {
             target: mouseActions
-            onZoomEnded :{
-                renderer.layermanager.addCommand("setviewextent("+ renderer.layermanager.viewid + "," + envelope + ")");
+            onSize :{
+                console.debug("zzzz34", newSize)
             }
         }
 
