@@ -166,7 +166,7 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
 		for (QString opt : opts) {
 			QStringList elems = opt.split('=');
 			if (elems.size() == 2) {
-				QString key = elems[0];
+				QString key = elems[0].trimmed();
 				QString val = elems[1];
 				_options[key] = val;
 			}
