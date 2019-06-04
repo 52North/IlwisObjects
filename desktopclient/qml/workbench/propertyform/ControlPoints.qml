@@ -24,10 +24,12 @@ Rectangle {
 			text : getProperty("controlpointransformation")
 		}
 		Creators.MasterSlaveFields {
+			id : masterslave
+
 		}
 		Creators.TiePointsTable {
 			id : tiepointstable
-			height : 280
+			height : 280 + 50 - masterslave.height
 		}
 
 	}
