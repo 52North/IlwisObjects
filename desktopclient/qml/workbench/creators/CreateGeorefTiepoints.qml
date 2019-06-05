@@ -65,7 +65,7 @@ Controls.DropableItem{
 			id : masterslave
 
         }
-		}
+
 
         Controls.ComboxLabelPair {
             labelText : qsTr("Transformation")
@@ -80,14 +80,13 @@ Controls.DropableItem{
             }
         }
 
-        }
-
         TiePointsTable {
             id : tiepointstable
             width : parent.width
             height : 270 - masterslave.height
 
         }
+		}
 
     }
     ApplyCreateButtons {
@@ -125,7 +124,7 @@ Controls.DropableItem{
     }
 
     function allDataSet() {
-        return refraster.content != "" && backraster.content != "" && csysystem.content != ""
+        return masterslave.slave && csysystem.content != ""
     }
 
 	function georefUrl(){
