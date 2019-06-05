@@ -234,7 +234,7 @@ Column {
         width : 190
         height : 25
         spacing : 4
-        visible : allDataSet()
+        //visible : allDataSet()
          Button {
              width : 90
              height : 22
