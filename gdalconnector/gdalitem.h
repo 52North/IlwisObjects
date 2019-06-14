@@ -28,7 +28,7 @@ public:
     quint64 extractNameAndDomain(const QString &parts, QString &shortname);
 
 private:
-    quint64 addItem(GdalHandle* handle, const QUrl &url, quint64 csyid, const QString& grfTag, IlwisTypes tp =itRASTER, IlwisTypes extTypes=itUNKNOWN, quint64 sz=i64UNDEF, int layerindex=iUNDEF, bool isExtendedType=true);
+	quint64 addItem(GdalHandle* handle, const QUrl &url, quint64 csyid, quint64 grfId, IlwisTypes tp = itRASTER, IlwisTypes extTypes = itUNKNOWN, quint64 sz = i64UNDEF, int layerindex = iUNDEF, bool isExtendedType = true);
     quint64 addCsy(GdalHandle* handle, const QString &path, const QUrl &url, bool message=true);
     QString dimensions(GdalHandle* handle, bool &is3d, int layerindex=iUNDEF) const;
     std::map<QString, QString> kvp2Map(char **kvplist);
