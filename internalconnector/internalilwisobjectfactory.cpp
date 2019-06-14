@@ -856,6 +856,22 @@ GeoReference *InternalIlwisObjectFactory::createGrfFromCode(const Resource& reso
     return 0;
 }
 
+void InternalIlwisObjectFactory::variant2Csy(const QVariant& v, ICoordinateSystem& csy) const{
+	bool ok;
+	quint64 id = v.toULongLong(&ok);
+	if (ok) {
+		csy.prepare(id);
+	}
+	else {
+		QString typenm = v.typeName();
+		if (typenm == "Ilwis::ICoordinateSystem")
+			csy = v.value<ICoordinateSystem>();
+		if (typenm == "QString") {
+			csy.prepare(v.toString());
+		}
+	}
+}
+
 IlwisObject *InternalIlwisObjectFactory::createGeoreference(const Resource& resource, const IOOptions &options) const {
     GeoReference *cgrf;
     if ( resource.code() == "undetermined"){
@@ -878,26 +894,24 @@ IlwisObject *InternalIlwisObjectFactory::createGeoreference(const Resource& reso
         ICoordinateSystem csy;
         bool ok;
         if ( resource.hasProperty("coordinatesystem")){
-            quint64 id = resource["coordinatesystem"].toULongLong(&ok);
-            if ( ok) {
-                csy = mastercatalog()->get(id);
-            } else
-                csy =  resource["coordinatesystem"].value<ICoordinateSystem>();
-
+			variant2Csy(resource["coordinatesystem"], csy);
             cgrf->coordinateSystem(csy);
         }
 
 		if (resource.hasProperty("envelope")) {
 			QSharedPointer< CornersGeoReference> spGrf = cgrf->as< CornersGeoReference>();
 			spGrf->internalEnvelope(resource["envelope"].value<Envelope>());
-		}if (resource.hasProperty("size"))
-            cgrf->size(resource["size"].value<Size<>>());
-        if ( resource.hasProperty("centerofpixel"))
+		}if (resource.hasProperty("size")) {
+			Size<quint32> sz;
+			variant2size(resource["size"], sz);
+			cgrf->size(sz);
+		}if (resource.hasProperty("centerofpixel"))
             cgrf->centerOfPixel(resource["centerofpixel"].toBool());
     }
 
     return cgrf;
 }
+
 
 IlwisObject *InternalIlwisObjectFactory::createTable(const Resource& resource, const IOOptions &options) const {
 

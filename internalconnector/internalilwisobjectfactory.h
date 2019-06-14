@@ -24,6 +24,8 @@ class GeodeticDatum;
 class GeoReference;
 class Domain;
 class NumericDomain;
+class CoordinateSystem;
+typedef IlwisData<CoordinateSystem> ICoordinateSystem;
 
 namespace Internal {
 /*!
@@ -78,6 +80,30 @@ private:
 
         return obj;
     }
+
+	template<class T> void variant2size(const QVariant& v, T& sz) const {
+		QString typenm = v.typeName();
+		if (typenm == "Ilwis::Size<quint32>") {
+			Size<quint32> isize = v.value<Size<quint32>>();
+			sz = T(isize.xsize(), isize.ysize(), isize.zsize());
+		}
+		else if (typenm == "Ilwis::Size<qint32>") {
+			Size<qint32> isize = v.value<Size<qint32>>();
+			sz = T(isize.xsize(), isize.ysize(), isize.zsize());
+		}
+		else if (typenm == "QSize") {
+			sz = v.toSize();
+		}
+		else if (typenm == "QString") {
+			QStringList parts = v.toString().split(" ");
+			if (parts.size() >= 2)
+				sz = Size<>(parts[0].toInt(), parts[1].toInt(), 1);
+			if (parts.size() == 3)
+				sz.zsize(parts[2].toInt());
+		}
+	}
+
+	void variant2Csy(const QVariant& v, ICoordinateSystem& csy) const;
 
 
 };
