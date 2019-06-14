@@ -39,7 +39,7 @@ SimplePolygonSetter::SimplePolygonSetter(const LayerManager *manager) : BaseSpat
 
 }
 
-void SimplePolygonSetter::getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& indices) const
+void SimplePolygonSetter::getVertices(const geos::geom::Geometry *geometry, Vertices& vertices, VertexIndices& indices) const
 {
     IlwisTesselator tesselator;
     int n = (int)geometry->getNumGeometries();
@@ -53,19 +53,21 @@ void SimplePolygonSetter::getVertices(const geos::geom::Geometry *geometry, std:
     QApplication::restoreOverrideCursor();
 }
 
-void SimplePolygonSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, std::vector<qreal>& colors) const
+void SimplePolygonSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, Colors& colors) const
 {
 	QColor clr = attr.value2color(value);
-    for(int j =0; j < colors.size(); j+=3){
-        if ( value.isValid() && value.toInt() != iUNDEF) {
-			colors[j] =clr.redF();
-			colors[j+1] =clr.greenF();
-			colors[j+2] =clr.blueF();
+	for (int i = 0; i < colors.size(); ++i) {
+		for (int j = 0; j < colors.size(); j += 3) {
+			if (value.isValid() && value.toInt() != iUNDEF) {
+				colors[i][j] = clr.redF();
+				colors[i][j + 1] = clr.greenF();
+				colors[i][j + 2] = clr.blueF();
+			}
+			else {
+				colors[i][j] = defaultColor.redF();
+				colors[i][j + 1] = defaultColor.greenF();
+				colors[i][j + 2] = defaultColor.blueF();
+			}
 		}
-		else {
-			colors[j] = defaultColor.redF();
-			colors[j + 1] = defaultColor.greenF();
-			colors[j + 2] = defaultColor.blueF();
-		}
-    }
+	}
 }

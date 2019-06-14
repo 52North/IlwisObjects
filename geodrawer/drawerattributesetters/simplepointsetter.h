@@ -26,11 +26,11 @@ class SimplePointSetter : public BaseSpatialAttributeSetter
 public:
     SimplePointSetter(const LayerManager *manager);
 
-    void getVertices(const geos::geom::Geometry *subgeom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+    void getVertices(const geos::geom::Geometry *subgeom, Vertices& vertices, VertexIndices& indices) const;
 
     void getColors(const VisualAttribute& attr,
                             const QVariant& value,const QColor& defaultColor, int start,
-								std::vector<qreal>& colors) const;
+								Colors& colors) const;
 
 };
 }

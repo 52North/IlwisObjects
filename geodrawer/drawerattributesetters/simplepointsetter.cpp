@@ -37,10 +37,12 @@ SimplePointSetter::SimplePointSetter(const LayerManager *manager) : BaseSpatialA
 
 }
 
-void SimplePointSetter::getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& ) const
+void SimplePointSetter::getVertices(const geos::geom::Geometry *geometry, Vertices& vertices, VertexIndices& ) const
 {
 	Envelope env = _layerManager->rootLayer()->vproperty("coverageenvelope").value<Envelope>();
 	int n = (int)geometry->getNumGeometries();
+	if (vertices.size() == 0)
+		vertices.resize(1);
 	for (int geom = 0; geom < n; ++geom) {
 		const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
 		if (!subgeom)
@@ -52,21 +54,23 @@ void SimplePointSetter::getVertices(const geos::geom::Geometry *geometry, std::v
 		}
 
 		double z = coord.z == rUNDEF || std::isnan(coord.z) ? 0 : coord.z;
-		vertices.push_back(coord.x);
-		vertices.push_back(coord.y);
-		vertices.push_back(z);
+		vertices[0].push_back(coord.x);
+		vertices[0].push_back(coord.y);
+		vertices[0].push_back(z);
 	}
 }
 
-void SimplePointSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, std::vector<qreal>& colors) const
+void SimplePointSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, Colors& colors) const
 {
 	QColor clr = attr.value2color(value);
-	int last = std::max((int)0,(int)(colors.size() - 3));
-	for (int j = last; j < colors.size(); j+=3) {
-		if (value.isValid() && value.toInt() != iUNDEF) {
-			colors[j] = clr.redF();
-			colors[j+1] =clr.greenF();
-			colors[j+2] = clr.blueF();
+	for (int i = 0; i < colors.size(); ++i) {
+		int last = std::max((int)0, (int)(colors[i].size() - 3));
+		for (int j = last; j < colors.size(); j += 3) {
+			if (value.isValid() && value.toInt() != iUNDEF) {
+				colors[i][j] = clr.redF();
+				colors[i][j + 1] = clr.greenF();
+				colors[i][j + 2] = clr.blueF();
+			}
 		}
 	}
 }

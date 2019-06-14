@@ -44,7 +44,7 @@ SimpleLineSetter::~SimpleLineSetter()
 
 }
 
-void SimpleLineSetter::getGeometryVertices(const geos::geom::Geometry* geom, std::vector<qreal>& vertices, std::vector<int>& indices) const {
+void SimpleLineSetter::getGeometryVertices(const geos::geom::Geometry* geom, Vertices& vertices, VertexIndices& indices) const {
 
 	if (!geom)
 		return;
@@ -52,27 +52,42 @@ void SimpleLineSetter::getGeometryVertices(const geos::geom::Geometry* geom, std
 	const std::vector<geos::geom::Coordinate>* coords = geom->getCoordinates()->toVector();
 
 	Coordinate crd;
-	int extraIndices = (int)coords->size() * 2 - 2;
-	int currentIndicesSize = (int)indices.size();
-	int verticesIndex = (int)vertices.size() / 3;
-	int indicesIndex = currentIndicesSize;
-	indices.resize(currentIndicesSize + extraIndices);
+	quint64 verticesIndex = indices.size() > 0 ? indices.back().back() + 1 : 0;
+	int mm = MAX_INDICES_BUFFER;
+    int count = 0;
 	for (int i = 0; i < coords->size(); ++i) {
-		if (i > 1)
-			indices[indicesIndex++] = verticesIndex + i - 1;
+		if (verticesIndex > mm || indices.size() == 0) {
+			indices.resize(indices.size() + 1);
+			vertices.resize(vertices.size() + 1);
+			verticesIndex = 0;
+			if (i != 0) { // we are breaking the somewhere in the line; need to copy the last coordinate to the new vertices plus new index
+				auto& prevVertices = vertices[vertices.size() - 2];
+				int last = prevVertices.size() - 1;
+				vertices.back().push_back(prevVertices[last - 2]);
+				vertices.back().push_back(prevVertices[last - 1]);
+				vertices.back().push_back(prevVertices[last]);
+				indices.back().push_back(verticesIndex++);
+				count = 1;
+			}
+
+		}
+		if (count > 1)
+			indices.back().push_back(indices.back().back());
 
 		crd = coords->at(i);
 		if (coordinateConversionNeeded()) {
 			crd = _targetSystem->coord2coord(_sourceSystem, crd);
 		}
-		vertices.push_back(crd.x);
-		vertices.push_back(crd.y);
-		vertices.push_back((std::isnan(crd.z) || crd.z == rUNDEF) ? 0 : crd.z);
-		indices[indicesIndex++] = verticesIndex + i;
+		vertices.back().push_back(crd.x);
+		vertices.back().push_back(crd.y);
+		vertices.back().push_back((std::isnan(crd.z) || crd.z == rUNDEF) ? 0 : crd.z);
+		indices.back().push_back(verticesIndex);
+		++verticesIndex;
+		++count;
 	}
 }
 
-void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, std::vector<qreal>& vertices, std::vector<int>& indices) const {
+void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, Vertices& vertices, VertexIndices& indices) const {
 	geos::geom::GeometryTypeId geostype = polygons->getGeometryTypeId();
 	if (geostype == geos::geom::GEOS_POLYGON) {
 		const geos::geom::Polygon *polygon = dynamic_cast<const geos::geom::Polygon*>(polygons);
@@ -97,7 +112,7 @@ void SimpleLineSetter::getVerticesPolygon(const geos::geom::Geometry *polygons, 
 	}
 }
 
-void SimpleLineSetter::getVertices(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int>& indices)const
+void SimpleLineSetter::getVertices(const geos::geom::Geometry *geometry, Vertices& vertices, VertexIndices& indices) const
 {
     geos::geom::GeometryTypeId geostype = geometry->getGeometryTypeId();
 	if (geostype == geos::geom::GEOS_POLYGON || geostype == geos::geom::GEOS_MULTIPOLYGON) {
@@ -109,18 +124,24 @@ void SimpleLineSetter::getVertices(const geos::geom::Geometry *geometry, std::ve
         const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
         if (!subgeom)
             continue;
+		if (geom == 5917) {
+			qDebug() << "stop";
+		}
 		getGeometryVertices(subgeom, vertices, indices);
      }
 }
 
-void SimpleLineSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, std::vector<qreal>& colors) const
+void SimpleLineSetter::getColors(const VisualAttribute &attr, const QVariant &value, const QColor &defaultColor, int start, Colors& colors) const
 {
+
 	QColor clr = attr.value2color(value);
-	for (int j = start; j < colors.size(); j += 3) {
-		if (value.isValid() && value.toInt() != iUNDEF) {
-				colors[j] = clr.redF();
-				colors[j + 1] = clr.greenF();
-				colors[j + 2] = clr.blueF();
+	for (int i = 0; i < colors.size(); ++i) {
+		for (int j = start; j < colors[i].size(); j += 3) {
+			if (value.isValid() && value.toInt() != iUNDEF) {
+				colors[i][j] = clr.redF();
+				colors[i][j + 1] = clr.greenF();
+				colors[i][j + 2] = clr.blueF();
+			}
 		}
 	}
 }

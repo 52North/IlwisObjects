@@ -28,16 +28,16 @@ public:
     SimpleLineSetter(const LayerManager *manager);
     ~SimpleLineSetter();
 
-	void getGeometryVertices(const geos::geom::Geometry * geom, std::vector<qreal>& vertices, std::vector<int>& indices);
+	//void getGeometryVertices(const geos::geom::Geometry * geom, Vertices& vertices, VertexIndices& indices) const;
 
-	void getVertices(const geos::geom::Geometry *subgeom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getVertices(const geos::geom::Geometry *subgeom, Vertices& vertices, VertexIndices& indices) const;
 
     void getColors(const VisualAttribute& attr,
                             const QVariant& value,const QColor& defaultColor,int start,
-							std::vector<qreal>& colors) const;
+							Colors& colors) const;
 private : 
-	void getVerticesPolygon(const geos::geom::Geometry *geom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
-	void getGeometryVertices(const geos::geom::Geometry * geom, std::vector<qreal>& vertices, std::vector<int>& indices) const;
+	void getVerticesPolygon(const geos::geom::Geometry *geom, Vertices& vertices, VertexIndices& indices) const;
+	void getGeometryVertices(const geos::geom::Geometry * geom, Vertices& vertices, VertexIndices& indices) const;
 
 };
 }
