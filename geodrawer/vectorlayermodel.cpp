@@ -171,3 +171,4 @@ void VectorLayerModel::renderReady(bool yesno)
 {
     _renderReady = yesno;
 }
+

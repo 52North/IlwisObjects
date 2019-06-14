@@ -54,7 +54,7 @@ LineLayerModel::LineLayerModel(LayerManager * manager, QStandardItem * parent, c
 	_isValid = _featureLayer->coverage().as<FeatureCoverage>()->featureCount(isSupportLayer() ? itPOLYGON :  itLINE) > 0;
 	_icon = "vector_line.png";
 	_isDrawable = true;
-	_layerType = itLINELAYER;
+	_layerType = itLINELAYER; 
 
 }
 
@@ -74,15 +74,23 @@ QString LineLayerModel::value2string(const QVariant & value, const QString & att
 
 void LineLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *attr, const QVariant& value, int & currentBuffer)
 {
-	std::vector<qreal> vertices, colors;
-	std::vector<int> indices;
+	Vertices vertices;
+	Colors colors; 
+	VertexIndices indices;
     QColor clr = attr->value2color(value);
     if (clr.alphaF() == 1) {
-        _linesetter->getVertices(feature->geometry().get(), vertices, indices);
-        colors.resize(vertices.size());
-        int start = 0; // std::max((int)0, (int)(colors.size() - 3));
-        _linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
-        currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itLINE, feature->featureid());
+		auto *geom = feature->geometry().get();
+
+     	_linesetter->getVertices(geom, vertices, indices);
+		colors.resize(vertices.size());
+		for (int i = 0; i < vertices.size(); ++i) {
+			colors[i].resize(vertices[i].size());
+		}
+		int start = 0; // std::max((int)0, (int)(colors.size() - 3));
+		_linesetter->getColors(*attr, value, uicontext()->defaultColor("coverageline"), start, colors);
+		for (int i = 0; i < indices.size(); ++i) {
+			currentBuffer = _buffer.addObject(currentBuffer, vertices[i], indices[i], colors[i], itLINE, feature->featureid());
+		}
     }
 }
 

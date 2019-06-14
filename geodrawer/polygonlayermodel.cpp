@@ -85,8 +85,9 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
             const auto& geometry = feature->geometry();
             int n = (int)geometry->getNumGeometries();
             for (int geom = 0; geom < n; ++geom) {
-                std::vector<qreal> vertices, colors;
-                std::vector<int> indices;
+				Vertices vertices;
+				Colors colors;
+                VertexIndices indices;
 
                 const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
                 if (!subgeom)
@@ -94,9 +95,14 @@ void PolygonLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *
                 _polygonsetter->getVertices(subgeom, vertices, indices);
 
                 colors.resize(vertices.size());
+				for (int i = 0; i < vertices.size(); ++i) {
+					colors[i].resize(vertices[i].size());
+				}
 
                 _polygonsetter->getColors(*attr, value, uicontext()->defaultColor("coveragearea"), 0, colors);
-                currentBuffer = _buffer.addObject(currentBuffer, vertices, indices, colors, itPOLYGON, feature->featureid());
+				for (int i = 0; i < indices.size(); ++i) {
+					currentBuffer = _buffer.addObject(currentBuffer, vertices[i], indices[i], colors[i], itPOLYGON, feature->featureid());
+				}
             }
         }
     }

@@ -72,11 +72,14 @@ bool PointLayerModel::prepare(int prepType) {
 
 void PointLayerModel::addFeature(const SPFeatureI & feature, VisualAttribute *attr, const QVariant& value, int & currentBuffer)
 {
-	std::vector<int> indices;
+	VertexIndices indices;
     QColor clr = attr->value2color(value);
     if (clr.alphaF() == 1) {
         _pointsetter->getVertices(feature->geometry().get(), _pointVertices, indices);
         _pointColors.resize(_pointVertices.size());
+		for (int i = 0; i < _pointVertices.size(); ++i) {
+			_pointColors[i].resize(_pointVertices[i].size());
+		}
         int start = std::max((int)0, (int)(_pointColors.size() - 3));
         _pointsetter->getColors(*attr, value, uicontext()->defaultColor("coveragepoint"), start, _pointColors);
         //_buffer.addPoint(currentBuffer,_pointColors,  feature->featureid())
@@ -90,8 +93,10 @@ void PointLayerModel::setColors(int start, VisualAttribute *attr, const QVariant
 
 void Ilwis::Ui::PointLayerModel::finish(const std::vector<quint64>&ids)
 {
-	_buffer.addPoints(_pointVertices, _pointColors, ids);
-	_pointColors = _pointVertices = std::vector<qreal>();
+	for (int i = 0; i < _pointVertices.size(); ++i) {
+		_buffer.addPoints(_pointVertices[i], _pointColors[i], ids);
+	}
+	_pointColors = _pointVertices = std::vector<std::vector<qreal>>();
 }
 
 int PointLayerModel::numberOfBuffers(const QString& type) const

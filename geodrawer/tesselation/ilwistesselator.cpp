@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "geometryhelper.h"
 #include "ilwistesselator.h"
 
+#define MAX_INDICES_BUFFER 0xffff
+
 void* stdAlloc(void* userData, unsigned int size)
 {
     qint32* allocated = ( qint32*)userData;
@@ -63,7 +65,7 @@ IlwisTesselator::~IlwisTesselator()
     tessDeleteTess(_tessaltor);
 }
 
-void IlwisTesselator::tesselate(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int> &indices)
+void IlwisTesselator::tesselate(const geos::geom::Geometry *geometry, Vertices& vertices, VertexIndices& indices)
 
 {
     tessReinitialize(_tessaltor);
@@ -116,7 +118,7 @@ int orientation(float x1, float y1, float x2, float y2, float x3, float y3)
     return (val > 0) ? 1 : 2; // clock or counterclock wise
 }
 
-void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &contours, std::vector<qreal>& vertices, std::vector<int> &indices)
+void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &contours, Vertices& vertices, VertexIndices &indices)
 {
 
     quint32 maxVerts = 50;
@@ -132,50 +134,58 @@ void IlwisTesselator::tesselateInternal(const std::vector<std::vector<float> > &
     const qint32 nelems = tessGetElementCount(_tessaltor);
 
     int currentStart = vertices.size() / 3; 
+	quint64 verticesIndex = indices.size() > 0 ? indices.back().back() : 0;
 
     for (int i = 0; i < nelems; ++i)
     {
         const qint32* p = &elems[i*maxVerts];
 
 
-       // for (int j = 0; j < maxVerts && p[j] != TESS_UNDEF; ++j) {
-       //     qDebug() << verts[p[j] * 2] - center.x << verts[p[j] * 2 + 1] - center.y << verts[p[j] * 2] << verts[p[j] * 2 + 1] ;
-       // }
         float baseX = verts[p[0] * 2];
         float baseY = verts[p[0] * 2 + 1];
         float oldX = verts[p[1] * 2];
         float oldY = verts[p[1] * 2 + 1];
+
+		if (verticesIndex > MAX_INDICES_BUFFER || indices.size() == 0) {
+			indices.resize(indices.size() + 1);
+			vertices.resize(vertices.size() + 1);
+			verticesIndex = 0;
+		}
+		auto &vertsRef = vertices.back();
+		auto &inds = indices.back();
+
         for (int j = 2; j < maxVerts && p[j] != TESS_UNDEF; ++j){
             float nextX = verts[p[j] * 2];
             float nextY = verts[p[j] * 2 + 1];
 
-            vertices.push_back(baseX);
-            vertices.push_back(baseY);
-            vertices.push_back(0);
-            indices.push_back(currentStart++);
+			vertsRef.push_back(baseX);
+			vertsRef.push_back(baseY);
+			vertsRef.push_back(0);
+			inds.push_back(currentStart++);
 
             int clockwise = orientation(baseX, baseY, oldX, oldY, nextX, nextY);
             if (clockwise == 2) {
-                vertices.push_back(oldX);
-                vertices.push_back(oldY);
-                vertices.push_back(0);
+				vertsRef.push_back(oldX);
+				vertsRef.push_back(oldY);
+				vertsRef.push_back(0);
 
-                vertices.push_back(nextX);
-                vertices.push_back(nextY);
-                vertices.push_back(0);
+				vertsRef.push_back(nextX);
+				vertsRef.push_back(nextY);
+				vertsRef.push_back(0);
 
             }
             else {
-                vertices.push_back(nextX);
-                vertices.push_back(nextY);
-                vertices.push_back(0);
+				vertsRef.push_back(nextX);
+				vertsRef.push_back(nextY);
+				vertsRef.push_back(0);
 
-                vertices.push_back(oldX);
-                vertices.push_back(oldY);
-                vertices.push_back(0);
+				vertsRef.push_back(oldX);
+				vertsRef.push_back(oldY);
+				vertsRef.push_back(0);
             }
-            indices.push_back(currentStart++);
-            indices.push_back(currentStart++);
+            inds.push_back(currentStart++);
+            inds.push_back(currentStart++);
+			++verticesIndex;
 
             oldX = nextX;
             oldY = nextY;

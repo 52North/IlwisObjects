@@ -51,7 +51,8 @@ namespace Ilwis {
 
 		private:
 			std::shared_ptr<BaseSpatialAttributeSetter> _pointsetter;
-			std::vector<qreal> _pointVertices, _pointColors;
+			Vertices _pointVertices;
+			Colors _pointColors;
 		};
 	}
 }

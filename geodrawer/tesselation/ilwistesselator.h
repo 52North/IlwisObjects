@@ -28,10 +28,10 @@ public:
     IlwisTesselator();
     ~IlwisTesselator();
 
-    void tesselate(const geos::geom::Geometry *geometry, std::vector<qreal>& vertices, std::vector<int> &indices);
+    void tesselate(const geos::geom::Geometry *geometry, Vertices& vertices, VertexIndices &indices);
 private:
    std::vector<std::vector<float>> getContours(const geos::geom::Geometry *geometry);
-   void tesselateInternal(const std::vector<std::vector<float> > &contours, std::vector<qreal>& vertices, std::vector<int> &indices);
+   void tesselateInternal(const std::vector<std::vector<float> > &contours, Vertices& vertices, VertexIndices& indices);
 
     TESStesselator *_tessaltor = 0;
     TESSalloc _ma;

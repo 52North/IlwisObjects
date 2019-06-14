@@ -54,6 +54,7 @@ namespace Ilwis {
 			virtual bool renderReady();
 			virtual void renderReady(bool yesno);
 
+
 		signals:
 			void activeAttributeChanged();
 
