@@ -394,10 +394,10 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
     QString rowBodyChoiceHeader = "Row{ width : parent.width;Text { text: qsTr(\"%1\"); width : %2; } Column{ExclusiveGroup { id: exclusivegroup_pin_%3} %4}}";
     QString rowChoiceOption = "RadioButton{id:choice_pin_%1;text:qsTr(\"%2\");checked:%3;exclusiveGroup:exclusivegroup_pin_%4;property string value:qsTr(\"%5\")}";
     QString formRows;
-    int oldOptionGroup = -1;
-    int xshift = 0;                                   
+    int oldOptionGroup = -1; 
+    int xshift = 0;                                       
 
-    try{                
+    try{                   
         //Variables for workflow form
         QVariantList::iterator operationIndex = operationNames.begin();
         int operationParameterCount = 1;

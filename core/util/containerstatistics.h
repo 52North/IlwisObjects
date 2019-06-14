@@ -248,8 +248,10 @@ public:
                     DataType sample = *iter;
                     quint16 index = (quint16)binsize - 1;
                     if (!isNumericalUndef(sample)) {
-                        index = binsize * (double)(sample - rmin) / rdelta;
-                        index =  index == binsize ? index - 1 : index;
+						double d = (double)(sample - rmin);
+						double idx = (double)binsize * d / rdelta;
+						index = idx;
+                        index =  index >= binsize-2 ? index - 2 : index; // -2 is the last 'real' number, -1 is the place for undefs; through rounding the index may endup at index -1 which is not what we want;
                     }
                     _bins.at(index)._count++;
                 }

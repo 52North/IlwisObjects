@@ -16,6 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
 #include "version.h"
+#include "geometries.h"
+#include "drawerattributesetter.h"
 #include <QColor>
 #include <QDir>
 #include "oglbuffer.h"
@@ -27,23 +29,23 @@ OGLBuffer::OGLBuffer()
 
 }
 
-void OGLBuffer::addPoints(const std::vector<qreal>& positions, const std::vector<qreal>& colors, const std::vector<quint64>& ids) {
+void OGLBuffer::addPoints(std::vector<qreal>& positions, std::vector<qreal>& colors, const std::vector<quint64>& ids) {
 
-	_buffers.resize(_buffers.size() + 1);
-	OGLBufferChunck& buffer = _buffers.back();
-	FeatureMarker marker;
-	marker._firstChunk = _buffers.size() - 1;
-    marker._count = 1;
+		_buffers.resize(_buffers.size() + 1);
+		OGLBufferChunck& buffer = _buffers.back();
+		FeatureMarker marker;
+		marker._firstChunk = _buffers.size() - 1;
+		marker._count = 1;
 
-	buffer._vertices.resize(positions.size());
-	buffer._colors.resize( colors.size());
-	std::copy(positions.begin(), positions.end(), buffer._vertices.begin());
-	std::copy(colors.begin(), colors.end(), buffer._colors.begin());
-    _features = std::unordered_map<quint64, std::vector<FeatureMarker>>();
-    for (int i=0; i < ids.size(); ++i) {
-        marker._start = i*3;
-        _features[ids[i]].push_back(marker);
-    }
+		buffer._vertices.resize(positions.size());
+		buffer._colors.resize(colors.size());
+		std::copy(positions.begin(), positions.end(), buffer._vertices.begin());
+		std::copy(colors.begin(), colors.end(), buffer._colors.begin());
+		_features = std::unordered_map<quint64, std::vector<FeatureMarker>>();
+		for (int i = 0; i < ids.size(); ++i) {
+			marker._start = i * 3;
+			_features[ids[i]].push_back(marker);
+		}
 }
 
 void OGLBuffer::changeColor(quint64 fid, const QColor& clr) {
@@ -55,7 +57,7 @@ void OGLBuffer::changeColor(quint64 fid, const QColor& clr) {
             quint32 count = 0;
             for (int chunkIdx = marker._firstChunk; count < marker._count && chunkIdx < _buffers.size(); ++chunkIdx) {
                 OGLBufferChunck& buffer = _buffers[chunkIdx];
-                for (int i = start; count < marker._count && i < buffer._colors.size(); i += 3) {
+                for (int i = start; count < marker._count && i < buffer._colors.size()-2; i += 3) {
                     buffer._colors[i] = clr.redF();
                     buffer._colors[i + 1] = clr.greenF();
                     buffer._colors[i + 2] = clr.blueF();
@@ -66,13 +68,14 @@ void OGLBuffer::changeColor(quint64 fid, const QColor& clr) {
         }
 	}
 }
-int OGLBuffer::addObject(int currentBuffer, const std::vector<qreal>& positions, const std::vector<int>& indices, const std::vector<qreal>& colors,IlwisTypes type, quint64 fid)
+int OGLBuffer::addObject(int currentBuffer, const std::vector<qreal>& positions, const std::vector<quint16>& indices, const std::vector<qreal>& colors,IlwisTypes type, quint64 fid)
 {
 	FeatureMarker marker;
 	if (currentBuffer <= _buffers.size())
 		_buffers.resize(currentBuffer + 1);
 
-	if ((_buffers[currentBuffer]._indices.size() + indices.size()) >= MAX_INDICES_BUFFER - 1) {
+	int mm = MAX_INDICES_BUFFER;
+	if ((_buffers[currentBuffer]._indices.size() + indices.size()) >= mm - 1) {
 		_buffers.resize(_buffers.size() + 1);
 		++currentBuffer;
 	}

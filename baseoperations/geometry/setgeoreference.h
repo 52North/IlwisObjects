@@ -1,3 +1,5 @@
+#pragma once
+
 /*IlwisObjects is a framework for analysis, processing and visualization of remote sensing and gis data
 Copyright (C) 2018  52n North
 
@@ -14,9 +16,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-#ifndef BUILDNR_H
-#define BUILDNR_H
-#define ILWIS_BUILDNR 201906121000
-#define ILWIS_VERSION_TYPE "Alpha"
-#define ILWIS_VERSION_NUMBER 25
-#endif
+namespace Ilwis {
+	class GeoReference;
+	typedef IlwisData<GeoReference> IGeoReference;
+
+	namespace BaseOperations {
+
+		class SetGeoreference : public OperationImplementation
+		{
+		public:
+			SetGeoreference();
+			SetGeoreference(quint64 metaid, const Ilwis::OperationExpression &expr);
+
+			bool execute(ExecutionContext *ctx, SymbolTable& symTable);
+			static Ilwis::OperationImplementation *create(quint64 metaid, const Ilwis::OperationExpression& expr);
+			Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable&);
+
+			static quint64 createMetadata();
+		private:
+			IRasterCoverage _raster;
+			IRasterCoverage _outputRaster;
+			IGeoReference _inputGrf;
+
+			NEW_OPERATION(SetGeoreference)
+		};
+	}
+}
+
+

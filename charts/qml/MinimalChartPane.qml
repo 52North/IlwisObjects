@@ -13,7 +13,7 @@ import "../../../../qml/controls" as Controls
 Rectangle {
     id : chartView
     width : parent.width
-    height : parent.height - 270
+   // height : parent.height - 270
 	property ChartModel chart : models.createChartModel(chartView) 
     property var updateChart : chart ? chart.updateSeries : 0
     property alias margins : visibleGraphs.margins

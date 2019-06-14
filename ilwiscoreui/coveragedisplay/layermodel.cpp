@@ -99,7 +99,9 @@ QVariant LayerModel::vproperty(const QString &key) const
                     var.setValue<IRepresentation>(attr->representation());
                 else if ( parts[1] == "stretchrange"){
                     var.setValue<NumericRange>(attr->stretchRange());
-                } else if ( parts[1] == "domain"){
+                } if (parts[1] == "actualrange") {
+					var.setValue<NumericRange>(attr->actualRange());
+				} else if ( parts[1] == "domain"){
                     var.setValue<IDomain>(attr->attributeDomain());
                 }
 				else if (parts[1] == "color") {

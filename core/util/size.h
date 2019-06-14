@@ -252,6 +252,7 @@ template<typename T> bool operator!=(const Ilwis::Size<T>& sz1, const Ilwis::Siz
 }
 }
 Q_DECLARE_METATYPE(Ilwis::Size<quint32>)
+Q_DECLARE_METATYPE(Ilwis::Size<qint32>)
 Q_DECLARE_METATYPE(Ilwis::Size<double>)
 
 #endif // SIZE_H

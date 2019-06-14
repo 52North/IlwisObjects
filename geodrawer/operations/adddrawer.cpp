@@ -151,9 +151,10 @@ Ilwis::OperationImplementation::State AddDrawer::prepare(ExecutionContext *ctx, 
             return sPREPAREFAILED;
         }
 
+		bool newCsyIsUnknown = _coverage->coordinateSystem()->isUnknown();
+		bool screenCsyIsUnknown = layerManager()->rootLayer()->screenCsy().isValid()  ? layerManager()->rootLayer()->screenCsy()->isUnknown() : true;
 
-
-		if (_coverage->coordinateSystem()->isUnknown() && layerManager()->rootLayer()->screenCsy().isValid()) {
+		if (newCsyIsUnknown && !screenCsyIsUnknown) {
 			QString mes = QString("coordinate system 'unknown' not compatible with coordinate system of the layerview");
 			kernel()->issues()->log(mes, IssueObject::itWarning);
 			return sPREPAREFAILED;

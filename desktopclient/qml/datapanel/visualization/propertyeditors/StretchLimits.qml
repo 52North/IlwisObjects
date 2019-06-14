@@ -6,7 +6,7 @@ import "../../../Global.js" as Global
 import "../../../controls" as Controls
 
 Row {
-    width : Math.min(300,parent ? Math.min(parent.width,500) : 300)
+    width : Math.min(500,parent ? Math.min(parent.width,500) : 500)
     height: parent ? parent.height - 10 : 0
     clip : true
     property var editor
@@ -17,7 +17,10 @@ Row {
         height: parent ? parent.height - 10 : 0
         x : 10
 
-        //spacing : 5
+        onHeightChanged : {
+			console.debug("aaaaaaaaa", height, minhist.height, chartArea.item,chartArea.item.height, chartArea.item.width, chartArea.x, chartArea.height, chartArea.width)
+			//item.height = parent.height
+		}
 
         Loader {
             id : chartArea
@@ -27,6 +30,7 @@ Row {
             x : -offset
 
             onLoaded : {
+			    console.debug("zzzzzzzzz", source)
 			    var extraParams = {name : 'histogram',chartType : 'line', color : 'black'}
                 chartArea.item.chart.addDataTable(editor.coverageId,"max","counts",extraParams)
                 chartArea.item.margins.left = 0
@@ -42,6 +46,7 @@ Row {
                     slider.minValue = editor.min;
                     slider.maxValue = editor.max;
                 }
+				item.height = parent.height
             }
         }
         Connections {

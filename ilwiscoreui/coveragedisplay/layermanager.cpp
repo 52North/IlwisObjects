@@ -271,7 +271,9 @@ void  LayerManager::reset() {
 }
 LayerModel *LayerManager::create(QStandardItem *parentLayer, const ICoverage &cov, LayerManager *lm, const IOOptions &options)
 {
-    if (cov->coordinateSystem()->isUnknown() && lm->rootLayer()->screenCsy().isValid()){
+	bool newCsyIsUnknown = cov->coordinateSystem()->isUnknown();
+	bool screenCsyIsUnknown = lm->rootLayer()->screenCsy().isValid() ? lm->rootLayer()->screenCsy()->isUnknown() : true;
+    if (newCsyIsUnknown && !screenCsyIsUnknown){
         QString mes = QString("coordinate system 'unknown' not compatible with coordinate system of the layerview");
         kernel()->issues()->log(mes, IssueObject::itWarning);
         return 0;
@@ -620,6 +622,8 @@ void LayerManager::linkAcceptMessage(const QVariantMap& parameters) {
                 quint64 csyid = parameters["csyid"].toULongLong(&ok);
                 if (!ok)
                     return;
+				if (!rootLayer()->screenCsy().isValid())
+					return;
 
                 if (rootLayer()->screenCsy()->id() != csyid) {
                     ICoordinateSystem csy;

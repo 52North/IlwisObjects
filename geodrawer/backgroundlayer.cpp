@@ -50,7 +50,7 @@ BackgroundLayer::BackgroundLayer(LayerManager *manager, QStandardItem *parent, c
 
 bool BackgroundLayer::prepare(int prepType)
 {
-    auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<int>& indices)->void {
+    auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<quint16>& indices)->void {
         vector.push_back(x);
         vector.push_back(y);
         vector.push_back(z);
@@ -63,7 +63,7 @@ bool BackgroundLayer::prepare(int prepType)
         Coordinate cmax = layerManager()->rootLayer()->zoomEnvelope().max_corner();
 
         std::vector<qreal> vertices;
-        std::vector<int> indices;
+        std::vector<quint16> indices;
         std::vector<qreal> colors;
         for (int i = 0; i < 6; ++i) {
             colors.push_back(_backgroundcolor.redF());

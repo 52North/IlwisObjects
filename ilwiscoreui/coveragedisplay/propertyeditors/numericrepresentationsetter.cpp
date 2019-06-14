@@ -68,10 +68,12 @@ void NumericRepresentationSetter::fillElements() {
 		QVariant actAttribute = vpmodel()->layer()->vproperty("activevisualattribute");
 		if (!actAttribute.isValid())
 			return;
-		auto var = vpmodel()->layer()->vproperty("visualattribute|stretchrange|" + actAttribute.toString());
+		auto var = vpmodel()->layer()->vproperty("visualattribute|actualrange|" + actAttribute.toString());
 		NumericRange numrange = var.value<NumericRange>();
 		if (!numrange.isValid())
 			return;
+
+		std::vector<QColor> colors = vpmodel()->stretchedColors(256, numrange);
 
 		NumericRange roundedRange = MathHelper::roundRange(numrange.min(), numrange.max());
 		double tickValue = roundedRange.min();
@@ -142,6 +144,7 @@ void NumericRepresentationSetter::representationChanged(const IRepresentation &r
 
 QQmlListProperty<RepresentationElementModel> NumericRepresentationSetter::representationElements()
 {
+	fillElements();
     return  QQmlListProperty<RepresentationElementModel>(this, _rprElements);
 }
 

@@ -444,7 +444,7 @@ bool MasterCatalog::changeResource(quint64 objectid, const QString &attribute, c
         newname.replace("'","''");
         statement = QString("update mastercatalog set %3= '%1' where itemid=%2").arg(newname).arg(objectid).arg(attribute) ;
     }
-    if ( std::find(baseOtherAttributes.begin(), baseOtherAttributes.end(), attribute) != baseOtherAttributes.end()){
+    if ( !extended && std::find(baseOtherAttributes.begin(), baseOtherAttributes.end(), attribute) != baseOtherAttributes.end()){
         QString newvalue = var.toString();
         statement = QString("update mastercatalog set %3= %1 where itemid=%2").arg(newvalue).arg(objectid).arg(attribute) ;
     }

@@ -142,8 +142,24 @@ bool CoverageConnector::loadMetaData(Ilwis::IlwisObject *data,const IOOptions& o
     if ( data->resource().hasProperty("coordinatesystem")){
         auto url = data->resource()["coordinatesystem"].toString();
         Resource res = mastercatalog()->name2Resource(url,itCOORDSYSTEM);
-        if ( res.isValid())
-            csy.prepare(res);
+		if (res.isValid()) {
+			csy.prepare(res);
+			if (csy->code() == "unknown") {
+				// these usually dont contain bounds so we have to add them
+				QString bnds = _odf->value("BaseMap", "CoordBounds");
+				if (bnds != sUNDEF) {
+					QStringList parts = bnds.split(" ", QString::SkipEmptyParts);
+					if (parts.size() == 4) {
+						double minx = parts[0].toDouble();
+						double miny = parts[1].toDouble();
+						double maxx = parts[2].toDouble();
+						double maxy = parts[3].toDouble();
+						Envelope env(Coordinate(minx, miny), Coordinate(maxx, maxy));
+						csy->envelope(env);
+					}
+				}
+			}
+		}
     }
 
     if (!csy.isValid()){

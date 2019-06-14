@@ -185,6 +185,7 @@
     <ClCompile Include="featureoperations\pointrastercrossing.cpp" />
     <ClCompile Include="featureoperations\polygon2line.cpp" />
     <ClCompile Include="featureoperations\raster2point.cpp" />
+    <ClCompile Include="featureoperations\raster2polygon.cpp" />
     <ClCompile Include="featureoperations\transformcoordinates.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +197,7 @@
     <ClInclude Include="featureoperations\pointrastercrossing.h" />
     <ClInclude Include="featureoperations\polygon2line.h" />
     <ClInclude Include="featureoperations\raster2point.h" />
+    <ClInclude Include="featureoperations\raster2polygon.h" />
     <ClInclude Include="featureoperations\transformcoordinates.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

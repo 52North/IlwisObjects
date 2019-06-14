@@ -257,11 +257,14 @@ public:
             return true;
         } else {
 			if (mustExist && !options.contains("retryexist")) {
-				QString container = nme.left(nme.lastIndexOf("/"));
-				if (mastercatalog()->addContainer(container)) {
-					auto newoptions = options;
-					newoptions.addOption("retryexist", true);
-					return prepare(nme, tp, newoptions);
+				int isUrl = nme.indexOf("://") > 1;
+				if (isUrl) {
+					QString container = nme.left(nme.lastIndexOf("/"));
+					if (mastercatalog()->addContainer(container)) {
+						auto newoptions = options;
+						newoptions.addOption("retryexist", true);
+						return prepare(nme, tp, newoptions);
+					}
 				}
 				return false;
 			}

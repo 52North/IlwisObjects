@@ -38,7 +38,7 @@ BoundingBox OperationHelperRaster::initialize(const IRasterCoverage &inputRaster
     BoundingBox box(sz);
 
     if ( what & itRASTERSIZE) {
-        resource.addProperty("size", IVARIANT(sz.toString()));
+        resource.addProperty("size", IVARIANT(sz.toString()),true);
     }
     if ( what & itENVELOPE) {
         if ( box.isNull() || !box.isValid()) {

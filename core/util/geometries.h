@@ -24,6 +24,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwiscoordinate.h"
 #include "box.h"
 
+typedef std::vector<std::vector<quint16>> VertexIndices;
+typedef std::vector<std::vector<qreal>> Vertices;
+typedef std::vector<std::vector<qreal>> Colors;
+
+#define MAX_INDICES_BUFFER 0xffff
+
 
 
 #endif // GEOMETRIES_H

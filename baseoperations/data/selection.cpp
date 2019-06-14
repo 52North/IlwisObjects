@@ -221,7 +221,7 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
 
      if ( (copylist & itGEOREF) == 0) {
          Resource resource(QUrl(INTERNAL_CATALOG + "/" + outputRaster->name() + "_grf_" + QString::number(outputRaster->id())),itGEOREF);
-         resource.addProperty("size", IVARIANT(_box.size()));
+         resource.addProperty("size", _box.size().toString(), true);
          auto envelope = inputRaster->georeference()->pixel2Coord(_box);
          resource.addProperty("envelope", IVARIANT(envelope));
          resource.addProperty("coordinatesystem", inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);

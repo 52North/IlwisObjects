@@ -224,7 +224,7 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
         opacity(0.3);
         _lineColor = QColor("black");
 
-        auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<int>& indices)->void {
+        auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<quint16>& indices)->void {
             vector.push_back(x);
             vector.push_back(y);
             vector.push_back(z);
@@ -244,7 +244,7 @@ bool Ilwis::Ui::PrimaryGridLayer::prepare(int prepType)
         }
 
         std::vector<qreal> vertices;
-        std::vector<int> indices;
+        std::vector<quint16> indices;
 
         PushPoints(cmin.x, cmin.y, 0, vertices, indices);
         PushPoints(cmin.x, cmax.y, 0, vertices, indices);
@@ -322,7 +322,7 @@ void SecondaryGridLayer::vproperty(const QString& key, const QVariant& value) {
 
 bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
 {
-    auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<int>& indices)->void {
+    auto PushPoints = [](double x, double y, double z, std::vector<qreal>& vector, std::vector<quint16>& indices)->void {
         vector.push_back(x);
         vector.push_back(y);
         vector.push_back(z);
@@ -339,7 +339,7 @@ bool Ilwis::Ui::SecondaryGridLayer::prepare(int prepType)
         calcEnvelope(cmin, cmax);
 
         std::vector<qreal> vertices;
-        std::vector<int> indices;
+        std::vector<quint16> indices;
 
         opacity(0.15);
         _linewidth = 0.5;
