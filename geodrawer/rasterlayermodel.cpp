@@ -255,6 +255,10 @@ void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
 		_texturesNeedUpdate = true;
 		requestRedraw();
 		return;
+	} else if (pName == "refreshquads") {
+		_quadsNeedUpdate = true;
+		requestRedraw();
+		return;
 	}
 	CoverageLayerModel::vproperty(pName, value);
 }
@@ -325,6 +329,13 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 			}
 			refreshStretch();
 			_texturesNeedUpdate = false;
+		} else if (_quadsNeedUpdate) { // refresh; take all quads out and in to webgl
+			for (qint32 i = 0; i < _quads.size(); ++i) {
+				if (_quads[i].active) {
+					_quads[i].dirty = true; // this ensures the "active" quads that need refreshing are taken out and back into webgl
+				}
+			}
+			_quadsNeedUpdate = false;
 		}
 
         // generate "addQuads" and "removeQuads" queues

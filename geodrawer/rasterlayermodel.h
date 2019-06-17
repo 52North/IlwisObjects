@@ -103,6 +103,7 @@ protected:
     bool _initDone = false;
     bool _linear = true;
 	bool _texturesNeedUpdate = false;
+	bool _quadsNeedUpdate = false;
 	QVariantMap _stretch;
 
 private:

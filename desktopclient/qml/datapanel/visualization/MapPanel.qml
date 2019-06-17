@@ -376,12 +376,18 @@ Item {
     }
 
     function createLayerManagers(number){
+        for(var j=0; j < Math.min(layermanagers.length,number); ++j){ // refresh all quads/textures in the rasterlayers that are going to be re-used, otherwise the layer doesn't display properly after a layout switch
+            var layers = layermanagers[j].topLevelLayers
+            for(var k=0; k < layers.length; ++k){
+                if (layers[k].drawType == "raster")
+                    layers[k].vproperty("refreshquads","?")
+            }
+        }
         if ( number < layermanagers.length){
             layermanagers = layermanagers.slice(0,number)
             createParameters = createParameters.slice(0,number)
         }else if ( number > layermanagers.length){
             var start = layermanagers.length
-            
             for(var i=start; i < number; ++i){
                 var newLM = models.createLayerManager(layouts,layerview)
                 for(var j=0; j < layermanagers.length; ++j){
