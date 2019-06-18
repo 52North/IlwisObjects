@@ -103,7 +103,6 @@ quint64 SetGeoreference::createMetadata()
 
 	OperationResource operation({ "ilwis://operations/setgeoreference" });
 	operation.setSyntax("setgeoreference(inputraster,inputgeoreference");
-	operation.setLongName("Set value range raster");
 	operation.setDescription(TR("creates a copy of the inputmap with the new georeference"));
 	operation.setInParameterCount({ 2 });
 	operation.addInParameter(0, itRASTER, TR("input raster"), TR("Raster which needs a new georeference "));
