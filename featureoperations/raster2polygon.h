@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 	namespace FeatureOperations {
 
+
 		class RasterToPolygon : public OperationImplementation
 		{
 		public:
@@ -67,13 +68,31 @@ namespace Ilwis {
 				}
 			};
 
+			typedef std::shared_ptr<SegBound> SegBoundPtr;
+
 
 			IFeatureCoverage _outputfeatures;
 			IRasterCoverage _inputraster;
 
-			void fillLineInfo(const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, int lineSize, std::vector< DirBound>& dirBoundsCurrent, std::vector< DirBound>& dirBoundsNext) const;
-			byte setPixelFlag(const std::vector< DirBound>& dirBoundsPrev, const std::vector< DirBound>& dirBoundsCurrent, const std::vector< DirBound>& dirBoundsNext, int x) const;
-			void handleNodeCases(byte PixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, std::vector<SegBound *>& segBoundsHoriz, std::vector<SegBound *>& segBoundsVert) const;
+			std::vector<SegBoundPtr> _segBoundsHoriz;
+			std::vector<SegBoundPtr> _segBoundsVert;
+			std::vector< DirBound> _dirBoundsCurrent;
+			std::vector< DirBound> _dirBoundsNext;
+			std::vector< DirBound> _dirBoundsPrev;
+			std::vector<quint32> _segNr;
+			std::vector<qint32> _fwl, _bwl;
+			quint32 _nrPol=0, _nrSeg=0;
+			bool _eightConnected = false;
+
+			void fillLineInfo(const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, int lineSize) ;
+			byte setPixelFlag(int x) ;
+			void handleNodeCases(int x, int y,byte PixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev) ;
+			void newNode(int x, int y, byte pixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev) ;
+			SegBoundPtr newWithOneEnd(int x, int y, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, bool isRight, bool& isLeft);
+			quint32 newSegNr();
+			void appendLeftUp(int x, int y);
+			void StoreSegm(SegBoundPtr seg);
+			SegBoundPtr newInBetween(int x);
 
 			NEW_OPERATION(RasterToPolygon);
 		};

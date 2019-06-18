@@ -59,20 +59,18 @@ RasterToPolygon::RasterToPolygon(quint64 metaid, const Ilwis::OperationExpressio
 
 void RasterToPolygon::fillLineInfo(const std::vector<double>& inputLine,
 									const std::vector<double>& inputLinePrev,
-								    int lineSize,
-									std::vector< DirBound>& dirBoundsCurrent,
-									std::vector< DirBound>& dirBoundsNext) const
+								    int lineSize)
 {
 	// calc dirBoundsCurrent with horizontal directions by comparing vertical differences of pixel rows
 		// if upper pixel > lower pixel then direction is RIGHT
 	for (int j = -1; j <= lineSize; ++j) {
 		int x = j + 1;
 		if (inputLinePrev[x] == inputLine[x])
-			dirBoundsCurrent[x] = dbNONE;
+			_dirBoundsCurrent[x] = dbNONE;
 		else if (inputLinePrev[x] > inputLine[x])
-			dirBoundsCurrent[x] = dbRIGHT;
+			_dirBoundsCurrent[x] = dbRIGHT;
 		else
-			dirBoundsCurrent[x] = dbLEFT;
+			_dirBoundsCurrent[x] = dbLEFT;
 	}
 	// calc dirBoundsNext with vertical directions by comparing horizontal differences of pixel columns
 		// if left pixel > right pixel then direction is UP
@@ -80,38 +78,304 @@ void RasterToPolygon::fillLineInfo(const std::vector<double>& inputLine,
 	for (int j = 0; j <= lineSize; ++j) {
 		int x = j + 1;
 		if (inputLine[x - 1] == inputLine[x])
-			dirBoundsNext[x] = dbNONE;
+			_dirBoundsNext[x] = dbNONE;
 		else if (inputLine[x - 1] > inputLine[x])
-			dirBoundsNext[x] = dbUP;
+			_dirBoundsNext[x] = dbUP;
 		else
-			dirBoundsNext[x] = dbDOWN;
+			_dirBoundsNext[x] = dbDOWN;
 	}
 }
 
-byte RasterToPolygon::setPixelFlag(const std::vector< DirBound>& dirBoundsPrev, const std::vector< DirBound>& dirBoundsCurrent, const std::vector< DirBound>& dirBoundsNext, int x) const {
+byte RasterToPolygon::setPixelFlag(int x)  {
 	byte b = 0;
-	if (dirBoundsCurrent[x] != dbNONE)
+	if (_dirBoundsCurrent[x] != dbNONE)
 		b |= 1;
-	if (dirBoundsPrev[x] != dbNONE)
+	if (_dirBoundsPrev[x] != dbNONE)
 		b |= 2;
-	if (dirBoundsCurrent[x - 1] != dbNONE)
+	if (_dirBoundsCurrent[x - 1] != dbNONE)
 		b |= 4;
-	if (dirBoundsNext[x] != dbNONE)
+	if (_dirBoundsNext[x] != dbNONE)
 		b |= 8;
 
 	return b;
 }
 
-void RasterToPolygon::handleNodeCases(byte PixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, std::vector<SegBound *>& segBoundsHoriz, std::vector<SegBound *>& segBoundsVert) const {
-	switch (PixelFlag)
+void RasterToPolygon::handleNodeCases(int x, int y, byte pixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev)  {
+	switch (pixelFlag)
 	{
 		case 0:
 		{
-			segBoundsHoriz[0] = 0;
-			segBoundsVert[0] = 0;
+			_segBoundsHoriz[0] = 0;
+			_segBoundsVert[0] = 0;
 		}
 		break;
+		case 7: case 11: case 13: case 14:
+		{
+			newNode(x, y, pixelFlag, inputLine, inputLinePrev);
+		}
+		break;
+		case 15:
+		{
+			if (!_eightConnected)
+				newNode(x, y, pixelFlag, inputLine, inputLinePrev);
+			else
+			{
+				bool f1 = inputLinePrev[x] == inputLine[x - 1];
+				bool f2 = inputLinePrev[x - 1] == inputLine[x];
+				if (f1 && f2)
+				{
+					if (inputLine[x - 1] > inputLine[x])
+						f2 = false;
+					else
+						f1 = false;
+				}
+				if (f1)
+				{
+					appendLeftUp(x, y); // b = 6
+					//b = 9
+					_segBoundsVert[x] = _segBoundsHoriz[x] = newInBetween(x);
+
+				}
+				else if (f2)
+				{
+					//->appendUp(x,y,1);
+					auto h = _segBoundsHoriz[x];
+					//->appendLeft(x,y,0/*12*/);
+					_segBoundsHoriz[x] = h;
+				}
+				else
+					newNode(x, y, pixelFlag, inputLine, inputLinePrev);
+			}
+			break;
+		}
 	}
+}
+
+void RasterToPolygon::appendLeftUp(int x, int y)
+/* Appends codes of point (iLine, iCol) to segment to the left of point.
+   The segment above the point is chained to the left segment.
+   Is called if type of point = 6 (line from left to up or line
+   from up to left.                                              */
+{
+	enum WhatDel { DELNONE, DELLEFT, DELUP } del;
+	auto sbUp = _segBoundsVert[x];
+	auto sbLeft = _segBoundsHoriz[x - 1];
+	if (sbLeft != sbUp) {
+		del = DELNONE;
+		if (_dirBoundsCurrent[x - 1] == dbLEFT) { //line comes from above, goes left }
+			if (sbUp->fBeginSeg) {
+				sbUp->dlChain.insert(sbUp->dlChain.end(), sbLeft->dlChain.begin(), sbLeft->dlChain.end());
+				//        for (DLIter<ChainRec> iter(&sbLeft->dlChain); iter.fValid(); iter++) 
+				//          sbUp->dlChain.append(iter());
+				del = DELLEFT;
+				sbUp->fEndSeg = sbLeft->fEndSeg;
+				if (sbUp->fEndSeg) {
+					_fwl[sbUp->iSegNr] = _fwl[sbLeft->iSegNr];
+					for (unsigned long i = 1; i <= _bwl.size(); ++i) {
+						if (_bwl[i] == -sbLeft->iSegNr)
+							_bwl[i] = -sbUp->iSegNr;
+						else if (_bwl[i] == sbLeft->iSegNr)
+							_bwl[i] = sbUp->iSegNr;
+						else if (_fwl[i] == -sbLeft->iSegNr)
+							_bwl[i] = -sbUp->iSegNr;
+						else if (_fwl[i] == sbLeft->iSegNr)
+							_bwl[i] = sbUp->iSegNr;
+					}
+				}
+				sbUp->crdTo = sbLeft->crdTo;
+				StoreSegm(*sbUp);
+			}
+			else { // sbUp->fBeginSeg == false
+				//sbLeft->dlChain.insert(sbUp->dlChain);
+				sbLeft->dlChain.insert(sbLeft->dlChain.begin(), sbUp->dlChain.begin(), sbUp->dlChain.end());
+				//        DLIter<ChainRec> iter(&sbUp->dlChain);
+				//        for (iter.last(); iter.fValid(); iter--) 
+				//          sbLeft->dlChain.insert(iter());
+				del = DELUP;
+			}
+		}
+		else { // line comes from left, goes to above 
+			if (sbUp->fEndSeg) {
+				//sbUp->dlChain.insert(sbLeft->dlChain);
+				sbUp->dlChain.insert(sbUp->dlChain.begin(), sbLeft->dlChain.begin(), sbLeft->dlChain.end());
+
+				//          DLIter<ChainRec> iter(&sbLeft->dlChain);
+				//          for (iter.last(); iter.fValid(); iter--)
+				//            sbUp->dlChain.insert(iter());
+				del = DELLEFT;
+				sbUp->fBeginSeg = sbLeft->fBeginSeg;
+				if (sbUp->fBeginSeg) {
+					_bwl[sbUp->iSegNr] = _bwl[sbLeft->iSegNr];
+					for (unsigned long i = 1; i <= _fwl.size(); ++i) {
+						if (_fwl[i] == sbLeft->iSegNr)
+							_fwl[i] = sbUp->iSegNr;
+						else if (_fwl[i] == -sbLeft->iSegNr)
+							_fwl[i] = -sbUp->iSegNr;
+						else if (_bwl[i] == sbLeft->iSegNr)
+							_bwl[i] = sbUp->iSegNr;
+						else if (_bwl[i] == -sbLeft->iSegNr)
+							_bwl[i] = -sbUp->iSegNr;
+					}
+				}
+				sbUp->crdFrom = sbLeft->crdFrom;
+				StoreSegm(*sbUp);
+			}
+			else {
+				//sbLeft->dlChain.append(sbUp->dlChain);
+				sbLeft->dlChain.insert(sbLeft->dlChain.end(), sbUp->dlChain.begin(), sbUp->dlChain.end());
+				//        for (DLIter<ChainRec> iter(&sbUp->dlChain); iter.fValid(); iter++) 
+			  //            sbLeft->dlChain.append(iter());
+				del = DELUP;
+			}
+		}
+		// adjust sbHoriz and sbVert by replacing the deleted SegBound with the other one
+		if (del == DELLEFT) {
+			for (long i = 0; i <= _segBoundsHoriz.size(); i++) {
+				if (_segBoundsHoriz[i] == sbLeft)
+					_segBoundsHoriz[i] = sbUp;
+				if (_segBoundsVert[i] == sbLeft)
+					_segBoundsVert[i] = sbUp;
+			}
+			_segNr.push_back(sbLeft->iSegNr);
+			_fwl[sbLeft->iSegNr] = 0;
+			_bwl[sbLeft->iSegNr] = 0;
+		}
+		else if (del == DELUP) {
+			for (long i = 0; i <= _segBoundsHoriz.size(); i++) {
+				if (_segBoundsHoriz[i] == sbUp)
+					_segBoundsHoriz[i] = sbLeft;
+				if (_segBoundsVert[i] == sbUp)
+					_segBoundsVert[i] = sbLeft;
+			}
+			_segNr.push_back(sbUp->iSegNr);
+			_fwl[sbUp->iSegNr] = 0;
+			_bwl[sbUp->iSegNr] = 0;
+		}
+		else {
+			StoreSegm(*sbLeft);
+			StoreSegm(*sbUp);
+		}
+	}
+	else { // segment is contour of island 
+	  // create new node; start and end of segment 
+	  // modify segment 
+		sbUp->fBeginSeg = true;
+		sbUp->crdFrom.x = x; 
+		sbUp->crdFrom.y = y;
+		sbUp->fEndSeg = true;
+		sbUp->crdTo.x = x; 
+		sbUp->crdTo.y = y;
+		_fwl[sbUp->iSegNr] = sbUp->iSegNr;
+		_bwl[sbUp->iSegNr] = -sbUp->iSegNr;
+		StoreSegm(*sbUp);
+	}
+	_segBoundsHoriz[x] = 0;
+	_segBoundsVert[x] = 0;
+}
+
+void RasterToPolygon::StoreSegm(SegBoundPtr seg) {
+
+}
+
+RasterToPolygon::SegBoundPtr RasterToPolygon::newInBetween(int x) {
+
+}
+void RasterToPolygon::newNode(int x, int y, byte pixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev)  {
+	std::vector<bool> segExist(dbRIGHT + 1);
+	std::vector<bool> beginSeg(dbRIGHT + 1);
+	std::vector<SegBoundPtr> sbSeg(dbRIGHT + 1);
+
+	segExist[dbRIGHT] = pixelFlag & 1;
+	segExist[dbUP] = (pixelFlag & 2) != 0;
+	segExist[dbLEFT] = (pixelFlag & 4) != 0;
+	segExist[dbDOWN] = (pixelFlag & 8) != 0;
+
+	if (segExist[dbRIGHT]) {// new segment to the right 
+		sbSeg[dbRIGHT] = newWithOneEnd(x, y, inputLine, inputLinePrev, true, (bool &)beginSeg[dbRIGHT]);
+		_segBoundsHoriz[x] = sbSeg[dbRIGHT];
+	}
+
+}
+
+RasterToPolygon::SegBoundPtr RasterToPolygon::newWithOneEnd(int x, int y, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, bool isRight, bool& isBegin) {
+	// Creates new segment with a node at one end.                 
+	// If fRightSeg==true : it has to be a segment to the right of node,
+	// else a segment under the node.                                 
+
+	DirBound db;
+	if (isRight)
+		db = (DirBound)_dirBoundsCurrent[x];
+	else
+		db = (DirBound)_dirBoundsNext[x];
+	SegBoundPtr sb;
+	sb.reset(new SegBound());
+
+	sb->iSegNr = newSegNr();
+	if (sb->iSegNr >= (int)_fwl.size()) {
+		_fwl.resize(sb->iSegNr + 1);
+		_bwl.resize(sb->iSegNr + 1);
+	}
+
+	_fwl[sb->iSegNr] = _bwl[sb->iSegNr] = 0;
+	if ((db == dbRIGHT) || (db == dbDOWN)) { // start of segment 
+		sb->Insert(db, 1); // at start
+		sb->fBeginSeg = true;
+		isBegin = true;
+		sb->fEndSeg = false;
+		sb->crdFrom.x = x; 
+		sb->crdFrom.y = y;
+		sb->crdTo.x = sb->crdTo.y = 0;
+	}
+	else { // end of segment 
+		sb->Append(db, 1); // at end
+		sb->fBeginSeg = false;
+		isBegin = false;
+		sb->fEndSeg = true;
+		sb->crdFrom.x = sb->crdFrom.y = 0;
+		sb->crdTo.x = x; 
+		sb->crdTo.y = y;
+	}
+
+	switch (db) {
+	case dbRIGHT: {
+		//            top.PolL := last_line^[x]; top.PolR := line^[x];
+		sb->iLeftRaw = inputLinePrev[x];
+		sb->iRightRaw = inputLine[x];
+	}
+				  break;
+	case dbUP: {
+		//              top.PolL := line^[x - 1]; top.PolR := line^[x];
+		sb->iLeftRaw = inputLine[x - 1];
+		sb->iRightRaw = inputLine[x];
+	}
+			   break;
+	case dbLEFT: {
+		//              top.PolL := line^[x]; top.PolR := last_line^[x];
+		sb->iLeftRaw = inputLine[x];
+		sb->iRightRaw = inputLinePrev[x];
+	}
+				 break;
+	case dbDOWN: {
+		//                top.PolL := line^[x]; top.PolR := line^[x - 1];
+		sb->iLeftRaw = inputLine[x];
+		sb->iRightRaw = inputLine[x - 1];
+	}
+	break;
+	default: 
+		break;
+	}
+	return sb;
+}
+
+quint32 RasterToPolygon::newSegNr()
+{
+	long ind = _segNr.size() - 1;
+	if (ind >= 0) {
+		long segnr = _segNr[ind];
+		_segNr.erase(_segNr.begin() + ind);
+		return segnr;
+	}
+	return ++_nrSeg;
 }
 
 bool RasterToPolygon::execute(ExecutionContext *ctx, SymbolTable &symTable)
@@ -125,11 +389,11 @@ bool RasterToPolygon::execute(ExecutionContext *ctx, SymbolTable &symTable)
 	int lineSize = _inputraster->size().xsize();
 	std::vector<double> inputLine( lineSize + 2, rUNDEF); // lines are 2 cells bigger as a virtual cells are added to left and right
 	std::vector<double> inputLinePrev(inputLine.size(), rUNDEF); // lines are 2 cells bigger as a virtual is added to left and right
-	std::vector< DirBound> dirBoundsCurrent(inputLine.size(), dbNONE);
-	std::vector< DirBound> dirBoundsNext(inputLine.size(), dbNONE);
-	std::vector< DirBound> dirBoundsPrev(inputLine.size(), dbNONE);
-	std::vector<SegBound *> segBoundsHoriz(inputLine.size());
-	std::vector<SegBound *> segBoundsVert(inputLine.size());
+	_dirBoundsNext.resize(inputLine.size(), dbNONE);
+	_dirBoundsPrev.resize(inputLine.size(), dbNONE);
+	_segBoundsHoriz.resize(inputLine.size());
+	_segBoundsVert.resize(inputLine.size());
+	_dirBoundsCurrent.resize(inputLine.size(), dbNONE);
 
 	inputLine.front() = inputLine.back() = rUNDEF;
 
@@ -138,7 +402,7 @@ bool RasterToPolygon::execute(ExecutionContext *ctx, SymbolTable &symTable)
 	while (iter != iterEnd) {
 		inputLine[iter.x() + 1] = *iter;
 		if (iter.ychanged()) {
-			fillLineInfo(inputLine, inputLinePrev, lineSize, dirBoundsCurrent, dirBoundsNext);
+			fillLineInfo(inputLine, inputLinePrev, lineSize);
 
 			for (int j = 0; j <= lineSize; ++j) {
 				int x = j + 1;
@@ -152,13 +416,10 @@ bool RasterToPolygon::execute(ExecutionContext *ctx, SymbolTable &symTable)
 							//     pix  |  pix
 							//          8
 							//
-				byte pixelFlag = setPixelFlag(dirBoundsPrev, dirBoundsCurrent, dirBoundsNext,x);
-				handleNodeCases(pixelFlag, inputLine, inputLinePrev, segBoundsHoriz, segBoundsVert);
-				
-
+				byte pixelFlag = setPixelFlag(x);
+				handleNodeCases(x,iter.y(),  pixelFlag, inputLine, inputLinePrev);
 			}
 		}
-
 	}
 
 	QVariant value;
