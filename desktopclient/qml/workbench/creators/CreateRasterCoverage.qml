@@ -188,12 +188,12 @@ Controls.DropableItem{
                             for(var i=0; i < ids.length; ++i ){
                                 var id = ids[i]
                                 var obj = mastercatalog.id2object(id, rasterlist)
-                                var grfurl = obj.getProperty("georeferenceurl");
+                                var grfid = obj.getProperty("georefid");
                                 if ( obj && obj.typeName === "rastercoverage"){
                                     if ( grfvalue.content === ""){
                                         grfvalue.content = grfurl
                                     }
-                                    if (resampleCB.checked || mastercatalog.isCompatible(grfvalue.content, grfurl, "georeference"))
+                                    if (resampleCB.checked || mastercatalog.isCompatible(grfvalue.content, grfid, "georeference"))
                                         rasters.append({path : obj.url})
                                 }
                             }
