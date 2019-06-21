@@ -36,6 +36,15 @@ Coordinate BoundsOnlyCoordinateSystem::coord2coord(const ICoordinateSystem &sour
 {
     if ( sourceCs->id() == id())
         return crdSource;
+	if (sourceCs->code() == "unknown" && code() == "unknown") {
+		Envelope env1 = sourceCs->envelope();
+		Envelope env2 = envelope();
+		if (env1.isValid() && env2.isValid()) {
+			double delta = env1.size().xsize() * 0.01;
+			if (env1.equals(env2, delta))
+				return crdSource;
+		}
+	}
     return Coordinate();
 }
 
@@ -67,4 +76,15 @@ IlwisTypes BoundsOnlyCoordinateSystem::ilwisType() const
 QString BoundsOnlyCoordinateSystem::toWKT(quint32 spaces) const
 {
     return sUNDEF;
+}
+
+bool BoundsOnlyCoordinateSystem::isCompatibleWith(const IlwisObject *obj, bool strict) const
+{
+	if (obj->isValid()) {
+		const BoundsOnlyCoordinateSystem *bcsy = dynamic_cast<const BoundsOnlyCoordinateSystem *>(obj);
+		if (bcsy) {
+			return bcsy->envelope() == envelope();
+		}
+	}
+	return false;
 }

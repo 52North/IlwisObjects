@@ -32,6 +32,7 @@ public:
     virtual bool isUnknown() const;
     IlwisTypes ilwisType() const;
     QString toWKT(quint32 spaces=0) const;
+	bool isCompatibleWith(const IlwisObject *obj, bool strict = false) const override;
 };
 typedef IlwisData<Ilwis::BoundsOnlyCoordinateSystem> IBoundsOnlyCoordinateSystem;
 }
