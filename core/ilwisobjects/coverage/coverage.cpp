@@ -80,6 +80,9 @@ void Coverage::envelope(const Envelope &bnds)
     changed(true);
 
     _envelope = bnds;
+	if (_coordinateSystem.isValid()) {
+		_coordinateSystem->envelope(_envelope);
+	}
 }
 
 NumericStatistics &Coverage::statistics(int  )
