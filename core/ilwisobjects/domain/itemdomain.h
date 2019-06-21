@@ -341,12 +341,12 @@ public:
 		return _range->overlapCount(item);
 	}
 
-	bool hasOverlaps() const {
+	bool hasOverlaps(bool strict=true) const {
 		if (_range.isNull()) {
 			ERROR1(ERR_NO_INITIALIZED_1, name());
 			return iUNDEF;
 		}
-		return _range->hasOverlaps();
+		return _range->hasOverlaps(strict);
 	}
 
     /*!
