@@ -187,7 +187,7 @@ public:
      * @return
      */
 	virtual quint32 overlapCount(const QString& item);
-	virtual bool hasOverlaps() const;
+	virtual bool hasOverlaps(bool strict=true) const;
     static ItemRange *merge(const QSharedPointer<ItemRange>& nr1, const QSharedPointer<ItemRange>& nr2);
 
     static SPDomainItem valueAt(quint32& index, const Range *rng);

@@ -106,7 +106,7 @@ quint32 ItemRange::overlapCount(const QString& item) {
 	return 0;
 }
 
-bool ItemRange::hasOverlaps() const {
+bool ItemRange::hasOverlaps(bool strict) const {
 	return false;
 }
 

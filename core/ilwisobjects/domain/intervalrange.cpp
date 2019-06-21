@@ -84,7 +84,7 @@ quint32 IntervalRange::overlapCount(const QString& item) {
 	return count;
 }
 
-bool IntervalRange::hasOverlaps() const {
+bool IntervalRange::hasOverlaps(bool strict) const {
 	if (_items.size() == 0)
 		return false;
 
@@ -92,7 +92,7 @@ bool IntervalRange::hasOverlaps() const {
 		const NumericRange& rng = _items[ind]->range();
 		for (quint32 ind2 = 0; ind2 < _items.size(); ++ind2) {
 			if (ind != ind2) {
-				if (_items[ind2]->range().overlaps(&rng))
+				if (_items[ind2]->range().overlaps(&rng, strict))
 					return true;
 			}
 		}

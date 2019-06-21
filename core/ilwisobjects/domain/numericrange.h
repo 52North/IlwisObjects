@@ -71,12 +71,21 @@ public:
     bool contains(const QVariant &value, bool inclusive = true) const;
     bool contains(SPRange rng, bool inclusive=true) const;
     bool contains(NumericRange *rng, bool inclusive=true) const;
-	bool overlaps(const NumericRange *nrange) const{
+	bool overlaps(const NumericRange *nrange, bool strict = true) const{
 		if (!nrange)
 			return false;
 
-		return nrange->min() >= min() && nrange->min() <= max() || // if the external min is between the min and max it will always overlap
-			nrange->max() >= min() && nrange->max() <= max(); // same for the max
+		if (strict) {
+			return nrange->min() >= min() && nrange->min() <= max() || // if the external min is between the min and max it will always overlap
+				nrange->max() >= min() && nrange->max() <= max(); // same for the max
+		} 
+		double d1 = nrange->min() - min();
+		double d2 = nrange->min() - max();
+		double d3 = nrange->max() - min();
+		double d4 = nrange->max() - max();
+		bool ret = d1 >0 && d2 <0 ||
+			d3 > 0 && d4 < 0;
+		return ret; 
 	}
     double max() const;
     void max(double v);

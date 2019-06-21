@@ -110,7 +110,7 @@ public:
     qint32 gotoIndex(qint32 index, qint32 step) const;
     IlwisTypes valueType() const;
 	quint32 overlapCount(const QString& item);
-	bool hasOverlaps() const;
+	bool hasOverlaps(bool strict=true) const;
 	NumericRange totalRange() const;
 
     static SPDomainItem valueAt(quint32 index, const Ilwis::Range *rng);
