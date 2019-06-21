@@ -79,10 +79,14 @@ namespace Ilwis {
 			std::vector< DirBound> _dirBoundsCurrent;
 			std::vector< DirBound> _dirBoundsNext;
 			std::vector< DirBound> _dirBoundsPrev;
+			std::map<long, std::vector<Coordinate>> _topologySegments;
+			std::map<long, std::pair<long, long>> _topology;
+			std::map<long, long> _topStarts;
 			std::vector<quint32> _segNr;
 			std::vector<qint32> _fwl, _bwl;
 			quint32 _nrPol=0, _nrSeg=0;
 			bool _eightConnected = false;
+			bool _smooth = true;
 
 			void fillLineInfo(const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, int lineSize) ;
 			byte setPixelFlag(int x) ;
@@ -91,8 +95,14 @@ namespace Ilwis {
 			SegBoundPtr newWithOneEnd(int x, int y, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, bool isRight, bool& isLeft);
 			quint32 newSegNr();
 			void appendLeftUp(int x, int y);
-			void StoreSegm(SegBoundPtr seg);
-			SegBoundPtr newInBetween(int x);
+			void storeSegm(SegBoundPtr seg);
+			void storeSegm(const SegBoundPtr sb, std::vector<Coordinate>& coords, bool fIsland, long& crdIndex);
+			SegBoundPtr newInBetween(int x, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev);
+			void appendUp(int x, byte pixelFlag);
+			void appendLeft(int x, byte pixelFlag);
+			void endOfSegment(int x, int y, RasterToPolygon::SegBoundPtr sb, bool fUp, bool& fBegin);
+			void detLink(DirBound db1, DirBound db2, DirBound db3, const std::vector<bool>& segExist, const std::vector<bool>& seginSeg, const std::vector<SegBoundPtr>& sbSeg);
+			void linkBoundaries(const IRasterCoverage& areaNumberedRaster);
 
 			NEW_OPERATION(RasterToPolygon);
 		};
