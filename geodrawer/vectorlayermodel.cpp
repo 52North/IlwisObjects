@@ -49,6 +49,11 @@ VectorLayerModel::VectorLayerModel(LayerManager * manager, QStandardItem * paren
 
 QVariant VectorLayerModel::vproperty(const QString &attrName) const
 {
+	if (attrName == "id") {
+		if (_featureLayer) {
+			return _featureLayer->coverage()->id();
+		}
+	}
 	return LayerModel::vproperty(attrName);
 }
 
