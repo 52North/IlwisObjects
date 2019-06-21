@@ -299,6 +299,7 @@ bool GeorefConnector::loadGeorefCorners(const IniFile& odf, IlwisObject *data) {
     }
 	bool centerOfCornerPixels = (odf.value("GeoRefCorners", "CornersOfCorners").compare("No") == 0);
 	QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+	grf->coordinateSystem()->envelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
 	spGrf->internalEnvelope(Envelope(Coordinate(minx, miny), Coordinate(maxx, maxy)));
     grf->centerOfPixel(centerOfCornerPixels);
     grf->compute();
