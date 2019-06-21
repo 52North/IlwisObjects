@@ -167,7 +167,7 @@ QString RasterLayerModel::value2string(const QVariant &value, const QString &att
     if ( attrName != "") {
         IRasterCoverage raster = CoverageLayerModel::coverage().as<RasterCoverage>();
         if ( raster->hasAttributes()){
-            ColumnDefinition coldef = raster->attributeTable()->columndefinition(attrName);
+            ColumnDefinition coldef = raster->attributeTable()->columndefinition(attrName == PIXELVALUE ? COVERAGEKEYCOLUMN :  attrName);
             return v2s(coldef, value);
         }
         if ( raster->datadef().domain()->ilwisType() == itCOLORDOMAIN){

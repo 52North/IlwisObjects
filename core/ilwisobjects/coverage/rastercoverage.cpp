@@ -654,7 +654,10 @@ QVariant RasterCoverage::coord2value(const Coordinate &c, const QString &attrnam
                 int record = _recordLookup[value];
                 for(int i=0; i < attributeTable()->columnCount(); ++i){
                     QVariant attrvalue = attributeTable()->cell(i, record);
-                    vmap[attributeTable()->columndefinitionRef(i).name()] = attrvalue;
+					QString colName = attributeTable()->columndefinitionRef(i).name();
+                    vmap[colName] = attrvalue;
+					if (colName == COVERAGEKEYCOLUMN)
+						vmap[PIXELVALUE] = value;
                 }
             }
             return QVariant(vmap);
