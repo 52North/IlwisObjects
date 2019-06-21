@@ -467,8 +467,8 @@ IlwisObject *InternalIlwisObjectFactory::createRasterCoverage(const Resource& re
 
     } else{
         Envelope bounds = gcoverage->envelope();
-        if ( bounds.isValid() && !bounds.isNull()){
-            grf = new GeoReference();
+        if ( bounds.isValid() && !bounds.isNull() && !sz.isNull()){
+			grf.prepare();
             grf->create("corners");
             grf->name("subset_" + gcoverage->name());
             grf->coordinateSystem(gcoverage->coordinateSystem());
