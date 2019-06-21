@@ -144,8 +144,9 @@ template<typename T> void loadBulk(std::vector<T>& rawdata, std::vector<PIXVALUE
     }
 }
 
-bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &options)
+bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &opt)
 {
+	auto options = addParent(obj, opt);
     if (!CoverageSerializerV1::store(obj, options))
         return false;
     RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
@@ -444,30 +445,6 @@ bool RasterSerializerV1::loadData(IlwisObject *data, const IOOptions &options)
     return true;
 }
 
-//quint32 RasterSerializerV1::loadGridBlock(IlwisObject *data, quint32 block, QByteArray &blockdata, const RawConverter& converter, const IOOptions &)
-//{
-//    RasterCoverage *raster = static_cast<RasterCoverage *>(data);
-
-//    IRasterCoverage rcoverage(raster);
-//    switch (converter.storeType()){
-//    case itUINT8:
-//        return loadBulk<quint8>(converter, block, blockdata, rcoverage); break;
-//    case itINT16:
-//        return loadBulk<qint16>(converter, block, blockdata, rcoverage); break;
-//    case itINT32:
-//        return loadBulk<qint32>(converter, block, blockdata, rcoverage); break;
-//    case itINT64:{
-//    default:
-//            quint64 noOfPixels = raster->grid()->blockSize(block);
-//            std::vector<double> values(noOfPixels);
-//            for(int j = 0; j < noOfPixels; ++j){
-//                _stream >> values[j];
-//            }
-//            raster->gridRef()->setBlockData(block, values);
-//            return blockdata.size() - noOfPixels * 8;
-//        }
-//    }
-//}
 
 VersionedSerializer *RasterSerializerV1::create(QDataStream &stream)
 {
