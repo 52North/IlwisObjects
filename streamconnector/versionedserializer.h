@@ -60,6 +60,7 @@ protected:
 
     bool store(const QString &v, IlwisTypes valueType, const Ilwis::IOOptions &options);
     bool loadMetaData(const Ilwis::IOOptions &options, IlwisTypes tp, QString &v);
+	IOOptions addParent(IlwisObject *obj, const IOOptions& oldOptions);
 };
 }
 }

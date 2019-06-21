@@ -114,6 +114,12 @@ bool VersionedSerializer::store(IlwisObject *obj, const IOOptions &options)
     double ctime = (double)obj->createTime();
     Resource res = obj->resource(IlwisObject::cmINPUT);
     QString nm =  res.hasProperty("longname") ? obj->name() + "|" + res["longname"].toString() : obj->name();
+	/*nm.replace(".","_");
+	if (options.contains("parentid")) {
+		quint64 pid = options["parentid"].toULongLong();
+		if ( pid != obj->id())
+			nm += "_" + options["parentid"].toString();
+	}*/
     _stream <<  obj->ilwisType() << Version::interfaceVersion << obj->extendedType() << nm << obj->code() << obj->description() << obj->isReadOnly()  << mtime << ctime;
 
 	return true;
@@ -224,6 +230,16 @@ bool VersionedSerializer::loadMetaData(const Ilwis::IOOptions &options, IlwisTyp
         _stream >> v;
     }
     return true;
+}
+
+IOOptions VersionedSerializer::addParent(IlwisObject *obj, const IOOptions& oldOptions) {
+	
+	if (!oldOptions.contains("parentid")) {
+		IOOptions newOptions = oldOptions;
+		newOptions.addOption("parentid", obj->id());
+		return newOptions;
+	}
+	return oldOptions;
 }
 
 
