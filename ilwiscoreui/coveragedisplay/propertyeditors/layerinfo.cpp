@@ -53,14 +53,16 @@ VisualPropertyEditor *LayerInfo::create(VisualAttribute *p)
 }
 
 IlwisObjectModel *LayerInfo::object(QObject *parent) {
-	CoverageLayerModel *cm = static_cast<CoverageLayerModel *>(vpmodel()->layer());
-	quint64 objectid = cm->coverage()->id();
+	LayerModel *layer = vpmodel()->layer();
+
+	quint64 objectid = layer->vproperty("id").toULongLong();
 	bool ok;
 	Resource resource = mastercatalog()->id2Resource(objectid);
 	IlwisObjectModel *ioModel = new IlwisObjectModel(resource, parent);
 	if (ioModel->isValid()) {
 		return ioModel;
 	}
+
 	return 0;
 
 }
