@@ -201,7 +201,7 @@ Ilwis::OperationImplementation::State AggregateRasterStatistics::prepare(Executi
 
 		QString outputName = _expression.parm(0, false).value();
 
-		OperationHelperRaster::initialize(_inputRaster, _outputRaster, itCOORDSYSTEM | itGEODETICDATUM | itGEOREF);
+		OperationHelperRaster::initialize(_inputRaster, _outputRaster, itCOORDSYSTEM | itENVELOPE | itGEOREF);
 		if (!_outputRaster.isValid()) {
 			ERROR1(ERR_NO_INITIALIZED_1, "output rastercoverage");
 			return sPREPAREFAILED;
