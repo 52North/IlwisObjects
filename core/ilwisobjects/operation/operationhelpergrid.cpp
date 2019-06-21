@@ -52,14 +52,14 @@ BoundingBox OperationHelperRaster::initialize(const IRasterCoverage &inputRaster
         resource.addProperty("coordinatesystem",inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);
     }
 
-    if ( what & itGEOREF) {
+   /* if ( what & itGEOREF) {
         if ( box.isNull() || !box.isValid()) {
             sz = inputRaster->size();
             box  = BoundingBox(sz);
         }
         if ( sz.xsize() == box.xlength() && sz.ysize() == box.ylength())
             resource.addProperty("georeference", IVARIANT(inputRaster->georeference()->resourceRef().url(true).toString()),true);
-    }
+    }*/
     if ( what & itDOMAIN) {
         resource.addProperty("domain", IVARIANT(inputRaster->datadef().domain<>()->id()));
     }
@@ -80,6 +80,9 @@ BoundingBox OperationHelperRaster::initialize(const IRasterCoverage &inputRaster
             outputRaster->setBandDefinition(index,DataDefinition(outputRaster->datadef().domain()));
         }
     }
+	if (what & itGEOREF) {
+		outputRaster->georeference(inputRaster->georeference());
+	}
 
 
     return box;
