@@ -42,6 +42,7 @@ TabView {
     }
 
     function useDropFormat() {
+		console.debug("xxxx", getTab(2))
         getTab(2).active = true
         return getTab(2).item.useDropFormat
     }

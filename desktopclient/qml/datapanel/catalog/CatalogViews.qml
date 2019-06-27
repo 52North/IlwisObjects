@@ -36,8 +36,8 @@ DropArea {
             if (obj) {
                 if ( currentCatalog.url == "ilwis://internalcatalog")
                     formatstrings = "stream:" + obj.typeName;
-                else if ( actionBar.useDropFormat())
-                    formatstrings = actionBar.getFormatString(drag.source.type)
+                //else if ( actionBar.useDropFormat())
+                //    formatstrings = actionBar.getFormatString(drag.source.type)
                 if (formatstrings === "")
                     formatstrings = obj.externalFormat
                 if ( formatstrings){
