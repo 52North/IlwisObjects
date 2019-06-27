@@ -148,60 +148,60 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
                 extractUserDefinedEllipsoid(csyp, srshandle);
             }
             QString datumName(gdal()->getAttributeValue(srshandle,"Datum",0));
-            if ( datumName == "WGS_1984")
-                csy->prepare("+proj=longlat +ellps=WGS84 +datum=WGS84");
-            else {
-                GeodeticDatum *datum = new GeodeticDatum(datumName);
-                std::vector<double> shifts = getShifts(QString("gcs.override.csv"), datumName);
-                if (shifts.size() == 0)
-                    shifts = getShifts(QString("gcs.csv"), datumName);
-                if (shifts.size() >= 3) {
-                    if (shifts.size() >= 7)
-                        datum->set7TransformationParameters(shifts[0], shifts[1], shifts[2], shifts[3], shifts[4], shifts[5], shifts[6]);
-                    else
-                        datum->set3TransformationParameters(shifts[0], shifts[1], shifts[2], ellipsoid);
+           // if ( datumName == "WGS_1984")
+            //    csy->prepare("+proj=longlat +ellps=WGS84 +datum=WGS84");
+           
+            GeodeticDatum *datum = new GeodeticDatum(datumName);
+            std::vector<double> shifts = getShifts(QString("gcs.override.csv"), datumName);
+            if (shifts.size() == 0)
+                shifts = getShifts(QString("gcs.csv"), datumName);
+            if (shifts.size() >= 3) {
+                if (shifts.size() >= 7)
+                    datum->set7TransformationParameters(shifts[0], shifts[1], shifts[2], shifts[3], shifts[4], shifts[5], shifts[6]);
+                else
+                    datum->set3TransformationParameters(shifts[0], shifts[1], shifts[2], ellipsoid);
+            }
+            //datum.prepare("wkt=" + datumName);
+            if ( datum->isValid())
+                csyp->setDatum(datum);
+
+            QString projectionName(gdal()->getAttributeValue(srshandle,"Projection",0));
+            if ( projectionName != "") {
+                IProjection projection;
+                IOOptions opt = options;
+                if (_resource.code().indexOf("code=") == 0){
+                    opt << IOOptions::Option("proj4", _resource.code().mid(6));
+                }else
+                    opt << IOOptions::Option("proj4", _resource.code());
+
+                projection.prepare("code=wkt:" + projectionName, opt);
+                if ( projection.isValid()) {
+                    setProjectionParameter(srshandle, "false_easting", Projection::pvFALSEEASTING, projection);
+                    setProjectionParameter(srshandle, "false_northing", Projection::pvFALSENORTHING, projection);
+                    setProjectionParameter(srshandle, "scale_factor", Projection::pvSCALE, projection);
+                    setProjectionParameter(srshandle, "central_meridian", Projection::pvCENTRALMERIDIAN, projection);
+                    setProjectionParameter(srshandle, "latitude_of_origin", Projection::pvCENTRALPARALLEL, projection);
+                    setProjectionParameter(srshandle, "standard_parallel_1", Projection::pvSTANDARDPARALLEL1, projection);
+                    setProjectionParameter(srshandle, "standard_parallel_2", Projection::pvSTANDARDPARALLEL2, projection);
+                    setProjectionParameter(srshandle, "zone", Projection::pvZONE, projection);
+                    csyp->setProjection(projection);
+                    projection->setCoordinateSystem(csyp);
                 }
-                //datum.prepare("wkt=" + datumName);
-                if ( datum->isValid())
-                    csyp->setDatum(datum);
-
-                QString projectionName(gdal()->getAttributeValue(srshandle,"Projection",0));
-                if ( projectionName != "") {
-                   IProjection projection;
-                   IOOptions opt = options;
-                   if (_resource.code().indexOf("code=") == 0){
-                        opt << IOOptions::Option("proj4", _resource.code().mid(6));
-                   }else
-                       opt << IOOptions::Option("proj4", _resource.code());
-
-                   projection.prepare("code=wkt:" + projectionName, opt);
-                   if ( projection.isValid()) {
-                        setProjectionParameter(srshandle, "false_easting", Projection::pvFALSEEASTING, projection);
-                        setProjectionParameter(srshandle, "false_northing", Projection::pvFALSENORTHING, projection);
-                        setProjectionParameter(srshandle, "scale_factor", Projection::pvSCALE, projection);
-                        setProjectionParameter(srshandle, "central_meridian", Projection::pvCENTRALMERIDIAN, projection);
-                        setProjectionParameter(srshandle, "latitude_of_origin", Projection::pvCENTRALPARALLEL, projection);
-                        setProjectionParameter(srshandle, "standard_parallel_1", Projection::pvSTANDARDPARALLEL1, projection);
-                        setProjectionParameter(srshandle, "standard_parallel_2", Projection::pvSTANDARDPARALLEL2, projection);
-                        setProjectionParameter(srshandle, "zone", Projection::pvZONE, projection);
-                        csyp->setProjection(projection);
-                        projection->setCoordinateSystem(csyp);
-                    }
-                }else // fallback, not all gdal wkt are correct
-                {
-                    char *proj4;
-                    gdal()->export2Proj4(srshandle, &proj4);
-                    QString sproj4 = proj4;
-                    if ( proj4){
-                        gdal()->free(proj4);
-                        csy->prepare(sproj4);
-                    }
+            }else // fallback, not all gdal wkt are correct
+            {
+                char *proj4;
+                gdal()->export2Proj4(srshandle, &proj4);
+                QString sproj4 = proj4;
+                if ( proj4){
+                    gdal()->free(proj4);
+                    csy->prepare(sproj4);
                 }
             }
-            Envelope env = gdal()->envelope(_handle, 0);
-            if ( env.isValid() && !env.isNull()){
-                csy->envelope(env);
-            }
+           
+        Envelope env = gdal()->envelope(_handle, 0);
+        if ( env.isValid() && !env.isNull()){
+            csy->envelope(env);
+        }
 
         }
     }else{

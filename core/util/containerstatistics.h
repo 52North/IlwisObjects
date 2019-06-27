@@ -166,7 +166,6 @@ public:
 
         double pmin = rUNDEF, pmax = rUNDEF, psum = 0;
         quint64 pcount=0, pnetcount = 0;
-        kernel()->startClock();
         for (auto iter = begin; iter != end; ++iter) {
             DataType sample = *iter;
 			++pcount;
@@ -194,8 +193,6 @@ public:
 
             }
         }
-		kernel()->endClock();
-		kernel()->startClock();
         bool isUndefined = pnetcount == 0;
         std::fill(_markers.begin(), _markers.end(), rUNDEF);
 		_markers[index(pCOUNT)] = pcount;
@@ -257,7 +254,6 @@ public:
                 }
             }
         }
-        kernel()->endClock();
 
         return true;
     }

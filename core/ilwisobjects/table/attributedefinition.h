@@ -68,7 +68,7 @@ public:
     quint32 count() const;
     IDomain domain() const;
     QString insert(const QString& domainItem);
-    double insert(double domainItem);
+    double insert(double domainItem, bool first=false);
     void clearSubFeatureDefinitions();
     void store(QDataStream& stream);
     bool isValid() const;

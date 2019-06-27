@@ -77,8 +77,11 @@ bool CreateRasterCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
         }
     }
     if (resolution == 1e30) resolution = 0;
-    //double resolution = _outputRaster->datadefRef().domain()->range<NumericRange>()->resolution();
-    NumericRange *rng = new NumericRange(minv, maxv, resolution);
+	NumericRange *rng;
+	if (minv == 1e307 && maxv == -1e307) {
+		rng = new NumericRange();
+	}else
+		rng = new NumericRange(minv, maxv, resolution);
     _outputRaster->datadefRef().range(rng);
 
 
@@ -145,23 +148,23 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
     }
     QString potentialCatalog = _expression.input<QString>(4);
     ICatalog cat;
-    if (cat.prepare(potentialCatalog, { "mustexist", true })) {
-        auto resources = cat->items();
-        QString domainName = _expression.input<QString>(3);
-        QString path = cat->resource().container().toString();
-        INamedIdDomain dom;
-        if (dom.prepare(domainName, { "extendedtype",itNAMEDITEM})) {
-            for (auto resource : resources) {
-                NamedIdentifier *item = new NamedIdentifier(resource.name());
-                dom->addItem(item);
-            }
-            dom->connectTo(path + "/" + domainName, "domain", "stream", IlwisObject::cmOUTPUT);
-            dom->store();
-            _stackDomain = dom;
-            for (auto band : _bands)
-                _stackValueStrings.push_back(band->name());
-        }
-    }
+	if (potentialCatalog.indexOf("://") > 0 && cat.prepare(potentialCatalog, { "mustexist", true })) {
+		auto resources = cat->items();
+		QString domainName = _expression.input<QString>(3);
+		QString path = cat->resource().container().toString();
+		INamedIdDomain dom;
+		if (dom.prepare(domainName, { "extendedtype",itNAMEDITEM })) {
+			for (auto resource : resources) {
+				NamedIdentifier *item = new NamedIdentifier(resource.name());
+				dom->addItem(item);
+			}
+			dom->connectTo(path + "/" + domainName, "domain", "stream", IlwisObject::cmOUTPUT);
+			dom->store();
+			_stackDomain = dom;
+			for (auto band : _bands)
+				_stackValueStrings.push_back(band->name());
+		}
+	}
     else {
         _stackDomain = IDomain("positiveInteger");
         _stackValueStrings = { "1" };

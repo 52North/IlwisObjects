@@ -102,7 +102,7 @@ bool IntervalRange::hasOverlaps(bool strict) const {
 
 SPDomainItem IntervalRange::item(const QString &item, int itemIndex) const
 {
-    QStringList parts = item.split(" ");
+    QStringList parts = item.split("|");
     if ( parts.size() == 0 || parts.size() > 3){
         ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), item);
         return SPDomainItem();
@@ -133,7 +133,7 @@ SPDomainItem IntervalRange::item(const QString &item, int itemIndex) const
     }
     if (!ok){
         for(auto val : _items) {
-            if ( val->name() == item){
+            if ( val->name().trimmed() == item.trimmed()){
                 return val;
             }
         }
@@ -183,7 +183,7 @@ bool IntervalRange::contains(const QVariant &name, bool ) const
 {
     QStringList items = name.toString().split(";");
     for(const QString& item : items) {
-        QStringList parts = item.split(" ");
+        QStringList parts = item.split("|");
         if ( parts.size() == 0 || parts.size() > 3){
             return ERROR2(ERR_ILLEGAL_VALUE_2, TR("numeric range"), name.toString());
         }
@@ -192,7 +192,7 @@ bool IntervalRange::contains(const QVariant &name, bool ) const
             ok &= validNumber(parts[1]);
         if (!ok && parts.size() == 1){ // maybe we checked for the label
             for(const auto& item : _items)    {
-                if (item->name() == parts[0]){
+                if (item->name().trimmed() == parts[0].trimmed()){
                     return true;
                 }
             }

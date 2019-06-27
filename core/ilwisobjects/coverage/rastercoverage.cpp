@@ -496,10 +496,12 @@ bool RasterCoverage::band(QString bandIndex,  PixelIterator inputIter)
 
 bool RasterCoverage::band(double bandIndex,  PixelIterator inputIter)
 {
+	bool isAnonAdd = bandIndex == rUNDEF;
+	bool first = size().zsize() == 1 && !datadefRef().range()->isValid();
     if (bandIndex != rUNDEF &&  !_bandDefinition.domain()->contains(bandIndex))
         return false;
     if ( bandIndex == rUNDEF){
-        bandIndex = _bandDefinition.insert(bandIndex);
+        bandIndex = _bandDefinition.insert(bandIndex, first);
     }
     if ( bandIndex == rUNDEF)
         throw InternalError(TR("Couldnt add band; indexe isnt usuable"));
@@ -507,9 +509,9 @@ bool RasterCoverage::band(double bandIndex,  PixelIterator inputIter)
     int bndIndex = _bandDefinition.index(bandIndex);
     if ( bndIndex >= size().zsize()){
         _size.zsize(bndIndex + 1);
-        _grid->setBandProperties(this, 1);
+        _grid->setBandProperties(this, size().zsize() - _grid->size().zsize());
     }
-    return bandPrivate(bndIndex, inputIter);
+    return bandPrivate(isAnonAdd ? _size.zsize() - 1 : bndIndex, inputIter);
 }
 
 void RasterCoverage::setBandDefinition(QString bandIndex, const DataDefinition &def)
@@ -568,15 +570,35 @@ bool RasterCoverage::bandPrivate(quint32 bandIndex,  PixelIterator inputIter)
     trq->prepare("Copying input data","Initializing raster band",size().xsize() * size().ysize());
     quint64 count = 0;
     PixelIterator iter = bandPrivate(bandIndex);
+	double v, minv = 1e307, maxv = -1e307;
+	if (datadefRef().range()->isValid() && datadefRef().domain()->ilwisType() == itNUMERICDOMAIN) {
+		minv = datadefRef().range<NumericRange>()->min();
+		maxv = datadefRef().range<NumericRange>()->max();
+	}
     auto endPos = iter.end();
     while(iter != endPos){
-        *iter = *inputIter;
+		v = *inputIter;
+		minv = Ilwis::min(v, minv);
+		maxv = Ilwis::max(v, maxv);
+        *iter = v;
         ++iter;
         ++inputIter;
         if ( (++count % 1000) == 0){
             trq->update(1000);
         }
     }
+	if (datadefRef().domain()->ilwisType() == itNUMERICDOMAIN) {
+		double resolution = 1e30;
+		std::min(inputIter.raster()->datadefRef().range<NumericRange>()->resolution(), resolution);
+		if (resolution == 1e30) resolution = 0;
+		if (minv != 1e307 && maxv != -1e307) {
+			NumericRange *rng = new NumericRange(minv, maxv, resolution);
+			datadefRef().range(rng);
+		}
+	}
+	else {
+		// TODO : itemdomaincase ranges
+	}
     return true;
 
 

@@ -363,7 +363,7 @@ QString SubFeatureDefinition::insert(const QString& di)
     return domainItem;
 }
 
-double SubFeatureDefinition::insert(double domainItem)
+double SubFeatureDefinition::insert(double domainItem, bool first)
 {
     if (!_subFeatureDomain.isValid()) {
         _index2subFeature.clear();
@@ -380,7 +380,7 @@ double SubFeatureDefinition::insert(double domainItem)
             if  ( res == 0)
                 res = 0.001;
         }
-        domainItem = _index2subFeature.size() != 0 ? _index2subFeature.back().toDouble() + res: 0;
+		domainItem = _index2subFeature.size() != 0 ? _index2subFeature.back().toDouble() + (first ? 0 : res) : 0;
     }
     if (!_subFeatureDomain->contains(domainItem))
         return rUNDEF;
