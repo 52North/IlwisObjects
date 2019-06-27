@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QDir>
 #include <QCollator>
 #include <QCoreApplication>
+#include <map>
 #include "coverage.h"
 #include "representation.h"
 #include "connectorinterface.h"
@@ -416,15 +417,28 @@ void CatalogModel::gatherItems() {
 
     bool hasParent = true;
     QUrl previousContainer;
+
+	std::map<QString, std::vector<Resource>> folderClashes;
     for(const Resource& resource : items){
-        if (resource.ilwisType() == itCATALOG && hasType(resource.extendedType(), itRASTER)) // skip container catalog Resources; the main Resource already functions as the container.
-            continue;
-        _allItems.push_back( new ResourceModel(resource, this));
+        //if (resource.ilwisType() == itCATALOG && hasType(resource.extendedType(), itRASTER)) // skip container catalog Resources; the main Resource already functions as the container.
+        //    continue;
+		if (resource.ilwisType() == itCATALOG || resource.ilwisType() == itRASTER) {
+			folderClashes[resource.url().toString()].push_back(resource);
+		}else
+			_allItems.push_back( new ResourceModel(resource, this));
         hasParent &= (previousContainer.isValid() ? resource.container() == previousContainer : true);
         previousContainer = resource.container();
         if ( previousContainer.toString() == "ilwis://")
             hasParent = false;
     }
+	for (auto pair : folderClashes) {
+		if (pair.second.size() == 1)
+			_allItems.push_back(new ResourceModel(pair.second[0], this));
+		if (pair.second.size() == 2) {
+			auto item = pair.second[0];
+			_allItems.push_back(new ResourceModel(pair.second[item.ilwisType() == itRASTER ? 0 : 1], this));
+		}
+	}
 	sortItems(_allItems);
 	if (hasParent) {
 		if (!previousContainer.isValid()) {
