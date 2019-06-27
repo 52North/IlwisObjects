@@ -83,8 +83,8 @@ void createCatalog(const IRasterCoverage& raster,std::vector<Resource>& items){
     resCatalog.name(raster->name());
     resCatalog.createTime(Time::now());
     resCatalog.modifiedTime(Time::now());
-    resCatalog.setIlwisType(itCATALOG);
-    resCatalog.setExtendedType(resCatalog.extendedType() | itRASTER);
+    resCatalog.setIlwisType(itRASTER);
+    resCatalog.setExtendedType(resCatalog.extendedType() | itCATALOG);
     items.push_back(resCatalog);
 	collectBands(raster, items);
 }
@@ -96,7 +96,7 @@ std::vector<Resource> StreamCatalogExplorer::loadItems(const IOOptions &)
 	std::vector<Resource> items;
 	Resource res = source();
 	QString path = res.url(true).toLocalFile();
-	if (path.indexOf(".ilwis") > 0 && hasType(res.ilwisType(),itCATALOG)) {
+	if (path.indexOf(".ilwis") > 0 && hasType(res.extendedType(),itCATALOG)) {
 		IRasterCoverage raster(res.url().toString());
 		if (raster.isValid()) {
 			collectBands(raster, items);
@@ -156,13 +156,15 @@ std::vector<Resource> StreamCatalogExplorer::loadItems(const IOOptions &)
                             if (obj.isValid() && obj->ilwisType() == itRASTER){
                                 IRasterCoverage raster = obj.as<RasterCoverage>();
                                 if ( raster->size().zsize() > 1){
+									mastercatalog()->removeItems({ res }); // unfortunately automatically added by creating the object. But it has the wrong type ; its a catalog
                                     createCatalog(raster,items);
                                 }
-                            }
+                            }else
+								items.push_back(res);
                         } catch (const ErrorObject& err){
                             kernel()->issues()->log(QString(TR("StreamCatalogExplorer: Error scanning object '%1'. Cause: '%2'")).arg(res.url().toString()).arg(err.message()), IssueObject::itError);
                         }
-                        items.push_back(res);
+ 
                     }
                 }
             }
