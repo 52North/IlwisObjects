@@ -124,7 +124,12 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
 				cMin = Coordinate(min(crdLeftup.x, crdRightDown.x), min(crdLeftup.y, crdRightDown.y));
 				cMax = Coordinate(max(crdLeftup.x, crdRightDown.x), max(crdLeftup.y, crdRightDown.y));
 
-				if (!georeference.prepare(_resource.url().toString()))
+				QString name = _resource.url().toString();
+				if (layer != iUNDEF) {
+					int idx = name.lastIndexOf("/");
+					name = name.left(idx);
+				}
+				if (!georeference.prepare(name))
 					return ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2, "Georeference", raster->name());
 				if (raster->coordinateSystem().isValid()) {
 					georeference->coordinateSystem(raster->coordinateSystem());
