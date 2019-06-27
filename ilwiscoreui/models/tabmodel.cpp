@@ -38,11 +38,16 @@ TabModel::TabModel(const QString &url, const QString &componentUrl,const QString
     if ( objtype != itUNKNOWN){
         if ( objtype == itMODEL && url.indexOf("ilwis://operations") != -1) // exception. workflows are opened in the modelpna but are workflows
             objtype = itWORKFLOW;
-
-        Ilwis::Resource res = Ilwis::mastercatalog()->name2Resource(url, objtype);
-        if ( res.isValid()){
-            _displayName = res.hasProperty("longname") ? res["longname"].toString() : res.name();
-        }
+		Ilwis::Resource res;
+		if (type == "catalog") { // some rasters maybe a catalog
+			 res = Ilwis::mastercatalog()->name2Resource(url, itRASTER);
+		}
+		if (!res.isValid()) {
+			Ilwis::Resource res = Ilwis::mastercatalog()->name2Resource(url, objtype);
+			if (res.isValid()) {
+				_displayName = res.hasProperty("longname") ? res["longname"].toString() : res.name();
+			}
+		}
 		_type = type;
     }
 	if (_displayName == "") {
