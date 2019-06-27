@@ -398,7 +398,7 @@ bool WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, con
         opt.addOption("mustexist", true);
         if(!VersionedSerializer::loadMetaData(opt, tp, v))
             return true;
-        wp.value(v, tp);
+        wp.value(v, tp, (WorkFlowParameter::ParameterKind)state);
         node->addInput(wp,j);
     }
 
