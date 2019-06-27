@@ -695,10 +695,19 @@ IlwisObject *InternalIlwisObjectFactory::createProjection(const Resource& resour
     QString query;
     QString code = resource.code();
 
+	auto parseDef = [](const QString& def)->QString {
+		if (def.indexOf("epsg:") == 0) {
+			int epsg = def.mid(5).toInt();
+			return epsg2String(epsg);
+		}
+		return def;
+	};
     Projection *proj = 0;
     if ( code == sUNDEF){ // meant for new projections which will be initialized later (e.g by the streaming connector)
         proj = createFromResource<Projection>(resource, options);
     }
+
+
 
     else if ( code != "") {
         InternalDatabaseConnection db;
@@ -709,10 +718,13 @@ IlwisObject *InternalIlwisObjectFactory::createProjection(const Resource& resour
 
                 const ProjectionFactory *factory =  kernel()->factory<ProjectionFactory>("ProjectionFactory",resource);
                 if ( factory) {
+
                     ProjectionImplementation *projimpl = 0;
-                    if ( options.contains("proj4"))
-                        projimpl = static_cast<ProjectionImplementation *>(factory->create(resource.code(), options["proj4"].toString()));
-                    else
+					if (options.contains("proj4")) {
+						QString prj4 = parseDef(options["proj4"].toString());
+						projimpl = static_cast<ProjectionImplementation *>(factory->create(resource.code(), prj4));
+					}
+					else
                         projimpl = static_cast<ProjectionImplementation *>(factory->create(resource));
                     if (!projimpl) {
                         kernel()->issues()->log(TR(ERR_COULDNT_CREATE_OBJECT_FOR_2).arg("projection", resource.name()));
