@@ -357,8 +357,14 @@ quint64 GDALItems::addItem(GdalHandle* handle, const QUrl& url, quint64 csyid, q
     if ( sz != i64UNDEF)
         gdalItem.size(sz);
     bool is3D = false;
-    if ( !hasType(tp,itCATALOG))
-        gdalItem.addProperty("coordinatesystem", url.toString(),true);
+	if (!hasType(tp, itCATALOG)) {
+		QString name = url.toString();
+		if (layerindex != iUNDEF) {
+			int idx = name.lastIndexOf("/");
+			name = name.left(idx);
+		}
+		gdalItem.addProperty("coordinatesystem", name, true);
+	}
     if ( tp == itFEATURE){
 		QString count = grfId == -1 ? "" : QString::number(grfId);
         gdalItem.dimensions(count);// misuse of grfid
@@ -401,16 +407,31 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
         const char * localcs_epsg = gdal()->getAuthorityCode(srshandle, "LOCAL_CS");
         if (projcs_epsg && QString(gdal()->getAuthorityName(srshandle, "PROJCS")).compare("EPSG", Qt::CaseInsensitive) == 0) {
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(projcs_epsg), itCONVENTIONALCOORDSYSTEM);
-            if ( resource.isValid())
-                ret = resource.id();
+			if (resource.isValid()) {
+				Resource res(url, itCONVENTIONALCOORDSYSTEM);
+				res.code(QString("epsg:%1").arg(projcs_epsg));
+				res.addProperty("extendedtype", true);
+				insert(res);
+				ret = res.id();
+			}
         }else if (geocs_epsg && QString(gdal()->getAuthorityName(srshandle, "GEOGCS")).compare("EPSG", Qt::CaseInsensitive) == 0){
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(geocs_epsg), itCONVENTIONALCOORDSYSTEM);
-            if ( resource.isValid())
-                ret = resource.id();
+			if (resource.isValid()) {
+				Resource res(url, itCONVENTIONALCOORDSYSTEM);
+				res.code(QString("epsg:%1").arg(projcs_epsg));
+				res.addProperty("extendedtype", true);
+				insert(res);
+				ret = res.id();
+			}
         }else if (localcs_epsg && QString(gdal()->getAuthorityName(srshandle, "LOCAL_CS")).compare("EPSG", Qt::CaseInsensitive) == 0){
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(localcs_epsg), itCONVENTIONALCOORDSYSTEM);
-            if ( resource.isValid())
-                ret = resource.id();
+			if (resource.isValid()) {
+				Resource res(url, itCONVENTIONALCOORDSYSTEM);
+				res.code(QString("epsg:%1").arg(projcs_epsg));
+				res.addProperty("extendedtype", true);
+				insert(res);
+				ret = res.id();
+			}
         }else {
             char *proj4;
             OGRErr err =  gdal()->export2Proj4(srshandle, &proj4);
