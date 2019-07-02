@@ -1,11 +1,13 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.2 as QC2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import UserMessageHandler 1.0
 import MessageModel 1.0
 import "../Global.js" as Global
 import ".." as Base
+import "../controls"as Control
 
 WorkBenchShifter {
     id : messageContainer
@@ -35,8 +37,8 @@ WorkBenchShifter {
                 Item{
                     id : clearArea
                     width : parent.width
-                    height : 24
-                    Button{
+                    height : 26
+                    Control.PushButton{
                         id : clearButton
                         text : "Clear error/warning status"
                         anchors.verticalCenter: parent.verticalCenter
@@ -46,7 +48,6 @@ WorkBenchShifter {
                         onClicked: {
                             messagehandler.resetColor(-1)
                         }
-
                     }
                 }
 
