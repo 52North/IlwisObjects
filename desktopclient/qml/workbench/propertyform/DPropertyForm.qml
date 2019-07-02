@@ -125,6 +125,7 @@ Rectangle {
 
         Component.onCompleted: {
             addTab(qsTr("General"), generalData )
+			addTab(qsTr("Context"), contextData)
             addTab(qsTr("Data"), dataData)
             if(typeName == "rastercoverage"  || typeName == "feature" ||
                     typeName == "featurecoverage" || typeName == "pointcoverage" ||
