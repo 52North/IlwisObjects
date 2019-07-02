@@ -238,6 +238,7 @@
     <None Include="desktopclient\qml\controls\MapExtentButton.qml" />
     <None Include="desktopclient\qml\controls\MultiPointSlider.qml" />
     <None Include="desktopclient\qml\controls\ProjectionParametersEditor.qml" />
+    <None Include="desktopclient\qml\controls\PushButton.qml" />
     <None Include="desktopclient\qml\controls\RotatingArrow.qml" />
     <None Include="desktopclient\qml\controls\SelectProjection.qml" />
     <None Include="desktopclient\qml\controls\SmallRoundButton.qml" />
@@ -532,6 +533,7 @@
     <None Include="desktopclient\qml\workbench\propertyform\AttributeProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\CatalogProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\CombinationMatrixProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ContextPropertyPane.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\ControlPoints.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\CoordinateSystemProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\CoverageDataProperties.qml" />

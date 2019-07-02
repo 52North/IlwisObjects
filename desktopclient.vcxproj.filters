@@ -1283,6 +1283,12 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\AddColorComposite.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
+    <None Include="desktopclient\qml\controls\PushButton.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\propertyform\ContextPropertyPane.qml">
+      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
