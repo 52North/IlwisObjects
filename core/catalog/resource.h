@@ -341,6 +341,8 @@ public:
     void code(const QString &code);
     void setDescription(const QString &desc);
     QString code() const;
+	std::map<QString, QString> metadata() const;
+	void addMetaTag(const QString& tag, const QString& value);
 protected:
     void stringAsUrl(const QString& txt, IlwisTypes tp, bool isNew);
     QHash<QString, QVariant> _properties;

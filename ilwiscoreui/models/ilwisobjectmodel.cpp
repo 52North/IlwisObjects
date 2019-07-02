@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "coverage.h"
+#include <QStandardItemModel>
 #include "ilwisobjectmodel.h"
 #include "projection.h"
 #include "ellipsoid.h"
@@ -1120,7 +1121,10 @@ void IlwisObjectModel::setAttribute(const QString &attrname, const QString &valu
 
                 }
             }
-        }
+		}
+		else if (attrname == "property") {
+			_ilwisobject->resourceRef().addMetaTag(extra, value);
+		}
     }
 }
 
@@ -1374,6 +1378,49 @@ QString IlwisObjectModel::storeAdjustment(const QString& property, const QString
 
 	return value;
 }
+
+QVariantList IlwisObjectModel::metaItemTree() {
+
+
+	std::map<QString, QString> metadata = itemRef().metadata();
+	_metaItemTree.clear();
+	for (auto item : metadata) {
+		QVariantMap data;
+		data["tag"] = item.first;
+		data["value"] = item.second;
+		_metaItemTree.push_back(data);
+	}
+
+	return _metaItemTree;
+}
+
+QVariantList IlwisObjectModel::metaItemTable(const QString& filter) {
+
+
+	std::map<QString, QString> metadata = itemRef().metadata();
+	_metaItemTree.clear();
+	for (auto item : metadata) {
+		QVariantMap data;
+		if (filter != "") {
+			if (item.first.indexOf(filter) == -1)
+				continue;
+		}
+		data["tag"] = item.first;
+		data["value"] = item.second;
+		_metaItemTree.push_back(data);
+	}
+
+	return _metaItemTree;
+}
+
+void IlwisObjectModel::addMetaTag(const QString& tag, const QString& value) {
+	if (tag == "" || value == "")
+		return;
+
+	itemRef().addMetaTag(tag, value);
+	emit metaItemTreeChanged();
+}
+
 //---------------------------------------------------------------------------------
 CalcRangesWorker::CalcRangesWorker(quint64 rasterid) : _rasterid(rasterid){
 

@@ -18,6 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define ILWISOBJECTMODEL_H
 
 #include <QQmlListProperty>
+#include <QObject>
+#include <QAbstractItemModel>
+#include <QStandardItemModel>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "resourcemodel.h"
@@ -26,6 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "projectionparametermodel.h"
 
 
+class QStandardItemModel;
+class QAbstractItemModel;
 
 namespace Ilwis {
 namespace Ui {
@@ -49,27 +54,28 @@ private:
 
 class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
 {
-    Q_OBJECT
-    Q_PROPERTY(QString isValid READ isValid CONSTANT)
-    Q_PROPERTY(QString creationDate READ creationDate CONSTANT)
-    Q_PROPERTY(QString modifiedDate READ modifiedDate CONSTANT)
-    Q_PROPERTY(bool isReadonly READ readonly WRITE readonly NOTIFY readOnlyChanged)
-    Q_PROPERTY(bool isSystemObject READ isSystemObject CONSTANT)
-    Q_PROPERTY(bool isAnonymous READ isAnonymous CONSTANT)
-    Q_PROPERTY(QString externalFormat READ externalFormat CONSTANT)
-    Q_PROPERTY(bool externalReadOnly READ externalReadOnly CONSTANT)
-    Q_PROPERTY(bool isCoverage READ isCoverage CONSTANT)
-    Q_PROPERTY(QString valuetype READ valuetype CONSTANT)
-	Q_PROPERTY(QString internalValuetype READ internalValuetype CONSTANT)
-    Q_PROPERTY(bool isProjected READ isProjectedCoordinateSystem CONSTANT)
-    Q_PROPERTY(QString projectionInfo READ projectionInfo NOTIFY projectionInfoChanged)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::AttributeModel> attributes READ attributes CONSTANT)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DomainItemModel> domainitems READ domainitems NOTIFY domainItemsChanged)
-    Q_PROPERTY(QQmlListProperty<ProjectionParameterModel> projectionItems READ projectionItems CONSTANT)
-    Q_PROPERTY(QVariantList layerInfo READ layerInfo NOTIFY layerInfoChanged)
-    Q_PROPERTY(QStringList quickProps READ quickProps CONSTANT)
-    Q_PROPERTY(bool hasAttributes READ hasAttributes CONSTANT)
-	Q_PROPERTY(bool isEditable READ editable WRITE editable NOTIFY editableChanged)
+	Q_OBJECT
+		Q_PROPERTY(QString isValid READ isValid CONSTANT)
+		Q_PROPERTY(QString creationDate READ creationDate CONSTANT)
+		Q_PROPERTY(QString modifiedDate READ modifiedDate CONSTANT)
+		Q_PROPERTY(bool isReadonly READ readonly WRITE readonly NOTIFY readOnlyChanged)
+		Q_PROPERTY(bool isSystemObject READ isSystemObject CONSTANT)
+		Q_PROPERTY(bool isAnonymous READ isAnonymous CONSTANT)
+		Q_PROPERTY(QString externalFormat READ externalFormat CONSTANT)
+		Q_PROPERTY(bool externalReadOnly READ externalReadOnly CONSTANT)
+		Q_PROPERTY(bool isCoverage READ isCoverage CONSTANT)
+		Q_PROPERTY(QString valuetype READ valuetype CONSTANT)
+		Q_PROPERTY(QString internalValuetype READ internalValuetype CONSTANT)
+		Q_PROPERTY(bool isProjected READ isProjectedCoordinateSystem CONSTANT)
+		Q_PROPERTY(QString projectionInfo READ projectionInfo NOTIFY projectionInfoChanged)
+		Q_PROPERTY(QQmlListProperty<Ilwis::Ui::AttributeModel> attributes READ attributes CONSTANT)
+		Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DomainItemModel> domainitems READ domainitems NOTIFY domainItemsChanged)
+		Q_PROPERTY(QQmlListProperty<ProjectionParameterModel> projectionItems READ projectionItems CONSTANT)
+		Q_PROPERTY(QVariantList layerInfo READ layerInfo NOTIFY layerInfoChanged)
+		Q_PROPERTY(QStringList quickProps READ quickProps CONSTANT)
+		Q_PROPERTY(bool hasAttributes READ hasAttributes CONSTANT)
+		Q_PROPERTY(bool isEditable READ editable WRITE editable NOTIFY editableChanged)
+		Q_PROPERTY(QVariantList metaItemTree READ metaItemTree NOTIFY metaItemTreeChanged)
 
 
 public:
@@ -96,6 +102,8 @@ public:
 	Q_INVOKABLE quint32 modelId() const;
 	Q_INVOKABLE QString subType() const;
 	Q_INVOKABLE QString storeAdjustment(const QString& property, const QString& value);
+	Q_INVOKABLE void addMetaTag(const QString& tag, const QString& value);
+	Q_INVOKABLE QVariantList metaItemTable(const QString& filter);
 
     QString creationDate() const;
     QString modifiedDate() const;
@@ -123,6 +131,7 @@ public:
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
 
+
 public slots:
     void recalcDone();
 protected:
@@ -136,6 +145,7 @@ signals:
     void projectionInfoChanged();
 	void domainItemsChanged();
 	void editableChanged();
+	void metaItemTreeChanged();
 
 private slots:
     QString valueType() const;
@@ -144,12 +154,17 @@ private:
     quint32 _modelId;
     QList<DomainItemModel *> _domainItems;
     QList<ProjectionParameterModel *> _projectionParmItems;
+	QVariantList _metaItemTree;
+
+
     QString pixSizeString() const;
     QString centerPixelLocation() const;
     QString parentDomain() const;
     QStringList quickProps() const;
     bool hasAttributes() const;
 	IlwisTypes valueTypePrivate() const;
+	QVariantList metaItemTree();
+
 	bool _editState = false;
 
 	void applyAdjustments();

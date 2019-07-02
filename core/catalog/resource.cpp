@@ -351,8 +351,18 @@ void Resource::addProperty(const QString &key, const QVariant &value, bool exten
     if ( _properties[key.toLower()] == value)
         return;
     changed(true);
-	mastercatalog()->changeResource(id(), key, value, extended);
-    _properties[key.toLower()] = value;
+	QString potentialKey = key;
+	if (key.indexOf("metadata.lineage.") == 0) {
+		for (int i = 0; i < 100; ++i) {
+			QString potentialKey = key;
+			potentialKey.replace("lineage.", QString("lineage%1.").arg(i));
+			if (_properties.find(potentialKey) == _properties.end()) {
+				break;
+			}
+		}
+	}
+	mastercatalog()->changeResource(id(), potentialKey, value, extended);
+    _properties[potentialKey.toLower()] = value;
 }
 
 void Resource::removeProperty(const QString &key)
@@ -620,7 +630,11 @@ bool Resource::store(InternalDatabaseConnection &queryItem, InternalDatabaseConn
 	queryProperties.exec("DELETE from catalogitemproperties WHERE itemid=" + QString::number(id()));
 	QString queryP = "INSERT INTO catalogitemproperties (propertyname, propertyvalue, itemid) VALUES('%1','%2',%3)";
     for(QHash<QString, QVariant>::const_iterator  iter = _properties.constBegin(); iter != _properties.constEnd(); ++iter) {
-		QString fullq = QString(queryP).arg(iter.key()).arg(iter.value().toString()).arg(id());
+		QString v = iter.value().toString();
+		if (v.indexOf("'") >= 0) {
+			v.replace("'", "''");
+		}
+		QString fullq = QString(queryP).arg(iter.key()).arg(v).arg(id());
 		bool ok = queryProperties.exec(fullq);
 		if (!ok) {
 			kernel()->issues()->logSql(queryProperties.lastError());
@@ -931,4 +945,25 @@ void Resource::changed(bool yesno)
     _changed = yesno;
     if ( yesno)
         modifiedTime(Ilwis::Time::now());
+}
+
+void Resource::addMetaTag(const QString& tag, const QString& value) {
+	QString fullTag = tag;
+	if (fullTag.indexOf("metadata.") != 0)
+		fullTag = "metadata." + tag;
+	_properties.insert(fullTag, value);
+}
+
+std::map<QString, QString> Resource::metadata() const {
+	std::map<QString, QString> result;
+	for (QHash<QString, QVariant>::const_iterator i = _properties.begin(); i != _properties.end(); ++i)
+	{
+		QString key = i.key();
+		if (key.indexOf("metadata.") == 0) {
+			QString v = i.value().toString();
+			key = key.mid(9);
+			result[key] = v;
+		}
+	}
+	return result;
 }
