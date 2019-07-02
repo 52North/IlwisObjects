@@ -102,8 +102,10 @@ Rectangle {
 					frame.grabToImage(function(result) {
 						  result.saveToFile(thumbPath);
 					});
-					if ( frame.resources[currentMap])
+					if ( frame.resources[currentMap]){
 						frame.resources[currentMap].unload()
+						frame.resources[currentMap].imagePath = "file:///" + thumbPath
+					}
 					++currentMap
 					progress.value = currentMap
 					setResource()
@@ -140,6 +142,7 @@ Rectangle {
 			text : qsTr("Generate Thumbnails")
             onClicked: {
                 frame.makeResourceList()
+				mastercatalog.currentCatalog.scanContainer(true,true)
             }
 		}
 	}
