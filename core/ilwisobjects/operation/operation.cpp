@@ -63,7 +63,8 @@ OperationExpression OperationImplementation::expression() const
 void OperationImplementation::logOperation(const IIlwisObject &obj, const OperationExpression &expr)
 {
     if (obj.isValid()){
-        obj->addDescription(expr.toString());
+		obj->resourceRef().addProperty("metadata.lineage.expression", expr.toPythonExpression());
+		obj->resourceRef().addProperty("metadata.lineage.creation", obj->createTime().toString());
     }
 }
 
