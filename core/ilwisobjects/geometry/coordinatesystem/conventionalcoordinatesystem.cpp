@@ -43,6 +43,8 @@ ConventionalCoordinateSystem::~ConventionalCoordinateSystem()
 
 Coordinate ConventionalCoordinateSystem::coord2coord(const ICoordinateSystem &sourceCs, const Coordinate &crdSource) const
 {
+	if (!sourceCs.isValid())
+		return Coordinate();
     //TODO isLatLon guard doesn't consider latlon cs other than WGS84!
     if (sourceCs->id() == id()) //  the 'real'isEqual test is too expensive here, as this method can be called 100000's of times (resample)
         return crdSource;
@@ -63,6 +65,9 @@ Coordinate ConventionalCoordinateSystem::coord2coord(const ICoordinateSystem &so
 
 LatLon ConventionalCoordinateSystem::coord2latlon(const Coordinate &crdSource) const
 {
+	if (!_projection.isValid())
+		return LatLon();
+
     LatLon ll = _projection->coord2latlon(crdSource);
     if (!ll.isValid())
         return llUNDEF;
@@ -73,6 +78,9 @@ LatLon ConventionalCoordinateSystem::coord2latlon(const Coordinate &crdSource) c
 
 Coordinate ConventionalCoordinateSystem::latlon2coord(const LatLon &ll) const
 {
+	if (!_projection.isValid())
+		return Coordinate();
+
     Coordinate xy = _projection->latlon2coord(ll);
     if (xy == crdUNDEF)
         return crdUNDEF;
