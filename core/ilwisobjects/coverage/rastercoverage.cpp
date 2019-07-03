@@ -867,7 +867,7 @@ bool RasterCoverage::prepare(const IOOptions& options) {
 void RasterCoverage::storeAdjustment(const QString& property, const QString& value) {
 	Coverage::storeAdjustment(property, value);
 	if (property == "georeference") {
-		changeData(property, value);
+		changeData(resourceRef(), property, value);
 	}
 }
 

@@ -142,7 +142,7 @@ void Coverage::copyTo(IlwisObject *obj)
 void Coverage::storeAdjustment(const QString& property, const QString& value) {
 	IlwisObject::storeAdjustment(property, value);
 	if (property == "coordinatesystem") {
-		changeData(property, value);
+		changeData(resourceRef(), property, value);
 	}
 }
 
