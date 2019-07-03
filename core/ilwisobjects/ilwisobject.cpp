@@ -982,3 +982,12 @@ void IlwisObject::applyAdjustments() {
 			this->applyAdjustments(adjustments);
 	}
 }
+
+void IlwisObject::updateAdjustementsDatabase(const Resource& oldRes) {
+	InternalDatabaseConnection db;
+	QString stmt = QString("Update objectadjustments set objecturl = '%1' where objecturl = '%2' and ilwistype='%3'").
+		arg(resourceRef().url(true).toString()).
+		arg(oldRes.url(true).toString()).
+		arg(TypeHelper::type2name(oldRes.ilwisType()));
+	db.exec(stmt);
+}

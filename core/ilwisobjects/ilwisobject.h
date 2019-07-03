@@ -410,6 +410,7 @@ public:
     const QScopedPointer<ConnectorInterface> &constConnector(int mode=cmINPUT | cmOUTPUT) const;
     void resetOutputConnector();
 	virtual void storeAdjustment(const QString& property, const QString& value);
+	void updateAdjustementsDatabase(const Resource& oldRes);
 
 
 protected:

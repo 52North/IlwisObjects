@@ -128,6 +128,7 @@ public:
     QString value2string(const QVariant& value, const QString& attrName="");
 	virtual void applyAdjustments(const std::map<QString, QString>& adjustments);
 
+
     Ilwis::IIlwisObject object() const;
     QVariantList layerInfo() const;
 

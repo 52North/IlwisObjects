@@ -1329,6 +1329,7 @@ void IlwisObjectModel::editable(bool yesno) {
 	}
 }
 
+
 void IlwisObjectModel::applyAdjustments(const std::map<QString, QString>& adjustments) {
 	auto iter = adjustments.find("displayname");
 	if (iter != adjustments.end()) {
