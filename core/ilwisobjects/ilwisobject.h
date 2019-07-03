@@ -401,6 +401,7 @@ public:
     static void addTypeFunction(IlwisTypeFunction);
 
     static IlwisTypes name2ExtendedType(const QString &dname);
+	static void changeData(const Resource& resource, const QString& property, const QString& value);
 
     QString formatCode(bool input=true) const;
     QString provider(bool input=true) const;
@@ -417,7 +418,7 @@ protected:
    bool setValid(bool yesno);
    void copyTo(IlwisObject *obj);
    virtual void applyAdjustments(const std::map<QString, QString>& adjustments);
-   void changeData(const QString& property, const QString& value);
+
 
    std::recursive_mutex _mutex;
    std::mutex _loadforstore;

@@ -921,18 +921,18 @@ IlwisTypes IlwisObject::findType(const QString &resource)
     return itUNKNOWN;
 }
 
-void IlwisObject::changeData(const QString& property, const QString& value) {
+void IlwisObject::changeData(const Resource& resource, const QString& property, const QString& value) {
 	InternalDatabaseConnection db;
 	QString stmt = QString("DELETE FROM objectadjustments where objecturl = '%1' and ilwistype='%2' and propertyname='%3'  and ismodel=0")
-		.arg(resourceRef().url(true).toString())
-		.arg(TypeHelper::type2name(ilwisType())
+		.arg(resource.url(true).toString())
+		.arg(TypeHelper::type2name(resource.ilwisType())
 			.arg(property));
 	if (!db.exec(stmt)) {
 		kernel()->issues()->logSql(db.lastError());
 		return;
 	}
 	stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
-		.arg(property).arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(ilwisType())).arg(value).arg(0);
+		.arg(property).arg(resource.url(true).toString()).arg(TypeHelper::type2name(resource.ilwisType())).arg(value).arg(0);
 	if (!db.exec(stmt)) {
 		kernel()->issues()->logSql(db.lastError());
 		return;
@@ -942,11 +942,11 @@ void IlwisObject::changeData(const QString& property, const QString& value) {
 void IlwisObject::storeAdjustment(const QString& property, const QString& value) {
 	if (property == "description") {
 		if (description() != value) {
-			changeData(property, value);
+			changeData(resourceRef(), property, value);
 		}
 	}
 	else if (property.indexOf("metadata.") == 0) {
-		changeData(property, value);
+		changeData(resourceRef(), property, value);
 	}
 }
 
