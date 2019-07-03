@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QRegularExpression>
 #include "kernel.h"
 #include "connectorinterface.h"
 #include "ilwiscontext.h"
@@ -952,17 +953,24 @@ void Resource::addMetaTag(const QString& tag, const QString& value) {
 	if (fullTag.indexOf("metadata.") != 0)
 		fullTag = "metadata." + tag;
 	_properties.insert(fullTag, value);
+	QString v = value;
+	if (v.indexOf("'") >= 0) {
+		v.replace("'", "''");
+	}
+	IlwisObject::changeData(*this, fullTag, v);
 }
 
-std::map<QString, QString> Resource::metadata() const {
+std::map<QString, QString> Resource::metadata(const QString& keyfilter) const {
 	std::map<QString, QString> result;
 	for (QHash<QString, QVariant>::const_iterator i = _properties.begin(); i != _properties.end(); ++i)
 	{
 		QString key = i.key();
 		if (key.indexOf("metadata.") == 0) {
-			QString v = i.value().toString();
-			key = key.mid(9);
-			result[key] = v;
+			if (keyfilter == "" || key.indexOf(keyfilter) >= 0) {
+				QString v = i.value().toString();
+				key = key.mid(9);
+				result[key] = v;
+			}
 		}
 	}
 	return result;
