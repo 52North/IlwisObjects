@@ -24,14 +24,14 @@ namespace Stream {
 class FeatureSerializerV1 : public CoverageSerializerV1
 {
 public:
-    FeatureSerializerV1(QDataStream& stream);
+    FeatureSerializerV1(QDataStream& stream, const QString &version);
 
     bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
     bool storeData(IlwisObject *obj, const IOOptions &options = IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & options);
     bool loadData(IlwisObject *obj, const IOOptions &options = IOOptions());
 
-    static Ilwis::Stream::VersionedSerializer *create(QDataStream &stream);
+    static Ilwis::Stream::VersionedSerializer *create(QDataStream &stream, const QString &version);
 };
 }
 }

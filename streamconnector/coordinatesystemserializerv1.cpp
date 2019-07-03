@@ -37,12 +37,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *CoordinateSystemSerializerV1::create( QDataStream& stream)
+VersionedSerializer *CoordinateSystemSerializerV1::create( QDataStream& stream, const QString &version)
 {
-    return new CoordinateSystemSerializerV1(stream);
+    return new CoordinateSystemSerializerV1(stream, version);
 }
 
-CoordinateSystemSerializerV1::CoordinateSystemSerializerV1(QDataStream& stream) : VersionedSerializer(stream)
+CoordinateSystemSerializerV1::CoordinateSystemSerializerV1(QDataStream& stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 
@@ -56,13 +56,13 @@ bool CoordinateSystemSerializerV1::store(IlwisObject *obj, const IOOptions &opti
         VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
         if (!factory)
             return false;
-        std::unique_ptr<DataInterface> projstreamer(factory->create(Version::interfaceVersion, itPROJECTION,_stream));
+        std::unique_ptr<DataInterface> projstreamer(factory->create(Version::interfaceVersion41, itPROJECTION,_stream));
         if ( !projstreamer)
             return false;
         ConventionalCoordinateSystem *ccsy = static_cast<ConventionalCoordinateSystem *>(csy);
         storeSystemPath(ccsy->projection()->resource());
         projstreamer->store(ccsy->projection().ptr(),options);
-        std::unique_ptr<DataInterface> ellstreamer(factory->create(Version::interfaceVersion, itELLIPSOID,_stream));
+        std::unique_ptr<DataInterface> ellstreamer(factory->create(Version::interfaceVersion41, itELLIPSOID,_stream));
         if ( !ellstreamer)
             return false;
         storeSystemPath(ccsy->ellipsoid()->resource());
@@ -113,7 +113,7 @@ bool CoordinateSystemSerializerV1::loadMetaData(IlwisObject *obj, const IOOption
         if ( type != itUNKNOWN){
             _stream >> version;
 
-            std::unique_ptr<DataInterface> ellstreamer(factory->create(Version::interfaceVersion, itELLIPSOID,_stream));
+            std::unique_ptr<DataInterface> ellstreamer(factory->create(version, itELLIPSOID,_stream));
             if ( !ellstreamer)
                 return false;
             IEllipsoid systemEll = makeSystemObject<IEllipsoid>(url);

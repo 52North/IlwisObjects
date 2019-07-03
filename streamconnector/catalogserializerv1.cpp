@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-CatalogserializerV1::CatalogserializerV1(QDataStream &stream) : VersionedSerializer(stream)
+CatalogserializerV1::CatalogserializerV1(QDataStream &stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 
@@ -145,7 +145,7 @@ bool CatalogserializerV1::loadMetaData(IlwisObject *obj, const IOOptions &option
     return true;
 }
 
-VersionedSerializer *CatalogserializerV1::create(QDataStream &stream)
+VersionedSerializer *CatalogserializerV1::create(QDataStream &stream, const QString &version)
 {
-        return new CatalogserializerV1(stream);
+        return new CatalogserializerV1(stream, version);
 }

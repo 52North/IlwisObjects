@@ -28,11 +28,11 @@ namespace Stream {
 class WorkflowSerializerV1 : public OperationMetadataSerializerV1
 {
 public:
-    WorkflowSerializerV1(QDataStream& stream);
+    WorkflowSerializerV1(QDataStream& stream, const QString &version);
 
     bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & );
-    static VersionedSerializer *create(QDataStream &stream);
+    static VersionedSerializer *create(QDataStream &stream, const QString &version);
 private:
     bool storeNode(const Ilwis::SPWorkFlowNode &node, const IOOptions &options=IOOptions());
     bool loadNode(Ilwis::SPWorkFlowNode &node, Workflow *workflow, const IOOptions &options=IOOptions());

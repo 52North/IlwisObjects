@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-GeorefSerializerV1::GeorefSerializerV1(QDataStream& stream) : VersionedSerializer(stream)
+GeorefSerializerV1::GeorefSerializerV1(QDataStream& stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 
@@ -54,7 +54,7 @@ bool GeorefSerializerV1::store(IlwisObject *obj, const IOOptions &options)
         return false;
 
     GeoReference *grf = static_cast<GeoReference *>(obj);
-    std::unique_ptr<DataInterface> csyStreamer(factory->create(Version::interfaceVersion, itCOORDSYSTEM,_stream));
+    std::unique_ptr<DataInterface> csyStreamer(factory->create(Version::interfaceVersion41, itCOORDSYSTEM,_stream));
     if ( !csyStreamer)
         return false;
     csyStreamer->store(grf->coordinateSystem().ptr(),options);
@@ -164,7 +164,7 @@ bool GeorefSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
 
 }
 
-VersionedSerializer *GeorefSerializerV1::create(QDataStream &stream)
+VersionedSerializer *GeorefSerializerV1::create(QDataStream &stream, const QString &version)
 {
-    return new GeorefSerializerV1(stream);
+    return new GeorefSerializerV1(stream, version);
 }

@@ -24,7 +24,7 @@ namespace Stream {
 class CoverageSerializerV1 : public VersionedSerializer
 {
 public:
-    CoverageSerializerV1(QDataStream &stream);
+    CoverageSerializerV1(QDataStream &stream, const QString &version);
 
     bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & options);

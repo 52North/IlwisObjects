@@ -28,7 +28,7 @@ class RawConverter;
 class VersionedSerializer : public DataInterface
 {
 public:
-    VersionedSerializer(QDataStream &stream);
+    VersionedSerializer(QDataStream &stream, const QString &version);
 
     virtual ~VersionedSerializer();
 
@@ -46,6 +46,7 @@ protected:
     QDataStream& _stream;
     StreamConnector *_streamconnector = 0;
     bool _dataLoaded = false;
+	QString _version;
 
     bool storeDataDefintion(const DataDefinition& def, QDataStream& stream,  const IOOptions& options = IOOptions()) const;
     bool loadDataDefinition(DataDefinition& def, QDataStream& stream, const Ilwis::IOOptions &options);

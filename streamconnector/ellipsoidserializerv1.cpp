@@ -27,12 +27,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *EllipsoidSerializerV1::create(QDataStream& stream)
+VersionedSerializer *EllipsoidSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new EllipsoidSerializerV1(stream);
+    return new EllipsoidSerializerV1(stream, version);
 }
 
-EllipsoidSerializerV1::EllipsoidSerializerV1(QDataStream& stream) : VersionedSerializer(stream)
+EllipsoidSerializerV1::EllipsoidSerializerV1(QDataStream& stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 

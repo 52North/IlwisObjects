@@ -22,13 +22,13 @@ namespace Stream {
 class CatalogserializerV1 : public VersionedSerializer
 {
 public:
-    CatalogserializerV1(QDataStream &stream) ;
+    CatalogserializerV1(QDataStream &stream, const QString &version) ;
 
     bool store(IlwisObject *obj, const Ilwis::IOOptions &options= IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & options);
     bool loadData(IlwisObject*, const IOOptions& options = IOOptions()) { return true; }
     bool loadItems(std::vector<Resource> &items);
-    static VersionedSerializer *create(QDataStream &stream);
+    static VersionedSerializer *create(QDataStream &stream, const QString &version);
 private:
     void adaptProperyResource(const QString& baseUrl, Resource& resource, const QString &propertyName) const;
     void adaptResource(const QString &baseUrl, Resource &resource) const;

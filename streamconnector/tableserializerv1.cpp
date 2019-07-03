@@ -34,12 +34,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *TableSerializerV1::create(QDataStream& stream)
+VersionedSerializer *TableSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new TableSerializerV1(stream);
+    return new TableSerializerV1(stream, version);
 }
 
-TableSerializerV1::TableSerializerV1(QDataStream& stream) : VersionedSerializer(stream)
+TableSerializerV1::TableSerializerV1(QDataStream& stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 
@@ -58,7 +58,7 @@ bool TableSerializerV1::store(IlwisObject *obj, const IOOptions &options)
         _stream << coldef.name();
         _stream << coldef.datadef().domain()->valueType();
 
-        std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion, itDOMAIN,_stream));
+        std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN,_stream));
         if ( !domainStreamer)
             return false;
         storeSystemPath(coldef.datadef().domain()->resource());
@@ -74,7 +74,7 @@ bool TableSerializerV1::storeData(IlwisObject *obj, const IOOptions &options ){
     qint64 pos = _stream.device()->pos();
     _stream << pos + sizeof(qint64);
     _stream << itTABLE;
-    _stream << Version::interfaceVersion;
+    _stream << Version::interfaceVersion40;
     Table *tbl = static_cast<Table *>(obj);
 
     std::vector<IlwisTypes> types;

@@ -23,11 +23,11 @@ namespace Stream {
 class DomainSerializerV1 : public VersionedSerializer
 {
 public:
-    DomainSerializerV1(QDataStream& stream);
+    DomainSerializerV1(QDataStream& stream, const QString &version);
 
     bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & );
-    static VersionedSerializer *create(QDataStream &stream);
+    static VersionedSerializer *create(QDataStream &stream, const QString &version);
 };
 }
 }

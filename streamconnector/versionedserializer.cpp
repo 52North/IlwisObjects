@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer::VersionedSerializer(QDataStream& stream) : _stream(stream)
+VersionedSerializer::VersionedSerializer(QDataStream& stream, const QString &version) : _stream(stream), _version(version)
 {
 }
 
@@ -104,6 +104,17 @@ bool VersionedSerializer::loadMetaData(IlwisObject *obj, const IOOptions &)
     if (!skip)
         obj->createTime(time);
 
+	if (_version != Version::interfaceVersion40) {
+		quint32 nrMetaItem;
+		_stream >> nrMetaItem;
+		for (int i = 0; i < nrMetaItem; ++i) {
+			QString tag, value;
+			_stream >> tag;
+			_stream >> value;
+			obj->resourceRef().addMetaTag(tag, value);
+		}
+	}
+
     return true;
 
 }
@@ -120,7 +131,14 @@ bool VersionedSerializer::store(IlwisObject *obj, const IOOptions &options)
 		if ( pid != obj->id())
 			nm += "_" + options["parentid"].toString();
 	}*/
-    _stream <<  obj->ilwisType() << Version::interfaceVersion << obj->extendedType() << nm << obj->code() << obj->description() << obj->isReadOnly()  << mtime << ctime;
+    _stream <<  obj->ilwisType() << Version::interfaceVersion41 << obj->extendedType() << nm << obj->code() << obj->description() << obj->isReadOnly()  << mtime << ctime;
+	auto metadata = res.metadata();
+	quint32 sz = metadata.size();
+	_stream << sz;
+	for (auto item : metadata) {
+		_stream << item.first;
+		_stream << item.second;
+	}
 
 	return true;
 }
@@ -136,7 +154,7 @@ bool VersionedSerializer::storeDataDefintion(const DataDefinition &def, QDataStr
     VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
     if (!factory)
         return false;
-    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion, itDOMAIN,_stream));
+    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN,_stream));
     if ( !domainStreamer)
         return false;
     _stream << def.domain()->valueType();
@@ -194,7 +212,7 @@ bool VersionedSerializer::store(const QString& v, IlwisTypes valueType,const IOO
         _stream << storeall;
         if ( storeall){
             VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
-            std::unique_ptr<DataInterface>  streamer(factory->create(Version::interfaceVersion, valueType,_stream));
+            std::unique_ptr<DataInterface>  streamer(factory->create(Version::interfaceVersion41, valueType,_stream));
             if ( !streamer)
                 return false;
             IIlwisObject obj;
@@ -217,7 +235,7 @@ bool VersionedSerializer::loadMetaData(const Ilwis::IOOptions &options, IlwisTyp
         _stream >> storeall;
         if ( storeall){
             VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
-            std::unique_ptr<DataInterface>  streamer(factory->create(Version::interfaceVersion, tp,_stream));
+            std::unique_ptr<DataInterface>  streamer(factory->create(Version::interfaceVersion41, tp,_stream));
             if ( !streamer)
                 return false;
             IIlwisObject obj ;// TODO : this wwont work :)

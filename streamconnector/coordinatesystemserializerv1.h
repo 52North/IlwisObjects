@@ -22,11 +22,11 @@ namespace Stream {
 class CoordinateSystemSerializerV1 : public VersionedSerializer
 {
 public:
-    CoordinateSystemSerializerV1(QDataStream& stream);
+    CoordinateSystemSerializerV1(QDataStream& stream, const QString &version);
 
     bool store(IlwisObject *obj,const IOOptions& options = IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & options);
-    static VersionedSerializer *create(QDataStream &stream);
+    static VersionedSerializer *create(QDataStream &stream, const QString &version);
 };
 }
 }

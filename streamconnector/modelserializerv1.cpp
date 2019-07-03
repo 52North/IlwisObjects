@@ -37,12 +37,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *ModelSerializerV1::create(QDataStream& stream)
+VersionedSerializer *ModelSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new ModelSerializerV1(stream);
+    return new ModelSerializerV1(stream, version);
 }
 
-ModelSerializerV1::ModelSerializerV1(QDataStream& stream) : VersionedSerializer(stream)
+ModelSerializerV1::ModelSerializerV1(QDataStream& stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 
@@ -56,7 +56,7 @@ bool ModelSerializerV1::store(IlwisObject *obj,const IOOptions& options)
     if (!factory)
         return false;
 
-    std::unique_ptr<DataInterface> wfstreamer(factory->create(Version::interfaceVersion, itMODEL,_stream));
+    std::unique_ptr<DataInterface> wfstreamer(factory->create(Version::interfaceVersion41, itMODEL,_stream));
     if ( !wfstreamer)
         return false;
 
@@ -88,7 +88,7 @@ bool ModelSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options)
     if (!factory)
         return false;
 
-    std::unique_ptr<DataInterface> wfstreamer(factory->create(Version::interfaceVersion, itMODEL,_stream));
+    std::unique_ptr<DataInterface> wfstreamer(factory->create(_version, itMODEL,_stream));
     if ( !wfstreamer)
         return false;
 

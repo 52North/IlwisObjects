@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-RasterSerializerV1::RasterSerializerV1(QDataStream& stream) : CoverageSerializerV1(stream)
+RasterSerializerV1::RasterSerializerV1(QDataStream& stream, const QString &version) : CoverageSerializerV1(stream, version)
 {
 }
 
@@ -100,7 +100,7 @@ template<typename T> void loadBulk(std::vector<T>& rawdata, std::vector<PIXVALUE
 
         for(int i = 0; i < blockCount; ++i){
 
-            int n = stream.readRawData((char *)&rawdata[0],blockSize * sizeof(T) );
+            stream.readRawData((char *)&rawdata[0],blockSize * sizeof(T) );
 
             if (realdata.size() != blockSize )
                 realdata.resize(blockSize);
@@ -168,7 +168,7 @@ bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &opt)
 
     }
 
-    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion, itDOMAIN,_stream));
+    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN,_stream));
     if ( !domainStreamer)
         return false;
     auto vtype = raster->stackDefinition().domain()->valueType();
@@ -181,7 +181,7 @@ bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &opt)
     for(auto index : indexes)
         _stream << index;
 
-    std::unique_ptr<DataInterface> grfstreamer(factory->create(Version::interfaceVersion, itGEOREF,_stream));
+    std::unique_ptr<DataInterface> grfstreamer(factory->create(Version::interfaceVersion41, itGEOREF,_stream));
     if ( !grfstreamer)
         return false;
 
@@ -190,7 +190,7 @@ bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &opt)
         return false;
     _stream << raster->hasAttributes();
     if ( raster->hasAttributes()){
-        std::unique_ptr<DataInterface> tblstreamer(factory->create(Version::interfaceVersion, itTABLE,_stream));
+        std::unique_ptr<DataInterface> tblstreamer(factory->create(Version::interfaceVersion41, itTABLE,_stream));
         if ( !tblstreamer)
             return false;
 
@@ -210,7 +210,7 @@ bool RasterSerializerV1::storeData(IlwisObject *obj, const IOOptions &options )
     qint64 pos = _stream.device()->pos();
     _stream << pos + sizeof(qint64);
     _stream << itRASTER;
-    _stream << Version::interfaceVersion;
+    _stream << Version::interfaceVersion40;
     RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
     RawConverter converter;
     if ( hasType(raster->datadef().domain()->ilwisType() , itNUMERICDOMAIN)){
@@ -301,7 +301,7 @@ bool RasterSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
     _stream >> type;
     _stream >> version;
 
-    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion, itDOMAIN,_stream));
+    std::unique_ptr<DataInterface> domainStreamer(factory->create(version, itDOMAIN,_stream));
     if ( !domainStreamer)
         return false;
 
@@ -446,7 +446,7 @@ bool RasterSerializerV1::loadData(IlwisObject *data, const IOOptions &options)
 }
 
 
-VersionedSerializer *RasterSerializerV1::create(QDataStream &stream)
+VersionedSerializer *RasterSerializerV1::create(QDataStream &stream, const QString &version)
 {
-    return new RasterSerializerV1(stream);
+    return new RasterSerializerV1(stream, version);
 }

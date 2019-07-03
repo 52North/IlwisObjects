@@ -25,14 +25,14 @@ namespace Stream {
 class RasterSerializerV1 : public CoverageSerializerV1
 {
 public:
-    RasterSerializerV1(QDataStream& stream);
+    RasterSerializerV1(QDataStream& stream, const QString &version);
 
     bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
     bool storeData(IlwisObject *obj, const IOOptions& options = IOOptions()) override ;
     bool loadMetaData(IlwisObject*obj, const IOOptions & options);
     bool loadData(IlwisObject *data, const IOOptions &options);
 //    quint32 loadGridBlock(IlwisObject *data, quint32 block, QByteArray& blockdata, const RawConverter& converter, const IOOptions &options);
-    static VersionedSerializer *create(QDataStream &stream);
+    static VersionedSerializer *create(QDataStream &stream, const QString &version);
 
 private:
 

@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 namespace Stream {
 
-typedef std::function<VersionedSerializer *(QDataStream&)> CreateStreamIO;
+typedef std::function<VersionedSerializer *(QDataStream&, const QString &)> CreateStreamIO;
 
 struct StreamerKey {
     StreamerKey(const QString& version, IlwisTypes tp) : _version(version) {
@@ -42,7 +42,7 @@ public:
     VersionedDataStreamFactory();
 
     static VersionedSerializer* create(const QString& version, IlwisTypes tp, QDataStream &stream);
-    static void addCreator(const StreamerKey& key, CreateStreamIO streamer);
+    static void addCreator(const QString& keys, IlwisTypes tp,CreateStreamIO streamer);
 
 private:
     static std::map<StreamerKey, CreateStreamIO, LessStreamKey> _dataStreamers;

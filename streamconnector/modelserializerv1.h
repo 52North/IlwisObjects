@@ -23,12 +23,12 @@ namespace Stream {
 class ModelSerializerV1 : public VersionedSerializer
 {
 public:
-    ModelSerializerV1(QDataStream &stream) ;
+    ModelSerializerV1(QDataStream &stream, const QString &version) ;
 
     bool store(IlwisObject *obj, const Ilwis::IOOptions &options= IOOptions());
     bool loadMetaData(IlwisObject*obj, const IOOptions & options);
     bool loadData(IlwisObject *data, const IOOptions &options);
-    static VersionedSerializer *create(QDataStream &stream);
+    static VersionedSerializer *create(QDataStream &stream, const QString &version);
 };
 }
 }

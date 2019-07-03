@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
+#include "version.h"
 #include "connectorinterface.h"
 #include "abstractfactory.h"
 #include "ilwisobjectfactory.h"
@@ -87,20 +88,21 @@ void StreamModule::prepare()
     VersionedDataStreamFactory *versionFactory = new VersionedDataStreamFactory();
     kernel()->addFactory(versionFactory);
 
-    versionFactory->addCreator({"iv40",itFEATURE},FeatureSerializerV1::create);
-    versionFactory->addCreator({"iv40",itDOMAIN},DomainSerializerV1::create);
-    versionFactory->addCreator({"iv40",itTABLE},TableSerializerV1::create);
-    versionFactory->addCreator({"iv40",itCOORDSYSTEM},CoordinateSystemSerializerV1::create);
-    versionFactory->addCreator({"iv40",itELLIPSOID},EllipsoidSerializerV1::create);
-    versionFactory->addCreator({"iv40",itPROJECTION},ProjectionSerializerV1::create);
-    versionFactory->addCreator({"iv40",itGEOREF},GeorefSerializerV1::create);
-    versionFactory->addCreator({"iv40",itRASTER},RasterSerializerV1::create);
-    versionFactory->addCreator({"iv40",itCATALOG},CatalogserializerV1::create);
-    versionFactory->addCreator({"iv40",itSINGLEOPERATION},OperationMetadataSerializerV1::create);
-    versionFactory->addCreator({"iv40",itWORKFLOW},WorkflowSerializerV1::create);
-    versionFactory->addCreator({"iv40",itSCRIPT},ScriptSerializerV1::create);
-    versionFactory->addCreator({"iv40",itMODEL},ModelSerializerV1::create);
-    versionFactory->addCreator({"iv40",itCOMBINATIONMATRIX},CombinationMatrixSerializerv1::create);
+	QString supportedVersions = Version::interfaceVersion40 + '|' + Version::interfaceVersion41;
+    versionFactory->addCreator(supportedVersions,itFEATURE,FeatureSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itDOMAIN,DomainSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itTABLE,TableSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itCOORDSYSTEM,CoordinateSystemSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itELLIPSOID,EllipsoidSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itPROJECTION,ProjectionSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itGEOREF,GeorefSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itRASTER,RasterSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itCATALOG,CatalogserializerV1::create);
+    versionFactory->addCreator(supportedVersions,itSINGLEOPERATION,OperationMetadataSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itWORKFLOW,WorkflowSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itSCRIPT,ScriptSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itMODEL,ModelSerializerV1::create);
+    versionFactory->addCreator(supportedVersions,itCOMBINATIONMATRIX,CombinationMatrixSerializerv1::create);
 
 
     ConnectorFactory *cfactory = kernel()->factory<ConnectorFactory>("ilwis::ConnectorFactory");

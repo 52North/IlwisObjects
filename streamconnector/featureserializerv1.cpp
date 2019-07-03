@@ -31,12 +31,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *FeatureSerializerV1::create(QDataStream& stream)
+VersionedSerializer *FeatureSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new FeatureSerializerV1(stream);
+    return new FeatureSerializerV1(stream, version);
 }
 
-FeatureSerializerV1::FeatureSerializerV1(QDataStream &stream) : CoverageSerializerV1(stream)
+FeatureSerializerV1::FeatureSerializerV1(QDataStream &stream, const QString &version) : CoverageSerializerV1(stream, version)
 {
 }
 
@@ -66,7 +66,7 @@ bool FeatureSerializerV1::store(IlwisObject *obj, const IOOptions &options)
         _stream << coldef.name();
         _stream << coldef.datadef().domain()->valueType();
 
-        std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion, itDOMAIN,_stream));
+        std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN,_stream));
         if ( !domainStreamer)
             return false;
         storeSystemPath(coldef.datadef().domain()->resource());
@@ -76,7 +76,7 @@ bool FeatureSerializerV1::store(IlwisObject *obj, const IOOptions &options)
     }
 
     if (fcoverage->attributeDefinitions().domain().isValid()){
-        std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion, itDOMAIN,_stream));
+        std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN,_stream));
         if ( !domainStreamer)
             return false;
          _stream << fcoverage->attributeDefinitions().domain()->valueType();
@@ -91,7 +91,7 @@ bool FeatureSerializerV1::store(IlwisObject *obj, const IOOptions &options)
         _stream << itUNKNOWN;
         _stream << QString(sUNDEF);
         _stream << itUNKNOWN;
-        _stream << Version::interfaceVersion;
+        _stream << Version::interfaceVersion40;
     }
 
 
@@ -100,7 +100,7 @@ bool FeatureSerializerV1::store(IlwisObject *obj, const IOOptions &options)
 bool FeatureSerializerV1::storeData(IlwisObject *obj, const IOOptions& options){
     FeatureCoverage *fcoverage = static_cast<FeatureCoverage *>(obj);
     _stream << itFEATURE;
-    _stream << Version::interfaceVersion;
+    _stream << Version::interfaceVersion40;
     _stream << fcoverage->featureCount();
     for(const SPFeatureI& feature : fcoverage){
         feature->store(fcoverage->attributeDefinitions(),_stream, options);

@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-CoverageSerializerV1::CoverageSerializerV1(QDataStream &stream) : VersionedSerializer(stream){
+CoverageSerializerV1::CoverageSerializerV1(QDataStream &stream, const QString &version) : VersionedSerializer(stream, version){
 
 }
 
@@ -46,7 +46,7 @@ bool CoverageSerializerV1::store(IlwisObject *obj, const IOOptions &options)
     VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
     if (!factory)
         return false;
-    std::unique_ptr<DataInterface> csyStreamer(factory->create(Version::interfaceVersion, itCOORDSYSTEM,_stream));
+    std::unique_ptr<DataInterface> csyStreamer(factory->create(Version::interfaceVersion41, itCOORDSYSTEM,_stream));
     if ( !csyStreamer)
         return false;
     Coverage *coverage = static_cast<Coverage *>(obj);

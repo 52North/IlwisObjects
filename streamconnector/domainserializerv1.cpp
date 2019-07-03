@@ -25,12 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *DomainSerializerV1::create(QDataStream& stream)
+VersionedSerializer *DomainSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new DomainSerializerV1(stream);
+    return new DomainSerializerV1(stream, version);
 }
 
-DomainSerializerV1::DomainSerializerV1(QDataStream &stream) : VersionedSerializer(stream)
+DomainSerializerV1::DomainSerializerV1(QDataStream &stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 

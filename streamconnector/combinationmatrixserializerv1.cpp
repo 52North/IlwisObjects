@@ -31,12 +31,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *CombinationMatrixSerializerv1::create(QDataStream& stream)
+VersionedSerializer *CombinationMatrixSerializerv1::create(QDataStream& stream,const QString &version)
 {
-    return new CombinationMatrixSerializerv1(stream);
+    return new CombinationMatrixSerializerv1(stream, version);
 }
 
-CombinationMatrixSerializerv1::CombinationMatrixSerializerv1(QDataStream& stream) : VersionedSerializer(stream)
+CombinationMatrixSerializerv1::CombinationMatrixSerializerv1(QDataStream& stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 
@@ -50,7 +50,7 @@ bool CombinationMatrixSerializerv1::store(IlwisObject *obj,const IOOptions& opti
     if (!factory)
         return false;
 
-    std::unique_ptr<DataInterface> combostreamer(factory->create(Version::interfaceVersion, itCOMBINATIONMATRIX,_stream));
+    std::unique_ptr<DataInterface> combostreamer(factory->create(Version::interfaceVersion41, itCOMBINATIONMATRIX,_stream));
     if ( !combostreamer)
         return false;
 
@@ -88,9 +88,9 @@ bool CombinationMatrixSerializerv1::loadMetaData(IlwisObject *obj, const IOOptio
 {
     if (!VersionedSerializer::loadMetaData(obj, options))
         return false;
-    VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
+    /*VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
     if (!factory)
-        return false;
+        return false;*/
 
     CombinationMatrix *matrix = static_cast<CombinationMatrix *>(obj);
     DataDefinition xAxis, yAxis, combos;

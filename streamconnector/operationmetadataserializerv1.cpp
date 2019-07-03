@@ -25,12 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *OperationMetadataSerializerV1::create(QDataStream& stream)
+VersionedSerializer *OperationMetadataSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new OperationMetadataSerializerV1(stream);
+    return new OperationMetadataSerializerV1(stream, version);
 }
 
-OperationMetadataSerializerV1::OperationMetadataSerializerV1(QDataStream &stream) : VersionedSerializer(stream)
+OperationMetadataSerializerV1::OperationMetadataSerializerV1(QDataStream &stream, const QString &version) : VersionedSerializer(stream, version)
 {
 }
 

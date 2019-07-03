@@ -52,15 +52,19 @@ VersionedSerializer *VersionedDataStreamFactory::create(const QString &version,I
 
     auto iter =  _dataStreamers.find(key);
     if ( iter != _dataStreamers.end())
-        return ((*iter).second)(stream);
+        return ((*iter).second)(stream, version);
     return 0;
 }
 
-void VersionedDataStreamFactory::addCreator(const StreamerKey &key, CreateStreamIO streamer)
+void VersionedDataStreamFactory::addCreator(const QString &keys, IlwisTypes tp, CreateStreamIO streamer)
 {
-   auto iter =  _dataStreamers.find(key);
-   if ( iter == _dataStreamers.end())
-       _dataStreamers[key] = streamer;
+	QStringList parts = keys.split("|");
+	for (auto key : parts) {
+		StreamerKey sk(key, tp);
+		auto iter = _dataStreamers.find(sk);
+		if (iter == _dataStreamers.end())
+			_dataStreamers[sk] = streamer;
+	}
 }
 
 

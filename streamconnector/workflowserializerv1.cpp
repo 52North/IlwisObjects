@@ -41,12 +41,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Stream;
 
-VersionedSerializer *WorkflowSerializerV1::create(QDataStream& stream)
+VersionedSerializer *WorkflowSerializerV1::create(QDataStream& stream, const QString &version)
 {
-    return new WorkflowSerializerV1(stream);
+    return new WorkflowSerializerV1(stream, version);
 }
 
-WorkflowSerializerV1::WorkflowSerializerV1(QDataStream &stream) : OperationMetadataSerializerV1(stream)
+WorkflowSerializerV1::WorkflowSerializerV1(QDataStream &stream, const QString &version) : OperationMetadataSerializerV1(stream, version)
 {
 }
 
