@@ -63,9 +63,38 @@ OperationExpression OperationImplementation::expression() const
 void OperationImplementation::logOperation(const IIlwisObject &obj, const OperationExpression &expr)
 {
     if (obj.isValid()){
-		obj->resourceRef().addProperty("metadata.lineage.expression", expr.toPythonExpression());
-		obj->resourceRef().addProperty("metadata.lineage.creation", obj->createTime().toString());
+		obj->resourceRef().addMetaTag("lineage.0.expression", expr.toPythonExpression());
+		obj->resourceRef().addMetaTag("lineage.0.creation", obj->createTime().toString());
     }
+}
+
+void OperationImplementation::logOperation(const IIlwisObject &obj, const OperationExpression &expr, const std::vector<IIlwisObject>& inputobjects)
+{
+	if (obj.isValid()) {
+		int count = 0;
+		for (auto iobj : inputobjects) {
+			if (iobj.isValid()) {
+				auto tags =iobj->resourceRef().metadata("lineage.");
+				for (auto item : tags) {
+					if (item.first.indexOf("lineage.") == -1)
+						continue;
+					QString tag;
+					if (item.first.indexOf(".expression") > 0) {
+						tag = QString("lineage.%1.expression").arg(count++); // due to the sorting order, expression will end up after creation; so we up the count here
+					}
+					else {
+						if (item.first.indexOf(".creation") > 0) {
+							tag = QString("lineage.%1.creation").arg(count);
+						}
+					}
+					if (tag != "")
+						obj->resourceRef().addMetaTag(tag,item.second);
+				}
+			}
+		}
+		obj->resourceRef().addMetaTag(QString("lineage.%1.expression").arg(count), expr.toPythonExpression());
+		obj->resourceRef().addMetaTag(QString("lineage.%1.creation").arg(count), obj->createTime().toString());
+	}
 }
 
 void OperationImplementation::logOperation(const OperationExpression &expr)
