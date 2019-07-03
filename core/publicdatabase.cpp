@@ -250,6 +250,9 @@ void PublicDatabase::loadAdjustments() {
 			int ism;
 			stream >> property >> value >> ilwisType >> objUrl >> ism;
 
+			if (value.indexOf("'") > 0) {
+				value.replace("'", "''");
+			}
 			QString stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
 				.arg(property)
 				.arg(objUrl)
