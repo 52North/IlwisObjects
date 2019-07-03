@@ -47,6 +47,7 @@ bool AddRasterBand::execute(ExecutionContext *ctx, SymbolTable& symTable)
         _inputRaster->band(rUNDEF, bandIter);
 
     ctx->_additionalInfo["outputisinput"] = true;
+	logOperation(_inputRaster, _expression, { _band });
     setOutput(_inputRaster, ctx, symTable);
 
     return true;

@@ -69,7 +69,7 @@ bool BinaryMathFeature::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     QVariant value;
     value.setValue<IFeatureCoverage>(_outputFeatures);
-    _outputFeatures->addDescription(_expression.toString());
+	logOperation(_outputFeatures, _expression, { _inputFeatureSet1, _inputFeatureSet2 });
     ctx->setOutput(symTable,value,_outputFeatures->name(),itFEATURE,_outputFeatures->resource());
 
     return true;

@@ -38,7 +38,7 @@ namespace Ilwis {
 			IRasterCoverage _outputRaster;
 			IGeoReference _inputGrf;
 
-			NEW_OPERATION(SetGeoreference)
+			//NEW_OPERATION(SetGeoreference)
 		};
 	}
 }

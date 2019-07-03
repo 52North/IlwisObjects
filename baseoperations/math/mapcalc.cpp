@@ -93,10 +93,23 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
     QVariant value;
     value.setValue<IRasterCoverage>(_outputRaster);
-    logOperation(_outputRaster, _expression);
+	logOperation(_outputRaster, _expression, rasters());
     ctx->setOutput(symTable,value,_outputRaster->name(), itRASTER,_outputRaster->resource() );
 
     return true;
+}
+
+std::vector<IIlwisObject> MapCalc::rasters() const {
+	std::vector<IIlwisObject> result;
+	std::map<quint64, IRasterCoverage> maps;
+	for (auto inpRaster : _inputRasters) {
+		maps[inpRaster.second.raster()->id()] = inpRaster.second.raster();
+	}
+	for (auto item : maps) {
+		result.push_back(item.second);
+	}
+	return result;
+
 }
 
 bool MapCalc::check(int index) const {

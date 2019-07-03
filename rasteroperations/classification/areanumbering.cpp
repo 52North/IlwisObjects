@@ -93,7 +93,7 @@ bool AreaNumbering::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
     QVariant value;
     value.setValue<IRasterCoverage>(outputRaster);
-    logOperation(outputRaster,_expression);
+	logOperation(outputRaster, _expression, { _inputObj });
     ctx->setOutput(symTable,value,outputRaster->name(), itRASTER, outputRaster->resource() );
     return res;
 }

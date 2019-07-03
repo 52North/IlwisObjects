@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace BaseOperations;
 
-REGISTER_OPERATION(SetGeoreference)
+//REGISTER_OPERATION(SetGeoreference)
 
 SetGeoreference::SetGeoreference()
 {

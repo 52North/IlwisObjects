@@ -83,6 +83,7 @@ bool BinaryMathTable::execute(ExecutionContext *ctx, SymbolTable &symTable)
         QVariant var;
         var.setValue<ITable>(_outputTable);
         _outputTable->addDescription(_expression.toString());
+		logOperation(_outputTable, _expression, { _inputTable });
         ctx->setOutput(symTable,var, _outputTable->name(),itCOLUMN,_outputTable->resource(),_outColumn);
         return true;
     }

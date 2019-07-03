@@ -86,7 +86,7 @@ bool Ilwis::BaseOperations::CreateProjectedCoordinateSystem::execute(ExecutionCo
 
     QVariant value;
     value.setValue<ICoordinateSystem>(csy);
-    logOperation(csy, _expression);
+	logOperation(csy, _expression, { _ellipsoid, _projection });
     ctx->setOutput(symTable,value,csy->name(),itCOORDSYSTEM,csy->resource());
     return true;
 }

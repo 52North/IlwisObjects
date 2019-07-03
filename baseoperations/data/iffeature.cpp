@@ -69,10 +69,10 @@ bool IfFeature::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     bool resource = OperationHelperFeatures::execute(ctx, iffunc, _inputFC, _outputFC);
 
-    if ( resource && ctx != 0) {
-        QVariant value;
-        value.setValue<IFeatureCoverage>(_outputFC);
-       logOperation(_outputFC, _expression);
+	if (resource && ctx != 0) {
+		QVariant value;
+		value.setValue<IFeatureCoverage>(_outputFC);
+		logOperation(_outputFC, _expression, { _inputFC });
         ctx->setOutput(symTable,value,_outputFC->name(),itFEATURE,_outputFC->resource());
     }
     return true;

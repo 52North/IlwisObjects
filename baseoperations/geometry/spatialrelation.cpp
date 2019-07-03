@@ -168,6 +168,7 @@ bool SpatialRelationOperation::execute(ExecutionContext *ctx, SymbolTable &symTa
         }
 
     }
+	logOperation(_outputFeatures, _expression, { _inputFeatures });
     setOutput(_outputFeatures, ctx, symTable);
 
     return true;

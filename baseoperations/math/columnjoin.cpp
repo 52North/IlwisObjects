@@ -118,7 +118,7 @@ bool ColumnJoin::execute(ExecutionContext *ctx, SymbolTable &symTable)
         }
         ++record;
     }
-
+	logOperation(_outputTable, _expression, { _baseTable, _foreignTable, _inputCoverage });
     setOutput(_outputTable, ctx, symTable);
     return true;
 }

@@ -184,7 +184,7 @@ bool AggregateTable::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     QVariant value;
     value.setValue<ITable>(_outputTable);
-    logOperation(_outputTable, _expression);
+	logOperation(_outputTable, _expression, { _inputTable });
     ctx->setOutput(symTable,value,_outputTable->name(), itTABLE, _outputTable->resource() );
 
     return true;

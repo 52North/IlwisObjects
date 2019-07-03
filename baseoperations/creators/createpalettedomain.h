@@ -37,7 +37,6 @@ public:
 
 private:
     IDomain _parentdomain;
-    IDomain _targetdomain;
     QStringList _items;
     bool _strict;
     QString _domaindesc;

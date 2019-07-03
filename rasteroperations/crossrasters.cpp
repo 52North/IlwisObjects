@@ -249,6 +249,7 @@ bool CrossRastersBase::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ( _outputRaster.isValid()) {
             QVariant outraster;
             outraster.setValue<IRasterCoverage>(_outputRaster);
+			logOperation(_outputRaster, _expression, { _inputRaster1, _inputRaster2 });
             ctx->addOutput(symTable,outraster,_outputRaster->name(), itRASTER, _outputRaster->resource() );
         }
     }

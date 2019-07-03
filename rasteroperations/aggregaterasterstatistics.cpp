@@ -177,7 +177,7 @@ bool AggregateRasterStatistics::execute(ExecutionContext *ctx, SymbolTable& symT
 
 	QVariant value;
 	value.setValue<IRasterCoverage>(_outputRaster);
-	logOperation(_outputRaster, _expression);
+	logOperation(_outputRaster, _expression, {_inputRaster});
 	ctx->setOutput(symTable, value, _outputRaster->name(), itRASTER, _outputRaster->resource());
 
 	return true;

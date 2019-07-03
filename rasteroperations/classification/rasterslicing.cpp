@@ -94,7 +94,7 @@ bool RasterSlicing::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     QVariant value;
     value.setValue<IRasterCoverage>(_outputRaster);
-    logOperation(_outputRaster,_expression);
+	logOperation(_outputRaster, _expression, {_inputRaster, _numericItems});
     ctx->setOutput(symTable,value,_outputRaster->name(), itRASTER, _outputRaster->resource() );
 
 

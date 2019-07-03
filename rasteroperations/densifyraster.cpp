@@ -83,10 +83,10 @@ bool DensifyRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
     bool resource = OperationHelperRaster::execute(ctx, densifyFun, _outputRaster);
 
-    if ( resource && ctx != 0) {
-        QVariant value;
-        value.setValue<IRasterCoverage>(_outputRaster);
-        logOperation(_outputRaster,_expression);
+	if (resource && ctx != 0) {
+		QVariant value;
+		value.setValue<IRasterCoverage>(_outputRaster);
+		logOperation(_outputRaster, _expression, {_inputRaster});
         ctx->setOutput(symTable,value,_outputRaster->name(), itRASTER, _outputRaster->resource() );
     }
     return resource;

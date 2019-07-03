@@ -75,7 +75,7 @@ bool Gridding::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     QVariant value;
     value.setValue<IFeatureCoverage>(_outfeatures);
-    logOperation(_outfeatures, _expression);
+	logOperation(_outfeatures, _expression, {_csy});
     ctx->setOutput(symTable, value, _outfeatures->name(), itFEATURE,_outfeatures->resource());
     return true;
 }

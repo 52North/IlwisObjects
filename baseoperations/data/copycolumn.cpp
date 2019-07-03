@@ -79,7 +79,7 @@ bool CopyColumn::execute(ExecutionContext *ctx, SymbolTable &symTable)
             _outputTable->setCell(colIndex, i,colvaluesIn[i]);
           }
     }
-
+	logOperation(_outputTable, _expression, { _inputTable });
     setOutput(_outputTable,ctx, symTable);
 
     return true;

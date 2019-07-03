@@ -179,7 +179,7 @@ bool ConvertColumnDomain::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
        QVariant value;
        value.setValue<ITable>(outputTable);
-       logOperation(outputTable, _expression);
+	   logOperation(outputTable, _expression, { _inputTable });
        ctx->setOutput(symTable, value, outputTable->name(),itTABLE,outputTable->resource());
     }
 

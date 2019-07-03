@@ -44,7 +44,7 @@ bool BinaryLogical::setOutput(ExecutionContext *ctx, SymbolTable& symTable) {
     if ( ctx) {
         QVariant value;
         value.setValue<IRasterCoverage>(_outputGC);
-        _outputGC->addDescription(_expression.toString());
+		logOperation(_outputGC, _expression, { _inputGC1,_inputGC2 });
         ctx->setOutput(symTable,value,_outputGC->name(), itRASTER, _outputGC->resource() );
     }
     return _outputGC.isValid();
@@ -67,7 +67,6 @@ bool BinaryLogical::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& sy
     ctx->_threaded = false;
     if (!OperationHelperRaster::execute(ctx, BinaryLogical, _outputGC))
         return false;
-
     return setOutput(ctx, symTable);
 }
 

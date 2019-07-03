@@ -93,7 +93,7 @@ bool Buffer::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
     QVariant value;
     value.setValue<IFeatureCoverage>(_outputFeatures);
-    logOperation(_outputFeatures, _expression);
+	logOperation(_outputFeatures, _expression, { _inputFeatures });
     ctx->setOutput(symTable, value, _outputFeatures->name(), itFEATURE, _outputFeatures->resource());
 
 

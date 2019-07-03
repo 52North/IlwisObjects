@@ -39,6 +39,7 @@ private:
     void fillValues(int pindex, const QString &part, ParmValue &val);
     DataDefinition datadef(int index);
     bool check(int index) const;
+	std::vector<IIlwisObject> rasters() const;
 };
 
 class MapCalc1 : public MapCalc{

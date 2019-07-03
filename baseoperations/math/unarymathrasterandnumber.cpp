@@ -69,6 +69,7 @@ bool UnaryMathRasterAndNumber::execute(ExecutionContext *ctx, SymbolTable& symTa
             QVariant value;
             value.setValue<IRasterCoverage>(_outputGC);
              _outputGC->addDescription(_expression.toString());
+			 logOperation(_outputGC, _expression, { _inputGC });
             ctx->setOutput(symTable,value,_outputGC->name(), itRASTER,_outputGC->resource() );
         }
     } else if (_case == otNUMBER) {

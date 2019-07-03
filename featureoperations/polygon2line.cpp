@@ -100,7 +100,7 @@ bool Polygon2Line::execute(ExecutionContext *ctx, SymbolTable &symTable)
     }
     QVariant value;
     value.setValue<IFeatureCoverage>(_outputfeatures);
-    logOperation(_outputfeatures, _expression);
+	logOperation(_outputfeatures, _expression, {_inputfeatures});
     ctx->setOutput(symTable, value, _outputfeatures->name(), itFEATURE,_outputfeatures->resource());
 
     return true;

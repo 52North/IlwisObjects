@@ -162,7 +162,7 @@ bool MannKendallSignificanceTest::execute(ExecutionContext *ctx, SymbolTable &sy
 
 	QVariant value;
 	value.setValue<IRasterCoverage>(_outputRaster);
-	logOperation(_outputRaster, _expression);
+	logOperation(_outputRaster, _expression, {_inputRaster, _trendDomain});
 	ctx->setOutput(symTable, value, _outputRaster->name(), itRASTER, _outputRaster->resource());
 	return true;
 

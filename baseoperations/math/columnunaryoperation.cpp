@@ -102,7 +102,7 @@ bool ColumnUnaryOperation::execute(ExecutionContext *ctx, SymbolTable &symTable)
     if ( _outputTable.isValid()){
         QVariant var;
         var.setValue<ITable>(_outputTable);
-        logOperation(_outputTable, _expression);
+		logOperation(_outputTable, _expression, { _inputTable });
         ctx->setOutput(symTable,var, _outputTable->name(),itTABLE,_outputTable->resource(),_outColumn);
         return true;
     }
