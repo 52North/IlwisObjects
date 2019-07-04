@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QQmlContext>
 #include <QQuickItem>
 #include <Qt>
+#include <list>
 #include <atomic>
 #include "iooptions.h"
 #include "ilwiscoreui_global.h"
@@ -104,6 +105,7 @@ public:
     Q_INVOKABLE void addMessage(const QString& message, const QString& type);
     Q_INVOKABLE bool keyPressed(int key) const;
 	Q_INVOKABLE void setMousePos(int x, int y);
+	Q_INVOKABLE void addMRUFormat(const QString& name);
 
     int addPropertyEditor(const QString& propertyName, CreatePropertyEditor func);
     QList<VisualPropertyEditor *> propertyEditors(VisualAttribute *vattrib, const IIlwisObject &obj, const DataDefinition& datadef) ;
@@ -135,6 +137,7 @@ public:
     void showLastGeneratedResult(const QString& lgr);
     void uiBusy(bool yesno);
     bool uiBusy() const;
+	std::list<QString> mruFormats() const;
 
 	QString paleColor() const;
 	void paleColor(const QString& clr);
@@ -203,6 +206,7 @@ private:
     QWaitCondition _wait4ViewCreate;
     QString _lastGeneratedShowCommand;
     bool _uiBusy = false;
+	std::list<QString> _mruFormats;
 
     static std::unique_ptr<UIContextModel>_uicontext;
 

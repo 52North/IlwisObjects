@@ -1,6 +1,6 @@
-import QtQuick 2.6
+import QtQuick 2.12
 import QtQuick.Controls 1.1
-import QtQuick.Controls 2.4 as QC2
+import QtQuick.Controls 2.12 as QC2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import "../Global.js" as Global
@@ -13,7 +13,7 @@ Item {
     property int labelWidth
     property bool textEditable : false
     property int fontSize : 8
-	property bool fontBold : true
+	property bool fontBold : false
     property bool readOnly : false;
     property alias itemModel : control.model
     property alias comboText : control.currentText
@@ -21,6 +21,7 @@ Item {
 	property bool transparentBackgrond : false
     property string role
     property alias currentIndex : control.currentIndex
+	property var callback
     height : 20
 
     signal indexChanged()
@@ -52,12 +53,12 @@ Item {
 	    delegate: QC2.ItemDelegate {
 		    id  : itdelg
 			width: control.width
-			height : 26
+			height : 25
 			contentItem: Text {
-				text: control.textRole ? modelData[control.textRole] : modelData
+				text: stripName(control.textRole ? modelData[control.textRole] : modelData)
 				height : 20
 				color: "black"
-				font: control.font
+				font.bold : isSpecial(control.textRole ? modelData[control.textRole] : modelData) 
 				elide: Text.ElideRight
 				verticalAlignment: Text.AlignVCenter
 			}
@@ -103,12 +104,17 @@ Item {
 				width : parent.width - 15
 				rightPadding: control.indicator.width + control.spacing
 
-				text: control.displayText
+				text: stripName(control.displayText)
 				font: control.font
 				color: "black"
 				verticalAlignment: Text.AlignVCenter
 				elide: Text.ElideRight
 				clip : true
+
+				onTextChanged : {
+					if ( callback)	
+						callback(text)
+				}
 			}
 		}
 
@@ -127,6 +133,33 @@ Item {
 			}
 		}
 
+		popup: QC2.Popup {
+		    id : cbpopup
+			y: control.height - 1
+			width: control.width
+			height : Math.min(control.delegateModel.count * 26, 300)
+
+			padding: 1
+
+			contentItem: ScrollView{
+					clip: true
+					height : cbpopup.height
+					ListView {
+						clip: true
+						height : parent.height
+						model: control.popup.visible ? control.delegateModel : null
+						currentIndex: control.highlightedIndex
+
+						QC2.ScrollIndicator.vertical: QC2.ScrollIndicator { }
+					}
+			}
+
+        background: Rectangle {
+            border.color: "#21be2b"
+            radius: 2
+        }
+    }
+
         onActivated : {
             indexChanged()
         }
@@ -143,6 +176,18 @@ Item {
         }
         control.currentIndex = index
     }
+
+	function stripName(txt) {
+		if ( txt.charAt(0) == "*")
+			return txt.substr(1)
+		return txt
+
+	}
+
+	function isSpecial(txt) {
+		return txt.charAt(0) == "*"
+
+	}
 }
 
 

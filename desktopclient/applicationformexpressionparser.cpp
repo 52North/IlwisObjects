@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
  
  
 using namespace Ilwis;                                                                                  
-using namespace Ui;                                                                                             
+using namespace Ui; 
 
 ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                      
 {
@@ -509,25 +509,25 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                         arg(constantValue == "" ? parameters[i]._defValue : constantValue).
                         arg(checkEffects).
                         arg(wrapMode);
-                }
+                } 
 
                 QString parameterRow = QString(rowBodyText + textFieldPart + imagePart + "}").arg(check).arg(parameters[i]._label).arg(width).arg(i).arg(checkWidth).arg(xshift).arg(visibile).arg(hasType(parameters[i]._fieldType,ftTEXTEDIT) ? 30 : 75);
                 formRows += parameterRow;
                 if ( results != "")
-                    results += "+ \"|\" +";
+                    results += "+ \"|\" +";  
                 results += QString(input ? "pin_%1.text" : "pout_%1.text").arg(i);
                 if ( !input){
                     QString query = QString("(datatype & %1)!=0 and (readwrite='rc' or readwrite='rcu')").arg(parameters[i]._dataType);
                     QString formatList = formats(query, parameters[i]._dataType);
-                    if ( formatList != ""){    
+                    if ( formatList != ""){                  
 
 
                         //QString formatLabel = QString("Row{height:20;width:parent.width;Text { x:5;text: qsTr(\"Output format\"); id:label_pout_format_%2; width :%1;}").arg(width).arg(i);
                         //QString formatCombo = QString("ComboBox{id : pout_format_%1; height:20; width : parent.width - label_pout_format_%1.width - 5;model : %2}").arg(i).arg(formatList);
-						QString formats = QString("Controls.ComboxLabelPair{ id: pout_format_%1; width : parent.width  - 5;fontBold : false;labelWidth : %2 - 5;itemModel : %3;labelText :qsTr(\"Output format\")}").
-							arg(i).arg(width).arg(formatList);
+						QString formats = QString("Controls.ComboxLabelPair{ id: pout_format_%1; callback : addMRUFormat; width : parent.width  - 5;fontBold : false;labelWidth : %2 - 5;itemModel : %3;labelText :qsTr(\"Output format\")}").
+							arg(i).arg(width).arg(formatList); 
                         results += "+\"@@\"+"  + QString("pout_format_%1.comboText").arg(i);
-                        formRows += formats;  
+                        formRows += formats;        
                     }
                 }
 
@@ -553,7 +553,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                         choice = choice.mid(1);
                         if (noChoice) state = "true";
                     }  
-                    if (validConstant && (constantValue == choice)) {
+                    if (validConstant && (constantValue == choice)) { 
                         state = "true";  
                     } 
                     buttons += QString(rowChoiceOption).arg(QString::number(i) + choice, choice, state, QString::number(i), choice);
@@ -624,14 +624,15 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
         QString validation = "function addValidation(e, idx, u){var r = operations.resolveValidation(metaid, u,idx);";
         validation += "if ( r){for(var k=0; k<r.length;k++){var p=r[k];var ue = \"pin_\" + p.parameterIndex + \"" + QString("_") + mid + "\"" ;
         validation += "; var item = uicontext.getItem(ue,0); if ( item !== null) { if ( p.uielement==\"list\"){item.itemModel=p.result}if(p.uielement==\"textfield\"){item.text=p.result}}}}}";
+		QString mruFormats = "function addMRUFormat(formatName){ uicontext.addMRUFormat(formatName)}";
         QString propertyMetaid = "property var metaid :" + mid + ";property var operation : operations.operation(" + mid + ");";
         QString columnStart = "import QtQuick 2.2; import QtQuick.Controls 1.1;import QtQuick.Layouts 1.1;import QtQuick.Controls.Styles 1.0;import UIContextModel 1.0;import MasterCatalogModel 1.0;import \"../controls\" as Controls;";
-        columnStart += "Column { " + validation + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
+        columnStart += "Column { " + validation + " " + mruFormats + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
         QString exclusiveGroup = "ExclusiveGroup { id : sourceFilterGroup; onCurrentChanged: {}}";
         columnStart += exclusiveGroup;    
         int width = 0;    
         for(int i = 0; i < parameters.size(); ++i){
-            width = std::max(parameters[i]._label.size(), width);    
+            width = std::max(parameters[i]._label.size(), width);     
         }  
         width *= 10;     
         width = std::min(100, width);   
@@ -645,7 +646,7 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                 for(int i = 0; i < outparameters.size(); ++i){
                     width = std::max(outparameters[i]._label.size(), width); 
                 } 
-                width = std::max(100, width);  
+                width = std::max(100, width);    
             }
             outputPart = makeFormPart(mid, width, outparameters, false, results, showEmptyOptionInList,QStringList(), operationNames);
 
@@ -731,11 +732,19 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
 QString ApplicationFormExpressionParser::formats(const QString& query, quint64 ilwtype) const
 {
     if ( hasType(ilwtype,itFEATURE )){
-        ilwtype = itFEATURE;     
+        ilwtype = itFEATURE;      
     }
+
 
     std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
     QString formatList;
+	auto mrus = uicontext()->mruFormats(); 
+	for (auto item : mrus) {
+		if (formatList != "") {  
+			formatList += ",";
+		}
+		formatList += "'*"+ item + "'";
+	}
     for(auto &format : formats)    { 
         if ( formatList != ""){
             formatList += ",";

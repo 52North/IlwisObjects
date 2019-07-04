@@ -100,6 +100,10 @@ void UIContextModel::exitUI()
     if ( masterCatalogModel() && masterCatalogModel()->currentCatalog()){
         masterCatalogModel()->currentCatalog()->viewRef().storeFilters();
     }
+	int count = 0;
+	for (auto item : _mruFormats) {
+		context()->configurationRef().addValue(QString("users/" + Ilwis::context()->currentUser() + "/mruformats%1").arg(count), item);
+	}
 
 }
 ScriptModel *UIContextModel::scriptModel(const QString& fileorid, QObject *parent)
@@ -336,6 +340,15 @@ void UIContextModel::prepare()
     _worldMap.prepare(mapResource);
 
     kernel()->loadModulesFromLocation(context()->ilwisFolder().absoluteFilePath() + "/extensions/ui");
+
+	for (int i = 0; i <5; ++i) {
+		QString key = QString("users/" + Ilwis::context()->currentUser() + "/mruformats%1").arg(i);
+		QString v = context()->configurationRef()(key, QString(sUNDEF));
+		if (v == sUNDEF)
+			break;
+		_mruFormats.push_back(v);
+
+	}
 }
 
 bool UIContextModel::abort() const
@@ -867,7 +880,22 @@ bool UIContextModel::uiBusy() const {
 
 void UIContextModel::setMousePos(int x, int y) {
 	QCursor cur;
-	cur.setPos(500, 500);
+	cur.setPos(x, y);
+}
+
+void UIContextModel::addMRUFormat(const QString& name) {
+	if (name == "Temporary")
+		return;
+	auto iter = std::find(_mruFormats.begin(), _mruFormats.end(), name);
+	if (iter == _mruFormats.end()) {
+		_mruFormats.push_front(name);
+		if (_mruFormats.size() > 4)
+			_mruFormats.pop_back();
+	}
+}
+
+std::list<QString> UIContextModel::mruFormats() const {
+	return _mruFormats;
 }
 
 
