@@ -483,6 +483,7 @@
     <None Include="desktopclient\qml\workbench\creators\CreateSupervisedClassification.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateTable.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateThematicDom.qml" />
+    <None Include="desktopclient\qml\workbench\creators\CreateTimeDom.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateWorkflow.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreatorList.qml" />
     <None Include="desktopclient\qml\workbench\creators\EditorHeader.qml" />

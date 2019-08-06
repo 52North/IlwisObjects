@@ -262,6 +262,9 @@
     <ClCompile Include="baseoperations\geometry\setgeoreference.cpp">
       <Filter>Source Files\geometry</Filter>
     </ClCompile>
+    <ClCompile Include="baseoperations\creators\createtimedomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseoperations\data\addcolumn.h">
@@ -472,6 +475,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baseoperations\geometry\setgeoreference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createtimedomain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

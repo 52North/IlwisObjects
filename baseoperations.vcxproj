@@ -178,6 +178,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="baseoperations\creators\createtimedomain.cpp" />
     <ClCompile Include="baseoperations\creators\parsestackdefinition.cpp" />
     <ClCompile Include="baseoperations\data\addcolumn.cpp" />
     <ClCompile Include="baseoperations\data\addrasterband.cpp" />
@@ -249,6 +250,7 @@
     <ClCompile Include="baseoperations\util\workingcatalog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="baseoperations\creators\createtimedomain.h" />
     <ClInclude Include="baseoperations\creators\parsestackdefinition.h" />
     <ClInclude Include="baseoperations\data\addcolumn.h" />
     <ClInclude Include="baseoperations\data\addrasterband.h" />

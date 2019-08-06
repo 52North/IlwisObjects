@@ -1289,6 +1289,9 @@
     <None Include="desktopclient\qml\workbench\propertyform\ContextPropertyPane.qml">
       <Filter>Distribution Files\qml\workbench\metadata</Filter>
     </None>
+    <None Include="desktopclient\qml\workbench\creators\CreateTimeDom.qml">
+      <Filter>Distribution Files\qml\workbench\creators</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
