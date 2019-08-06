@@ -714,7 +714,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
 {
     std::vector<FormParameter> parameters;  
 
-    FormParameter metadataname;   
+    FormParameter metadataname;      
     metadataname._label = "Name"; 
     metadataname._dataType = itTEXTDOMAIN;  
     metadataname._fieldType = ftTEXTEDIT;
@@ -724,26 +724,28 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
     metadatadescription._label = "Description";
     metadatadescription._dataType = itTEXTDOMAIN;
     metadatadescription._fieldType = ftTEXTAREA;
-    parameters.push_back(metadatadescription);      
+    parameters.push_back(metadatadescription);        
 
-    return parameters;                
+    return parameters;                          
 }
 
 QString ApplicationFormExpressionParser::formats(const QString& query, quint64 ilwtype) const
 {
     if ( hasType(ilwtype,itFEATURE )){
-        ilwtype = itFEATURE;      
-    }
+        ilwtype = itFEATURE;           
+    }  
 
 
     std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
     QString formatList;
 	auto mrus = uicontext()->mruFormats(); 
 	for (auto item : mrus) {
-		if (formatList != "") {  
+		if (formatList != "") {   
 			formatList += ",";
 		}
-		formatList += "'*"+ item + "'";
+		auto iter = formats.find(item); // we only include mru items if it appears in the queried list, so it makes sense for this query
+		if ( iter != formats.end())
+			formatList += "'*"+ item + "'";
 	}
     for(auto &format : formats)    { 
         if ( formatList != ""){
