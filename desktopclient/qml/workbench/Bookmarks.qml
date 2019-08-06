@@ -1,7 +1,7 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
-import QtQuick.Controls.Styles 1.0
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.12
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Dialogs 1.0
 import MasterCatalogModel 1.0
 import "../datapanel/catalog" as Catalog
@@ -213,8 +213,10 @@ Column {
 
     }
     Row {
+	    x : 4
         height : 45
         width :215
+		spacing : 4
 
         Action {
             id :addbookmark
@@ -233,7 +235,7 @@ Column {
 
         Controls.ActionButtonV{
             id : removeBookmark
-            width : navigationFoldercreate.width /2
+            width : (navigationFoldercreate.width - 6) /2
             height : 55
             iconsource: "../images/bookmark_delete.png"
             buttontext :  qsTr("Delete Bookmark");
@@ -246,7 +248,7 @@ Column {
             buttontext : "Add Bookmark"
             iconsource : "../images/bookmark_add.png"
             height : 55
-            width :navigationFoldercreate.width /2
+            width :(navigationFoldercreate.width - 6) /2
             action : addbookmark
             enabled : false
             z : 1

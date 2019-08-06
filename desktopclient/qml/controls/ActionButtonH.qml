@@ -1,9 +1,11 @@
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.2
+import QtQuick.Controls.Styles 1.3
+import "../Global.js" as Global
+import "../controls" as Controls
 
-Button{
+Controls.PushButton{
     property string iconsource
     property string buttontext;
 
@@ -21,16 +23,6 @@ Button{
         anchors.verticalCenter: parent.verticalCenter
         text : buttontext
     }
-
-    style : ButtonStyle{
-        background: Rectangle {
-            anchors.fill: parent
-            color : control.pressed || (checked) ? "#B0C4DE" : "white"
-            border.width: 1
-            border.color: "lightgrey"
-        }
-    }
-
 }
 
 
