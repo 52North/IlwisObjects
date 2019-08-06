@@ -62,7 +62,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["nameidentifierdomain" ] = new IlwisObjectCreatorModel("nameidentifierdomain",TR("Identifier Domain"),itITEMDOMAIN | itIDENTIFIERITEM,"CreateIdentifierDomain.qml", 520, this);
     //_creators[ ] = new IlwisObjectCreatorModel(TR("Indexed Domain",itITEMDOMAIN | itINDEXEDITEM,"CreateNumDom.qml", 200, this);
     _creators["intervaldomain" ] = new IlwisObjectCreatorModel("intervaldomain",TR("Interval Domain"),itITEMDOMAIN | itNUMERICITEM,"CreateIntervalDomain.qml", 610, this);
-    _creators["timedomain" ] = new IlwisObjectCreatorModel("timedomain",TR("Time Domain"),itTIME | itDOMAIN,"UnderDevelopment.qml", 200, this);
+    _creators["timedomain" ] = new IlwisObjectCreatorModel("timedomain",TR("Time Domain"),itTIME | itDOMAIN,"CreateTimeDom.qml", 350, this);
     _creators["timeintervaldomain" ] = new IlwisObjectCreatorModel("timeintervaldomain", TR("Time Interval Domain"),itTIMEITEM | itITEMDOMAIN,"UnderDevelopment.qml", 200, this);
 //    _creators[ ] = new IlwisObjectCreatorModel(TR("Color Domain",itCOLORDOMAIN,"CreateNumDom.qml", 200, this);
     _creators["colorpalette" ] = new IlwisObjectCreatorModel("colorpalette", TR("Color Palette Domain"),itPALETTECOLOR | itITEMDOMAIN,"CreatePaletteDomain.qml", 630, this);
@@ -220,6 +220,31 @@ QString ObjectCreator::createNumericDomain(const QVariantMap &parms)
         return QString::number(obj->id());
     }
     return sUNDEF;
+}
+
+QString ObjectCreator::createTimeDomain(const QVariantMap &parms)
+{
+	if (parms["name"].toString() == "") {
+		kernel()->issues()->log(TR("Domain must have a valid name"));
+		return QString::number(i64UNDEF);
+	}
+
+	QString v = OperationHelper::quote(parms["name"].toString());
+	QString expression = QString("script %1{format(stream,\"domain\")}=createtimeddomain(\"%2\", \"%3\", \"%4\", \"%5\"")
+		.arg(v)
+		.arg(parms["minvalue"].toString())
+		.arg(parms["maxvalue"].toString())
+		.arg(parms["resolutionvalue"].toString())
+		.arg(parms["description"].toString());
+	expression += ")";
+
+	Ilwis::ExecutionContext ctx;
+	Ilwis::SymbolTable syms;
+	if (Ilwis::commandhandler()->execute(expression, &ctx, syms)) {
+		IDomain obj = syms.getSymbol(ctx._results[0])._var.value<IDomain>();
+		return QString::number(obj->id());
+	}
+	return sUNDEF;
 }
 
 QString ObjectCreator::createBoundsOnlyCoordinateSystem(const QVariantMap &parms){
@@ -707,6 +732,9 @@ QString ObjectCreator::createObject(const QVariantMap &parms)
 
 	else if (type == "pythonconsole") {
 		return sUNDEF;
+	}
+	else if (type == "timedomain") {
+		return createTimeDomain(parms);
 	}
 
     return QString::number(i64UNDEF);
