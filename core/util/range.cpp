@@ -74,6 +74,8 @@ Range *Range::create(IlwisTypes types) {
         return new ContinuousColorRange();
     case itPALETTECOLOR:
         return new ColorPalette();
+	case itDATETIME:
+		return new TimeInterval();
     default:
         if ( hasType(types, itNUMBER)){
             return new NumericRange();
