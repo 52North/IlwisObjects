@@ -371,6 +371,7 @@ public:
     void end(const Time& t);
     Duration getStep() const { return _step;}
     QString toString(bool local, IlwisTypes) const;
+	QString toString() const;
     bool contains(const QString& value, bool inclusive = true) const;
     bool contains(const Time& value, bool inclusive = true) const;
     bool contains(const QVariant& value, bool inclusive = true) const;

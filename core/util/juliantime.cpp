@@ -830,6 +830,7 @@ Duration::Duration(const QString& duration, IlwisTypes tp) {
     }
     _julianday = gregorianToJulian(year, month, day, hour, minute, seconds);
     _julianday += rest;
+	_valid = true;
 }
 
 Duration::Duration(double r, IlwisTypes tp) : Time(r) {
@@ -944,6 +945,17 @@ QString TimeInterval::toString(bool local, IlwisTypes tp) const{
     QString sb = begin.toString(local,tp);
     QString se = end.toString(local,tp);
     return QString("timeinterval:%1|%2").arg(sb ,se);
+}
+
+QString TimeInterval::toString() const {
+	if (min() == rUNDEF || max() == rUNDEF)
+		return sUNDEF;
+
+	Time begin(min());
+	Time end(max());
+	QString sb = begin.toString();
+	QString se = end.toString();
+	return QString("timeinterval:%1|%2").arg(sb, se);
 }
 
 bool TimeInterval::contains(const QString &value, bool inclusive) const
