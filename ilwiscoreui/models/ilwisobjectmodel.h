@@ -165,6 +165,7 @@ private:
     bool hasAttributes() const;
 	IlwisTypes valueTypePrivate() const;
 	QVariantList metaItemTree();
+	QString valueTypeHuman() const;
 
 	bool _editState = false;
 

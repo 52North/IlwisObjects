@@ -812,6 +812,21 @@ QString IlwisObjectModel::valueType() const {
     }
     return "";
 }
+
+QString IlwisObjectModel::valueTypeHuman() const {
+	if (hasType(_ilwisobject->ilwisType(), itDOMAIN)) {
+		IDomain domain = _ilwisobject.as<Domain>();
+		if (domain.isValid()) {
+			IlwisTypes tp = domain->valueType();
+			if (!hasType(_ilwisobject->resourceRef().extendedType(), itDATETIME))
+				return TypeHelper::type2HumanReadable(tp);
+			else
+				return "Time Domain";
+		}
+	}
+	return "";
+}
+
 void IlwisObjectModel::setProperty(const QString& propertyname, const QVariantMap& values) {
 	if (!_ilwisobject.isValid())
 		return;
@@ -882,6 +897,9 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
         if ( propertyname == "valuetype"){
             return valueType();
         }
+		if (propertyname == "valuetypehuman") {
+			return valueType();
+		}
         if ( propertyname == "recordcount"){
             if ( hasType(_ilwisobject->ilwisType(), itTABLE)){
                 return QString::number(_ilwisobject.as<Table>()->recordCount());
