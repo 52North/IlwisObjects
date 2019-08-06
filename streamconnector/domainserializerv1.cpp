@@ -78,7 +78,7 @@ bool DomainSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
 
     }
     if ( dom->ilwisType() != itTEXTDOMAIN){
-        Range * range = Range::create(dom->valueType());
+        Range * range = Range::create(hasType(dom->resourceRef().extendedType(), itDATETIME) ? itDATETIME : dom->valueType());
         if ( !range)
             return false;
         range->load(_stream);
