@@ -44,7 +44,7 @@ public:
     void logOperation(const IIlwisObject& obj, const OperationExpression& expr);
     void logOperation(const OperationExpression &expr);
 	void logOperation(const IIlwisObject &obj, const OperationExpression &expr, const std::vector<IIlwisObject>& inputobjects);
-    Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
+    virtual Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
 
 protected:
     void initialize(quint64 totalCoun);

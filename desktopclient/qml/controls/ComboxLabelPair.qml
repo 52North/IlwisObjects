@@ -8,7 +8,7 @@ import "../controls" as Controls
 
 Item {
     id : cbox   
-    property string content
+    property string content : control.currentText
     property string labelText
     property int labelWidth
     property bool textEditable : false

@@ -261,6 +261,9 @@ QString ResourceModel::iconPath() const
         }
         if ( hasType(tp, itCOORDSYSTEM))
             return iconPath(itCOORDSYSTEM);
+		if (hasType(tp, itDOMAIN) && hasType(itemRef().extendedType(), itDATETIME)) {
+			return iconPath(itDATETIME);
+		}
         if (displayName() == "..")
             return "folderUp.png";
         return iconPath(tp);
@@ -322,7 +325,7 @@ QString ResourceModel::iconPath(IlwisTypes tp)
 	   return "object_domain_item.svg";
    else if (tp == (itTIMEITEM | itITEMDOMAIN))
 	   return "object_domain_item.svg";
-   else if (tp == (itTIME | itDOMAIN))
+   else if (tp == (itTIME | itDATE))
 	   return "object_domain_time.svg";
    else if (tp == (itCOLORDOMAIN))
 	   return "object_domain_color.svg";

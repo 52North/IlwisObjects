@@ -898,6 +898,10 @@ std::list<QString> UIContextModel::mruFormats() const {
 	return _mruFormats;
 }
 
+double UIContextModel::isoString2julianTime(const QString& isoTime) {
+	return Ilwis::Time(isoTime);
+}
+
 
 
 

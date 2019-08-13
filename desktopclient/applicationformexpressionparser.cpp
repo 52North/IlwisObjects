@@ -115,7 +115,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
 
     }
 
-    return parameters;
+    return parameters;  
 }
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getParameters(const Resource& resource, bool workflowContext, const QVariantList& nodeparameters) const
 {
@@ -189,16 +189,16 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
                 parm._placeHolderValue = "";    
         }  
     }
-    return parameters;  
+    return parameters;      
 
-}
+} 
 
 QString ApplicationFormExpressionParser::iconName(IlwisTypes dataType) const{
     if ( hasType(dataType, itRASTER)){
-        return ResourceModel::iconPath(itRASTER);
+        return ResourceModel::iconPath(itRASTER);   
     }
-    if ( hasType(dataType, itFEATURE)){
-        return ResourceModel::iconPath(itFEATURE);
+    if ( hasType(dataType, itFEATURE)){ 
+        return ResourceModel::iconPath(itFEATURE);  
     }
     if ( hasType(dataType, itTABLE)){
         return ResourceModel::iconPath(itTABLE);
