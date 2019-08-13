@@ -906,6 +906,12 @@ bool Duration::isValid() const{
     return Time::isValid() && _julianday != 0;
 }
 
+bool Duration::isFullDays() const {
+	if (!isValid())
+		return false;
+	return std::abs(_julianday - (quint64)_julianday) < EPS6;
+}
+
 
 //-------------------------------------------
 TimeInterval::TimeInterval(IlwisTypes tp) : NumericRange(-BIGTIME, BIGTIME,0){
@@ -951,8 +957,8 @@ QString TimeInterval::toString() const {
 	if (min() == rUNDEF || max() == rUNDEF)
 		return sUNDEF;
 
-	Time begin(min());
-	Time end(max());
+	Time begin(min(), _step.isFullDays() ? itDATE : itDATETIME);
+	Time end(max(), _step.isFullDays() ? itDATE : itDATETIME);
 	QString sb = begin.toString();
 	QString se = end.toString();
 	return QString("timeinterval:%1|%2").arg(sb, se);

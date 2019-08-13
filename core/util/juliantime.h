@@ -357,6 +357,7 @@ public:
     QString toString(bool local, IlwisTypes tp=itTIME) const;
     bool isValid() const;
     double get(TimePart part) const;
+	bool isFullDays() const;
 };
 
 class KERNELSHARED_EXPORT TimeInterval : public NumericRange {
