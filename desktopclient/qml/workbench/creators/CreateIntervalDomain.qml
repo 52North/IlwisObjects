@@ -58,7 +58,7 @@ Controls.DropableItem{
 				var itemstring = ""
 				if ( commonpart.domitems.item.model){
 					if (!overwrite){
-						if ( mastercatalog.exists("ilwis://internalcatalog/"+ commonpart.name, "coordinatesystem")){
+						if ( mastercatalog.exists("ilwis://internalcatalog/"+ commonpart.name, "domain")){
 							return false;
 						}
 					}

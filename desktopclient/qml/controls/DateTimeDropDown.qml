@@ -11,7 +11,8 @@ Row {
     height : 20
 	property var labelText
 	property int labelWidth : 0
-	property var content : datetimepicker.selectedDate.toLocaleString(Qt.locale(),"yyyy-MM-dd" ) + "T" + timepicker.currentTime 
+	property bool useWholeDays : false
+	property var content : datetimepicker.selectedDate.toLocaleString(Qt.locale(),"yyyy-MM-dd" ) + (useWholeDays ?   '' :  "T" + timepicker.currentTime) 
 	Text {
 			y : 2
 			width : labelWidth
@@ -113,6 +114,7 @@ Row {
 					Item {
 						height : dropDown.height / 2
 						width : parent.width
+						visible : !useWholeDays
 						AreaHeader { labeltext: "Time";source: "../images/tab_thin_active.png";fontPointSize : 9; height :  dtchoice.width}
 						MouseArea {
 							anchors.fill : parent

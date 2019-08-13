@@ -13,6 +13,7 @@ TableView {
     width : parent.width
     height : parent.height - 45
     selectionMode : SelectionMode.ExtendedSelection
+	property var limitwidth : 50
 
     TableViewColumn{
         title : qsTr("Item name");
@@ -32,7 +33,7 @@ TableView {
     TableViewColumn{
         title : qsTr("Minimum Value");
         role : "minvalue"
-        width : 50
+        width : limitwidth
         delegate: Component{
             Text {
                 text: styleData.value
@@ -46,7 +47,7 @@ TableView {
     TableViewColumn{
         title : qsTr("MaximumValue");
         role : "maxvalue"
-        width : 50
+        width : limitwidth
         delegate: Component{
             Text {
                 text: styleData.value
