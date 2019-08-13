@@ -460,6 +460,7 @@
     <None Include="desktopclient\qml\workbench\creators\AddNewIdentifierItem.qml" />
     <None Include="desktopclient\qml\workbench\creators\AddNewNumericInterval.qml" />
     <None Include="desktopclient\qml\workbench\creators\AddNewThematicItem.qml" />
+    <None Include="desktopclient\qml\workbench\creators\AddNewTimeInterval.qml" />
     <None Include="desktopclient\qml\workbench\creators\ApplyCreateButtons.qml" />
     <None Include="desktopclient\qml\workbench\creators\ColumnCreator.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateBoundsOnlyCsy.qml" />
@@ -484,6 +485,7 @@
     <None Include="desktopclient\qml\workbench\creators\CreateTable.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateThematicDom.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateTimeDom.qml" />
+    <None Include="desktopclient\qml\workbench\creators\CreateTimeIntervalDomain.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateWorkflow.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreatorList.qml" />
     <None Include="desktopclient\qml\workbench\creators\EditorHeader.qml" />

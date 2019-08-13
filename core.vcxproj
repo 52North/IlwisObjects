@@ -469,6 +469,7 @@ xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
     <ClCompile Include="core\geos\src\io\WKTWriter.cpp" />
     <ClCompile Include="core\geos\src\io\Writer.cpp" />
     <ClCompile Include="core\abstractfactory.cpp" />
+    <ClCompile Include="core\ilwisobjects\domain\timeintervalitem.cpp" />
     <ClCompile Include="core\ilwisobjects\operation\modeller\analysispattern.cpp" />
     <ClCompile Include="core\ilwisobjects\operation\modeller\applicationmodel.cpp" />
     <ClCompile Include="core\ilwisobjects\table\attributedefinition.cpp" />
@@ -938,6 +939,7 @@ xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
     <ClInclude Include="core\geos\include\geos\io\WKTWriter.h" />
     <ClInclude Include="core\geos\include\geos\io\Writer.h" />
     <ClInclude Include="core\abstractfactory.h" />
+    <ClInclude Include="core\ilwisobjects\domain\timeintervalitem.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\analysispattern.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\applicationmodel.h" />
     <ClInclude Include="core\ilwisobjects\table\attributedefinition.h" />

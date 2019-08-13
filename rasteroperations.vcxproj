@@ -187,6 +187,8 @@
     <ClCompile Include="rasteroperations\crossrasters.cpp" />
     <ClCompile Include="rasteroperations\densifyraster.cpp" />
     <ClCompile Include="rasteroperations\distanceraster.cpp" />
+    <ClCompile Include="rasteroperations\lookupindex.cpp" />
+    <ClCompile Include="rasteroperations\percentilegroups.cpp" />
     <ClCompile Include="rasteroperations\line2raster.cpp" />
     <ClCompile Include="rasteroperations\filter\linearrasterfilter.cpp" />
     <ClCompile Include="rasteroperations\mannkendallsignificancetest.cpp" />
@@ -212,6 +214,8 @@
     <ClInclude Include="rasteroperations\crossrasters.h" />
     <ClInclude Include="rasteroperations\densifyraster.h" />
     <ClInclude Include="rasteroperations\distanceraster.h" />
+    <ClInclude Include="rasteroperations\lookupindex.h" />
+    <ClInclude Include="rasteroperations\percentilegroups.h" />
     <ClInclude Include="rasteroperations\line2raster.h" />
     <ClInclude Include="rasteroperations\filter\linearrasterfilter.h" />
     <ClInclude Include="rasteroperations\mannkendallsignificancetest.h" />

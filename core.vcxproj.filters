@@ -1670,6 +1670,9 @@
     <ClCompile Include="core\ilwisobjects\representation\shapelookup.cpp">
       <Filter>Source Files\ilwisobjects\representation</Filter>
     </ClCompile>
+    <ClCompile Include="core\ilwisobjects\domain\timeintervalitem.cpp">
+      <Filter>Source Files\ilwisobjects\domain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\geos\include\geos\index\strtree\AbstractNode.h">
@@ -3237,6 +3240,9 @@
     </ClInclude>
     <ClInclude Include="core\util\natural_sorting.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="core\ilwisobjects\domain\timeintervalitem.h">
+      <Filter>Header Files\ilwisobjects\domain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

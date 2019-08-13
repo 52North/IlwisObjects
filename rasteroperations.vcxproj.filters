@@ -106,6 +106,12 @@
     <ClCompile Include="rasteroperations\mannkendallsignificancetest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rasteroperations\percentilegroups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rasteroperations\lookupindex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h">
@@ -175,6 +181,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rasteroperations\mannkendallsignificancetest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\percentilegroups.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\lookupindex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -265,6 +265,9 @@
     <ClCompile Include="baseoperations\creators\createtimedomain.cpp">
       <Filter>Source Files\creator</Filter>
     </ClCompile>
+    <ClCompile Include="baseoperations\creators\createtimeintervaldomain.cpp">
+      <Filter>Source Files\creator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseoperations\data\addcolumn.h">
@@ -478,6 +481,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baseoperations\creators\createtimedomain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseoperations\creators\createtimeintervaldomain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
