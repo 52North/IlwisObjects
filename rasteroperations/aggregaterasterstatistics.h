@@ -33,13 +33,16 @@ namespace Ilwis {
 
 			bool execute(ExecutionContext *ctx, SymbolTable& symTable);
 			static Ilwis::OperationImplementation *create(quint64 metaid, const Ilwis::OperationExpression& expr);
-			Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
+			Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &) override;
 
 			static quint64 createMetadata();
 
-
-		private:
+		protected:
+			int _startBand = 0;
+			int _endBand = iUNDEF;
 			IRasterCoverage _inputRaster;
+		private:
+
 			IRasterCoverage _outputRaster;
 			QString _operationName;
 			StatFunction _statisticsFunction;
@@ -47,6 +50,18 @@ namespace Ilwis {
 
 			NEW_OPERATION(AggregateRasterStatistics);
 
+		};
+
+		class AggregateRasterStatisticsBySubset : AggregateRasterStatistics {
+			AggregateRasterStatisticsBySubset();
+			AggregateRasterStatisticsBySubset(quint64 metaid, const Ilwis::OperationExpression &expr);
+
+			static Ilwis::OperationImplementation *create(quint64 metaid, const Ilwis::OperationExpression& expr);
+			Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &) override;
+
+			static quint64 createMetadata();
+
+			NEW_OPERATION(AggregateRasterStatisticsBySubset);
 		};
 	}
 }

@@ -155,8 +155,11 @@ bool AggregateRasterStatistics::execute(ExecutionContext *ctx, SymbolTable& symT
 	double inValue;
 	bool xchanged = false;
 	std::vector<double> zcolumn;
+	Pixel bottom(_inputRaster->size().xsize(), _inputRaster->size().ysize(), _endBand);
+	Pixel top(0, 0, _startBand);
+	BoundingBox box = _endBand == iUNDEF ? BoundingBox() : BoundingBox(bottom, top);
 	zcolumn.reserve(_inputRaster->size().zsize());
-	PixelIterator iterIn(_inputRaster, BoundingBox(), PixelIterator::fZXY);
+	PixelIterator iterIn(_inputRaster, box, PixelIterator::fZXY);
 	int count = 0;
 	for (auto& value : _outputRaster) {
 		while (!xchanged) {
@@ -279,4 +282,57 @@ quint64 AggregateRasterStatistics::createMetadata()
 
 	mastercatalog()->addItems({ operation });
 	return operation.id();
+}
+
+//-------------------------------------------------------
+REGISTER_OPERATION(AggregateRasterStatisticsBySubset)
+
+quint64 AggregateRasterStatisticsBySubset::createMetadata()
+{
+	OperationResource operation({ "ilwis://operations/aggregaterasterstatisticsbysubset" }, "ilwis");
+	operation.setSyntax("aggregaterasterstatisticsbysubset(inputraster,statisticalmarker=mean|variance|standarddev|totalsumsquares|skew|kurtosis|max|min|maxindex|minindex|median|sum, startBand, endBand)");
+	operation.setDescription(TR("aggregates the bands of a raster stack into a new rastercoverage according to the method indicated by the second parameter"));
+	operation.setInParameterCount({ 4 });
+	operation.addInParameter(0, itRASTER, TR("input raster"), TR("set raster bands to be aggregated"));
+	operation.addInParameter(1, itSTRING, TR("statistical method"), TR("method of calucaltion for a pixel column of the stack of bands"));
+	operation.addInParameter(2, itINTEGER | itSTRING, TR("Start band"), TR("Band index from which the statistical method starts calculating"));
+	operation.addInParameter(3, itINTEGER | itSTRING, TR("End band"), TR("Band index from which the statistical method stops calculating"));
+	operation.setOutParameterCount({ 1 });
+	operation.addOutParameter(0, itRASTER, TR("output raster"), TR("Single band raster with the aggregated statical values"));
+	operation.setKeywords("raster, statistics,numeric,aggregate");
+
+	mastercatalog()->addItems({ operation });
+	return operation.id();
+}
+
+Ilwis::OperationImplementation *AggregateRasterStatisticsBySubset::create(quint64 metaid, const Ilwis::OperationExpression &expr)
+{
+	return new AggregateRasterStatisticsBySubset(metaid, expr);
+}
+
+AggregateRasterStatisticsBySubset::AggregateRasterStatisticsBySubset()
+{
+}
+
+AggregateRasterStatisticsBySubset::AggregateRasterStatisticsBySubset(quint64 metaid, const Ilwis::OperationExpression &expr) :
+	AggregateRasterStatistics(metaid, expr)
+{
+}
+
+Ilwis::OperationImplementation::State AggregateRasterStatisticsBySubset::prepare(ExecutionContext *ctx, const SymbolTable &st)
+{
+	if (AggregateRasterStatistics::prepare(ctx, st) == sPREPAREFAILED)
+		return sPREPAREFAILED;
+
+	_startBand = _expression.input<quint32>(2);
+	_endBand = _expression.input<quint32>(3);
+
+	if (_startBand >= _inputRaster->size().zsize() ||
+		_endBand >= _inputRaster->size().zsize() ||
+		_startBand >=_endBand) {
+		kernel()->issues()->log(TR("Band indexes for subset are not valid"));
+		return sPREPAREFAILED;
+	}
+	return sPREPARED;
+	
 }
