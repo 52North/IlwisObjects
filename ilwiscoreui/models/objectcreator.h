@@ -83,7 +83,6 @@ private:
 	QString createSupervisedClassification(const QVariantMap &parms);
     Ilwis::OperationResource createOperationResource(const QString &url, const QVariantMap &parms);
 	QString createTimeDomain(const QVariantMap &parms);
-
 };
 }
 }

@@ -63,7 +63,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     //_creators[ ] = new IlwisObjectCreatorModel(TR("Indexed Domain",itITEMDOMAIN | itINDEXEDITEM,"CreateNumDom.qml", 200, this);
     _creators["intervaldomain" ] = new IlwisObjectCreatorModel("intervaldomain",TR("Interval Domain"),itITEMDOMAIN | itNUMERICITEM,"CreateIntervalDomain.qml", 610, this);
     _creators["timedomain" ] = new IlwisObjectCreatorModel("timedomain",TR("Time Domain"),itTIME | itDOMAIN,"CreateTimeDom.qml", 350, this);
-    _creators["timeintervaldomain" ] = new IlwisObjectCreatorModel("timeintervaldomain", TR("Time Interval Domain"),itTIMEITEM | itITEMDOMAIN,"UnderDevelopment.qml", 200, this);
+    _creators["timeintervaldomain" ] = new IlwisObjectCreatorModel("timeintervaldomain", TR("Time Interval Domain"),itTIMEITEM | itITEMDOMAIN,"CreateTimeIntervalDomain.qml", 610, this);
 //    _creators[ ] = new IlwisObjectCreatorModel(TR("Color Domain",itCOLORDOMAIN,"CreateNumDom.qml", 200, this);
     _creators["colorpalette" ] = new IlwisObjectCreatorModel("colorpalette", TR("Color Palette Domain"),itPALETTECOLOR | itITEMDOMAIN,"CreatePaletteDomain.qml", 630, this);
     _creators["cornersgeoreferences" ] = new IlwisObjectCreatorModel("cornersgeoreferences", TR("Corners Georeference"),itGEOREF,"CreateGeorefCorners.qml", 330, this);
@@ -184,6 +184,19 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             expression += ","+ parms["parentdomain"].toString();
         expression += ")";
     }
+	if (parms["valuetype"].toString() == "timeinterval") {
+		if (parms["name"].toString() == "") {
+			kernel()->issues()->log(TR("Domain must have a valid name"));
+			return sUNDEF;
+		}
+		QString v = OperationHelper::quote(parms["name"].toString());
+		expression = QString("script %1{format(stream,\"domain\")}=createtimeintervaldomain(\"%2\",\"%3\",\"%4\"")
+			.arg(v)
+			.arg(parms["items"].toString())
+			.arg(parms["resolution"].toString())
+			.arg(parms["description"].toString());
+		expression += ")";
+	}
 
     Ilwis::ExecutionContext ctx;
     Ilwis::SymbolTable syms;
