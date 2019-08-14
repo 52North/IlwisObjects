@@ -59,6 +59,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "exportdata.h"
 #include "menumodel.h"
 #include "colorcompositecreation.h"
+#include "setkeywords.h"
 #include "mastercatalogmodel.h"
 
 using namespace Ilwis;
@@ -538,9 +539,9 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
 QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> MasterCatalogModel::catalogOperationEditors() {
 	std::vector<ResourceModel *> maps;
 	for (auto *object : _selectedObjects) {
-		if (hasType(object->type(), itCOVERAGE)) {
+		//if (hasType(object->type(), itCOVERAGE)) {
 			maps.push_back(object);
-		}
+		//}
 	}
 	return QQmlListProperty<CatalogOperationEditor>(this, _catalogOperations.selectedOperations(maps));
 }
@@ -974,6 +975,7 @@ void MasterCatalogModel::prepare()
 	_catalogOperations.registerCatalogOperation("generatethumbnails", GenerateThumbnails::create);
 	_catalogOperations.registerCatalogOperation("exportdata", ExportData::create);
 	_catalogOperations.registerCatalogOperation("colorcompositecreation", ColorCompositeCreation::create);
+	_catalogOperations.registerCatalogOperation("setkeywords", SetKeywords::create);
 
     _bookmarks.push_back(addBookmark(TR("Temporary Catalog"),TR("Temporary"),
                INTERNAL_CATALOG_URL,
