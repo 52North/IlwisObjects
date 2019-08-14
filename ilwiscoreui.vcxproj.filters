@@ -374,6 +374,9 @@
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\addcolorcomposite.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\setkeywords.cpp">
+      <Filter>Source Files\catalog\operations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -633,6 +636,9 @@
     </QtMoc>
     <QtMoc Include="ilwiscoreui\coveragedisplay\propertyeditors\addcolorcomposite.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\setkeywords.h">
+      <Filter>Header Files\catalog\operations</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
