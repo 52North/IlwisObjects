@@ -75,7 +75,7 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
 
     std::vector<QString> selectionBands = bands(inputRaster);
-    initialize(outputRaster->size().linearSize() * selectionBands.size());
+    initialize(outputRaster->size().linearSize());
 
     PixelIterator iterOut(outputRaster);
     int count = 0;
@@ -124,7 +124,7 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
             ++iterIn;
             ++iterOut;
-            updateTranquilizer(++count, 100);
+            updateTranquilizer(++count, 1000);
         }
         // if there is an attribute table we must copy the correct attributes and records
         if ( keyColumn != iUNDEF && _attTable.isValid()){
@@ -210,6 +210,7 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
          Resource resource(url, itFLATTABLE);
          _attTable.prepare(resource);
      }
+	 outputRaster->size(_box.size());
      if ( selectedAttributes == 1 && _inputAttributeTable.isValid()){
         QStringList names = attributeNames();
         //outputRaster->datadefRef().domain(_inputAttributeTable->columndefinition(names[0]).datadef().domain());
@@ -224,13 +225,17 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
          resource.addProperty("size", _box.size().toString(), true);
          auto envelope = inputRaster->georeference()->pixel2Coord(_box);
          resource.addProperty("envelope", IVARIANT(envelope));
-         resource.addProperty("coordinatesystem", inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);
+		 if (!OperationHelperRaster::addCsyFromInput(inputRaster.ptr(), resource)) {
+			 kernel()->issues()->log(TR("failed to assign coordinate system to output"));
+			 return sPREPAREFAILED;
+		 }
          resource.addProperty("name", _outputObj->name());
          resource.addProperty("centerofpixel",inputRaster->georeference()->centerOfPixel());
          IGeoReference  grf;
          grf.prepare(resource);
          outputRaster->georeference(grf);
          outputRaster->envelope(envelope);
+
     }
 
 
@@ -242,7 +247,29 @@ quint64 SelectionRaster::createMetadata()
     OperationResource operation({"ilwis://operations/selection"});
     operation.setLongName("Raster Selection");
     operation.setSyntax("selection(coverage,selection-definition)");
-    operation.setDescription(TR("the operation select parts of the spatial extent or attributes to create a smaller coverage"));
+    operation.setDescription("The select is meant as a base operation for “selecting  things” in a coverage. Things can be clipped regions, attributes or logical constraints. There are minimal differences between raster and features for this operation ( e.g. boundingbox is not accepted for features as it is a pixel thing).\
+		The formal definition is : <br> \
+		(logical - attribute - comparision) ? (and|or logical - attribute - comparision)* (with : (data - defintion) (and (data - selection)*) ? <br> \
+		\
+			Where<br> \
+			<table> \
+			<tr><td>Logical - attribute - comparison< / td><td>attribute(< | >|<=|>= |= = ) appropriate - value< / td><td>special attribute for rasters is pixelvalue.For rasters without attribute tables< / td>< / tr> \
+			<tr><td>Data - selection< / td><td>envelope - definition | boundingbox - defintion | polygon - defintion | attribute - definition< / td><td>defines a spatial area< / td< / tr> \
+			<tr><td>Envelope - definition< / td><td>envelope(minx miny, maxx maxxy) < / td > <td>in coordinates< / td>< / tr> \
+			<tr><td>Boundingbox - defintion</td><td>boundingbox(minx miny, maxx maxy) < / td > <td>in pixels< / td>< / tr> \
+			<tr><td>Polygon - definitions</td><td>wkt polygon definition< / td><td>< / td>< / tr> \
+			<tr><td>Attribute - definition</td><td>attributes(<attribute - name>(, attribute - name > )*) < / td > <td>in case of rasters and only one attribute is selected, no attribute table will be attached< / td>< / tr> \
+			<tr><td>Rasterbands</td><td>rasterbands(<comma separate list> | (<number>..<higher number>) </td> <td>Selects bands out of a mulitband</td></tr> \
+			</table> <br>\
+\
+			This sounds complicated but a few examples <br> \
+\
+			Select(someraster, PH > 4 and PH < 7); logical - attribute (PH) selection <br> \
+			Select(someraster, PH > 4 or topology == flat); logical - attribute selection <br> \
+			Select(someraster, boundingbox(20 20, 300 250)); data - selection by clipping <br> \
+			Select(someraster, PH > 6 with: boundingbox(20 20, 300 250)); logical - attribute selection and a data - selection <br> \
+			Select(someraster, PH > 6 with: boundingbox(20 20, 300 250) and attributes(topology)); logical - attribute selection and a two data - selections <br> \
+			Select(anotherraster, pixelvalue < 100); logical - attribute - selection with pixelvalues(usualy images) < br > ");
     operation.setInParameterCount({2});
     operation.addInParameter(0,itRASTER, TR("input rastercoverage"),TR("input rastercoverage with a domain as specified by the selection"));
     operation.addInParameter(1,itSTRING,  TR("selection-definition"),TR("Selection can either be attribute, layer index or area definition (e.g. box)"));

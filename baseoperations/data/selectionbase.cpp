@@ -131,7 +131,20 @@ SelectionBase::ExpressionPart::ExpressionPart(const ICoverage& coverage, const Q
         index = part.indexOf("(");
         int len = part.lastIndexOf(")") - index - 1;
         QString lst = part.mid(index + 1, len);
-        QStringList indexes = lst.split(",");
+		QStringList indexes;
+		if (lst.indexOf("..") > 0) {
+			QStringList parts = lst.split("..");
+			if (parts.size() == 2) {
+				int start = parts[0].trimmed().toDouble();
+				int end = parts[1].trimmed().toDouble();
+				for (int i = start; i <= end; ++i)
+					indexes.push_back(QString::number(i));
+				_isValid = true;
+			}
+			else
+				_isValid = false;
+		}else 
+			indexes= lst.split(",");
         IRasterCoverage raster = coverage.as<RasterCoverage>();
         for(auto ind : indexes){
             if (raster->stackDefinition().index(ind) != iUNDEF){
@@ -351,7 +364,7 @@ BoundingBox SelectionBase::boundingBox(const IRasterCoverage& raster) const
         if ( !box.isValid())
             box = raster->size();
         auto &p = box.max_corner();
-        p.z = bands.size();
+        p.z = bands.size() - 1;
     }
     return box;
 }
