@@ -191,9 +191,9 @@ Controls.DropableItem{
                                 var grfid = obj.getProperty("georefid");
                                 if ( obj && obj.typeName === "rastercoverage"){
                                     if ( grfvalue.content === ""){
-                                        grfvalue.content = grfurl
+                                        grfvalue.content = obj.getProperty("georeferenceurl");
                                     }
-                                    if (resampleCB.checked || mastercatalog.isCompatible(grfvalue.content, grfid, "georeference"))
+                                    if (resampleCB.checked || mastercatalog.isCompatible(grfvalue.content, obj.id, "georeference"))
                                         rasters.append({path : obj.url})
                                 }
                             }

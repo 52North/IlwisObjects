@@ -86,6 +86,9 @@ bool GeorefConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
             Coordinate crdRightDown(a1 + sz.xsize() * a2, b1 + sz.ysize() * b2 ) ;
             cMin = Coordinate( min(crdLeftup.x, crdRightDown.x), min(crdLeftup.y, crdRightDown.y));
             cMax = Coordinate( max(crdLeftup.x, crdRightDown.x), max(crdLeftup.y, crdRightDown.y));
+			QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+			spGrf->internalEnvelope(Envelope(cMin, cMax));
+			spGrf->centerOfPixel(false);
         } else {
             int iNrTiePoints = gdal()->getGCPCount(_handle->handle());
             if (iNrTiePoints > 0) {

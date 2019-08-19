@@ -370,9 +370,20 @@ domainFormatter returns [ DomainFormatter *node]
 	;	
 
 valrangePart returns [ ValueRangeNode *node]
-	:	'vr' '=' 
+@init{
+	node = new ValueRangeNode();
+}
+	:	id1=ID '(' id2=FLOAT   id3=FLOAT   id4=FLOAT ')' {node->setDomainId($id1); 
+								node->setMin((char *)($id2.text->chars;
+								node->setMax((char *)($id3.text->chars;
+								node->setResolution((char *)($id3.text->chars;}
+	|	id1=ID '(' id2=INT  id3=INT  id4=INT ')' {node->setDomainId($id1); 
+								node->setMin((char *)($id2.text->chars;
+								node->setMax((char *)($id3.text->chars;
+								node->setResolution((char *)($id3.text->chars;}		
 	;	
-	
+
+
 ifStatement returns [ Ifnode *node]
 @init{
 	node = new Ifnode();

@@ -475,10 +475,10 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     check = QString("CheckBox{id:check_pin_%1; checked:%2;width:20}").arg(i).arg(parameters[i]._defValue == "" ? "false" : "true");
                     oldOptionGroup = parameters[i]._optionGroup;
                 } else
-                   xshift = 22;
+                   xshift = 22; 
 
             }else{
-                xshift = 0;
+                xshift = 0; 
             }
             int checkWidth = check == "" ? 0 : 20;
             int imagewidth = 0;      

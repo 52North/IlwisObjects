@@ -402,28 +402,38 @@ void MasterCatalogModel::longAction()
 
 bool MasterCatalogModel::isCompatible(const QString &obj1, const QString &obj2, const QString &type)
 {
-    if ( type == "georeference"){
-        if ( obj1 == obj2)
-            return true;
-		IGeoReference grf1, grf2;
-		bool ok;
-		quint64 id = obj1.toULongLong(&ok);
-		if (ok)
-			grf1.prepare(id, { "mustexist", true });
-		else
-			grf1.prepare(obj1, { "mustexist", true });
+	try {
 
-		id = obj2.toULongLong(&ok);
-		if (ok)
-			grf2.prepare(id, { "mustexist", true });
-		else
-			grf2.prepare(obj2, { "mustexist", true });
-		
+		if (type == "georeference") {
+			if (obj1 == obj2)
+				return true;
+			IGeoReference grf1, grf2;
+			bool ok;
+			quint64 id = obj1.toULongLong(&ok);
+			if (ok)
+				grf1.prepare(id, { "mustexist", true });
+			else
+				grf1.prepare(obj1, { "mustexist", true });
 
-        if ( grf1.isValid() && grf2.isValid()){
-            return grf1->isCompatible(grf2);
-        }
-    }
+			id = obj2.toULongLong(&ok);
+			if (ok) {
+				IRasterCoverage raster;
+				if (raster.prepare(id)) {
+					grf2 = raster->georeference();
+				}
+				else
+					grf2.prepare(id, { "mustexist", true });
+			}
+			else
+				grf2.prepare(obj2, { "mustexist", true });
+
+
+			if (grf1.isValid() && grf2.isValid()) {
+				return grf1->isCompatible(grf2);
+			}
+		}
+	}
+	catch (ErrorObject&) {}
     return false;
 }
 

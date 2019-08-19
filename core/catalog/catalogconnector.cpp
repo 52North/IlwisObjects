@@ -280,8 +280,8 @@ bool CatalogConnector::loadDataThreaded(IlwisObject *obj, const IOOptions &optio
 
 Ilwis::IlwisObject *CatalogConnector::create() const
 {
-    if ( sourceRef().hasProperty("domain"))
-        return new DataSet(sourceRef());
+   // if ( sourceRef().hasProperty("domain"))
+    //    return new DataSet(sourceRef());
     return new Catalog(sourceRef());
 }
 

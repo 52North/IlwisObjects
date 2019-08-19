@@ -652,7 +652,13 @@ IlwisObject *InternalIlwisObjectFactory::createCsy(const Resource& resource, con
         csy = createFromResource<ConventionalCoordinateSystem>(resource, options);
         csy->name(resource.name());
         csy->code(resource.code());
-    }
+	}
+	else {
+		ICoverage cov;
+		if (cov.prepare(resource.url().toString())) {
+			csy = cov->coordinateSystem().ptr();
+		}
+	}
     return csy;
 }
 

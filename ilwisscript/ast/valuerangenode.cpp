@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "ilwis.h"
 #include "astnode.h"
+#include "idnode.h"
 #include "valuerangenode.h"
 
 using namespace Ilwis;
@@ -24,7 +25,30 @@ ValueRangeNode::ValueRangeNode()
 {
 }
 
+void ValueRangeNode::setDomainId(IDNode *node) {
+	_domainId = QSharedPointer<IDNode>(node);
+}
 QString ValueRangeNode::nodeType() const
 {
     return "valrangePart";
 }
+
+double ValueRangeNode::min() const {
+	return _min;
+}
+double ValueRangeNode::max() const {
+	return _max;
+}
+double ValueRangeNode::resolution() const {
+	return _resolution;
+}
+void ValueRangeNode::setMin(const QString& v) {
+	_min = v.toDouble();
+}
+void ValueRangeNode::setMax(const QString& v) {
+	_max = v.toDouble();
+}
+void ValueRangeNode::setResolution(const QString& v) {
+	_resolution = v.toDouble();
+}
+

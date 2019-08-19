@@ -25,6 +25,20 @@ class ValueRangeNode : public ASTNode
 public:
     ValueRangeNode();
      QString nodeType() const;
+
+	 void setDomainId(IDNode *node);
+	 double min() const;
+	 double max() const;
+	 double resolution() const;
+	 void setMin(const QString& v);
+	 void setMax(const QString& v);
+	 void setResolution(const QString& v);
+
+private:
+	QSharedPointer<IDNode> _domainId;
+	double _min = rUNDEF;
+	double _max = rUNDEF;
+	double _resolution = rUNDEF;
 };
 
 }
