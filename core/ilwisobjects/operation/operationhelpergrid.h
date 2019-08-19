@@ -30,6 +30,8 @@ public:
     static int subdivideTasks(ExecutionContext *ctx,const IRasterCoverage& raster, const BoundingBox& bounds, std::vector<BoundingBox > &boxes);
     static bool resample(IRasterCoverage& input1, IRasterCoverage& input2, ExecutionContext *ctx);
     static IRasterCoverage resample(const IRasterCoverage& sourceRaster, const IGeoReference& targetGrf);
+	static bool addCsyFromInput(const Coverage* cov, Resource& res);
+	static bool addGrfFromInput(const RasterCoverage* cov, Resource& resource);
 
     template<typename T> static bool execute(ExecutionContext* ctx, T func, IRasterCoverage& outputRaster, const BoundingBox& bounds=BoundingBox()) {
         std::vector<BoundingBox> boxes;
