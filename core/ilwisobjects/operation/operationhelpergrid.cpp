@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "raster.h"
 #include "connectorinterface.h"
 #include "symboltable.h"
+#include "conventionalcoordinatesystem.h"
 #include "ilwisoperation.h"
 
 #include <QThread>
@@ -33,33 +34,29 @@ OperationHelperRaster::OperationHelperRaster()
 
 BoundingBox OperationHelperRaster::initialize(const IRasterCoverage &inputRaster, IRasterCoverage &outputRaster, quint64 what)
 {
-    Resource resource(itRASTER);
-    Size<> sz = inputRaster->size();
-    BoundingBox box(sz);
+	Resource resource(itRASTER);
+	Size<> sz = inputRaster->size();
+	BoundingBox box(sz);
 
-    if ( what & itRASTERSIZE) {
-        resource.addProperty("size", IVARIANT(sz.toString()),true);
-    }
-    if ( what & itENVELOPE) {
-        if ( box.isNull() || !box.isValid()) {
-            sz = inputRaster->size();
-            box  = BoundingBox(sz);
-        }
-        Envelope bounds = inputRaster->georeference()->pixel2Coord(box);
-        resource.addProperty("envelope", IVARIANT(bounds.toString()));
-    }
-    if ( what & itCOORDSYSTEM) {
-        resource.addProperty("coordinatesystem",inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);
-    }
+	if (what & itRASTERSIZE) {
+		resource.addProperty("size", IVARIANT(sz.toString()), true);
+	}
+	if (what & itENVELOPE) {
+		if (box.isNull() || !box.isValid()) {
+			sz = inputRaster->size();
+			box = BoundingBox(sz);
+		}
+		Envelope bounds = inputRaster->georeference()->pixel2Coord(box);
+		resource.addProperty("envelope", IVARIANT(bounds.toString()));
+	}
+	if (what & itCOORDSYSTEM) {
+		QUrl url = inputRaster->coordinateSystem()->resourceRef().url(true);
+		QFileInfo inf(url.toLocalFile());
+		if (!addCsyFromInput(inputRaster.ptr(), resource))
+			return BoundingBox();
 
-   /* if ( what & itGEOREF) {
-        if ( box.isNull() || !box.isValid()) {
-            sz = inputRaster->size();
-            box  = BoundingBox(sz);
-        }
-        if ( sz.xsize() == box.xlength() && sz.ysize() == box.ylength())
-            resource.addProperty("georeference", IVARIANT(inputRaster->georeference()->resourceRef().url(true).toString()),true);
-    }*/
+        
+    }
     if ( what & itDOMAIN) {
         resource.addProperty("domain", IVARIANT(inputRaster->datadef().domain<>()->id()));
     }
@@ -101,14 +98,15 @@ IIlwisObject OperationHelperRaster::initialize(const IIlwisObject &inputObject, 
                 resource.addProperty("size", IVARIANT(box.size()));
             }
             if ( what & itGEOREF) {
-                resource.addProperty("georeference", gcInput->georeference()->resourceRef().url(true).toString(),true);
+				addGrfFromInput(gcInput.ptr(), resource);
             }
             if ( what & itDOMAIN) {
                 resource.addProperty("domain", IVARIANT(gcInput->datadef().domain()));
             }
         }
         if ( what & itCOORDSYSTEM) {
-            resource.addProperty("coordinatesystem", cov->coordinateSystem()->resourceRef().url(true).toString(),true);
+			if (!addCsyFromInput(cov.ptr(), resource))
+				return IIlwisObject();
         }
 
      }
@@ -121,6 +119,56 @@ IIlwisObject OperationHelperRaster::initialize(const IIlwisObject &inputObject, 
     }
 
     return obj;
+}
+
+bool OperationHelperRaster::addCsyFromInput(const Coverage* cov, Resource& resource) {
+	QUrl url = cov->coordinateSystem()->resourceRef().url(true);
+	QFileInfo inf(url.toLocalFile());
+	if (inf.exists()) {
+		resource.addProperty("coordinatesystem", url.toString(), true);
+		return true;
+	}
+	else {
+		if (cov->coordinateSystem()->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+			QString code("code=proj4:" + cov->coordinateSystem().as<ConventionalCoordinateSystem>()->toProj4());
+			resource.addProperty("coordinatesystem", code, true);
+			return true;
+		}
+		else if (cov->coordinateSystem()->ilwisType() == itBOUNDSONLYCSY) {
+			QString code("code=csy:" + cov->coordinateSystem()->envelope().toString());
+			resource.addProperty("coordinatesystem", code, true);
+		}
+	}
+	return false;
+}
+
+bool OperationHelperRaster::addGrfFromInput(const RasterCoverage* raster, Resource& resource) {
+	QUrl url = raster->georeference()->resourceRef().url(true);
+	QFileInfo inf(url.toLocalFile());
+	if (inf.exists()) {
+		resource.addProperty("georeference", url.toString(), true);
+		return true;
+	}
+	else {
+		QString codeCsy;
+		if (raster->coordinateSystem()->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+			codeCsy = raster->coordinateSystem().as<ConventionalCoordinateSystem>()->toProj4();
+
+
+		}
+		else if (raster->coordinateSystem()->ilwisType() == itBOUNDSONLYCSY) {
+			if (url.toString().indexOf("undetermined") < 0)
+				codeCsy = raster->coordinateSystem()->envelope().toString();
+			else
+				codeCsy = "unknown";
+		}
+		QString grfType = raster->georeference()->grfType();
+		if ( grfType == "corners" || grfType == "undeterminedGeoReference") {
+			QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(raster->size().twod().toString());
+			resource.addProperty("georeference", grfs, true);
+		}
+	}
+	return false;
 }
 
 int OperationHelperRaster::subdivideTasks(ExecutionContext *ctx,const IRasterCoverage& raster, const BoundingBox &bnds, std::vector<BoundingBox > &boxes)

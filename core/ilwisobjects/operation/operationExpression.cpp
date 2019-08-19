@@ -750,6 +750,8 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
             }
 
             QString formatName = parts[1];
+			if (formatName[0] == "*") // special case with most recently used formats which contain a * before the name
+				formatName = formatName.mid(1);
 
             if ( operationresource.ilwisType() & itWORKFLOW) {
 				QDir directory;
