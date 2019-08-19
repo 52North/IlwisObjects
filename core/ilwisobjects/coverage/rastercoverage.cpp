@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "containerstatistics.h"
 #include "itemdomain.h"
 #include "domainitem.h"
+#include "operationhelpergrid.h"
 #include "interval.h"
 #include "itemiterator.h"
 
@@ -65,8 +66,11 @@ void RasterCoverage::georeference(const IGeoReference &grf, bool resetData)
     if ( _georef.isValid() ) {
         _georef->compute();
         coordinateSystem(grf->coordinateSystem()); // mandatory
-        resourceRef().addProperty("coordinatesystem",coordinateSystem()->resourceRef().url(true).toString(),true);
-        resourceRef().addProperty("georeference",_georef->resourceRef().url(true).toString(),true);
+		OperationHelperRaster::addCsyFromInput(this, resourceRef());
+		OperationHelperRaster::addGrfFromInput(this, resourceRef());
+       // resourceRef().addProperty("coordinatesystem",coordinateSystem()->resourceRef().url(true).toString(),true);
+        //resourceRef().addProperty("georeference",_georef->resourceRef().url(true).toString(),true);
+
         if ( coordinateSystem()->envelope(true).isValid())
             resourceRef().addProperty("latlonenvelop", coordinateSystem()->envelope(true).toString());
         if ( _size.isValid() && !_size.isNull() && !resetData)
@@ -98,6 +102,7 @@ void RasterCoverage::georeference(const IGeoReference &grf, bool resetData)
 void RasterCoverage::coordinateSystem(const ICoordinateSystem &csy)
 {
     Coverage::coordinateSystem(csy);
+	OperationHelperRaster::addCsyFromInput(this, resourceRef());
     if ( _georef.isValid()){
         _georef->coordinateSystem(csy);
     }
