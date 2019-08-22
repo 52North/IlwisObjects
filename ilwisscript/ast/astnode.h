@@ -58,7 +58,7 @@ class ASTNode
 {
 public:
     ASTNode();
-    ASTNode(const QString& t) : _type(t) {}
+	ASTNode(const QString& t);
     virtual ~ASTNode() {}
    bool addChild(ASTNode *n);
    virtual bool evaluate(SymbolTable& symbols, int scope, ExecutionContext* ctx);

@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisdata.h"
 
 namespace Ilwis {
+	class RasterCoverage;
+	typedef IlwisData<RasterCoverage> IRasterCoverage;
 
 class Selector;
 class SelectNode;
@@ -82,6 +84,7 @@ private:
     IIlwisObject getObject(const Symbol &sym) const;
     void getFormat(QSharedPointer<Ilwis::ASTNode> &node, QString &format, QString &fnamespace) const;
     void store2Format(QSharedPointer<Ilwis::ASTNode> &node, const Symbol &sym, const QString &result);
+	void setResolution(IRasterCoverage& raster, QSharedPointer<ASTNode>& node) const;
     bool _defintion;
     QSharedPointer<ASTNode> _expression;
     QSharedPointer<OutParametersNode> _outParms;

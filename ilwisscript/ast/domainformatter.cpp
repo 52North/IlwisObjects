@@ -32,10 +32,17 @@ void DomainFormatter::setDomainId(IDNode *node)
     _domainId = QSharedPointer<IDNode>(node);
 }
 
-void DomainFormatter::setValueRange(ValueRangeNode *node)
-{
-    _valrange = QSharedPointer<ValueRangeNode>(node);
+void DomainFormatter::setResolution(char *num) {
+	QString s(num);
+	bool ok;
+	_resolution = s.toDouble(&ok);
+	if (!ok) {
+		_resolution = Ilwis::rUNDEF;
+	}
+}
 
+double DomainFormatter::resolution() const {
+	return _resolution;
 }
 
 QString DomainFormatter::nodeType() const

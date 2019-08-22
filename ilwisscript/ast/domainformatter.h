@@ -23,12 +23,14 @@ class DomainFormatter : public ASTNode
 public:
     DomainFormatter();
     void setDomainId(IDNode *node);
-    void setValueRange(ValueRangeNode *node);
+	void setResolution(char *num);
+	double resolution() const;
+
     QString nodeType() const;
 
 private:
     QSharedPointer<IDNode> _domainId;
-    QSharedPointer<ValueRangeNode> _valrange;
+	double _resolution = rUNDEF;
 };
 }
 

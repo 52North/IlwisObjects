@@ -157,6 +157,10 @@ ASTNode::ASTNode() : _evaluated(false), _type("astnode")
 {
 }
 
+ASTNode::ASTNode(const QString& t) : _type(t) {
+
+}
+
 bool ASTNode::addChild(ASTNode *n)
 {
     _childeren.push_back(QSharedPointer<ASTNode>(n));

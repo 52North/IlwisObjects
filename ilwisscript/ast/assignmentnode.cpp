@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "symboltable.h"
 #include "astnode.h"
 #include "idnode.h"
+#include "domainformatter.h"
 #include "operationnodescript.h"
 #include "expressionnode.h"
 #include "symboltable.h"
@@ -101,19 +102,41 @@ IIlwisObject AssignmentNode::getObject(const Symbol& sym) const {
     return IIlwisObject();
 
 }
+void AssignmentNode::setResolution(IRasterCoverage& raster, QSharedPointer<ASTNode>& node) const {
+	for (int i = 0; i < node->noOfChilderen(); ++i) {
+		auto data = node->child(i).data();
+		if (data->nodeType() == "dompart" && raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+			DomainFormatter *formatter = static_cast<DomainFormatter *>(data);
+			double res = formatter->resolution();
+			if (res != rUNDEF) {
+				NumericRange *rng = raster->datadefRef().range()->as<NumericRange>();
+				rng->resolution(res);
+				for (int z = 0; z < raster->size().zsize(); ++z) {
+					NumericRange *rng =  raster->datadefRef(z).range()->as<NumericRange>();
+					rng->resolution(res);
+				}
+			}
+		}
+	}
+}
 
 void AssignmentNode::getFormat(QSharedPointer<ASTNode>& node, QString& format, QString& fnamespace) const {
-    Formatter *fnode = static_cast<Formatter *>(node->child(0).data());
-    format = fnode->format();
-    fnamespace = fnode->fnamespace();
+	for (int i = 0; i < node->noOfChilderen(); ++i) {
+		auto data = node->child(i).data();
+		if (data->nodeType() == "Formatter") {
+			Formatter *fnode = static_cast<Formatter *>(data);
+			format = fnode->format();
+			fnamespace = fnode->fnamespace();
 
-    if ( format == "" || format == sUNDEF) {
-        Formatter *fnode = ScriptNode::activeFormat(itRASTER);
-        if ( fnode) {
-            format = fnode->format();
-            fnamespace = fnode->fnamespace();
-        }
-    }
+			if (format == "" || format == sUNDEF) {
+				Formatter *fnode = ScriptNode::activeFormat(itRASTER);
+				if (fnode) {
+					format = fnode->format();
+					fnamespace = fnode->fnamespace();
+				}
+			}
+		}
+	}
 }
 
 void AssignmentNode::store2Format(QSharedPointer<ASTNode>& node, const Symbol& sym, const QString& result) {
@@ -235,6 +258,7 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                         if ( resultGC.isValid() && resultGC->size().zsize() > 1){
                             createCatalog(resultGC);
                         }
+						setResolution(resultGC, specifier);
 
                     }
                     else if (hasType(tp, itFEATURE))
@@ -270,8 +294,6 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                         throw ErrorObject(QString(TR(ERR_OPERATION_FAILID1).arg("assignment")));
                     }
                     if ( !specifier.isNull()) {
-                        if ( specifier->noOfChilderen()!= 1)
-                            return ERROR2(ERR_NO_OBJECT_TYPE_FOR_2, "Output object", "expression");
                         store2Format(specifier, sym, result);
 
                     }
