@@ -110,6 +110,8 @@ public:
     Q_INVOKABLE void longAction();
     Q_INVOKABLE bool isCompatible(const QString& objUrl1, const QString& objUrl2, const QString& type);
 	Q_INVOKABLE QStringList pathList(const QString& path) const;
+	Q_INVOKABLE QString checkValueType(const QString& name, bool simplified) const;
+	Q_INVOKABLE void clearSelection();
 	MenuModel *bookMarkMenu();
     std::vector<Ilwis::Resource> select(const QString& filter);
 

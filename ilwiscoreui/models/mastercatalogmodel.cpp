@@ -505,6 +505,14 @@ IlwisObjectModel *MasterCatalogModel::id2object(const QString &objectid, QQuickI
     return 0;
 }
 
+void MasterCatalogModel::clearSelection() {
+	for (IlwisObjectModel *model : _selectedObjects) {
+		model->setParent(0);
+		model->deleteLater();
+	}
+	currentCatalog()->clearSelection();
+	_selectedObjects.clear();
+}
 void MasterCatalogModel::setSelectedObjects(const QString &objects)
 {
     try {
@@ -1062,6 +1070,21 @@ QStringList MasterCatalogModel::pathList(const QString& path) const {
 	QString p = url.path();
 	QStringList result = p.split("/");
 	return result;
+}
+
+QString MasterCatalogModel::checkValueType(const QString& name, bool simplified) const {
+	IDomain dom;
+	if (dom.prepare(name, { "mustexist", true })) {
+		IlwisTypes tp = dom->valueType();
+		if (simplified) {
+			if (tp >= itINT8 && tp <= itINT64)
+				return "integer";
+			if (tp == itFLOAT || tp == itDOUBLE)
+				return "float";
+		}
+		return TypeHelper::type2name(tp);
+	}
+	return sUNDEF;
 }
 
 //--------------------
