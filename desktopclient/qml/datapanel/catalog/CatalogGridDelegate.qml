@@ -111,6 +111,7 @@ Item {
             }
         }
         onClicked: {
+		    console.debug("click")
             if (mouse.button == Qt.RightButton) {
                 var menuItems = []; // TODO: the menuItems and actions should be generated elsewhere
                 menuItems.push(["Open","showObject(id);"]);

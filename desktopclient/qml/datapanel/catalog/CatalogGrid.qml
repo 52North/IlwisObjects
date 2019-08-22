@@ -14,7 +14,7 @@ FocusScope {
     anchors.fill: parent
     property color backgroundColor: uicontext.genericBGColor
     Rectangle {
-    id : cont
+	    id : cont
         anchors.fill :parent
         color : mastercatalog.metadataEditMode ? "#f2f2f2" : uicontext.catalogBGColor
 
@@ -23,6 +23,7 @@ FocusScope {
             id : catalogGrid
             anchors.fill : parent
             anchors.margins: 2
+			z : 20
 
             GridView {
                 id : itemgrid
@@ -46,6 +47,12 @@ FocusScope {
                 flow: GridView.FlowTopToBottom
             }
         }
+		MouseArea {
+			anchors.fill : parent
+			onClicked : {
+				mastercatalog.clearSelection()
+			}
+		}
     }
 }
 
