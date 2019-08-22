@@ -854,24 +854,40 @@ QString ObjectCreator::createRasterCoverage(const QVariantMap& parms){
     if ( name == "")
         return sUNDEF;
     name = OperationHelper::quote(name);
-
+	QString dom = parms["domain"].toString();
+	QString stDom = parms["stackdomain"].toString();
+	int idx = -1;
+	if ((idx = dom.indexOf("(")) != -1) {
+		dom = dom.left(idx);
+	}
+	if ((idx = stDom.indexOf("(")) != -1) {
+		stDom = stDom.left(idx);
+	}
     QString expr = "createrastercoverage(";
     expr += "\"" + parms["georeference"].toString() + "\"";
     expr += ",";
-    expr += parms["domain"].toString();
+    expr += dom;
     expr += ",";
     expr += "\"" + parms["bands"].toString() + "\"";
     expr += ",";
-    expr += "\"" + parms["stackdomain"].toString() + "\"" ;
+    expr += "\"" + stDom + "\"" ;
     expr += ",";
     expr += "\"" + parms["stackdefinition"].toString() + "\"";
     expr += ",";
     expr += parms["autoresample"].toBool() ? "yes" : "no";
 
+	QString res;
+	if (parms["resolution"] != "") {
+		bool ok;
+		double resolution = parms["resolution"].toDouble(&ok);
+		if (ok) {
+			res = ";resolution(" + QString::number(resolution) + ")";
+		}
+	} 
 
     expr += ")";
 
-    QString output = QString("script %1{format(stream,\"rastercoverage\")}=").arg(name);
+    QString output = QString("script %1{format(stream,\"rastercoverage\")%2}=").arg(name).arg(res);
     expr = output + expr;
    executeoperation(expr);
 

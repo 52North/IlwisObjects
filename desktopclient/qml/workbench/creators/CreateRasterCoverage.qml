@@ -16,6 +16,7 @@ Controls.DropableItem{
     height : 0
     clip:true
     property var list
+	property var domainValueType
 
     function setValue(type, value){
         var resource
@@ -54,20 +55,6 @@ Controls.DropableItem{
                 width : parent.width
             }
 
-            Connections {
-                target : grfvalue
-                onCreateClicked : {
-                    editorList.push({item:creatorContainer, properties:{creator:objectcreator.creatorInfo("cornersgeoreferences")}})
-                }
-            }
-
-            Connections {
-                target : domvalue
-                onCreateClicked : {
-                    editorList.push({item:creatorContainer, properties:{creator:objectcreator.creatorInfo("domain")}})
-                }
-            }
-
             Controls.FilteredTextEditLabelPair{
                 id : grfvalue
                 labelWidth: 100
@@ -75,28 +62,40 @@ Controls.DropableItem{
                 filterImage: "../images/georeference20.png"
                 filterType: "georeference"
                 width : parent.width
-                useCreateButton: true
             }
 
-            Controls.FilteredTextEditLabelPair{
+            Controls.ComboxLabelPair{
                 id : domvalue
                 labelWidth: 100
                 labelText: qsTr("Domain")
-                filterImage: "../images/domain.png"
-                filterType: "domain"
                 width : parent.width
-                useCreateButton: true
-                content : "value"
+                content : "value(float)"
+				textEditable : true
+				filters : ["domain", "itemdomain", "numericdomain"]
+				itemModel : ["value(float)", "image(8 bits)","image16(16 bits)","min1to1", "integer(-big to +big)", "count(0..big)", "positiveInteger(1..big)", "distance(0.. float)", "percentage(0..100.0"]
+				checkFunction : testDrop
+
+				onContentChanged : {
+					domainValueType = mastercatalog.checkValueType(content, true)	
+				}
             }
-            Controls.FilteredTextEditLabelPair{
+			Controls.TextEditLabelPair {
+				id : resid
+  			    labelWidth: 100
+                labelText: qsTr("Resolution")
+                width :220
+				visible : domainValueType == "float" || domainValueType == "integer"
+				content : domainValueType == "float" ? 0.01 : 1 
+			}
+            Controls.ComboxLabelPair{
                 id : stackdomvalue
                 labelWidth: 100
-                labelText: qsTr("Stack Domain")
-                filterImage: "../images/domain.png"
-                filterType: "domain"
                 width : parent.width
-                useCreateButton: true
-                content : "positiveInteger"
+                content : "positiveInteger(1..big)"
+				textEditable : true
+				itemModel : ["value(float)", "image(8 bits)","image16(16 bits)","min1to1", "integer(-big to +big)", "count(0..big)", "positiveInteger(1..big)", "distance(0.. float)", "percentage(0..100.0"]
+				currentIndex : 6
+				checkFunction : testDrop
             }
 
             Controls.TextEditLabelPair{
@@ -195,7 +194,19 @@ Controls.DropableItem{
                                     }
                                     if (resampleCB.checked || mastercatalog.isCompatible(grfvalue.content, obj.id, "georeference"))
                                         rasters.append({path : obj.url})
+									var vt = obj.internalValuetype
+									if ( vt === "byte")
+										domvalue.currentIndex = 1
+									if ( vt === "uint16")
+										domvalue.currentIndex = 2
+									if ( vt === "uint32" || vt === "uint64")
+										domvalue.currentIndex = 5
+									if ( vt === "int32" || vt === "int64")
+										domvalue.currentIndex = 4
+									if ( domvalue.content == "" )
+										domvalue.currentIndex = 0
                                 }
+
                             }
                         }
                     }
@@ -226,6 +237,7 @@ Controls.DropableItem{
              var url = applyButton.currentCatalogCorrectUrl() + "/"+ namevalue.content
             var createInfo = {georeference : grfvalue.content,
                 domain : domvalue.content,
+				resolution : resid.visible ? resid.content : "",
                 stackdefinition : bandsvalue.content,
                 type : "rastercoverage",
                 name :  url,
@@ -263,5 +275,20 @@ Controls.DropableItem{
 			}
 		}
 	}
+
+	function testDrop(id, filterTypes){
+        if (!id)
+            return false
+        var obj = mastercatalog.id2object(id, null)
+		for ( var i=0; i < filterTypes.length ; ++i) {
+			if ( obj.typeName === filterTypes[i]){ 
+				obj.suicide()
+				return true
+			}
+		}
+		if ( obj)
+			obj.suicide()
+        return false
+    }
 }
 
