@@ -298,7 +298,7 @@ quint64 AggregateRasterStatisticsBySubset::createMetadata()
 	operation.addInParameter(2, itINTEGER | itSTRING, TR("Start band"), TR("Band index from which the statistical method starts calculating"));
 	operation.addInParameter(3, itINTEGER | itSTRING, TR("End band"), TR("Band index from which the statistical method stops calculating"));
 	operation.setOutParameterCount({ 1 });
-	operation.addOutParameter(0, itRASTER, TR("output raster"), TR("Single band raster with the aggregated statical values"));
+	operation.addOutParameter(0, itRASTER, TR("output raster"), TR("Single band raster with the aggregated statical values"), itINTEGER | itFLOAT | itDOUBLE);
 	operation.setKeywords("raster, statistics,numeric,aggregate");
 
 	mastercatalog()->addItems({ operation });

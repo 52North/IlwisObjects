@@ -215,8 +215,7 @@ bool RasterSerializerV1::storeData(IlwisObject *obj, const IOOptions &options )
     RawConverter converter;
     if ( hasType(raster->datadef().domain()->ilwisType() , itNUMERICDOMAIN)){
         NumericStatistics& stats = raster->statistics(ContainerStatistics<PIXVALUETYPE>::pBASIC);
-        qint16 digits = stats.significantDigits();
-        PIXVALUETYPE scale = digits >= 10 ? 0 : std::pow(10,-digits);
+		PIXVALUETYPE scale = raster->datadef().range()->as<NumericRange>()->resolution();
 		bool hasUndefs = stats[ContainerStatistics<PIXVALUETYPE>::pCOUNT] != stats[ContainerStatistics<PIXVALUETYPE>::pNETTOCOUNT];
         converter = RawConverter(stats[ContainerStatistics<PIXVALUETYPE>::pMIN], stats[ContainerStatistics<PIXVALUETYPE>::pMAX],scale, hasUndefs);
 

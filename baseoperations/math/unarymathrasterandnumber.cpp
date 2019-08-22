@@ -152,7 +152,7 @@ Resource UnaryMathRasterAndNumber::populateMetadata(const QString& item, const Q
     operation.setInParameterCount({1});
     operation.addInParameter(0,itRASTER|itNUMBER,"input value");
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER|itNUMBER, "output name");
+    operation.addOutParameter(0,itRASTER|itNUMBER, "output name",sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
     return operation;

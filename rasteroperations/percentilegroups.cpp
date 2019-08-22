@@ -169,7 +169,7 @@ quint64 PercentileGroups::createMetadata()
 	operation.addInParameter(1, itSTRING, TR("Dsitribution groups"), TR("Groups bounds over whitch the values will be distributed by percentile"));
 	operation.addInParameter(2, itPOSITIVEINTEGER, TR("Control group count"), TR("Bands below this index are used for calculation of the trend numbers"));
 	operation.setOutParameterCount({ 1 });
-	operation.addOutParameter(0, itRASTER, TR("adjusted raster"));
+	operation.addOutParameter(0, itRASTER, TR("adjusted raster"), sUNDEF, itFLOAT | itDOUBLE);
 	operation.setKeywords("raster, classification, statistics");
 	operation.parameterNeedsQuotes(1);
 

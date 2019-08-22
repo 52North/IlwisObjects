@@ -132,7 +132,7 @@ quint64 StackMinMaxFilter::createMetadata()
     operation.addInParameter(1,itSTRING , TR("filter type"),TR("Definition of the filter type. This can be either minimum or maximum"));
     operation.setOutParameterCount({1});
     operation.addValidation(0,0,"domain=numericdomain");
-    operation.addOutParameter(0,itRASTER, TR("output raster"),TR("output raster with a numeric domain"));
+    operation.addOutParameter(0,itRASTER, TR("output raster"),TR("output raster with a numeric domain"), itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("filter,raster");
 
     mastercatalog()->addItems({operation});
