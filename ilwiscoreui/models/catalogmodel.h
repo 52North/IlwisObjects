@@ -77,6 +77,7 @@ public:
     Ilwis::CatalogView& viewRef() ;
     QQmlListProperty<ResourceModel> resources();
     QQmlListProperty<ResourceModel> coverages();
+	void clearSelection();
 
     int catalogType() const;
     void catalogType(int tp);

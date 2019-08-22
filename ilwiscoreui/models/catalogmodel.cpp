@@ -185,6 +185,13 @@ void CatalogModel::sortItems(QList<ResourceModel *>& items) {
 	}
 }
 
+void CatalogModel::clearSelection() {
+	for (auto *item : _allItems) {
+		if ( item->isSelected())
+			item->setIsSelected(false);
+	}
+}
+
 QQmlListProperty<ResourceModel> CatalogModel::resources() {
 
     try{
