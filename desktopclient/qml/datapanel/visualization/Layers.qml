@@ -68,7 +68,6 @@ Item {
         maparea.initGeoDrawer()
         layerview.createParameters[layerview.activeSubPanel] = [filter, sourceName, sourceType]
 		models.lastAddedId = layerManager().viewid
-		console.debug("xxxxxxxxx", cmd)
         return layerManager().viewid
     }
 

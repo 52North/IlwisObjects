@@ -66,6 +66,7 @@ DropArea {
         onTextChanged: {
             if ( regexvalidator){
                 var regex = regexvalidator
+				var k = regex.test(textid.text)
                 if (!regex.test(textid.text)){
                     textid.text = textid.oldText
                 }
