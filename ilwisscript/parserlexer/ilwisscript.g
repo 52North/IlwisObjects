@@ -313,30 +313,18 @@ formatters returns [ ASTNode *node ]
 @init{
 	node = new ASTNode("Formatters");
 }
-	: formatter					{ node->addChild($formatter.node); }
-	| formatter ';' formatters			{ node->addChild($formatter.node); }
+	: dataFormatter				{ node->addChild($dataFormatter.node); }
+	| domainFormatter			{ node->addChild($domainFormatter.node); }
+	| domainFormatter ';' dataFormatter	{ node->addChild($domainFormatter.node); node->addChild($dataFormatter.node); }
+	| dataFormatter ';' domainFormatter	{ node->addChild($domainFormatter.node); node->addChild($dataFormatter.node); }
 	;
 
 formatter returns [ ASTNode *node]
 	
 	: dataFormatter				{ node = $dataFormatter.node;}
 	| domainFormatter			{ node = $domainFormatter.node;}
-	| grouper
-	| reintepreter
-	;
-
-grouper	: 'groupBy' '(' idlist')'
-	;
-
-reintepreter
-	: 'reinterpret(' idlist '=' ID ',' STRING ',' STRING ')'
-	| 'reinterpret(' STRING ')'
 	;
 	
-idlist	: ID+
-	
-	;
-
 dataFormatter returns [ Formatter *node]
 @init{
 	node = new Formatter();
@@ -365,24 +353,9 @@ domainFormatter returns [ DomainFormatter *node]
 @init{
 	node = new DomainFormatter();
 }
-	:	'dom' '=' ID 			{ node->setDomainId(new IDNode((char *)($ID.text->chars)));}
-	|	'dom' '=' valrangePart 		{ node->setValueRange($valrangePart.node);}
+	:	'resolution' '(' id1=FLOAT ')'	{ node->setResolution((char *)($id1.text->chars));}
+	|	'resolution' '(' id1=INT ')'	{ node->setResolution((char *)($id1.text->chars));}	
 	;	
-
-valrangePart returns [ ValueRangeNode *node]
-@init{
-	node = new ValueRangeNode();
-}
-	:	id1=ID '(' id2=FLOAT   id3=FLOAT   id4=FLOAT ')' {node->setDomainId($id1); 
-								node->setMin((char *)($id2.text->chars;
-								node->setMax((char *)($id3.text->chars;
-								node->setResolution((char *)($id3.text->chars;}
-	|	id1=ID '(' id2=INT  id3=INT  id4=INT ')' {node->setDomainId($id1); 
-								node->setMin((char *)($id2.text->chars;
-								node->setMax((char *)($id3.text->chars;
-								node->setResolution((char *)($id3.text->chars;}		
-	;	
-
 
 ifStatement returns [ Ifnode *node]
 @init{
