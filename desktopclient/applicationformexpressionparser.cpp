@@ -35,14 +35,15 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
                                                                                                const QStringList& choices,
                                                                                              bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{
     FormParameter parm;                              
-    QString prefix = QString("pin_%1_").arg(index + 1);     
+    QString prefix = QString("pin_%1_").arg(index + 1); 
     FieldType alternateUIType = ftNONE;   
     if ( resource.hasProperty((prefix + "validationcondition"))){
         OperationResource::UIElement elem = (OperationResource::UIElement)resource[prefix + "altUIType"].toInt();
         if ( elem == OperationResource::ueCOMBO && !workflowContex){ // no comboboxes in the workflow context as the controlling field is porbably not filled in
             alternateUIType = ftCOMBOBOX;
         }
-    }   
+    } 
+
     parm._label = resource[prefix + "name"].toString(); 
     parm._dataType = resource[prefix + "type"].toULongLong();
     parm._isOptional = optional;
@@ -111,6 +112,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
        parm._dataType = resource[prefix + "type"].toULongLong();
        parm._isOptional = false;
        parm._label = resource[prefix + "name"].toString();
+	   parm._valueType = resource[prefix + "valuetype"].toULongLong();
        parameters.push_back(parm);
 
     }
@@ -508,15 +510,21 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                         arg(input ? dropKeys(parameters[i]._dataType) : "\"?\"").
                         arg(constantValue == "" ? parameters[i]._defValue : constantValue).
                         arg(checkEffects).
-                        arg(wrapMode);
-                } 
+                        arg(wrapMode);   
+                }          
 
                 QString parameterRow = QString(rowBodyText + textFieldPart + imagePart + "}").arg(check).arg(parameters[i]._label).arg(width).arg(i).arg(checkWidth).arg(xshift).arg(visibile).arg(hasType(parameters[i]._fieldType,ftTEXTEDIT) ? 30 : 75);
-                formRows += parameterRow;
-                if ( results != "")
+                formRows += parameterRow;   
+                if ( results != "") 
                     results += "+ \"|\" +";  
                 results += QString(input ? "pin_%1.text" : "pout_%1.text").arg(i);
                 if ( !input){
+					if (hasType(parameters[i]._valueType, itINTEGER | itFLOAT | itDOUBLE)) {
+						QString vr = QString("Controls.TextEditLabelPair{id: pout_res_%1;labelText:qsTr(\"Numeric resolution\"); boldLabel : false; labelWidth:100; width:200;height:20}").arg(i);
+						formRows += vr;
+						results += "+\"@@\"+" + QString("pout_res_%1.content").arg(i);
+
+					}
                     QString query = QString("(datatype & %1)!=0 and (readwrite='rc' or readwrite='rcu')").arg(parameters[i]._dataType);
                     QString formatList = formats(query, parameters[i]._dataType);
                     if ( formatList != ""){                  
@@ -601,12 +609,12 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
             formRows.replace("optionalOutputMarker",";");
     //        formRows.replace("optionalOutputMarker",";text : outputfield_0;onTextChanged:{ if( text !== outputfield_0){ outputfield_0=text}}");
         }else {    
-            formRows.replace("optionalOutputMarker","");
+            formRows.replace("optionalOutputMarker",""); 
         }   
 
-    }catch(...){ 
+    }catch(...){   
      }
-    return formRows; 
+    return formRows;                 
 }      
 
 QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,

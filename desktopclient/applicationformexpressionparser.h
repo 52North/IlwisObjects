@@ -41,6 +41,7 @@ private:
         QStringList _choiceList;
         QString _label;
         IlwisTypes _dataType;
+		IlwisTypes _valueType = itUNKNOWN;
         quint32 _isOptional;
         int _optionGroup;
         QString _defValue;
