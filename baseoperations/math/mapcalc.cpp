@@ -220,7 +220,7 @@ quint64 MapCalc1::createMetadata()
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
+    operation.addOutParameter(0,itRASTER, TR("raster coverage"), "", itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
     mastercatalog()->addItems({operation});
@@ -249,7 +249,7 @@ quint64 MapCalc2::createMetadata()
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
+    operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
     mastercatalog()->addItems({operation});
@@ -279,7 +279,7 @@ quint64 MapCalc3::createMetadata()
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(3,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
+    operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
     mastercatalog()->addItems({operation});
@@ -310,7 +310,7 @@ quint64 MapCalc4::createMetadata()
     operation.addInParameter(3,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(4,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
+    operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
     mastercatalog()->addItems({operation});
     return operation.id();
@@ -342,7 +342,7 @@ quint64 MapCalc5::createMetadata()
     operation.addInParameter(4,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(5,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
+    operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
     mastercatalog()->addItems({operation});
@@ -376,7 +376,7 @@ quint64 MapCalc6::createMetadata()
     operation.addInParameter(5,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(6,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
-    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
+    operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
     mastercatalog()->addItems({operation});
