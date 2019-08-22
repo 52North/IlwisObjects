@@ -923,10 +923,10 @@ IlwisTypes IlwisObject::findType(const QString &resource)
 
 void IlwisObject::changeData(const Resource& resource, const QString& property, const QString& value) {
 	InternalDatabaseConnection db;
-	QString stmt = QString("DELETE FROM objectadjustments where objecturl = '%1' and ilwistype='%2' and propertyname='%3'  and ismodel=0")
-		.arg(resource.url(true).toString())
-		.arg(TypeHelper::type2name(resource.ilwisType())
-			.arg(property));
+	QString stmt = QString("DELETE FROM objectadjustments where objecturl = '");
+	stmt += resource.url(true).toString() + "' and ilwistype='";
+	stmt += TypeHelper::type2name(resource.ilwisType()) + "' and propertyname='"; 
+	stmt += property + "'  and ismodel=0";
 	if (!db.exec(stmt)) {
 		kernel()->issues()->logSql(db.lastError());
 		return;
