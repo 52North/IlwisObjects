@@ -8,7 +8,7 @@ import "../controls" as Controls
 
 Item {
     id : cbox   
-    property string content : control.currentText
+    property string content : editid.text
     property string labelText
     property int labelWidth
     property bool textEditable : false
@@ -22,6 +22,9 @@ Item {
     property string role
     property alias currentIndex : control.currentIndex
 	property var callback
+	property var checkFunction
+	property var callbackFunction : null
+	property var filters : []
     height : 20
 
     signal indexChanged()
@@ -97,23 +100,43 @@ Item {
 		     width : control.width - 12
 			 height : control.height - 12
 
-			Text {
-			    x : 4
-				y : 5
-				leftPadding: 0
-				width : parent.width - 15
-				rightPadding: control.indicator.width + control.spacing
+			 DropArea {
+			 		width : parent.width - 15
+					height : parent.height
+					TextEdit {
+						id : editid
+						x : 4
+						y : 5
+						leftPadding: 0
+						width : parent.width
+						rightPadding: control.indicator.width + control.spacing
 
-				text: stripName(control.displayText)
-				font: control.font
-				color: "black"
-				verticalAlignment: Text.AlignVCenter
-				elide: Text.ElideRight
-				clip : true
+						text: stripName(control.displayText)
+						font: control.font
+						color: "black"
+						verticalAlignment: Text.AlignVCenter
+						//elide: Text.ElideRight
+						clip : true
+						readOnly : !cbox.textEditable
 
-				onTextChanged : {
-					if ( callback)	
-						callback(text)
+						onTextChanged : {
+							if ( callback)	
+								callback(text)
+						}
+					}
+			    onDropped : {
+				    var ilwisobjectid
+					if ( 'ilwisobjectid' in drag.source){
+						ilwisobjectid = drag.source.ilwisobjectid
+					}
+					if ( checkFunction && ilwisobjectid){
+						if ( checkFunction(ilwisobjectid, filters))
+							control.displayText = drag.source.message
+					}else {
+						if ( callbackFunction)
+							callbackFunction(editid.text)
+						control.displayText = drag.source.message
+					}
 				}
 			}
 		}
@@ -178,7 +201,7 @@ Item {
     }
 
 	function stripName(txt) {
-		if ( txt.charAt(0) == "*")
+		if ( txt && txt.charAt(0) == "*")
 			return txt.substr(1)
 		return txt
 
