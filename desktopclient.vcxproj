@@ -237,6 +237,7 @@
     <None Include="desktopclient\qml\controls\LayerExtentsToolbar.qml" />
     <None Include="desktopclient\qml\controls\MapExtentButton.qml" />
     <None Include="desktopclient\qml\controls\MultiPointSlider.qml" />
+    <None Include="desktopclient\qml\controls\NumericResolution.qml" />
     <None Include="desktopclient\qml\controls\ProjectionParametersEditor.qml" />
     <None Include="desktopclient\qml\controls\PushButton.qml" />
     <None Include="desktopclient\qml\controls\RotatingArrow.qml" />

@@ -1301,6 +1301,9 @@
     <None Include="desktopclient\qml\datapanel\catalog\SetKeyWords.qml">
       <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
     </None>
+    <None Include="desktopclient\qml\controls\NumericResolution.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
