@@ -518,7 +518,7 @@ void OperationResource::addOptionalInParameter(quint32 order, IlwisTypes type, c
     addProperty(prefix + "optional", true);
 }
 
-void OperationResource::addOutParameter(quint32 order, IlwisTypes type, const QString &nme, const QString &description)
+void OperationResource::addOutParameter(quint32 order, IlwisTypes type, const QString &nme, const QString &description, IlwisTypes valueType)
 {
     QString prefix = "pout_" + QString::number(order + 1) + "_";
     addProperty(prefix + "type", type);
@@ -527,6 +527,7 @@ void OperationResource::addOutParameter(quint32 order, IlwisTypes type, const QS
 	d.replace("'", " ");
 	addProperty(prefix + "desc", d);
     addProperty(prefix + "optional", false);
+	addProperty(prefix + "valuetype", valueType);
 }
 
 void OperationResource::addOptionalOutParameter(quint32 order, IlwisTypes type, const QString &name, const QString &description)

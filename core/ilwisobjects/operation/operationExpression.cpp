@@ -748,8 +748,15 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
                 duplicateFileNames = true;
                 kernel()->issues()->log(TR("Workflow did not execute, multiple occurences of an output name"));
             }
-
-            QString formatName = parts[1];
+			double resolution = rUNDEF;
+			int fnameIndex = parts.size() == 2 ? 1 : 2;
+			if (parts.size() == 3) {
+				bool ok;
+				double v = parts[1].toDouble(&ok);
+				if (ok)
+					resolution = v;
+			}
+            QString formatName = parts[fnameIndex];
 			if (formatName[0] == "*") // special case with most recently used formats which contain a * before the name
 				formatName = formatName.mid(1);
 
@@ -824,7 +831,7 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
                     IlwisTypes type = operationresource[pout].toULongLong();
                     QVariantList values = DataFormat::getFormatProperties(DataFormat::fpCODE,type,obj->provider());
                     if ( values.size() != 0){
-                        format = "{format(" + obj->provider() + ",\"" + values[0].toString() + "\")}";
+                        format = "{format(" + obj->provider() + ",\"" + values[0].toString() + "\")";
                     }else{
                         kernel()->issues()->log(QString("No valid conversion found for provider %1 and format %2").arg(obj->provider()).arg(IlwisObject::type2Name(type)));
                         return OperationExpression();
@@ -840,9 +847,13 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
                     std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
                     if ( formats.size() == 1){
                         format = "{format(" + (*formats.begin()).second.property(DataFormat::fpCONNECTOR).toString() + ",\"" +
-                                (*formats.begin()).second.property(DataFormat::fpCODE).toString() + "\")}";
+                                (*formats.begin()).second.property(DataFormat::fpCODE).toString() + "\")";
                     }
                 }
+				if (resolution != rUNDEF) {
+					format += ";resolution(" + QString::number(resolution) + ")";
+				}
+				format += "}";
                 // if there is no path we extend it with a path unless the output is a new column, output is than the "old" table so no new output object
                 if (output.indexOf("://") == -1) {
                     output = createOuputName(context()->workingCatalog()->resource(), output);
@@ -853,25 +864,28 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
                     output = output + format;
             }else{
                 if ( hasType(outputtype,itRASTER)){
-                    format = "{format(stream,\"rastercoverage\")}";
+                    format = "{format(stream,\"rastercoverage\")";
                 }else if (hasType(outputtype, itFEATURE)){
-                    format = "{format(stream,\"featurecoverage\")}";
+                    format = "{format(stream,\"featurecoverage\")";
                 }else if (hasType(outputtype, itTABLE | itCOLUMN)){
-                    format = "{format(stream,\"table\")}";
+                    format = "{format(stream,\"table\")";
                 }else if (hasType(outputtype, itCATALOG)){
-                    format = "{format(stream,\"catalog\")}";
+                    format = "{format(stream,\"catalog\")";
                 }else if (hasType(outputtype, itDOMAIN)){
-                    format = "{format(stream,\"domain\")}";
+                    format = "{format(stream,\"domain\")";
                 }else if (hasType(outputtype, itCOORDSYSTEM)){
-                    format = "{format(stream,\"coordinatesystem\")}";
+                    format = "{format(stream,\"coordinatesystem\")";
                 }else if (hasType(outputtype, itGEOREF)){
-                    format = "{format(stream,\"georeference\")}";
+                    format = "{format(stream,\"georeference\")";
                 }
                 if ( formatName == "Temporary"){
                     if ( output.indexOf(".ilwis")== -1)
                         output += ".ilwis";
                 }
-
+				if (resolution != rUNDEF) {
+					format += ";resolution(" + QString::number(resolution) + ")";
+				}
+				format += "}";
                 output = output + format;
             }
         }

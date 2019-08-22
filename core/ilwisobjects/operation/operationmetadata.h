@@ -38,7 +38,7 @@ public:
     void setOutParameterCount(const std::vector<quint32>& counts);
     void addInParameter(quint32 order, IlwisTypes type, const QString& name=sUNDEF, const QString& description=sUNDEF, UIElement altUIType=ueNONE, bool needsQuotes=false);
     void addOptionalInParameter(quint32 order, IlwisTypes type, const QString& name=sUNDEF, const QString& description=sUNDEF, UIElement altUIType=ueNONE);
-    void addOutParameter(quint32 order, IlwisTypes type, const QString& name=sUNDEF, const QString& description=sUNDEF);
+    void addOutParameter(quint32 order, IlwisTypes type, const QString& name=sUNDEF, const QString& description=sUNDEF, IlwisTypes valueType = itUNKNOWN);
     void addOptionalOutParameter(quint32 order, IlwisTypes type, const QString& name=sUNDEF, const QString& description=sUNDEF);
     void setKeywords(const QString &words);
     void addValidation(quint32 parent, quint32 child, const QString &validationCondition);
