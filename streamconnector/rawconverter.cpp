@@ -23,7 +23,7 @@ using namespace Stream;
 RawConverter::RawConverter(double low, double high, double step, bool hasUndefs)  {
     _storeType =  minNeededStoreType(low, high, step, hasUndefs);
     _offset = determineOffset(low, high, step, _storeType);
-    _scale = MathHelper::roundTo3DecimalDigits (step);
+	_scale = step; // MathHelper::roundTo3DecimalDigits(step);
     _undefined = guessUndef();
 }
 
