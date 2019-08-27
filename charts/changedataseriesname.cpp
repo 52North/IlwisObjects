@@ -57,14 +57,12 @@ Ilwis::OperationImplementation::State ChangeDataSeriesName::prepare(ExecutionCon
 	_oldName = _expression.input<QString>(1);
 	auto *series = _chartmodel->getSeriesByName(_oldName);
 	if (!series) {
-		kernel()->issues()->log(TR("Data serie with this name doesn't exist:") + _oldName);
-		return sPREPAREFAILED;
+		return sPREPSKIP;
 	}
 	_newName = _expression.input<QString>(2);
 	series = _chartmodel->getSeriesByName(_newName);
 	if (series) {
-		kernel()->issues()->log(TR("Data serie with this name does already exist:") + _newName);
-		return sPREPAREFAILED;
+		return sPREPSKIP;
 	}
 
 	
@@ -77,7 +75,8 @@ bool ChangeDataSeriesName::execute(ExecutionContext *ctx, SymbolTable &symTable)
 		if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
 			return false;
 
-	_chartmodel->changeDataSeriesName(_oldName, _newName);
+	if(_prepState != sPREPSKIP)
+		_chartmodel->changeDataSeriesName(_oldName, _newName);
 
 	logOperation(_expression);
 

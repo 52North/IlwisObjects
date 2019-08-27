@@ -58,15 +58,13 @@ Ilwis::OperationImplementation::State UpdateChartSeries::prepare(ExecutionContex
     OperationHelper::check([&]()->bool { return _inputTable.prepare(_expression.input<QString>(1), itTABLE); },
     { ERR_COULD_NOT_LOAD_2,_expression.input<QString>(1), "" });
 
-    OperationHelper::check(
-        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(2)); },
-        { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(1), "chart" } 
-    );
+	if (!_chartmodel->isValidSeries(_inputTable, _expression.input<QString>(2))) {
+		return sPREPSKIP;
+	}
 
-    OperationHelper::check(  
-        [&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(3)); },
-        { ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
-    ); 
+	if (!_chartmodel->isValidSeries(_inputTable, _expression.input<QString>(3))) {
+		return sPREPSKIP;
+	}
 
     _columnX = _expression.input<QString>(2);
     _columnY = _expression.input<QString>(3);
@@ -80,7 +78,8 @@ bool UpdateChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false; 
 
-    _chartmodel->updateDataSeries(_inputTable,_columnX,  _columnY, sUNDEF);
+	if (_prepState != sPREPSKIP)
+		_chartmodel->updateDataSeries(_inputTable,_columnX,  _columnY, sUNDEF);
 
     logOperation(_expression);
 

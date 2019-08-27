@@ -35,7 +35,6 @@ namespace Ilwis {
 			QString _oldName = sUNDEF;
 			QString _newName = sUNDEF;
 
-
 			NEW_OPERATION(ChangeDataSeriesName);
 		};
 	}
