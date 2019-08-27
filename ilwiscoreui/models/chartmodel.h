@@ -193,8 +193,8 @@ namespace Ilwis {
 			QList<DataseriesModel *> _series;
             QList<ChartOperationEditor *> _operations;
 
-            std::vector<QString> _graphColors = { "crimson", "blueviolet","olive","deeppink","darkblue","darkred","cadetblue","tomato", "darkslateblue","orangered", "dodgerblue","forestgreen","goldenrod",
-            "green","indigo","limegreen","orange", "mediumslateblue","orchid","seagreen","sienna","teal" };
+            std::vector<QString> _graphColors = { "red", "blue","green","magneta","orange","darkblue","sienna","yellowgreen", "darkslateblue","orangered", "limegreen","Indigo","goldenrod",
+            "dimgray","crimson","chocolate","cyan", "mediumslateblue","orchid","seagreen","darkorchid","teal" };
         };
     }
 }
