@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "itemdomain.h"
 #include "domainitem.h"
 #include "crosssection.h"
+#include "modelregistry.h"
+#include "chartmodel.h"
 #include "ilwiscontext.h"
 
 
@@ -184,84 +186,93 @@ int Ilwis::Ui::CrosssectionTool::decimalsCrds() const
     return _panelCoverage->coordinateSystem()->isLatLon() ? 7 : 3;
 }
 void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
-    if (!_pinData.isValid() || _dataSource == 0)
-        return;
- 
+	if (!_pinData.isValid() || _dataSource == 0)
+		return;
 
-    std::vector<QVariant> empty(_pinData->recordCount());
-    _pinData->column(index+1, empty);  // index == 0 is the band value which we dont want to change
-    if ( !_raster.isValid())
+
+	std::vector<QVariant> empty(_pinData->recordCount());
+	_pinData->column(index + 1, empty);  // index == 0 is the band value which we dont want to change
+	if (!_raster.isValid())
 		_raster.prepare(_dataSource->coverageId());
-    
-    if (_raster.isValid()) {
-        if (_raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
-            if (!_raster->datadef().range<NumericRange>()->isValid()) {
-                //QGuiApplication *app = static_cast<QGuiApplication *>(QApplication::instance());
-                QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-                _raster->statistics(Ilwis::NumericStatistics::pBASIC);
-                QApplication::restoreOverrideCursor();
-            }
-        }
-  
-        QString ycolName = columnName(index, _raster->name());
-        Pixel pix = _raster->georeference()->coord2Pixel(crd);
-        int col = 0;
-        if ((col = _pinData->columnIndex(ycolName)) != iUNDEF) {
-            int rec = 0;
-            for (int z = 0; z < _raster->size().zsize(); ++z) {
-                if (_dataSource->active(z)) {
-                    double v = _raster->pix2value(Pixel(pix.x, pix.y, z));
-                    _pinData->setCell(col, rec++, v);
-                }
-            }
-        }
-    }
+
+	if (_raster.isValid()) {
+		if (_raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+			if (!_raster->datadef().range<NumericRange>()->isValid()) {
+				//QGuiApplication *app = static_cast<QGuiApplication *>(QApplication::instance());
+				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+				_raster->statistics(Ilwis::NumericStatistics::pBASIC);
+				QApplication::restoreOverrideCursor();
+			}
+		}
+
+		QString ycolName = columnName(index, _raster->name());
+		Pixel pix = _raster->georeference()->coord2Pixel(crd);
+		int col = 0;
+		if ((col = _pinData->columnIndex(ycolName)) != iUNDEF) {
+			int rec = 0;
+			for (int z = 0; z < _raster->size().zsize(); ++z) {
+				if (_dataSource->active(z)) {
+					double v = _raster->pix2value(Pixel(pix.x, pix.y, z));
+					_pinData->setCell(col, rec++, v);
+				}
+			}
+		}
+	}
+
 }
 
 void CrosssectionTool::changeCoords(int index, int c, int r, bool useScreenPixels)
 {
-    if (index >= 0 && index < _pins.size()) {
-        if (_panelCoverage->ilwisType() == itRASTER) {
-            IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
-            if (raster.isValid()) {
-                Coordinate crd;
-                if (useScreenPixels) {
-                    crd = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
-                    Pixel pix = raster->georeference()->coord2Pixel(crd);
-                    c = pix.x;
-                    r = pix.y;
-                }
-                crd = raster->georeference()->pixel2Coord(Pixel(c, r));
-                _pins[index]->x(crd.x);
-                _pins[index]->y(crd.y);
-                _pins[index]->column(c);
-                _pins[index]->row(r);
-                _pins[index]->update();
-                vpmodel()->layer()->layerManager()->updatePostDrawers();
-                changePinData(index, crd); 
-            }
-        }
-        
-    }
+	try {
+		if (index >= 0 && index < _pins.size()) {
+			if (_panelCoverage->ilwisType() == itRASTER) {
+				IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
+				if (raster.isValid()) {
+					Coordinate crd;
+					if (useScreenPixels) {
+						crd = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->pixel2Coord(Pixel(c, r));
+						Pixel pix = raster->georeference()->coord2Pixel(crd);
+						c = pix.x;
+						r = pix.y;
+					}
+					crd = raster->georeference()->pixel2Coord(Pixel(c, r));
+					_pins[index]->x(crd.x);
+					_pins[index]->y(crd.y);
+					_pins[index]->column(c);
+					_pins[index]->row(r);
+					_pins[index]->update();
+					vpmodel()->layer()->layerManager()->updatePostDrawers();
+					changePinData(index, crd);
+				}
+			}
+
+		}
+	}
+	catch (const ErrorObject&) {}
 }
 
 void CrosssectionTool::changePixel(int index, double x, double y)
 {
-    if (index >= 0 && index < _pins.size()) {
-        if (_panelCoverage->ilwisType() == itRASTER) {
-            IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
-            if (raster.isValid()) {
-                Pixel pix = raster->georeference()->coord2Pixel(Coordinate(x, y));
-                _pins[index]->x(x) ;
-                _pins[index]->y(y);
-                _pins[index]->column(pix.x);
-                _pins[index]->row(pix.y);
-                _pins[index]->update();
-                vpmodel()->layer()->layerManager()->updatePostDrawers();
-                changePinData(index, Coordinate(x,y)); 
-            }
-        }
-    }
+	try {
+		if (index >= 0 && index < _pins.size()) {
+			if (index >= 0 && index < _pins.size()) {
+				if (_panelCoverage->ilwisType() == itRASTER) {
+					IRasterCoverage raster = _panelCoverage.as<RasterCoverage>();
+					if (raster.isValid()) {
+						Pixel pix = raster->georeference()->coord2Pixel(Coordinate(x, y));
+						_pins[index]->x(x);
+						_pins[index]->y(y);
+						_pins[index]->column(pix.x);
+						_pins[index]->row(pix.y);
+						_pins[index]->update();
+						vpmodel()->layer()->layerManager()->updatePostDrawers();
+						changePinData(index, Coordinate(x, y));
+					}
+				}
+			}
+		}
+	}
+	catch (const ErrorObject&) {}
 }
 
 QVariantList CrosssectionTool::pinLocation4screen() const
@@ -367,8 +378,17 @@ void Ilwis::Ui::CrosssectionTool::deletePin(int index)
         _pins.removeAt(index);
         vpmodel()->layer()->layerManager()->updatePostDrawers();
         _pinData->deleteColumn(columnName);
-        emit pinsChanged();
-        emit pinCountChanged();
+
+		auto pair = modelregistry()->getModel(chartModelId());
+		if (pair.first != sUNDEF) {
+			auto chartmodel = dynamic_cast<ChartModel *>(pair.second);
+			if (chartmodel) {
+				chartmodel->deleteSerie(columnName, sUNDEF);
+				chartmodel->updateSeries();
+			}
+		}
+      emit pinsChanged();
+      emit pinCountChanged();
     }
 }
 
