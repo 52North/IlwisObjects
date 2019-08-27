@@ -46,13 +46,13 @@ Item {
 						}else {
 							var columnName = editor.pinDataColumn(crosssectiontool.contineousPin + 1)
 							editor.deletePin( crosssectiontool.contineousPin)
-							var expr = "deletechartseries(" + modelid + "," + columnName + ")"
-							layerview.activeLayerManager().addCommand(expr);
+							if ( editor.chartModelId > 0) {
+								var expr = "deletechartseries(" + modelid + "," + columnName + ")"
+								layerview.activeLayerManager().addCommand(expr);
+							}
 							crosssectiontool.contineousPin = -1
-
 						}
 					}
-
 				}
 			}
 		}
@@ -88,13 +88,16 @@ Item {
 								}    
 							}
 							onEditingFinished : {
-							    var oldLabel = editor.pinLabel(styleData.row)
-								editor.pinLabel(styleData.row,label.text)
-								if ( oldLabel != label.text) {
-									var expr = "changedataseriesname(" + modelid + ","+ oldLabel + "," + label.text + ")"
-									layerview.activeLayerManager().addCommand(expr);
-									expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
-									layerview.activeLayerManager().addCommand(expr);
+								if ( tableview.rowCount == editor.pinCount) { // during deletes there maybe a temporary inconsitency (events) between these two numbers; ignore it then
+									var oldLabel = editor.pinLabel(styleData.row)
+									editor.pinLabel(styleData.row,label.text)
+									
+									if ( oldLabel != label.text) {
+										var expr = "changedataseriesname(" + modelid + ","+ oldLabel + "," + label.text + ")"
+										layerview.activeLayerManager().addCommand(expr);
+										expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn('bands')+ "," + editor.pinDataColumn(styleData.row + 1) + ")"
+										layerview.activeLayerManager().addCommand(expr);
+									}
 								}
 							}
 						}
