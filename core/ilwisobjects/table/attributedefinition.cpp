@@ -58,21 +58,20 @@ void AttributeDefinition::renameColumn(quint32 index, const QString&newName) {
 }
 
 void AttributeDefinition::deleteColumn(const QString& name) {
-    auto iter = _columnDefinitionsByName.find(name);
-    if (iter != _columnDefinitionsByName.end()) {
-        _columnDefinitionsByName.erase(iter);
-    }
-    int count = 0;
     bool found = false;
     for (int i = 0; i < _columnDefinitionsByIndex.size(); ++i) {
         if (_columnDefinitionsByIndex[i].name() != name) {
-            _columnDefinitionsByIndex[i] = _columnDefinitionsByIndex[count++];
+            _columnDefinitionsByIndex[found ? i-1 : i] = _columnDefinitionsByIndex[i];
         }
         else
             found = true;
    }
    if (found) {
        _columnDefinitionsByIndex.resize(_columnDefinitionsByIndex.size() - 1);
+	   _columnDefinitionsByName.clear();
+	   for (int i = 0; i < _columnDefinitionsByIndex.size(); ++i) {
+		   _columnDefinitionsByName[_columnDefinitionsByIndex[i].name()] = i;
+	   }
    }
 
 }
