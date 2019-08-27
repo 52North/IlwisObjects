@@ -27,7 +27,7 @@ class SymbolTable;
 class KERNELSHARED_EXPORT OperationImplementation : public Identity
 {
 public:
-    enum State{sNOTPREPARED,sPREPARED, sPREPAREFAILED};
+    enum State{sNOTPREPARED,sPREPARED, sPREPAREFAILED, sPREPSKIP};
     OperationImplementation() : _prepState(sNOTPREPARED) {}
     OperationImplementation(quint64 metaid, const Ilwis::OperationExpression &e);
     virtual ~OperationImplementation() ;
