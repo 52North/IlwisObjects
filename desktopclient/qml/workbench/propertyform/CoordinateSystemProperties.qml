@@ -43,9 +43,9 @@ Rectangle {
     }
     Loader{
         id : projectionInfoLine
-        height : isProjected ? lineheight : 0
+        height : lineheight
         width : parent.width
-        source : isProjected ? "ProjectionProperties.qml" : ""
+        source : isProjected ? "ProjectionProperties.qml" : "Ellipseinfo2.qml"
         anchors.top : line2.bottom
     }
     Text { id : line3; text : qsTr("LatLon Extent"); width: 120;anchors.top : projectionInfoLine.bottom; height : lineheight}
