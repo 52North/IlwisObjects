@@ -171,7 +171,7 @@ QString CrosssectionTool::columnName(int index, const QString& coverageName) con
         return sUNDEF;
     QString ycolName = _pins[index]->label();
     if (_contineousMode)
-        ycolName = "contineous_pin";
+        ycolName = "continuous_pin";
    /* if (_dataSource) {
         ycolName += coverageName;
     }*/
@@ -492,10 +492,10 @@ void CrosssectionTool::contineousMode(bool yesno) {
 
 int CrosssectionTool::addContineousPin() {
 	for (auto pin : _pins) {
-		if (pin->label() == "contineous_pin")
+		if (pin->label() == "continuous_pin")
 			return _pins.size() - 1;
 	}
-    _pins.push_back(new CrossSectionPin("contineous_pin", Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
+    _pins.push_back(new CrossSectionPin("continuous_pin", Coordinate(), vpmodel()->layer()->layerManager()->rootLayer()->screenGrf(), this));
     addPinPrivate();
     _pins.back()->update();
     vpmodel()->layer()->layerManager()->updatePostDrawers();
