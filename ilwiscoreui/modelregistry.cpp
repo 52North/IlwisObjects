@@ -275,31 +275,34 @@ LayerManager *ModelRegistry::createLayerManager(QObject *parent, QQuickItem *vie
 
 Ilwis::Ui::TableModel *ModelRegistry::createTableModel(QObject *parent, const QString& filter, const QString& type)
 {
-    IlwisTypes tp = IlwisObject::name2Type(type);
-    Resource resource;
-    if (filter.indexOf("itemid=") != -1 || filter.indexOf("resource=") != -1) {
-        std::vector<Resource> res = mastercatalog()->select(filter);
-        if (res.size() != 1)
-            return 0;
-        resource = res[0];
-    }
-    else
-        resource = mastercatalog()->name2Resource(filter, tp);
-    if (resource.isValid()) {
-        if (resource.extendedType() == itRASTER) {
-            bool ok;
-            quint64 rasterid = resource["rasterid"].toULongLong(&ok);
-            if (ok) {
-                IRasterCoverage raster;
-                raster.prepare(rasterid);
-                if (raster.isValid() && raster->attributeTable().isValid())
-                    return new Ilwis::Ui::TableModel(raster->attributeTable(), parent);
-            }
-        }
-        else {
-            return new Ilwis::Ui::TableModel(resource, parent);
-        }
-    }
+	try {
+		IlwisTypes tp = IlwisObject::name2Type(type);
+		Resource resource;
+		if (filter.indexOf("itemid=") != -1 || filter.indexOf("resource=") != -1) {
+			std::vector<Resource> res = mastercatalog()->select(filter);
+			if (res.size() != 1)
+				return 0;
+			resource = res[0];
+		}
+		else
+			resource = mastercatalog()->name2Resource(filter, tp);
+		if (resource.isValid()) {
+			if (resource.extendedType() == itRASTER) {
+				bool ok;
+				quint64 rasterid = resource["rasterid"].toULongLong(&ok);
+				if (ok) {
+					IRasterCoverage raster;
+					raster.prepare(rasterid);
+					if (raster.isValid() && raster->attributeTable().isValid())
+						return new Ilwis::Ui::TableModel(raster->attributeTable(), parent);
+				}
+			}
+			else {
+				return new Ilwis::Ui::TableModel(resource, parent);
+			}
+		}
+	}
+	catch (ErrorObject&) {}
     return 0;
 }
 
