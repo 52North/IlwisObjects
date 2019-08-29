@@ -36,9 +36,12 @@ Item {
 
 			onClicked : {
 			    var pix = editor.screenPixel(parseFloat(columnField.content), parseFloat(rowField.content))
-				var mp = layerview.activePanel().maparea()
+				
+				var a = layerview.activePanel();
+				var mp = a.mapArea()
 				var drw = mp.drawer()
 				var pnt = drw.mapToGlobal(pix.x, pix.y)
+				console.debug(pix.x, pix.y, pnt.x, pnt.y, layerview.lastZoomEnvelope)
 				editor.moveCursor(pnt.x, pnt.y) 
 			}
 		}
