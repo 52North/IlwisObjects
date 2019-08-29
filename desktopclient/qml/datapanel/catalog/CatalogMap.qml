@@ -36,7 +36,9 @@ Rectangle {
         id : panningClicked
         onTriggered : {
             if ( renderer.layermanager){
-                renderer.rootLayer().panningMode = !renderer.rootLayer().panningMode
+                renderer.layermanager.panningMode = !renderer.layermanager.panningMode
+                renderer.layermanager.zoomInMode = false
+                renderer.layermanager.zoomOutMode = false
                 grid.setSource("")
             }
         }
@@ -47,6 +49,8 @@ Rectangle {
         onTriggered : {
             if ( renderer.layermanager){
                 renderer.layermanager.zoomInMode = !renderer.layermanager.zoomInMode
+                renderer.layermanager.zoomOutMode = false
+                renderer.layermanager.panningMode = false
                 grid.setSource("")
             }
         }
@@ -56,11 +60,9 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( renderer.layermanager){
-			    console.debug("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                var envelope = renderer.layerManager.rootLayer.zoomEnvelope;
-                var zoomposition = {x: 0.5, y: 0.5};
-                envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, renderer.layerManager,0.707);
-                renderer.newExtent(envelope.minx + " " + envelope.miny + " " + envelope.maxx + " " + envelope.maxy);
+                renderer.layermanager.zoomOutMode = !renderer.layermanager.zoomOutMode
+                renderer.layermanager.zoomInMode = false
+                renderer.layermanager.panningMode = false
                 grid.setSource("");
             }
         }
@@ -80,11 +82,13 @@ Rectangle {
     Action {
         id : entireClicked
         onTriggered : {
+            if (renderer.layermanager){
                 renderer.layermanager.zoomOutMode = false
                 renderer.layermanager.panningMode = false
                 renderer.addCommand("setviewextent("+ renderer.layermanager.viewid + ",\'entiremap\')");
                 renderer.layermanager.refresh()
                 grid.setSource("")
+            }
         }
     }
 
@@ -148,12 +152,46 @@ Rectangle {
             }
         }
 
+        Connections {
+            target: mouseActions
+            onSetZoomPanButton :{
+                maptools.panButton.enabled = enablePanAndZoomOut
+                maptools.zoomoutButton.enabled = enablePanAndZoomOut
+            }
+        }
+        Connections {
+            target: mouseActions
+            onCheckZoomNormalButton :{
+                maptools.zoomoutButton.checked = enablePanAndZoomOut
+                maptools.normalButton.checked = !enablePanAndZoomOut
+            }
+        }
+        Connections {
+            target: mouseActions
+            onCheckNormalButton :{
+                maptools.normalButton.checked = checked
+            }
+        }
+        Connections {
+            target: mouseActions
+            onCheckZoomOutButton :{
+                maptools.zoomoutButton.checked = checked
+            }
+        }
+        Connections {
+            target: mouseActions
+            onCheckPanButton :{
+                maptools.panButton.checked = checked
+            }
+        }
+
         Controls.LayerExtentMouseActions{
 		    id : mouseActions
 		    zoomToExtents: true
 		    hasPermanence: false
 		    showInfo: false
 		    selectiondrawerColor: "basic"
+		    property var viewmanager: "viewmanager" // make Global.calcZoomOutEnvelope() happy when called from LayerExtentMouseActions; we only need it to return an envelope
 		}
     }
     Canvas{
