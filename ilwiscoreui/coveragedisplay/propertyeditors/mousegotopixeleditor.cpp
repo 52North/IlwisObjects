@@ -73,10 +73,19 @@ QVariantMap MouseGotoPixelEditor::screenPixel(int column, int row) const {
 	IRasterCoverage raster = static_cast<CoverageLayerModel *>(vpmodel()->layer())->coverage().as<RasterCoverage>();
 	if (raster.isValid()) {
 		auto crd = raster->georeference()->pixel2Coord(Pixel(column, row));
+		auto env = vpmodel()->layer()->layerManager()->rootLayer()->zoomEnvelope();
+		if (!env.contains(crd)) {
+			Envelope envNew(crd, env.size());
+			QString expr = QString("setviewextent(%1,%2,%3,%4,%5)").arg(vpmodel()->layer()->layerManager()->viewid())
+				.arg(envNew.min_corner().x)
+				.arg(envNew.min_corner().y)
+				.arg(envNew.max_corner().x)
+				.arg(envNew.max_corner().y);
+			vpmodel()->layer()->layerManager()->addCommand(expr);
+		}
 		auto pix = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->coord2Pixel(crd);
 		mp["x"] = pix.x;
 		mp["y"] = pix.y;
-		
 	}
 	return mp;
 }
