@@ -395,11 +395,15 @@ QVariantMap RootLayerModel::raster2screen(IlwisObjectModel *obj, double x, doubl
 
 QVariantMap RootLayerModel::coord2Screen(const QVariantMap &var) const
 {
-    Envelope env(var);
+	try {
+		Envelope env(var);
 
-    BoundingBox bb = screenGrf()->coord2Pixel(env);
+		BoundingBox bb = screenGrf()->coord2Pixel(env);
 
-    return bb.toMap();
+		return bb.toMap();
+	}
+	catch (const ErrorObject&) {}
+	return QVariantMap();
 }
 
 QVariantMap RootLayerModel::screen2Coord(const QVariantMap &var) const
