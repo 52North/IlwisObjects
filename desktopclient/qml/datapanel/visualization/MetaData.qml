@@ -47,7 +47,7 @@ Item {
             MetaDataSpatialInfo{
                 id : mdspatialinfo
                 anchors.leftMargin: 2
-                width : 270
+                width : 350
                 height : parent.height
             }
             Rectangle {
