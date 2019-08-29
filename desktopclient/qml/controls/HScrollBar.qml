@@ -34,6 +34,42 @@ Rectangle {
         return pos;
     }
 
+	function scroll(offset){
+        var scrollerTopThumbPos =  marea.width * currentPosition / maxSize
+        var scrollerBottomThumbPos = marea.width * ( currentPosition + currentSize) / maxSize
+
+        if (viewportHorizontalScrollPosition == -1) {
+            viewportHorizontalScrollPosition = marea.width / 2
+        }
+
+        var viewportMax = marea.width * maxSize;
+
+        if (scrollerBottomThumbPos + offset < 0) // try to keep the scrolling positions limited to upper/bottom positions
+            offset =  -scrollerTopThumbPos;
+
+        if (scrollerBottomThumbPos + offset > viewportMax) // try to keep the scrolling positions limited to upper/bottom positions
+            offset =  viewportMax - scrollerBottomThumbPos;
+
+        if ( (scrollerTopThumbPos + offset) >= 0 && (scrollerBottomThumbPos + offset) <= viewportMax){
+
+            if ( oldPosition === -10000){
+                oldPosition = viewportHorizontalScrollPosition // keep for the scroller draggable button
+            }
+            viewportHorizontalScrollPosition += offset
+
+            var relx = viewportHorizontalScrollPosition / marea.width
+            var oldRelx = oldPosition / marea.width
+            var difrelx = relx - oldRelx;
+            currentPosition = currentPosition + maxSize * difrelx
+            if ( currentPosition > maxSize - currentSize)
+                currentPosition = maxSize - currentSize
+            if ( (currentPosition) < 0)
+                currentPosition = 0
+            scrolled(currentPosition)
+            oldPosition = viewportHorizontalScrollPosition
+        }
+    }
+
 
     Button{
         id : leftMarker
