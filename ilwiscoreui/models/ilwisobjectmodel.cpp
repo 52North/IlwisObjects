@@ -226,9 +226,10 @@ QString IlwisObjectModel::projectionInfo() const
             }else if ( hasType(_ilwisobject->ilwisType(), itGEOREF)){
                 csy = _ilwisobject.as<GeoReference>()->coordinateSystem().as<ConventionalCoordinateSystem>();
             }
+			QString ptj4 = csy->projection()->toProj4();
             QString projection = Projection::projectionCode2Name(csy->projection()->code());
             QVariant var = csy->projection()->parameter(Projection::pvZONE);
-            if ( var.isValid() && !var.toInt() == 1){
+            if ( var.isValid() && var.toInt() != 1){
                 projection += " zone=" + var.toString();
             }
             QString ellipsoid = Ellipsoid::ellipsoidCode2Name(csy->ellipsoid()->name());
@@ -246,7 +247,16 @@ QString IlwisObjectModel::projectionInfo() const
             }
             return projection + "; ellipsoid=" + ellipsoid;
         }
-        return "Geographic Coordinate System";
+		if (hasType(_ilwisobject->ilwisType(), itCOVERAGE)) {
+			auto csy = _ilwisobject.as<Coverage>()->coordinateSystem().as<ConventionalCoordinateSystem>();
+			if (csy->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+				QString txt = "Geographic Coordinate system " ;
+				if (csy->ellipsoid().isValid()) {
+					txt += ":ellipsoid = " + csy->ellipsoid()->name();
+				}
+				return txt;
+			}
+		}
     } catch(const ErrorObject& ){
         // no exceptions may escape here
     }
