@@ -107,6 +107,12 @@ void GdalTableLoader::loadMetaData(Table *attTable, OGRLayerH hLayer) {
             tdomain->range(new TimeInterval(itDATETIME));
             domain = tdomain; break;
         }
+		case OFTInteger64: {
+			INumericDomain ndomain;
+			ndomain.prepare("integer"); // for the moment 32 bits
+			domain = ndomain; break;
+			break;
+		}
         }
         ColumnDefinition colDef(name, domain,i+1);
         attTable->addColumn(colDef);
