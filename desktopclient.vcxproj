@@ -427,6 +427,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MapinfoProperties.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MouseGoToPixelEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\NumericRepresentation.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PointLabeling.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PolygonProperties.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PostDrawerCrossSection.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PropertyEditorsList.qml" />
@@ -544,6 +545,7 @@
     <None Include="desktopclient\qml\workbench\propertyform\CoverageDataProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\DataPropertyPane.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\DPropertyForm.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\Ellipseinfo2.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\EllipsoidProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\Envelope.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\FeatureCoverageDataProperties.qml" />

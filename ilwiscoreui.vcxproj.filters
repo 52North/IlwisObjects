@@ -377,6 +377,9 @@
     <ClCompile Include="ilwiscoreui\setkeywords.cpp">
       <Filter>Source Files\catalog\operations</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\pointlabeling.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -639,6 +642,9 @@
     </QtMoc>
     <QtMoc Include="ilwiscoreui\setkeywords.h">
       <Filter>Header Files\catalog\operations</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\coveragedisplay\propertyeditors\pointlabeling.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

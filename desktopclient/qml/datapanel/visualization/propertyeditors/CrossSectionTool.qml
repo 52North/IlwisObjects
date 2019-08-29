@@ -35,13 +35,13 @@ Item {
             contineousMode = true
             editor.changeCoords(contineousPin, mx, my, true)
             if ( modelid == null){
-                var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis :'contineous_pin', zaxis : ''}
+                var createInfo = {type : "chart", url : editor.tableUrl, ctype : 'points', name : editor.editorName , xaxis : editor.pinDataColumn(0), yaxis :'continuous_pin', zaxis : ''}
                 modelid = objectcreator.createObject(createInfo)
 				editor.chartModelId = modelid
                 var filter = "itemid=" + modelid
                 bigthing.newCatalog(filter, "chart", "","other")
             }else {
-                var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",contineous_pin)"
+                var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",continuous_pin)"
                 layerview.activeLayerManager().addCommand(expr);
             }
         }/*else{
@@ -53,7 +53,7 @@ Item {
     function  handleMouseMoved(mx,my){
         if ( contineousMode == true && modelid != null && contineousPin != -1) {
                 editor.changeCoords(contineousPin, mx, my, true)
-                var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",contineous_pin)"
+                var expr = "updatechartseries(" + modelid + ","+ editor.tableUrl + "," + editor.pinDataColumn(0)+ ",continuous_pin)"
                 layerview.activeLayerManager().addCommand(expr);        
         }
     }

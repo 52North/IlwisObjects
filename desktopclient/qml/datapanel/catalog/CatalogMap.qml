@@ -14,6 +14,7 @@ Rectangle {
     id : catalogMapView
     color : tabmodel && tabmodel.side == "right" ? "white" : "#FFFFF7"
 
+
     onWidthChanged : {
         mapItems.requestPaint();
     }
@@ -55,6 +56,7 @@ Rectangle {
         id : zoomOutClicked
         onTriggered : {
             if ( renderer.layermanager){
+			    console.debug("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                 var envelope = renderer.layerManager.rootLayer.zoomEnvelope;
                 var zoomposition = {x: 0.5, y: 0.5};
                 envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, renderer.layerManager,0.707);
@@ -109,13 +111,6 @@ Rectangle {
         }
 
         Connections {
-            target: mouseActions
-            onSize :{
-                console.debug("zzzz34", newSize)
-            }
-        }
-
-        Connections {
             target : mouseActions
             onClick :{
                 var maps = []
@@ -143,6 +138,14 @@ Rectangle {
                 if (catalogViews && catalogViews.tabmodel && !catalogViews.tabmodel.selected)
                     catalogViews.tabmodel.selectTab()
              }
+        }
+
+		Connections {
+            target: mouseActions
+            onZoomEnded :{
+				var command = "setviewextent("+ renderer.layermanager.viewid + "," + envelope + ")"
+                renderer.addCommand(command)
+            }
         }
 
         Controls.LayerExtentMouseActions{

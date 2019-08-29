@@ -612,9 +612,9 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
             formRows.replace("optionalOutputMarker",""); 
         }   
 
-    }catch(...){   
+    }catch(...){           
      }
-    return formRows;                 
+    return formRows;                                                    
 }      
 
 QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
@@ -685,7 +685,7 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
         return component;   
 }
 
-QString ApplicationFormExpressionParser::index2Form(quint64 metaid, const QVariantMap& node)  {
+QString ApplicationFormExpressionParser::index2Form(quint64 metaid, const QVariantMap& node)  { 
     Resource resource = mastercatalog()->id2Resource(metaid);
 
 

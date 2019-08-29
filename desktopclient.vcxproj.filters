@@ -1304,6 +1304,12 @@
     <None Include="desktopclient\qml\controls\NumericResolution.qml">
       <Filter>Distribution Files\qml\controls</Filter>
     </None>
+    <None Include="desktopclient\qml\workbench\propertyform\Ellipseinfo2.qml">
+      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PointLabeling.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

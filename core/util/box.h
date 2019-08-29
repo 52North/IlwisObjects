@@ -56,6 +56,17 @@ public:
     Box(const QSize& sz) : _min_corner(PointType(0,0,0)),_max_corner(PointType(sz.width()-1, sz.height()-1,0)){
     }
 
+	template<typename T> Box(const PointType& center, const Size<T>& sz) {
+		auto xmin = center.x - sz.xsize() / 2;
+		auto ymin = center.y - sz.ysize() / 2;
+		auto zmin = isNumericalUndef(sz.zsize()) ? center.undefined() : center.z - sz.zsize() / 2;
+		auto xmax = center.x + sz.xsize() / 2;
+		auto ymax = center.y + sz.ysize() / 2;
+		auto zmax = isNumericalUndef(sz.zsize()) ? center.undefined() : center.z + sz.zsize() / 2;
+		_min_corner = PointType(xmin, ymin, zmin);
+		_max_corner = PointType(xmax, ymax, zmax);
+	}
+
     Box(const geos::geom::Envelope& env) : _min_corner(PointType(env.getMinX(), env.getMinY(), 0)),_max_corner(PointType(env.getMaxX(), env.getMaxY(), 0)){
     }
 
