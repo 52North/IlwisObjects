@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.3 as QC2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import ObjectCreator 1.0
@@ -41,7 +42,7 @@ Controls.DropableItem{
         Column {
             id : maincolumn
             width : parent.width - 7
-            height : 240
+            height : 260
             y : 5
             spacing : 2
             x : 4
@@ -133,7 +134,7 @@ Controls.DropableItem{
             }
             Item {
                 width : parent.width
-                height : 90
+                height : 110
                 Controls.TextEditLabelPair{
                     id : bywildcardtext
                     width : parent.width
@@ -147,15 +148,17 @@ Controls.DropableItem{
                 Rectangle {
                     id : bands
                     width : parent.width
-                    height : 90
+                    height : 110
                     visible : bydraganddrop.checked
                     enabled : visible
                     DropArea {
+					id : dropid
+						width : parent.width
+						height : parent.height
                         ListModel {
                             id : rasters
                         }
 
-                        anchors.fill: parent
 						 ScrollView {
 						 	anchors.fill : parent
 							anchors.margins: 2
@@ -174,8 +177,18 @@ Controls.DropableItem{
 
 								id : rasterlist
 								anchors.fill : parent
+								currentIndex : -1
 								model : rasters
-								delegate :  Text { height : 16; text : path}
+								delegate :  Text { 
+									height : 16; text : path
+									MouseArea {
+										anchors.fill : parent
+										onClicked : {
+											rasterlist.currentIndex = index
+										}
+									}
+								}
+								highlight: Rectangle { color: Global.selectedColor}
 							}
 						}
                         onDropped : {
@@ -209,12 +222,23 @@ Controls.DropableItem{
 
                             }
                         }
+
                     }
                     border.width: 1
                     border.color: Global.edgecolor
 
                 }
             }
+			Controls.PushButton {
+				width : 80
+				height: 20
+				text : qsTr("delete")
+				onClicked : {
+					if ( rasterlist.currentIndex >= 0)
+						rasters.remove(rasterlist.currentIndex)
+						rasterlist.currentIndex = -1
+				}
+			}
             Item {
                 width : 100
                 height : Global.rowHeight
