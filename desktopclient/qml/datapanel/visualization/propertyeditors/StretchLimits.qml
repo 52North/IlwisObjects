@@ -30,7 +30,6 @@ Row {
             x : -offset
 
             onLoaded : {
-			    console.debug("zzzzzzzzz", source)
 			    var extraParams = {name : 'histogram',chartType : 'line', color : 'black'}
                 chartArea.item.chart.addDataTable(editor.coverageId,"max","counts",extraParams)
                 chartArea.item.margins.left = 0
