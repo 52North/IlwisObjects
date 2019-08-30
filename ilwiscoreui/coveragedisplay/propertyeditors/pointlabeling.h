@@ -38,7 +38,7 @@ namespace Ilwis {
 
 			bool canUse(const IIlwisObject &obj, const DataDefinition &def) const;
 			static VisualPropertyEditor *create(VisualAttribute *p);
-			void prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef);
+			//void prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef);
 			int labelPlacement() const;
 			void labelPlacement(int p);
 

@@ -59,13 +59,13 @@ VisualPropertyEditor *PointLabeling::create(VisualAttribute *p)
 	return new PointLabeling(p);
 }
 
-void PointLabeling::prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef) {
+/*void PointLabeling::prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef) {
 	auto *lm = vpmodel()->layer()->layerManager();
 	QString path = context()->ilwisFolder().absoluteFilePath();
 	QUrl url = QUrl::fromLocalFile(path);
 	associatedUrl(url.toString() + "/qml/datapanel/visualization/propertyeditors/PostDrawerPointLabels.qml");
 	lm->addPostDrawer(this);
-}
+}*/
 
 int PointLabeling::labelPlacement() const {
 	return _placement;
