@@ -68,13 +68,20 @@ void MouseGotoPixelEditor::column(int tr) {
 	_column = tr;
 }
 
-QVariantMap MouseGotoPixelEditor::screenPixel(int column, int row) const {
+QVariantMap MouseGotoPixelEditor::screenPixel(double column, double row, int zoomPixels) const {
 	QVariantMap mp;
 	IRasterCoverage raster = static_cast<CoverageLayerModel *>(vpmodel()->layer())->coverage().as<RasterCoverage>();
 	if (raster.isValid()) {
-		auto crd = raster->georeference()->pixel2Coord(Pixel(column, row));
-		auto env = vpmodel()->layer()->layerManager()->rootLayer()->zoomEnvelope();
-		if (!env.contains(crd)) {
+		auto crd = raster->georeference()->pixel2Coord(Pixeld(column, row));
+		Envelope env;
+		if (zoomPixels > 0)
+		{
+			auto crdMin = raster->georeference()->pixel2Coord(Pixel(column - zoomPixels/2, row - zoomPixels / 2));
+			auto crdMax = raster->georeference()->pixel2Coord(Pixel(column + zoomPixels / 2, row + zoomPixels / 2));
+			env = Envelope(crdMin, crdMax);
+		} else
+			env = vpmodel()->layer()->layerManager()->rootLayer()->zoomEnvelope();
+		if (!env.contains(crd) || zoomPixels > 0) {
 			Envelope envNew(crd, env.size());
 			QString expr = QString("setviewextent(%1,%2,%3,%4,%5)").arg(vpmodel()->layer()->layerManager()->viewid())
 				.arg(envNew.min_corner().x)

@@ -34,7 +34,7 @@ namespace Ilwis {
 			MouseGotoPixelEditor(VisualAttribute *p);
 
 			Q_INVOKABLE void moveCursor(int column, int row);
-			Q_INVOKABLE QVariantMap screenPixel(int column, int row) const;
+			Q_INVOKABLE QVariantMap screenPixel(double column, double row, int zoomPixels) const;
 
 			bool canUse(const IIlwisObject &obj, const QString &name) const;
 			static VisualPropertyEditor *create(VisualAttribute *p);
