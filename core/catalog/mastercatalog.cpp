@@ -293,6 +293,9 @@ bool MasterCatalog::addItems(const std::vector<Resource>& items, bool silent)
         }
 
         _knownHashes.insert(Ilwis::qHash(resource));
+		if (resource.name() == "primarycolors") {
+			qDebug() << "stop";
+		}
         resource.store(queryItem, queryProperties);
         containers.insert(resource.container());
     }
@@ -592,6 +595,14 @@ QUrl MasterCatalog::name2url(const QString &name, IlwisTypes tp) const{
         return QString("ilwis://system/coordinatesystems/%1").arg(shortname);
     }else if ( name.left(9) == "code=rpr:") {
         QString shortname = name.mid(name.indexOf(":") + 1);
+		QString query = "select relateddomain from representation where code='" + shortname + "'";
+		InternalDatabaseConnection db(query);
+		db.exec();
+		if (db.next()) {
+			auto rec = db.record();
+			auto type = rec.value(0).toString();
+			return QString("ilwis://system/representations/%1/%2").arg(type).arg(shortname);
+		}
         return QString("ilwis://system/representations/%1").arg(shortname);
     }else if ( name.indexOf("code=ellipsoid:") == 0) {
         QString shortname = name.mid(name.indexOf(":") + 1);

@@ -155,6 +155,8 @@ void IlwisContext::init(const QString &ilwisDir)
     mastercatalog()->addContainer(QUrl("ilwis://system/domains"));
     mastercatalog()->addContainer(QUrl("ilwis://system/coordinatesystems"));
     mastercatalog()->addContainer(QUrl("ilwis://system/representations"));
+	mastercatalog()->addContainer(QUrl("ilwis://system/representations/item"));
+	mastercatalog()->addContainer(QUrl("ilwis://system/representations/value"));
     mastercatalog()->addContainer(QUrl("ilwis://system/ellipsoids"));
     mastercatalog()->addContainer(QUrl("ilwis://system/projections"));
     mastercatalog()->addContainer(QUrl("ilwis://system/datums"));

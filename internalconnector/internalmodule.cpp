@@ -279,8 +279,12 @@ bool InternalModule::createItems(InternalDatabaseConnection &db, const QString& 
             QSqlRecord rec = db.record();
             QString code = rec.value("code").toString();
             IlwisTypes extType = rec.value("extendedtype").toLongLong();
-            QString table = internalname == "" ? sqltable : internalname;
-            QString url = QString("ilwis://system/%1/%2").arg(folder,code);
+			QString url;
+			QString sub = rec.value("relateddomain").toString();
+			if ( sub == "")
+				url = QString("ilwis://system/%1/%2").arg(folder,code);
+			else
+				url = QString("ilwis://system/%1/%2/%3").arg(folder).arg(sub).arg(code);
             Resource resource(url, type);
             if ( hasType(type, itNUMERICDOMAIN | itREPRESENTATION)) // for valuedomain name=code
                 resource.name(rec.value("code").toString(), false);
@@ -290,7 +294,10 @@ bool InternalModule::createItems(InternalDatabaseConnection &db, const QString& 
             resource.code(code);
             resource.setExtendedType(extType);
             resource.setDescription(rec.value("description").toString());
-            resource.addContainer(QUrl("ilwis://system/" + folder));
+			if ( sub == "")
+				resource.addContainer(QUrl("ilwis://system/" + folder));
+			else
+				resource.addContainer(QUrl("ilwis://system/" + folder + "/" + sub));
             QString wkt = rec.value("wkt").toString();
             if ( wkt != "" && wkt != sUNDEF)
                 resource.addProperty("wkt",wkt);
