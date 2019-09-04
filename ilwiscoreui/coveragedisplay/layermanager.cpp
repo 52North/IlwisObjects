@@ -189,6 +189,7 @@ void LayerManager::addInfoLayer(const QString& sobjid)  {
 		CoverageLayerModel *layer = static_cast<CoverageLayerModel *>(createFunc(this, 0, layername, cov->description(),IOOptions()));
 		layer->coverage(cov);
 		_mapInfoExtraLayer.emplace_back(layer);
+		rootLayer()->updateLayerInfo();
 	}
 
 }
