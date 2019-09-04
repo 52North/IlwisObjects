@@ -231,11 +231,12 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
 
     QVariant value = coverage()->coord2value(crd,attrName);
     if ( value.isValid()){
+		QVariantMap vmap = value.value<QVariantMap>();
+		vmap["coordinate"] = QString::number(crd.x, 'g', 8) + " " + QString::number(crd.y, 'g', 8);
         QString txt;
         if ( attrName != "")
             txt = value2string(value,attrName);
         else {
-            QVariantMap vmap = value.value<QVariantMap>();
             int activeAttIndex = activeVProperty();
             if ( activeAttIndex == 0){ // this is the pseudo attribute representing the whole layer, not wanted here
                 activeAttIndex = 1;
@@ -255,6 +256,8 @@ QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &at
                     vitem["name"] = item.key();
                     vitem["value"] = attTxt;
 					vitem["color"] = QObject::parent() ? "black" : "darkgreen";
+					vitem["selected"] = false;
+					vitem["layer"] = coverage()->resourceRef().name();
                     items.push_back(vitem);
                 }
             }

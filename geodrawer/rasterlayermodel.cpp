@@ -165,6 +165,9 @@ QVariantList Ilwis::Ui::RasterLayerModel::linkProperties() const
 QString RasterLayerModel::value2string(const QVariant &value, const QString &attrName) const
 {
     if ( attrName != "") {
+		if (attrName == "coordinate")
+			return value.toString();
+
         IRasterCoverage raster = CoverageLayerModel::coverage().as<RasterCoverage>();
         if ( raster->hasAttributes()){
             ColumnDefinition coldef = raster->attributeTable()->columndefinition(attrName == PIXELVALUE ? COVERAGEKEYCOLUMN :  attrName);
@@ -181,7 +184,6 @@ QString RasterLayerModel::value2string(const QVariant &value, const QString &att
             return QString::number(value.toLongLong());
         }
     }
-
     if ( value.toDouble() == rUNDEF)
         return sUNDEF;
     //IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
@@ -200,6 +202,9 @@ QString RasterLayerModel::layerData(const Coordinate &crdIn, const QString &attr
     vitem["name"] = "Pixel";
     vitem["value"] = pixtxt;
 	vitem["color"] = QObject::parent() ? "black" : "darkgreen";
+	vitem["selected"] = false;
+	vitem["layer"] = raster->resourceRef().name();
+
     items.push_back(vitem);
 
     return txt;
