@@ -107,6 +107,7 @@ public:
 	Q_INVOKABLE void setMousePos(int x, int y);
 	Q_INVOKABLE void addMRUFormat(const QString& name);
 	Q_INVOKABLE double isoString2julianTime(const QString& isoTime);
+	Q_INVOKABLE void setClipBoardData(const QVariantList& data, const QString& type);
 
     int addPropertyEditor(const QString& propertyName, CreatePropertyEditor func);
     QList<VisualPropertyEditor *> propertyEditors(VisualAttribute *vattrib, const IIlwisObject &obj, const DataDefinition& datadef) ;

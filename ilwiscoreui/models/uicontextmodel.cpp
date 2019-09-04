@@ -16,6 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QThread>
 #include <QCursor>
+#include <QGuiapplication>
+#include <QClipboard>
 #include <QGenericReturnArgument>
 #include "kernel.h"
 #include "ilwisdata.h"
@@ -903,6 +905,54 @@ std::list<QString> UIContextModel::mruFormats() const {
 double UIContextModel::isoString2julianTime(const QString& isoTime) {
 	return Ilwis::Time(isoTime);
 }
+
+void UIContextModel::setClipBoardData(const QVariantList& data, const QString& type) {
+	QString txt;
+	if (type == "layerinfo") {
+		std::map<QString, int> columns;
+		int columnIndex = 0;
+		for (auto item : data) {
+			QVariantMap record = item.toMap();
+			if (record.contains("context") && record["context"].isValid()) {
+				QString key = record["key"].toString();
+				if (columns.find(key) == columns.end()) {
+					columns[key] = columnIndex++;
+				}
+			}
+		}
+		std::map<QString, std::vector<QString>> table;
+		for (auto item : data) {
+			QVariantMap record = item.toMap();
+			if (record.contains("context") && record["context"].isValid()) {
+				QString key = record["key"].toString();
+				for (auto col : columns) {
+					if (key == col.first) {
+						QString context = record["context"].toString();
+						if (table.find(context) == table.end()) {
+							table[context] = std::vector<QString>(columns.size());
+						}
+						table[context][col.second] = record["value"].toString();
+						break;
+					}
+				}
+			}
+		}
+		for (auto iter = table.begin(); iter != table.end(); ++iter) {
+			QString recordText = (*iter).first;
+			for (auto v : iter->second) {
+				recordText += "," + v;
+			}
+			if (txt != "")
+				txt += "\n";
+			txt += recordText;
+		}
+	}
+	QClipboard *clipboard = QGuiApplication::clipboard();
+	clipboard->setText(txt);
+}
+
+
+
 
 
 
