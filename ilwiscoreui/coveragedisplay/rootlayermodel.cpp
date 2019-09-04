@@ -518,35 +518,50 @@ QVariantMap RootLayerModel::drawEnvelope(const QString& envelope) const{
 }*/
 
 
+QString RootLayerModel::layerInfo(const Coordinate& screenCrd) {
+	try {
+		if (!screenCrd.isValid())
+			return "";
+		if (zoomInMode() || panningMode()) // when zooming we don't give info. costs too much performance
+			return "";
 
+		if (layerManager()) {
+			_layerInfoItems.clear();
+			QString ret = layerManager()->layerData(screenCrd, "", _layerInfoItems);
+			emit layerInfoItemsChanged();
+			return ret;
+		}
+		return "";
+	}
+	catch (const ErrorObject&) {}
+	catch (const std::exception& ex) {
+		kernel()->issues()->log(ex.what());
+	}
+	return "";
+}
 QString RootLayerModel::layerInfo(const QString& pixelpair)  
 {
-    try {
-        if ( zoomInMode() || panningMode()) // when zooming we don't give info. costs too much performance
-            return "";
 
-        if ( layerManager()){
-			_layerInfoItems.clear();
-            QStringList parts = pixelpair.split("|");
-            if ( parts.size() == 2 ){
-                Ilwis::Coordinate crd = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
-               QString ret = layerManager()->layerData(crd,"", _layerInfoItems);
-			   emit layerInfoItemsChanged();
-			   return ret;
-            }
+    if ( layerManager()){
+		_layerInfoItems.clear();
+        QStringList parts = pixelpair.split("|");
+        if ( parts.size() == 2 && _screenGrf.isValid()){
+			_currentCoordinate = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
+			return layerInfo(_currentCoordinate);
         }
-        return "";
-    }
-    catch(const ErrorObject& ){}
-    catch(const std::exception& ex){
-        kernel()->issues()->log(ex.what());
     }
     return "";
-}
+ }
 
 QVariantList RootLayerModel::layerInfoItems()
 {
     return _layerInfoItems;
+}
+
+void RootLayerModel::updateLayerInfo()  {
+
+	layerInfo(_currentCoordinate);
+	emit layerInfoItemsChanged();
 }
 
 void RootLayerModel::RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap)

@@ -119,6 +119,7 @@ public:
      QVariantList gridAxis(const QString& type) const;
      virtual bool renderReady();
      virtual void renderReady(bool yesno);
+	 void updateLayerInfo() ;
 
 
 signals:
@@ -177,7 +178,7 @@ private:
     void modifyZoomX(double rFactor);
     void modifyZoomY(double rFactor);
     void SetCameraPosition();
-
+	QString layerInfo(const Coordinate& screenCrd);
     //NEW_LAYERMODEL(GlobalLayerModel);
 
 };
