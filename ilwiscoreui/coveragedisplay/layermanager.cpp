@@ -194,6 +194,30 @@ void LayerManager::addInfoLayer(const QString& sobjid)  {
 
 }
 
+QModelIndex LayerManager::modelIndex(int row) const {
+	auto index = _tree->index(row, 0);
+	if (index.isValid())
+		return index;
+
+	return QModelIndex();
+}
+
+void LayerManager::removeLayer(const LayerModel * layer) {
+	QModelIndex idx = _tree->indexFromItem(layer);
+	if (idx.isValid()) {
+		if (_lastAddedCoverageLayer->nodeId() == layer->nodeId())
+			_lastAddedCoverageLayer = 0;
+		if (_overview) {
+			LayerModel *overviewLayer = _overview->findLayerByName(layer->text());
+			if (overviewLayer) {
+				_overview->removeLayer(overviewLayer);
+				qDebug() << "overviewwww";
+			}
+		}
+		_tree->removeRow(idx.row());
+	}
+}
+
 LayerModel * LayerManager::findLayer(int nodeid)
 {
     QStandardItem *rootItem = _tree->invisibleRootItem();
@@ -407,6 +431,10 @@ QQmlListProperty<LayerModel> LayerManager::allCoveragesPrivate()
 
     return QQmlListProperty<LayerModel>(this, _coverages);
  
+}
+
+void LayerManager::setAssociatedLayerManager(LayerManager * lm) {
+	_overview = lm;
 }
 
 QQmlListProperty<QObject> LayerManager::postDrawers() {

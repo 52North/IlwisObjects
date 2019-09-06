@@ -106,6 +106,9 @@ public:
 	Q_INVOKABLE void qmlDrawer(const QString& objectname);
 	Q_INVOKABLE QString qmlDrawer() const;
 	Q_INVOKABLE void updatePostDrawers();
+	Q_INVOKABLE void removeLayer(const LayerModel * layer);
+	Q_INVOKABLE QModelIndex modelIndex(int row) const;
+	Q_INVOKABLE void setAssociatedLayerManager(LayerManager * lm);
 
     RootLayerModel *rootLayer() const;
     
@@ -181,6 +184,7 @@ private:
     static quint32 _baseViewId;
     ManagerType _managerType = mtUNKNOWN;
 	QString _qmlDrawerName = sUNDEF;
+	LayerManager *_overview = 0;
 
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
