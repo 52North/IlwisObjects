@@ -1,4 +1,4 @@
-{
+﻿{
 	"Spectral Library" : [ 
 	{
 		"name" : "Tree(acer)",
@@ -202,6 +202,23 @@
 			"theme" : "manmade",
 			"class" : "roofing",
 			"subclass" : "galvanized steel"
+		}		
+	},
+	{
+		"name" : "Road asphalt",
+		"code" : "road",
+		"description" : "Road Asphalts and Tar. Gray and black construction asphalt.  The sample was soiled and weathered, with some limestone and quartz aggregate showing. Original ASTER Spectral Library name was",
+		"wavelength range" : "All",
+		"provenance" : {
+				"source" : "ECOSTRESS Spectral Library - Version 1.0 - NASA/JPL",
+				"owner" : " National Photographic Interpretation Center",
+				"origin" : "Spectra obtained from the Noncoventional Exploitation FactorsData System of the National Photographic Interpretation Center.",
+				"collection" : "?"
+		},
+		"characterization" : {
+			"theme" : "manmade",
+			"class" : "road",
+			"subclass" : "asphalt"
 		}		
 	}
 	]
