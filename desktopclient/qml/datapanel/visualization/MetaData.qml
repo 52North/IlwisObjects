@@ -153,6 +153,7 @@ Item {
             if (! metatdata.manager){
                 metatdata.manager = models.createLayerManager(metadata,overview)
                 overview.layermanager = metatdata.manager
+				layerview.activeLayerManager().setAssociatedLayerManager(metatdata.manager)
             }
             var cmd = "adddrawer(" + manager.viewid + ",\"\"," + filter + "," + sourceType + ",true,\"" + (options !== undefined ? options : "") +  "\")"
             metatdata.manager.addCommand(cmd)
