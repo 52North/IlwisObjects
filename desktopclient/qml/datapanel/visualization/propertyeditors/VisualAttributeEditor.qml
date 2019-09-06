@@ -7,6 +7,12 @@ Rectangle {
 
     property var currentEditor
     color : Global.alternatecolor3
+
+	function removeEditors(){ // used because the layer tied to this editor is removed so the editor columns have to be forcefully cleaned as they may contain a link to the non existing layer
+		propertyEditor1.setSource("")
+		propertyEditor2.setSource("")
+	}
+
     onCurrentEditorChanged: {
          if ( currentEditor){ 
              if ( editorColumn2.state == "minimized"){
