@@ -14,10 +14,12 @@ Item {
     width : 180
 
 	property var dummy101 : activeLayerManager().layerTree
+	property int currentNodeId : 0
 
 	onDummy101Changed : {
-		if ( activeLayerManager().lastAddedCoverageLayer)
+		if ( activeLayerManager().lastAddedCoverageLayer){
 			currentNodeId = activeLayerManager().lastAddedCoverageLayer.nodeId
+		}
 	}
 
 	function setModel(){
@@ -45,7 +47,7 @@ Item {
 			attributeListColumn.currentCoverage = activeLayerManager().findLayer(idx)
 		}
 	}
-	property int currentNodeId : 0
+
 
 
     Column {
@@ -104,6 +106,18 @@ Item {
 					flat : true
 					width : parent.width / 2 - 4
 					height : buttonbar.height - 2
+
+					onClicked : {
+					    /*var nid = currentNodeId
+						var idx = activeLayerManager().modelIndex(0)
+						tree.selection.setCurrentIndex(idx, ItemSelectionModel.ClearAndSelect)
+						setTreeIndex(idx)
+						setModel()
+						editorColumn.removeEditors()
+						var cmd = 'removelayer(' + activeLayerManager().viewid + ',' + nid + ')'
+						layerview.activeLayerManager().addCommand(cmd)
+						activeLayerManager().refresh()*/
+					}
 				}
 			}
 		}
@@ -198,7 +212,7 @@ Item {
 					    color : styleData.selected ? Global.selectedColor : "white"
 				    }
                 }
-				itemDelegate: LayerDelegate {
+				itemDelegate: LayerDelegate { 
 				}
 				
 			 	TableViewColumn {
@@ -216,6 +230,7 @@ Item {
             }
             
 			onDropped : {
+			console.debug("zzzzzzzzzzzzzzzzzzzzzz")
                 if (!tree.dropHandled){
 				    var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
 				    if ( resource){
