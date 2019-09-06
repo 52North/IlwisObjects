@@ -50,9 +50,8 @@ bool RemoveDrawer::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-	//TODO : need better implementation
-   // layerManager()->moveLayer(_layer->parentLayer(), _layer, LayerModel::lmREMOVE);
-	//layerManager()->needRedraw(true);
+	layerManager()->removeLayer(_layer);
+
     return true;
 }
 
@@ -78,12 +77,12 @@ Ilwis::OperationImplementation::State RemoveDrawer::prepare(ExecutionContext *ct
 
 quint64 RemoveDrawer::createMetadata()
 {
-    OperationResource operation({"ilwis://operations/removedrawer"});
-    operation.setSyntax("removedrawer(viewid, drawercode)");
-    operation.setDescription(TR("changes the view extent"));
-    operation.setInParameterCount({3});
+    OperationResource operation({"ilwis://operations/removelayer"});
+    operation.setSyntax("removelayer(viewid, layerid)");
+    operation.setDescription(TR("removes a layer from the layer manager"));
+    operation.setInParameterCount({2});
     operation.addInParameter(0,itINTEGER , TR("view id"),TR("id of the view to which this drawer has to be added"));
-    operation.addInParameter(1,itSTRING , TR("Layer index"), TR("index identifying the drawer"));
+    operation.addInParameter(1,itSTRING , TR("Layer id"), TR("id identifying the drawer"));
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization");
 
