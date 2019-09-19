@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\libraries\win32debug\extensions\spreadsheet\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\spreadsheet\</IntDir>
+    <TargetName>spreadsheet</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;SPREADSHEET_LIBRARY;QT_PLUGIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;..\external\xlsx</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external\xlsx;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;spreadsheet_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" ..\output\win32debug\bin\extensions\spreadsheet\* /s /y /i</Command>
+      <Message>Copy spreadsheet.dll to ..\output\win32debug\bin\extensions\spreadsheet</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;SPREADSHEET_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtMoc>
+      <QTDIR>$(QTDIR)</QTDIR>
+      <InputFile>%(FullPath)</InputFile>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external\opencv2;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;opencv_LIBRARY;QT_PLUGIN;_WINDLL</Define>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+    </QtMoc>
+    <PostBuildEvent>
+      <Command>xcopy "$(TargetPath)" ..\output\win32release\bin\extensions\spreadsheet\* /s /y /i</Command>
+      <Message>Copy spreadsheet.dll to ..\output\win32release\bin\extensions\spreadsheet</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="spreadsheet\spreadsheet.h" />
+    <ClInclude Include="spreadsheet\spreadsheetcatalogexplorer.h" />
+    <ClInclude Include="spreadsheet\spreadsheetcatalogfileexplorer.h" />
+    <QtMoc Include="spreadsheet\spreadsheetconnectorsmodule.h" />
+    <ClInclude Include="spreadsheet\spreadsheetconnectorsobjectfactory.h" />
+    <ClInclude Include="spreadsheet\spreadsheettableconnector.h" />
+    <ClInclude Include="spreadsheet\ilwisxlsxformat.h" />
+    <ClInclude Include="spreadsheet\xlsx\qtprivates.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxabstractooxmlfile.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxabstractooxmlfile_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxabstractsheet.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxabstractsheet_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcell.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcellformula.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcellformula_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcelllocation.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcellrange.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcellreference.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcell_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxchart.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxchartsheet.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxchartsheet_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxchart_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcolor_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxconditionalformatting.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxconditionalformatting_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxcontenttypes_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdatavalidation.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdatavalidation_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdatetype.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdocpropsapp_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdocpropscore_p.h" />
+    <QtMoc Include="spreadsheet\xlsx\xlsxdocument.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;$(INHERIT);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;.\..\external\xlsx</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;WIN32;WIN64;SPREADSHEET_LIBRARY;QT_PLUGIN;%(PreprocessorDefinitions)</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;SPREADSHEET_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
+    <ClInclude Include="spreadsheet\xlsx\xlsxdocument_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdrawinganchor_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxdrawing_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxformat.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxformat_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxglobal.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxmediafile_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxnumformatparser_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxrelationships_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxrichstring.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxrichstring_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxsharedstrings_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxsimpleooxmlfile_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxstyles_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxtheme_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxutility_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxworkbook.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxworkbook_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxworksheet.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxworksheet_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxzipreader_p.h" />
+    <ClInclude Include="spreadsheet\xlsx\xlsxzipwriter_p.h" />
+    <ClInclude Include="spreadsheet_global.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="spreadsheet\spreadsheetcatalogexplorer.cpp" />
+    <ClCompile Include="spreadsheet\spreadsheetcatalogfileexplorer.cpp" />
+    <ClCompile Include="spreadsheet\spreadsheetconnectorsmodule.cpp" />
+    <ClCompile Include="spreadsheet\spreadsheetconnectorsobjectfactory.cpp" />
+    <ClCompile Include="spreadsheet\spreadsheettableconnector.cpp" />
+    <ClCompile Include="spreadsheet\ilwisxlsxformat.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxabstractooxmlfile.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxabstractsheet.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcell.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcellformula.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcelllocation.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcellrange.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcellreference.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxchart.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxchartsheet.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcolor.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxconditionalformatting.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxcontenttypes.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdatavalidation.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdatetype.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdocpropsapp.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdocpropscore.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdocument.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdrawing.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxdrawinganchor.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxformat.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxmediafile.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxnumformatparser.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxrelationships.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxrichstring.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxsharedstrings.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxsimpleooxmlfile.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxstyles.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxtheme.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxutility.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxworkbook.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxworksheet.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxzipreader.cpp" />
+    <ClCompile Include="spreadsheet\xlsx\xlsxzipwriter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="spreadsheet\spreadsheetconnectors.json" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="5122" MocOptions="" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

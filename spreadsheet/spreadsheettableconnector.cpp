@@ -28,9 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "basetable.h"
 #include "flattable.h"
 #include "SpreadSheet.h"
-#include "odsformat.h"
-#include "xlsformat.h"
-#include "xlsxformat.h"
+//#include "odsformat.h"
+//#include "xlsformat.h"
+#include "ilwisxlsxformat.h"
 #include "spreadsheettableconnector.h"
 
 using namespace Ilwis;
@@ -41,9 +41,9 @@ const std::vector<QString> SpreadSheetTableConnector::_suffixes = {"xls", "ods",
 SpreadSheetTableConnector::SpreadSheetTableConnector(const QString& file) : IlwisObjectConnector(Resource(file,itTABLE), true, IOOptions()){
     QFileInfo path(file);
      if ( path.suffix().toLower() == "ods"){
-        _spreadsheet.reset( new ODSFormat());
+       // _spreadsheet.reset( new ODSFormat());
     } else if ( path.suffix().toLower() == "xls"){
-        _spreadsheet.reset( new XLSFormat());
+       // _spreadsheet.reset( new XLSFormat());
     } else if ( path.suffix().toLower() == "xlsx"){
         _spreadsheet.reset( new XLSXFormat());
     }
@@ -76,9 +76,9 @@ SpreadSheetTableConnector::SpreadSheetTableConnector(const Ilwis::Resource &reso
         }
     }
     if ( suffix.toLower() == "ods"){
-        _spreadsheet.reset( new ODSFormat());
+       // _spreadsheet.reset( new ODSFormat());
     } else if ( suffix.toLower() == "xls"){
-        _spreadsheet.reset( new XLSFormat());
+       // _spreadsheet.reset( new XLSFormat());
     } else if ( suffix.toLower() == "xlsx"){
         _spreadsheet.reset( new XLSXFormat());
     }

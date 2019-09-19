@@ -74,7 +74,7 @@ void SpreadSheetConnectorsModule::prepare()
     cfactory->addCreator("spreadsheet","spreadsheets",SpreadSheetTableConnector::create);
 
     QFileInfo ilw = context()->ilwisFolder();
-    QString path = ilw.canonicalFilePath() + "/extensions/spreadsheetconnectors/resources";
+    QString path = ilw.canonicalFilePath() + "/extensions/spreadsheet/resources";
     DataFormat::setFormatInfo(path + "/spreadsheetformats.config","spreadsheets");
 
     QVariantList names = DataFormat::getFormatProperties(DataFormat::fpCODE,itTABLE,"spreadsheets");

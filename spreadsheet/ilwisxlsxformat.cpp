@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "SpreadSheet.h"
 #include "xlsxdocument.h"
 #include "xlsxworkbook.h"
-#include "xlsxformat.h"
+#include "ilwisxlsxformat.h"
 
 using namespace Ilwis;
 using namespace SpreadSheetConnectors;
@@ -64,9 +64,9 @@ QVariant XLSXFormat::cellValue(quint32 col, quint32 row) const
     QXlsx::Cell *cell = _xlsxdocument->cellAt(row + 1, col + 1);
     if (!cell)
         return QVariant();
-    QXlsx::Cell::DataType type = cell->dataType();
-    if ( type == QXlsx::Cell::String || type == QXlsx::Cell::Boolean || type == QXlsx::Cell::Numeric)
-        return cell->value();
+    QXlsx::Cell::CellType type = cell->cellType();
+    if ( type == QXlsx::Cell::StringType || type == QXlsx::Cell::BooleanType || type == QXlsx::Cell::NumberType)
+		return cell->value();
     return QVariant();
 
 }
