@@ -25,6 +25,7 @@ namespace Ilwis {
 		class RasterToPolygon : public OperationImplementation
 		{
 		public:
+			enum LineDirection { ldDOWN = 1, ldUP = 2, ldRIGHT = 4, ldLEFT = 8 };
 			RasterToPolygon();
 			~RasterToPolygon();
 			RasterToPolygon(quint64 metaid, const Ilwis::OperationExpression &expr);
@@ -36,73 +37,36 @@ namespace Ilwis {
 			static quint64 createMetadata();
 
 		private:
-			enum DirBound { dbNONE, dbUP, dbDOWN, dbLEFT, dbRIGHT };
-
-			class ChainRec {
-			public:
-				ChainRec() { iLength = 1; dbCode = dbNONE; }
-				ChainRec(DirBound db, long iLen) { iLength = iLen; dbCode = db; }
-				DirBound dbCode;
-				long iLength;
+			struct R2PPoint {
+				R2PPoint(int x=iUNDEF, int y=iUNDEF) : _x(x), _y(y) {}
+				R2PPoint(double x , double y) : _x(x), _y(y) {}
+				quint32 _x;
+				quint32 _y;
+				bool operator != (const R2PPoint& p) const { return _x != p._x || _y != p._y; }
+				bool operator == (const R2PPoint& p) const { return _x == p._x && _y == p._y; }
+			};
+			struct R2PRing {
+				std::vector<R2PPoint> _points;
+				std::vector<R2PPoint> _pixelInNeighbour;
 			};
 
-			class SegBound {
-			public:
-				long iSegNr;
-				bool fBeginSeg, fEndSeg;
-				Coordinate crdFrom, crdTo;
-				std::list<ChainRec> dlChain;
-				long iLeftRaw, iRightRaw;
-				//long iForw, iBackw;
-				void Insert(DirBound db, long iLength) {
-					dlChain.push_front(ChainRec(db, iLength));
-				}
-				void Append(DirBound db, long iLength) {
-					dlChain.push_back(ChainRec(db, iLength));
-				}
-				ChainRec& front() {
-					return dlChain.front();
-				}
-				ChainRec& back() {
-					return dlChain.back();
-				}
-			};
-
-			typedef std::shared_ptr<SegBound> SegBoundPtr;
-
+			enum DirBound { dbNONE, dbUP=1, dbDOWN=4, dbLEFT=8, dbRIGHT=16 };
 
 			IFeatureCoverage _outputfeatures;
 			IRasterCoverage _inputraster;
+			IRasterCoverage _handledPixels;
+			IRasterCoverage _neighbourCount;
 
-			std::vector<SegBoundPtr> _segBoundsHoriz;
-			std::vector<SegBoundPtr> _segBoundsVert;
-			std::vector< DirBound> _dirBoundsCurrent;
-			std::vector< DirBound> _dirBoundsNext;
-			std::vector< DirBound> _dirBoundsPrev;
-			std::map<long, std::vector<Coordinate>> _topologySegments;
-			std::map<long, std::pair<long, long>> _topology;
-			std::map<long, long> _topStarts;
-			std::vector<quint32> _segNr;
-			std::vector<qint32> _fwl, _bwl;
-			quint32 _nrPol=0, _nrSeg=0;
-			bool _eightConnected = false;
-			bool _smooth = true;
 
-			void fillLineInfo(const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, int lineSize) ;
-			byte setPixelFlag(int x) ;
-			void handleNodeCases(int x, int y,byte PixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev) ;
-			void newNode(int x, int y, byte pixelFlag, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev) ;
-			SegBoundPtr newWithOneEnd(int x, int y, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev, bool isRight, bool& isLeft);
-			quint32 newSegNr();
-			void appendLeftUp(int x, int y);
-			void storeSegm(SegBoundPtr seg);
-			void storeSegm(const SegBoundPtr sb, std::vector<Coordinate>& coords, bool fIsland, long& crdIndex);
-			SegBoundPtr newInBetween(int x, const std::vector<double>& inputLine, const std::vector<double>& inputLinePrev);
-			void appendUp(int x, byte pixelFlag);
-			void appendLeft(int x, byte pixelFlag);
-			void endOfSegment(int x, int y, RasterToPolygon::SegBoundPtr sb, bool fUp, bool& fBegin);
-			void detLink(DirBound db1, DirBound db2, DirBound db3, const std::vector<bool>& segExist, const std::vector<bool>& seginSeg, const std::vector<SegBoundPtr>& sbSeg);
-			void linkBoundaries(const IRasterCoverage& areaNumberedRaster);
+			const double NOTHANDLED = PIXVALUEUNDEF;
+			const double HANDLED = 0;
+
+			int countNeighbours(BlockIterator& inIter, PIXVALUETYPE refValue);
+			void neighbourvalues(PixelIterator& inIter, PixelIterator& handledIterr, std::vector<PIXVALUETYPE>& neighbours);
+			bool addLine(const R2PPoint& tail, const R2PPoint& head, R2PRing& ring) const;
+			void shifts(const DoubleVector3D& data, BlockIterator& iterIn);
+
+		
 
 			NEW_OPERATION(RasterToPolygon);
 		};
