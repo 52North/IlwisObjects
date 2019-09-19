@@ -138,35 +138,48 @@ double& GridBlock::operator ()(qint32 x, qint32 y, qint32 z)
 {
     if ( !isValid())
         throw ErrorObject(TR("Using invalid pixeliterator, are all data sources accessible?"));
-    if (_iterator->_outside != rILLEGAL) {
-       _iterator->_outside = rILLEGAL;
-    }
 
-    actualPosition(x,y,z);
+	if (!actualPosition(x, y, z)) {
+		throw ErrorObject(TR("Pixel values requested outside map boundaries"));
+	}
+		
+
     double &v =_iterator->_raster->_grid->value(_internalBlockNumber[y ] + _bandOffset * z, _offsets[y] + x);
     return v;
 
 }
 
+double GridBlock::value(int x, int y, int z) const {
+	if (!isValid())
+		throw ErrorObject(TR("Using invalid pixeliterator, are all data sources accessible?"));
+
+	if (!actualPosition(x, y, z))
+		return PIXVALUEUNDEF;
+
+	double v = _iterator->_raster->_grid->value(_internalBlockNumber[y] + _bandOffset * z, _offsets[y] + x);
+	return v;
+}
 double GridBlock::operator ()(qint32 x, qint32 y, qint32 z) const
 {
-    if ( !isValid())
-        throw ErrorObject(TR("Using invalid pixeliterator, are all data sources accessible?"));
-    if (_iterator->_outside != rILLEGAL) {
-       _iterator->_outside = rILLEGAL;
-    }
-
-    actualPosition(x,y,z);
-    double v =_iterator->_raster->_grid->value(_internalBlockNumber[y ] + _bandOffset * z, _offsets[y] +  x);
-    return v;
+	return value(x, y, z);
 
 }
 
-void GridBlock::actualPosition(qint32& x, qint32& y, qint32& z) const
+bool GridBlock::actualPosition(qint32& x, qint32& y, qint32& z) const
 {
-    x = std::max(0, std::min(_iterator->_x + x,_iterator->_endx));
-    y = std::max(0, std::min(_iterator->_y + y,_iterator->_endy));
-    z = std::max(0, std::min(_iterator->_z + z,_iterator->_endz));
+	int px = _iterator->_x + x;
+	int py = _iterator->_y + y;
+	int pz = _iterator->_z + z;
+	if (_iterator->_acceptOutside) {
+		if (px < 0 || py < 0 || pz < 0 ||
+			px > _iterator->_endx || py > _iterator->_endy || pz > _iterator->_endz)
+			return false;
+	}
+    x = std::max(0, std::min(px,_iterator->_endx));
+    y = std::max(0, std::min(py,_iterator->_endy));
+    z = std::max(0, std::min(pz,_iterator->_endz));
+
+	return true;
 }
 
 Size<> GridBlock::size() const
@@ -217,12 +230,40 @@ std::vector<double> GridBlock::toVector(Pivot pivot) const{
     return v;
 }
 
+DoubleVector3D GridBlock::to3DVector() const {
+	const Size<>& size = _iterator->blockSize();
+	Pixel leftup(- (int)size.xsize() / 2, -(int)size.ysize()/2, 0);
+	Pixel rightdown(leftup.x + size.xsize(), leftup.y + size.ysize(), leftup.z + size.zsize());
+	DoubleVector3D v(size.zsize());
+	for (auto& col : v) {
+		col.resize(size.ysize());
+		for (auto& row : col) {
+			row.resize(size.xsize(), rUNDEF);
+		}
+	}
+	int lz = 0;
+	for (qint32 z = leftup.z; z < rightdown.z; ++z) {
+		int ly = 0;
+		for (qint32 y = leftup.y; y < rightdown.y; ++y) {
+			int lx = 0;
+			for (qint32 x = leftup.x; x < rightdown.x; ++x) {
+				v[lz][ly][lx] = operator ()(x, y, z);
+				++lx;
+			}
+			++ly;
+		}
+		++lz;
+	}
+	return v;
+}
+
 //----------------------------------------------------------------------------------------------
-BlockIterator::BlockIterator(IRasterCoverage raster, const Size<> &sz, const BoundingBox &box, const Size<>& stepsize) :
+BlockIterator::BlockIterator(IRasterCoverage raster, const Size<> &sz, const BoundingBox &box, const Size<>& stepsize, bool acceptOutside ) :
     PixelIterator(raster,box),
     _block(this),
     _blocksize(sz),
-    _stepsizes(stepsize.isValid() ? stepsize : sz)
+    _stepsizes(stepsize.isValid() ? stepsize : sz),
+	_acceptOutside(acceptOutside)
 
 {
 }
@@ -281,6 +322,12 @@ Size<> BlockIterator::blockSize() const
 void BlockIterator::stepsizes(const Size<> &stepsizes)
 {
     _stepsizes = stepsizes;
+}
+
+BlockIterator& BlockIterator::operator=(const Pixel &pix) {
+	PixelIterator::operator=(pix);
+
+	return *this;
 }
 
 

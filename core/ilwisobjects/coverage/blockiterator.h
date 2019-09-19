@@ -79,6 +79,7 @@ public:
     GridBlock(BlockIterator *biter);
     double& operator()(qint32 x, qint32 y, qint32 z=0);
     double operator()(qint32 x, qint32 y, qint32 z=0) const;
+	double value(int x, int y, int z = 0) const;
     Size<> size() const;
     CellIterator begin() ;
     CellIterator end() ;
@@ -87,6 +88,7 @@ public:
     Pixel position() const;
     void setValue(double v);
     std::vector<double> toVector(Pivot pivot = pLEFTUP) const;
+	DoubleVector3D to3DVector() const;
 
 private:
     BlockIterator* _iterator;
@@ -96,14 +98,14 @@ private:
     quint32 _blockXSize;
     quint32 _bandOffset;
     quint64 _XYSize;
-    void actualPosition(qint32 &x, qint32 &y, qint32 &z) const;
+    bool actualPosition(qint32 &x, qint32 &y, qint32 &z) const;
 };
 
 class KERNELSHARED_EXPORT BlockIterator : public PixelIterator {
 public:
     friend class GridBlock;
 
-    BlockIterator(IRasterCoverage raster, const Size<> &sz, const BoundingBox& box=BoundingBox(), const Size<> &steps=Size<>());
+    BlockIterator(IRasterCoverage raster, const Size<> &sz, const BoundingBox& box=BoundingBox(), const Size<> &steps=Size<>(), bool acceptOutside=false);
 
     GridBlock& operator*() {
         return _block;
@@ -116,6 +118,7 @@ public:
     BlockIterator end() const ;
     bool operator==(const BlockIterator& iter) const;
     bool operator!=(const BlockIterator& iter) const;
+	BlockIterator& operator=(const Pixel &pix);
     Size<> blockSize() const;
     void stepsizes(const Size<>& stepsize);
 private:
@@ -123,7 +126,7 @@ private:
     GridBlock _block;
     Size<> _blocksize;
     Size<> _stepsizes;
-    double _outside=rILLEGAL;
+	bool _acceptOutside = false;
 };
 
 
