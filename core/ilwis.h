@@ -69,6 +69,8 @@ const double clrUNDEF2 = (std::numeric_limits < quint32 >::max() - 1);
 
 typedef double PIXVALUETYPE;
 const PIXVALUETYPE PIXVALUEUNDEF = rUNDEF;
+typedef std::vector<std::vector<std::vector<double>>> DoubleVector3D;
+typedef std::vector<std::vector<double>> DoubleVector2D;
 
 #define sUNDEF "?"
 
@@ -80,6 +82,7 @@ inline long max(long a, long b) { return (a>=b && a!=iUNDEF) ? a : b; }
 inline qint64 max(qint64 a, qint64 b) { return a>=b && a!=i64UNDEF ? a : b;}
 
 enum LogicalOperator{loNONE,loAND, loOR, loXOR, loLESS, loLESSEQ, loNEQ, loEQ, loGREATER, loGREATEREQ, loNOT};
+enum BlockPosition{bpTOPLEFT, bpTOPMIDDLE, bpTOPRIGHT, bpMIDDLELEFT, bpCENTER, bpMIDDLERIGHT, bpBOTTOMLEFT, bpBOTTOMMIDDLE, bpBOTTOMRIGHT};
 
 }
 
