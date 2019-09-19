@@ -140,6 +140,7 @@ Item {
     ]
 
     function sideChange() {
+
         centerItem.activeSplit = Math.abs(side)
         mastercatalog.activeSplit = Math.abs(side) - 1
         var tab = centerItem.getCurrentCatalogTab()

@@ -64,13 +64,16 @@ Rectangle {
                 var tabview = isleft ? lefttab : righttab
                 tabview.removeTab(tabindex)
                 tabview.currentIndex = Math.max(0,tabindex - 1)
-
                 if ( datapane.leftSide.tabCount === 0){
                     lefttab.state = "zerosize"
                     righttab.state = "fullsize"
+					righttab.currentIndex = 0
+					righttab.sideChange()
                 }else if(datapane.rightSide.tabCount === 0){
                     lefttab.state = "fullsize"
                     righttab.state = "zerosize"
+					lefttab.currentIndex = 0
+					lefttab.sideChange()
                 }
             }
         }
