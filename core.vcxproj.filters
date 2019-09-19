@@ -3244,6 +3244,9 @@
     <ClInclude Include="core\ilwisobjects\domain\timeintervalitem.h">
       <Filter>Header Files\ilwisobjects\domain</Filter>
     </ClInclude>
+    <ClInclude Include="core\ilwisobjects\spinlock.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="core\geos\include\geos\._version.h.vc">
@@ -3252,7 +3255,6 @@
     <None Include="core\geos\include\config.h.in">
       <Filter>Distribution Files</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="core\catalog\catalog.h">

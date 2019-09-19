@@ -942,6 +942,7 @@ xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
     <ClInclude Include="core\ilwisobjects\domain\timeintervalitem.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\analysispattern.h" />
     <ClInclude Include="core\ilwisobjects\operation\modeller\applicationmodel.h" />
+    <ClInclude Include="core\ilwisobjects\spinlock.h" />
     <ClInclude Include="core\ilwisobjects\table\attributedefinition.h" />
     <ClInclude Include="core\ilwisobjects\table\attributetable.h" />
     <ClInclude Include="core\ilwisobjects\table\basetable.h" />
@@ -1157,7 +1158,6 @@ xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="core\geos\include\geos\._version.h.vc" />
     <None Include="core\geos\include\config.h.in" />
   </ItemGroup>
