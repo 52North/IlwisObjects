@@ -154,12 +154,24 @@ public:
      */
     PixelIterator& operator=(const PixelIterator& iter);
     PixelIterator& operator=(const Pixel &pix){
-        _x = pix.x;
-        _y = pix.y;
-        _z = pix.z == iUNDEF ? 0 : pix.z;
-        _yChanged = _xChanged = _zChanged = true;
-        initPosition();
-        return *this;
+		quint64 dIndex = 0;
+		switch (_flow) {
+		case fXYZ:
+			dIndex = (pix.x - _x) + (pix.y - _y) * _box.xlength() + (pix.z - _z) * _box.xlength() * _box.ylength();
+			move(dIndex);
+			break;
+		case fZXY:
+			dIndex = (pix.z - _z) + (pix.x - _x) * _box.ylength() + (pix.y - _y) * _box.xlength() * _box.zlength();
+			move(dIndex);
+			break;
+		default:
+			_x = pix.x;
+			_y = pix.y;
+			_z = pix.z;
+			_yChanged = _xChanged = _zChanged = true;
+			initPosition();
+		}
+		return *this;
     }
 
     /*!
@@ -247,11 +259,23 @@ public:
      */
     PixelIterator &operator ()(const Pixel &pix)
     {
-        _x = pix.x;
-        _y = pix.y;
-        _z = pix.z;
-        _yChanged = _xChanged = _zChanged = true;
-        initPosition();
+		quint64 dIndex = 0;
+		switch (_flow) {
+		case fXYZ:
+			dIndex = (pix.x - _x) + (pix.y - _y) * _box.xlength() + (pix.z - _z) * _box.xlength() * _box.ylength(); 
+			move(dIndex);
+			break;
+		case fZXY:
+			dIndex = (pix.z - _z) + (pix.x - _x) * _box.ylength() + (pix.y - _y) * _box.xlength() * _box.zlength(); 
+			move(dIndex);
+			break;
+		default:
+			_x = pix.x;
+			_y = pix.y;
+			_z = pix.z;
+			_yChanged = _xChanged = _zChanged = true;
+			initPosition();
+		}
         return *this;
     }
 
