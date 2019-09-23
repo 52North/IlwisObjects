@@ -138,7 +138,6 @@ private:
     std::vector<quint32> _blockSizes;
     Size<> _size;
     quint32 _maxLines;
-    std::vector<std::vector<quint32>> _offsets;
     std::vector<quint32> _blockOffsets;
 };
 

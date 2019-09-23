@@ -199,10 +199,10 @@ void GridBlockInternal::dispose()
 Grid::Grid(int maxlines) : _maxCacheBlocks(1), _memUsed(0),_blocksPerBand(0), _maxLines(maxlines) {
     //Locker lock(_mutex);
     if ( _maxLines == iUNDEF){
-         _maxLines = context()->configurationRef()("system-settings/grid-blocksize",500);
-         if ( _maxLines > 1 && (_maxLines * size().xsize() * 8 > 1e7)) {
-             _maxLines = max(1, 1e7 / (size().xsize() * 8));
-         }
+		_maxLines = 10000;//  context()->configurationRef()("system-settings/grid-blocksize", 500);
+         //if ( _maxLines > 1 && (_maxLines * size().xsize() * 8 > 1e7)) {
+        //     _maxLines = max(1, 1e7 / (size().xsize() * 8));
+        // }
     }
     //qDebug() << "grid created:" << this;
 }
@@ -272,7 +272,6 @@ void Grid::clear() {
         delete _blocks[i];
     _blocks = std::vector< GridBlockInternal *>();
     _blockSizes =  std::vector<quint32>();
-    _offsets = std::vector<std::vector<quint32>>();
     _blockOffsets = std::vector<quint32>();
     _size = Size<>();
 }
@@ -285,11 +284,12 @@ PIXVALUETYPE Grid::value(const Pixel &pix) {
     quint32 yoff = (qint32)pix.y % _maxLines;
     quint32 block = pix.y / _maxLines;
     quint32 bandBlocks = _blocksPerBand * (pix.is3D() ? pix.z : 0);
-    quint32 offset = _offsets[yoff][pix.x];
+	quint32 offset = yoff * _size.xsize() + pix.x;; // _offsets[yoff][pix.x];
     return value(bandBlocks + block, offset);
 }
 
 PIXVALUETYPE &Grid::value(quint32 block, int offset )  {
+	//Locker<> lock(_mutex);
     if ( _blocks[block]->dataInMemory() ) // no load needed
         return _blocks[block]->at(offset);
     Locker<> lock(_mutex); // slower case. must prevent other threads to messup admin
@@ -300,7 +300,8 @@ PIXVALUETYPE &Grid::value(quint32 block, int offset )  {
 }
 
 void Grid::setValue(quint32 block, int offset, PIXVALUETYPE v ) {
-    if ( _blocks[block]->dataInMemory() ) {
+	//Locker<> lock(_mutex);
+    if ( _blocks[block]->dataInMemory() ) { 
         _blocks[block]->at(offset) = v;
         return;
     }
@@ -376,8 +377,8 @@ bool Grid::prepare(RasterCoverage *raster, const Size<> &sz) {
     if ( _size.zsize() == 0)
         _size.zsize(1);
 
-    if ( _maxLines > 1 && (_maxLines * sz.xsize() * 8 > 1e7))
-        _maxLines = max(1, 1e7 / (sz.xsize() * 8));
+   // if ( _maxLines > 1 && (_maxLines * sz.xsize() * 8 > 1e7))
+    //   _maxLines = max(1, 1e7 / (sz.xsize() * 8));
 
     quint64 bytesNeeded = _size.linearSize() * sizeof(PIXVALUETYPE);
     quint64 mleft = context()->memoryLeft();
@@ -403,14 +404,6 @@ bool Grid::prepare(RasterCoverage *raster, const Size<> &sz) {
         totalLines -= _maxLines;
         if ( totalLines <= 0) // to next band
             totalLines = _size.ysize();
-    }
-    _offsets.resize(_maxLines);
-    for(quint32 y=0; y < _maxLines; ++y) {
-        _offsets[y].resize(_size.xsize());
-        for(quint32 x=0; x < _size.xsize(); ++x) {
-            quint64 linearPos = y * size().xsize() + x;
-            _offsets[y][x] = linearPos;
-        }
     }
     return true;
 }
