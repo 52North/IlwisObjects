@@ -555,13 +555,13 @@ quint64 IlwisObject::copy(const QString &newUrl, const QString &format, const QS
             quint64 id = mastercatalog()->name2id(newUrl, ilwisType());
             if (id == i64UNDEF) {
                 QString bareUrl = newUrl;
-                int index = newUrl.lastIndexOf(".");
+               /* int index = newUrl.lastIndexOf(".");
                 if (index != -1) { // remove extension
                     QString p = newUrl.mid(index + 1);
                     if (p.size() < 4 || p == "ilwis") {
                         bareUrl = newUrl.left(index);
                     }
-                }
+                }*/
                 connectTo(bareUrl, format.toLower(), provider.toLower(), IlwisObject::cmOUTPUT);
                 QString newUrl = resource(IlwisObject::cmOUTPUT).url(true).toString();
                 QUrl oldUrl = resource().url();
