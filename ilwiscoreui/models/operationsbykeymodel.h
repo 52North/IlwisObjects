@@ -26,7 +26,7 @@ namespace Ui {
 class ILWISCOREUISHARED_EXPORT OperationsByKeyModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QMLOperationList operationsList READ operationsList CONSTANT)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::OperationModel> operationsList READ operationsList CONSTANT)
     Q_PROPERTY(int operationCount READ operationCount CONSTANT)
     Q_PROPERTY(QString keyword READ keyword CONSTANT)
 

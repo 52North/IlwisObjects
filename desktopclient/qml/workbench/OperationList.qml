@@ -6,6 +6,7 @@ import QtQuick.Dialogs 1.1
 import MasterCatalogModel 1.0
 import OperationCatalogModel 1.0
 import OperationModel 1.0
+import OperationsByKeyModel 1.0
 
 import "../Global.js" as Global
 
@@ -16,6 +17,9 @@ Rectangle {
     property var operationsModel : operations.operations
     property bool byKey : false
 
+	onOperationsModelChanged : {
+		console.debug("zzzzzzzzzzzzzzzzz", operationsModel)
+	}
 
     width : parent.width
     color : "white"

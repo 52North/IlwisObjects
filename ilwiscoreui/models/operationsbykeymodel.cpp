@@ -35,7 +35,7 @@ QString OperationsByKeyModel::keyword() const
     return _keyword;
 }
 
-QMLOperationList OperationsByKeyModel::operationsList()
+QQmlListProperty<Ilwis::Ui::OperationModel> OperationsByKeyModel::operationsList()
 {
     return  QQmlListProperty<OperationModel>(this, _operations);
 }
