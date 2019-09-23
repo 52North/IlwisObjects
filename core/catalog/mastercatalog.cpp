@@ -156,8 +156,18 @@ bool MasterCatalog::addContainer(const QUrl &inlocation, bool forceScan)
     if ( !catalog.isValid()){
         return false;
     }
-    if ( forceScan)
-        catalog->unload();
+
+
+	if (forceScan) {
+		catalog->unload();
+		// empty currentcatalog as it will be refreshed , any old content must be gone
+		QString stmt = QString("DELETE FROM mastercatalog WHERE container = '%1'").arg(inlocation.toString());
+		InternalDatabaseConnection db;
+		if (!db.exec(stmt)) {
+			kernel()->issues()->logSql(db.lastError());
+			return false;
+		}
+	}
     catalog->scan();
 
     addItems({catalog->resource()});
