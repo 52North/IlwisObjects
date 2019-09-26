@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.0
 import Qt.labs.folderlistmodel 2.1
 import MasterCatalogModel 1.0
 import "../Global.js" as Global
+import "../controls" as Controls
 
 Rectangle {
 
@@ -62,7 +63,7 @@ Rectangle {
 
     QtObject{
         id : privateProperty
-        property ComboBox pathCB
+        property var pathCB
     }
 
 
@@ -85,15 +86,18 @@ Rectangle {
        }
 
 
-    ComboBox {
+    Controls.ComboxLabelPair {
         id : drivelist
         anchors.top :folderlist.top
-        width: parent.width
+        width: parent.width - 4
         height : 20
-        model: mastercatalog.driveList()
+		labelText : "drives"
+		labelWidth : 50
+		x : 4
+        itemModel: mastercatalog.driveList()
         Layout.fillWidth: true
-        onActivated: {
-            currentIndex = index
+		currentIndex : mastercatalog.currentDriveIndex
+		onIndexChanged : {
             var drivePath = mastercatalog.getDrive(currentIndex)
             path2pathView(drivePath)
             folderModel.folder = Global.createfileUrlFromParts(drivePath, "")
@@ -103,17 +107,19 @@ Rectangle {
     }
     Rectangle {
         id : pathView
-        width: parent.width
-        height : 20
+        width: parent.width - 4
+        height : 25
         anchors.top : drivelist.bottom
         anchors.topMargin: 1
+		x : 4
         color : Global.mainbackgroundcolor
-        ComboBox {
+         Controls.ComboxLabelPair {
             id : pathText
             width : parent.width - 26
-            height : 18
-            editable: true
-            model: mastercatalog.history
+			labelText : "history"
+			labelWidth : 50
+            height : 25
+            itemModel: mastercatalog.history
             anchors.verticalCenter: parent.verticalCenter
             clip : true
             onCurrentIndexChanged: {
@@ -126,12 +132,11 @@ Rectangle {
                 privateProperty.pathCB = pathText
                 pathModel.fillModel()
             }
-            onActivated: {
-                currentIndex = index
-                   var path = currentText
+            onIndexChanged: {
+                   var path = comboText
                    if ( path !== null && typeof path != 'undefined'){
-                       folderModel.folder = currentText
-                       var filter = "container='" + currentText+ "'"
+                       folderModel.folder = comboText
+                       var filter = "container='" + path+ "'"
                        mainSplit.changeCatalog(filter,"catalog",folderModel.folder)
                    }
             }
@@ -149,9 +154,10 @@ Rectangle {
         Action {
             id : goPath
             onTriggered :{
-                currentFolder = Global.createfileUrlFromParts(pathText.editText, "")
+                currentFolder = Global.createfileUrlFromParts(pathText.comboText, "")
                 folderModel.folder = currentFolder
                 var filter = "container='" + folderModel.folder + "'"
+				console.debug("aaaa", filter, currentFolder,pathText.comboText)
                 mainSplit.changeCatalog(filter,"catalog", currentFolder)
             }
         }
