@@ -57,6 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "opencoverages.h"
 #include "generatethumbnails.h"
 #include "exportdata.h"
+#include "dataformat.h"
 #include "menumodel.h"
 #include "colorcompositecreation.h"
 #include "setkeywords.h"
@@ -627,6 +628,7 @@ CatalogModel *MasterCatalogModel::newCatalog(const QString &inpath, const QStrin
         context()->setWorkingCatalog(catalog);
         model->scanContainer(true, false);
         emit currentCatalogChanged();
+		emit currentDriveIndexChanged();
         return model;
 
 
@@ -639,6 +641,12 @@ void MasterCatalogModel::add2history(const QString &location)
     if ( _history.size() > 0 && _history.front() == location)
         return;
 
+	if (location.indexOf("file:/") == 0) {
+		QUrl url(location);
+		QFileInfo inf(url.toLocalFile());
+		if (!inf.exists())
+			return;
+	}
     _history.push_front(location);
     emit historyChanged();
 }
@@ -924,7 +932,21 @@ QString MasterCatalogModel::currentUrl() const
     return _currentUrl;
 }
 
-
+int MasterCatalogModel::currentDriveIndex() const {
+	if (_currentCatalog) {
+		QUrl url = _currentCatalog->resourceRef().url(true);
+		QFileInfo inf(url.toLocalFile());
+		if (inf.isDir()) {
+			QStringList drives = MasterCatalogModel::driveList();
+			QString drive = inf.absoluteFilePath().left(3);
+			for(int  i = 0; i < drives.size(); ++i){
+				if (drive.toLower() == drives[i].toLower())
+					return i;
+			}
+		}
+	}
+	return -1;
+}
 
 CatalogModel *MasterCatalogModel::currentCatalog() const
 {
@@ -962,6 +984,7 @@ void MasterCatalogModel::setCurrentCatalog(CatalogModel *cat)
         context()->setWorkingCatalog(catalog);
         mastercatalog()->addContainer(cat->url());
     }
+	emit currentDriveIndexChanged();
 }
 
 WorkSpaceModel *MasterCatalogModel::workspace(quint64 id)
@@ -1085,6 +1108,54 @@ QString MasterCatalogModel::checkValueType(const QString& name, bool simplified)
 		return TypeHelper::type2name(tp);
 	}
 	return sUNDEF;
+}
+
+QStringList MasterCatalogModel::formats(const QString& dataType) const {
+	IlwisTypes tp = TypeHelper::name2type(dataType);
+	if (tp != itUNKNOWN) {
+		QString query = QString("(datatype & %1)!=0 and (readwrite='rc' or readwrite='rcu')").arg(tp);
+		QString fmrs =  MasterCatalogModel::formats(query, tp);
+		fmrs.remove("[");
+		fmrs.remove("]");
+		fmrs.remove("'");
+		auto parts = fmrs.split(",");
+		return parts;
+	}
+	return QStringList();
+}
+
+QString MasterCatalogModel::formats(const QString& query, quint64 ilwtype)
+{
+	if (hasType(ilwtype, itFEATURE)) {
+		ilwtype = itFEATURE;
+	}
+
+
+	std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
+	QString formatList;
+	auto mrus = uicontext()->mruFormats();
+	for (auto item : mrus) {
+		if (formatList != "") {
+			formatList += ",";
+		}
+		auto iter = formats.find(item); // we only include mru items if it appears in the queried list, so it makes sense for this query
+		if (iter != formats.end())
+			formatList += "'*" + item + "'";
+	}
+	for (auto &format : formats) {
+		if (formatList != "") {
+			formatList += ",";
+		}
+		formatList += "'" + format.second.property(Ilwis::DataFormat::fpNAME).toString() + "'";
+	}
+	if (formatList != "")
+		formatList = "'Temporary'," + formatList;
+	if (hasType(ilwtype, itCOLUMN)) {
+		formatList = "'Keep original'," + formatList;
+	}
+	if (formatList != "")
+		formatList = "[" + formatList + "]";
+	return formatList;
 }
 
 //--------------------

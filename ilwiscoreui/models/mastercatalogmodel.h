@@ -56,8 +56,7 @@ class ILWISCOREUISHARED_EXPORT MasterCatalogModel : public QObject
     Q_PROPERTY(QStringList history READ history NOTIFY historyChanged)
     Q_PROPERTY(bool metadataEditMode READ metadataEditMode WRITE metadataEditMode NOTIFY editModeChanged)
 	Q_PROPERTY(Ilwis::Ui::MenuModel *bookMarkMenu READ bookMarkMenu NOTIFY bookmarksChanged)
-
-
+	Q_PROPERTY(int currentDriveIndex READ currentDriveIndex NOTIFY currentDriveIndexChanged)
 
 public:
     MasterCatalogModel();
@@ -112,9 +111,11 @@ public:
 	Q_INVOKABLE QStringList pathList(const QString& path) const;
 	Q_INVOKABLE QString checkValueType(const QString& name, bool simplified) const;
 	Q_INVOKABLE void clearSelection();
+	Q_INVOKABLE QStringList formats(const QString& dataType) const;
 	MenuModel *bookMarkMenu();
     std::vector<Ilwis::Resource> select(const QString& filter);
 
+	static QString formats(const QString &query, quint64 ilwtype);
 
 
 public slots:
@@ -149,6 +150,7 @@ private:
     QList<CatalogModel *> startBackgroundScans(const std::vector<Ilwis::Resource>& catalogResources);
     void scanBookmarks();
     QQmlListProperty<CatalogFilterModel> defaultFilters();
+	int currentDriveIndex() const;
 
     void loadWorkSpaces(const QString workspaceList);
     void setDefaultView();
@@ -166,8 +168,10 @@ signals:
     void historyChanged();
     void editModeChanged();
 	void catalogOperationEditorsChanged();
+	void currentDriveIndexChanged();
 private slots:
     void initFinished();
+	
  };
 
 class worker : public QObject{
