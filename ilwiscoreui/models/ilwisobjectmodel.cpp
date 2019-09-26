@@ -915,6 +915,12 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
                 return QString::number(_ilwisobject.as<Table>()->recordCount());
             }
         }
+		if (propertyname == "bandcount") {
+			if (hasType(_ilwisobject->ilwisType(), itRASTER)) {
+				IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
+				return QString::number(raster->size().zsize());
+			}
+		}
         if ( propertyname == "columncount"){
             if ( hasType(_ilwisobject->ilwisType(), itTABLE)){
                 return QString::number(_ilwisobject.as<Table>()->columnCount());
