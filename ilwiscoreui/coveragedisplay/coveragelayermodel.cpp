@@ -35,11 +35,13 @@ using namespace Ui;
 
 void Ilwis::Ui::CoverageLayerModel::setActiveAttribute(int idx)
 {
-	if (idx < _visualAttributes.size()) {
+	if (idx >= 0 && idx < _visualAttributes.size()) {
 		_activeAttribute = _visualAttributes[idx]->attributename();
 		add2ChangedProperties("buffers",true);
 		emit activeAttributeChanged();
 	}
+	else
+		_activeAttribute = "";
 }
 
 void Ilwis::Ui::CoverageLayerModel::linkMessage(const QVariantMap & parms)
