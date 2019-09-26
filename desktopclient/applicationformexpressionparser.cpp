@@ -19,8 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "models/resourcemodel.h"                                        
 #include "operationmetadata.h"         
 #include "dataformat.h"                  
-#include "uicontextmodel.h"                                                                              
-#include "applicationformexpressionparser.h"                                                                                                                          
+#include "uicontextmodel.h" 
+#include "mastercatalogmodel.h"
+#include "applicationformexpressionparser.h"                                                                                                                           
  
  
 using namespace Ilwis;                                                                                  
@@ -33,16 +34,16 @@ ApplicationFormExpressionParser::ApplicationFormExpressionParser()
 ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
                                                                                              quint32 index,
                                                                                                const QStringList& choices,
-                                                                                             bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{
-    FormParameter parm;                              
+                                                                                              bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{ 
+    FormParameter parm;                                                
     QString prefix = QString("pin_%1_").arg(index + 1); 
-    FieldType alternateUIType = ftNONE;   
+    FieldType alternateUIType = ftNONE;    
     if ( resource.hasProperty((prefix + "validationcondition"))){
         OperationResource::UIElement elem = (OperationResource::UIElement)resource[prefix + "altUIType"].toInt();
         if ( elem == OperationResource::ueCOMBO && !workflowContex){ // no comboboxes in the workflow context as the controlling field is porbably not filled in
-            alternateUIType = ftCOMBOBOX;
+            alternateUIType = ftCOMBOBOX;    
         }
-    } 
+    }    
 
     parm._label = resource[prefix + "name"].toString(); 
     parm._dataType = resource[prefix + "type"].toULongLong();
@@ -117,7 +118,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
 
     }
 
-    return parameters;  
+    return parameters;             
 }
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getParameters(const Resource& resource, bool workflowContext, const QVariantList& nodeparameters) const
 {
@@ -128,7 +129,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
     QString part;
     int parmCount = 0;
     bool inChoiceList = false;
-    bool isOptional = false;
+    bool isOptional = false;  
     bool checkGroup;
     int optionGroup = 0;
     QString specials = "[]|,"; 
@@ -172,9 +173,9 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
         } 
         part.clear();  
     } 
-    // last parameter      
+    // last parameter       
     if (part != ""){                                      
-        part = part.trimmed();               
+        part = part.trimmed();                
         setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional,optionGroup, workflowContext);
     }  
     if ( nodeparameters.size() == parameters.size()){     
@@ -183,12 +184,12 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
             QVariantMap props = nodeparameters[i].value<QVariantMap>();
             QString nodeLabel = props["label"].toString(); 
             if ( nodeLabel != ""){
-                parm._label = nodeLabel;     
+                parm._label = nodeLabel;       
             } 
         if ( props["state"].toString() == "calculated" && props.contains("outputIndex") && props.contains("index")){
                 parm._placeHolderValue = "link=" + props["outputNodeId"].toString() + ":"  + props["outputIndex"].toString() ;
             }else
-                parm._placeHolderValue = "";    
+                parm._placeHolderValue = "";     
         }  
     }
     return parameters;      
@@ -450,7 +451,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                 }
 
                 if(operationParameterCount==parameterCount){
-                    ++operationIndex;
+                    ++operationIndex; 
 
                     if(operationIndex != operationNames.end()) operationRowEnd = "Rectangle{width : parent.width; height:1;color : \"black\"}";
 
@@ -467,7 +468,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
             QString visibile = "true"; 
             for (const QString index : hiddenFields) {
                 if(i == index.toInt()){
-                    visibile = "false";       
+                    visibile = "false";        
                 }
             }
             QString wrapMode = input ? "TextEdit.NoWrap" : "TextEdit.Wrap";
@@ -505,18 +506,18 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     textFieldPart = textArea.arg(i).  
                         arg(width).
                         arg(checkWidth).
-                        arg(imagewidth).
+                        arg(imagewidth). 
                         arg(xshift). 
                         arg(input ? dropKeys(parameters[i]._dataType) : "\"?\"").
                         arg(constantValue == "" ? parameters[i]._defValue : constantValue).
                         arg(checkEffects).
-                        arg(wrapMode);   
-                }          
-
+                        arg(wrapMode);                  
+                }            
+				 
                 QString parameterRow = QString(rowBodyText + textFieldPart + imagePart + "}").arg(check).arg(parameters[i]._label).arg(width).arg(i).arg(checkWidth).arg(xshift).arg(visibile).arg(hasType(parameters[i]._fieldType,ftTEXTEDIT) ? 30 : 75);
                 formRows += parameterRow;   
                 if ( results != "") 
-                    results += "+ \"|\" +";  
+                    results += "+ \"|\" +";   
                 results += QString(input ? "pin_%1.text" : "pout_%1.text").arg(i);
                 if ( !input){
 					if (hasType(parameters[i]._valueType, itINTEGER | itFLOAT | itDOUBLE)) {
@@ -526,7 +527,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
 
 					}
                     QString query = QString("(datatype & %1)!=0 and (readwrite='rc' or readwrite='rcu')").arg(parameters[i]._dataType);
-                    QString formatList = formats(query, parameters[i]._dataType);
+                    QString formatList = MasterCatalogModel::formats(query, parameters[i]._dataType);
                     if ( formatList != ""){                  
 
 
@@ -583,7 +584,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
                     if (validConstant && constantValue == choiceString) {
                         inputIndex = j;
                     }
-                    if ( choices.size() > 1)
+                    if ( choices.size() > 1) 
                         choices += ",";
                     else if ( showEmptyOptionInList )
                         choices += "\" \",";
@@ -614,7 +615,7 @@ QString ApplicationFormExpressionParser::makeFormPart(const QString& metaid, int
 
     }catch(...){           
      }
-    return formRows;                                                    
+    return formRows;                                                           
 }      
 
 QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
@@ -623,12 +624,12 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
                                                             QStringList hiddenFields, 
                                                             QVariantList operationNames,  
                                                             QStringList constantValues,
-                                                            const std::vector<FormParameter>& parameters)      
+                                                            const std::vector<FormParameter>& parameters)                
 {
-        Resource resource = mastercatalog()->id2Resource(metaid);         
-         std::vector<FormParameter> outparameters = getOutputParameters(resource);   
-        QString results;                               
-        QString mid = QString::number(metaid);
+        Resource resource = mastercatalog()->id2Resource(metaid);               
+         std::vector<FormParameter> outparameters = getOutputParameters(resource);        
+        QString results;                                     
+        QString mid = QString::number(metaid); 
         QString validation = "function addValidation(e, idx, u){var r = operations.resolveValidation(metaid, u,idx);";
         validation += "if ( r){for(var k=0; k<r.length;k++){var p=r[k];var ue = \"pin_\" + p.parameterIndex + \"" + QString("_") + mid + "\"" ;
         validation += "; var item = uicontext.getItem(ue,0); if ( item !== null) { if ( p.uielement==\"list\"){item.itemModel=p.result}if(p.uielement==\"textfield\"){item.text=p.result}}}}}";
@@ -638,21 +639,21 @@ QString ApplicationFormExpressionParser::index2FormInternal(quint64 metaid,
         columnStart += "Column { " + validation + " " + mruFormats + " " + propertyMetaid + "%1 x:5; width : parent.width - 5; height : parent.height;spacing :10;";
         QString exclusiveGroup = "ExclusiveGroup { id : sourceFilterGroup; onCurrentChanged: {}}";
         columnStart += exclusiveGroup;    
-        int width = 0;    
+        int width = 0;       
         for(int i = 0; i < parameters.size(); ++i){
-            width = std::max(parameters[i]._label.size(), width);     
+            width = std::max(parameters[i]._label.size(), width);                
         }  
-        width *= 10;     
-        width = std::min(100, width);   
+        width *= 10;           
+        width = std::min(100, width);            
 
         QString inputpart = makeFormPart(mid, width, parameters, true, results, showEmptyOptionInList, hiddenFields, operationNames, constantValues);
 
-        QString outputPart;
+        QString outputPart;   
         QString seperator;
-        if ( showoutputformat){ 
+        if ( showoutputformat){  
             if ( outparameters.size() > 0){       
                 for(int i = 0; i < outparameters.size(); ++i){
-                    width = std::max(outparameters[i]._label.size(), width); 
+                    width = std::max(outparameters[i]._label.size(), width);  
                 } 
                 width = std::max(100, width);    
             }
@@ -737,36 +738,4 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
     return parameters;                          
 }
 
-QString ApplicationFormExpressionParser::formats(const QString& query, quint64 ilwtype) const
-{
-    if ( hasType(ilwtype,itFEATURE )){
-        ilwtype = itFEATURE;           
-    }  
 
-
-    std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
-    QString formatList;
-	auto mrus = uicontext()->mruFormats(); 
-	for (auto item : mrus) {
-		if (formatList != "") {   
-			formatList += ",";
-		}
-		auto iter = formats.find(item); // we only include mru items if it appears in the queried list, so it makes sense for this query
-		if ( iter != formats.end())
-			formatList += "'*"+ item + "'";
-	}
-    for(auto &format : formats)    { 
-        if ( formatList != ""){
-            formatList += ",";
-        }
-        formatList += "'"+ format.second.property(Ilwis::DataFormat::fpNAME).toString() + "'";
-    }
-    if ( formatList != "")
-       formatList = "'Temporary'," + formatList;
-    if ( hasType(ilwtype, itCOLUMN)){
-        formatList = "'Keep original'," + formatList;
-    }    
-    if ( formatList != "")
-        formatList = "[" + formatList + "]";
-    return formatList;  
-}
