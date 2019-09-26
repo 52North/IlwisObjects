@@ -57,11 +57,13 @@ RootLayerModel::RootLayerModel(LayerManager *lm, QStandardItem *parent) :
 
 void RootLayerModel::setActiveAttribute(int idx)
 {
-    if (idx < _visualAttributes.size()) {
+    if (idx >= 0 && idx < _visualAttributes.size()) {
         _activeAttribute = _visualAttributes[idx]->attributename();
         add2ChangedProperties("buffers", true);
         emit activeAttributeChanged();
-    }
+	}
+	else
+		_activeAttribute = "";
 }
 
 QVariant RootLayerModel::vproperty(const QString &attrName) const
