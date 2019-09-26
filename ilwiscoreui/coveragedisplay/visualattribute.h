@@ -59,6 +59,7 @@ public:
     VisualAttribute();
     VisualAttribute(LayerModel *layer, const DataDefinition& def, const QString& attrName, const IRepresentation &rpr = IRepresentation());
     VisualAttribute(const VisualAttribute& avp);
+	~VisualAttribute();
 
     IRepresentation representation() const;
     void representation(const IRepresentation& rpr);

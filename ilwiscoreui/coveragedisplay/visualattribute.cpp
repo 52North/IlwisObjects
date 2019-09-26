@@ -69,6 +69,10 @@ VisualAttribute::VisualAttribute(const VisualAttribute &avp)
     _datadef = avp._datadef;
 }
 
+VisualAttribute::~VisualAttribute() {
+	//qDebug() << "delete visual attribute" << attributename() << (qint64)this;
+}
+
 IRepresentation VisualAttribute::representation() const
 {
     return _representation;
