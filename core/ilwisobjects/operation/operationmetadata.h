@@ -44,7 +44,8 @@ public:
     void addValidation(quint32 parent, quint32 child, const QString &validationCondition);
     void parameterNeedsQuotes(quint32 order);
     void setOutputIsInput(int outParm, int inParm);
-
+	void setCustomForm(const QString& form);
+	
     bool compatibleOperationAlreadyExists(bool ignoreSelf=true);
 };
 
