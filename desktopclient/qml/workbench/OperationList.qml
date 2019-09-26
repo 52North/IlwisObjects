@@ -17,10 +17,6 @@ Rectangle {
     property var operationsModel : operations.operations
     property bool byKey : false
 
-	onOperationsModelChanged : {
-		console.debug("zzzzzzzzzzzzzzzzz", operationsModel)
-	}
-
     width : parent.width
     color : "white"
     opacity: width > 4 ? 1 : 0

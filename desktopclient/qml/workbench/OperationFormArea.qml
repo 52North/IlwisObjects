@@ -19,17 +19,25 @@ Rectangle {
 
     function newForm(metaid, title, url){
         operationid = metaid
-        var form= formbuilder.index2Form(metaid, true)
 		operationmd = operations.operation(metaid)
-        appF().formQML = form
-        appF().formTitle = title
-        appF().opacity = 1
+		var url = operationmd.customForm
+		if ( url == '?'){
+			var form= formbuilder.index2Form(metaid, true)
+			appF().formQML = form
+		}else{
+			appF().formComponent = url
+		}
+
+		appF().formTitle = title
+		appF().opacity = 1
     }
 
 	TabView {
 		id : tabs
 		width : parent.width
 		height : parent.height
+
+
 		Tab {
 			title : qsTr("Form")
 			Column {
@@ -56,19 +64,23 @@ Rectangle {
 			}
 		}
 		Tab { 
-			title : "Descscription"
-			Rectangle {
+			title : "Description"
 			width : parent.width
-				height : parent.height
-
-
-			}
-			ScrollView {
+			height : parent.height
+			QC2.ScrollView {
+				id : scrollv
 				width : parent.width
 				height : parent.height
-				QC2.TextArea {
+					onWidthChanged : {
+					scrollv.contentWidth = scrollv.width
+				}
+				QC2.TextArea 
+				{
+					id :texta
 					textFormat : TextEdit.RichText
 					text : operationmd ? operationmd.fullDescription() : ""
+					width : scrollv.width
+					height : lineCount * 18
 				}
 			}
 		}
