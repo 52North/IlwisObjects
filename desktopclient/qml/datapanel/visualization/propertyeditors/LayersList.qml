@@ -108,15 +108,15 @@ Item {
 					height : buttonbar.height - 2
 
 					onClicked : {
-					    /*var nid = currentNodeId
+					    var nid = currentNodeId
 						var idx = activeLayerManager().modelIndex(0)
 						tree.selection.setCurrentIndex(idx, ItemSelectionModel.ClearAndSelect)
 						setTreeIndex(idx)
 						setModel()
 						editorColumn.removeEditors()
 						var cmd = 'removelayer(' + activeLayerManager().viewid + ',' + nid + ')'
-						layerview.activeLayerManager().addCommand(cmd)
-						activeLayerManager().refresh()*/
+						//layerview.activeLayerManager().addCommand(cmd)
+						activeLayerManager().refresh()
 					}
 				}
 			}
@@ -230,7 +230,6 @@ Item {
             }
             
 			onDropped : {
-			console.debug("zzzzzzzzzzzzzzzzzzzzzz")
                 if (!tree.dropHandled){
 				    var resource = mastercatalog.id2Resource(drag.source.ilwisobjectid, dropArea)
 				    if ( resource){
