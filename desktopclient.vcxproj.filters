@@ -116,6 +116,9 @@
     <Filter Include="Distribution Files\qml\datapanel\modeller\analysisview\classification">
       <UniqueIdentifier>{4285b7ff-9c64-495e-ade9-677a099bc571}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Distribution Files\qml\workbench\customforms">
+      <UniqueIdentifier>{101ed1a1-3690-4398-86a3-92956d6573e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="desktopclient\applicationformexpressionparser.cpp">
@@ -1309,6 +1312,24 @@
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PointLabeling.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\customforms\RasterSelection.qml">
+      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\customforms\RSAttributeByValue.qml">
+      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\customforms\RSAttributes.qml">
+      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+    </None>
+    <None Include="desktopclient\qml\controls\BoundingBox.qml">
+      <Filter>Distribution Files\qml\controls</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\customforms\RSBoundingBox.qml">
+      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+    </None>
+    <None Include="desktopclient\qml\workbench\customforms\RSBands.qml">
+      <Filter>Distribution Files\qml\workbench\customforms</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

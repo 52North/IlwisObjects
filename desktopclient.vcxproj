@@ -201,6 +201,7 @@
     <None Include="desktopclient\qml\controls\ActionButtonH.qml" />
     <None Include="desktopclient\qml\controls\ActionButtonV.qml" />
     <None Include="desktopclient\qml\controls\AreaHeader.qml" />
+    <None Include="desktopclient\qml\controls\BoundingBox.qml" />
     <None Include="desktopclient\qml\controls\Busy.qml" />
     <None Include="desktopclient\qml\controls\CatalogTab.qml" />
     <None Include="desktopclient\qml\controls\CircularSlider.qml" />
@@ -511,6 +512,11 @@
     <None Include="desktopclient\qml\workbench\creators\TextFieldStyleTiePoints.qml" />
     <None Include="desktopclient\qml\workbench\creators\TiePointsTable.qml" />
     <None Include="desktopclient\qml\workbench\creators\UnderDevelopment.qml" />
+    <None Include="desktopclient\qml\workbench\customforms\RasterSelection.qml" />
+    <None Include="desktopclient\qml\workbench\customforms\RSAttributeByValue.qml" />
+    <None Include="desktopclient\qml\workbench\customforms\RSAttributes.qml" />
+    <None Include="desktopclient\qml\workbench\customforms\RSBands.qml" />
+    <None Include="desktopclient\qml\workbench\customforms\RSBoundingBox.qml" />
     <None Include="desktopclient\qml\workbench\DataSourceFormButtons.qml" />
     <None Include="desktopclient\qml\workbench\DebugInfo.qml" />
     <None Include="desktopclient\qml\workbench\DOperation.qml" />
