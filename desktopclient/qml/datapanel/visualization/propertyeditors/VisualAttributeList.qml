@@ -21,7 +21,10 @@ Rectangle {
 
      }
 	 onCurrentCoverageChanged : {
-		attributesList.currentIndex = currentCoverage.nodeId === 0 ? 0 : 1
+		attributesList.currentIndex  = -1
+		if ( currentCoverage)
+			attributesList.currentIndex = currentCoverage.nodeId === 0 ? 0 : 1
+			
 	 }
     color : Global.alternatecolor3
 
@@ -59,7 +62,10 @@ Rectangle {
             model : attributeListModel
 
 			onModelChanged :  {
-                currentIndex = currentCoverage ? (currentCoverage.isCoverageBased ? 1 : 0) : 0
+				currentIndex = -1
+				if ( currentCoverage)
+					currentIndex = currentCoverage ? (currentCoverage.isCoverageBased ? 1 : 0) : 0
+			
 			}
 
             onCurrentIndexChanged: {
