@@ -122,9 +122,13 @@ function drawArrow(canvas, ctx, pt1,pt2, selected){
 
 function createfileUrlFromParts(left, right) {
     if (Qt.platform.os === "windows") {
-        return "file:///" + left + right;
+        if (left.indexOf("file:/") == -1)
+            return "file:///" + left + right;
+        return left + right
     }
-    return "file://" + left + right;
+    if (left.indexOf("file:/") == -1)
+        return "file://" + left + right;
+    return left + right
 }
 
 function urlToLocalPath(path) {
