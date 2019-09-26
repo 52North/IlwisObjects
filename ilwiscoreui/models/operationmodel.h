@@ -38,7 +38,7 @@ public:
     Q_PROPERTY(QString provider READ provider CONSTANT)
     Q_PROPERTY(bool booleanOperation READ booleanOperation CONSTANT)
     Q_PROPERTY(QString specialIcon READ specialIcon CONSTANT)
-
+	Q_PROPERTY(QString customForm READ customForm CONSTANT)
 
     OperationModel();
     explicit OperationModel(const Ilwis::Resource &source, QObject *parent=0);
@@ -80,6 +80,7 @@ public:
 private:
     bool booleanOperation() const;
     QString specialIcon() const;
+	QString customForm() const;
 
 };
 

@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QUrl>
 #include "kernel.h"
 #include "ilwisdata.h"
+#include "ilwiscontext.h"
 #include "connectorinterface.h"
 #include "resource.h"
 #include "ilwisobject.h"
@@ -337,7 +338,14 @@ QString OperationModel::specialIcon() const
     }
     return "";
 }
+QString OperationModel::customForm() const {
+	QString frm =  getProperty("customform");
+	if (frm == sUNDEF)
+		return frm;
+	
 
+	return QUrl::fromLocalFile(context()->ilwisFolder().absoluteFilePath() + "/qml/workbench/customforms/" + frm).toString();
+}
 QString OperationModel::fullDescription() const {
 
 	auto breakLine = [](const QString& inp, int maxLine)->QString {
