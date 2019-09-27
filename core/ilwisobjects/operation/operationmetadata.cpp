@@ -552,6 +552,10 @@ void OperationResource::setKeywords(const QString& words) {
     addProperty("keyword", result.toLower());
 }
 
+void OperationResource::setCustomForm(const QString& form) {
+	addProperty("customform", form);
+}
+
 void OperationResource::addValidation(quint32 parent, quint32 child, const QString &validationCondition)
 {
     QString prefix = "pin_" + QString::number(child + 1) + "_";
