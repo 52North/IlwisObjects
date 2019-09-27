@@ -49,6 +49,7 @@ public:
     Q_PROPERTY(QStringList objectCounts READ objectCounts NOTIFY objectCountsChanged)
     Q_PROPERTY(QStringList dataProviders READ dataProviders CONSTANT)
 	Q_PROPERTY(bool isFileBased READ isFileBased CONSTANT)
+	Q_PROPERTY(qint32 maxNameLength READ maxNameLength WRITE maxNameLength NOTIFY maxNameLengthChanged)
 
 
     ~CatalogModel();
@@ -94,6 +95,7 @@ protected:
    QList<ResourceModel *> _coverages;
    std::map<quint64, int> _objectCounts;
    bool _refresh = true;
+   qint32 _maxNameLength = 32;
    MasterCatalogModel *getMasterCatalogModel();
 
 private:
@@ -112,6 +114,8 @@ private:
 	bool isFileBased() const;
 
 	void sortItems(QList<ResourceModel *>& items);
+	qint32 maxNameLength() const;
+	void maxNameLength(qint32 l);
 
 public slots:
     void contentChanged2(const UrlSet& locs);
@@ -122,6 +126,7 @@ signals:
     void coveragesChanged();
     void objectCountsChanged();
     void activeFilterNameChanged();
+	void maxNameLengthChanged();
 
 
 };

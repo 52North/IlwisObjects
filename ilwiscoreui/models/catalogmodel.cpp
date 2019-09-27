@@ -178,8 +178,10 @@ void CatalogModel::sortItems(QList<ResourceModel *>& items) {
 
 	std::sort(names.begin(), names.end(), [&](const QString& s1, const QString& s2) { return coll.compare(s1, s2) < 0; });
 	items.clear();
+	_maxNameLength = -1;
 	for (auto name : names) {
 		std::vector<ResourceModel *> vitems = lookup[name];
+		_maxNameLength = std::max(_maxNameLength, (qint32)name.size());
 		for (auto *res : vitems)
 			items.push_back(res);
 	}
@@ -551,6 +553,15 @@ QString CatalogModel::specialFolder(const QString& folderType) {
 			return sUNDEF;
 	}
 	return path + "/.ilwis/" + folderType;
+}
+
+qint32 CatalogModel::maxNameLength() const {
+	return _maxNameLength;
+}
+void CatalogModel::maxNameLength(qint32 l) {
+	if (l > 1) {
+		_maxNameLength = l;
+	}
 }
 
 //-------------------------------------------------

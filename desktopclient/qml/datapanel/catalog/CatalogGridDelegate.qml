@@ -46,7 +46,7 @@ Item {
 
         Rectangle{
 
-            width : 130
+            width : parent.width - 25
             height : iconDelegate.height
             color : isSelected ? Global.selectedColor : "transparent"
             anchors.verticalCenter: imageBase.verticalCenter

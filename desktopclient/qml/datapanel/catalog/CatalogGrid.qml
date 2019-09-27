@@ -40,7 +40,7 @@ FocusScope {
                 height : parent.height
 
                 delegate: CatalogGridDelegate{}
-                cellWidth: 170
+                cellWidth: currentCatalog ? currentCatalog.maxNameLength * 7 : 170
                 cellHeight: 22
                 clip : true
                 cacheBuffer: 1000
