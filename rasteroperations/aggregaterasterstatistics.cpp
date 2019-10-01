@@ -295,8 +295,8 @@ quint64 AggregateRasterStatisticsBySubset::createMetadata()
 	operation.setInParameterCount({ 4 });
 	operation.addInParameter(0, itRASTER, TR("input raster"), TR("set raster bands to be aggregated"));
 	operation.addInParameter(1, itSTRING, TR("statistical method"), TR("method of calucaltion for a pixel column of the stack of bands"));
-	operation.addInParameter(2, itINTEGER | itSTRING, TR("Start band"), TR("Band index from which the statistical method starts calculating"));
-	operation.addInParameter(3, itINTEGER | itSTRING, TR("End band"), TR("Band index from which the statistical method stops calculating"));
+	operation.addInParameter(2, itINTEGER | itSTRING, TR("Start band index"), TR("Band index from which the statistical method starts calculating"));
+	operation.addInParameter(3, itINTEGER | itSTRING, TR("End band index"), TR("Band index from which the statistical method stops calculating"));
 	operation.setOutParameterCount({ 1 });
 	operation.addOutParameter(0, itRASTER, TR("output raster"), TR("Single band raster with the aggregated statical values"), itINTEGER | itFLOAT | itDOUBLE);
 	operation.setKeywords("raster, statistics,numeric,aggregate");
