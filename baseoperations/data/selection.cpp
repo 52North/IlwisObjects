@@ -246,6 +246,7 @@ quint64 SelectionRaster::createMetadata()
 {
     OperationResource operation({"ilwis://operations/selection"});
     operation.setLongName("Raster Selection");
+	operation.setCustomForm("RasterSelection.qml");
     operation.setSyntax("selection(coverage,selection-definition)");
     operation.setDescription("The select is meant as a base operation for “selecting  things” in a coverage. Things can be clipped regions, attributes or logical constraints. There are minimal differences between raster and features for this operation ( e.g. boundingbox is not accepted for features as it is a pixel thing).\
 		The formal definition is : <br> \

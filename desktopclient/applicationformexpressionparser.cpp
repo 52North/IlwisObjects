@@ -94,7 +94,7 @@ void ApplicationFormExpressionParser::setParameter(const Resource& resource, boo
     parameters.push_back(addParameter(resource, parmCount, choices, isOptional, optionGroup, workflowContext, defvalue));
     choices.clear();
     part = "";
-    inChoiceList = false;              
+    inChoiceList = false;                 
     ++parmCount; 
 } 
 

@@ -66,7 +66,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\libraries\win32debug\ilwiscore.lib;..\libraries\win32debug\extensions\spreadsheet\QXlsx.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
@@ -182,39 +182,6 @@
     <ClCompile Include="spreadsheet\spreadsheetconnectorsobjectfactory.cpp" />
     <ClCompile Include="spreadsheet\spreadsheettableconnector.cpp" />
     <ClCompile Include="spreadsheet\ilwisxlsxformat.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxabstractooxmlfile.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxabstractsheet.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcell.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcellformula.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcelllocation.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcellrange.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcellreference.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxchart.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxchartsheet.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcolor.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxconditionalformatting.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxcontenttypes.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdatavalidation.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdatetype.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdocpropsapp.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdocpropscore.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdocument.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdrawing.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxdrawinganchor.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxformat.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxmediafile.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxnumformatparser.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxrelationships.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxrichstring.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxsharedstrings.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxsimpleooxmlfile.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxstyles.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxtheme.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxutility.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxworkbook.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxworksheet.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxzipreader.cpp" />
-    <ClCompile Include="spreadsheet\xlsx\xlsxzipwriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="spreadsheet\spreadsheetconnectors.json" />

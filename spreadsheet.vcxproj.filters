@@ -27,9 +27,6 @@
     <Filter Include="Header Files\xlsx">
       <UniqueIdentifier>{acfc8c30-5fac-4b33-a219-edfb941ea35b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\xlsx">
-      <UniqueIdentifier>{7b9e9081-27a1-4671-bd11-a1b51a91e19d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="spreadsheet_global.h">
@@ -210,105 +207,6 @@
     </ClCompile>
     <ClCompile Include="spreadsheet\spreadsheettableconnector.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxabstractooxmlfile.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxabstractsheet.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcell.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcellformula.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcelllocation.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcellrange.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcellreference.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxchart.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxchartsheet.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcolor.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxconditionalformatting.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxcontenttypes.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdatavalidation.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdatetype.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdocpropsapp.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdocpropscore.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdocument.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdrawing.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxdrawinganchor.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxformat.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxmediafile.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxnumformatparser.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxrelationships.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxrichstring.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxsharedstrings.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxsimpleooxmlfile.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxstyles.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxtheme.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxutility.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxworkbook.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxworksheet.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxzipreader.cpp">
-      <Filter>Source Files\xlsx</Filter>
-    </ClCompile>
-    <ClCompile Include="spreadsheet\xlsx\xlsxzipwriter.cpp">
-      <Filter>Source Files\xlsx</Filter>
     </ClCompile>
     <ClCompile Include="spreadsheet\ilwisxlsxformat.cpp">
       <Filter>Source Files</Filter>

@@ -303,9 +303,6 @@ bool MasterCatalog::addItems(const std::vector<Resource>& items, bool silent)
         }
 
         _knownHashes.insert(Ilwis::qHash(resource));
-		if (resource.name() == "primarycolors") {
-			qDebug() << "stop";
-		}
         resource.store(queryItem, queryProperties);
         containers.insert(resource.container());
     }
