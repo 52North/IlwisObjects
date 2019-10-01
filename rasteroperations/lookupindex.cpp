@@ -68,7 +68,7 @@ double  LookUpIndex::testColumn(double testValue, const std::vector<double> colu
 	for (int i = 0; i < column.size(); ++i) {
 		double v = column[i];
 		if (_testFunction(v, testValue))
-			return i > 0 ? i - 1 : rUNDEF;
+			return i > 0 ? i - 1 : 0;
 	}
 	return rUNDEF;
 }
@@ -87,9 +87,9 @@ bool LookUpIndex::execute(ExecutionContext *ctx, SymbolTable &symTable)
 	int count = 0;
 	for (auto& value : _outputRaster) {
 		while (!xchanged) {
-			zcolumn.push_back(*iterIn);
+			zcolumn.push_back(*iterTest);
 			++iterTest;
-			xchanged = iterIn.xchanged();
+			xchanged = iterTest.xchanged();
 		}
 		value = testColumn(*iterIn, zcolumn);
 		updateTranquilizer(++count, 100);
@@ -118,7 +118,7 @@ Ilwis::OperationImplementation::State LookUpIndex::prepare(ExecutionContext *ctx
 	OperationHelper::check([&]()->bool { return _inputRaster.prepare(_expression.input<QString>(0), itRASTER); },
 		{ ERR_COULD_NOT_LOAD_2,_expression.input<QString>(0), "" });
 
-	OperationHelper::check([&]()->bool { return _testRaster.prepare(_expression.input<QString>(0), itRASTER); },
+	OperationHelper::check([&]()->bool { return _testRaster.prepare(_expression.input<QString>(1), itRASTER); },
 		{ ERR_COULD_NOT_LOAD_2,_expression.input<QString>(1), "" });
 
 	std::vector<QString> operations = { "smaller","smallerequal","equal","notequal", "greater","greaterequal" };
