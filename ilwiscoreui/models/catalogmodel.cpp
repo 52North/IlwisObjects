@@ -178,7 +178,6 @@ void CatalogModel::sortItems(QList<ResourceModel *>& items) {
 
 	std::sort(names.begin(), names.end(), [&](const QString& s1, const QString& s2) { return coll.compare(s1, s2) < 0; });
 	items.clear();
-	_maxNameLength = -1;
 	for (auto name : names) {
 		std::vector<ResourceModel *> vitems = lookup[name];
 		_maxNameLength = std::max(_maxNameLength, (qint32)name.size());
