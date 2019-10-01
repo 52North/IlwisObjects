@@ -22,7 +22,7 @@ Column {
 			text : qsTr("apply")
 			onClicked : {
 				var bb = "boundingbox(" + boundingbox.content + ")"
-				addRule({ rule : bb, connector : "and"})
+				addRule({ rule : bb, connector : "with"})
 				closeMe()
 			}
 		}

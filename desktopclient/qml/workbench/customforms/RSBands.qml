@@ -13,6 +13,11 @@ Column {
 	x : 4
 	spacing : 4
 	property var selectedBands : []
+	Text {
+		width : 150
+		height : 20
+		text : qsTr("Band indexes")
+	}
 	ScrollView {
 		width : parent.width
 		height : 80
@@ -39,7 +44,7 @@ Column {
 						}
 						Text {
 							width : 120
-							text : list.model[index].name
+							text : list.model[index].index
 						}
 					}
 		}
@@ -56,11 +61,11 @@ Column {
 					if (  selectedBands[i] == true) {
 						if ( bands != "" )
 							bands += ","
-						bands += list.model[i].name
+						bands += list.model[i].index
 					}
 				}
 				bands = "rasterbands(" + bands + ")"
-				addRule({ rule : bands, connector : "and"})
+				addRule({ rule : bands, connector : "with"})
 				closeMe()
 			}
 		}

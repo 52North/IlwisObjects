@@ -16,6 +16,7 @@ Column {
 	spacing : 4
 	property var raster
 	property var formresult : getFormResult()
+	property var connectorVisible : false
 
 	ListModel {
 		id: data
@@ -46,7 +47,7 @@ Column {
 			delegate: ComboBox {
 				width : 50
 				height : 20
-				visible : data.count > 1
+				visible : connectorVisible
 				model : determineModel(styleData.row)
 
 				Component.onCompleted : {
@@ -142,6 +143,7 @@ Column {
 
 	function addRule(rule) {
 		data.append(rule)
+		connectorVisible = data.count > 1
 	}
 
 	function getResolution(){
@@ -178,10 +180,17 @@ Column {
 	}
 
 	function determineModel(idx) {
-		if ( data.count > 1){
-			if ( data.get(idx - 1).connector == "") {}
+		var result = []
+		if ( data.count > 1 && idx < data.count - 1){
+			if ( data.get(idx+1).connector == "andor") {
+				result = ["and", "or"]
+			}
+			if ( data.get(idx+1).connector == "with") {
+				result = ["with:"]
+			}
+
 		}
-		return []
+		return result
 	}
 
 }

@@ -60,7 +60,7 @@ Column {
 					}
 				}
 				attribs = "attributes(" + attribs + ")"
-				addRule({ rule : attribs, connector : "and"})
+				addRule({ rule : attribs, connector : "with"})
 				closeMe()
 			}
 		}

@@ -45,7 +45,7 @@ Column {
 			text : qsTr("Apply")
 
 			onClicked : {
-				addRule({ rule : attrList.comboText + conditionList.comboText + valueEdit.content, connector : "and"})
+				addRule({ rule : attrList.comboText + conditionList.comboText + valueEdit.content, connector : "andor"})
 				closeMe()
 			}
 		}
