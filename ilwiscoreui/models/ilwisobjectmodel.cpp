@@ -1275,6 +1275,7 @@ QVariantList IlwisObjectModel::layerInfo() const
                     }
                     mp["name"] = name;
                     mp["range"] = rangelist;
+					mp["index"] = QString::number(i);
 					for (int j = 0; j < items.size(); ++j) {
 						if (items[j].name() == name && items[j].ilwisType() == raster->resourceRef().ilwisType()) {
 							mp["id"] = items[j].id();
