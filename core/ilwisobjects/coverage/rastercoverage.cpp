@@ -94,7 +94,7 @@ void RasterCoverage::georeference(const IGeoReference &grf, bool resetData)
     else
         _size = Size<>();
     if (!_grid && _size.isValid()){
-            gridRef()->prepare(this,_size);
+            gridRef()->prepare(this->id(),_size);
     }
     resourceRef().dimensions(_size.toString());
 }
@@ -651,7 +651,7 @@ void RasterCoverage::size(const Size<> &sz)
     if (sz.xsize() > 0 && sz.ysize() > 0) {
         changed(true);
         _size = sz;
-        gridRef()->prepare(this, sz);
+        gridRef()->prepare(this->id(), sz);
         if (_georef.isValid())
             _georef->size(sz);
          stackDefinitionRef().setSubDefinition(sz.zsize()); // default filling, can be overruled
