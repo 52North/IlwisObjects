@@ -63,7 +63,6 @@ inline uint qHash(const QFileInfo& inf ){
 std::vector<Resource> GdalCatalogExplorer::loadItems(const IOOptions &)
 {
     QStringList filters; //gdal()->getRasterExtensions();
-    kernel()->startClock();
     std::multimap<QString, DataFormat>  formats = DataFormat::getSelectedBy(DataFormat::fpEXTENSION, "connector='gdal'");
     for(const auto& element : formats){
         for(const auto& ext : element.second.property(DataFormat::fpEXTENSION).toString().split(",",QString::SkipEmptyParts)){

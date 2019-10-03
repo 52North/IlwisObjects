@@ -449,7 +449,7 @@ IlwisObject *InternalIlwisObjectFactory::createRasterCoverage(const Resource& re
             sz.zsize(parts[2].toInt());
     }
 
-    gcoverage->gridRef()->prepare(gcoverage, sz);
+    gcoverage->gridRef()->prepare(gcoverage->id(), sz);
 
     IGeoReference grf;
     QString tpnam = resource["georeference"].typeName();

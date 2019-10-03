@@ -45,7 +45,7 @@ bool InternalRasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOp
     if ( !gcoverage->datadef().range().isNull())
         _dataType = gcoverage->datadef().range()->valueType();
 
-    gcoverage->gridRef()->prepare(gcoverage,gcoverage->size());
+    gcoverage->gridRef()->prepare(gcoverage->id(),gcoverage->size());
 
     return true;
 }

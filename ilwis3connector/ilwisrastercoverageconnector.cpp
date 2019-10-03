@@ -81,7 +81,7 @@ bool RasterCoverageConnector::loadMapList(IlwisObject *data,const IOOptions& opt
     if (!ok || z < 0)
         return ERROR2(ERR_INVALID_PROPERTY_FOR_2,"Number of maps", gcoverage->name());
 
-    gcoverage->gridRef()->prepare(gcoverage, sz);
+    gcoverage->gridRef()->prepare(gcoverage->id(), sz);
     std::vector<double> bands(sz.zsize());
     for(int i =0; i < sz.zsize(); ++i)
         bands[i] = i;
@@ -269,7 +269,7 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
    // if ( def.domain<>()->valueType() & itNUMBER)
    updateConverter(*_odf);
 
-    gcoverage->gridRef()->prepare(gcoverage, grf->size());
+    gcoverage->gridRef()->prepare(gcoverage->id(), grf->size());
 
     gcoverage->georeference(grf);
     if ( !gcoverage->datadefRef().range().isNull() )
