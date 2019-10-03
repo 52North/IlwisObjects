@@ -290,7 +290,7 @@ public:
                 resource = resource1;
             IlwisTypes objecttp = class2name();
             if ( objecttp == itANY || !hasType(objecttp, resource.ilwisType())){
-                kernel()->issues()->log(TR("Requested object type doesnt match object type found in the master catalog; Is the requested resource correct?"));
+                kernel()->issues()->log(TR("Requested object type doesn't match object type found in the master catalog; Is the requested resource correct?"));
                 return false;
             }
             if (!mastercatalog()->isRegistered(resource.id())) {
@@ -334,7 +334,7 @@ public:
         Resource resource = mastercatalog()->id2Resource(iid);
         IlwisTypes objecttp = class2name();
         if ( objecttp == itANY || !hasType(objecttp, resource.ilwisType())){
-            kernel()->issues()->log(TR("Requested object type doesnt match object type found in the master catalog; Is the requested resource correct?"));
+            kernel()->issues()->log(TR("Requested object type doesn't match object type found in the master catalog; Is the requested resource correct?"));
             return false;
         }
         if (!mastercatalog()->isRegistered(iid)) {
