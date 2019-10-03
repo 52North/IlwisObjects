@@ -136,8 +136,8 @@ Rectangle {
                 if ( allNew){
                     lefttab.state = "fullsize"
                 }else if ( datapane.leftSide.tabCount === 1 && datapane.rightSide.tabCount === 1){ // one of them was new, so halfsize
-                    lefttab.state ="halfsize"
-                    righttab.state = "halfsize"
+                    lefttab.state ="smallsize"
+                    righttab.state = "bigsize"
                 } //else we dont do anything, leave it as it is
                 if ( sidePanel.side == "left"){
                     lefttab.currentIndex = sidePanel.tabCount - 1
