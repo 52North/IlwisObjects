@@ -194,23 +194,39 @@ LayerModel *FeatureLayerModel::create(LayerManager *manager, QStandardItem *pare
     return new FeatureLayerModel(manager, parentLayer, name, desc, options);
 }
 
+void Ilwis::Ui::FeatureLayerModel::addAttribute(const Ilwis::FeatureAttributeDefinition & attributes, int i)
+{
+	ColumnDefinition coldef = attributes.columndefinition(i);
+	IlwisTypes valueType = coldef.datadef().domain()->valueType();
+	if (hasType(valueType, itNUMBER | itDOMAINITEM | itSTRING | itCOLOR)) {
+		_visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(), coldef.name()));
+		auto editors = uicontext()->propertyEditors(_visualAttributes.back(), _features, coldef.datadef());
+		for (auto editor : editors)
+			_visualAttributes.back()->addVisualPropertyEditor(editor);
+	}
+}
+
 void FeatureLayerModel::fillAttributes()
 {
     if ( _features.isValid()){
         _visualAttributes = QList<VisualAttribute *>();
         _visualAttributes.push_back(new LayerAttributeModel(this,_features,DataDefinition()));
+		if (layerManager()->managerType() == LayerManager::mtMAIN) {
+			const FeatureAttributeDefinition& attributes = _features->attributeDefinitions();
+			for (int i = 0; i < attributes.columnCount(); ++i) {
+				addAttribute(attributes, i);
+			}
 
-        const FeatureAttributeDefinition& attributes = _features->attributeDefinitions();
-        for(int i=0; i < attributes.columnCount(); ++i){
-            ColumnDefinition coldef = attributes.columndefinition(i);
-            IlwisTypes valueType = coldef.datadef().domain()->valueType();
-            if ( hasType(valueType, itNUMBER|itDOMAINITEM|itSTRING|itCOLOR)){
-                _visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(),coldef.name()));
-				auto editors =uicontext()->propertyEditors(_visualAttributes.back(), _features, coldef.datadef());
-				for (auto editor : editors)
-					_visualAttributes.back()->addVisualPropertyEditor(editor);
-            }
-        }
+			for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
+				LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
+				lyr->fillAttributes();
+			}
+		}
+		else { // we add only the first attribute for coverages that are not the main display as they dont use the attributes. The first is added for coloring (attribute value --> color)
+			const FeatureAttributeDefinition& attributes = _features->attributeDefinitions();
+			if ( attributes.columnCount() > 1)
+				addAttribute(attributes, 1);
+		}
 		// set default attribute
 		if (_visualAttributes.size() > 0) {
 			if (_visualAttributes.size() == 1)
@@ -218,11 +234,8 @@ void FeatureLayerModel::fillAttributes()
 			else
 				activeAttributeName(_visualAttributes[1]->attributename());
 		}
-        for (int layerIndex = 0; layerIndex < rowCount(); ++layerIndex) {
-            LayerModel *lyr = static_cast<LayerModel *>(child(layerIndex));
-            lyr->fillAttributes();
-        }
     }
+
 }
 
 int FeatureLayerModel::numberOfBuffers(const QString&) const {

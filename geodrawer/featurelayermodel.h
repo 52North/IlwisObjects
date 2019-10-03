@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 class FeatureCoverage;
 typedef IlwisData<FeatureCoverage> IFeatureCoverage;
+class FeatureAttributeDefinition;
 
 namespace Ui {
 
@@ -74,7 +75,8 @@ public:
 	ICoverage coverage() const;
     QVariant vproperty(const QString& attrName) const ;
     void vproperty(const QString& attrName, const QVariant& value);
-    void fillAttributes() ;
+	void addAttribute(const Ilwis::FeatureAttributeDefinition & attributes, int i);
+	void fillAttributes() ;
     QString value2string(const QVariant &value, const QString &attrName) const;
 	bool prepare(int);
     int numberOfBuffers(const QString&) const;
