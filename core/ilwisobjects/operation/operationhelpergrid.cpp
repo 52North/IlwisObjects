@@ -95,13 +95,13 @@ IIlwisObject OperationHelperRaster::initialize(const IIlwisObject &inputObject, 
             if ( what & itRASTERSIZE) {
                 Size<> sz = gcInput->size();
                 BoundingBox box(sz);
-                resource.addProperty("size", IVARIANT(box.size()));
+                resource.addProperty("size", IVARIANT(box.size().toString()));
             }
             if ( what & itGEOREF) {
 				addGrfFromInput(gcInput.ptr(), resource);
             }
             if ( what & itDOMAIN) {
-                resource.addProperty("domain", IVARIANT(gcInput->datadef().domain()));
+                resource.addProperty("domain", IVARIANT(gcInput->datadef().domain<>()->id()));
             }
         }
         if ( what & itCOORDSYSTEM) {
