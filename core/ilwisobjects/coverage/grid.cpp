@@ -199,10 +199,10 @@ void GridBlockInternal::dispose()
 Grid::Grid(int maxlines) : _maxCacheBlocks(1), _memUsed(0),_blocksPerBand(0), _maxLines(maxlines) {
     //Locker lock(_mutex);
     if ( _maxLines == iUNDEF){
-		_maxLines = 10000;//  context()->configurationRef()("system-settings/grid-blocksize", 500);
-         //if ( _maxLines > 1 && (_maxLines * size().xsize() * 8 > 1e7)) {
-        //     _maxLines = max(1, 1e7 / (size().xsize() * 8));
-        // }
+		_maxLines =  context()->configurationRef()("system-settings/grid-blocksize", 500);
+         if ( _maxLines > 1 && (_maxLines * size().xsize() * 8 > 1e7)) {
+            _maxLines = max(1, 1e7 / (size().xsize() * 8));
+         }
     }
     //qDebug() << "grid created:" << this;
 }
@@ -365,7 +365,15 @@ void Grid::setBandProperties(RasterCoverage *raster, int n){
     }
 }
 
-bool Grid::prepare(RasterCoverage *raster, const Size<> &sz) {
+void Grid::resetBlocksPerBand(quint64 rasterid, quint32 blockCount, int maxlines) {
+	Size<> keepSize = _size;
+	clear();
+	_maxLines = maxlines;
+	_blocksPerBand = blockCount;
+	prepare(rasterid, keepSize);
+}
+
+bool Grid::prepare(quint64 rasterid, const Size<> &sz) {
     Locker<> lock(_mutex);
 
     clear();
@@ -377,8 +385,8 @@ bool Grid::prepare(RasterCoverage *raster, const Size<> &sz) {
     if ( _size.zsize() == 0)
         _size.zsize(1);
 
-   // if ( _maxLines > 1 && (_maxLines * sz.xsize() * 8 > 1e7))
-    //   _maxLines = max(1, 1e7 / (sz.xsize() * 8));
+    if ( _maxLines > 1 && (_maxLines * sz.xsize() * 8 > 1e7))
+       _maxLines = max(1, 1e7 / (sz.xsize() * 8));
 
     quint64 bytesNeeded = _size.linearSize() * sizeof(PIXVALUETYPE);
     quint64 mleft = context()->memoryLeft();
@@ -398,7 +406,7 @@ bool Grid::prepare(RasterCoverage *raster, const Size<> &sz) {
 
     for(quint32 i = 0; i < _blocks.size(); ++i) {
         int linesPerBlock = std::min((qint32)_maxLines, totalLines);
-        _blocks[i] = new GridBlockInternal(i, raster ? raster->id() : i64UNDEF,linesPerBlock, _size.xsize());
+        _blocks[i] = new GridBlockInternal(i, rasterid,linesPerBlock, _size.xsize());
         _blockSizes[i] = linesPerBlock * _size.xsize();
         _blockOffsets[i] = i == 0 ? 0 : _blockOffsets[i-1] +  _blockSizes[i];
         totalLines -= _maxLines;

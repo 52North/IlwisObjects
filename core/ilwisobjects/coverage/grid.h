@@ -74,6 +74,7 @@ public:
     void loadDiskDataToMemory();
     quint64 blockNr();
 
+
 private:
     bool loadFromCache();
     void fetchFromSource();
@@ -109,7 +110,7 @@ public:
     void setBlockData(quint32 block, const std::vector<PIXVALUETYPE>& data);
     char *blockAsMemory(quint32 block);
     void setBandProperties(RasterCoverage *raster, int n);
-    bool prepare(RasterCoverage *raster, const Size<> &sz) ;
+    bool prepare(quint64 rasterid, const Size<> &sz) ;
     quint32 blockSize(quint32 index) const;
     Size<> size() const;
     int maxLines() const;
@@ -118,6 +119,7 @@ public:
     std::map<quint32, std::vector<quint32> > calcBlockLimits(const IOOptions &options);
     bool isValid() const;
     qint64 memUsed() const;
+	void resetBlocksPerBand(quint64 rasterid, quint32 blockCount, int maxlines);
 
     //debug
     PIXVALUETYPE findBigger(PIXVALUETYPE v);
