@@ -48,7 +48,8 @@ class ILWISCOREUISHARED_EXPORT MasterCatalogModel : public QObject
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::CatalogModel> bookmarked READ bookmarked NOTIFY bookmarksChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::CatalogFilterModel> defaultFilters READ defaultFilters CONSTANT)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::WorkSpaceModel> workspaces READ workspaces NOTIFY workspacesChanged)
-    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::IlwisObjectModel> selectedData READ selectedData NOTIFY selectionChanged)
+    Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ResourceModel> selectedData READ selectedData NOTIFY selectionChanged)
+	Q_PROPERTY(QQmlListProperty<Ilwis::Ui::IlwisObjectModel> selectedObjects READ selectedObjects NOTIFY selectionObjectsChanged)
 	Q_PROPERTY(QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> catalogOperationEditors READ catalogOperationEditors NOTIFY catalogOperationEditorsChanged)
     Q_PROPERTY(int activeSplit READ activeSplit WRITE setActiveSplit NOTIFY activeSplitChanged)
     Q_PROPERTY(QString currentUrl READ currentUrl WRITE setCurrentUrl NOTIFY currentUrlChanged)
@@ -99,7 +100,8 @@ public:
 	Q_INVOKABLE Ilwis::Ui::IlwisObjectModel *url2object(const QString& url, const QString& type, QQuickItem *parent);
     Q_INVOKABLE QStringList select(const QString &filter, const QString& property);
     Q_INVOKABLE QString filter(const QString& source) const;
-    QQmlListProperty<IlwisObjectModel> selectedData();
+    QQmlListProperty<ResourceModel> selectedData();
+	QQmlListProperty<IlwisObjectModel> selectedObjects();
     Q_INVOKABLE void setSelectedObjects(const QString& objects);
     Q_INVOKABLE bool hasSelectedObjects() const;
     Q_INVOKABLE QString selectedIds() const;
@@ -127,7 +129,8 @@ private:
     QList<CatalogModel *> _bookmarks;
     QList<WorkSpaceModel *> _workspaces;
     QList<CatalogFilterModel *> _defaultFilters;
-    QList<IlwisObjectModel *> _selectedObjects;
+    QList<ResourceModel *> _selectedResources;
+	QList<IlwisObjectModel *> _selectedObjects; // this mirrors _selectedResources but because creation of ilwisobjects is somehwat expensive this function will only be used were we realy need the objects, not teh resources
     QList<QString> _history;
 
     QQmlContext *_qmlcontext = 0;
@@ -169,6 +172,7 @@ signals:
     void editModeChanged();
 	void catalogOperationEditorsChanged();
 	void currentDriveIndexChanged();
+	void selectionObjectsChanged();
 private slots:
     void initFinished();
 	

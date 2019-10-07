@@ -475,9 +475,20 @@ void MasterCatalogModel::setSelectedBookmark(quint32 index)
     }
 }
 
-QQmlListProperty<IlwisObjectModel> MasterCatalogModel::selectedData()
+QQmlListProperty<ResourceModel> MasterCatalogModel::selectedData()
 {
-    return  QQmlListProperty<IlwisObjectModel>(this, _selectedObjects);
+    return  QQmlListProperty<ResourceModel>(this, _selectedResources);
+}
+
+QQmlListProperty<IlwisObjectModel> MasterCatalogModel::selectedObjects()
+{
+	if (_selectedObjects.size() == 0) {
+		for (ResourceModel *model : _selectedResources) {
+			IlwisObjectModel *ioModel = new IlwisObjectModel(model->item(), this);
+			_selectedObjects.append(ioModel);
+		}
+	}
+	return  QQmlListProperty<IlwisObjectModel>(this, _selectedObjects);
 }
 
 IlwisObjectModel *MasterCatalogModel::url2object(const QString& url, const QString& type, QQuickItem *parent) {
@@ -507,27 +518,38 @@ IlwisObjectModel *MasterCatalogModel::id2object(const QString &objectid, QQuickI
 }
 
 void MasterCatalogModel::clearSelection() {
+	for (ResourceModel *model : _selectedResources) {
+		model->setParent(0);
+		model->deleteLater();
+	}
 	for (IlwisObjectModel *model : _selectedObjects) {
 		model->setParent(0);
 		model->deleteLater();
 	}
 	currentCatalog()->clearSelection();
+	_selectedResources.clear();
 	_selectedObjects.clear();
 }
 void MasterCatalogModel::setSelectedObjects(const QString &objects)
 {
     try {
         auto clearList = [&](){
-            for(IlwisObjectModel *model : _selectedObjects){
+            for(ResourceModel *model : _selectedResources){
                 model->setParent(0);
                 model->deleteLater();
             }
-            _selectedObjects.clear();
+			for (IlwisObjectModel *model : _selectedObjects) {
+				model->setParent(0);
+				model->deleteLater();
+			}
+            _selectedResources.clear();
+			_selectedObjects.clear();
         };
 
         if ( objects == ""){
             clearList();
             emit selectionChanged();
+			emit selectionObjectsChanged();
 			emit catalogOperationEditorsChanged();
             return;
         }
@@ -541,10 +563,11 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
                 continue;
 
 			mastercatalog()->noRefreshCatalog(true);
-            IlwisObjectModel *ioModel = new IlwisObjectModel(resource, this);
+			ResourceModel *ioModel = new ResourceModel(resource, this);
 			mastercatalog()->noRefreshCatalog(false);
-            _selectedObjects.append(ioModel);
+            _selectedResources.append(ioModel);
             emit selectionChanged();
+			emit selectionObjectsChanged();
 			emit catalogOperationEditorsChanged();
         }
         kernel()->issues()->silent(false);
@@ -557,7 +580,7 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
 
 QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> MasterCatalogModel::catalogOperationEditors() {
 	std::vector<ResourceModel *> maps;
-	for (auto *object : _selectedObjects) {
+	for (auto *object : _selectedResources) {
 		//if (hasType(object->type(), itCOVERAGE)) {
 			maps.push_back(object);
 		//}
@@ -567,7 +590,7 @@ QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> MasterCatalogModel::catalo
 
 bool MasterCatalogModel::hasSelectedObjects() const
 {
-    return _selectedObjects.size() != 0;
+    return _selectedResources.size() != 0;
 }
 
 void MasterCatalogModel::setCurrentUrl(const QString &url)
@@ -1039,7 +1062,7 @@ void MasterCatalogModel::prepare()
 QString MasterCatalogModel::selectedIds() const
 {
     QString selected;
-    for(auto obj : _selectedObjects ){
+    for(auto obj : _selectedResources ){
         if ( selected != "")
             selected += "|";
         selected += obj->id();
@@ -1075,7 +1098,7 @@ void MasterCatalogModel::keyPressed(int key)
 
 void MasterCatalogModel::keyReleased(int key)
 {
-    if ( _selectedObjects.size() > 0)    {
+    if ( _selectedResources.size() > 0)    {
     }
 }
 
