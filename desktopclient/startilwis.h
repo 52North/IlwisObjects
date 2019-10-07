@@ -31,6 +31,7 @@ class KeyFilter;
 class QThread;
 class InternalDatabaseModel;
 class QFileSystemModel;
+class CursorPosProvider;
 
 namespace Ilwis {
 	namespace Ui {
@@ -73,6 +74,7 @@ private:
 	Ilwis::Ui::ModelBuilder *_modelBuilder;
 	Ilwis::Ui::DataPaneModel *_datapane;
 	Ilwis::Ui::ObjectCreator *_objcreator;
+	CursorPosProvider *_mousePosition;
 	PreferencesModel *_preferences;
 	InternalDatabaseModel *_database;
 	QFileSystemModel *_filesystemmodel;

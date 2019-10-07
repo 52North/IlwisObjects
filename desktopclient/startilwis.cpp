@@ -88,6 +88,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "catalogoperationeditor.h"
 #include "menumodel.h"
 #include "filesystem.h"
+#include "mousefilter.h"
 #include "../core/buildnumber.h"
 
 using namespace Ilwis;
@@ -191,6 +192,7 @@ void StartIlwis::init() {
         _preferences =new PreferencesModel();
         _database = new InternalDatabaseModel();
         _trqthread = new QThread;
+		_mousePosition = new CursorPosProvider();
 
 		/*_filesystemmodel = new QFileSystemModel();
 		_filesystemmodel->setRootPath("");
@@ -209,6 +211,7 @@ void StartIlwis::init() {
         ctx->setContextProperty("internaldatabase",_database);
         ctx->setContextProperty("uicontext", uicontext().get());
         ctx->setContextProperty("models", modelregistry().get());
+		ctx->setContextProperty("mouseposition", _mousePosition);
 		//ctx->setContextProperty("filesystem", _filesystemmodel);
 		//ctx->setContextProperty("rootPathIndex", _filesystemmodel->index(_filesystemmodel->rootPath()));
 
