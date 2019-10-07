@@ -13,7 +13,6 @@ DropArea {
     width : parent.width
     state : ""
 
-
     onDropped: {
         if ( currentCatalog.url.indexOf("ilwis://system") != -1)
             return

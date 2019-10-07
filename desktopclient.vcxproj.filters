@@ -159,6 +159,9 @@
     <QtMoc Include="desktopclient\workflowmetadataformbuilder.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="desktopclient\mousefilter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="desktopclient\qml\CheckBoxStyle1.qml">

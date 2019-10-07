@@ -9,13 +9,13 @@ import "propertyform" as PropertyForm
 WorkBenchShifter {
     id : propertyFormContainer
 
-    function getSelectedData() {
+   /* function getSelectedData() {
         if ( mastercatalog.hasSelectedObjects()){
            return mastercatalog.selectedData
         }  else if ( mastercatalog.currentCatalog){
             return mastercatalog.currentCatalog.selectedData
         }
-    }
+    }*/
 
     clip : true
     state : "invisible"
@@ -33,7 +33,7 @@ WorkBenchShifter {
         anchors.top: functionBar.bottom
         width : parent.width
         anchors.bottom: parent.bottom
-        model : width > 0 ? mastercatalog.selectedData : null
+        model : width > 0 ? mastercatalog.selectedObjects : null
         property int lastIndex : 0
         delegate : PropertyForm.DPropertyForm{}
 

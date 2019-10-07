@@ -8,7 +8,7 @@ import "../controls" as Controls
 TabViewStyle {
     property string selectColor : uicontext.actionHeaderColor
     property string nonselectColor : uicontext.actionColor
-    property int tabHeight : 54
+    property int tabHeight : 30
 
 
     frameOverlap: 1
@@ -27,17 +27,16 @@ TabViewStyle {
             up : true
         }
 
-        Image {
+       /* Image {
             source : control.getTab(styleData.index).item ? (styleData.selected ? control.getTab(styleData.index).item.iconName + "_green.svg" : control.getTab(styleData.index).item.iconName + "_grey.svg") : ""
             anchors.top: parent.top
             anchors.topMargin: 2
             anchors.horizontalCenter: parent.horizontalCenter
-        }
+        }*/
 
         Text {
             id: text
-            anchors.bottom : parent.bottom
-            anchors.bottomMargin: 6
+			anchors.verticalCenter : parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment:Text.AlignHCenter
 

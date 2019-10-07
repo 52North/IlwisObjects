@@ -14,10 +14,6 @@ import "../.." as Base
 Item {
     id : viewmanager
 
-   // property var renderer
-
-   // property alias metadata : metadata
-
     signal zoomEnded(string envelope)
 
     Layout.minimumHeight: Global.actionBarMinHeight

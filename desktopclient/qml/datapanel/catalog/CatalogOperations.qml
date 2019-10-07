@@ -13,6 +13,7 @@ Rectangle {
     color : catalogSplit.backgroundCatalogColor
 	property string iconName : "../images/actions"
 
+
 	  SplitView {
 		width : parent.width - 5
         height : parent.height

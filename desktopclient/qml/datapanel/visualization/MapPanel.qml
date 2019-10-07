@@ -195,7 +195,7 @@ Item {
         LayerPanelLayout {
             id : layouts
             width : parent.width
-            height : parent.height - ( showManager ? Global.actionBarMaxHeight : 0)
+            height : parent.height - ( showManager ? Global.actionBarMinHeight + 6 : 0)
 
 
         }

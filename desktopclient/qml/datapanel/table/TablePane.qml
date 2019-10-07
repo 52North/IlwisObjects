@@ -51,7 +51,7 @@ Item {
         TableView {
             id : tableView
             width : parent.width
-            height : parent.height - 270 - tableToolbar.height
+            height : parent.height -  Global.actionBarMinHeight
             selectionMode : SelectionMode.ExtendedSelection
             property int currentSelection : table ? table.currentSelection : -1
 
@@ -84,14 +84,14 @@ Item {
 
                     PropertyChanges {
                         target: tableView
-                        height : parent.height - 270 - tableToolbar.height
+                        height : parent.height - 270  - Global.actionBarMinHeight
                     }
                 },
                 State {
                     name : "invisible"
                     PropertyChanges {
                         target: tableView
-                        height : parent.height  - 24 - tableToolbar.height
+                        height : parent.height -  Global.actionBarMinHeight
                     }
                 }
 
@@ -105,7 +105,7 @@ Item {
         }
         ColumnManagement{
             id : columnManagement
-            height : 270
+            //height : 270
         }
     }
 

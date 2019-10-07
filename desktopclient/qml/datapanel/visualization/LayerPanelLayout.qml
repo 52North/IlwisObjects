@@ -40,7 +40,7 @@ Item {
             name : "invisible"
             PropertyChanges {
                 target: layers
-                height : parent.height - activeLayerExtentsToolbar().height + 10
+                height : parent.height - activeLayerExtentsToolbar().height
             }
         }
 

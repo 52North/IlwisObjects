@@ -7,7 +7,7 @@ import ".." as DataPanel
 
 TabView {
     id : catalogoptions
-    height : Global.actionBarMinHeight
+    height : 30
     width : parent.width
     tabPosition: Qt.BottomEdge
     property string side

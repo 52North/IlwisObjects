@@ -17,11 +17,6 @@ Row {
         height: parent ? parent.height - 10 : 0
         x : 10
 
-        onHeightChanged : {
-			console.debug("aaaaaaaaa", height, minhist.height, chartArea.item,chartArea.item.height, chartArea.item.width, chartArea.x, chartArea.height, chartArea.width)
-			//item.height = parent.height
-		}
-
         Loader {
             id : chartArea
             width : parent.width + offset

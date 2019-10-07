@@ -5,7 +5,6 @@ import "../../controls" as Controls
 Item {
     id : operationsColumn
 
-
     Rectangle {
         id : opLabel
         width : 160
