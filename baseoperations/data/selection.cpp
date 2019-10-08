@@ -59,20 +59,9 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     IRasterCoverage outputRaster = _outputObj.as<RasterCoverage>();
     IRasterCoverage inputRaster = _inputObj.as<RasterCoverage>();
 
-    std::map<Raw, quint32> raw2record;
     int keyColumn = _inputAttributeTable.isValid() ? _inputAttributeTable->columnIndex(inputRaster->primaryKey()) : iUNDEF;
-    if (keyColumn != iUNDEF){
-        std::vector<QVariant> values = _inputAttributeTable->column(keyColumn);
-        for(quint32 rec=0; rec < values.size(); ++rec){
-            Raw r = values[rec].toDouble();
-            if ( !isNumericalUndef(r)){
-                raw2record[r] = rec;
-            }
-        }
-    }
 
     std::vector<int> extraAtrrib = organizeAttributes();
-
 
     std::vector<QString> selectionBands = bands(inputRaster);
     initialize(outputRaster->size().linearSize());
@@ -90,7 +79,7 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
             double matchValue = pixValue;
 
             for(const auto& epart : _expressionparts){
-                bool partOk = epart.match(iterIn.position(), matchValue,this);
+                bool partOk = epart.match(iterIn.position(), matchValue, this);
                 if ( epart._andor != loNONE)
                     ok =  epart._andor == loAND ? ok && partOk : ok || partOk;
                 else
@@ -103,9 +92,8 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
                     // pixValue == ID; ID < zero means undef, ID's start at zero.
                     if (pixValue >= 0) {
                         if (keyColumn != iUNDEF){
-                            auto iter = raw2record.find(pixValue);
-                            if ( iter != raw2record.end()){
-                                quint32 rec = iter->second;
+                            auto rec = inputRaster->raw2record(pixValue);
+                            if ( rec != iUNDEF){
                                 const Record& record = _inputAttributeTable->record(rec);
                                 pixValue = record.cell(extraAtrrib[0]).toDouble();
                             }else
@@ -117,9 +105,9 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
                         pixValue = rUNDEF;
                 }
             }
-            if ( ok){
+            if (ok) {
                 *iterOut = pixValue;
-            }else
+            } else
                 *iterOut = rUNDEF;
 
             ++iterIn;
