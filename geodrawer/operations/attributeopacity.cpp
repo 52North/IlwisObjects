@@ -63,8 +63,7 @@ bool AttributeOpacity::execute(ExecutionContext *ctx, SymbolTable &symTable)
                 clr.setAlphaF(_opacity);
                 rpr->colors()->setColor(raw,clr);
             }
-            _layer->updateGeometry(true, true);
-            _layer->add2ChangedProperties("buffers", true);
+			_layer->vproperty("updatetextures", true);
         }
     }
     return true;

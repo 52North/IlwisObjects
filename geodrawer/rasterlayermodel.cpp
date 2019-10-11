@@ -258,6 +258,7 @@ QVariant RasterLayerModel::vproperty(const QString& pName) const {
 void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
 	if (pName == "updatetextures") {
 		_texturesNeedUpdate = true;
+		_refreshPaletteAtNextCycle = true;
 		requestRedraw();
 		return;
 	} else if (pName == "refreshquads") {

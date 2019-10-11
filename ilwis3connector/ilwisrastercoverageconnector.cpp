@@ -239,9 +239,6 @@ bool RasterCoverageConnector::loadMetaData(IlwisObject *data, const IOOptions &o
         return false;
     }
 	if (gcoverage->resourceRef().hasProperty("georeference")) {
-		if (gcoverage->name() == "small3_grfnone.mpr") {
-			qDebug() << "sypp";
-		}
 		QString altUrl = gcoverage->resourceRef()["georeference"].toString();
 		if (altUrl != grf->resourceRef().url(true).toString()) {
 			grf.prepare(altUrl);
