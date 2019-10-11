@@ -363,9 +363,6 @@ void Resource::addProperty(const QString &key, const QVariant &value, bool exten
 		}
 	}
 	mastercatalog()->changeResource(id(), potentialKey, value, extended);
-	if (value.toString() == "code=georef:type=corners,csy=-0.625000 -0.625000 5.625000 5.625000,envelope=-0.625000 -0.625000 5.625000 5.625000,gridsize=5 5") {
-		qDebug() << "stop2";
-	}
     _properties[potentialKey.toLower()] = value;
 }
 
