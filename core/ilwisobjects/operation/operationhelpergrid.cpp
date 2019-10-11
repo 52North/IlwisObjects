@@ -128,44 +128,36 @@ bool OperationHelperRaster::addCsyFromInput(const Coverage* cov, Resource& resou
 		resource.addProperty("coordinatesystem", url.toString(), true);
 		return true;
 	}
-	else {
-		if (cov->coordinateSystem()->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
-			QString code("code=proj4:" + cov->coordinateSystem().as<ConventionalCoordinateSystem>()->toProj4());
-			resource.addProperty("coordinatesystem", code, true);
-			return true;
-		}
-		else if (cov->coordinateSystem()->ilwisType() == itBOUNDSONLYCSY) {
-			QString code("code=csy:" + cov->coordinateSystem()->envelope().toString());
-			resource.addProperty("coordinatesystem", code, true);
-		}
-	}
-	return false;
+	CoordinateSystem::addCsyProperty(cov->coordinateSystem(), resource);
+	return true;
 }
 
 bool OperationHelperRaster::addGrfFromInput(const RasterCoverage* raster, Resource& resource) {
-	QUrl url = raster->georeference()->resourceRef().url(true);
-	QFileInfo inf(url.toLocalFile());
-	if (inf.exists()) {
-		resource.addProperty("georeference", url.toString(), true);
-		return true;
-	}
-	else {
-		QString codeCsy;
-		if (raster->coordinateSystem()->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
-			codeCsy = raster->coordinateSystem().as<ConventionalCoordinateSystem>()->toProj4();
+	if (raster && raster->georeference().isValid()) {
+		QUrl url = raster->georeference()->resourceRef().url(true);
+		QFileInfo inf(url.toLocalFile());
+		if (inf.exists()) {
+			resource.addProperty("georeference", url.toString(), true);
+			return true;
+		}
+		else {
+			QString codeCsy;
+			if (raster->coordinateSystem()->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+				codeCsy = raster->coordinateSystem().as<ConventionalCoordinateSystem>()->toProj4();
 
 
-		}
-		else if (raster->coordinateSystem()->ilwisType() == itBOUNDSONLYCSY) {
-			if (url.toString().indexOf("undetermined") < 0)
-				codeCsy = raster->coordinateSystem()->envelope().toString();
-			else
-				codeCsy = "unknown";
-		}
-		QString grfType = raster->georeference()->grfType();
-		if ( grfType == "corners" || grfType == "undeterminedGeoReference") {
-			QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(raster->size().twod().toString());
-			resource.addProperty("georeference", grfs, true);
+			}
+			else if (raster->coordinateSystem()->ilwisType() == itBOUNDSONLYCSY) {
+				if (url.toString().indexOf("undetermined") < 0)
+					codeCsy = raster->coordinateSystem()->envelope().toString();
+				else
+					codeCsy = "unknown";
+			}
+			QString grfType = raster->georeference()->grfType();
+			if (grfType == "corners" || grfType == "undeterminedGeoReference") {
+				QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(raster->size().twod().toString());
+				resource.addProperty("georeference", grfs, true);
+			}
 		}
 	}
 	return false;

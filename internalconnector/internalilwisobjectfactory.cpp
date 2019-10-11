@@ -656,7 +656,8 @@ IlwisObject *InternalIlwisObjectFactory::createCsy(const Resource& resource, con
 	else {
 		ICoverage cov;
 		if (cov.prepare(resource.url().toString())) {
-			csy = cov->coordinateSystem().ptr();
+			if (cov->coordinateSystem().isValid())
+				csy = cov->coordinateSystem().ptr();
 		}
 	}
     return csy;

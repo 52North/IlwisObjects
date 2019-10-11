@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import ObjectCreator 1.0
 import IlwisObjectCreatorModel 1.0
+import UIContextModel 1.0
 
 import "../../Global.js" as Global
 import "../../controls" as Controls
@@ -205,8 +206,12 @@ Controls.DropableItem{
                                     if ( grfvalue.content === ""){
                                         grfvalue.content = obj.getProperty("georeferenceurl");
                                     }
-                                    if (resampleCB.checked || mastercatalog.isCompatible(grfvalue.content, obj.id, "georeference"))
+									var ok = mastercatalog.isCompatible(grfvalue.content, obj.id, "georeference");
+                                    if (resampleCB.checked || ok)
                                         rasters.append({path : obj.url})
+									else
+										uicontext.addMessage(qsTr("Georefs are not compatible"),"warning")
+
 									var vt = obj.internalValuetype
 									if ( vt === "byte")
 										domvalue.currentIndex = 1

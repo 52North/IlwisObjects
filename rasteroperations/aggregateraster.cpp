@@ -212,7 +212,7 @@ Ilwis::OperationImplementation::State AggregateRaster::prepare(ExecutionContext 
         Resource resource(QUrl("ilwis://internalcatalog/georeference" + _outputObj->name()),itGEOREF);
         resource.addProperty("size", IVARIANT(box.size()));
         resource.addProperty("envelope", IVARIANT(envlope));
-        resource.addProperty("coordinatesystem", inputRaster->coordinateSystem()->resourceRef().url(true).toString(),true);
+		CoordinateSystem::addCsyProperty(inputRaster->coordinateSystem(), resource);
         resource.addProperty("name", outputBaseName);
         resource.addProperty("centerofpixel",inputRaster->georeference()->centerOfPixel());
         IGeoReference  grf;

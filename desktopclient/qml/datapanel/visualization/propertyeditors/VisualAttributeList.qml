@@ -69,13 +69,16 @@ Rectangle {
 			}
 
             onCurrentIndexChanged: {
+
 				if ( currentCoverage && attributesList.model && currentIndex < attributesList.model.length ) {
 					currentCoverage.setActiveAttribute(currentIndex)
-					editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
-					if ( editorListColumn.displayEditorModel.length > 0)
-						editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
-					else
-						editorColumn.currentEditor = null
+					if ( currentIndex >= 0) {
+						editorListColumn.displayEditorModel = attributesList.model[currentIndex].propertyEditors
+						if ( editorListColumn.displayEditorModel.length > 0)
+							editorColumn.currentEditor = editorListColumn.displayEditorModel[0]
+						else
+							editorColumn.currentEditor = null
+					}
 				}else {
                     editorListColumn.displayEditorModel = null
                     editorColumn.currentEditor = null

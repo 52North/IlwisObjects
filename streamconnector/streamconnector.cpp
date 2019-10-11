@@ -147,6 +147,13 @@ bool StreamConnector::loadMetaData(IlwisObject *object, const IOOptions &options
         QString version;
         stream >> tp;
         stream >> version;
+		if (tp == itRASTER && object->ilwisType() == itGEOREF) {
+			IRasterCoverage raster;
+			if (raster.prepare(object->resourceRef().url().toString())) {
+				raster->georeference()->copyTo(object);
+				return true;
+			}
+		}
         std::unique_ptr<VersionedSerializer> serializer(factory->create(version,source().ilwisType(),stream));
         if (!serializer)
             return false;

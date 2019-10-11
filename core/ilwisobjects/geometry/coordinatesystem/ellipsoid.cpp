@@ -250,8 +250,7 @@ void Ellipsoid::setEllipsoid( double a, double invf){
 				double maxis = rec.field("majoraxis").value().toDouble();
 				double invflat = rec.field("invflattening").value().toDouble();
 				if (a == 6378137 && invf == 0) { // special case that is basically an error but is assumed to refered to the wgs84 ellipsoid
-					fromInternal(rec);
-					return;
+					break;
 				}
 				else if (std::abs(maxis - a) < 0.01 && std::abs(invflat - invf) < 0.0000001) {
 					fromInternal(rec);

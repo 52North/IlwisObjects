@@ -37,7 +37,7 @@ LinkCoverage::LinkCoverage(VisualAttribute *p) : VisualPropertyEditor(p, "linkco
 
 bool LinkCoverage::canUse(const IIlwisObject &obj, const QString &name) const
 {
-    if (name == VisualAttribute::GLOBAL_ONLY)
+	if (name == VisualAttribute::GLOBAL_ONLY)
         return true;
 
     if (!obj.isValid())

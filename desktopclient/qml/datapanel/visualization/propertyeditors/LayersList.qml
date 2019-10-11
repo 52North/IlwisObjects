@@ -115,7 +115,7 @@ Item {
 						setModel()
 						editorColumn.removeEditors()
 						var cmd = 'removelayer(' + activeLayerManager().viewid + ',' + nid + ')'
-						//layerview.activeLayerManager().addCommand(cmd)
+						layerview.activeLayerManager().addCommand(cmd)
 						activeLayerManager().refresh()
 					}
 				}

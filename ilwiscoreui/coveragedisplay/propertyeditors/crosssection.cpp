@@ -103,7 +103,7 @@ CrosssectionTool::CrosssectionTool(VisualAttribute *p) :
 
 bool CrosssectionTool::canUse(const IIlwisObject& obj, const QString& name ) const
 {
-    if (!obj.isValid())
+ if (!obj.isValid())
         return false;
     if(!hasType(obj->ilwisType(), itRASTER))
         return false;
@@ -122,7 +122,7 @@ void CrosssectionTool::prepare(const Ilwis::IIlwisObject& bj, const DataDefiniti
     QString path = context()->ilwisFolder().absoluteFilePath();
     QUrl url = QUrl::fromLocalFile(path);
     associatedUrl(url.toString() + "/qml/datapanel/visualization/propertyeditors/PostDrawerCrossSection.qml");
-    lm->addPostDrawer(this);
+    lm->addPostDrawer(vpmodel()->layer(), this);
 }
 
 bool CrosssectionTool::hasData() const {

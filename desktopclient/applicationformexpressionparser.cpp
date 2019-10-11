@@ -89,21 +89,21 @@ void ApplicationFormExpressionParser::setParameter(const Resource& resource, boo
                                                    bool isOptional, int optionGroup,bool workflowContext,
                                                    const QString& defvalue = "") const 
 { 
-    if ( inChoiceList)                       
-        choices << part;  
+    if ( inChoiceList)                         
+        choices << part;       
     parameters.push_back(addParameter(resource, parmCount, choices, isOptional, optionGroup, workflowContext, defvalue));
     choices.clear();
     part = "";
     inChoiceList = false;                                    
-    ++parmCount;                
+    ++parmCount;                             
 } 
 
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getOutputParameters(const Ilwis::Resource &resource) const{
     std::vector<FormParameter> parameters; 
     QString outparms = resource["outparameters"].toString();
-    bool isService = resource["keyword"].toString().indexOf("service") != -1;
+    bool isService = resource["keyword"].toString().indexOf("service") != -1; 
     if ( outparms == "0")
-        return parameters; 
+        return parameters;  
 
     QStringList parts = outparms.split("|");
     for ( int order = 0; order < parts.last().toInt(); ++order){

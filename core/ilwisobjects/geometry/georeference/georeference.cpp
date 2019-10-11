@@ -90,7 +90,7 @@ ICoordinateSystem GeoReference::coordinateSystem() const
 {
      if ( isValid() && csy.isValid()){
         _georefImpl->coordinateSystem(csy);
-        resourceRef().addProperty("coordinatesystem",csy->resourceRef().url(true).toString(),true);
+		CoordinateSystem::addCsyProperty(csy, resourceRef());
      }
 
  }

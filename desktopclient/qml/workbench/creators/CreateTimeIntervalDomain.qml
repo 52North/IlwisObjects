@@ -19,7 +19,6 @@ Controls.DropableItem{
 	property var editorEnabled : false
 	function useWholeDays() {
 		var unit = commonpart.additionalFields.item.unit
-		console.debug("pppppppppp", unit)
 		return unit == "days" || unit == "months" || unit == "years" || unit == "weeks"
 	}
 

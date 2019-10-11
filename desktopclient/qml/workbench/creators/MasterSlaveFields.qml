@@ -156,7 +156,7 @@ Column {
 					var tab = bigthing.newCatalog(filter ,"rastercoverage",slaveRasterField.content, "left", options)
 					tiepointstable.editor.slaveLayerManager(tab.item.layermanagers[0],tiepointstable.editor.slaveid())
 					tab.item.setActiveEditor(tiepointstable)
-					tab.item.activeLayerManager().addPostDrawer(tiepointstable.editor)
+					tab.item.activeLayerManager().addPostDrawer(tab.item.layermanagers[0], tiepointstable.editor)
 					tab.item.activeLayerManager().updatePostDrawers();
 					tab.item.tabmodel.displayName = "Slave Raster"
 				}

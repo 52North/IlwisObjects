@@ -427,6 +427,15 @@ Item {
 					updatePositions()
 					layermanager.needUpdate = false
 				}
+				if(layermanager.removableLayer){
+					var layer = layermanager.removableLayer
+					if ( layer.drawType != "raster"){
+						removeLayer(layer)
+					}else {
+						removeRasterLayer(layer)
+					}
+					layermanager.doneRemoving()
+				}
 				var layerList = layermanager.topLevelLayers
 				for(var i=layerList.length-1; i >=0; --i){
 					setProperties(layerList[i])

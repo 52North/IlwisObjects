@@ -186,7 +186,9 @@ bool RasterSerializerV1::store(IlwisObject *obj, const IOOptions &opt)
         return false;
 
     storeSystemPath(raster->georeference()->resource());
-    if(!grfstreamer->store(raster->georeference().ptr(), options))
+	IOOptions newOptions;
+	newOptions.addOption("storename", raster->name());
+    if(!grfstreamer->store(raster->georeference().ptr(), newOptions))
         return false;
     _stream << raster->hasAttributes();
     if ( raster->hasAttributes()){
@@ -326,6 +328,9 @@ bool RasterSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
     IGeoReference systemGrf = makeSystemObject<IGeoReference>(url);
     IGeoReference georeference (type);
     grfstreamer->loadMetaData(georeference.ptr(), options)    ;
+	georeference->resourceRef().addContainer(raster->resourceRef().container(), true);
+	georeference->resourceRef().addContainer(raster->resourceRef().container());
+	qDebug() << georeference->resourceRef().container().toString() << georeference->resourceRef().url().toString();
     raster->georeference(systemGrf.isValid() ? systemGrf : georeference);
 
 

@@ -39,6 +39,7 @@ LayerInfo::LayerInfo(VisualAttribute *p) :
 
 bool LayerInfo::canUse(const IIlwisObject& obj, const QString& name) const
 {
+
 	if (!obj.isValid())
 		return false;
 	if (!hasType(obj->ilwisType(), itCOVERAGE))

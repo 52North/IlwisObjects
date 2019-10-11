@@ -257,6 +257,16 @@ QString IlwisObjectModel::projectionInfo() const
 				return txt;
 			}
 		}
+		if (hasType(_ilwisobject->ilwisType(), itGEOREF)) {
+			auto csy = _ilwisobject.as<GeoReference>()->coordinateSystem().as<ConventionalCoordinateSystem>();
+			if (csy->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+				QString txt = "Geographic Coordinate system ";
+				if (csy->ellipsoid().isValid()) {
+					txt += ":ellipsoid = " + csy->ellipsoid()->name();
+				}
+				return txt;
+			}
+		}
     } catch(const ErrorObject& ){
         // no exceptions may escape here
     }
@@ -753,34 +763,31 @@ bool IlwisObjectModel::hasAttributes() const
 }
 QString IlwisObjectModel::pixSizeString() const{
     if (hasType(_ilwisobject->ilwisType(), itRASTER | itGEOREF)){
+		bool latlon = false;
         double pixsizex=rUNDEF, pixsizey=rUNDEF;
         if ( hasType(_ilwisobject->ilwisType(), itRASTER)){
-            Size<> sz = _ilwisobject.as<RasterCoverage>()->size();
-            Envelope envelope = _ilwisobject.as<RasterCoverage>()->envelope();
-            if ( envelope.isValid()){
-                pixsizex = envelope.xlength() / sz.xsize();
-                pixsizey = envelope.ylength() / sz.ysize();
-                if ( _ilwisobject.as<RasterCoverage>()->coordinateSystem()->isLatLon()){
-                    pixsizex *= 360.0;
-                    pixsizey *= 360.0;
-                }
-            }
+            double pixsz = _ilwisobject.as<RasterCoverage>()->georeference()->pixelSize();
+			if (pixsz == rUNDEF)
+				return sUNDEF;
+			latlon = _ilwisobject.as<RasterCoverage>()->coordinateSystem()->isLatLon();
+			pixsizex = pixsizey = pixsz;
         }
         if ( hasType(_ilwisobject->ilwisType(), itGEOREF)){
             double pixsz = _ilwisobject.as<GeoReference>()->pixelSize();
             if ( pixsz == rUNDEF)
                 return sUNDEF;
+			latlon = _ilwisobject.as<GeoReference>()->coordinateSystem()->isLatLon();
 
-            if ( _ilwisobject.as<GeoReference>()->coordinateSystem()->isLatLon()){
-                pixsz *= 360.0;
-            }
             pixsizex = pixsizey = pixsz;
         }
         auto pixszstring = [&](double pixsize) ->QString{
             if ( pixsize > 50){
                 return QString::number((int)pixsize);
             }else {
-                return QString("%1").arg(pixsize,0,'f',1);
+				if (latlon) {
+					return QString("%1").arg(pixsize, 0, 'f', 4);
+				}
+                return QString("%1").arg(pixsize,0,'f',2);
             }
         };
         return pixszstring(pixsizex) + " x " + pixszstring(pixsizey);
@@ -1089,7 +1096,6 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
 			}
 			return sUNDEF;
 		}
-
         return "";
     } catch(const ErrorObject& ){
         // no exceptions may escape here

@@ -55,6 +55,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
 
     Q_PROPERTY(QStandardItemModel * layerTree READ layerTree NOTIFY layerTreeChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> topLevelLayers READ childLayersPrivate NOTIFY topLevelLayersChanged)
+	Q_PROPERTY(LayerModel * removableLayer READ removableLayer NOTIFY removableLayerChanged)
     Q_PROPERTY(QQmlListProperty<Ilwis::Ui::LayerModel> allCoverages READ allCoveragesPrivate NOTIFY allCoveragesChanged)
     Q_PROPERTY(QQmlListProperty<QObject> postDrawers READ postDrawers NOTIFY allCoveragesChanged)
     Q_PROPERTY(quint32 viewid READ viewid CONSTANT)
@@ -96,8 +97,8 @@ public:
     Q_INVOKABLE quint32 viewid() const; // modelid == viewid, for historical reasons (viewid is older) it remains in the interface as it is used in qml
     Q_INVOKABLE void setSelection(const QString &pixelpair);
     Q_INVOKABLE void updateAxis();
-    Q_INVOKABLE void addPostDrawer(QObject *editor);
-    Q_INVOKABLE void removePostDrawer(QObject *editor);
+    Q_INVOKABLE void addPostDrawer(QObject *owner, QObject *editor);
+    Q_INVOKABLE void removePostDrawer(QObject *owner, QObject *editor);
     Q_INVOKABLE void broadCast(const QVariantMap& parameters);
     Q_INVOKABLE void linkTo(QObject *obj, bool bidrectional, const QString& type);
     Q_INVOKABLE void unLinkTo(QObject *target, const QString& type);
@@ -106,9 +107,10 @@ public:
 	Q_INVOKABLE void qmlDrawer(const QString& objectname);
 	Q_INVOKABLE QString qmlDrawer() const;
 	Q_INVOKABLE void updatePostDrawers();
-	Q_INVOKABLE void removeLayer(const LayerModel * layer);
+	Q_INVOKABLE void removeLayer(LayerModel * layer);
 	Q_INVOKABLE QModelIndex modelIndex(int row) const;
 	Q_INVOKABLE void setAssociatedLayerManager(LayerManager * lm);
+	Q_INVOKABLE void doneRemoving();
 
     RootLayerModel *rootLayer() const;
     
@@ -136,6 +138,7 @@ public:
     bool isValid() const;
 	QQuickItem *viewArea() const;
     QList<LayerModel *> topChilderen();
+	void setRemovableLayer(LayerModel *lyr);
 
 	void needUpdate(bool yesno);
 	bool needUpdate() const;
@@ -168,6 +171,7 @@ signals:
     void axisValuesChanged();
     void updatePostDrawersChanged();
 	void layerListNameChanged();
+	void removableLayerChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
@@ -185,11 +189,13 @@ private:
     ManagerType _managerType = mtUNKNOWN;
 	QString _qmlDrawerName = sUNDEF;
 	LayerManager *_overview = 0;
+	LayerModel *_removableLayer = 0;
 
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
     QList<LayerModel *> _childeren; //this list is filled on the fly in  childLayersPrivate, don't rely on it to have contents
     QList<LayerModel *> _coverages; //this list is filled on the fly in  allCoveragesPrivate, don't rely on it to have contents
+	std::map<QObject *, std::vector<QObject *>> _postDrawersPerOwner;
     QList<QObject *> _postDrawers;
 	std::vector<std::unique_ptr<LayerModel>> _mapInfoExtraLayer;
 
@@ -199,6 +205,7 @@ private:
     void setSelectionPrivate(const Coordinate& crd, LayerModel * layer);
     QQmlListProperty<QObject> postDrawers();
     bool updatePostDrawersPrivate();
+	LayerModel * removableLayer();
     
 
 };

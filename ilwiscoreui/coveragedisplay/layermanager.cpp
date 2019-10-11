@@ -69,6 +69,7 @@ LayerManager::LayerManager(QObject *parent, QQuickItem *viewContainer) : QObject
 LayerManager::~LayerManager()
 {
 	qDebug() << "deleting layermanager";
+	_postDrawersPerOwner = std::map<QObject *, std::vector<QObject *>>();
     _postDrawers = QList<QObject *>();
     modelregistry()->unRegisterModel(modelId());
 }
@@ -202,7 +203,7 @@ QModelIndex LayerManager::modelIndex(int row) const {
 	return QModelIndex();
 }
 
-void LayerManager::removeLayer(const LayerModel * layer) {
+void LayerManager::removeLayer(LayerModel * layer) {
 	QModelIndex idx = _tree->indexFromItem(layer);
 	if (idx.isValid()) {
 		if (_lastAddedCoverageLayer->nodeId() == layer->nodeId())
@@ -211,10 +212,9 @@ void LayerManager::removeLayer(const LayerModel * layer) {
 			LayerModel *overviewLayer = _overview->findLayerByName(layer->text());
 			if (overviewLayer) {
 				_overview->removeLayer(overviewLayer);
-				qDebug() << "overviewwww";
 			}
 		}
-		_tree->removeRow(idx.row());
+		setRemovableLayer(layer);
 	}
 }
 
@@ -279,6 +279,7 @@ void  LayerManager::reset() {
 	_nodeCounter = 0;
 	_childeren.clear();
 	_coverages.clear();
+	_postDrawersPerOwner.clear();
 	_postDrawers.clear();
 	_tree = new TreeModel(this);
 	_globalLayer = new RootLayerModel(this, _tree->invisibleRootItem());
@@ -402,6 +403,23 @@ void  LayerManager::addLayer(QStandardItem *parentLayer, LayerModel *layer, Laye
 
 }
 
+LayerModel * LayerManager::removableLayer() {
+	return _removableLayer;
+}
+
+void LayerManager::setRemovableLayer(LayerModel *lyr) {
+	_removableLayer = lyr;
+}
+
+void  LayerManager::doneRemoving() {
+	QModelIndex idx = _tree->indexFromItem(_removableLayer);
+	if (idx.isValid()) {
+		removePostDrawer((QObject *)_removableLayer, 0);
+		_tree->removeRow(idx.row());
+	}
+	_removableLayer = 0;
+}
+
 QQmlListProperty<LayerModel> Ilwis::Ui::LayerManager::childLayersPrivate()
 {
     _childeren = QList<LayerModel *>();
@@ -438,6 +456,12 @@ void LayerManager::setAssociatedLayerManager(LayerManager * lm) {
 }
 
 QQmlListProperty<QObject> LayerManager::postDrawers() {
+	_postDrawers = QList<QObject *>();
+	for (auto& v : _postDrawersPerOwner) {
+		for (auto *obj : v.second) {
+			_postDrawers.append(obj);
+		}
+	}
     return QQmlListProperty<QObject>(this, _postDrawers);
 
 }
@@ -489,7 +513,7 @@ void LayerManager::setSelection(const QString & pixelpair)
 {
 	try {
 		QStringList parts = pixelpair.split("|");
-		if (parts.size() == 2) {
+		if (parts.size() == 2 && rootLayer()->screenGrf().isValid()) {
 			Ilwis::Coordinate crd = rootLayer()->screenGrf()->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
 			QStandardItem *root = _tree->invisibleRootItem();
 			for (int layerIndex = 0; layerIndex < root->rowCount(); ++layerIndex) {
@@ -726,20 +750,46 @@ QVariantList LayerManager::yGridAxisLeft() const
     return QVariantList();
 }
 
-void LayerManager::addPostDrawer(QObject* editor)
+void LayerManager::addPostDrawer(QObject* owner, QObject* editor)
 {
-    auto iter = std::find(_postDrawers.begin(), _postDrawers.end(), editor);
-    if (iter == _postDrawers.end()) {
+
+	auto iter = std::find(_postDrawersPerOwner[owner].begin(), _postDrawersPerOwner[owner].end(), editor);
+    if (iter == _postDrawersPerOwner[owner].end()) {
         _postDrawers.append(editor);
     }
 }
 
-void LayerManager::removePostDrawer(QObject * editor)
+void LayerManager::removePostDrawer(QObject * owner, QObject *editor)
 {
-    auto iter = std::find(_postDrawers.begin(), _postDrawers.end(), editor);
-    if (iter != _postDrawers.end()) {
-        _postDrawers.erase(iter);
-    }
+	auto iter = _postDrawersPerOwner.find(owner);
+	if (iter != _postDrawersPerOwner.end()) {
+		if (editor) {
+			auto iter2 = std::find(iter->second.begin(), iter->second.end(), owner);
+			if (iter2 != iter->second.end()) {
+				_postDrawers = QList<QObject *>();
+				_postDrawers = QList<QObject *>();
+				iter->second.erase(iter2);
+				if (iter->second.size() == 0)
+					_postDrawersPerOwner.erase(iter->first);
+			}
+		}
+		else {
+			_postDrawersPerOwner.erase(iter->first);
+		}
+	}
+
+	if (owner == 0) {
+		for (auto& v : _postDrawersPerOwner) {
+			auto iter = std::find(v.second.begin(), v.second.end(), editor);
+			if (iter != v.second.end()) {
+				_postDrawers = QList<QObject *>();
+				v.second.erase(iter);
+				if (v.second.size() == 0)
+					_postDrawersPerOwner.erase(v.first);
+				break;
+			}
+		}
+	}
 }
 
 void LayerManager::updatePostDrawers()

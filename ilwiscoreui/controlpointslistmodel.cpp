@@ -200,7 +200,7 @@ void ControlPointsListModel::slaveLayerManager(LayerManager * lm, const QString&
 		_slaveLayerManager = lm;
 		quint64 id = objid.toULongLong();
 		_slaveRaster.prepare(id);
-		_slaveLayerManager->addPostDrawer(this);
+		_slaveLayerManager->addPostDrawer(_slaveRaster.ptr(), this);
 		for (ControlPointModel *cp : _controlPoints) {
 			cp->_layerManager = lm;
 		}

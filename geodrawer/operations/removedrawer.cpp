@@ -50,7 +50,9 @@ bool RemoveDrawer::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
+
 	layerManager()->removeLayer(_layer);
+	layerManager()->refresh();
 
     return true;
 }

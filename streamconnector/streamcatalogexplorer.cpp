@@ -153,14 +153,23 @@ std::vector<Resource> StreamCatalogExplorer::loadItems(const IOOptions &)
                     }else if (hasType(tp, itILWISOBJECT)){
                         try {
                             IIlwisObject obj(res);
+				
+
                             if (obj.isValid() && obj->ilwisType() == itRASTER){
                                 IRasterCoverage raster = obj.as<RasterCoverage>();
+								res.setExtendedType(itGEOREF);
+								Resource grfResource(res.name(), itGEOREF);
+								QString dim = QString("%1 %2").arg(raster->size().xsize()).arg(raster->size().ysize());
+								grfResource.addProperty("dimensions", dim);
+								items.push_back(grfResource);
                                 if ( raster->size().zsize() > 1){
 									mastercatalog()->removeItems({ res }); // unfortunately automatically added by creating the object. But it has the wrong type ; its a catalog
                                     createCatalog(raster,items);
                                 }
-                            }else
+							}
+							else {
 								items.push_back(res);
+							}
                         } catch (const ErrorObject& err){
                             kernel()->issues()->log(QString(TR("StreamCatalogExplorer: Error scanning object '%1'. Cause: '%2'")).arg(res.url().toString()).arg(err.message()), IssueObject::itError);
                         }

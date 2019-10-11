@@ -36,7 +36,7 @@ StretchLimits::StretchLimits(VisualAttribute *p) : VisualPropertyEditor(p, "stre
 
 bool StretchLimits::canUse(const IIlwisObject &obj, const QString &name) const
 {
-    if (!obj.isValid())
+if (!obj.isValid())
         return false;
     if (!hasType(obj->ilwisType(), itCOVERAGE))
         return false;

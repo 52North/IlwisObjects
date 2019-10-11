@@ -51,16 +51,17 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
 			handleComplexDataSet(handle->handle());
 		}
 		else {
-			quint64 csyId = addCsy(handle, file.absoluteFilePath(), url, false);
+			QString code;
+			quint64 csyId = addCsy(handle, file.absoluteFilePath(), url, code, false);
 			if (handle->type() == GdalHandle::etGDALDatasetH) {
-				quint64 grfId = addItem(handle, url, csyId, 0, itGEOREF, itCOORDSYSTEM);
+				quint64 grfId = addItem(handle, url, code, 0, itGEOREF, itCOORDSYSTEM);
 				//addItem(handle, url, csyId, grfId, itRASTER,itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM,sz);
 				for (int i = 0; i < count; ++i) {
 					auto layerHandle = gdal()->getRasterBand(handle->handle(), i + 1);
 					if (layerHandle) {
 						QString layername = file.baseName() + "_" + QString::number(i + 1);
 						QString containerUrl = url.toString() + "/" + layername;
-						addItem(handle, containerUrl, csyId, grfId, itRASTER, itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM, sz / count, i, false);
+						addItem(handle, containerUrl, code, grfId, itRASTER, itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM, sz / count, i, false);
 					}
 				}
 			}
@@ -70,7 +71,7 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
 					int featureCount = gdal()->getFeatureCount(layerH, FALSE);
 					sz = findSize(file);
 					if (tp & itFEATURE) {
-						addItem(handle, url, csyId, featureCount, itFEATURE, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
+						addItem(handle, url, code, featureCount, itFEATURE, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
 						addItem(handle, url, 0, iUNDEF, itTABLE, itFEATURE, sz);
 						if (!mastercatalog()->id2Resource(csyId).isValid())
 							addItem(handle, QUrl(url), 0, iUNDEF, itCONVENTIONALCOORDSYSTEM, 0, sz);
@@ -80,7 +81,7 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
 				}
 				else { // multiple layers, the file itself will be marked as container; internal layers will be added using this file as container
 					//TODO: atm the assumption is that all gdal containers are files. this is true in the majority of the cases but not in all. Without a proper testcase the non-file option will not(yet) be implemented
-					addItem(handle, url, count, iUNDEF, itCATALOG, extTypes | itFILE | itFEATURE);
+					addItem(handle, url, QString::number(count), iUNDEF, itCATALOG, extTypes | itFILE | itFEATURE);
 					for (int i = 0; i < count; ++i) {
 						OGRLayerH layerH = gdal()->getLayer(handle->handle(), i);
 						if (layerH) {
@@ -89,7 +90,7 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
 							if (cname) {
 								QString layerName(cname);
 								QString layerurl = url.toString() + "/" + layerName;
-								addItem(handle, QUrl(layerurl), csyId, featureCount, itFEATURE, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
+								addItem(handle, QUrl(layerurl), code, featureCount, itFEATURE, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
 								addItem(handle, QUrl(layerurl), 0, iUNDEF, itTABLE, itFEATURE, sz);
 								if (!mastercatalog()->id2Resource(csyId).isValid())
 									addItem(handle, QUrl(layerurl), 0, iUNDEF, itCONVENTIONALCOORDSYSTEM, 0, sz);
@@ -141,19 +142,20 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 		quint64 sz = file.size();
 		int count = layerCount(handle);
 		if (count == 0) {// could be a complex dataset
-			addItem(handle, QUrl::fromLocalFile(file.absoluteFilePath()), handleComplexDataSet(handle->handle()), iUNDEF, itCATALOG, itFILE | itRASTER);
+			addItem(handle, QUrl::fromLocalFile(file.absoluteFilePath()), QString::number(handleComplexDataSet(handle->handle())), iUNDEF, itCATALOG, itFILE | itRASTER);
 			return;
 		}
 		//TODO: at the moment simplistic approach; all is corners georef and domain value
 		// and a homogenous type if files. when we have example of more complex nature we wille xtend this+
-		quint64 csyId = addCsy(handle, file.absoluteFilePath(), url, false);
+		QString code;
+		quint64 csyId = addCsy(handle, file.absoluteFilePath(), url, code, false);
 		if (handle->type() == GdalHandle::etGDALDatasetH) {
-			quint64 grfId = addItem(handle, url, csyId, 0, itGEOREF, itCOORDSYSTEM);
+			quint64 grfId = addItem(handle, url, code, 0, itGEOREF, itCOORDSYSTEM);
 			if (count == 1)
-				addItem(handle, url, csyId, grfId, itRASTER, itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM, sz, iUNDEF, false);
+				addItem(handle, url, code, grfId, itRASTER, itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM, sz, iUNDEF, false);
 			else {
-				addItem(handle, url, csyId, grfId, itRASTER, itCATALOG | itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM | itFILE, sz);
-				addItem(handle, url, count, iUNDEF, itCATALOG, itFILE | itRASTER);
+				addItem(handle, url, code, grfId, itRASTER, itCATALOG | itGEOREF | itNUMERICDOMAIN | itCONVENTIONALCOORDSYSTEM | itFILE, sz);
+				addItem(handle, url, code, iUNDEF, itCATALOG, itFILE | itRASTER);
 			}
 		}
 		else {
@@ -163,7 +165,7 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 				IlwisTypes featuretype = GDALProxy::translateOGRType(gdal()->getLayerGeometry(layerH));
 				sz = findSize(file);
 				if (tp & itFEATURE) {
-					addItem(handle, url, csyId, featureCount, featuretype, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
+					addItem(handle, url, code, featureCount, featuretype, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
 					addItem(handle, url, 0, iUNDEF, itTABLE, itFEATURE, sz);
 					if (!mastercatalog()->id2Resource(csyId).isValid())
 						addItem(handle, QUrl(url), 0, iUNDEF, itCONVENTIONALCOORDSYSTEM, 0, sz);
@@ -173,7 +175,7 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 			}
 			else { // multiple layers, the file itself will be marked as container; internal layers will be added using this file as container
 				//TODO: atm the assumption is that all gdal containers are files. this is true in the majority of the cases but not in all. Without a proper testcase the non-file option will not(yet) be implemented
-				addItem(handle, url, count, iUNDEF, itCATALOG, extTypes | itFILE | itFEATURE);
+				addItem(handle, url, QString::number(count), iUNDEF, itCATALOG, extTypes | itFILE | itFEATURE);
 				for (int i = 0; i < count; ++i) {
 					OGRLayerH layerH = gdal()->getLayer(handle->handle(), i);
 					if (layerH) {
@@ -182,7 +184,7 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 						if (cname) {
 							QString layerName(cname);
 							QString layerurl = url.toString() + "/" + layerName;
-							addItem(handle, QUrl(layerurl), csyId, featureCount, itFEATURE, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
+							addItem(handle, QUrl(layerurl), code, featureCount, itFEATURE, itCOORDSYSTEM | itTABLE, sz, iUNDEF, false);
 							addItem(handle, QUrl(layerurl), 0, iUNDEF, itTABLE, itFEATURE, sz);
 							if (!mastercatalog()->id2Resource(csyId).isValid())
 								addItem(handle, QUrl(layerurl), 0, iUNDEF, itCONVENTIONALCOORDSYSTEM, 0, sz);
@@ -305,9 +307,10 @@ int GDALItems::handleComplexDataSet(void *handle){
         gdalitem.dimensions(sz.toString());
         GDALDatasetH handle = gdal()->open(gdalitem.code().toLocal8Bit(), GA_ReadOnly);
         GdalHandle ihandle(handle,GdalHandle::etGDALDatasetH);
-        quint64 csyid = addCsy(&ihandle,gdalitem.code(),normalizedUrl,false);
-        if ( csyid != i64UNDEF){
-            gdalitem.addProperty("coordinatesystem", rawUrl,true);
+		QString code;
+        addCsy(&ihandle,gdalitem.code(),normalizedUrl,code, false);
+        if ( code != sUNDEF){
+            gdalitem.addProperty("coordinatesystem", code,true);
         }
         addOffsetScale(handle, count, gdalitem);
         gdal()->close(handle);
@@ -349,8 +352,8 @@ QString GDALItems::dimensions(GdalHandle* handle, bool & is3d, int layerindex) c
     return dim;
 }
 
-quint64 GDALItems::addItem(GdalHandle* handle, const QUrl& url, quint64 csyid, quint64 grfId, IlwisTypes tp, IlwisTypes extTypes, quint64 sz, int layerindex, bool isExtendedType) {
-    if ( csyid == iUNDEF)
+quint64 GDALItems::addItem(GdalHandle* handle, const QUrl& url, const QString csyCode, quint64 grfId, IlwisTypes tp, IlwisTypes extTypes, quint64 sz, int layerindex, bool isExtendedType) {
+    if ( csyCode == sUNDEF)
         return i64UNDEF;
 
     Resource gdalItem(url, tp);
@@ -358,12 +361,10 @@ quint64 GDALItems::addItem(GdalHandle* handle, const QUrl& url, quint64 csyid, q
         gdalItem.size(sz);
     bool is3D = false;
 	if (!hasType(tp, itCATALOG)) {
-		QString name = url.toString();
-		if (layerindex != iUNDEF) {
-			int idx = name.lastIndexOf("/");
-			name = name.left(idx);
-		}
-		gdalItem.addProperty("coordinatesystem", name, true);
+		bool ok;
+		csyCode.toInt(&ok);
+		if (!ok)
+			gdalItem.addProperty("coordinatesystem", csyCode, true);
 	}
     if ( tp == itFEATURE){
 		QString count = grfId == -1 ? "" : QString::number(grfId);
@@ -383,8 +384,7 @@ quint64 GDALItems::addItem(GdalHandle* handle, const QUrl& url, quint64 csyid, q
         gdalItem.dimensions(dimensions(handle, is3D));
     }else{
         if ( tp == itCATALOG){
-            QString dim = QString::number(csyid); // misuse of csyid :)
-            gdalItem.dimensions(dim);
+            gdalItem.dimensions(csyCode); // misuse of csyid :
         }
     }
     gdalItem.setExtendedType(extTypes);
@@ -398,7 +398,8 @@ quint64 GDALItems::addItem(GdalHandle* handle, const QUrl& url, quint64 csyid, q
     return gdalItem.id();
 }
 
-quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& url, bool message) {
+quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& url, QString& code, bool message) {
+	code = sUNDEF;
     quint64 ret = i64UNDEF;
     OGRSpatialReferenceH srshandle = gdal()->srsHandle(handle, path, message);
     if (srshandle != 0){
@@ -413,6 +414,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
 				res.addProperty("extendedtype", true);
 				insert(res);
 				ret = res.id();
+				code = "code=" + res.code();
 			}
         }else if (geocs_epsg && QString(gdal()->getAuthorityName(srshandle, "GEOGCS")).compare("EPSG", Qt::CaseInsensitive) == 0){
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(geocs_epsg), itCONVENTIONALCOORDSYSTEM);
@@ -422,6 +424,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
 				res.addProperty("extendedtype", true);
 				insert(res);
 				ret = res.id();
+				code = "code=" + res.code();
 			}
         }else if (localcs_epsg && QString(gdal()->getAuthorityName(srshandle, "LOCAL_CS")).compare("EPSG", Qt::CaseInsensitive) == 0){
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(localcs_epsg), itCONVENTIONALCOORDSYSTEM);
@@ -431,6 +434,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
 				res.addProperty("extendedtype", true);
 				insert(res);
 				ret = res.id();
+				code = "code=" + res.code();
 			}
         }else {
             char *proj4;
@@ -455,6 +459,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
                         res.addProperty("extendedtype",true);
                         mastercatalog()->addItems({res});
                         insert(res);
+						code = "code=" + res.code();
                         return res.id();
                     }
                 }else {
@@ -469,6 +474,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
                                 QString name = parts2[0];
                                 Proj4Def def = Proj4Parameters::lookupByName(name);
                                 if ( def._epsg != sUNDEF){
+									code = "code=" + def._epsg;
                                     return mastercatalog()->name2id("code=" + def._epsg);
                                 }
                             }
@@ -490,6 +496,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
         Envelope env = gdal()->envelope(handle,0);
         if ( env.isValid() && !env.isNull()){
             QString dim = QString("%1 x %2 x %3 x %4").arg(env.min_corner().x).arg(env.min_corner().y).arg(env.max_corner().x).arg(env.max_corner().y);
+			code = "code=csy:" + env.toString();
             resource.dimensions(dim);
 
         }
