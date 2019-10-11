@@ -72,7 +72,7 @@ void RasterCoverage::georeference(const IGeoReference &grf, bool resetData)
         //resourceRef().addProperty("georeference",_georef->resourceRef().url(true).toString(),true);
 
         if ( coordinateSystem()->envelope(true).isValid())
-            resourceRef().addProperty("latlonenvelop", coordinateSystem()->envelope(true).toString());
+            resourceRef().addProperty("latlonenvelope", coordinateSystem()->envelope(true).toString());
         if ( _size.isValid() && !_size.isNull() && !resetData)
             _size = Size<>(_georef->size().xsize(), _georef->size().ysize(), _size.zsize());
         else
@@ -393,11 +393,20 @@ Resource RasterCoverage::resource(int mode) const
 {
     Resource resource = Coverage::resource(mode);
     if ( mode & IlwisObject::cmEXTENDED) {
-        resource.addProperty("georeference", georeference()->resourceRef().url(true).toString(),true);
-        resource.addProperty("domain", _datadefCoverage.domain()->id());
-        resource.setExtendedType( resource.extendedType() | itDOMAIN |  itGEOREF);
+		bool ch = false;
+		if (OperationHelperRaster::addGrfFromInput(this, resource)) {
+			resource.setExtendedType(resource.extendedType() | itGEOREF);
+			ch = true;
+		}
+		if (_datadefCoverage.domain().isValid()) {
+			resource.addProperty("domain", _datadefCoverage.domain()->id());
+			resource.setExtendedType(resource.extendedType() | itDOMAIN);
+			ch = true;
+		}
+		if ( ch)
+			resource.changed(IlwisObject::resource().hasChanged());
     }
-    resource.changed(IlwisObject::resource().hasChanged());
+    
     return resource;
 }
 
