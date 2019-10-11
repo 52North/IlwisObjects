@@ -820,6 +820,11 @@ GeoReference *InternalIlwisObjectFactory::createGrfFromCode(const Resource& reso
        cgrf->create("corners");
        cgrf->name(ANONYMOUS_PREFIX + QString::number(cgrf->id()));
     }
+	if (parameters["type"] == "undetermined") {
+		cgrf = createFromResource<GeoReference>(resource, IOOptions());
+		cgrf->create("undetermined");
+		cgrf->name(ANONYMOUS_PREFIX + QString::number(cgrf->id()));
+	}
     if ( cgrf == 0)
         return 0;
 
@@ -866,8 +871,10 @@ GeoReference *InternalIlwisObjectFactory::createGrfFromCode(const Resource& reso
         cgrf->name(ANONYMOUS_PREFIX + QString::number(cgrf->id()));
     if ( csy.isValid() && env.isValid() && sz.isValid()){
         cgrf->coordinateSystem(csy);
-		QSharedPointer< CornersGeoReference> spGrf = cgrf->as< CornersGeoReference>();
-		spGrf->internalEnvelope(env);
+		if (cgrf->grfType() == "corners") {
+			QSharedPointer< CornersGeoReference> spGrf = cgrf->as< CornersGeoReference>();
+			spGrf->internalEnvelope(env);
+		}
         cgrf->size(sz);
         cgrf->compute();
         return cgrf;

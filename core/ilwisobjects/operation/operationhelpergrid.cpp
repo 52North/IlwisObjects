@@ -148,14 +148,18 @@ bool OperationHelperRaster::addGrfFromInput(const RasterCoverage* raster, Resour
 
 			}
 			else if (raster->coordinateSystem()->ilwisType() == itBOUNDSONLYCSY) {
-				if (url.toString().indexOf("undetermined") < 0)
-					codeCsy = raster->coordinateSystem()->envelope().toString();
+				if (raster->coordinateSystem()->code() != "unknown")
+					codeCsy = "boundsonly";
 				else
 					codeCsy = "unknown";
 			}
 			QString grfType = raster->georeference()->grfType();
-			if (grfType == "corners" || grfType == "undeterminedGeoReference") {
+			if (grfType == "corners" ) {
 				QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(raster->size().twod().toString());
+				resource.addProperty("georeference", grfs, true);
+			}
+			if (grfType == "undeterminedGeoReference") {
+				QString grfs = QString("code=georef:type=undetermined,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(raster->size().twod().toString());
 				resource.addProperty("georeference", grfs, true);
 			}
 		}
