@@ -566,6 +566,20 @@ void Resource::addContainer(const QUrl& url, bool asRaw) {
                 _rawContainer = url;
         }
     }
+	if (asRaw) {
+		int idx = _rawUrl.toString().lastIndexOf("/");
+		if (idx > 0) {
+			QString name = _rawUrl.toString().mid(idx + 1);
+			_rawUrl = _rawContainer.toString() + "/" + name;
+		}
+	}
+	else {
+		int idx = _normalizedUrl.toString().lastIndexOf("/");
+		if (idx > 0) {
+			QString name = _normalizedUrl.toString().mid(idx + 1);
+			_normalizedUrl = _container.toString() + "/" + name;
+		}
+	}
 }
 
 IlwisTypes Resource::ilwisType() const
