@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "coverage.h"
+#include "conventionalcoordinatesystem.h"
 #include "table.h"
 
 using namespace Ilwis;
@@ -51,7 +52,7 @@ void Coverage::coordinateSystem(const ICoordinateSystem &csy)
     changed(true);
 
     _coordinateSystem = csy;
-    resourceRef().addProperty("coordinatesystem",coordinateSystem()->resourceRef().url(true).toString(), true);
+	CoordinateSystem::addCsyProperty(_coordinateSystem, resourceRef());
 }
 
 Envelope Coverage::envelope(bool tolatlon) const
@@ -99,9 +100,8 @@ Resource Coverage::resource(int mode) const
 {
     Resource resource = IlwisObject::resource(mode);
     if ( mode & IlwisObject::cmEXTENDED) {
-        resource.addProperty("coordinatesystem", coordinateSystem()->resourceRef().url(true).toString(),true);
-        resource.setExtendedType( resource.extendedType() | itCOORDSYSTEM);
-    }
+		CoordinateSystem::addCsyProperty(coordinateSystem(), resource);
+	}
     return resource;
 }
 
