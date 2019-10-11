@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisdata.h"
 //#include "domain.h"
 #include "coordinatesystem.h"
+#include "conventionalcoordinatesystem.h"
 
 using namespace Ilwis;
 
@@ -92,6 +93,29 @@ void CoordinateSystem::copyTo(IlwisObject *obj)
 bool CoordinateSystem::isUnknown() const
 {
     return false;
+}
+
+bool CoordinateSystem::addCsyProperty(const ICoordinateSystem& csy, Resource& resource) {
+	if (csy.isValid()) {
+		if (csy->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+			QString code("code=proj4:" + csy.as<ConventionalCoordinateSystem>()->toProj4());
+			resource.addProperty("coordinatesystem", code, true);
+			resource.setExtendedType(resource.extendedType() | itCOORDSYSTEM);
+		}
+		else if (csy->ilwisType() == itBOUNDSONLYCSY) {
+			QString code("code=envelope:" + csy->envelope().toString());
+			resource.addProperty("coordinatesystem", code, true);
+		}
+		else {
+			QUrl url = csy->resourceRef().url(true);
+			QFileInfo inf(url.toLocalFile());
+			if (inf.exists()) {
+				resource.addProperty("coordinatesystem", csy->resourceRef().url(true).toString(), true);
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 
