@@ -420,7 +420,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(geocs_epsg), itCONVENTIONALCOORDSYSTEM);
 			if (resource.isValid()) {
 				Resource res(url, itCONVENTIONALCOORDSYSTEM);
-				res.code(QString("epsg:%1").arg(projcs_epsg));
+				res.code(QString("epsg:%1").arg(geocs_epsg));
 				res.addProperty("extendedtype", true);
 				insert(res);
 				ret = res.id();
@@ -430,7 +430,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
             Resource resource = mastercatalog()->name2Resource(QString("code=epsg:%1").arg(localcs_epsg), itCONVENTIONALCOORDSYSTEM);
 			if (resource.isValid()) {
 				Resource res(url, itCONVENTIONALCOORDSYSTEM);
-				res.code(QString("epsg:%1").arg(projcs_epsg));
+				res.code(QString("epsg:%1").arg(localcs_epsg));
 				res.addProperty("extendedtype", true);
 				insert(res);
 				ret = res.id();
