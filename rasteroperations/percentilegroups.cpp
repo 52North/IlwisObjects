@@ -139,7 +139,7 @@ OperationImplementation::State PercentileGroups::prepare(ExecutionContext *ctx, 
 		_distributionGroups.push_back(100);
 
 	_controlGroupCount = _expression.input<int>(2);
-	if (_controlGroupCount > _inputRaster->size().zsize() - 1 && _controlGroupCount > 0) {
+	if (_controlGroupCount > _inputRaster->size().zsize() || _controlGroupCount < 0) {
 		kernel()->issues()->log(TR("Control group size invalid"));
 		return sPREPAREFAILED;
 	}
