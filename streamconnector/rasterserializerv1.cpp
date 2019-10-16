@@ -330,7 +330,6 @@ bool RasterSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options
     grfstreamer->loadMetaData(georeference.ptr(), options)    ;
 	georeference->resourceRef().addContainer(raster->resourceRef().container(), true);
 	georeference->resourceRef().addContainer(raster->resourceRef().container());
-	qDebug() << georeference->resourceRef().container().toString() << georeference->resourceRef().url().toString();
     raster->georeference(systemGrf.isValid() ? systemGrf : georeference);
 
 
