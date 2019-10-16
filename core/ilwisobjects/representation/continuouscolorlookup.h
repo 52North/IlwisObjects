@@ -32,6 +32,7 @@ class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 		bool overlaps(const ValueRange& rng) {
 			return _last < rng._first || (_first > rng._first && _last < rng._last) || (_first < rng._first && _last > rng._last);
 		}
+
 	};
 public:
         ContinuousColorLookup();
@@ -41,6 +42,8 @@ public:
         void addGroup(const ValueRange& range, const ContinuousColorRange& colorrange);
         void setColor(double value, const QColor& clr) ;
         ColorLookUp *clone() const;
+		void store(QDataStream& stream) const override;
+		void load(QDataStream& stream) override;
 
 private:
 

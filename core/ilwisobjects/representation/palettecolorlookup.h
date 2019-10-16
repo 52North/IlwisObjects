@@ -32,6 +32,8 @@ public:
     void setColor(double value, const QColor &clr);
 
     ColorLookUp *clone() const;
+	void store(QDataStream& stream) const override;
+	void load(QDataStream& stream) override;
 private:
     boost::container::flat_map<quint32, QColor> _colors;
     bool _cyclic = true;

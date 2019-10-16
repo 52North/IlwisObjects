@@ -53,7 +53,7 @@ public:
     static QColor defaultColor(int index) ;
 
 protected:
-    void storeColor(const QColor &clr, QDataStream& stream);
+    void storeColor(const QColor &clr, QDataStream& stream) const;
     void loadColor(QColor &clr, QDataStream &stream);
 private:
     static void init();
@@ -81,7 +81,7 @@ public:
     QColor limitColor1() const;
     QColor limitColor2() const;
     void add(const QVariant& v);
-    void store(QDataStream& stream);
+    void store(QDataStream& stream)  const;
     void load(QDataStream& stream);
     void clear();
 private:
@@ -121,7 +121,7 @@ public:
 
     qint32 gotoIndex(qint32 index, qint32 step) const;
     bool alignWithParent(const IDomain &dom);
-    void store(QDataStream& stream);
+    void store(QDataStream& stream)  const;
     void load(QDataStream& stream);
 
 private:

@@ -132,6 +132,44 @@ ColorLookUp *ContinuousColorLookup::clone() const
     return newlookup;
 }
 
+void ContinuousColorLookup::store(QDataStream& stream) const {
+	stream << (quint32)_groups.size();
+	for (auto item : _groups) {
+		stream << item._first;
+		stream << item._last;
+		stream << item._reversed;
+	}
+	stream << (quint32)_colorranges.size();
+	for (auto item : _colorranges) {
+		item.store(stream);
+	}
+	_numericRange.store(stream);
+	stream << _step;
+	stream << _linear;
+	stream << _relative;
+}
+void ContinuousColorLookup::load(QDataStream& stream) {
+	quint32 n;
+	stream >> n;
+	_groups.resize(n);
+	for (auto& vr : _groups) {
+		ValueRange vr;
+		stream >> vr._first;
+		stream >> vr._last;
+		stream >> vr._reversed;
+	}
+	stream >> n;
+	_colorranges.resize(n);
+	for(auto& item : _colorranges)
+	{
+		item.load(stream);
+	}
+	_numericRange.load(stream);
+	stream >> _step;
+	stream >> _linear;
+	stream >> _relative;
+}
+
 void ContinuousColorLookup::fromDefinition(const QString &definition)
 {
     QStringList parts = definition.split(";");

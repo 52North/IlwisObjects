@@ -212,7 +212,7 @@ QString ColorRangeBase::toString(const QColor &clr, ColorRangeBase::ColorModel c
 }
 
 
-void ColorRangeBase::storeColor(const QColor& clr, QDataStream &stream)
+void ColorRangeBase::storeColor(const QColor& clr, QDataStream &stream) const
 {
     switch (defaultColorModel()){
     case ColorRangeBase::cmRGBA:
@@ -507,7 +507,7 @@ void ContinuousColorRange::add(const QVariant &v)
 
 }
 
-void ContinuousColorRange::store(QDataStream &stream)
+void ContinuousColorRange::store(QDataStream &stream)  const
 {
     stream << defaultColorModel();
     storeColor(_limit1, stream);
@@ -734,7 +734,7 @@ bool ColorPalette::alignWithParent(const IDomain &dom){
     return false;
 }
 
-void ColorPalette::store(QDataStream &stream)
+void ColorPalette::store(QDataStream &stream) const
 {
     int size = (int)_colors.size();
     stream << size;
