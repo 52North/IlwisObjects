@@ -82,12 +82,12 @@ QVariantMap MouseGotoPixelEditor::screenPixel(double column, double row, int zoo
 		} else
 			env = vpmodel()->layer()->layerManager()->rootLayer()->zoomEnvelope();
 		if (!env.contains(crd) || zoomPixels > 0) {
-			Envelope envNew(crd, env.size());
+			Envelope envNew(crd, env.size<double>());
 			QString expr = QString("setviewextent(%1,%2,%3,%4,%5)").arg(vpmodel()->layer()->layerManager()->viewid())
-				.arg(envNew.min_corner().x)
-				.arg(envNew.min_corner().y)
-				.arg(envNew.max_corner().x)
-				.arg(envNew.max_corner().y);
+				.arg(envNew.min_corner().x,0,'g', 11)
+				.arg(envNew.min_corner().y, 0,'g', 11)
+				.arg(envNew.max_corner().x, 0, 'g', 11)
+				.arg(envNew.max_corner().y, 0, 'g', 11);
 			vpmodel()->layer()->layerManager()->addCommand(expr);
 		}
 		auto pix = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->coord2Pixel(crd);
