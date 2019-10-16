@@ -124,11 +124,13 @@ MouseArea {
             var coords = {minx : pminx, maxx : pmaxx, miny : pminy, maxy : pmaxy } 
         }                   
         var bb = layerManager.rootLayer.coord2Screen(coords)
-        targetRectangle.x = bb.minx
-        targetRectangle.width = bb.maxx - bb.minx
-        targetRectangle.y = bb.miny
-        targetRectangle.height = bb.maxy - bb.miny
-        targetRectangle.visible = true;
+		if ( bb){
+			targetRectangle.x = bb.minx
+			targetRectangle.width = bb.maxx - bb.minx
+			targetRectangle.y = bb.miny
+			targetRectangle.height = bb.maxy - bb.miny
+			targetRectangle.visible = true;
+		}
     }
 
     function setRect() {
