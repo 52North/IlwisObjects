@@ -212,7 +212,7 @@ void IndexedIdentifierRange::clear()
     //_start.reset(0);
 }
 
-void IndexedIdentifierRange::store(QDataStream &stream)
+void IndexedIdentifierRange::store(QDataStream &stream)  const
 {
     stream << _count;
     stream << _start->name() << _start->prefix();
@@ -467,7 +467,7 @@ bool NamedIdentifierRange::isContinuous() const
     return false;
 }
 
-void NamedIdentifierRange::store(QDataStream &stream)
+void NamedIdentifierRange::store(QDataStream &stream)  const
 {
     int size = (int)_byName.size();
     stream << size;
@@ -617,7 +617,7 @@ IlwisTypes ThematicRange::valueType() const
     return itTHEMATICITEM;
 }
 
-void ThematicRange::store(QDataStream &stream)
+void ThematicRange::store(QDataStream &stream)  const
 {
     int size = (int)_byName.size();
     stream << size;

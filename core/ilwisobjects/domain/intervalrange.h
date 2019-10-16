@@ -72,7 +72,7 @@ public:
      * @return a string
      */
     QString toString() const;
-    void store(QDataStream& stream);
+    void store(QDataStream& stream)  const;
     void load(QDataStream& stream);
 
     /**

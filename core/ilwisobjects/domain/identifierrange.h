@@ -179,7 +179,7 @@ public:
     qint32 gotoIndex(qint32 index, qint32 step) const;
     IlwisTypes valueType() const;
     void clear();
-    void store(QDataStream& stream);
+    void store(QDataStream& stream) const;
     void load(QDataStream& stream);
 
     /**
@@ -316,7 +316,7 @@ public:
      * empty function
      */
     void interpolation(const QString&) {}
-    void store(QDataStream& stream);
+    void store(QDataStream& stream) const;
     void load(QDataStream& stream);
 
     /**
@@ -394,7 +394,7 @@ public:
     static SPDomainItem valueAt(quint32 &index, const Range *rng);
     static QString valueAsString(quint32 &index, const Range *rng);
     IlwisTypes valueType() const;
-    void store(QDataStream& stream);
+    void store(QDataStream& stream)  const;
     void load(QDataStream& stream);
     QString toString() const;
 };

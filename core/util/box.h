@@ -284,7 +284,7 @@ public:
         //TODO:
     }
 
-    void store(QDataStream& stream){
+    void store(QDataStream& stream) const{
         stream << toString();
     }
 

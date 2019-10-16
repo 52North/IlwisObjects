@@ -362,7 +362,7 @@ QString IntervalRange::toString() const
     return "intervalrange:"+ names;
 }
 
-void IntervalRange::store(QDataStream &stream)
+void IntervalRange::store(QDataStream &stream)  const
 {
     quint32 size = (quint32)_items.size();
     stream << size;

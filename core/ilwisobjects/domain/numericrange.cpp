@@ -357,7 +357,7 @@ quint32 NumericRange::count() const
     return 1 + distance() / _resolution;
 }
 
-void NumericRange::store(QDataStream &stream)
+void NumericRange::store(QDataStream &stream)  const
 {
     stream << _min << _max << _resolution << _undefined << _valuetype;
 }

@@ -71,7 +71,7 @@ public:
     virtual QVariant impliedValue(const QVariant& v) const { return v; }
     virtual void add(const QVariant& v) = 0;
     virtual quint32 count() const = 0;
-    virtual void store(QDataStream& stream) = 0;
+    virtual void store(QDataStream& stream) const = 0;
     virtual void load(QDataStream& stream) = 0;
     virtual void clear() = 0;
 
