@@ -9,6 +9,7 @@ Rectangle {
     id:comboBox
     property alias selectedColor : colorPicker.lastSelectedColor
     property var initialColor
+	property var closeCallBack
 
     onInitialColorChanged : {
         choosenItemColor.color = initialColor ? initialColor : "white"
@@ -280,6 +281,8 @@ Rectangle {
                             onClicked: {
                                 colorPicker.lastSelectedColor = disk.getColor(mouseX, mouseY,true)
                                 comboBox.state = ""
+								if ( closeCallBack)
+									closeCallBack(colorPicker.lastSelectedColor)
                             }
                             onPositionChanged: {
                                 var clr = disk.getColor(mouseX, mouseY,false)
