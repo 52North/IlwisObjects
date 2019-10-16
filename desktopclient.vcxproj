@@ -511,6 +511,7 @@
     <None Include="desktopclient\qml\workbench\creators\ParameterDetails.qml" />
     <None Include="desktopclient\qml\workbench\creators\ParameterList.qml" />
     <None Include="desktopclient\qml\workbench\creators\PostDrawerTiepointEditor.qml" />
+    <None Include="desktopclient\qml\workbench\creators\CreateRepresentationItemDomain.qml" />
     <None Include="desktopclient\qml\workbench\creators\SelectColorItem.qml" />
     <None Include="desktopclient\qml\workbench\creators\SelectIdentifierItem.qml" />
     <None Include="desktopclient\qml\workbench\creators\SelectNumericIntervalItem.qml" />
