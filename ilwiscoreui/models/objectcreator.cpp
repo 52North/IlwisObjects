@@ -76,7 +76,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["table" ] = new IlwisObjectCreatorModel("table", TR("Table"),itTABLE,"CreateTable.qml", 520, this);
     _creators["chart"] = new IlwisObjectCreatorModel("chart", TR("Chart"), itTABLE, "CreateChart.qml", 520, this);
 	_creators["supervisedclassification"] = new IlwisObjectCreatorModel("supervisedclassification", TR("Supervised Classification"), itMODEL, "CreateSupervisedClassification.qml", 340, this);
-    _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation"),itREPRESENTATION,"UnderDevelopment.qml", 250, this);
+    _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation Item domain"),itREPRESENTATION,"CreateRepresentationItemDomain.qml", 550, this);
     _creators["domain" ] = new IlwisObjectCreatorModel("domain",TR("Domain"),itDOMAIN,"CreateDomain.qml", 250, this);
     _creators["combinationmatrix" ] = new IlwisObjectCreatorModel("combinationmatrix",TR("Combinationmatrix"),itCOMBINATIONMATRIX,"CreateCombinationMatrix.qml", 600, this);
 	_creators["pythonconsole"] = new IlwisObjectCreatorModel("pythonconsole", TR("Python Console"), itSCRIPT, "CreatePythonConsole.qml",300, this);
