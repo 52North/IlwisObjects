@@ -70,7 +70,6 @@ Controls.DropableItem{
 					return false
 				var ok = false
 				var obj = mastercatalog.id2object(id, null)
-				console.debug("kkkk", obj, obj.id, obj.typeName, obj.internalValuetype)
 				if ( obj) {
 					if (obj.typeName === "itemdomain"){
 							classDomain = obj
