@@ -66,7 +66,7 @@ double MannKendallSignificanceTest::trendValue(const std::vector<double>& stackC
 					deltaDirection[j] = 0;
 					++repeats;
 				}else
-					deltaDirection[j] = d > 0 ? 1 : -1;
+					deltaDirection[j] = d > 0 ? -1 : 1;
 			}
 		}
 		if ( repeats > 0)
@@ -88,7 +88,8 @@ double MannKendallSignificanceTest::calcVarS(int n, const std::vector<int>&ties)
 	}
 	int sizeFactor = lambda(n);
 
-	return (sizeFactor - tieFactor) / 18;
+	double f = (sizeFactor - tieFactor) / 18;;
+	return f;
 
 }
 
@@ -122,23 +123,26 @@ bool MannKendallSignificanceTest::execute(ExecutionContext *ctx, SymbolTable &sy
 		}
 		std::vector<int> ties;
 		double s = trendValue(zcolumn, ties);
-		zcolumn.clear(); // next column
 		xchanged = false; // reset flag as we are in the next column now
 		double varS = calcVarS(_inputRaster->size().zsize(), ties);
-		double z = calcZ(s, varS);
-		normal ndis;
-		double prob = cdf(ndis, z);
-		value = 0;
-		for (auto i : _limits) {
-			double vmin = std::get<0>(i);
-			double vmax = std::get<1>(i);
-			if (prob >= vmin && prob <= vmax) {
-				value = std::get<2>(i);
-				usedRaws[value] = true;
-				break;
+		if (varS >= 0) {
+			double z = calcZ(s, varS);
+			normal ndis;
+			double prob = cdf(ndis, z);
+			value = 0;
+			for (auto i : _limits) {
+				double vmin = std::get<0>(i);
+				double vmax = std::get<1>(i);
+				if (prob >= vmin && prob <= vmax) {
+					value = std::get<2>(i);
+					usedRaws[value] = true;
+					break;
+				}
 			}
 		}
-		
+		else
+			value = rUNDEF;
+		zcolumn.clear(); // next column
 		updateTranquilizer(count++, 1000);
 
 	}
@@ -210,6 +214,7 @@ Ilwis::OperationImplementation::State MannKendallSignificanceTest::prepare(Execu
 	}
 	if (smin < 0 || smax > 1) {
 		kernel()->issues()->log(TR("Trend domain values must be between 0 (exclusive) and 1 (exclusive)"));
+		return sPREPAREFAILED;
 	}
 		
 	OperationHelperRaster::initialize(_inputRaster, _outputRaster, itCOORDSYSTEM | itGEOREF| itENVELOPE);
