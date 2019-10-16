@@ -51,6 +51,7 @@ public:
 
     bool isValid() const;
 
+
 private:
     UPColorLookUp _colors;
     UPShapeLookUp _shapes;
