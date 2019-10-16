@@ -47,6 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "scriptserializerv1.h"
 #include "modelserializerv1.h"
 #include "combinationmatrixserializerv1.h"
+#include "representationserializer.h"
 #include "dataformat.h"
 
 using namespace Ilwis;
@@ -103,6 +104,7 @@ void StreamModule::prepare()
     versionFactory->addCreator(supportedVersions,itSCRIPT,ScriptSerializerV1::create);
     versionFactory->addCreator(supportedVersions,itMODEL,ModelSerializerV1::create);
     versionFactory->addCreator(supportedVersions,itCOMBINATIONMATRIX,CombinationMatrixSerializerv1::create);
+	versionFactory->addCreator(supportedVersions, itREPRESENTATION, RepresentationSerializerV1::create);
 
 
     ConnectorFactory *cfactory = kernel()->factory<ConnectorFactory>("ilwis::ConnectorFactory");
@@ -132,6 +134,7 @@ void StreamModule::prepare()
     cfactory->addCreator("script","stream",StreamConnector::create);
     cfactory->addCreator("model","stream",StreamConnector::create);
     cfactory->addCreator("combinationmatrix","stream",StreamConnector::create);
+	cfactory->addCreator("representation", "stream", StreamConnector::create);
 
     QFileInfo ilw = context()->ilwisFolder();
     QString path = ilw.canonicalFilePath() + "/extensions/streamconnector/resources";

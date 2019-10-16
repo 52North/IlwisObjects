@@ -55,10 +55,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "location.h"
 #include "workflownode.h"
 #include "workflow.h"
+#include "representation.h"
 #include "downloadmanager.h"
 #include "analysispattern.h"
 #include "applicationmodel.h"
 #include "combinationmatrix.h"
+#include "representationserializer.h"
 #include "model.h"
 #include "versioneddatastreamfactory.h"
 
@@ -106,6 +108,8 @@ IlwisObject *StreamConnector::create() const
             return new ItemDomain<ColorItem>(_resource);
 
     }
+	case itREPRESENTATION:
+		return new Representation(_resource);
     default:
         return 0;
     }
