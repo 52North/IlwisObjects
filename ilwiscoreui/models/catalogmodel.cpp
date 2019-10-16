@@ -185,6 +185,7 @@ void CatalogModel::sortItems(QList<ResourceModel *>& items) {
 			items.push_back(res);
 	}
 	qDebug() << "max name" << _maxNameLength << item().name();
+	emit maxNameLengthChanged();
 }
 
 void CatalogModel::clearSelection() {
@@ -561,6 +562,7 @@ qint32 CatalogModel::maxNameLength() const {
 void CatalogModel::maxNameLength(qint32 l) {
 	if (l > 1) {
 		_maxNameLength = l;
+		emit maxNameLengthChanged();
 	}
 }
 
