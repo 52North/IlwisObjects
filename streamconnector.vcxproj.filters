@@ -109,6 +109,9 @@
     <ClCompile Include="streamconnector\workflowserializerv1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="streamconnector\representationserializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="streamconnector\catalogconnection.h">
@@ -181,6 +184,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="streamconnector\workflowserializerv1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamconnector\representationserializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -193,6 +193,7 @@
     <ClCompile Include="streamconnector\projectionserializerv1.cpp" />
     <ClCompile Include="streamconnector\rasterserializerv1.cpp" />
     <ClCompile Include="streamconnector\rawconverter.cpp" />
+    <ClCompile Include="streamconnector\representationserializer.cpp" />
     <ClCompile Include="streamconnector\scriptserializerv1.cpp" />
     <ClCompile Include="streamconnector\streamcatalogexplorer.cpp" />
     <ClCompile Include="streamconnector\streamconnector.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="streamconnector\projectionserializerv1.h" />
     <ClInclude Include="streamconnector\rasterserializerv1.h" />
     <ClInclude Include="streamconnector\rawconverter.h" />
+    <ClInclude Include="streamconnector\representationserializer.h" />
     <ClInclude Include="streamconnector\scriptserializerv1.h" />
     <ClInclude Include="streamconnector\streamcatalogexplorer.h" />
     <ClInclude Include="streamconnector\streamconnector.h" />
