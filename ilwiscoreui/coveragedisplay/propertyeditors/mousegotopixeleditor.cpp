@@ -82,7 +82,8 @@ QVariantMap MouseGotoPixelEditor::screenPixel(double column, double row, int zoo
 		} else
 			env = vpmodel()->layer()->layerManager()->rootLayer()->zoomEnvelope();
 		if (!env.contains(crd) || zoomPixels > 0) {
-			Envelope envNew(crd, env.size<double>());
+			Size<double> sz(env.xlength() - 1, env.ylength() - 1,0);
+			Envelope envNew(crd, sz);
 			QString expr = QString("setviewextent(%1,%2,%3,%4,%5)").arg(vpmodel()->layer()->layerManager()->viewid())
 				.arg(envNew.min_corner().x,0,'g', 11)
 				.arg(envNew.min_corner().y, 0,'g', 11)
