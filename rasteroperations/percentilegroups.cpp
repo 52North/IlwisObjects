@@ -59,19 +59,21 @@ bool PercentileGroups::execute(ExecutionContext *ctx, SymbolTable &symTable)
 	while (iterIn != endRaster) {
 		if (iterIn.xchanged()) {
 			if (zcolumn.size() > 0) {
+				if (iterIn.x() == 596 && iterIn.y() == 427) {
+					qDebug() << "stop";
+				}
 				std::sort(zcolumn.begin(), zcolumn.end());
 				if (_extraBoundaryPerc > 0) {
 					double delta = std::abs(zcolumn.front() - zcolumn.back()) * _extraBoundaryPerc;
 					zcolumn.insert(zcolumn.begin() + 0, (zcolumn.front() - delta));
 					zcolumn.push_back(zcolumn.back() + delta);
 				}
-				std::vector<int> percRanks;
-				for (auto v : _distributionGroups) {
-					percRanks.push_back(1 + (v / 100.0) * (zcolumn.size()));
-				}
-
-				for (auto rank : percRanks) {
-					*iterOut = rank < zcolumn.size() ? zcolumn[rank] : zcolumn.back();
+				//std::vector<double> percRanks(_distributionGroups.size());
+				double value = zcolumn.front();
+				double delta = (zcolumn.back() - zcolumn.front()) / _distributionGroups.size();
+				for (int i = 0; i < _distributionGroups.size(); ++i) {
+					value += delta;
+					*iterOut = value;
 					++iterOut;
 				}
 			}
