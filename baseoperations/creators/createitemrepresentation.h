@@ -1,3 +1,4 @@
+#pragma once
 /*IlwisObjects is a framework for analysis, processing and visualization of remote sensing and gis data
 Copyright (C) 2018  52n North
 
@@ -14,54 +15,30 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-#include <QColor>
-#include "kernel.h"
-#include "geometries.h"
-#include "shapelookup.h"
 
-using namespace Ilwis;
+namespace Ilwis {
+	namespace BaseOperations {
 
+		class CreateItemRepresentation : public OperationImplementation
+		{
+		public:
+			CreateItemRepresentation();
 
-Shape::Shape()
-{
+			CreateItemRepresentation(quint64 metaid, const Ilwis::OperationExpression &expr);
 
+			bool execute(ExecutionContext *ctx, SymbolTable& symTable);
+			static Ilwis::OperationImplementation *create(quint64 metaid, const Ilwis::OperationExpression& expr);
+			Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable&);
+
+			static quint64 createMetadata();
+
+			NEW_OPERATION(CreateItemRepresentation);
+
+		private:
+			IDomain _baseDomain;
+			std::map<quint32, QColor> _items;
+		};
+	}
 }
-//----------------------------
-ShapeLookUp::ShapeLookUp()
-{
-
-}
-
-ShapeLookUp::~ShapeLookUp()
-{
-
-}
-
-Shape ShapeLookUp::shape(Raw raw)
-{
-    auto iter = _shapes.find(raw);
-    if ( iter != _shapes.end())
-        return (*iter).second;
-    return Shape();
-}
-
-ShapeLookUp *ShapeLookUp::clone() const
-{
-    return 0;
-}
-
-void ShapeLookUp::store(QDataStream& stream) const {
-	stream << (quint32)_shapes.size();
-
-}
-
-void ShapeLookUp::load(QDataStream& stream)  {
-	quint32 n;
-	stream >> n;
-
-}
-
-
-
 
 

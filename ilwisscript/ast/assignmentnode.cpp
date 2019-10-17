@@ -49,6 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "selectornode.h"
 #include "outparametersnode.h"
 #include "dataformat.h"
+#include "representation.h"
 #include "operationhelper.h"
 #include "assignmentnode.h"
 
@@ -93,6 +94,8 @@ IIlwisObject AssignmentNode::getObject(const Symbol& sym) const {
         return sym._var.value<Ilwis::IFlatTable>().as<IlwisObject>();
     if ( hasType(tp , itDOMAIN))
         return sym._var.value<Ilwis::IDomain>().as<IlwisObject>();
+	if (hasType(tp, itREPRESENTATION))
+		return sym._var.value<Ilwis::IRepresentation>().as<IlwisObject>();
     if ( hasType(tp , itGEOREF))
         return sym._var.value<Ilwis::IGeoReference>().as<IlwisObject>();
     if ( hasType(tp , itCOORDSYSTEM))
@@ -267,7 +270,9 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                         ok &= copyObject<CoordinateSystem>(sym, result,symbols);
                     else if ( hasType(tp, itDOMAIN)){
                         ok &= copyObject<Domain>(sym, result,symbols);
-                   } else if ( hasType(tp, itCOMBINATIONMATRIX)){
+                   } if (hasType(tp, itREPRESENTATION)) {
+					   ok &= copyObject<Representation>(sym, result, symbols);
+				   } else if ( hasType(tp, itCOMBINATIONMATRIX)){
                        ok &= copyObject<CombinationMatrix>(sym, result,symbols);
                     } else if ( hasType(tp, itGEOREF)){
                         ok &= copyObject<GeoReference>(sym, result,symbols);

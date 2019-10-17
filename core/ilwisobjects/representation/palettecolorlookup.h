@@ -34,10 +34,14 @@ public:
     ColorLookUp *clone() const;
 	void store(QDataStream& stream) const override;
 	void load(QDataStream& stream) override;
+
+
 private:
     boost::container::flat_map<quint32, QColor> _colors;
     bool _cyclic = true;
-    void fromDefinition(const QString &definition, const Ilwis::IDomain &dom = IDomain());
+
+	void fromDefinition(const QString &definition, const Ilwis::IDomain &dom = IDomain());
+
 };
 }
 

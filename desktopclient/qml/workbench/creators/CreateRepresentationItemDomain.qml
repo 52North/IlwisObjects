@@ -155,5 +155,25 @@ Controls.DropableItem{
 	}
 
     function apply(overwrite) {
+	   var itemstring = ""
+       if ( itemDomain){
+			var items = itemDomain.domainitems
+            for(var i = 0; i < items.length; ++i){
+                if (itemstring !== "")
+                    itemstring += "|"
+                itemstring += items[i].name;
+                    itemstring += "|"+ colors[i]
+            }
+            if (!overwrite){
+                if ( mastercatalog.exists("ilwis://internalcatalog/"+ objectcommon.name, "domain")){
+                    return false;
+                }
+            }
+            var url = applyButton.currentCatalogCorrectUrl() + "/"+objectcommon.itemname
+            var createInfo = {type : "representation", valuetype : "item", name :  url, items : itemstring, domain : itemdompart.content }
+            var ilwisid = objectcreator.createObject(createInfo)
+
+            return true;
+		}
     }
 }

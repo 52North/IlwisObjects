@@ -706,58 +706,6 @@ QString ObjectCreator::createChart(const QVariantMap &parms) {
     return sUNDEF;
 }
 
-QString ObjectCreator::createObject(const QVariantMap &parms)
-{
-    try {
-    QString type = parms["type"].toString();
-	if (type == "supervisedclassification") {
-		return createSupervisedClassification(parms);
-	}
-    if (type == "chart") {
-        return createChart(parms);
-    } else if (  type == "workflow" ){
-        return createWorkflow(parms);
-    } else  if ( type == "numericdomain"){
-        return createNumericDomain(parms);
-    } else if ( type == "itemdomain"){
-            return createItemDomain(parms);
-    } else if ( type == "georef"){
-        return createGeoreference(parms);
-    } else if ( type == "coordinatesystem"){
-        if ( parms["subtype"].toString() == "conventional")
-            return createProjectedCoordinateSystem(parms);
-        if ( parms["subtype"].toString() == "boundsonly")
-            return createBoundsOnlyCoordinateSystem(parms);
-    } else if ( type == "rastercoverage"){
-        return createRasterCoverage(parms);
-    }else if ( type == "script"){
-        return createScript(parms);
-    }else if ( type == "model"){
-        return createModel(parms);
-    } else if ( type == "combinationmatrix"){
-        return createCombinationMatrix(parms);
-    } else if (type == "featurecoverage") {
-		return createFeatureCoverage(parms);
-	}
-    else if (type == "table") {
-        return createTable(parms);
-    }
-
-	else if (type == "pythonconsole") {
-		return sUNDEF;
-	}
-	else if (type == "timedomain") {
-		return createTimeDomain(parms);
-	}
-
-    return QString::number(i64UNDEF);
-    } catch (const ErrorObject& ){
-
-    } catch (std::exception& ex){
-        kernel()->issues()->log(ex.what());
-    }
-    return sUNDEF;
-}
 
 QVariantMap ObjectCreator::creatorInfo(const QString& name) const
 {
@@ -921,4 +869,91 @@ ControlPointsListModel *ObjectCreator::createControlPointsList(const QVariantMap
 		return new ControlPointsListModel(parent);
 	else
 		return new ControlPointsListModel(parms, parent);
+}
+
+QString ObjectCreator::createRepresentation(const QVariantMap& parms) {
+	try {
+		QString type = parms["valuetype"].toString();
+		QString expression;
+		if (type == "item") {
+			expression = QString("script %1{format(stream,\"representation\")}=createitemrepresentation(\"%2\",\"%3\"")
+				.arg(parms["name"].toString())
+				.arg(parms["domain"].toString())
+				.arg(parms["items"].toString());
+			expression += ")";
+		}
+		executeoperation(expression);
+
+		return sUNDEF;
+	}
+	catch (ErrorObject& obj) {}
+}
+
+
+QString ObjectCreator::createObject(const QVariantMap &parms)
+{
+	try {
+		QString type = parms["type"].toString();
+		if (type == "supervisedclassification") {
+			return createSupervisedClassification(parms);
+		}
+		if (type == "chart") {
+			return createChart(parms);
+		}
+		else if (type == "workflow") {
+			return createWorkflow(parms);
+		}
+		else  if (type == "numericdomain") {
+			return createNumericDomain(parms);
+		}
+		else if (type == "itemdomain") {
+			return createItemDomain(parms);
+		}
+		else if (type == "georef") {
+			return createGeoreference(parms);
+		}
+		else if (type == "coordinatesystem") {
+			if (parms["subtype"].toString() == "conventional")
+				return createProjectedCoordinateSystem(parms);
+			if (parms["subtype"].toString() == "boundsonly")
+				return createBoundsOnlyCoordinateSystem(parms);
+		}
+		else if (type == "rastercoverage") {
+			return createRasterCoverage(parms);
+		}
+		else if (type == "script") {
+			return createScript(parms);
+		}
+		else if (type == "model") {
+			return createModel(parms);
+		}
+		else if (type == "combinationmatrix") {
+			return createCombinationMatrix(parms);
+		}
+		else if (type == "featurecoverage") {
+			return createFeatureCoverage(parms);
+		}
+		else if (type == "table") {
+			return createTable(parms);
+		}
+
+		else if (type == "pythonconsole") {
+			return sUNDEF;
+		}
+		else if (type == "timedomain") {
+			return createTimeDomain(parms);
+		}
+		else if (type == "representation") {
+			return createRepresentation(parms);
+		}
+
+		return QString::number(i64UNDEF);
+	}
+	catch (const ErrorObject&) {
+
+	}
+	catch (std::exception& ex) {
+		kernel()->issues()->log(ex.what());
+	}
+	return sUNDEF;
 }

@@ -81,6 +81,7 @@ private:
     QString createOperationScriptHeader(const QVariantMap &parms);
     QString createChart(const QVariantMap &parms);
 	QString createSupervisedClassification(const QVariantMap &parms);
+	QString createRepresentation(const QVariantMap& parms);
     Ilwis::OperationResource createOperationResource(const QString &url, const QVariantMap &parms);
 	QString createTimeDomain(const QVariantMap &parms);
 };

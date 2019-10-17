@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define SHAPELOOKUP_H
 
 #include "boost/container/flat_map.hpp"
+#include "kernel_global.h"
 
 //TODO this is meant to be a more or less a port of the IVG stuff of Ilwis 3,
 namespace Ilwis {
@@ -39,6 +40,8 @@ public:
     Shape shape(Raw raw);
 
     ShapeLookUp* clone() const;
+	void store(QDataStream& stream) const;
+	void load(QDataStream& stream);
 
 private:
     boost::container::flat_map<Raw, Shape> _shapes;

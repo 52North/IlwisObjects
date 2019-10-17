@@ -85,6 +85,8 @@ bool StreamObjectFactory::canUse(const Resource &resource) const
         return true;
     else if ( type & itCOMBINATIONMATRIX)
         return true;
+	else if (type & itREPRESENTATION)
+		return true;
     return false;
 }
 

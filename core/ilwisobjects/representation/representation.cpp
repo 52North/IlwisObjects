@@ -151,12 +151,27 @@ IlwisTypes Representation::ilwisType() const
     return itREPRESENTATION;
 }
 
+IlwisObject *Representation::clone()
+{
+	Representation * rpr = new Representation();
+	copyTo(rpr);
+	return rpr;
+}
+
+void Representation::copyTo(IlwisObject *obj) {
+	IlwisObject::copyTo(obj);
+	Representation *rpr = static_cast<Representation *>(obj);
+	rpr->_colors.reset(_colors->clone());
+	rpr->_shapes.reset(_shapes->clone());
+	rpr->_domain = _domain;
+
+}
+
 IlwisData<Representation> Representation::defaultRepresentation(const IDomain &dom)
 {
     QString code("code=rpr:monochromeblack"); // default
     if ( hasType(dom->ilwisType(), itNUMERICDOMAIN)){
-        NumericRange *numrange = dom->range()->as<NumericRange>();
-            code = "code=rpr:greyscale";
+          code = "code=rpr:greyscale";
     }else if ( hasType(dom->ilwisType(), itITEMDOMAIN )){
         code = "code=rpr:primarycolors";
     } else if ( hasType(dom->ilwisType(), itTEXTDOMAIN) ){

@@ -50,6 +50,8 @@ public:
     static IlwisData<Representation> defaultRepresentation(const Ilwis::IDomain &dom);
 
     bool isValid() const;
+	void copyTo(IlwisObject *obj) ;
+	IlwisObject *clone();
 
 
 private:

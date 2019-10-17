@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "versionedserializer.h"
 #include "itemdomain.h"
 #include "representation.h"
+#include "factory.h"
+#include "abstractfactory.h"
+#include "versioneddatastreamfactory.h"
 #include "representationserializer.h"
 
 using namespace Ilwis;
@@ -42,12 +45,29 @@ bool RepresentationSerializerV1::store(IlwisObject *obj, const IOOptions &option
 	if (!VersionedSerializer::store(obj, options))
 		return false;
 
-	if (rpr->domain()->ilwisType() == itITEMDOMAIN) {
+	VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
+	if (!factory)
+		return false;
+
+	std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN, _stream));
+	if (!domainStreamer)
+		return false;
+	auto vtype = rpr->domain()->valueType();
+	_stream << vtype;
+	storeSystemPath(rpr->domain()->resource());
+	domainStreamer->store(rpr->domain().ptr(), options);
+
+	if (rpr->domain().isValid() && rpr->domain()->ilwisType() == itITEMDOMAIN) {
 		rpr->colors()->store(_stream);
+		// dummy statement; it is in shapes()->store() which is empty atm; 
+		_stream << (quint32)0;
+		//rpr->shapes()->store(_stream);
+
+		return true;
 	}
 	
 
-	return true;
+	return false;
 
 }
 
@@ -56,36 +76,38 @@ bool RepresentationSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions 
 	if (!VersionedSerializer::loadMetaData(obj, options))
 		return false;
 
+	VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
+	if (!factory)
+		return false;
 
-	Domain *dom = static_cast<Domain *>(obj);
+	IlwisTypes valueType;
+	_stream >> valueType;
+	quint64 type;
+	QString version, url;
+	_stream >> url;
+	_stream >> type;
+	_stream >> version;
 
+	std::unique_ptr<DataInterface> domainStreamer(factory->create(version, itDOMAIN, _stream));
+	if (!domainStreamer)
+		return false;
 
-	if (dom->ilwisType() == itITEMDOMAIN) {
-		QString theme;
-		_stream >> theme;
-		ItemDomain<DomainItem> *itemdom = static_cast<ItemDomain<DomainItem> *>(dom);
-		itemdom->setTheme(theme);
+	IDomain systemDomain = makeSystemObject<IDomain>(url);
+	IDomain dom(type | valueType);
+	domainStreamer->loadMetaData(dom.ptr(), options);
 
+	Representation *rpr = static_cast<Representation *>(obj);
+	rpr->domain(dom);
+
+	if (rpr->domain().isValid() && rpr->domain()->ilwisType() == itITEMDOMAIN) {
+		rpr->colors()->load(_stream);
+		// dummy statement; it is in shapes()->store() which is empty atm; 
+		quint32 n;
+		_stream >> n;
+		//rpr->shapes()->store(_stream);
+
+		return true;
 	}
-	if (dom->ilwisType() != itTEXTDOMAIN) {
-		Range * range = Range::create(hasType(dom->resourceRef().extendedType(), itDATETIME) ? itDATETIME : dom->valueType());
-		if (!range)
-			return false;
-		range->load(_stream);
-		dom->range(range);
-
-	}
-	QString parent;
-	_stream >> parent;
-	if (parent != sUNDEF) {
-		IDomain parentdom;
-		if (parentdom.prepare(parent, { "mustexist", true })) {
-			dom->setParent(parentdom);
-		}
-	}
-	bool strict;
-	_stream >> strict;
-	dom->setStrict(strict);
 
 
 	return true;
