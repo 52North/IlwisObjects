@@ -577,7 +577,9 @@ void Resource::addContainer(const QUrl& url, bool asRaw) {
 		int idx = _normalizedUrl.toString().lastIndexOf("/");
 		if (idx > 0) {
 			QString name = _normalizedUrl.toString().mid(idx + 1);
-			_normalizedUrl = _container.toString() + "/" + name;
+			if ( _normalizedUrl.scheme() != "ilwis")
+				_normalizedUrl = _container.toString() + "/" + name;
+
 		}
 	}
 }
