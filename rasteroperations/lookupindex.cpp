@@ -68,7 +68,7 @@ double  LookUpIndex::testColumn(double testValue, const std::vector<double> colu
 	for (int i = 0; i < column.size(); ++i) {
 		double v = column[i];
 		if (_testFunction(v, testValue))
-			return i > 0 ? i - 1 : 0;
+			return i;
 	}
 	return rUNDEF;
 }
