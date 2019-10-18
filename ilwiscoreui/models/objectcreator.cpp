@@ -887,6 +887,8 @@ QString ObjectCreator::createRepresentation(const QVariantMap& parms) {
 		return sUNDEF;
 	}
 	catch (ErrorObject& obj) {}
+
+	return sUNDEF;
 }
 
 
