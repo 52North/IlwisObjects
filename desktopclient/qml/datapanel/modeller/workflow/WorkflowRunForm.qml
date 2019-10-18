@@ -7,6 +7,7 @@ import OperationCatalogModel 1.0
 import OperationModel 1.0
 import ApplicationFormExpressionParser 1.0
 import "../../../workbench" as Bench
+import "../../../controls" as Controls
 import "../../../Global.js" as Global
 
 Rectangle  {
@@ -14,13 +15,25 @@ Rectangle  {
     height : parent.height
     color : "white"
 
+	Controls.TextEditLabelPair {
+		id : basefolder
+		width : parent.width - 10
+		        anchors.top: parent.top
+		height : 20
+		labelText : qsTr("Base folder")
+		labelWidth : 100
+		Component.onCompleted : {
+			content = mastercatalog.currentCatalog.url
+		}
+	}
 
     ScrollView{
         id: runFormScrollView
         width : parent.width
-        height : parent.height
-        anchors.top: parent.top
+        height : parent.height - 30
         property var operationid;
+		anchors.top : basefolder.bottom
+		anchors.topMargin : 4
 
 
         Bench.ApplicationForm{
@@ -51,6 +64,7 @@ Rectangle  {
 
     function executeRunForm(runparms) {
         workflowView.storeRangeDefinitions()
+		workflowView.workflow.setBaseFolder(basefolder.content)
         var ret = operations.executeoperation(runparms.id,appFrame.currentAppForm.formresult, runparms)
         if ( ret === "?")
             return "?"

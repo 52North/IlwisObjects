@@ -86,6 +86,8 @@ public:
     bool isValid() const;
     static std::vector<SPWorkFlowNode> outputNodes(const std::vector<Ilwis::SPWorkFlowNode> graph, Workflow *flow);
      std::vector<SPWorkFlowNode> leafNodes(NodeId containerId);
+	 void setBaseFolder(const QString& folder);
+	 QString baseFolder() const;
 private:
     std::vector<SPWorkFlowNode> _graph;
     std::map<quint64,int> _parmid2order; // some workflow parameters are bound to parameters in  the workflow expression; this describes that relation. It is filled in the createMetadata
@@ -93,6 +95,7 @@ private:
     OperationResource _operation;
     double _scale = 1.0;
     std::pair<int, int> _translation = std::pair<int, int>(0,0);
+	QString _baseFolder;
 
 
     std::vector<WorkFlowParameter> freeInputParameters() const;

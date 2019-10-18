@@ -1040,3 +1040,9 @@ QVariantList WorkflowModel::outputCurrentOperation()
      return "workflowmodel";
  }
 
+ void WorkflowModel::setBaseFolder(const QString& folder) {
+	 if (_workflow.isValid()) {
+		 return _workflow->setBaseFolder(folder);
+	 }
+ }
+

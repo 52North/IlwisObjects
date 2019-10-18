@@ -303,6 +303,10 @@ bool ExecutionNode::executeOperation(ExecutionContext *ctx, SymbolTable &symTabl
                 kernel()->issues()->log(TR("An object could not be resolved to a meaningful name, execution halted"));
                 return false;
             }
+			if (objectname.indexOf("./") == 0) {
+				QString path = objectname.mid(2);
+				objectname = workflowImpl->workflow()->baseFolder() + "/" + path;
+			}
             parms += objectname;
             unloadableObject.push_back(objectname);
         }else {
@@ -318,6 +322,10 @@ bool ExecutionNode::executeOperation(ExecutionContext *ctx, SymbolTable &symTabl
             }
             if (  !ok && hasType(inParam.valueType(),itSTRING)){
                 QString v = mapping.getValue(inParam,*this).toString().trimmed();
+				if (v.indexOf("./") == 0) {
+					QString path = v.mid(2);
+					v = workflowImpl->workflow()->baseFolder() + "/" + path;
+				}
                 bool needsquotes = false;
                 if ( v[0] != '\"'){ // don't place quotes were they are already present
                     needsquotes = v.indexOf(QRegExp("[ ,)(\"\']")) != -1;

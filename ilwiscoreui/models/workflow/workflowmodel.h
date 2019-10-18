@@ -111,6 +111,7 @@ public:
     Q_INVOKABLE void setNodeProperty(int nodeid, int paramindex, const QString& property, const QString &value);
     Q_INVOKABLE void stopStepMode();
     Q_INVOKABLE void stopExecution();
+	Q_INVOKABLE void setBaseFolder(const QString& folder);
 
     QString modelType() const;
 

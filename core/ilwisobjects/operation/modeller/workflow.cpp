@@ -588,6 +588,20 @@ IlwisTypes Workflow::ilwisType() const
     return itWORKFLOW;
 }
 
+void Workflow::setBaseFolder(const QString& folder) {
+	QUrl url(folder);
+	if (url.isValid()) {
+		QString f = url.toLocalFile();
+		QFileInfo inf(f);
+		if ( inf.exists() && inf.isDir())
+			_baseFolder = folder;
+	}
+}
+
+QString Workflow::baseFolder() const {
+	return _baseFolder;
+}
+
 
 //-------------------------------------------------------------------------
 WorkflowIdMapping::WorkflowIdMapping(const OperationExpression &expr, const std::map<quint64, int> &mapping) :
