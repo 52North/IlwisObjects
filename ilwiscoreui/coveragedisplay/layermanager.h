@@ -74,6 +74,7 @@ class ILWISCOREUISHARED_EXPORT LayerManager : public QObject
     Q_PROPERTY(bool updateNeededPostDrawers READ updatePostDrawersPrivate NOTIFY updatePostDrawersChanged)
 	Q_PROPERTY(QString layerListName READ layerListName WRITE setLayerListName NOTIFY layerListNameChanged)
 	Q_PROPERTY(bool doPostRenderCallBack READ doPostRenderCallBack WRITE doPostRenderCallBack)
+	Q_PROPERTY(bool orderChanged READ orderChanged WRITE orderChanged NOTIFY orderChangedChanged)
 
 
 public:
@@ -172,6 +173,7 @@ signals:
     void updatePostDrawersChanged();
 	void layerListNameChanged();
 	void removableLayerChanged();
+	void orderChangedChanged();
 
 private:
     RootLayerModel *_globalLayer = 0;
@@ -190,6 +192,7 @@ private:
 	QString _qmlDrawerName = sUNDEF;
 	LayerManager *_overview = 0;
 	LayerModel *_removableLayer = 0;
+	bool _orderChanged = false;
 
 	bool _needUpdate = false; // needed when a property of the whole rendering changed (e.g. zoom)
 	LayerModel *_lastAddedCoverageLayer = 0;
@@ -206,6 +209,8 @@ private:
     QQmlListProperty<QObject> postDrawers();
     bool updatePostDrawersPrivate();
 	LayerModel * removableLayer();
+	void orderChanged(bool yesno);
+	bool orderChanged() const;
     
 
 };

@@ -117,28 +117,28 @@ void LayerManager::setPanningMode(bool yesno)
 
 void LayerManager::moveLayer(LayerModel *parentLayer, LayerModel *layer, LayerMovement type)
 {
-    if ( parentLayer){
+	if (parentLayer) {
 
-        //parentLayer->moveLayer(layer, type);
-    }
-   // _globalLayer->moveLayer(layer, type);
+		//parentLayer->moveLayer(layer, type);
+	}
+	// _globalLayer->moveLayer(layer, type);
 }
 
 
 void LayerManager::setLayerListName(const QString name)
 {
-    _layerListName = name;
+	_layerListName = name;
 	emit layerListNameChanged();
 }
 
 QString LayerManager::layerListName() const
 {
-    return _layerListName;
+	return _layerListName;
 }
 
 QStandardItemModel * Ilwis::Ui::LayerManager::layerTree()
 {
-    return _tree;
+	return _tree;
 }
 
 LayerModel *Ilwis::Ui::LayerManager::lastAddedCoverageLayer() const
@@ -151,17 +151,17 @@ void Ilwis::Ui::LayerManager::lastAddedCoverageLayer(LayerModel * lyr)
 	_lastAddedCoverageLayer = lyr;
 }
 
-QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrName, QVariantList & items) 
+QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrName, QVariantList & items)
 {
 	QString result;
-    QStandardItem *rootItem = _tree->invisibleRootItem();
-    for (int layerIndex = 0; layerIndex < rootItem->rowCount(); ++layerIndex) {
-        LayerModel *layer = static_cast<LayerModel *>(rootItem->child(layerIndex));
+	QStandardItem *rootItem = _tree->invisibleRootItem();
+	for (int layerIndex = 0; layerIndex < rootItem->rowCount(); ++layerIndex) {
+		LayerModel *layer = static_cast<LayerModel *>(rootItem->child(layerIndex));
 		if (layer->isValid()) {
-            QString txt = layer->layerData(crdIn, attrName, items);
+			QString txt = layer->layerData(crdIn, attrName, items);
 			if (result != "" && txt != "")
 				result += ";";
-            result += txt;
+			result += txt;
 		}
 	}
 	for (auto& cov : _mapInfoExtraLayer) {
@@ -173,26 +173,50 @@ QString LayerManager::layerData(const Coordinate & crdIn, const QString & attrNa
 	return result;
 }
 
-void LayerManager::addInfoLayer(const QString& sobjid)  {
-	quint64 objid = sobjid.toULongLong();
-	for (auto& cov : _mapInfoExtraLayer) {
-		if (cov->vproperty("id") .toULongLong() == objid)
+void LayerManager::addInfoLayer(const QString& sobjid) {
+	try {
+		auto addStuff = [&](const ICoverage& cov)->void {
+			auto iter = _createLayers.find(TypeHelper::type2name(cov->ilwisType()));
+			if (iter != _createLayers.end()) {
+				auto createFunc = (*iter).second;
+				QString layername = cov->name();
+				CoverageLayerModel *layer = static_cast<CoverageLayerModel *>(createFunc(this, 0, layername, cov->description(), IOOptions()));
+				layer->coverage(cov);
+				_mapInfoExtraLayer.emplace_back(layer);
+
+			}
+		};
+
+		quint64 objid = sobjid.toULongLong();
+		for (auto& cov : _mapInfoExtraLayer) {
+			if (cov->vproperty("id").toULongLong() == objid)
+				return;
+		}
+		ICoverage cov;
+		if (!cov.prepare(objid, { "mustexist", true })) {
 			return;
-	}
-	ICoverage cov;
-	if (!cov.prepare(objid, {"mustexist", true})) {
-		return;
-	}
-	auto iter = _createLayers.find(TypeHelper::type2name(cov->ilwisType()));
-	if (iter != _createLayers.end()) {
-		auto createFunc = (*iter).second;
-		QString layername = cov->name();
-		CoverageLayerModel *layer = static_cast<CoverageLayerModel *>(createFunc(this, 0, layername, cov->description(),IOOptions()));
-		layer->coverage(cov);
-		_mapInfoExtraLayer.emplace_back(layer);
+		}
+		if (cov->ilwisType() == itRASTER) {
+			IRasterCoverage raster = cov.as<RasterCoverage>();
+			if (raster->size().zsize() > 1) {
+				ICatalog cat;
+				if (cat.prepare(raster->resourceRef().url().toString(), { "mustexist", true })) {
+					auto bands = cat->items();
+					for (auto item : bands) {
+						IRasterCoverage r;
+						if(r.prepare(item.url().toString(), { "mustexist", true }))
+							addStuff(r);
+					}
+				}
+			}
+			else
+				addStuff(cov);
+		}
+		else
+			addStuff(cov);
 		rootLayer()->updateLayerInfo();
 	}
-
+	catch (const ErrorObject&) {}
 }
 
 QModelIndex LayerManager::modelIndex(int row) const {
@@ -270,6 +294,7 @@ void Ilwis::Ui::LayerManager::move(int nodeId, const QModelIndex & targetLocatio
 
 //    _tree->insertRow(targetLocation.row() + shift, layers);
     _tree->insertRow(targetItem->row(), layers);
+	orderChanged(true);
 
 
 }
@@ -834,4 +859,11 @@ void LayerManager::qmlDrawer(const QString& objectname) {
 
 QString LayerManager::qmlDrawer() const {
 	return _qmlDrawerName;
+}
+
+void LayerManager::orderChanged(bool yesno) {
+	_orderChanged = yesno;
+}
+bool LayerManager::orderChanged() const {
+	return _orderChanged;
 }
