@@ -11,7 +11,7 @@ import "../../Global.js" as Global
 import "../../controls" as Controls
 
 Item {
-    property OperationCatalogModel currentCatalog
+    property var currentCatalog
     id :    catalogViews
     width : parent.width
     height : parent.height
@@ -180,7 +180,7 @@ Item {
 
     Component.onCompleted: {
         var url = mastercatalog.currentUrl
-        currentCatalog = mastercatalog.newCatalog(url,"(type='SingleOperation' or type='Workflow')")
+        currentCatalog = mastercatalog.newCatalog(url,"(type=262144 or type=36028797018963968)")
         if ( currentCatalog){
             currentCatalog.makeParent(catalogViews)
             mastercatalog.currentCatalog = currentCatalog
