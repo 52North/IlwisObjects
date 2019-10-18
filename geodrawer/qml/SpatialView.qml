@@ -436,6 +436,22 @@ Item {
 					}
 					layermanager.doneRemoving()
 				}
+				if ( layermanager.orderChanged){
+					var newOrder = []
+					var layerList = layermanager.topLevelLayers
+					for(var i=layerList.length-1; i >=0; --i){
+						var sceneObject = scene.getObjectByName(layerList[i].nodeId);
+						if ( sceneObject){
+							scene.remove(sceneObject)
+							newOrder.push(sceneObject)
+						}
+
+					}
+					for(var i=0; i < newOrder.length; ++i){
+						scene.add(newOrder[i])
+					}
+					layermanager.orderChanged = false
+				}
 				var layerList = layermanager.topLevelLayers
 				for(var i=layerList.length-1; i >=0; --i){
 					setProperties(layerList[i])

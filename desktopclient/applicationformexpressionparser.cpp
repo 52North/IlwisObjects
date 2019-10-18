@@ -95,7 +95,7 @@ void ApplicationFormExpressionParser::setParameter(const Resource& resource, boo
     choices.clear();
     part = "";
     inChoiceList = false;                                    
-    ++parmCount;                             
+    ++parmCount;                                
 } 
 
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getOutputParameters(const Ilwis::Resource &resource) const{
