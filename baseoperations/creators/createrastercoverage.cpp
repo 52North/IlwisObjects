@@ -67,14 +67,17 @@ bool CreateRasterCoverage::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if (_autoresample && !band->georeference()->isCompatible(_grf)) {
             band = OperationHelperRaster::resample(band, _grf);
         }
-        resolution = std::min(band->datadefRef().domain()->range<NumericRange>()->resolution(), resolution);
-        for(double value : band){
-            *pout = value;
-            minv = Ilwis::min(value,minv);
-            maxv = Ilwis::max(value,maxv);
-            updateTranquilizer(pout.linearPosition(), 1000);
-            ++pout;
-        }
+		auto numrng = band->datadefRef().domain()->range<NumericRange>();
+		if (!numrng.isNull()) {
+			resolution = std::min(numrng->resolution(), resolution);
+			for (double value : band) {
+				*pout = value;
+				minv = Ilwis::min(value, minv);
+				maxv = Ilwis::max(value, maxv);
+				updateTranquilizer(pout.linearPosition(), 1000);
+				++pout;
+			}
+		}
     }
     if (resolution == 1e30) resolution = 0;
 	NumericRange *rng;
@@ -102,7 +105,7 @@ Ilwis::OperationImplementation::State CreateRasterCoverage::prepare(ExecutionCon
 {
     OperationImplementation::prepare(ctx,st);
     auto CreateStackDomain = [&](const QString& dom)-> Ilwis::OperationImplementation::State{
-        _stackDomain.prepare(dom);
+		_stackDomain.prepare(dom, { "mustexist", true } );
         if ( !_stackDomain.isValid()){
             kernel()->issues()->log(QString(TR("%1 is an invalid stack domain")).arg(dom));
             return sPREPAREFAILED;
