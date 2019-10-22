@@ -570,15 +570,24 @@ void Resource::addContainer(const QUrl& url, bool asRaw) {
 		int idx = _rawUrl.toString().lastIndexOf("/");
 		if (idx > 0) {
 			QString name = _rawUrl.toString().mid(idx + 1);
-			_rawUrl = _rawContainer.toString() + "/" + name;
+			QString cont = _rawContainer.toString();
+			if (cont.back() != "/")
+				_rawUrl = cont + "/" + name;
+			else
+				_rawUrl = cont + name;
 		}
 	}
 	else {
 		int idx = _normalizedUrl.toString().lastIndexOf("/");
 		if (idx > 0) {
 			QString name = _normalizedUrl.toString().mid(idx + 1);
-			if ( _normalizedUrl.scheme() != "ilwis")
-				_normalizedUrl = _container.toString() + "/" + name;
+			if (_normalizedUrl.scheme() != "ilwis") {
+				QString cont = _container.toString();
+				if (cont.back() != "/")
+					_normalizedUrl = cont + "/" + name;
+				else
+					_normalizedUrl =cont + name;
+			}
 
 		}
 	}
