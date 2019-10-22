@@ -235,7 +235,7 @@ quint64 MannKendallSignificanceTest::createMetadata()
 {
 	OperationResource operation({ "ilwis://operations/mannkendallsignificancetest" });
 	operation.setLongName("Mann-Kendall Significance Test");
-	operation.setSyntax("MannKendallSignificanceTest(raster,domain)");
+	operation.setSyntax("mannKendallSignificanceTest(raster,domain)");
 	operation.setInParameterCount({ 2 });
 	operation.addInParameter(0, itRASTER, TR("Multi-band raster"), TR("A multi band raster with a numeric domain"));
 	operation.addInParameter(1, itDOMAIN, TR("Interval domain"), TR("An item interval domain that indicates the semantcis of trends for the output map"));
