@@ -175,7 +175,7 @@ Ilwis::OperationImplementation::State ComboClassification::prepare(ExecutionCont
 quint64 ComboClassification::createMetadata()
 {
     OperationResource operation({"ilwis://operations/crossrasterclassification"});
-    operation.setSyntax("crossrasterclassification(inputraster1,inputraster2, combinationmatrix");
+    operation.setSyntax("crossrasterclassification(inputraster1,inputraster2, combinationmatrix)");
     operation.setDescription(TR("unsupervised classification the value of the output cells is determined by the combination of the input rrasters values in the cells of the combinationmatrix"));
     operation.setInParameterCount({3});
     operation.addInParameter(0,itRASTER,  TR("x - input raster"),TR("Raster which has the values of the x-axis in the combination matrix; it must have an item domain as domain"));
