@@ -54,7 +54,7 @@ bool EllipsoidSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &opti
     QString authority;
     _stream >> majorAxis >> flattening >> authority;
     Ellipsoid *ellipsoid = static_cast<Ellipsoid *>(obj);
-    ellipsoid->setEllipsoid(majorAxis,flattening);
+    ellipsoid->setEllipsoid(majorAxis,flattening > 0 ? 1.0/flattening : 0);
     ellipsoid->setAuthority(authority);
 
 
