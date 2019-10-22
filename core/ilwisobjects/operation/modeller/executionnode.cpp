@@ -87,8 +87,7 @@ bool ExecutionNode::execute(ExecutionContext *ctx, SymbolTable &symTable, Workfl
 void ExecutionNode::unloadInputs(const std::vector<QString>& objects){
     for(const QString& input : objects)    {
         IIlwisObject obj;
-        obj.prepare(input);
-        if ( obj.isValid()){
+        if (obj.prepare(input, { "mustexist", true })){
             obj->unload();
         }
     }
