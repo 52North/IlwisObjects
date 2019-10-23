@@ -59,9 +59,6 @@ bool PercentileGroups::execute(ExecutionContext *ctx, SymbolTable &symTable)
 	while (iterIn != endRaster) {
 		if (iterIn.xchanged()) {
 			if (zcolumn.size() > 0) {
-				if (iterIn.x() == 596 && iterIn.y() == 427) {
-					qDebug() << "stop";
-				}
 				std::sort(zcolumn.begin(), zcolumn.end());
 				if (_extraBoundaryPerc > 0) {
 					double delta = std::abs(zcolumn.front() - zcolumn.back()) * _extraBoundaryPerc;
