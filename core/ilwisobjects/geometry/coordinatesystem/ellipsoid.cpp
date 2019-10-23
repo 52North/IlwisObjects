@@ -242,6 +242,9 @@ double Ellipsoid::excentricity2() const
 
 void Ellipsoid::setEllipsoid( double a, double invf){
 	if (a != rUNDEF && a > 0 && invf != rUNDEF) {
+		if (a == 6378137 && invf == 0) { // special case that is basically an error but is assumed to refered to the wgs84 ellipsoid
+			invf = 298.2572263;
+		}
 		InternalDatabaseConnection db;
 		QString query = "Select * from ellipsoid";
 		if (db.exec(query)) {
