@@ -70,6 +70,10 @@ double  LookUpIndex::testColumn(double testValue, const std::vector<double> colu
 		if (_testFunction(v, testValue))
 			return i;
 	}
+	if (_operator == loLESS || _operator == loLESSEQ)
+		return column.size() - 1;
+	if (_operator == loGREATER || _operator == loGREATEREQ)
+		return 0;
 	return rUNDEF;
 }
 
@@ -128,22 +132,28 @@ Ilwis::OperationImplementation::State LookUpIndex::prepare(ExecutionContext *ctx
 
 	QString testOperator = _expression.input<QString>(2);
 	if (testOperator == "smaller") {
+		_operator = loLESS;
 		_testFunction = testValuesSmaller;
 	}
 	if (testOperator == "smallerequal") {
+		_operator = loLESSEQ;
 		_testFunction = testValuesSmallerEqual;
 	}
 
 	if (testOperator == "equal") {
+		_operator = loEQ;
 		_testFunction = testValuesEqual;
 	}
 	if (testOperator == "notqual") {
+		_operator = loNEQ;
 		_testFunction = testValuesNotEqual;
 	}
 	if (testOperator == "greaterequal") {
+		_operator = loGREATEREQ;
 		_testFunction = testValuesGreaterEqual;
 	}
 	if (testOperator == "greater") {
+		_operator = loGREATER;
 		_testFunction = testValuesGreater;
 	}
 

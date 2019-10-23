@@ -39,6 +39,7 @@ namespace Ilwis {
 			IRasterCoverage _inputRaster;
 			IRasterCoverage _testRaster;
 			TestFunction _testFunction;
+			LogicalOperator _operator;
 
 			double testColumn(double testValue, const std::vector<double> column);
 
