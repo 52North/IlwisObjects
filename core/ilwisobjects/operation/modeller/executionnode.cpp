@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationnode.h"
 #include "conditionNode.h"
 #include "executionnode.h"
+#include "catalog.h"
 #include "rangenode.h"
 #include "rangejunctionnode.h"
 #include "workflowimplementation.h"
@@ -237,6 +238,22 @@ FlowContext  ExecutionNode::contextSwitch(const SPWorkFlowNode& sourceNode, cons
 
 bool ExecutionNode::executeOperation(ExecutionContext *ctx, SymbolTable &symTable, WorkflowImplementation* workflowImpl, WorkflowIdMapping& mapping)
 {
+	auto ensureScanned = [](WorkflowImplementation* workflowImpl, const QString& path)->bool {
+		int idx = path.lastIndexOf("/");
+		if (idx >= 0) {
+			QString inbetweenFolders = path.left(idx);
+			QUrl url = workflowImpl->workflow()->baseFolder() + "/" + inbetweenFolders;
+			if (!mastercatalog()->knownCatalogContent(url)) {
+				ICatalog cat;
+				if (!cat.prepare(url.toString())) {
+					kernel()->issues()->log(TR("Base folder for workflow doesn't exist"));
+					return false;
+				}
+				cat->scan();
+			}
+		}
+		return true;
+	};
      //auto iter = ctx->_additionalInfo.find("testoperation");
     SymbolTable symTable2(symTable);
     int inputCount = _node->inputCount();
@@ -304,6 +321,8 @@ bool ExecutionNode::executeOperation(ExecutionContext *ctx, SymbolTable &symTabl
             }
 			if (objectname.indexOf("./") == 0) {
 				QString path = objectname.mid(2);
+				if (!ensureScanned(workflowImpl, path))
+					return false;
 				objectname = workflowImpl->workflow()->baseFolder() + "/" + path;
 			}
             parms += objectname;
@@ -323,6 +342,8 @@ bool ExecutionNode::executeOperation(ExecutionContext *ctx, SymbolTable &symTabl
                 QString v = mapping.getValue(inParam,*this).toString().trimmed();
 				if (v.indexOf("./") == 0) {
 					QString path = v.mid(2);
+					if (!ensureScanned(workflowImpl, path))
+						return false;
 					v = workflowImpl->workflow()->baseFolder() + "/" + path;
 				}
                 bool needsquotes = false;
