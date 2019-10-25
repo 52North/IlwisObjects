@@ -184,7 +184,6 @@ void CatalogModel::sortItems(QList<ResourceModel *>& items) {
 		for (auto *res : vitems)
 			items.push_back(res);
 	}
-	qDebug() << "max name" << _maxNameLength << item().name();
 	emit maxNameLengthChanged();
 }
 
