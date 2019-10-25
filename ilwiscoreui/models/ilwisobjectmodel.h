@@ -35,6 +35,7 @@ class QAbstractItemModel;
 namespace Ilwis {
 namespace Ui {
 class OperationModel;
+class RepresentationElementModel;
 class CatalogModel;
 class CalcRangesWorker : public QObject{
     Q_OBJECT
@@ -70,6 +71,7 @@ class ILWISCOREUISHARED_EXPORT IlwisObjectModel : public ResourceModel
 		Q_PROPERTY(QString projectionInfo READ projectionInfo NOTIFY projectionInfoChanged)
 		Q_PROPERTY(QQmlListProperty<Ilwis::Ui::AttributeModel> attributes READ attributes CONSTANT)
 		Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DomainItemModel> domainitems READ domainitems NOTIFY domainItemsChanged)
+		Q_PROPERTY(QQmlListProperty<Ilwis::Ui::RepresentationElementModel> rpritems READ rpritems NOTIFY rprItemsChanged)
 		Q_PROPERTY(QQmlListProperty<ProjectionParameterModel> projectionItems READ projectionItems CONSTANT)
 		Q_PROPERTY(QVariantList layerInfo READ layerInfo NOTIFY layerInfoChanged)
 		Q_PROPERTY(QStringList quickProps READ quickProps CONSTANT)
@@ -147,6 +149,7 @@ signals:
 	void domainItemsChanged();
 	void editableChanged();
 	void metaItemTreeChanged();
+	void rprItemsChanged();
 
 private slots:
     QString valueType() const;
@@ -154,6 +157,7 @@ private:
     mutable Ilwis::IIlwisObject _ilwisobject;
     quint32 _modelId;
     QList<DomainItemModel *> _domainItems;
+	QList<Ilwis::Ui::RepresentationElementModel *> _rprItems;
     QList<ProjectionParameterModel *> _projectionParmItems;
 	QVariantList _metaItemTree;
 
@@ -166,6 +170,7 @@ private:
 	IlwisTypes valueTypePrivate() const;
 	QVariantList metaItemTree();
 	QString valueTypeHuman() const;
+	QQmlListProperty<Ilwis::Ui::RepresentationElementModel> rpritems() ;
 
 	bool _editState = false;
 

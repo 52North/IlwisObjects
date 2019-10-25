@@ -48,6 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "combinationmatrix.h"
 #include "abstractfactory.h"
 #include "tranquilizerfactory.h"
+#include "representationelementmodel.h"
 #include "modelregistry.h"
 #include <QSQLField>
 #include "script.h"
@@ -410,6 +411,32 @@ void IlwisObjectModel::newItemDomainItem() {
 		}
 	}
 }
+QQmlListProperty<Ilwis::Ui::RepresentationElementModel> IlwisObjectModel::rpritems()  {
+	try {
+		IlwisTypes objectype = _ilwisobject->ilwisType();
+		if (hasType(objectype, itREPRESENTATION)) {
+			IRepresentation rpr = _ilwisobject.as<Representation>();
+			if (hasType(rpr->domain()->ilwisType(), itITEMDOMAIN)) {
+				SPItemRange itemrange = rpr->domain()->range<ItemRange>();
+				if (!itemrange.isNull()) {
+					_rprItems.clear();
+					for (auto item : *(itemrange.data())) {
+						if (item) {
+							RepresentationElementModel *rpritem = new RepresentationElementModel(rpr, item->raw(), item->name(), this);
+							_rprItems.push_back(rpritem);
+						}
+					}
+					if (_rprItems.size() > 0)
+						return QQmlListProperty<RepresentationElementModel>(this, _rprItems);
+				}
+			}
+		}
+	}
+	catch (const ErrorObject&) {}
+
+	return QQmlListProperty<RepresentationElementModel>();
+}
+
 QQmlListProperty<DomainItemModel> IlwisObjectModel::domainitems()
 {
     try{
@@ -827,6 +854,13 @@ QString IlwisObjectModel::valueType() const {
             return TypeHelper::type2name(tp);
         }
     }
+	if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+		IRepresentation rpr = _ilwisobject.as<Representation>();
+		if (rpr.isValid()) {
+			IlwisTypes tp = rpr->domain()->valueType();
+			return TypeHelper::type2name(tp);
+		}
+	}
     return "";
 }
 
@@ -866,6 +900,20 @@ void IlwisObjectModel::setProperty(const QString& propertyname, const QVariantMa
 				return;
 			}
 			raster->georeference(grf);
+		}
+	}
+	if (propertyname == "representationitem") {
+		if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+			IRepresentation rpr = _ilwisobject.as<Representation>();
+			IlwisTypes tp = rpr->domain()->valueType();
+			if (hasType(tp, itTHEMATICITEM | itNUMERICITEM | itNAMEDITEM | itTIMEITEM)) {
+				IItemDomain dom = rpr->domain().as< ItemDomain<DomainItem>>();
+				for (auto iter = values.begin(); iter != values.end(); ++iter) {
+					auto item = dom->item(iter.key());
+					QString color(iter.value().toString());
+					rpr->colors()->setColor(item->raw(), color);
+				}
+			}
 		}
 	}
 }
