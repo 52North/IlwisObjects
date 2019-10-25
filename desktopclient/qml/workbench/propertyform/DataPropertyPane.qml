@@ -61,7 +61,11 @@ Rectangle {
             source = "OperationProperties.qml"
         } else if ( typeName == "catalog"){
             source = "CatalogProperties.qml"
-        }
+        } else if ( typeName == "representation" ){
+			var valueType = getProperty("valuetype")
+			if ( valueType == "numericinterval" || valueType == "timeinterval"  || valueType == "namedidentifier" || valueType == "thematicclass")
+				source = "RepresentationItemProperties.qml"
+		}
 
     }
 }
