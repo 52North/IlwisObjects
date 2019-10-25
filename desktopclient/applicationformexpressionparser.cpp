@@ -20,14 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationmetadata.h"         
 #include "dataformat.h"                  
 #include "uicontextmodel.h" 
-#include "mastercatalogmodel.h"
-#include "applicationformexpressionparser.h"                                                                                                                           
+#include "mastercatalogmodel.h"   
+#include "applicationformexpressionparser.h"                                                                                                                                            
  
  
-using namespace Ilwis;                                                                                  
+using namespace Ilwis;                                                                                     
 using namespace Ui; 
 
-ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                      
+ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                       
 {
 }                                                                                                        
 

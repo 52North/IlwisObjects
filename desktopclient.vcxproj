@@ -577,6 +577,7 @@
     <None Include="desktopclient\qml\workbench\propertyform\PropertyEditButtons.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\RangeValuesCombo.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\RasterCoverageDataProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\RepresentationItemProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\SpatialProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\TableProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\TextRangeDefinition.qml" />

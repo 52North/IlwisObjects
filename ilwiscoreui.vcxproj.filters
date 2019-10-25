@@ -110,9 +110,6 @@
     <ClCompile Include="ilwiscoreui\desktoptranquilizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ilwiscoreui\models\domainitemmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\models\workflow\errormodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -379,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\pointlabeling.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\domainitemmodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
