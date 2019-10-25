@@ -106,7 +106,7 @@ Controls.DropableItem{
 						
 				}
 				QC1.TableViewColumn{
-					title : qsTr("Portrayal");
+					title : qsTr("Presentation");
 					width : parent.width - 160
 					delegate:	Rectangle {
 						id : local
