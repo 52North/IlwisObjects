@@ -102,7 +102,6 @@ Ilwis::OperationImplementation::State CreateItemRepresentation::prepare(Executio
 	}
 	return sPREPARED;
 
-	return sPREPARED;
 }
 
 quint64 CreateItemRepresentation::createMetadata()
