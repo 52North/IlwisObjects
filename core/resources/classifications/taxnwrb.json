@@ -1,0 +1,605 @@
+{
+	"name" : "TAXNWRB",
+	"long name" : "TAXNWRB",
+	"code" : "soil",
+	"type" : "thematic",
+	"theme" : "geology",
+	"description" : "118 unique soil classes, e.g. Plinthic Acrisols, Albic Arenosols, Haplic Cambisols (Chromic), Calcic Gleysols and similar (IUSS Working Group WRB, 2006)",
+	"items" : [
+		{
+		"color" :"#FFFFFF",
+		"name":"NODATA",
+		"code" :"255"
+		},
+		{
+		"color" :"#FC894D",
+		"name":"Acric Ferralsols",
+		"code" :"43"
+		},
+		{
+		"color" :"#845851",
+		"name":"Acric Plinthosols",
+		"code" :"95"
+		},
+		{
+		"color" :"#FFE8BE",
+		"name":"Albic Arenosols",
+		"code" :"15"
+		},
+		{
+		"color" :"#F896B4",
+		"name":"Albic Luvisols",
+		"code" :"76"
+		},
+		{
+		"color" :"#A05246",
+		"name":"Alic Nitisols",
+		"code" :"85"
+		},
+		{
+		"color" :"#FC6B5D",
+		"name":"Aluandic Andosols",
+		"code" :"12"
+		},
+		{
+		"color" :"#FDE4B7",
+		"name":"Aric Regosols",
+		"code" :"99"
+		},
+		{
+		"color" :"#FDD2B8",
+		"name":"Calcaric Regosols",
+		"code" :"100"
+		},
+		{
+		"color" :"#E5C75D",
+		"name":"Calcic Chernozems",
+		"code" :"36"
+		},
+		{
+		"color" :"#AB9ABF",
+		"name":"Calcic Gleysols",
+		"code" :"53"
+		},
+		{
+		"color" :"#FFF9AD",
+		"name":"Calcic Gypsisols",
+		"code" :"59"
+		},
+		{
+		"color" :"#8291B8",
+		"name":"Calcic Histosols",
+		"code" :"61"
+		},
+		{
+		"color" :"#D2A18D",
+		"name":"Calcic Kastanozems",
+		"code" :"66"
+		},
+		{
+		"color" :"#F9A890",
+		"name":"Calcic Luvisols",
+		"code" :"77"
+		},
+		{
+		"color" :"#F8D8ED",
+		"name":"Calcic Solonetz",
+		"code" :"108"
+		},
+		{
+		"color" :"#A87188",
+		"name":"Calcic Vertisols",
+		"code" :"115"
+		},
+		{
+		"color" :"#8A9698",
+		"name":"Cryic Histosols",
+		"code" :"62"
+		},
+		{
+		"color" :"#E4DBBF",
+		"name":"Cutanic Alisols",
+		"code" :"10"
+		},
+		{
+		"color" :"#FDCE70",
+		"name":"Endogleyic Cambisols",
+		"code" :"25"
+		},
+		{
+		"color" :"#D7965F",
+		"name":"Endogleyic Planosols",
+		"code" :"90"
+		},
+		{
+		"color" :"#FEE7C0",
+		"name":"Ferralic Arenosols",
+		"code" :"16"
+		},
+		{
+		"color" :"#EDC669",
+		"name":"Ferralic Cambisols",
+		"code" :"26"
+		},
+		{
+		"color" :"#788092",
+		"name":"Fibric Histosols",
+		"code" :"63"
+		},
+		{
+		"color" :"#F9A091",
+		"name":"Gleyic Luvisols",
+		"code" :"78"
+		},
+		{
+		"color" :"#6EAA7C",
+		"name":"Gleyic Podzols",
+		"code" :"97"
+		},
+		{
+		"color" :"#E2CDCC",
+		"name":"Gleyic Solonetz",
+		"code" :"109"
+		},
+		{
+		"color" :"#E05B9A",
+		"name":"Gypsic Solonchaks",
+		"code" :"105"
+		},
+		{
+		"color" :"#FE813E",
+		"name":"Haplic Acrisols",
+		"code" :"1"
+		},
+		{
+		"color" :"#FD9F39",
+		"name":"Haplic Acrisols (Alumic)",
+		"code" :"2"
+		},
+		{
+		"color" :"#FDAE6B",
+		"name":"Haplic Acrisols (Ferric)",
+		"code" :"3"
+		},
+		{
+		"color" :"#FD8D3C",
+		"name":"Haplic Acrisols (Humic)",
+		"code" :"4"
+		},
+		{
+		"color" :"#F0C85C",
+		"name":"Haplic Albeluvisols",
+		"code" :"7"
+		},
+		{
+		"color" :"#F5EBCC",
+		"name":"Haplic Alisols",
+		"code" :"11"
+		},
+		{
+		"color" :"#F5E7CA",
+		"name":"Haplic Andosols",
+		"code" :"13"
+		},
+		{
+		"color" :"#FEE3C0",
+		"name":"Haplic Arenosols",
+		"code" :"17"
+		},
+		{
+		"color" :"#FEE4B1",
+		"name":"Haplic Arenosols (Calcaric)",
+		"code" :"18"
+		},
+		{
+		"color" :"#FFEF51",
+		"name":"Haplic Calcisols",
+		"code" :"21"
+		},
+		{
+		"color" :"#F8E729",
+		"name":"Haplic Calcisols (Sodic)",
+		"code" :"22"
+		},
+		{
+		"color" :"#FDE260",
+		"name":"Haplic Cambisols",
+		"code" :"27"
+		},
+		{
+		"color" :"#FDE770",
+		"name":"Haplic Cambisols (Calcaric)",
+		"code" :"28"
+		},
+		{
+		"color" :"#FDF770",
+		"name":"Haplic Cambisols (Chromic)",
+		"code" :"29"
+		},
+		{
+		"color" :"#F6CE4B",
+		"name":"Haplic Cambisols (Dystric)",
+		"code" :"30"
+		},
+		{
+		"color" :"#FDE170",
+		"name":"Haplic Cambisols (Eutric)",
+		"code" :"31"
+		},
+		{
+		"color" :"#FDE05F",
+		"name":"Haplic Cambisols (Humic)",
+		"code" :"32"
+		},
+		{
+		"color" :"#FDEB70",
+		"name":"Haplic Cambisols (Sodic)",
+		"code" :"33"
+		},
+		{
+		"color" :"#E5D15C",
+		"name":"Haplic Chernozems",
+		"code" :"37"
+		},
+		{
+		"color" :"#927D9E",
+		"name":"Haplic Cryosols",
+		"code" :"39"
+		},
+		{
+		"color" :"#FC9C4D",
+		"name":"Haplic Ferralsols",
+		"code" :"44"
+		},
+		{
+		"color" :"#E36940",
+		"name":"Haplic Ferralsols (Rhodic)",
+		"code" :"45"
+		},
+		{
+		"color" :"#FC934D",
+		"name":"Haplic Ferralsols (Xanthic)",
+		"code" :"46"
+		},
+		{
+		"color" :"#10A9E9",
+		"name":"Haplic Fluvisols",
+		"code" :"48"
+		},
+		{
+		"color" :"#0FC9E9",
+		"name":"Haplic Fluvisols (Arenic)",
+		"code" :"49"
+		},
+		{
+		"color" :"#0F8BE9",
+		"name":"Haplic Fluvisols (Calcaric)",
+		"code" :"50"
+		},
+		{
+		"color" :"#0F49E9",
+		"name":"Haplic Fluvisols (Dystric)",
+		"code" :"51"
+		},
+		{
+		"color" :"#0F8EE9",
+		"name":"Haplic Fluvisols (Eutric)",
+		"code" :"52"
+		},
+		{
+		"color" :"#A087BF",
+		"name":"Haplic Gleysols",
+		"code" :"54"
+		},
+		{
+		"color" :"#793FBF",
+		"name":"Haplic Gleysols (Dystric)",
+		"code" :"55"
+		},
+		{
+		"color" :"#9E83BF",
+		"name":"Haplic Gleysols (Eutric)",
+		"code" :"56"
+		},
+		{
+		"color" :"#FFF587",
+		"name":"Haplic Gypsisols",
+		"code" :"60"
+		},
+		{
+		"color" :"#D28769",
+		"name":"Haplic Kastanozems",
+		"code" :"67"
+		},
+		{
+		"color" :"#988F98",
+		"name":"Haplic Leptosols",
+		"code" :"68"
+		},
+		{
+		"color" :"#C9C9C9",
+		"name":"Haplic Leptosols (Eutric)",
+		"code" :"69"
+		},
+		{
+		"color" :"#F7C7CA",
+		"name":"Haplic Lixisols",
+		"code" :"73"
+		},
+		{
+		"color" :"#F7B5E9",
+		"name":"Haplic Lixisols (Chromic)",
+		"code" :"74"
+		},
+		{
+		"color" :"#F795B6",
+		"name":"Haplic Lixisols (Ferric)",
+		"code" :"75"
+		},
+		{
+		"color" :"#F99491",
+		"name":"Haplic Luvisols",
+		"code" :"79"
+		},
+		{
+		"color" :"#F9919B",
+		"name":"Haplic Luvisols (Chromic)",
+		"code" :"80"
+		},
+		{
+		"color" :"#F99C92",
+		"name":"Haplic Luvisols (Ferric)",
+		"code" :"81"
+		},
+		{
+		"color" :"#CC7B68",
+		"name":"Haplic Nitisols (Rhodic)",
+		"code" :"86"
+		},
+		{
+		"color" :"#D5EADB",
+		"name":"Haplic Phaeozems",
+		"code" :"87"
+		},
+		{
+		"color" :"#F0966B",
+		"name":"Haplic Planosols (Dystric)",
+		"code" :"91"
+		},
+		{
+		"color" :"#F69C69",
+		"name":"Haplic Planosols (Eutric)",
+		"code" :"92"
+		},
+		{
+		"color" :"#6DAA61",
+		"name":"Haplic Podzols",
+		"code" :"98"
+		},
+		{
+		"color" :"#FDD897",
+		"name":"Haplic Regosols (Dystric)",
+		"code" :"101"
+		},
+		{
+		"color" :"#FDDA9C",
+		"name":"Haplic Regosols (Eutric)",
+		"code" :"102"
+		},
+		{
+		"color" :"#FFD49C",
+		"name":"Haplic Regosols (Sodic)",
+		"code" :"103"
+		},
+		{
+		"color" :"#E05BB4",
+		"name":"Haplic Solonchaks",
+		"code" :"106"
+		},
+		{
+		"color" :"#E05B7F",
+		"name":"Haplic Solonchaks (Sodic)",
+		"code" :"107"
+		},
+		{
+		"color" :"#F8AADE",
+		"name":"Haplic Solonetz",
+		"code" :"110"
+		},
+		{
+		"color" :"#8C7E79",
+		"name":"Haplic Umbrisols",
+		"code" :"113"
+		},
+		{
+		"color" :"#A88E99",
+		"name":"Haplic Vertisols",
+		"code" :"116"
+		},
+		{
+		"color" :"#A85C7D",
+		"name":"Haplic Vertisols (Eutric)",
+		"code" :"117"
+		},
+		{
+		"color" :"#3C5A6A",
+		"name":"Hemic Histosols",
+		"code" :"64"
+		},
+		{
+		"color" :"#FFD372",
+		"name":"Histic Albeluvisols",
+		"code" :"8"
+		},
+		{
+		"color" :"#FEEEC0",
+		"name":"Hypoluvic Arenosols",
+		"code" :"19"
+		},
+		{
+		"color" :"#FDE170",
+		"name":"Leptic Cambisols",
+		"code" :"34"
+		},
+		{
+		"color" :"#F99184",
+		"name":"Leptic Luvisols",
+		"code" :"82"
+		},
+		{
+		"color" :"#B4EADB",
+		"name":"Leptic Phaeozems",
+		"code" :"88"
+		},
+		{
+		"color" :"#FDD58E",
+		"name":"Leptic Regosols",
+		"code" :"104"
+		},
+		{
+		"color" :"#798C83",
+		"name":"Leptic Umbrisols",
+		"code" :"114"
+		},
+		{
+		"color" :"#B4BDB6",
+		"name":"Lithic Leptosols",
+		"code" :"70"
+		},
+		{
+		"color" :"#AB7269",
+		"name":"Lixic Plinthosols",
+		"code" :"96"
+		},
+		{
+		"color" :"#FFFC2B",
+		"name":"Luvic Calcisols",
+		"code" :"23"
+		},
+		{
+		"color" :"#E5D85C",
+		"name":"Luvic Chernozems",
+		"code" :"38"
+		},
+		{
+		"color" :"#C2EADB",
+		"name":"Luvic Phaeozems",
+		"code" :"89"
+		},
+		{
+		"color" :"#D29964",
+		"name":"Luvic Planosols",
+		"code" :"93"
+		},
+		{
+		"color" :"#73C3F4",
+		"name":"Luvic Stagnosols",
+		"code" :"112"
+		},
+		{
+		"color" :"#8759BF",
+		"name":"Mollic Gleysols",
+		"code" :"57"
+		},
+		{
+		"color" :"#9098A3",
+		"name":"Mollic Leptosols",
+		"code" :"71"
+		},
+		{
+		"color" :"#F8DFE6",
+		"name":"Mollic Solonetz",
+		"code" :"111"
+		},
+		{
+		"color" :"#A851A2",
+		"name":"Mollic Vertisols",
+		"code" :"118"
+		},
+		{
+		"color" :"#FFEE2B",
+		"name":"Petric Calcisols",
+		"code" :"24"
+		},
+		{
+		"color" :"#FAEBC6",
+		"name":"Petric Durisols",
+		"code" :"42"
+		},
+		{
+		"color" :"#EC6801",
+		"name":"Plinthic Acrisols",
+		"code" :"5"
+		},
+		{
+		"color" :"#FEF3C0",
+		"name":"Protic Arenosols",
+		"code" :"20"
+		},
+		{
+		"color" :"#A2A2A2",
+		"name":"Rendzic Leptosols",
+		"code" :"72"
+		},
+		{
+		"color" :"#7F807A",
+		"name":"Sapric Histosols",
+		"code" :"65"
+		},
+		{
+		"color" :"#D8955D",
+		"name":"Solodic Planosols",
+		"code" :"94"
+		},
+		{
+		"color" :"#F3B992",
+		"name":"Stagnic Luvisols",
+		"code" :"83"
+		},
+		{
+		"color" :"#7A7C88",
+		"name":"Turbic Cryosols",
+		"code" :"40"
+		},
+		{
+		"color" :"#FFD170",
+		"name":"Umbric Albeluvisols",
+		"code" :"9"
+		},
+		{
+		"color" :"#F59641",
+		"name":"Umbric Ferralsols",
+		"code" :"47"
+		},
+		{
+		"color" :"#936FBF",
+		"name":"Umbric Gleysols",
+		"code" :"58"
+		},
+		{
+		"color" :"#FDDF70",
+		"name":"Vertic Cambisols",
+		"code" :"35"
+		},
+		{
+		"color" :"#F99192",
+		"name":"Vertic Luvisols",
+		"code" :"84"
+		},
+		{
+		"color" :"#EC6806",
+		"name":"Vetic Acrisols",
+		"code" :"6"
+		},
+		{
+		"color" :"#FC5546",
+		"name":"Vitric Andosols",
+		"code" :"14"
+		},
+		{
+		"color" :"#9E8C7D",
+		"name":"Vitric Cryosols",
+		"code" :"41"
+		}
+]
+}
