@@ -36,6 +36,7 @@ public:
     void addModuleInterfaceVersion(const QString& inf);
     const static QString interfaceVersion40;
 	const static QString interfaceVersion41;
+	const static QString interfaceVersion42;
     const static QString IlwisShortName;
     const static QString cacheVersion;
 	const static QString adjustmentVersion;

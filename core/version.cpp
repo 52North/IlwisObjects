@@ -25,6 +25,7 @@ using namespace Ilwis;
 
 const QString Ilwis::Version::interfaceVersion40 = QString("iv40");
 const QString Ilwis::Version::interfaceVersion41 = QString("iv41");
+const QString Ilwis::Version::interfaceVersion42 = QString("iv42");
 const QString Ilwis::Version::cacheVersion = QString("ilwiscache4");
 const QString Ilwis::Version::adjustmentVersion = QString("objadjustments1");
 
