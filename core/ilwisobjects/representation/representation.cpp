@@ -177,8 +177,17 @@ IlwisData<Representation> Representation::defaultRepresentation(const IDomain &d
     } else if ( hasType(dom->ilwisType(), itTEXTDOMAIN) ){
         code = "code=rpr:primarycolors";
     }
-
-    return IRepresentation(code);
+	IRepresentation rpr;
+	auto temp = IRepresentation(code);
+	Resource res = temp->resource();
+	quint64 newId = Identity::newAnonymousId();
+	QString path = INTERNAL_CATALOG + "/" + ANONYMOUS_PREFIX + QString::number(newId);
+	res.setId(newId);
+	res.setUrl(path, false, false);
+	res.setUrl(path, true, false);
+    IRepresentation newRpr =  IRepresentation(res);
+	newRpr->domain(dom);
+	return newRpr;
 }
 
 bool Representation::isValid() const {
