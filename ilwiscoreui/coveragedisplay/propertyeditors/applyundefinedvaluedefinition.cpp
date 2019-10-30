@@ -66,8 +66,8 @@ void ApplyUndefinedValueDefinition::undefinedvalue(double tr)
         return;
 
     vpmodel()->layer()->vproperty("undefinedvalue", tr);
-   // attribute()->layer()->unprepare(Ilwis::Geodrawer::DrawerInterface::ptRENDER);
-   // attribute()->layer()->prepare(Ilwis::Geodrawer::DrawerInterface::ptRENDER, IOOptions());
+	//vpmodel()->layer()->unprepare(LayerModel::ptRENDER);
+	vpmodel()->layer()->vproperty("updatetextures", true);
     vpmodel()->layer()->redraw();
 
 }

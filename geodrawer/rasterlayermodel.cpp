@@ -265,6 +265,8 @@ void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
 		_quadsNeedUpdate = true;
 		requestRedraw();
 		return;
+	}    if( pName == "undefinedvalue") {
+		coverage()->setPseudoUndef(value.toDouble());
 	}
 	CoverageLayerModel::vproperty(pName, value);
 }

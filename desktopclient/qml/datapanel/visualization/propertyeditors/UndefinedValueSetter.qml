@@ -28,6 +28,7 @@ Column {
         onClicked: {
             if ( valueedit.content != ""){
                 var result  = parseFloat(valueedit.content)
+				
                 if (  !isNaN(result)){
                     editor.undefinedvalue = result
                 }
