@@ -877,6 +877,25 @@ QString IlwisObjectModel::valueTypeHuman() const {
 	}
 	return "";
 }
+QString IlwisObjectModel::attributeDomainId(const QString& attrName) const{
+	if (hasType(_ilwisobject->ilwisType(), itRASTER)) {
+		IRasterCoverage raster = _ilwisobject.as<RasterCoverage>();
+		if (raster->hasAttributes()) {
+			int idx = raster->attributeTable()->columnIndex(attrName);
+			if (idx != iUNDEF) {
+				return QString::number(raster->attributeTable()->columndefinitionRef(idx).datadef().domain()->id());
+			}
+		}
+	}
+	else if (hasType(_ilwisobject->ilwisType(), itFEATURE)) {
+		IFeatureCoverage features = _ilwisobject.as<FeatureCoverage>();
+		int idx = features->attributeDefinitionsRef().columnIndex(attrName);
+		if (idx != iUNDEF) {
+			return QString::number(features->attributeDefinitions().columndefinitionRef(idx).datadef().domain()->id());
+		}
+	}
+	return "";
+}
 
 void IlwisObjectModel::setProperty(const QString& propertyname, const QVariantMap& values) {
 	if (!_ilwisobject.isValid())

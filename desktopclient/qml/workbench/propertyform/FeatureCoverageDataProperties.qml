@@ -1,8 +1,9 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.0 as QC1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.0
 import "../../Global.js" as Global
+import "../../controls" as Controls
 
 
 Rectangle {
@@ -14,6 +15,17 @@ Rectangle {
         if ( propertyForm.editable){
         }
     }
+	Controls.ColorPicker2 {
+		property var basey : 0
+		id : picker
+		width :240
+		height : 20
+		visible : false
+
+		Component.onCompleted : {
+			basey = picker.y
+		}
+	}
 
     Text { id : line1; text : qsTr("Polygon features"); width: 100; font.italic: true }
     Text { text : getProperty("polygoncount");  height : 20;width: parent.width - line1.width - 2; anchors.left: line1.right}
@@ -38,40 +50,100 @@ Rectangle {
 
     Rectangle {
         anchors.top : titleText.bottom
-        anchors.bottom : parent.bottom
+       height : 300
         width:parent.width
         clip : true
         border.width: 1
         border.color : Global.edgecolor
-        ListView {
-            id : attributeList
-            anchors.fill: parent
-            anchors.margins: 2
-            model : attributes
-            delegate : Rectangle {
-                id : myd
-                height : attProperties.height
-                width : parent.width
-                color : index  % 2 == 0 ? "#F7F9FC" : "#DCDCDC"
-                Text{
-                    id : attName
-                    text : attributename
-                    font.bold: true
-                    width : parent.width * 0.25
-                 }
-                 Item {
-                     anchors.left: attName.right
-                     width : parent.width * 0.749
-                     AttributeProperties{
-                            id : attProperties
-                            width : parent.width
-                            domainUsed: attributeDomain
-                            valueTypeUsed: attributeValueType
-                            domainTypeUsed: attributeDomainType
-                            columnName : attributename
-                    }
-                }
-            }
-        }
+ 		QC1.TableView {
+			id : itemtable
+			width : parent.width
+			height : 150
+//			selectionMode : SelectionMode.ExtendedSelection
+			model : attributes
+
+			onCurrentRowChanged : {
+					if ( itemtable.currentRow >= 0) {
+						var id = itemtable.model[itemtable.currentRow].representationId
+					
+						if ( id != "" && itemtable.model[itemtable.currentRow].attributeInternalDomainType == "itemdomain") {
+							var obj = mastercatalog.id2object(id,container)
+							itemdom.rpr = obj
+						}else{
+							itemdom.rpr = null
+						}
+					}
+				}
+
+
+			QC1.TableViewColumn{
+				title : qsTr("Attribute");
+				role : "attributename" 
+				width : 100
+				delegate: 	Text {
+					text: styleData.value
+					verticalAlignment:Text.AlignVCenter
+					font.pixelSize: 10
+					elide: Text.ElideMiddle
+					x : 4
+				}
+							
+			}
+			QC1.TableViewColumn{
+				title : qsTr("Used");
+				width : 100
+				role : "attributeDomain"
+				delegate:	Text {
+					text: styleData.value
+					verticalAlignment:Text.AlignVCenter
+					font.pixelSize: 10
+					elide: Text.ElideMiddle
+					x : 4
+
+				}
+			}
+			QC1.TableViewColumn{
+				title : qsTr("ValueType");
+				width : 120
+				role : "attributeValueType"
+				delegate:	Text {
+					text: styleData.value
+					verticalAlignment:Text.AlignVCenter
+					font.pixelSize: 10
+					elide: Text.ElideMiddle
+					x : 4
+				}
+			}
+			QC1.TableViewColumn{
+				title : qsTr("Range");
+				width : 150
+				role : "range"
+				delegate:	Text {
+					text: styleData.value
+					verticalAlignment:Text.AlignVCenter
+					font.pixelSize: 10
+					elide: Text.ElideMiddle
+					x : 4
+				}
+			}
+			rowDelegate: Rectangle {
+				id : rowdelegate
+				height :20
+				color : styleData.selected ? Global.selectedColor : (styleData.alternate? "#eee" : "#fff")
+
+
+				
+			}
+
+		}
+
+		ItemDomainItems {
+			anchors.top : itemtable.bottom
+			anchors.topMargin : 5
+			id : itemdom
+			width : parent.width
+			height : 200
+			visible : rpr != null
+		}
     }
 }

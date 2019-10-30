@@ -106,6 +106,7 @@ public:
 	Q_INVOKABLE QString storeAdjustment(const QString& property, const QString& value);
 	Q_INVOKABLE void addMetaTag(const QString& tag, const QString& value);
 	Q_INVOKABLE QVariantList metaItemTable(const QString& filter);
+	Q_INVOKABLE QString attributeDomainId(const QString& attrName) const;
 
     QString creationDate() const;
     QString modifiedDate() const;

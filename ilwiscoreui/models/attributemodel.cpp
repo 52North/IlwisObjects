@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "feature.h"
 #include "table.h"
 #include "attributemodel.h"
+#include "itemdomain.h"
 #include "ilwistypes.h"
 
 using namespace Ilwis;
@@ -58,6 +59,25 @@ AttributeModel::AttributeModel(const DataDefinition &def, const QString &name, Q
     _owner = owner;
 }
 
+QString AttributeModel::range() const {
+	QString rng;
+	if (_datadef.isValid()) {
+		if (_datadef.domain()->ilwisType() == itNUMERICDOMAIN) {
+			rng = actualRangeDefintion();
+			if (rng == "")
+				rng = defaultRangeDefinition();
+			rng = rng.remove("numericrange:");
+			rng.replace("|", ", ");
+		}
+		else if (_datadef.domain()->ilwisType() == itITEMDOMAIN) {
+			IItemDomain itemdom = _datadef.domain().as< ItemDomain<DomainItem>>();
+			IlwisTypes vt = itemdom->valueType();
+			rng = QString::number(itemdom->count()) + " items";
+		}
+
+	}
+	return rng;
+}
 
 QString AttributeModel::defaultRangeDefinition() const
 {
@@ -126,6 +146,12 @@ QString AttributeModel::attributeValueType() const
     return "";
 }
 
+QString AttributeModel::attributeInternalDomainType() const {
+	if (!_datadef.isValid())
+		return "";
+	quint64 tp = _datadef.domain()->ilwisType();
+	return Ilwis::TypeHelper::type2name(tp);
+}
 QString AttributeModel::attributeDomainType() const
 {
     if ( !_datadef.isValid())
@@ -156,6 +182,12 @@ const DataDefinition &AttributeModel::datadefinition() const
 void AttributeModel::setObject(const Ilwis::IIlwisObject &obj)
 {
     _owner = obj;
+}
+
+QString AttributeModel::representationId() const {
+	if (_datadef.isValid() && _datadef.representation().isValid())
+		return QString::number(_datadef.representation()->id());
+	return "";
 }
 
 QString AttributeModel::icon()

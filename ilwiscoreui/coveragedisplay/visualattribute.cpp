@@ -48,9 +48,9 @@ VisualAttribute::VisualAttribute(LayerModel *layer, const DataDefinition &def, c
     if ( def.isValid()){
         if ( rpr.isValid() && rpr->isCompatible(def.domain()))
             _representation = rpr;
-        else
-            _representation = Representation::defaultRepresentation(def.domain());
-        if (_representation->isSystemObject())
+		else {
+			_representation = def.representation().isValid() ? def.representation() : Representation::defaultRepresentation(def.domain());
+		}if (_representation->isSystemObject())
             _representation = _representation->copyWith(def.domain());
         else
             _representation->domain(def.domain());

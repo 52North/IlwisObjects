@@ -38,9 +38,12 @@ class ILWISCOREUISHARED_EXPORT AttributeModel : public QObject
     Q_PROPERTY(QString attributename READ attributename CONSTANT)
     Q_PROPERTY(QString defaultRangeDefinition READ defaultRangeDefinition CONSTANT)
     Q_PROPERTY(QString actualRangeDefintion READ actualRangeDefintion CONSTANT)
+	Q_PROPERTY(QString range READ range CONSTANT)
     Q_PROPERTY(QString attributeDomain READ attributeDomain CONSTANT)
     Q_PROPERTY(QString attributeValueType READ attributeValueType CONSTANT)
     Q_PROPERTY(QString attributeDomainType READ attributeDomainType CONSTANT)
+	Q_PROPERTY(QString attributeInternalDomainType READ attributeInternalDomainType CONSTANT)
+	Q_PROPERTY(QString representationId READ representationId CONSTANT)
     Q_PROPERTY(QString icon READ icon CONSTANT)
 
 public:
@@ -55,6 +58,7 @@ public:
     QString attributeDomain() const;
     QString attributeValueType() const;
     QString attributeDomainType() const;
+	QString attributeInternalDomainType() const;
     Q_INVOKABLE QStringList attributeValues(bool defaultRange) const;
     Q_INVOKABLE QString rangeDefinition(bool defaultRange, bool calc, const QString&) const;
 
@@ -69,6 +73,9 @@ protected:
     QStringList _attributeValuesDefaultRange;
     QStringList _attributeValuesActualRange;
     IIlwisObject _owner;
+
+	QString range() const;
+	QString representationId() const;
 
 signals:
 
