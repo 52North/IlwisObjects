@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "identifieritem.h"
 #include "thematicitem.h"
 #include "itemrange.h"
+#include "representation.h"
 #include "datadefinition.h"
 
 using namespace Ilwis;
@@ -47,6 +48,7 @@ DataDefinition::DataDefinition(const IDomain &dm, Range *rng)
     domain(dm);
     if ( rng)
         _range.reset(rng);
+	_representation = Representation::defaultRepresentation(domain());
 }
 
 DataDefinition::~DataDefinition()
@@ -61,6 +63,7 @@ DataDefinition &DataDefinition::operator =(const DataDefinition &def)
         _range.reset(def.range()->clone());
     else
         _range.reset(0);
+	_representation = def._representation;
 
     return *this;
 }
@@ -81,6 +84,7 @@ void DataDefinition::domain(const IDomain &dom)
         _range.reset(r->clone());
         _range->clear(); // the range(type) is the same but it may not contain values yet 
     }
+	_representation = Representation::defaultRepresentation(domain());
 
 }
 
@@ -137,6 +141,16 @@ DataDefinition DataDefinition::merge(const DataDefinition &def1, const DataDefin
         }
     }
     return DataDefinition();
+}
+
+void DataDefinition::representation(const IRepresentation& rpr) {
+	if (rpr->domain() == _domain) {
+		_representation = rpr;
+	}
+}
+
+IRepresentation DataDefinition::representation() const {
+	return _representation;
 }
 
 //-----------------------------------------------------------

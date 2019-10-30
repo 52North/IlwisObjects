@@ -21,7 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 
 class Domain;
+class Representation;
 typedef IlwisData<Domain> IDomain;
+typedef IlwisData<Representation> IRepresentation;
 
 class NumericRange;
 typedef QSharedPointer<NumericRange> SPNumericRange;
@@ -128,6 +130,9 @@ public:
      */
     bool isCompatibleWith(const DataDefinition& def) const;
 
+	void representation(const IRepresentation& rpr);
+	IRepresentation representation() const;
+
     /*!
      * Merges 2 DataDefinitions into 1 new DataDefinition<br>
      * if 1 is not valid and the other is, the valid definition will be returned<br>
@@ -140,6 +145,7 @@ public:
 
 protected:
     IDomain _domain;
+	IRepresentation _representation;
     SPRange _range;
 };
 
