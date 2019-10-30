@@ -471,7 +471,7 @@ void Resource::setUrl(const QUrl &url, bool asRaw, bool updateDatabase)
                 if ( ok) { //TODO: other cases than indexes; no example yet so postponed till there is one
                     QString rname = QString("%1_%2").arg(inf.fileName()).arg(index);
                     name(rname, false, updateDatabase);
-                    addContainer(QUrl(url.toString(QUrl::RemoveFragment)), asRaw);
+                    addContainer(QUrl(url.toString(QUrl::RemoveFragment)), asRaw); 
                 }
 
             }
@@ -567,6 +567,7 @@ void Resource::addContainer(const QUrl& url, bool asRaw) {
         }
     }
 	if (asRaw) {
+		_rawContainer = url;
 		int idx = _rawUrl.toString().lastIndexOf("/");
 		if (idx > 0) {
 			QString name = _rawUrl.toString().mid(idx + 1);
