@@ -48,7 +48,7 @@ ConvertAttributeDomain::ConvertAttributeDomain(VisualAttribute *attr) : VisualPr
 bool ConvertAttributeDomain::canUse(const IIlwisObject &obj, const DataDefinition &def) const{
     if ( !def.isValid() || !def.domain().isValid())
         return false;
-    if ( !hasType(def.domain()->ilwisType(), itTEXTDOMAIN | itNUMERICDOMAIN | itITEMDOMAIN))
+    if ( !hasType(def.domain()->ilwisType(), itTEXTDOMAIN | itITEMDOMAIN))
         return false;
     return true;
 }
