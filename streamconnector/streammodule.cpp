@@ -89,7 +89,7 @@ void StreamModule::prepare()
     VersionedDataStreamFactory *versionFactory = new VersionedDataStreamFactory();
     kernel()->addFactory(versionFactory);
 
-	QString supportedVersions = Version::interfaceVersion40 + '|' + Version::interfaceVersion41;
+	QString supportedVersions = Version::interfaceVersion40 + '|' + Version::interfaceVersion41 + '|' + Version::interfaceVersion42;
     versionFactory->addCreator(supportedVersions,itFEATURE,FeatureSerializerV1::create);
     versionFactory->addCreator(supportedVersions,itDOMAIN,DomainSerializerV1::create);
     versionFactory->addCreator(supportedVersions,itTABLE,TableSerializerV1::create);

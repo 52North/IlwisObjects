@@ -568,6 +568,7 @@
     <None Include="desktopclient\qml\workbench\propertyform\IndexedItemDomainProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\IndexItemRange.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\IntervalItemProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\ItemDomainItems.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\ItemDomainProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\NumericDomainProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\OperationProperties.qml" />

@@ -1340,6 +1340,9 @@
     <None Include="desktopclient\qml\workbench\propertyform\RepresentationItemProperties.qml">
       <Filter>Distribution Files\qml\workbench\metadata</Filter>
     </None>
+    <None Include="desktopclient\qml\workbench\propertyform\ItemDomainItems.qml">
+      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

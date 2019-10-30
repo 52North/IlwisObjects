@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "datadefinition.h"
 #include "versioneddatastreamfactory.h"
 #include "ilwisobjectconnector.h"
+#include "representation.h"
 #include "streamconnector.h"
 #include "operationhelper.h"
 
@@ -159,6 +160,12 @@ bool VersionedSerializer::storeDataDefintion(const DataDefinition &def, QDataStr
     if ( !def.range().isNull()) // no range for textdomains
         def.range()->store(_stream);
 
+	std::unique_ptr<DataInterface> rprStreamer(factory->create(Version::interfaceVersion42, itREPRESENTATION, _stream));
+	if (!rprStreamer)
+		return false;
+
+	storeSystemPath(def.representation()->resource());
+	domainStreamer->store(def.representation().ptr(), options);
     return true;
 }
 
@@ -188,6 +195,20 @@ bool VersionedSerializer::loadDataDefinition(DataDefinition &def, QDataStream &s
         range->load(_stream);
     }
     def = DataDefinition(systemDomain.isValid() ? systemDomain : dom,range);
+
+	if (_version != "iv40" && _version != "iv41") {
+		_stream >> url;
+		_stream >> type;
+		_stream >> version;
+		std::unique_ptr<DataInterface> rprStreamer(factory->create(version, itREPRESENTATION, _stream));
+		if (!rprStreamer)
+			return false;
+
+		IRepresentation systemRpr = makeSystemObject<IRepresentation>(url);
+		IRepresentation rpr(type);
+		rprStreamer->loadMetaData(rpr.ptr(), options);
+		def.representation(systemRpr.isValid() ? systemRpr: rpr);
+	}
 
     return true;
 }
