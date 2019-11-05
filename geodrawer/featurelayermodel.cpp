@@ -199,7 +199,7 @@ void Ilwis::Ui::FeatureLayerModel::addAttribute(const Ilwis::FeatureAttributeDef
 	ColumnDefinition coldef = attributes.columndefinition(i);
 	IlwisTypes valueType = coldef.datadef().domain()->valueType();
 	if (hasType(valueType, itNUMBER | itDOMAINITEM | itSTRING | itCOLOR)) {
-		_visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(), coldef.name()));
+		_visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(), coldef.name(), coldef.datadef().representation()));
 		auto editors = uicontext()->propertyEditors(_visualAttributes.back(), _features, coldef.datadef());
 		for (auto editor : editors)
 			_visualAttributes.back()->addVisualPropertyEditor(editor);

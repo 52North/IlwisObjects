@@ -61,7 +61,10 @@ bool RepresentationAttributeFillColor::execute(ExecutionContext *ctx, SymbolTabl
             if ( raw != rUNDEF){
                 rpr->colors()->setColor(raw,_color);
             }
-			_layer->vproperty("updatetextures", true);
+			if ( _layer->layerType() == itRASTERLAYER)
+				_layer->vproperty("updatetextures", true);
+			else
+				_layer->add2ChangedProperties("buffers", true);
         }
     }
     return true;

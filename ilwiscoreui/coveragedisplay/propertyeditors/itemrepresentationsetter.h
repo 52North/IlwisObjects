@@ -35,6 +35,8 @@ public:
     ItemRepresentationSetter();
     ItemRepresentationSetter(VisualAttribute *p);
 
+	Q_INVOKABLE void representationChanged(); // to inform the underlying "owner" of the representation that a change of an element has occured
+
     void prepare(const IIlwisObject &obj, const DataDefinition &coldef);
     bool canUse(const IIlwisObject &obj, const DataDefinition &) const;
     static VisualPropertyEditor *create(VisualAttribute *p);
@@ -42,6 +44,7 @@ public:
     QQmlListProperty<RepresentationElementModel> representationElements();
     void attributesChanged(Raw index, const QVariantMap &values);
      void representationChanged(const IRepresentation& rpr);
+
 
 signals:
     void rprNameChanged();

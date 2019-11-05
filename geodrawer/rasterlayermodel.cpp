@@ -229,7 +229,7 @@ void RasterLayerModel::fillAttributes()
     if ( _raster.isValid()){
         _visualAttributes = QList<VisualAttribute *>();
         _visualAttributes.push_back(new LayerAttributeModel(this,_raster, _raster->datadef()));
-        _visualAttributes.push_back(new VisualAttribute(this, _raster->datadef(),PIXELVALUE));
+        _visualAttributes.push_back(new VisualAttribute(this, _raster->datadef(),PIXELVALUE, _raster->datadef().representation()));
 		activeAttributeName(PIXELVALUE); // default
 		auto editors = uicontext()->propertyEditors(_visualAttributes.back(), _raster, PIXELVALUE);
 
@@ -241,7 +241,7 @@ void RasterLayerModel::fillAttributes()
                 ColumnDefinition coldef = _raster->attributeTable()->columndefinition(i);
                 IlwisTypes valueType = coldef.datadef().domain()->valueType();
                 if ( hasType(valueType, itNUMBER|itDOMAINITEM|itSTRING|itCOLOR)){
-                    _visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(),coldef.name()));
+                    _visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(),coldef.name(), coldef.datadef().representation()));
 					auto editors = uicontext()->propertyEditors(_visualAttributes.back(), _raster, coldef.datadef());
 					for (auto editor : editors)
 						_visualAttributes.back()->addVisualPropertyEditor(editor);

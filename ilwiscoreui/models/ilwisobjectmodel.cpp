@@ -1447,7 +1447,11 @@ void IlwisObjectModel::applyAdjustments(const std::map<QString, QString>& adjust
 
 void IlwisObjectModel::applyAdjustments() {
 	InternalDatabaseConnection db;
-	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=1").arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(resourceRef().ilwisType()));
+	_ilwisobject->applyAdjustments();
+	QString tpName = TypeHelper::type2name(item().ilwisType());
+	if (hasType(item().ilwisType(), itFEATURE)) // itPOLYGON, itLINE, itpOINT are merged
+		tpName = TypeHelper::type2name(itFEATURE);
+	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=1").arg(resourceRef().url(true).toString()).arg(tpName);
 	bool ok = db.exec(query);
 	if (ok) {
 		std::map<QString, QString> adjustments;
@@ -1465,16 +1469,19 @@ void IlwisObjectModel::applyAdjustments() {
 QString IlwisObjectModel::storeAdjustment(const QString& property, const QString& value) {
 	auto changeData = [&](const QString& property, const QString& value)->void {
 		InternalDatabaseConnection db;
+		QString tpName = TypeHelper::type2name(item().ilwisType());
+		if (hasType(item().ilwisType(), itFEATURE)) // itPOLYGON, itLINE, itpOINT are merged
+			tpName = TypeHelper::type2name(itFEATURE);
 		QString stmt = QString("DELETE FROM objectadjustments where objecturl = '%1' and ilwistype='%2' and propertyname='%3' and ismodel=1")
 			.arg(resourceRef().url(true).toString())
-			.arg(TypeHelper::type2name(item().ilwisType())
-				.arg(property));
+			.arg(tpName)
+			.arg(property);
 		if (!db.exec(stmt)) {
 			kernel()->issues()->logSql(db.lastError());
 			return;
 		}
 		stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
-			.arg(property).arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(item().ilwisType())).arg(value).arg(1);
+			.arg(property).arg(resourceRef().url(true).toString()).arg(tpName).arg(value).arg(1);
 		if (!db.exec(stmt)) {
 			kernel()->issues()->logSql(db.lastError());
 			return;

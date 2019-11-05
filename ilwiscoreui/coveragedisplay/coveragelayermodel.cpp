@@ -37,7 +37,10 @@ void Ilwis::Ui::CoverageLayerModel::setActiveAttribute(int idx)
 {
 	if (idx >= 0 && idx < _visualAttributes.size()) {
 		_activeAttribute = _visualAttributes[idx]->attributename();
-		add2ChangedProperties("buffers",true);
+		if (layerType() == itRASTERLAYER)
+			vproperty("updatetextures", true);
+		else
+			add2ChangedProperties("buffers", true);
 		emit activeAttributeChanged();
 	}
 	else

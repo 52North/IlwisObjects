@@ -925,14 +925,17 @@ void IlwisObject::changeData(const Resource& resource, const QString& property, 
 	InternalDatabaseConnection db;
 	QString stmt = QString("DELETE FROM objectadjustments where objecturl = '");
 	stmt += resource.url(true).toString() + "' and ilwistype='";
-	stmt += TypeHelper::type2name(resource.ilwisType()) + "' and propertyname='"; 
+	QString tpName = TypeHelper::type2name(resource.ilwisType());
+	if (hasType(resource.ilwisType(), itFEATURE)) // itPOLYGON, itLINE, itpOINT are merged
+		tpName = TypeHelper::type2name(itFEATURE);
+	stmt += tpName + "' and propertyname='"; 
 	stmt += property + "'  and ismodel=0";
 	if (!db.exec(stmt)) {
 		kernel()->issues()->logSql(db.lastError());
 		return;
 	}
 	stmt = QString("INSERT INTO objectadjustments (propertyname, objecturl, ilwistype, propertyvalue,ismodel) VALUES('%1', '%2', '%3', '%4', %5)")
-		.arg(property).arg(resource.url(true).toString()).arg(TypeHelper::type2name(resource.ilwisType())).arg(value).arg(0);
+		.arg(property).arg(resource.url(true).toString()).arg(tpName).arg(value).arg(0);
 	if (!db.exec(stmt)) {
 		kernel()->issues()->logSql(db.lastError());
 		return;
@@ -968,7 +971,10 @@ void IlwisObject::applyAdjustments(const std::map<QString, QString>& adjustments
 
 void IlwisObject::applyAdjustments() {
 	InternalDatabaseConnection db;
-	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=0").arg(resourceRef().url(true).toString()).arg(TypeHelper::type2name(ilwisType()));
+	QString tpName = TypeHelper::type2name(ilwisType());
+	if (hasType(ilwisType(), itFEATURE)) // itPOLYGON, itLINE, itpOINT are merged
+		tpName = TypeHelper::type2name(itFEATURE);
+	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=0").arg(resourceRef().url(true).toString()).arg(tpName);
 	bool ok = db.exec(query);
 	if (ok) {
 		std::map<QString, QString> adjustments;
@@ -985,9 +991,12 @@ void IlwisObject::applyAdjustments() {
 
 void IlwisObject::updateAdjustementsDatabase(const Resource& oldRes) {
 	InternalDatabaseConnection db;
+	QString tpName = TypeHelper::type2name(oldRes.ilwisType());
+	if (hasType(oldRes.ilwisType(), itFEATURE)) // itPOLYGON, itLINE, itpOINT are merged
+		tpName = TypeHelper::type2name(itFEATURE);
 	QString stmt = QString("Update objectadjustments set objecturl = '%1' where objecturl = '%2' and ilwistype='%3'").
 		arg(resourceRef().url(true).toString()).
 		arg(oldRes.url(true).toString()).
-		arg(TypeHelper::type2name(oldRes.ilwisType()));
+		arg(tpName);
 	db.exec(stmt);
 }

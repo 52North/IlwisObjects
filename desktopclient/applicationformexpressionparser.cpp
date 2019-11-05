@@ -29,14 +29,14 @@ using namespace Ui;
 
 ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                       
 {
-}                                                                                                        
+}                                                                                                              
 
 ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
                                                                                              quint32 index,
                                                                                                const QStringList& choices,
                                                                                               bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{ 
-    FormParameter parm;                                                
-    QString prefix = QString("pin_%1_").arg(index + 1); 
+    FormParameter parm;                                                 
+    QString prefix = QString("pin_%1_").arg(index + 1);  
     FieldType alternateUIType = ftNONE;    
     if ( resource.hasProperty((prefix + "validationcondition"))){
         OperationResource::UIElement elem = (OperationResource::UIElement)resource[prefix + "altUIType"].toInt();

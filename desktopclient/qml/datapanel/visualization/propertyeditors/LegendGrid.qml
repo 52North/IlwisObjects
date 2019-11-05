@@ -13,6 +13,7 @@ Column {
             grid.model[grid.currentIndex].ecolor = clr
             var expr = "attributefillcolor(" + activeLayerManager().viewid +"," + editor.layerIndex + "," + editor.attributeName + "," + grid.model[grid.currentIndex].label + "," + clr +")"
             activeLayerManager().addCommand(expr)
+			editor.representationChanged()
         }
     }
 
@@ -30,6 +31,7 @@ Column {
         x : 14
         y : 4
         visible : grid.currentIndex != -1
+
 
         onSelectedColorChanged: {
             legendGrid.setColor(selectedColor)

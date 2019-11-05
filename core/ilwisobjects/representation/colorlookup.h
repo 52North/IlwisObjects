@@ -35,6 +35,9 @@ public:
     static ColorLookUp *create(const Ilwis::IDomain &dom, const QString &rprCode="");
 	virtual void store(QDataStream& stream) const = 0;
 	virtual void load(QDataStream& stream) = 0;
+	virtual QString definition(const IDomain& dom, bool& hasChanged)  = 0;
+	virtual void fromDefinition(const QString& def, const IDomain& dom = IDomain()) = 0;
+	virtual void reset(const IDomain& dom) = 0;
 protected:
     QColor string2color(const QString &colorstring);
 };

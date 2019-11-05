@@ -115,10 +115,15 @@ void Representation::domain(const IDomain &domain)
 {
     if (isReadOnly())
         return;
+	if (domain == _domain)
+		return;
     changed(true);
     if (!_colors || (!isCompatible(domain) && _domain.isValid())){
         _colors.reset(ColorLookUp::create(domain));
-    }
+	}
+	else if (_colors) {
+		_colors->reset(domain);
+	}
 
     _domain = domain;
 }
