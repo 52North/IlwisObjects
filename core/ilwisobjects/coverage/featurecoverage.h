@@ -219,6 +219,8 @@ private:
 
     Ilwis::FeatureInterface *createNewFeature(IlwisTypes tp);
     void adaptFeatureCounts(int tp, qint32 featureCnt, quint32 level);
+	void storeAdjustment(const QString& property, const QString& value) override;
+	void applyAdjustments(const std::map<QString, QString>& adjustments) override;
 };
 
 typedef IlwisData<FeatureCoverage> IFeatureCoverage;

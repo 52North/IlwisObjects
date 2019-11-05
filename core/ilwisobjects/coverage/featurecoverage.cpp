@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "geos/geom/PrecisionModel.h"
 #include "geos/algorithm/locate/SimplePointInAreaLocator.h"
 #include "geos/geom/Point.h"
+#include "representation.h"
 #ifdef Q_OS_WIN
 #include "geos/geom/PrecisionModel.h"
 #endif
@@ -343,7 +344,7 @@ const FeatureAttributeDefinition& FeatureCoverage::attributeDefinitions(qint32 l
 
 IlwisTypes FeatureCoverage::ilwisType() const
 {
-    return itFEATURE;
+	return itFEATURE;
 }
 
 FeatureCoverage *FeatureCoverage::clone()
@@ -429,4 +430,39 @@ IlwisTypes FeatureCoverage::geometryType(const geos::geom::Geometry *geom){
 
 const UPGeomFactory& FeatureCoverage::geomfactory() const{
     return _geomfactory;
+}
+
+void FeatureCoverage::storeAdjustment(const QString& property, const QString& value) {
+	Coverage::storeAdjustment(property, value);
+	if (property.indexOf("representation|" == 0)) {
+		auto parts = property.split("|");
+		if (parts.size() == 2) {
+			DataDefinition def = attributeDefinitions().columndefinition(parts[1]).datadef();
+			if (def.isValid()) {
+				bool hasChanged;
+				QString sdef = def.representation()->colors()->definition(def.domain(), hasChanged);
+				if (hasChanged)
+					changeData(resourceRef(), property, sdef);
+			}
+		}
+	}
+}
+
+void FeatureCoverage::applyAdjustments(const std::map<QString, QString>& adjustments) {
+	Coverage::applyAdjustments(adjustments);
+	for (auto item : adjustments) {
+		QString key = item.first;
+		QString value = item.second;
+		if (key.indexOf("representation|") == 0) {
+			auto parts = key.split("|");
+			if (parts.size() == 2) {
+				QString attr = parts[1];
+				int idx = attributeDefinitionsRef().columnIndex(attr);
+				if (idx != iUNDEF) {
+					ColumnDefinition& def = attributeDefinitionsRef().columndefinitionRef(idx);
+					def.datadef().representation()->colors()->fromDefinition(item.second, def.datadef().domain());
+				}
+			}
+		}
+	}
 }
