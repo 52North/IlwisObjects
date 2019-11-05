@@ -489,7 +489,11 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
     double screenPixelsX1 = sqrt(sqr(win3.x-win2.x)+sqr(win3.y-win2.y));
     double screenPixelsY2 = sqrt(sqr(win4.x-win3.x)+sqr(win4.y-win3.y));
     double screenPixelsX2 = sqrt(sqr(win1.x-win4.x)+sqr(win1.y-win4.y));
-    double zoom = min(imageSizeX/screenPixelsX1, min(imageSizeX/screenPixelsX2, min(imageSizeY/screenPixelsY1, imageSizeY/screenPixelsY2)));
+
+    unsigned int rectSizeX = min(_imageWidth - imageOffsetX, imageSizeX);
+    unsigned int rectSizeY = min(_imageHeight - imageOffsetY, imageSizeY);
+
+    double zoom = min(rectSizeX/screenPixelsX1, min(rectSizeX/screenPixelsX2, min(rectSizeY/screenPixelsY1, rectSizeY/screenPixelsY2)));
     // the minimum zoomout-factor, indicating that it is necessary to plot the patch more accurately
 
     double log2zoom = log(zoom)/log(2.0);
