@@ -382,6 +382,10 @@ private:
 };
 
 template<class T> bool operator==(const IlwisData<T>& d1, const IlwisData<T>& d2) {
+	if (!d1.isValid())
+		return false;
+	if (!d2.isValid())
+		return false;
     return d1->id() == d2->id();
 }
 
