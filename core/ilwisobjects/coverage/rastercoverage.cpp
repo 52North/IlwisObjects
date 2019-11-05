@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "itemdomain.h"
 #include "domainitem.h"
 #include "operationhelpergrid.h"
+#include "representation.h"
 #include "interval.h"
 #include "itemiterator.h"
 
@@ -878,15 +879,50 @@ void RasterCoverage::storeAdjustment(const QString& property, const QString& val
 	if (property == "georeference") {
 		changeData(resourceRef(), property, value);
 	}
+	if (property == "representation") {
+		bool hasChanged;
+		QString def = datadef().representation()->colors()->definition(datadef().domain(), hasChanged);
+		if ( hasChanged)
+			changeData(resourceRef(), property, def);
+	}
+	if (property.indexOf("representation|" == 0)) {
+		auto parts = property.split("|");
+		if (parts.size() == 2) {
+			const DataDefinition& def = attributeTable()->columndefinitionRef(parts[1]).datadef();
+			if (def.isValid()) {
+				bool hasChanged;
+				QString sdef = def.representation()->colors()->definition(def.domain(), hasChanged);
+				if (hasChanged)
+					changeData(resourceRef(), property, sdef);
+			}
+		}
+	}
 }
 
 void RasterCoverage::applyAdjustments(const std::map<QString, QString>& adjustments) {
 	Coverage::applyAdjustments(adjustments);
-	auto iter = adjustments.find("georeference");
-	if (iter != adjustments.end()) {
-		IGeoReference grf;
-		if (grf.prepare((*iter).second)) {
-			georeference(grf);
+  for (auto item : adjustments) {
+		QString key = item.first;
+		QString value = item.second;
+		if (key == "georeference") {
+			IGeoReference grf;
+			if (grf.prepare(value)) {
+				georeference(grf);
+			}
+		}
+		else if (key == "representation") {
+			datadef().representation()->colors()->fromDefinition(value, datadef().domain());
+		} 
+		else if (key.indexOf("representation|") == 0) {
+			auto parts = key.split("|");
+			if (parts.size() == 2) {
+				QString attr = parts[1];
+				int idx = attributeTable()->columnIndex(attr);
+				if (idx != iUNDEF) {
+					ColumnDefinition& def = attributeTable()->columndefinitionRef(idx);
+					def.datadef().representation()->colors()->fromDefinition(item.second, def.datadef().domain());
+				}
+			}
 		}
 	}
 }
