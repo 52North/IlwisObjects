@@ -44,6 +44,7 @@ public:
         ColorLookUp *clone() const;
 		void store(QDataStream& stream) const override;
 		void load(QDataStream& stream) override;
+		QString definition(const IDomain& dom, bool& hasChanged)  override;
 
 private:
 
@@ -54,7 +55,8 @@ private:
         bool _linear = true;
 		bool _relative = true;
 
-        void fromDefinition(const QString& def);
+		void fromDefinition(const QString& def, const IDomain& dom = IDomain()); 
+		void reset(const IDomain& dom);
 
 };
 }

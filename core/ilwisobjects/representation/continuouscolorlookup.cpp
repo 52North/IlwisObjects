@@ -153,7 +153,6 @@ void ContinuousColorLookup::load(QDataStream& stream) {
 	stream >> n;
 	_groups.resize(n);
 	for (auto& vr : _groups) {
-		ValueRange vr;
 		stream >> vr._first;
 		stream >> vr._last;
 		stream >> vr._reversed;
@@ -170,7 +169,15 @@ void ContinuousColorLookup::load(QDataStream& stream) {
 	stream >> _relative;
 }
 
-void ContinuousColorLookup::fromDefinition(const QString &definition)
+QString ContinuousColorLookup::definition(const IDomain& dom, bool& hasChanged)  {
+	hasChanged = false;
+	return "";
+}
+
+void ContinuousColorLookup::reset(const IDomain& dom) {
+}
+
+void ContinuousColorLookup::fromDefinition(const QString &definition, const IDomain&)
 {
     QStringList parts = definition.split(";");
     for( QString group : parts){
