@@ -39,8 +39,9 @@ PaletteColorLookUp::PaletteColorLookUp(){
 
 }
 
-PaletteColorLookUp::PaletteColorLookUp(const QString &definition){
-    fromDefinition(definition);
+PaletteColorLookUp::PaletteColorLookUp(const QString &def){
+    fromDefinition(def);
+	_definition = def;
 }
 
 PaletteColorLookUp::PaletteColorLookUp(const IDomain &dom, const QString &rprCode)
@@ -64,7 +65,7 @@ PaletteColorLookUp::PaletteColorLookUp(boost::container::flat_map<quint32, QColo
 
 QColor PaletteColorLookUp::value2color(double index, const NumericRange &, const NumericRange &) const
 {
-    if (index != iUNDEF) {
+    if (index != iUNDEF && _colors.size() > 0) {
         int localIndex = index;
         if (_cyclic) {
             localIndex = localIndex % _colors.size();
@@ -79,6 +80,29 @@ QColor PaletteColorLookUp::value2color(double index, const NumericRange &, const
     return QColor();
 }
 
+QString PaletteColorLookUp::definition(const IDomain& dom, bool& hasChanged)  {
+	QString result;
+	if (dom.isValid() && _colors.size() > 0) {
+		if (hasType(dom->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM)) {
+			IItemDomain itemdom = dom.as<ItemDomain<DomainItem>>();
+			for (auto item : itemdom) {
+				QString clr = _colors.at(item->raw()).name(QColor::HexArgb);
+				if (result != "")
+					result += "|";
+				result += clr;
+
+			}
+		}
+	}
+	hasChanged = result != _definition;
+	if (hasChanged)
+		_definition = result;
+	return result;
+}
+
+void PaletteColorLookUp::reset(const IDomain& dom) {
+	fromDefinition(_definition, dom);
+}
 void PaletteColorLookUp::fromDefinition(const QString &definition, const IDomain& dom){
     QStringList parts = definition.split("|");
     if ( dom.isValid()){
@@ -87,19 +111,21 @@ void PaletteColorLookUp::fromDefinition(const QString &definition, const IDomain
             int index = 0;
             for(auto item : itemdom){
                 QString part = parts[index % parts.size()];
-                _colors[(quint32)item->raw()] = string2color(part);
+				QColor clr = string2color(part);
+                _colors[(quint32)item->raw()] = clr;
                 ++index;
             }
+			_definition = definition;
             return;
         }
     }
-    int index = 0;
+   // int index = 0;
     _cyclic = true;
-    for( QString part : parts){
+ /*  for( QString part : parts){
         QColor color = string2color(part);
         _colors[index - 1] = color;
         ++index;
-    }
+    }*/
 }
 
 void PaletteColorLookUp::store(QDataStream& stream) const {
