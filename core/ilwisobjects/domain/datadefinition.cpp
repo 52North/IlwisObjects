@@ -144,7 +144,7 @@ DataDefinition DataDefinition::merge(const DataDefinition &def1, const DataDefin
 }
 
 void DataDefinition::representation(const IRepresentation& rpr) {
-	if (rpr->domain() == _domain) {
+	if (rpr->domain()->isCompatibleWith(_domain.ptr())) {
 		_representation = rpr;
 	}
 }
