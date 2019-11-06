@@ -111,7 +111,7 @@ void ItemRepresentationSetter::representationChanged(const IRepresentation& rpr)
 void ItemRepresentationSetter::representationChanged() {
 	ICoverage cov = coverage();
 	if (cov.isValid()) {
-		cov->storeAdjustment("representation|" + attributeName(), "dummy");  // the value can be retrieved more efficiently at the implementation of the virtual function
+		cov->storeAdjustment("representation|" + attributeName(), sUNDEF);  // the value can be retrieved more efficiently at the implementation of the virtual function
 	}
 }
 
