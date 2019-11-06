@@ -891,7 +891,7 @@ void RasterCoverage::storeAdjustment(const QString& property, const QString& val
 			const DataDefinition& def = attributeTable()->columndefinitionRef(parts[1]).datadef();
 			if (def.isValid()) {
 				bool hasChanged;
-				QString sdef = def.representation()->colors()->definition(def.domain(), hasChanged);
+				QString sdef = value != sUNDEF ? value : def.representation()->colors()->definition(def.domain(), hasChanged);
 				if (hasChanged)
 					changeData(resourceRef(), property, sdef);
 			}
@@ -924,6 +924,14 @@ void RasterCoverage::applyAdjustments(const std::map<QString, QString>& adjustme
 				}
 			}
 		}
+	}
+}
+
+void RasterCoverage::setRepresentation(const QString& atr, const IRepresentation& rpr) {
+	int idx = attributeTable()->columnIndex(atr);
+	if (idx != iUNDEF) {
+		auto& def = attributeTable()->columndefinitionRef(idx).datadef();
+		def.representation(rpr);
 	}
 }
 

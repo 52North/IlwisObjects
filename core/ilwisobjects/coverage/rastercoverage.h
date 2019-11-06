@@ -229,7 +229,7 @@ public:
     NumericRange calcMinMax(bool force=false) const;
 	bool prepare(const IOOptions& options = IOOptions());
 	void storeAdjustment(const QString& property, const QString& value) override;
-
+	void setRepresentation(const QString& atr, const IRepresentation& rpr) override;
 
 protected:
 

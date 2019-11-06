@@ -466,3 +466,10 @@ void FeatureCoverage::applyAdjustments(const std::map<QString, QString>& adjustm
 		}
 	}
 }
+
+void FeatureCoverage::setRepresentation(const QString& atr, const IRepresentation& rpr) {
+	int idx = attributeDefinitionsRef().columnIndex(atr);
+	if (idx != iUNDEF) {
+		attributeDefinitionsRef().columndefinitionRef(idx).datadef().representation(rpr);
+	}
+}

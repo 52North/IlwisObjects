@@ -36,9 +36,11 @@ namespace Ilwis {
 
 class Table;
 class ItemRange;
+class Representation;
 
 
 typedef IlwisData<Table> ITable;
+typedef IlwisData<Representation> IRepresentation;
 /*!
  * \brief The Coverage class
  *
@@ -142,6 +144,7 @@ public:
 
     bool prepare(const IOOptions& options=IOOptions());
 	void storeAdjustment(const QString& property, const QString& value) override;
+	virtual void setRepresentation(const QString& atr, const IRepresentation& rpr) = 0;
 protected:
     void copyTo(IlwisObject *obj) ;
 	void applyAdjustments(const std::map<QString, QString>& adjustments) override;
