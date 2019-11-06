@@ -262,7 +262,12 @@ QString ObjectCreator::createTimeDomain(const QVariantMap &parms)
 
 QString ObjectCreator::createBoundsOnlyCoordinateSystem(const QVariantMap &parms){
     QString expression;
-	QString v = OperationHelper::quote(parms["name"].toString());
+	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A csy must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
+	QString v = OperationHelper::quote(name);
     expression = QString("script %1{format(stream,\"coordinatesystem\")}=createboundsonlycsy(%2,%3,%4,%5,\"%6\")").arg(v)
             .arg(parms["minx"].toDouble())
             .arg(parms["miny"].toDouble())
@@ -382,7 +387,13 @@ QString ObjectCreator::createProjectedCoordinateSystemFromBase(const QVariantMap
             kvps  += p + "= " + currentParms[currentIndex++].toString();
         }
     }
-	QString v = OperationHelper::quote(parms["name"].toString());
+	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A feature coordinate system must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
+	name = OperationHelper::quote(name);
+	QString v = OperationHelper::quote(name);
     expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\",\"%3\",\"%4\"").
             arg(v).
             arg(proj).
@@ -423,7 +434,11 @@ QString ObjectCreator::createWorkflow(const QVariantMap &parms)
 {
     IWorkflow wf;
     wf.prepare();
-    QString name = parms["name"].toString();
+	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A workflow must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
     wf->resourceRef().name(name,false,false);
     wf->resourceRef().setUrl(QUrl("ilwis://operations/" + name + ".ilwis"));
     wf->resourceRef().setUrl(parms["url"].toString(), true);
@@ -556,7 +571,11 @@ QString ObjectCreator::createScript(const QVariantMap &parms)
 {
     Ilwis::IScript script;
     script.prepare();
-    QString name = parms["name"].toString();
+	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A feature script must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
     script->name(name);
     QString url = parms["url"].toString();
     if ( url.indexOf(".py") == -1){
@@ -626,17 +645,19 @@ QString ObjectCreator::createModel(const QVariantMap &parms){
 }
 
 QString ObjectCreator::createTable(const QVariantMap &parms) {
-        QString name = parms["name"].toString();
-        if (name == "")
-            return sUNDEF;
+	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A feature table must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
 
-        QString expr = "createtable('" + parms["columns"].toString() + "')";
-		name = OperationHelper::quote(name);
-        QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
-        expr = output + expr;
-        executeoperation(expr);
+    QString expr = "createtable('" + parms["columns"].toString() + "')";
+	name = OperationHelper::quote(name);
+    QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
+    expr = output + expr;
+    executeoperation(expr);
 
-        return sUNDEF;
+    return sUNDEF;
 
 }
 QString ObjectCreator::createSupervisedClassification(const QVariantMap &parms) {
@@ -644,6 +665,10 @@ QString ObjectCreator::createSupervisedClassification(const QVariantMap &parms) 
 	IModel model;
 	model.prepare();
 	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A feature coverage must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
 	model->resourceRef().name(name, false, false);
 	QString url = parms["url"].toString();
 	if (url.indexOf(".ilwis") == -1)
@@ -681,9 +706,11 @@ QString ObjectCreator::createSupervisedClassification(const QVariantMap &parms) 
 
 QString ObjectCreator::createChart(const QVariantMap &parms) {
 
-    QString name = parms["name"].toString();
-    if (name == "")
-        return sUNDEF;
+	QString name = parms["name"].toString();
+	if (name == "") {
+		kernel()->issues()->log(TR("A feature chart must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
     QString url = parms["url"].toString();
     QString ctype = parms["ctype"].toString();
     QString xaxis = parms["xaxis"].toString();
@@ -772,8 +799,10 @@ QObject *ObjectCreator::createModellerObject(const QVariantMap &parms, QObject *
 
 QString ObjectCreator::createFeatureCoverage(const QVariantMap& parms) {
 	QString name = parms["name"].toString();
-	if (name == "")
+	if (name == "") {
+		kernel()->issues()->log(TR("A feature coverage must have a name"), IssueObject::itWarning);
 		return sUNDEF;
+	}
 	name = OperationHelper::quote(name);
 
 	QString expr = "createfeaturecoverage(";
@@ -799,8 +828,10 @@ QString ObjectCreator::createFeatureCoverage(const QVariantMap& parms) {
 
 QString ObjectCreator::createRasterCoverage(const QVariantMap& parms){
     QString name = parms["name"].toString();
-    if ( name == "")
-        return sUNDEF;
+	if (name == "") {
+		kernel()->issues()->log(TR("A raster must have a name"), IssueObject::itWarning);
+		return sUNDEF;
+	}
     name = OperationHelper::quote(name);
 	QString dom = parms["domain"].toString();
 	QString stDom = parms["stackdomain"].toString();
@@ -874,10 +905,19 @@ ControlPointsListModel *ObjectCreator::createControlPointsList(const QVariantMap
 QString ObjectCreator::createRepresentation(const QVariantMap& parms) {
 	try {
 		QString type = parms["valuetype"].toString();
+		QString name = parms["name"].toString();
+		if (name == "") {
+			kernel()->issues()->log(TR("A representation must have a name"), IssueObject::itWarning);
+			return sUNDEF;
+		}
+
+		if (name.indexOf(".ilwis") == -1)
+			name += ".ilwis";
+		name = OperationHelper::quote(name);
 		QString expression;
 		if (type == "item") {
 			expression = QString("script %1{format(stream,\"representation\")}=createitemrepresentation(\"%2\",\"%3\"")
-				.arg(parms["name"].toString())
+				.arg(name)
 				.arg(parms["domain"].toString())
 				.arg(parms["items"].toString());
 			expression += ")";
