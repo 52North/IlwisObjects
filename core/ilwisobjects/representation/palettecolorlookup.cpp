@@ -133,6 +133,7 @@ void PaletteColorLookUp::store(QDataStream& stream) const {
 	for (auto item : _colors) {
 		stream << item.first;
 		stream << item.second;
+		stream << _definition;
 	}
 	stream << _cyclic;
 }
@@ -146,6 +147,7 @@ void PaletteColorLookUp::load(QDataStream& stream) {
 		QColor clr;
 		stream >> raw;
 		stream >> clr;
+		stream >> _definition;
 		_colors[raw] = clr;
 	}
 	stream >> _cyclic;
@@ -155,10 +157,15 @@ ColorLookUp *PaletteColorLookUp::clone() const{
     PaletteColorLookUp *newpalette = new PaletteColorLookUp();
     newpalette->_colors = _colors;
     newpalette->_cyclic = _cyclic;
+	newpalette->_definition = _definition;
     return newpalette;
 }
 
 void PaletteColorLookUp::setColor(double value, const QColor &clr)
 {
     _colors[(quint32)value] = clr;
+}
+
+QString PaletteColorLookUp::definition() const {
+	return _definition;
 }

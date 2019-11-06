@@ -45,6 +45,7 @@ public:
 		void store(QDataStream& stream) const override;
 		void load(QDataStream& stream) override;
 		QString definition(const IDomain& dom, bool& hasChanged)  override;
+		QString definition() const override;
 
 private:
 

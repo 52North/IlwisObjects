@@ -218,3 +218,7 @@ void ContinuousColorLookup::fromDefinition(const QString &definition, const IDom
     }
 
 }
+
+QString ContinuousColorLookup::definition() const {
+	return sUNDEF;
+}
