@@ -58,8 +58,11 @@ bool CreateItemRepresentation::execute(ExecutionContext *ctx, SymbolTable &symTa
 	}
 	IRepresentation rpr;
 	rpr.prepare();
-	rpr->colors(lookup);
 	rpr->domain(_baseDomain);
+	rpr->colors(lookup);
+	bool dummy;
+	rpr->colors()->definition(_baseDomain, dummy);
+
 
 	value.setValue<IRepresentation>(rpr);
 	logOperation(rpr, _expression);
