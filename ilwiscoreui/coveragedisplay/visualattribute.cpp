@@ -28,6 +28,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "models/uicontextmodel.h"
 #include "visualpropertyeditor.h"
 #include "containerstatistics.h"
+#include "coveragelayermodel.h"
+#include "raster.h"
+#include "featurecoverage.h"
+#include "table.h"
 #include "visualattribute.h"
 
 using namespace Ilwis;
@@ -88,10 +92,28 @@ void VisualAttribute::representation(const IRepresentation &rpr)
     if ( !datadefinition().domain().isValid() || !rpr.isValid())
         return;
     if ( rpr->isCompatible(datadefinition().domain())){
-        _representation = rpr;
+       // _representation = rpr;
+		auto *rprClone = rpr->clone();
+		QString path = INTERNAL_CATALOG + "/" + ANONYMOUS_PREFIX + QString::number(rprClone->id());
+		Resource& res = rprClone->resourceRef();
+		res.setUrl(path, false, false);
+		res.setUrl(path, true, false);
+		_representation.set(static_cast<Representation *>(rprClone));
+		if (_layer->isCoverageBased()) {
+			CoverageLayerModel *cl = static_cast<CoverageLayerModel *>(_layer);
+			ICoverage cov = cl->coverage();
+			if (cov.isValid()) {
+				cov->storeAdjustment("representation|" + attributename(), _representation->colors()->definition());  // the value can be retrieved more efficiently at the implementation of the virtual function
+				cov->setRepresentation(attributename(), _representation);
+			}
+		}
         for (VisualPropertyEditor *editor : _vproperties) {
             editor->representationChanged(rpr);
         }
+		if (_layer->layerType() == itRASTERLAYER)
+			_layer->vproperty("updatetextures", true);
+		else
+			_layer->add2ChangedProperties("buffers", true);
     }
 }
 
