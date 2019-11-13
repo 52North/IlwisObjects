@@ -48,7 +48,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "combinationmatrix.h"
 #include "abstractfactory.h"
 #include "tranquilizerfactory.h"
+#include "numericrange.h"
+#include "numericdomain.h"
 #include "representationelementmodel.h"
+#include "continuouscolorlookup.h"
 #include "modelregistry.h"
 #include <QSQLField>
 #include "script.h"
@@ -429,6 +432,15 @@ QQmlListProperty<Ilwis::Ui::RepresentationElementModel> IlwisObjectModel::rprite
 					if (_rprItems.size() > 0)
 						return QQmlListProperty<RepresentationElementModel>(this, _rprItems);
 				}
+			}
+			if (hasType(rpr->domain()->ilwisType(), itNUMERICDOMAIN)) {
+				ContinuousColorLookup *crng = static_cast<ContinuousColorLookup *>(rpr->colors().get());
+				NumericRange numrange = crng->numericRange();
+
+				RepresentationElementModel::createNumericElementsList(numrange, this, _rprItems);
+
+				if (_rprItems.size() > 0)
+					return QQmlListProperty<RepresentationElementModel>(this, _rprItems);
 			}
 		}
 	}
@@ -935,6 +947,17 @@ void IlwisObjectModel::setProperty(const QString& propertyname, const QVariantMa
 			}
 		}
 	}
+	if (propertyname == "representationvalue") {
+		if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+			IRepresentation rpr = _ilwisobject.as<Representation>();
+			IlwisTypes tp = rpr->domain()->ilwisType();
+			if (hasType(tp, itNUMERICDOMAIN)) {
+				if ( values.contains("definition"))
+					rpr->colors()->fromDefinition(values["definition"].toString());
+			}
+		}
+
+	}
 }
 
 QString IlwisObjectModel::getProperty(const QString &propertyname) const
@@ -1161,7 +1184,44 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
 					return QString("%1|%2|%3").arg(nrange->min()).arg(nrange->max()).arg(nrange->resolution());
 				}
 			}
+			else if (hasType(_ilwisobject->ilwisType(), itNUMERICDOMAIN)) {
+				IDomain d = _ilwisobject.as<Domain>();
+				auto rng = d->range()->as<NumericRange>();
+				return QString("%1|%2|%3").arg(rng->min()).arg(rng->max()).arg(rng->resolution());
+			}
+			else if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+				IRepresentation rpr = _ilwisobject.as<Representation>();
+				if (rpr->domain()->ilwisType() == itNUMERICDOMAIN) {
+					IDomain d = rpr->domain().as<Domain>();
+					auto rng = d->range()->as<NumericRange>();
+					return QString("%1|%2|%3").arg(rng->min()).arg(rng->max()).arg(rng->resolution());
+				}
+			}
 			return sUNDEF;
+		}
+		if (propertyname == "relative") {
+			if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+				IRepresentation rpr = _ilwisobject.as<Representation>();
+				if (rpr->domain()->ilwisType() == itNUMERICDOMAIN) {
+					const ContinuousColorLookup *lookup = static_cast<const ContinuousColorLookup *>( rpr->colors().get());
+					return lookup->relative() ? "true" : "false";
+				}
+			}
+		}
+		if (propertyname == "steps") {
+			if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+				IRepresentation rpr = _ilwisobject.as<Representation>();
+				if (rpr->domain()->ilwisType() == itNUMERICDOMAIN) {
+					const ContinuousColorLookup *lookup = static_cast<const ContinuousColorLookup *>(rpr->colors().get());
+					return QString::number(lookup->steps());
+				}
+			}
+		}
+		if (propertyname == "definition") {
+			if (hasType(_ilwisobject->ilwisType(), itREPRESENTATION)) {
+				IRepresentation rpr = _ilwisobject.as<Representation>();
+				return rpr->colors()->definition();
+			}
 		}
         return "";
     } catch(const ErrorObject& ){
