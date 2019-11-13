@@ -951,7 +951,22 @@ void UIContextModel::setClipBoardData(const QVariantList& data, const QString& t
 	clipboard->setText(txt);
 }
 
-
+QStringList UIContextModel::roundedList(double rmin, double rmax, double st) const{
+	NumericRange roundedRange = MathHelper::roundRange(rmin, rmax);
+	double tickValue = roundedRange.min();
+	double dist = 0;
+	double step = roundedRange.resolution();
+	QStringList outList;
+	while (tickValue <= rmax) {
+		outList.push_back(QString::number(tickValue));
+		tickValue += step;
+		dist += step;
+	}
+	if ((tickValue - roundedRange.resolution()) != rmax) {
+		outList.push_back(QString::number(rmax));
+	}
+	return outList;
+}
 
 
 
