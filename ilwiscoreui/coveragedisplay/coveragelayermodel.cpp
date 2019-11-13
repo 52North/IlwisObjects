@@ -199,9 +199,6 @@ QColor CoverageLayerModel::color(const IRepresentation &rpr, const QString& prop
 
         if ( cvm ==LayerModel::cvmFRACTION){
             NumericRange numrange = attr->actualRange();
-            //if ( !numrange.isValid()){
-            //    numrange = attr->actualRange();
-            //}
             value = numrange.min() + numrange.distance() * value;
 
         }
