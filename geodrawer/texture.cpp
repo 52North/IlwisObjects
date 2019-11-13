@@ -35,7 +35,7 @@ Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & ra
 , sizeX(sizeX)
 , sizeY(sizeY)
 , zoomFactor(zoomFactor)
-, iPaletteSize(iPaletteSize)
+, iPaletteSize(iPaletteSize) 
 , valid(false)
 , dirty(false)
 , domain(raster->datadef().domain()->ilwisType())

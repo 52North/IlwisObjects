@@ -92,7 +92,6 @@ Column {
 										start = first
 										end = idx
 									}
-									console.debug("pppp", first, idx, start, end)
 									for(var i=0; i < grid.model.length; ++i){
 										temp[i].selected = i >= start && i <=end 
 									}

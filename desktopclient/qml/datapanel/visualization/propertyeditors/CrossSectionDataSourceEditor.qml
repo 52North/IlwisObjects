@@ -83,7 +83,6 @@ TableView {
 				minv.visible = false
 				maxv.visible = false
 			    var obj = mastercatalog.id2object(drag.source.ilwisobjectid, dropArea)
-				console.debug("zzzzz", obj.internalValuetype)
 				if(obj.internalValuetype == "numericinterval"){
 					minv.visible = true
 					maxv.visible = true

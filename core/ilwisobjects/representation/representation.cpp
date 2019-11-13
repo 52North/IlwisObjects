@@ -174,10 +174,14 @@ void Representation::copyTo(IlwisObject *obj) {
 
 IlwisData<Representation> Representation::defaultRepresentation(const IDomain &dom)
 {
-    QString code("code=rpr:monochromeblack"); // default
-    if ( hasType(dom->ilwisType(), itNUMERICDOMAIN)){
-          code = "code=rpr:greyscale";
-    }else if ( hasType(dom->ilwisType(), itITEMDOMAIN )){
+	NumericRange *numrange = dom->range()->as<NumericRange>();
+	QString code("code=rpr:monochromeblack"); // default
+	if (hasType(dom->ilwisType(), itNUMERICDOMAIN)) {
+		if (numrange->resolution() == 1)
+			code = "code=rpr:greyscale";
+		else
+			code = "code=rpr:pseudo2";
+	}else if ( hasType(dom->ilwisType(), itITEMDOMAIN )){
         code = "code=rpr:primarycolors";
     } else if ( hasType(dom->ilwisType(), itTEXTDOMAIN) ){
         code = "code=rpr:primarycolors";

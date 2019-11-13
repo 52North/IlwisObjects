@@ -76,29 +76,29 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
 		value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1 
 	else
 		value = min(actualRange.max(), max(actualRange.min(), (value - actualRange.min()))); // scale it between 0..1
-    for(int i = 0; i < _groups.size(); ++i){
-		double delta = std::abs(_groups[i]._last - _groups[i]._first);
+    for(int i = 0; i < _colorranges.size(); ++i){
+		double delta = std::abs(_colorranges[i].first._last - _colorranges[i].first._first);
 		double position = 0;
-		if (_groups[i]._reversed) {
-			if (value < _groups[i]._first && value >= _groups[i]._last) { 
+		if (_colorranges[i].first._reversed) {
+			if (value < _colorranges[i].first._first && value >= _colorranges[i].first._last) {
 				
 				if (_step == 0) {
-					position = (value - _groups[i]._last) / delta;
+					position = (value - _colorranges[i].first._last) / delta;
 				}
 				else
-					position = ((quint32)(value - _groups[i]._last) / _step) / ((quint32)(delta / _step));
+					position = ((quint32)(value - _colorranges[i].first._last) / _step) / ((quint32)(delta / _step));
 
 				position = 1.0 - position;
-				return ContinuousColorRange::valueAt(position, &_colorranges[i]);
+				return ContinuousColorRange::valueAt(position, &_colorranges[i].second);
 			}
-		} else if (value <= _groups[i]._last) {
+		} else if (value <= _colorranges[i].first._last) {
             double position = 0;
             if ( _step == 0){
-                position = (value - _groups[i]._first)/ delta;
+                position = (value - _colorranges[i].first._first)/ delta;
             }else
-                position = ((quint32)(value - _groups[i]._first)/ _step)/( (quint32)(delta / _step));
+                position = ((quint32)(value - _colorranges[i].first._first)/ _step)/( (quint32)(delta / _step));
 
-            return ContinuousColorRange::valueAt(position,&_colorranges[i]);
+            return ContinuousColorRange::valueAt(position,&_colorranges[i].second);
         }
     }
     return QColor();
@@ -106,13 +106,20 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
 
 void ContinuousColorLookup::addGroup(const ValueRange &range, const ContinuousColorRange &colorrange)
 {
-	if (_groups.size() == 0) {
-		_groups.push_back(range);
-		_colorranges.push_back(colorrange);
-	}else if (!_groups.back().overlaps(range)) {
-		_colorranges.push_back(colorrange);
-		_groups.push_back(range);
+	if (_colorranges.size() == 0) {
+		_colorranges.push_back(std::pair< ValueRange, ContinuousColorRange>(range, colorrange));
+	}else if (!_colorranges.back().first.overlaps(range)) {
+		_colorranges.push_back(std::pair< ValueRange, ContinuousColorRange>(range, colorrange));
 	}
+}
+
+NumericRange ContinuousColorLookup::numericRange() const {
+	NumericRange rng;
+	for (auto& item : _colorranges) {
+		rng += item.first._first;
+		rng += item.first._last;
+	}
+	return rng;
 }
 
 void ContinuousColorLookup::setColor(double value, const QColor &clr)
@@ -124,54 +131,56 @@ ColorLookUp *ContinuousColorLookup::clone() const
 {
     ContinuousColorLookup *newlookup = new ContinuousColorLookup();
     newlookup->_colorranges = _colorranges;
-    newlookup->_groups = _groups;
     newlookup->_linear = _linear;
     newlookup->_numericRange = _numericRange;
     newlookup->_step = _step;
+	newlookup->_definition = _definition;
 
     return newlookup;
 }
 
 void ContinuousColorLookup::store(QDataStream& stream) const {
-	stream << (quint32)_groups.size();
-	for (auto item : _groups) {
-		stream << item._first;
-		stream << item._last;
-		stream << item._reversed;
-	}
 	stream << (quint32)_colorranges.size();
 	for (auto item : _colorranges) {
-		item.store(stream);
+		stream << item.first._first;
+		stream << item.first._last;
+		stream << item.first._reversed;
+		item.second.store(stream);
 	}
 	_numericRange.store(stream);
 	stream << _step;
 	stream << _linear;
 	stream << _relative;
+	stream << _definition;
 }
 void ContinuousColorLookup::load(QDataStream& stream) {
 	quint32 n;
 	stream >> n;
-	_groups.resize(n);
-	for (auto& vr : _groups) {
-		stream >> vr._first;
-		stream >> vr._last;
-		stream >> vr._reversed;
-	}
-	stream >> n;
 	_colorranges.resize(n);
-	for(auto& item : _colorranges)
-	{
-		item.load(stream);
+	for (auto& vr : _colorranges) {
+		stream >> vr.first._first;
+		stream >> vr.first._last;
+		stream >> vr.first._reversed;
+		vr.second.load(stream);
 	}
 	_numericRange.load(stream);
 	stream >> _step;
 	stream >> _linear;
 	stream >> _relative;
+	stream >> _definition;
 }
 
 QString ContinuousColorLookup::definition(const IDomain& dom, bool& hasChanged)  {
-	hasChanged = false;
-	return "";
+	QString def;
+	for (auto crange : _colorranges) {
+		if (def != "")
+			def += ";";
+		def += QString("%1:%2|%3|%4").arg(crange.first._first).arg(crange.first._last).arg(crange.second.limitColor1().name()).arg(crange.second.limitColor2().name());
+	}
+	hasChanged = def != _definition;
+	if (hasChanged)
+		_definition = def;
+	return def;
 }
 
 void ContinuousColorLookup::reset(const IDomain& dom) {
@@ -179,6 +188,7 @@ void ContinuousColorLookup::reset(const IDomain& dom) {
 
 void ContinuousColorLookup::fromDefinition(const QString &definition, const IDomain&)
 {
+	_colorranges.clear();
     QStringList parts = definition.split(";");
     for( QString group : parts){
         QStringList groupdef = group.split("|");
@@ -216,9 +226,36 @@ void ContinuousColorLookup::fromDefinition(const QString &definition, const IDom
         addGroup(vr,colorrange);
 
     }
+	_definition = definition;
 
 }
 
+void ContinuousColorLookup::addGroup(const NumericRange& range, const ContinuousColorRange& colorrange) {
+	ValueRange vr;
+	vr._first = range.min();
+	vr._last = range.max();
+	addGroup(vr, colorrange);
+}
+
+void ContinuousColorLookup::steps(int st) {
+	if (st > 0) {
+		_step = st;
+	}
+}
+
+int ContinuousColorLookup::steps() const {
+	return _step;
+}
+
+void ContinuousColorLookup::relative(bool yesno) {
+	_relative = yesno;
+
+}
+
+bool ContinuousColorLookup::relative() const {
+	return _relative;
+}
+
 QString ContinuousColorLookup::definition() const {
-	return sUNDEF;
+	return _definition;
 }

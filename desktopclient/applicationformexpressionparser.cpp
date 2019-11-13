@@ -21,21 +21,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "dataformat.h"                  
 #include "uicontextmodel.h" 
 #include "mastercatalogmodel.h"   
-#include "applicationformexpressionparser.h"                                                                                                                                            
+#include "applicationformexpressionparser.h"                                                                                                                                                  
  
  
 using namespace Ilwis;                                                                                     
 using namespace Ui; 
 
-ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                       
+ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                        
 {
-}                                                                                                              
+}                                                                                                                                 
 
 ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
                                                                                              quint32 index,
                                                                                                const QStringList& choices,
                                                                                               bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{ 
-    FormParameter parm;                                                 
+    FormParameter parm;                                                           
     QString prefix = QString("pin_%1_").arg(index + 1);  
     FieldType alternateUIType = ftNONE;    
     if ( resource.hasProperty((prefix + "validationcondition"))){
@@ -69,18 +69,18 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
     }  
     else if ( parm._dataType == itBOOL){ 
         parm._fieldType = ftRADIOBUTTON;
-        QStringList lst = {"!yes", "no"};     
-        parm._choiceList = lst; 
+        QStringList lst = {"!yes", "no"};      
+        parm._choiceList = lst;      
 
     }   
-    else if (hasType(parm._dataType, itCOLLECTION)){
+    else if (hasType(parm._dataType, itCOLLECTION)){ 
        parm._fieldType = ftTEXTAREA; 
     }else
         parm._fieldType = ftTEXTEDIT; 
     if ( alternateUIType != ftNONE){
-        parm._fieldType = alternateUIType;
+        parm._fieldType = alternateUIType;     
     }
-    return parm;   
+    return parm;      
 }    
 
 void ApplicationFormExpressionParser::setParameter(const Resource& resource, bool& inChoiceList,
@@ -89,13 +89,13 @@ void ApplicationFormExpressionParser::setParameter(const Resource& resource, boo
                                                    bool isOptional, int optionGroup,bool workflowContext,
                                                    const QString& defvalue = "") const 
 { 
-    if ( inChoiceList)                         
-        choices << part;       
+    if ( inChoiceList)                          
+        choices << part;            
     parameters.push_back(addParameter(resource, parmCount, choices, isOptional, optionGroup, workflowContext, defvalue));
     choices.clear();
     part = "";
-    inChoiceList = false;                                    
-    ++parmCount;                                
+    inChoiceList = false;                                                                    
+    ++parmCount;                                                                                        
 } 
 
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getOutputParameters(const Ilwis::Resource &resource) const{
@@ -118,7 +118,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
 
     }
 
-    return parameters;             
+    return parameters;               
 }
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::getParameters(const Resource& resource, bool workflowContext, const QVariantList& nodeparameters) const
 {
@@ -154,26 +154,26 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
                 setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional,optionGroup, workflowContext);
                 checkGroup = true;  
             }
-            isOptional = true; 
+            isOptional = true;   
         } else if ( c == ']'){
             if ( !part.isEmpty()) {
                 part = part.trimmed();
                 QString defvalue =  part[0]=='!' ? "true" : "";
                 setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional, optionGroup, workflowContext,defvalue);
-            }
-            checkGroup = false;
+            } 
+            checkGroup = false; 
             isOptional = false;   
-            ++optionGroup;  
-        } else if ( c == '|'){
+            ++optionGroup;   
+        } else if ( c == '|'){  
             if ( part.indexOf("=") !=-1){
-                choices << part.split("=")[1];
+                choices << part.split("=")[1];  
             }else
                 choices << part.trimmed(); 
-            inChoiceList = true;
+            inChoiceList = true;     
         } 
-        part.clear();  
+        part.clear();    
     } 
-    // last parameter       
+    // last parameter         
     if (part != ""){                                      
         part = part.trimmed();                
         setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional,optionGroup, workflowContext);
@@ -184,7 +184,7 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
             QVariantMap props = nodeparameters[i].value<QVariantMap>();
             QString nodeLabel = props["label"].toString(); 
             if ( nodeLabel != ""){
-                parm._label = nodeLabel;       
+                parm._label = nodeLabel;        
             } 
         if ( props["state"].toString() == "calculated" && props.contains("outputIndex") && props.contains("index")){
                 parm._placeHolderValue = "link=" + props["outputNodeId"].toString() + ":"  + props["outputIndex"].toString() ;

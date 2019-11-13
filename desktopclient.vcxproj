@@ -242,6 +242,7 @@
     <None Include="desktopclient\qml\controls\LatLonEnvelopeLine.qml" />
     <None Include="desktopclient\qml\controls\LayerExtentMouseActions.qml" />
     <None Include="desktopclient\qml\controls\LayerExtentsToolbar.qml" />
+    <None Include="desktopclient\qml\controls\LegendBar.qml" />
     <None Include="desktopclient\qml\controls\MapExtentButton.qml" />
     <None Include="desktopclient\qml\controls\MultiPointSlider.qml" />
     <None Include="desktopclient\qml\controls\NumericResolution.qml" />
@@ -477,6 +478,7 @@
     <None Include="desktopclient\qml\workbench\creators\CreateChart.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateCombinationMatrix.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateContinousColorDomain.qml" />
+    <None Include="desktopclient\qml\workbench\creators\CreateRepresentationContinousValue.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateDomain.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateGeorefCorners.qml" />
     <None Include="desktopclient\qml\workbench\creators\CreateGeorefTiepoints.qml" />
@@ -579,6 +581,7 @@
     <None Include="desktopclient\qml\workbench\propertyform\RangeValuesCombo.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\RasterCoverageDataProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\RepresentationItemProperties.qml" />
+    <None Include="desktopclient\qml\workbench\propertyform\RepresentationValueProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\SpatialProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\TableProperties.qml" />
     <None Include="desktopclient\qml\workbench\propertyform\TextRangeDefinition.qml" />

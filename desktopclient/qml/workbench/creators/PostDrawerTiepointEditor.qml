@@ -16,7 +16,6 @@ Item {
         var points = editor.controlPoints
         for(var i=0; i < points.length; ++i){
             var p = points[i]
-			console.debug("zzzzz", p.columnScreen, p.rowScreen, p.color)
             ctx.beginPath();
             ctx.fillStyle = p.color
             ctx.fillRect(p.columnScreen - 3, p.rowScreen-3, 6,6)

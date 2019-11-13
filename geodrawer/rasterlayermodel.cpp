@@ -675,6 +675,8 @@ QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
 }
 
 void RasterLayerModel::refreshPalette() {
+	if (_paletteSize == 0)
+		return; 
     QVector<int> palette;
     QVariant vpalette;
         auto addPaletteColor = [&palette](int r, int g, int b, int a)->void {

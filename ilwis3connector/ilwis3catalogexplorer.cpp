@@ -57,7 +57,7 @@ inline uint qHash(const QFileInfo& inf ){
 
 std::vector<Resource> Ilwis3CatalogExplorer::loadItems(const IOOptions &)
 {
-    QVariantList filters = DataFormat::getFormatProperties(DataFormat::fpEXTENSION, itILWISOBJECT,"ilwis3");
+    QVariantList filters = DataFormat::getFormatProperties(DataFormat::fpEXTENSION, itILWISOBJECT,"ilwis3"); 
     QStringList sfilters;
     for(QVariant& ext : filters)
         sfilters += "*." + ext.toString();

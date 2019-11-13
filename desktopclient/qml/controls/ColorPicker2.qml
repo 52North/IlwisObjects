@@ -12,9 +12,17 @@ Rectangle {
 	property var closeCallBack
 
     onInitialColorChanged : {
-        choosenItemColor.color = initialColor ? initialColor : "white"
-        chosenItemText.text = initialColor ? initialColor : "white"
+		if ( initialColor != null) {
+			choosenItemColor.color = initialColor ? initialColor : "white"
+			chosenItemText.text = initialColor ? initialColor : "white"
+			selectedColor = initialColor
+		}
     }
+
+	onSelectedColorChanged : {
+		choosenItemColor.color = selectedColor
+		chosenItemText.text = selectedColor
+	}
 
     width : 235
     height : Global.rowHeight + dropDown.height
@@ -93,6 +101,8 @@ Rectangle {
             property int numberOfCircles : maxDisks
             property var currentDiskColor
             property var lastSelectedColor
+
+
 
             onNumberOfCirclesChanged: {
                 diskcanvas.requestPaint()

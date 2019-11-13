@@ -65,6 +65,9 @@ Rectangle {
 			var valueType = getProperty("valuetype")
 			if ( valueType == "numericinterval" || valueType == "timeinterval"  || valueType == "namedidentifier" || valueType == "thematicclass")
 				source = "RepresentationItemProperties.qml"
+			else {
+				source = "RepresentationValueProperties.qml"
+			}
 		}
 
     }

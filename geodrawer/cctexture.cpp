@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "rasterlayermodel.h"
 #include "core/ilwisobjects/domain/itemrange.h"
 #include "core/ilwisobjects/domain/colorrange.h"
-#include "ilwiscoreui/coveragedisplay/visualattribute.h" 
+#include "ilwiscoreui/coveragedisplay/visualattribute.h"  
 
 using namespace Ilwis;
 using namespace Ui;

@@ -40,21 +40,26 @@ public:
         ContinuousColorLookup(const IDomain&, const QString &rprCode="");
         QColor value2color(double value, const Ilwis::NumericRange &actualRange = NumericRange(), const Ilwis::NumericRange &stretchRange = NumericRange()) const;
         void addGroup(const ValueRange& range, const ContinuousColorRange& colorrange);
+		void addGroup(const NumericRange& range, const ContinuousColorRange& colorrange);
         void setColor(double value, const QColor& clr) ;
         ColorLookUp *clone() const;
 		void store(QDataStream& stream) const override;
 		void load(QDataStream& stream) override;
 		QString definition(const IDomain& dom, bool& hasChanged)  override;
 		QString definition() const override;
+		NumericRange numericRange() const;
+		void steps(int st);
+		int steps() const;
+		void relative(bool yesno);
+		bool relative() const;
 
 private:
-
-        std::vector<ValueRange> _groups;
-        std::vector<ContinuousColorRange> _colorranges;
+		std::vector < std::pair< ValueRange, ContinuousColorRange>> _colorranges;
         NumericRange _numericRange;
         double _step = 0;
         bool _linear = true;
 		bool _relative = true;
+		QString _definition = sUNDEF;
 
 		void fromDefinition(const QString& def, const IDomain& dom = IDomain()); 
 		void reset(const IDomain& dom);

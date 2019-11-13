@@ -133,8 +133,8 @@ void PaletteColorLookUp::store(QDataStream& stream) const {
 	for (auto item : _colors) {
 		stream << item.first;
 		stream << item.second;
-		stream << _definition;
 	}
+	stream << _definition;
 	stream << _cyclic;
 }
 
@@ -147,9 +147,9 @@ void PaletteColorLookUp::load(QDataStream& stream) {
 		QColor clr;
 		stream >> raw;
 		stream >> clr;
-		stream >> _definition;
 		_colors[raw] = clr;
 	}
+	stream >> _definition;
 	stream >> _cyclic;
 }
 

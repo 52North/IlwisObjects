@@ -181,6 +181,7 @@
     <ClCompile Include="baseoperations\creators\createitemrepresentation.cpp" />
     <ClCompile Include="baseoperations\creators\createtimedomain.cpp" />
     <ClCompile Include="baseoperations\creators\createtimeintervaldomain.cpp" />
+    <ClCompile Include="baseoperations\creators\createvaluerepresentation.cpp" />
     <ClCompile Include="baseoperations\creators\parsestackdefinition.cpp" />
     <ClCompile Include="baseoperations\data\addcolumn.cpp" />
     <ClCompile Include="baseoperations\data\addrasterband.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="baseoperations\creators\createitemrepresentation.h" />
     <ClInclude Include="baseoperations\creators\createtimedomain.h" />
     <ClInclude Include="baseoperations\creators\createtimeintervaldomain.h" />
+    <ClInclude Include="baseoperations\creators\createvaluerepresentation.h" />
     <ClInclude Include="baseoperations\creators\parsestackdefinition.h" />
     <ClInclude Include="baseoperations\data\addcolumn.h" />
     <ClInclude Include="baseoperations\data\addrasterband.h" />

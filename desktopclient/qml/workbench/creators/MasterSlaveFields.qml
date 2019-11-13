@@ -128,7 +128,6 @@ Column {
 							target:bluebands
 							onIndexChanged :{
 								slaveRasterField.bandIndexes[2] = bluebands.currentIndex
-								console.debug("ppppp", slaveRasterField.bandIndexes[2])
 							}
 						}
 					}
