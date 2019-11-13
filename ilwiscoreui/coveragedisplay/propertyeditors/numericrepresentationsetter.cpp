@@ -73,23 +73,7 @@ void NumericRepresentationSetter::fillElements() {
 		if (!numrange.isValid())
 			return;
 
-		std::vector<QColor> colors = vpmodel()->stretchedColors(256, numrange);
-
-		NumericRange roundedRange = MathHelper::roundRange(numrange.min(), numrange.max());
-		double tickValue = roundedRange.min();
-		double dist = 0;
-		double step = roundedRange.resolution();
-		_rprElements = QList<RepresentationElementModel *>();
-		while (tickValue <= numrange.max()) {
-			_rprElements.push_back(new RepresentationElementModel(QString::number(tickValue), dist / numrange.distance(), this));
-			tickValue += step;
-			dist += step;
-		}
-		if ((tickValue - roundedRange.resolution()) != numrange.max()) {
-			if (tickValue > numrange.max())
-				tickValue = numrange.max();
-			_rprElements.push_back(new RepresentationElementModel(QString::number(numrange.max()), this));
-		}
+		RepresentationElementModel::createNumericElementsList(numrange, this, _rprElements);
 
 		emit rprNameChanged();
 	}
