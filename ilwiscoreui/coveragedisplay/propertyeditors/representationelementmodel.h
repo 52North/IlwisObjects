@@ -49,6 +49,8 @@ public:
     void opacity(double v);
 	double fraction() const;
 
+	static void createNumericElementsList(const NumericRange& numrange, QObject* parent, QList<RepresentationElementModel *>& outList);
+
 signals:
     void ecolorChanged();
     void eopacityChanged();

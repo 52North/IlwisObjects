@@ -82,4 +82,22 @@ double RepresentationElementModel::fraction() const {
 	return _fraction;
 }
 
+void RepresentationElementModel::createNumericElementsList(const NumericRange& numrange, QObject* parent, QList<RepresentationElementModel *>& outList) {
+	NumericRange roundedRange = MathHelper::roundRange(numrange.min(), numrange.max());
+	double tickValue = roundedRange.min();
+	double dist = 0;
+	double step = roundedRange.resolution();
+	outList = QList<RepresentationElementModel *>();
+	while (tickValue <= numrange.max()) {
+		outList.push_back(new RepresentationElementModel(QString::number(tickValue), dist / numrange.distance(), parent));
+		tickValue += step;
+		dist += step;
+	}
+	if ((tickValue - roundedRange.resolution()) != numrange.max()) {
+		if (tickValue > numrange.max())
+			tickValue = numrange.max();
+		outList.push_back(new RepresentationElementModel(QString::number(numrange.max()), parent));
+	}
+}
+
 
