@@ -77,6 +77,7 @@ ObjectCreator::ObjectCreator(QObject *parent) : QObject(parent)
     _creators["chart"] = new IlwisObjectCreatorModel("chart", TR("Chart"), itTABLE, "CreateChart.qml", 520, this);
 	_creators["supervisedclassification"] = new IlwisObjectCreatorModel("supervisedclassification", TR("Supervised Classification"), itMODEL, "CreateSupervisedClassification.qml", 340, this);
     _creators["representation" ] = new IlwisObjectCreatorModel("representation",TR("Representation Item domain"),itREPRESENTATION,"CreateRepresentationItemDomain.qml", 550, this);
+	_creators["representationvalue"] = new IlwisObjectCreatorModel("representationvalue", TR("Representation Value domain"), itREPRESENTATION, "CreateRepresentationContinousValue.qml", 620, this);
     _creators["domain" ] = new IlwisObjectCreatorModel("domain",TR("Domain"),itDOMAIN,"CreateDomain.qml", 250, this);
     _creators["combinationmatrix" ] = new IlwisObjectCreatorModel("combinationmatrix",TR("Combinationmatrix"),itCOMBINATIONMATRIX,"CreateCombinationMatrix.qml", 600, this);
 	_creators["pythonconsole"] = new IlwisObjectCreatorModel("pythonconsole", TR("Python Console"), itSCRIPT, "CreatePythonConsole.qml",300, this);
@@ -850,48 +851,49 @@ QString ObjectCreator::createRasterCoverage(const QVariantMap& parms){
     expr += "\"" + parms["bands"].toString() + "\"";
     expr += ",";
     expr += "\"" + stDom + "\"" ;
-    expr += ",";
-    expr += "\"" + parms["stackdefinition"].toString() + "\"";
-    expr += ",";
-    expr += parms["autoresample"].toBool() ? "yes" : "no";
+expr += ",";
+expr += "\"" + parms["stackdefinition"].toString() + "\"";
+expr += ",";
+expr += parms["autoresample"].toBool() ? "yes" : "no";
 
-	QString res;
-	if (parms["resolution"] != "") {
-		bool ok;
-		double resolution = parms["resolution"].toDouble(&ok);
-		if (ok) {
-			res = ";resolution(" + QString::number(resolution) + ")";
-		}
-	} 
+QString res;
+if (parms["resolution"] != "") {
+	bool ok;
+	double resolution = parms["resolution"].toDouble(&ok);
+	if (ok) {
+		res = ";resolution(" + QString::number(resolution) + ")";
+	}
+}
 
-    expr += ")";
+expr += ")";
 
-    QString output = QString("script %1{format(stream,\"rastercoverage\")%2}=").arg(name).arg(res);
-    expr = output + expr;
-   executeoperation(expr);
+QString output = QString("script %1{format(stream,\"rastercoverage\")%2}=").arg(name).arg(res);
+expr = output + expr;
+executeoperation(expr);
 
-    return sUNDEF;
+return sUNDEF;
 }
 
 void ObjectCreator::executeoperation(const QString& expr) {
 
-    try {
-        OperationExpression opExpr(expr);
-        if (opExpr.isValid()){
+	try {
+		OperationExpression opExpr(expr);
+		if (opExpr.isValid()) {
 
-            QThread* thread = new QThread;
-            OperationWorker* worker = new OperationWorker(opExpr);
-            worker->moveToThread(thread);
-            thread->setProperty("workingcatalog", qVariantFromValue(context()->workingCatalog()));
-            thread->connect(thread, &QThread::started, worker, &OperationWorker::process);
-            thread->connect(worker, &OperationWorker::finished, thread, &QThread::quit);
-            thread->connect(worker, &OperationWorker::finished, worker, &OperationWorker::deleteLater);
-            thread->connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-            thread->start();
-        }
-    } catch (const ErrorObject& err){
-        emit error(err.message());
-    }
+			QThread* thread = new QThread;
+			OperationWorker* worker = new OperationWorker(opExpr);
+			worker->moveToThread(thread);
+			thread->setProperty("workingcatalog", qVariantFromValue(context()->workingCatalog()));
+			thread->connect(thread, &QThread::started, worker, &OperationWorker::process);
+			thread->connect(worker, &OperationWorker::finished, thread, &QThread::quit);
+			thread->connect(worker, &OperationWorker::finished, worker, &OperationWorker::deleteLater);
+			thread->connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+			thread->start();
+		}
+	}
+	catch (const ErrorObject& err) {
+		emit error(err.message());
+	}
 }
 
 ControlPointsListModel *ObjectCreator::createControlPointsList(const QVariantMap& parms, QObject *parent) {
@@ -900,6 +902,35 @@ ControlPointsListModel *ObjectCreator::createControlPointsList(const QVariantMap
 		return new ControlPointsListModel(parent);
 	else
 		return new ControlPointsListModel(parms, parent);
+}
+
+QString ObjectCreator::createRepresentationContinousValue(const QVariantMap& parms) {
+	try {
+		QString type = parms["valuetype"].toString();
+		QString name = parms["name"].toString();
+		if (name == "") {
+			kernel()->issues()->log(TR("A representation must have a name"), IssueObject::itWarning);
+			return sUNDEF;
+		}
+
+		if (name.indexOf(".ilwis") == -1)
+			name += ".ilwis";
+		name = OperationHelper::quote(name);
+		QString expression;
+		if (type == "item") {
+			expression = QString("script %1{format(stream,\"representation\")}=createvaluerepresentation(\"%2\",\"%3\"")
+				.arg(name)
+				.arg(parms["domain"].toString())
+				.arg(parms["items"].toString());
+			expression += ")";
+		}
+		executeoperation(expression);
+
+		return sUNDEF;
+	}
+	catch (ErrorObject& obj) {}
+
+	return sUNDEF;
 }
 
 QString ObjectCreator::createRepresentation(const QVariantMap& parms) {
@@ -921,6 +952,15 @@ QString ObjectCreator::createRepresentation(const QVariantMap& parms) {
 				.arg(parms["domain"].toString())
 				.arg(parms["items"].toString());
 			expression += ")";
+		} else if (type == "continous"){
+			expression = QString("script %1{format(stream,\"representation\")}=createvaluerepresentation(\"%2\",\"%3\",%4,%5")
+				.arg(name)
+				.arg(parms["domain"].toString())
+				.arg(parms["items"].toString())
+				.arg(parms["relative"].toBool() ? "true" : "false")
+				.arg(parms["steps"].toInt());
+			expression += ")";
+
 		}
 		executeoperation(expression);
 
@@ -988,6 +1028,7 @@ QString ObjectCreator::createObject(const QVariantMap &parms)
 		else if (type == "representation") {
 			return createRepresentation(parms);
 		}
+	
 
 		return QString::number(i64UNDEF);
 	}

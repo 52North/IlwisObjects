@@ -84,6 +84,7 @@ private:
 	QString createRepresentation(const QVariantMap& parms);
     Ilwis::OperationResource createOperationResource(const QString &url, const QVariantMap &parms);
 	QString createTimeDomain(const QVariantMap &parms);
+	QString createRepresentationContinousValue(const QVariantMap& parms);
 };
 }
 }
