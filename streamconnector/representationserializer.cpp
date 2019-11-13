@@ -57,7 +57,7 @@ bool RepresentationSerializerV1::store(IlwisObject *obj, const IOOptions &option
 	storeSystemPath(rpr->domain()->resource());
 	domainStreamer->store(rpr->domain().ptr(), options);
 
-	if (rpr->domain().isValid() && rpr->domain()->ilwisType() == itITEMDOMAIN) {
+	if (rpr->domain().isValid() && hasType(rpr->domain()->ilwisType(), itITEMDOMAIN | itNUMERICDOMAIN)) {
 		rpr->colors()->store(_stream);
 		// dummy statement; it is in shapes()->store() which is empty atm; 
 		_stream << (quint32)0;
@@ -99,7 +99,7 @@ bool RepresentationSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions 
 	Representation *rpr = static_cast<Representation *>(obj);
 	rpr->domain(dom);
 
-	if (rpr->domain().isValid() && rpr->domain()->ilwisType() == itITEMDOMAIN) {
+	if (rpr->domain().isValid() && hasType(rpr->domain()->ilwisType(),itITEMDOMAIN|itNUMERICDOMAIN)) {
 		rpr->colors()->load(_stream);
 		// dummy statement; it is in shapes()->store() which is empty atm; 
 		quint32 n;
