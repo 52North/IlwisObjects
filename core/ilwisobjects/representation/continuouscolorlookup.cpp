@@ -86,7 +86,7 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
 					position = (value - _colorranges[i].first._last) / delta;
 				}
 				else
-					position = ((quint32)(value - _colorranges[i].first._last) / _step) / ((quint32)(delta / _step));
+					position = ((value - _colorranges[i].first._last) / _step) / ((delta / _step));
 
 				position = 1.0 - position;
 				return ContinuousColorRange::valueAt(position, &_colorranges[i].second);
@@ -96,7 +96,7 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
             if ( _step == 0){
                 position = (value - _colorranges[i].first._first)/ delta;
             }else
-                position = ((quint32)(value - _colorranges[i].first._first)/ _step)/( (quint32)(delta / _step));
+                position = ((value - _colorranges[i].first._first)/ _step)/( (delta / _step));
 
             return ContinuousColorRange::valueAt(position,&_colorranges[i].second);
         }
