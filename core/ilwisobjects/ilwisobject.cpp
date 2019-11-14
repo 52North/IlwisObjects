@@ -532,7 +532,7 @@ void IlwisObject::copyTo(IlwisObject *obj)
     obj->code(code());
     obj->setDescription(description());
     obj->_valid = _valid;
-    obj->_readOnly = _readOnly;
+   
     const Ilwis::ConnectorFactory *factory = kernel()->factory<Ilwis::ConnectorFactory>("ilwis::ConnectorFactory");
     if ( !factory)
         return;
@@ -545,6 +545,7 @@ void IlwisObject::copyTo(IlwisObject *obj)
         Ilwis::ConnectorInterface *conn = factory->createFromResource(res, _outConnector->provider());
         obj->setConnector(conn, cmOUTPUT);
     }
+	obj->_readOnly = _readOnly;
 }
 
 quint64 IlwisObject::copy(const QString &newUrl, const QString &format, const QString &provider)
