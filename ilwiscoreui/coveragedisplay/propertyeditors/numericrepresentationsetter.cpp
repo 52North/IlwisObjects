@@ -32,7 +32,7 @@ using namespace Ilwis;
 using namespace Ui;
 
 NumericRepresentationSetter::NumericRepresentationSetter(VisualAttribute *p) :
-        VisualPropertyEditor(p,"numericrepresentationsetter",TR("Representation"),QUrl("NumericRepresentation.qml"))
+        VisualPropertyEditor(p,"numericrepresentationsetter",TR("Legend"),QUrl("NumericRepresentation.qml"))
 {
 
 }
