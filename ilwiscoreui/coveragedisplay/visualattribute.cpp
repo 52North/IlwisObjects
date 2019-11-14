@@ -108,7 +108,7 @@ void VisualAttribute::representation(const IRepresentation &rpr)
 			}
 		}
         for (VisualPropertyEditor *editor : _vproperties) {
-            editor->representationChanged(rpr);
+            editor->representationChanged(_representation);
         }
 		if (_layer->layerType() == itRASTERLAYER)
 			_layer->vproperty("updatetextures", true);
