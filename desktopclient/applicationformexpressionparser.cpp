@@ -155,20 +155,20 @@ std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpre
                 checkGroup = true;  
             }
             isOptional = true;   
-        } else if ( c == ']'){
+        } else if ( c == ']'){  
             if ( !part.isEmpty()) {
                 part = part.trimmed();
                 QString defvalue =  part[0]=='!' ? "true" : "";
                 setParameter(resource, inChoiceList, parameters, part, choices, parmCount, isOptional, optionGroup, workflowContext,defvalue);
             } 
             checkGroup = false; 
-            isOptional = false;   
-            ++optionGroup;   
+            isOptional = false;    
+            ++optionGroup;     
         } else if ( c == '|'){  
             if ( part.indexOf("=") !=-1){
                 choices << part.split("=")[1];  
             }else
-                choices << part.trimmed(); 
+                choices << part.trimmed();  
             inChoiceList = true;     
         } 
         part.clear();    

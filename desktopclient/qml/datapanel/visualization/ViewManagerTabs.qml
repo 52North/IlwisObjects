@@ -46,7 +46,6 @@ TabView{
     }
 
     function tabClicked(index){
-		console.debug("xxxxxx", layouts.state, index, currentIndex,viewmanager.height )
         if ( currentIndex === index ||  layouts.state == "" ){
             if ( viewmanager.height <= 60){
                 layouts.state = "visible"

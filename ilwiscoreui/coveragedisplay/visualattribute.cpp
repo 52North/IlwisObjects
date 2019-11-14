@@ -103,8 +103,8 @@ void VisualAttribute::representation(const IRepresentation &rpr)
 			CoverageLayerModel *cl = static_cast<CoverageLayerModel *>(_layer);
 			ICoverage cov = cl->coverage();
 			if (cov.isValid()) {
-				cov->storeAdjustment("representation|" + attributename(), _representation->colors()->definition());  // the value can be retrieved more efficiently at the implementation of the virtual function
 				cov->setRepresentation(attributename(), _representation);
+				cov->storeAdjustment("representation|" + attributename(), _representation->colors()->definition());  // the value can be retrieved more efficiently at the implementation of the virtual function
 			}
 		}
         for (VisualPropertyEditor *editor : _vproperties) {

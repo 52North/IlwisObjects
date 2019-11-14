@@ -75,7 +75,8 @@ void NumericRepresentationSetter::fillElements() {
 
 		RepresentationElementModel::createNumericElementsList(numrange, this, _rprElements);
 
-		emit rprNameChanged();
+		//emit rprNameChanged();
+		emit itemsChanged();
 	}
 }
 void NumericRepresentationSetter::prepare( const IIlwisObject &obj, const DataDefinition &cdef)
@@ -131,7 +132,7 @@ void NumericRepresentationSetter::representationChanged(const IRepresentation &r
 
 QQmlListProperty<RepresentationElementModel> NumericRepresentationSetter::representationElements()
 {
-	fillElements();
+	//fillElements();
     return  QQmlListProperty<RepresentationElementModel>(this, _rprElements);
 }
 

@@ -14,35 +14,16 @@ Rectangle {
 		id : dropArea
 		anchors.fill : parent
 	
-		/*Controls.TextEditLabelPair {
-			function check(id){
-				return editor.canUse(id)
-			}
-
-			labelWidth : 100
-			labelText : qsTr("Representation")
-			id : rprName
-			width : parent.width - 20
-			height : Global.rowHeight
-			content : editor.representationName
-			x : 10
-			checkFunction: check
-
-			onContentChanged: {
-				editor.visualAttribute.layer.vproperty("visualattribute|" + editor.visualAttribute.attributename + "|representation", content)
-				bar.requestPaint()
-			}
-		}*/
-
-
-
 		Controls.LegendBar {
 			id : bar
-			anchors.top : rprName.bottom
 			width : Math.min(350, parent.width)
 			x : 10
 			height : 60
 			items : editor.representationElements
+
+			onItemsChanged : {
+				bar.requestPaint()
+			}
 			colorFunc : editor.color
 		}
 

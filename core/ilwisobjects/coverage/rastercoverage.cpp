@@ -898,10 +898,9 @@ void RasterCoverage::storeAdjustment(const QString& property, const QString& val
 				}
 			}
 			else {
-				bool hasChanged;
-				QString sdef = datadef().representation()->colors()->definition(IDomain(), hasChanged);
-				if (hasChanged)
-					changeData(resourceRef(), property, sdef);
+				bool dummy;
+				QString sdef = datadef().representation()->colors()->definition(IDomain(), dummy);
+				changeData(resourceRef(), property, sdef);
 			}
 		}
 	}
