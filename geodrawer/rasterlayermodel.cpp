@@ -256,19 +256,23 @@ QVariant RasterLayerModel::vproperty(const QString& pName) const {
 }
 
 void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
-	if (pName == "updatetextures") {
-		_texturesNeedUpdate = true;
-		_refreshPaletteAtNextCycle = true;
-		requestRedraw();
-		return;
-	} else if (pName == "refreshquads") {
-		_quadsNeedUpdate = true;
-		requestRedraw();
-		return;
-	}    if( pName == "undefinedvalue") {
-		coverage()->setPseudoUndef(value.toDouble());
+	try {
+		if (pName == "updatetextures") {
+			_texturesNeedUpdate = true;
+			_refreshPaletteAtNextCycle = true;
+			requestRedraw();
+			return;
+		}
+		else if (pName == "refreshquads") {
+			_quadsNeedUpdate = true;
+			requestRedraw();
+			return;
+		}    if (pName == "undefinedvalue") {
+			coverage()->setPseudoUndef(value.toDouble());
+		}
+		CoverageLayerModel::vproperty(pName, value);
 	}
-	CoverageLayerModel::vproperty(pName, value);
+	catch (const ErrorObject&) {}
 }
 
 bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
