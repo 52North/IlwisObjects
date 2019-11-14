@@ -888,10 +888,18 @@ void RasterCoverage::storeAdjustment(const QString& property, const QString& val
 	if (property.indexOf("representation|" == 0)) {
 		auto parts = property.split("|");
 		if (parts.size() == 2) {
-			const DataDefinition& def = attributeTable()->columndefinitionRef(parts[1]).datadef();
-			if (def.isValid()) {
+			if (parts[1] != PIXELVALUE) {
+				const DataDefinition& def = attributeTable()->columndefinitionRef(parts[1]).datadef();
+				if (def.isValid()) {
+					bool hasChanged;
+					QString sdef = value != sUNDEF ? value : def.representation()->colors()->definition(def.domain(), hasChanged);
+					if (hasChanged)
+						changeData(resourceRef(), property, sdef);
+				}
+			}
+			else {
 				bool hasChanged;
-				QString sdef = value != sUNDEF ? value : def.representation()->colors()->definition(def.domain(), hasChanged);
+				QString sdef = datadef().representation()->colors()->definition(IDomain(), hasChanged);
 				if (hasChanged)
 					changeData(resourceRef(), property, sdef);
 			}
@@ -917,10 +925,15 @@ void RasterCoverage::applyAdjustments(const std::map<QString, QString>& adjustme
 			auto parts = key.split("|");
 			if (parts.size() == 2) {
 				QString attr = parts[1];
-				int idx = attributeTable()->columnIndex(attr);
-				if (idx != iUNDEF) {
-					ColumnDefinition& def = attributeTable()->columndefinitionRef(idx);
-					def.datadef().representation()->colors()->fromDefinition(item.second, def.datadef().domain());
+				if (attr != PIXELVALUE) {
+					int idx = attributeTable()->columnIndex(attr);
+					if (idx != iUNDEF) {
+						ColumnDefinition& def = attributeTable()->columndefinitionRef(idx);
+						def.datadef().representation()->colors()->fromDefinition(item.second, def.datadef().domain());
+					}
+				}
+				else {
+					datadef().representation()->colors()->fromDefinition(item.second);
 				}
 			}
 		}
@@ -928,9 +941,15 @@ void RasterCoverage::applyAdjustments(const std::map<QString, QString>& adjustme
 }
 
 void RasterCoverage::setRepresentation(const QString& atr, const IRepresentation& rpr) {
-	int idx = attributeTable()->columnIndex(atr);
-	if (idx != iUNDEF) {
-		auto& def = attributeTable()->columndefinitionRef(idx).datadef();
+	if (atr != PIXELVALUE) {
+		int idx = attributeTable()->columnIndex(atr);
+		if (idx != iUNDEF) {
+			auto& def = attributeTable()->columndefinitionRef(idx).datadef();
+			def.representation(rpr);
+		}
+	}
+	else {
+		auto& def = datadefRef();
 		def.representation(rpr);
 	}
 }
