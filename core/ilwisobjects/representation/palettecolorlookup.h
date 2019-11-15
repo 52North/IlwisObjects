@@ -41,7 +41,6 @@ public:
 private:
     boost::container::flat_map<quint32, QColor> _colors;
     bool _cyclic = true;
-	QString _definition = sUNDEF;
 
 	void fromDefinition(const QString &definition, const Ilwis::IDomain &dom = IDomain());
 	void reset(const IDomain& dom);
