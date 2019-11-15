@@ -10,6 +10,7 @@ Rectangle {
     property alias selectedColor : colorPicker.lastSelectedColor
     property var initialColor
 	property var closeCallBack
+	  property int dropdownheight : 180
 
     onInitialColorChanged : {
 		if ( initialColor != null) {
@@ -29,7 +30,7 @@ Rectangle {
     z: 100;
     smooth:true;
     color : "transparent"
-    property int dropdownheight : 180
+  
 
     Rectangle {
         id:chosenItem
