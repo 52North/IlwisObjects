@@ -128,7 +128,7 @@ bool VersionedSerializer::store(IlwisObject *obj, const IOOptions &options)
     QString nm =  res.hasProperty("longname") ? obj->name() + "|" + res["longname"].toString() : obj->name();
 	if (options.find("storename") != options.end())
 		nm = options.value("storename").toString();
-    _stream <<  obj->ilwisType() << Version::interfaceVersion41 << obj->extendedType() << nm << obj->code() << obj->description() << obj->isReadOnly()  << mtime << ctime;
+    _stream <<  obj->ilwisType() << _version << obj->extendedType() << nm << obj->code() << obj->description() << obj->isReadOnly()  << mtime << ctime;
 	auto metadata = res.metadata();
 	quint32 sz = metadata.size();
 	_stream << sz;
@@ -151,7 +151,7 @@ bool VersionedSerializer::storeDataDefintion(const DataDefinition &def, QDataStr
     VersionedDataStreamFactory *factory = kernel()->factory<VersionedDataStreamFactory>("ilwis::VersionedDataStreamFactory");
     if (!factory)
         return false;
-    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion41, itDOMAIN,_stream));
+    std::unique_ptr<DataInterface> domainStreamer(factory->create(Version::interfaceVersion42, itDOMAIN,_stream));
     if ( !domainStreamer)
         return false;
     _stream << def.domain()->valueType();
@@ -165,7 +165,7 @@ bool VersionedSerializer::storeDataDefintion(const DataDefinition &def, QDataStr
 		return false;
 
 	storeSystemPath(def.representation()->resource());
-	domainStreamer->store(def.representation().ptr(), options);
+	rprStreamer->store(def.representation().ptr(), options);
     return true;
 }
 
