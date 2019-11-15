@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 class Domain;
 typedef IlwisData<Domain> IDomain;
+class ContinuousColorRange;
 
 class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 {
@@ -29,7 +30,7 @@ class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 		double _first = rUNDEF;
 		double _last = rUNDEF;
 		double _reversed = false;
-		bool overlaps(const ValueRange& rng) {
+		bool overlaps(const ValueRange& rng) const{
 			return _last < rng._first || (_first > rng._first && _last < rng._last) || (_first < rng._first && _last > rng._last);
 		}
 
@@ -41,6 +42,7 @@ public:
         QColor value2color(double value, const Ilwis::NumericRange &actualRange = NumericRange(), const Ilwis::NumericRange &stretchRange = NumericRange()) const;
         void addGroup(const ValueRange& range, const ContinuousColorRange& colorrange);
 		void addGroup(const NumericRange& range, const ContinuousColorRange& colorrange);
+		void addException(const NumericRange& range, const QColor& clr, bool clear=true);
         void setColor(double value, const QColor& clr) ;
         ColorLookUp *clone() const;
 		void store(QDataStream& stream) const override;
@@ -52,14 +54,16 @@ public:
 		int steps() const;
 		void relative(bool yesno);
 		bool relative() const;
+		
 
 private:
 		std::vector < std::pair< ValueRange, ContinuousColorRange>> _colorranges;
+		std::vector< std::pair< ValueRange, QColor>> _exceptions;
         NumericRange _numericRange;
         double _step = 0;
         bool _linear = true;
 		bool _relative = true;
-		QString _definition = sUNDEF;
+
 
 		void fromDefinition(const QString& def, const IDomain& dom = IDomain()); 
 		void reset(const IDomain& dom);

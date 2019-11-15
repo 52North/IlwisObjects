@@ -8,6 +8,18 @@ Item {
 	property var items
 	property var colorFunc
 
+	function max() {
+		if ( !items)
+			return 0
+		return items[items.length - 1].label
+	}
+
+	function min() {
+		if ( !items)
+			return 0
+		return items[0].label
+	}
+
 	function requestPaint() {
 		rprCanvas.requestPaint()
 	}

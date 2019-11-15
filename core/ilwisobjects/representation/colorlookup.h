@@ -41,6 +41,8 @@ public:
 	virtual QString definition() const = 0;
 protected:
     QColor string2color(const QString &colorstring);
+
+	QString _definition = sUNDEF;
 };
 
 

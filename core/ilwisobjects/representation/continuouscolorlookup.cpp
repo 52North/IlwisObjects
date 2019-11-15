@@ -76,6 +76,12 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
 		value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1 
 	else
 		value = min(actualRange.max(), max(actualRange.min(), (value - actualRange.min()))); // scale it between 0..1
+
+	for (const auto& group : _exceptions) {
+		if (value >= group.first._first && value <= group.first._last) {
+			return group.second;
+		}
+	}
     for(int i = 0; i < _colorranges.size(); ++i){
 		double delta = std::abs(_colorranges[i].first._last - _colorranges[i].first._first);
 		double position = 0;
@@ -235,6 +241,20 @@ void ContinuousColorLookup::addGroup(const NumericRange& range, const Continuous
 	vr._first = range.min();
 	vr._last = range.max();
 	addGroup(vr, colorrange);
+}
+
+void ContinuousColorLookup::addException(const NumericRange& range, const QColor& clr, bool clear) {
+
+	if (clear)
+		_exceptions.clear();
+	if (!range.isValid())
+		return;
+	ValueRange vr{ range.min(), range.max() };
+	for (const auto& group : _exceptions) {
+		if (group.first.overlaps(vr))
+			return;
+	}
+	_exceptions.push_back(std::pair<ValueRange, QColor>(vr, clr));
 }
 
 void ContinuousColorLookup::steps(int st) {
