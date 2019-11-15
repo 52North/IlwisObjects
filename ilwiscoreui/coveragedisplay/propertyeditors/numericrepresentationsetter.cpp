@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "visualpropertyeditor.h"
 #include "coveragelayermodel.h"
 #include "raster.h"
+#include "colorlookup.h"
+#include "continuouscolorlookup.h"
 #include "numericrepresentationsetter.h"
 #include "mathhelper.h"
 
@@ -134,6 +136,24 @@ QQmlListProperty<RepresentationElementModel> NumericRepresentationSetter::repres
 {
 	//fillElements();
     return  QQmlListProperty<RepresentationElementModel>(this, _rprElements);
+}
+
+void NumericRepresentationSetter::addException(double value, double bandWdith, const QColor& clr) {
+	auto rpr = vpmodel()->representation();
+	ContinuousColorLookup *lookup = static_cast<ContinuousColorLookup *>(rpr->colors().get());
+	if (value == -1) {
+		lookup->addException(NumericRange(), clr, true);
+		vpmodel()->layer()->prepare(LayerModel::ptRENDER);
+	}
+	else {
+		double rmin = std::max(0.0, value - bandWdith / 2);
+		double rmax = std::min(1.0, value + bandWdith / 2);
+		NumericRange nr(rmin, rmax);
+		lookup->addException(nr, clr, true);
+	}
+	vpmodel()->layer()->prepare(LayerModel::ptRENDER);
+
+
 }
 
 

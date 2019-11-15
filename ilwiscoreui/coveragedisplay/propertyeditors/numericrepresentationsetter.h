@@ -42,6 +42,7 @@ public:
 
     Q_INVOKABLE QColor color(const QString &property, double frac);
     Q_INVOKABLE bool canUse(const QString& id) const;
+	Q_INVOKABLE void addException(double value, double bandWdith, const QColor& clr);
 	void representationChanged(const IRepresentation &rpr);
     QQmlListProperty< Ilwis::Ui::RepresentationElementModel > representationElements();
 signals:
