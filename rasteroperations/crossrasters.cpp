@@ -356,7 +356,7 @@ quint64 CrossRasters::createMetadata()
 //------------------------------------------------------------------
 REGISTER_OPERATION(CrossRastersWithRasterOutput)
 
-CrossRastersWithRasterOutput::CrossRastersWithRasterOutput(quint64 metaid, const Ilwis::OperationExpression &expr)
+CrossRastersWithRasterOutput::CrossRastersWithRasterOutput(quint64 metaid, const Ilwis::OperationExpression &expr) : CrossRastersBase(metaid, expr)
 {}
 
 Ilwis::OperationImplementation *CrossRastersWithRasterOutput::create(quint64 metaid, const Ilwis::OperationExpression &expr)
