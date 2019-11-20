@@ -46,7 +46,7 @@ PaletteColorLookUp::PaletteColorLookUp(const QString &def){
 
 PaletteColorLookUp::PaletteColorLookUp(const IDomain &dom, const QString &rprCode)
 {
-    _cyclic = hasType(dom->valueType(), itINDEXEDITEM | itNAMEDITEM | itSTRING);
+    _cyclic = hasType(dom->valueType(), itINDEXEDITEM | itNAMEDITEM | itSTRING | itNAMEDITEM);
     InternalDatabaseConnection db;
     QString query = QString("Select * from representation where code='%1'").arg(rprCode != "" ? rprCode : "primarycolors" );
     if (db.exec(query)) {
@@ -83,7 +83,7 @@ QColor PaletteColorLookUp::value2color(double index, const NumericRange &, const
 QString PaletteColorLookUp::definition(const IDomain& dom, bool& hasChanged)  {
 	QString result;
 	if (dom.isValid() && _colors.size() > 0) {
-		if (hasType(dom->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM)) {
+		if (hasType(dom->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM | itNAMEDITEM)) {
 			IItemDomain itemdom = dom.as<ItemDomain<DomainItem>>();
 			for (auto item : itemdom) {
 				QString clr = _colors.at(item->raw()).name(QColor::HexArgb);
@@ -106,7 +106,7 @@ void PaletteColorLookUp::reset(const IDomain& dom) {
 void PaletteColorLookUp::fromDefinition(const QString &definition, const IDomain& dom){
     QStringList parts = definition.split("|");
     if ( dom.isValid()){
-        if ( hasType(dom->valueType(), itTHEMATICITEM|itNUMERICITEM|itTIMEITEM)){
+        if ( hasType(dom->valueType(), itTHEMATICITEM|itNUMERICITEM|itTIMEITEM | itNAMEDITEM)){
             IItemDomain itemdom = dom.as<ItemDomain<DomainItem>>();
             int index = 0;
             for(auto item : itemdom){
