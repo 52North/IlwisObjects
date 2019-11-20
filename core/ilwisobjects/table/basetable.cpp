@@ -189,7 +189,7 @@ void BaseTable::dataLoaded(bool yesno)
 
 void BaseTable::copyTo(IlwisObject *obj)
 {
-    IlwisObject::copyTo(obj);
+    IlwisObject::copyTo(obj, _dataloaded);
     BaseTable *btable = static_cast<BaseTable *>(obj);
     btable->_columns = _columns;
     btable->_attributeDefinition = _attributeDefinition;
