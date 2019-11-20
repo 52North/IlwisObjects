@@ -417,7 +417,7 @@ protected:
    QScopedPointer<ConnectorInterface>& connector(int mode=cmINPUT | cmOUTPUT);
 
    bool setValid(bool yesno);
-   void copyTo(IlwisObject *obj);
+   void copyTo(IlwisObject *obj, bool loadData=false);
    virtual void applyAdjustments(const std::map<QString, QString>& adjustments);
 
 

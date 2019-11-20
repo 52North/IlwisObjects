@@ -526,7 +526,7 @@ Resource& IlwisObject::resourceRef(int mode)
     throw InternalError(TR("Incomplete ilwis object used for referencing information"));
 }
 
-void IlwisObject::copyTo(IlwisObject *obj)
+void IlwisObject::copyTo(IlwisObject *obj, bool loadData)
 {
     obj->name(name());
     obj->code(code());
@@ -539,7 +539,7 @@ void IlwisObject::copyTo(IlwisObject *obj)
     Resource res = resource().copy(obj->id());
     if (!_connector.isNull()){
         Ilwis::ConnectorInterface *conn = factory->createFromResource(res, _connector->provider());
-        obj->setConnector(conn, cmINPUT);
+		obj->setConnector(conn, cmINPUT, { "create", loadData });
     }
     if ( !_outConnector.isNull()) {
         Ilwis::ConnectorInterface *conn = factory->createFromResource(res, _outConnector->provider());
