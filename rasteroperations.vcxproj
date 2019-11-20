@@ -204,6 +204,7 @@
     <ClCompile Include="rasteroperations\filter\stackminmaxfilter.cpp" />
     <ClCompile Include="rasteroperations\filter\timesat_nrs.cpp" />
     <ClCompile Include="rasteroperations\setrepresentation.cpp" />
+    <ClCompile Include="rasteroperations\zonalstatistics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="rasteroperations\filter\rankorderrasterfilter.h" />
     <ClInclude Include="rasteroperations\classification\rasterclassification.h" />
     <ClInclude Include="rasteroperations\setrepresentation.h" />
+    <ClInclude Include="rasteroperations\zonalstatistics.h" />
     <QtMoc Include="rasteroperations\rasteroperationsmodule.h">
     </QtMoc>
     <ClInclude Include="rasteroperations\classification\rasterslicing.h" />
