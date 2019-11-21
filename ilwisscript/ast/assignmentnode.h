@@ -38,7 +38,7 @@ public:
     void addOutputs(OutParametersNode *p);
     void setOutId(IDNode *idnode);
 private:
-    template<typename T1> bool copyObject(Symbol& sym, QString& ident,SymbolTable &symbols, bool useMerge=false) {
+    template<typename T1> bool copyObject(Symbol& sym, QString& ident,SymbolTable &symbols, bool useMerge=false, const std::map<QString, QVariant>& addInfo = std::map<QString, QVariant>()) {
         IlwisData<T1> source =  sym._var.value<IlwisData<T1>>();
         if (!source.isValid())
             return false;
@@ -48,25 +48,32 @@ private:
         }
         bool wasAnonymous = source->isAnonymous();
         bool done = false;
-        IlwisData<T1> target;
-        //target.prepare(name, source->ilwisType());
-        if ( useMerge) {
-            if ( target.prepare(ident, source->ilwisType())) {
-                done = target->merge(source.ptr());
-            }
-        }
-        if(!done) {
-            T1 *obj = static_cast<T1 *>(source->clone());
-            if(!obj)
-                return false;
-            if ( ident.indexOf("://")!= -1) {// its a link, not a name
-                obj->resourceRef().setUrl(QUrl(ident));
-                obj->resourceRef().setUrl(QUrl(ident), true);
+		IlwisData<T1> target;
+		if (addInfo.find(INPUTISOUTPUTFLAG) != addInfo.end()) {
+			quint64 id = addInfo.at(INPUTISOUTPUTFLAG).toULongLong();
+			target.prepare(id);
+			ident = target->resourceRef().url(true).toString();
+		}
+		else {
+			if (useMerge) {
+				if (target.prepare(ident, source->ilwisType())) {
+					done = target->merge(source.ptr());
+				}
+			}
+			if (!done) {
+				T1 *obj = static_cast<T1 *>(source->clone());
+				if (!obj)
+					return false;
+				if (ident.indexOf("://") != -1) {// its a link, not a name
+					obj->resourceRef().setUrl(QUrl(ident));
+					obj->resourceRef().setUrl(QUrl(ident), true);
 
-            } else
-                obj->name(ident);
-            target.set(obj);
-        }
+				}
+				else
+					obj->name(ident);
+				target.set(obj);
+			}
+		}
         if ( !target.isValid())
             return false;
 

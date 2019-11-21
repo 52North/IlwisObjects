@@ -278,9 +278,9 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                         ok &= copyObject<GeoReference>(sym, result,symbols);
                     } else if (hasType(tp, itTABLE | itCOLUMN)){
                         // try generic type first (Table); if failed try specific type (FlatTable)
-                        ok &= copyObject<Table>(sym, result,symbols,false);
+                        ok &= copyObject<Table>(sym, result,symbols,false, additionalInfo);
                         if (!ok && tp == itFLATTABLE)
-                            ok &= copyObject<FlatTable>(sym, result,symbols,false);
+                            ok &= copyObject<FlatTable>(sym, result,symbols,false, additionalInfo);
                         QSharedPointer<Selector> selector = _outParms->selector(result);
                         if (!selector.isNull()){
                             QString varName = selector->variable();

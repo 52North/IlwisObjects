@@ -118,6 +118,9 @@
     <ClCompile Include="rasteroperations\zonalstatistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rasteroperations\percentilegroupscolumn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h">
@@ -199,6 +202,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rasteroperations\zonalstatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\percentilegroupscolumn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

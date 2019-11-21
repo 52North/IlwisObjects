@@ -194,6 +194,7 @@
     <ClCompile Include="rasteroperations\mannkendallsignificancetest.cpp" />
     <ClCompile Include="rasteroperations\mirrorrotateraster.cpp" />
     <ClCompile Include="rasteroperations\movingaverage.cpp" />
+    <ClCompile Include="rasteroperations\percentilegroupscolumn.cpp" />
     <ClCompile Include="rasteroperations\pointtoraster.cpp" />
     <ClCompile Include="rasteroperations\polygontoraster.cpp" />
     <ClCompile Include="rasteroperations\filter\rankorderrasterfilter.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="rasteroperations\mannkendallsignificancetest.h" />
     <ClInclude Include="rasteroperations\mirrorrotateraster.h" />
     <ClInclude Include="rasteroperations\movingaverage.h" />
+    <ClInclude Include="rasteroperations\percentilegroupscolumn.h" />
     <ClInclude Include="rasteroperations\pointtoraster.h" />
     <ClInclude Include="rasteroperations\polygontoraster.h" />
     <ClInclude Include="rasteroperations\filter\rankorderrasterfilter.h" />
