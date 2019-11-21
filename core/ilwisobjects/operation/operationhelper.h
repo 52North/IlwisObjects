@@ -23,6 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 namespace Ilwis {
 
+	const QString INPUTISOUTPUTFLAG = "outputisinput";
+
 typedef std::function<bool()> CheckCondtion;
 class Domain;
 typedef IlwisData<Domain> IDomain;

@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisdata.h"
 #include "ilwisobject.h"
 #include "connectorinterface.h"
+#include "operationhelper.h"
 #include "operationmetadata.h"
 
 using namespace Ilwis;
@@ -83,7 +84,7 @@ void OperationMetaData::parmfromResource(int n, const QString& base)
             QString description = res[parmBase + "desc"].toString();
             bool optional = res[parmBase + "optional"].toBool();
             bool needsQuotes = res[parmBase + "needsquotes"].toBool();
-            int linkedinput =  res.hasProperty("outputisinput") ? res["outputisinput"].toInt() : -1;
+            int linkedinput =  res.hasProperty(INPUTISOUTPUTFLAG) ? res[INPUTISOUTPUTFLAG].toInt() : -1;
 
             QString term;
             OperationParameter::ParameterKind kind = OperationParameter::ptOUTPUT;

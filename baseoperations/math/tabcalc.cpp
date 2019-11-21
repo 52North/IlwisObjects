@@ -73,7 +73,7 @@ bool TabCalc::execute(ExecutionContext *ctx, SymbolTable &symTable)
    }
    _outputTable->column(_outputColumn,values);
    if ( !_createNewTable){
-       ctx->_additionalInfo["outputisinput"] = _inputTable->id();
+       ctx->_additionalInfo[INPUTISOUTPUTFLAG] = _inputTable->id();
    }
 
    QVariant value;

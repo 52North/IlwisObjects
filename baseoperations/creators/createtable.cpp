@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "flattable.h"
 #include "datadefinition.h"
 #include "columndefinition.h"
+#include "operationhelper.h"
 #include "createtable.h"
 
 using namespace Ilwis;
@@ -60,7 +61,7 @@ bool CreateTable::execute(ExecutionContext *ctx, SymbolTable &symTable)
     tbl.prepare(res); //, options);
     for (auto item : _columns)
         tbl->addColumn(ColumnDefinition(item.first, item.second));
-    ctx->_additionalInfo["outputisinput"] = true;
+    ctx->_additionalInfo[INPUTISOUTPUTFLAG] = true;
     if ( tbl.isValid()){
 		std::map<quint64, IIlwisObject> doms;
 		std::vector<IIlwisObject> objs;
