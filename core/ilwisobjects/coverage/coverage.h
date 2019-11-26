@@ -118,8 +118,8 @@ public:
      * \param attType the type of the new table
      */
 
-    virtual NumericStatistics& statistics(int mode=0);
-    virtual const NumericStatistics& statistics(int mode = 0) const;
+   // virtual NumericStatistics& statistics(const QString& attribute, int mode=0);
+   // virtual const NumericStatistics& statistics(int mode = 0) const;
 
 
       //@override
@@ -139,6 +139,7 @@ public:
     virtual QVariant coord2value(const Coordinate& crd, const QString& attrname="") = 0;
 
     virtual ITable attributeTable(quint32 level=0) = 0;
+	virtual ITable attributeTable(quint32 level = 0) const = 0;
     virtual void setAttributes(const ITable &otherTable, const QString& joinColumn=sUNDEF) = 0;
     virtual bool hasAttributes() const;
 
@@ -152,9 +153,6 @@ private:
 
     ICoordinateSystem _coordinateSystem;
     Envelope _envelope;
-    NumericStatistics _statistics;
-
-
 };
 
 typedef IlwisData<Coverage> ICoverage;

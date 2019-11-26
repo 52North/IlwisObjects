@@ -86,16 +86,6 @@ void Coverage::envelope(const Envelope &bnds)
 	}
 }
 
-NumericStatistics &Coverage::statistics(int  )
-{
-        return _statistics;
-}
-
-const NumericStatistics &Coverage::statistics(int) const
-{
-    return _statistics;
-}
-
 Resource Coverage::resource(int mode) const
 {
     Resource resource = IlwisObject::resource(mode);
@@ -136,7 +126,6 @@ void Coverage::copyTo(IlwisObject *obj)
     Coverage *cov = static_cast<Coverage *>(obj);
     cov->_coordinateSystem = _coordinateSystem;
     cov->_envelope = _envelope;
-    cov->_statistics = _statistics;
 }
 
 void Coverage::storeAdjustment(const QString& property, const QString& value) {
