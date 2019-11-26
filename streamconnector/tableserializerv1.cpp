@@ -154,6 +154,7 @@ bool TableSerializerV1::loadData(IlwisObject* obj, const IOOptions& options){
         record.loadData(types,_stream,options);
 
     }
+
     _dataLoaded = true;
     return true;
 }

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "dataformat.h"                  
 #include "uicontextmodel.h" 
 #include "mastercatalogmodel.h"   
-#include "applicationformexpressionparser.h"                                                                                                                                                  
+#include "applicationformexpressionparser.h"                                                                                                                                                   
  
  
 using namespace Ilwis;                                                                                     
@@ -716,7 +716,7 @@ QString ApplicationFormExpressionParser::index2Form(quint64 metaid, bool showout
     } catch(const std::exception& ex){
         kernel()->issues()->log(ex.what());  
     } 
-    return "";                 
+    return "";                  
 }
 
 std::vector<ApplicationFormExpressionParser::FormParameter> ApplicationFormExpressionParser::createWorkflowMetadata(quint64 metaid) const 

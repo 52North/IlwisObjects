@@ -25,7 +25,7 @@ Row {
             x : -offset
 
             onLoaded : {
-			    var extraParams = {name : 'histogram',chartType : 'line', color : 'black'}
+			    var extraParams = {name : 'histogram',chartType : 'line', color : 'black', attribute : editor.visualAttribute.attributename}
                 chartArea.item.chart.addDataTable(editor.coverageId,"max","counts",extraParams)
                 chartArea.item.margins.left = 0
                 chartArea.item.margins.right = 0
@@ -145,7 +145,7 @@ Row {
         }
     }
     function updateMarkerPositions(fraction){
-        editor.setStretchLimit(fraction); // calls editor.setMarkers(positions)
+        editor.setStretchLimit(editor.visualAttribute.attributename, fraction); // calls editor.setMarkers(positions)
         editor.markersConfirmed();
 
         if (zoomonpreset.checked) {

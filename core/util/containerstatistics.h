@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <unordered_map>
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/mean.hpp>
@@ -163,11 +164,26 @@ public:
         undefined = pseudoUndef != rILLEGAL ? undef<DataType>() : pseudoUndef;
         double sigDigits = 0;
         double rest = 0;
+		qint32 imax = -1e9, imin = 1e9;
+		std::vector<double> vmap;
+		if (_mapping.size() > 0) {
+			for (auto& item : _mapping) {
+				imax = std::max(item.first, imax);
+				imin = std::min(item.first, imin);
+			}
+			vmap.resize(imax+1);
+			for (auto& item : _mapping) {
+				vmap[item.first] = item.second;
+			}
+		}
 
         double pmin = rUNDEF, pmax = rUNDEF, psum = 0;
         quint64 pcount=0, pnetcount = 0;
         for (auto iter = begin; iter != end; ++iter) {
             DataType sample = *iter;
+			if (vmap.size() > 0) {
+				sample = vmap[(quint32)sample];
+			}
 			++pcount;
             if (!isNumericalUndef(sample)) {
                 rest = fabs(sample - (qint64)sample);
@@ -243,6 +259,9 @@ public:
 				int binsize = _bins.size();
                 for (auto iter = begin; iter != end; ++iter) {
                     DataType sample = *iter;
+					if (vmap.size() > 0) {
+						sample = vmap[(quint32)sample];
+					}
                     quint16 index = (quint16)binsize - 1;
                     if (!isNumericalUndef(sample)) {
 						double d = (double)(sample - rmin);
@@ -262,6 +281,12 @@ public:
             std::unique_ptr<Tranquilizer> tranquilizer;
             return calculate(begin, end, tranquilizer, mode, bins, pseudoUndef);
         }
+
+		template<typename IterType> bool calculate(const IterType& begin, const IterType& end, std::unordered_map<qint32, double>& mapping, int mode = pBASIC, int bins = 0, double pseudoUndef = rILLEGAL) {
+			std::unique_ptr<Tranquilizer> tranquilizer;
+			_mapping = mapping;
+			return calculate(begin, end, tranquilizer, mode, bins, pseudoUndef);
+		}
 
         bool isValid() const {
             return prop(pMAX) != rUNDEF;
@@ -320,18 +345,22 @@ public:
 			return std::pair<double, double>(startV, endV);
 		}
 
+		static quint32 index(PropertySets method)  {
+			if (method == 0)
+				return 0;
+			return (quint32)(std::log((int)method) / log(2) + 0.2);
+		}
+
         private:
         std::vector<double> _markers;
+		std::unordered_map<qint32, double> _mapping;
 
         quint32 _sigDigits;
         std::vector<HistogramBin> _bins;
+
         quint32 _binCount=iUNDEF;
 
-        quint32 index(PropertySets method) const {
-            if ( method == 0)
-                return 0;
-            return (quint32)(std::log((int)method) / log(2) + 0.2);
-        }
+
 
         template<typename IterType> double calcStdDev(const IterType& begin,  const IterType& end, DataType undefined) {
             double ncount = prop(pNETTOCOUNT);

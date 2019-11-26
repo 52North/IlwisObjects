@@ -287,7 +287,7 @@ bool ZonalStatisticsRaster::execute(ExecutionContext *ctx, SymbolTable &symTable
 		++iter2;
 	}
 
-	_outputRaster->statistics(ContainerStatistics<double>::pBASIC);
+	_outputRaster->statistics(PIXELVALUE, ContainerStatistics<double>::pBASIC);
 
 	QVariant value;
 	value.setValue<IRasterCoverage>(_outputRaster);
