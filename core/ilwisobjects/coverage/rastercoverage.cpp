@@ -15,7 +15,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <qapplication.h>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "raster.h"
+#include "version.h"
 #include "connectorinterface.h"
 #include "symboltable.h"
 #include "table.h"
@@ -173,20 +177,49 @@ void RasterCoverage::copyBinary(const IRasterCoverage& raster, quint32 inputInde
     });
 }
 
-bool Ilwis::RasterCoverage::histogramCalculated() const
+NumericStatistics RasterCoverage::statistics(const QString& attribute) const {
+	if (attribute == PIXELVALUE)
+		return datadef().statistics();
+	else {
+		if (hasAttributes()) {
+			int idx;
+			ColumnDefinition coldef = attributeTable()->columndefinition(attribute);
+			if (coldef.isValid())
+				return coldef.datadef().statistics();
+		}
+	}
+	return NumericStatistics();
+}
+
+NumericStatistics& RasterCoverage::statisticsRef(const QString& attribute)  {
+	if (attribute == PIXELVALUE)
+		return datadefRef().statisticsRef();
+	else {
+		if (hasAttributes()) {
+			int idx;
+			ColumnDefinition& coldef = attributeTable()->columndefinitionRef(attribute);
+			if (coldef.isValid())
+				return coldef.datadef().statisticsRef();
+		}
+	}
+	throw ErrorObject("Invalid attribute for raster");
+}
+
+bool Ilwis::RasterCoverage::histogramCalculated(const QString& attribute) const
 {
-    const NumericStatistics& stats = Coverage::statistics();
+
+    NumericStatistics stats = statistics(attribute);
     std::vector<NumericStatistics::HistogramBin> hist = stats.histogram();
     return hist.size() != 0;
 }
 
-ITable RasterCoverage::histogramAsTable()
+ITable RasterCoverage::histogramAsTable(const QString& attribute)
 {
     std::vector<NumericStatistics::HistogramBin> hist;
-    if ( histogramCalculated())
-        hist = statistics().histogram();
+    if ( histogramCalculated(attribute))
+        hist = statistics(attribute).histogram();
     else {
-        hist = statistics(ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM).histogram();
+        hist = statistics(attribute, ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM,0).histogram();
     }
     
     int count = 0;
@@ -198,7 +231,21 @@ ITable RasterCoverage::histogramAsTable()
     histogram->addColumn("counts", IDomain("count"));
 
     count = 0;
-    PIXVALUETYPE vstart = datadef().range<NumericRange>()->min();
+	PIXVALUETYPE vstart;
+
+	if ( attribute == PIXELVALUE)
+		vstart = datadef().range<NumericRange>()->min();
+	else {
+		if (hasAttributes()) {
+			int idx = attributeTable()->columnIndex(attribute);
+			if (idx == iUNDEF)
+				return ITable();
+			ColumnDefinition def = attributeTable()->columndefinition(idx);
+			if (def.datadef().domain()->ilwisType() != itNUMERICDOMAIN)
+				return ITable();
+			vstart = def.datadef().range<NumericRange>()->min();
+		}
+	}
 	if (hist.size() > 0) {
 		for (int i = 0; i < hist.size() - 1; ++i) {
 			auto& h = hist[i];
@@ -211,46 +258,87 @@ ITable RasterCoverage::histogramAsTable()
     return histogram;
 }
 
-bool RasterCoverage::loadHistogram() {
+void string2statmap(std::map < QString, int>& mp) {
+	mp["count"] = NumericStatistics::index(NumericStatistics::pCOUNT);
+	mp["nettocount"] = NumericStatistics::index(NumericStatistics::pNETTOCOUNT);
+	mp["min"] = NumericStatistics::index(NumericStatistics::pMIN);
+	mp["max"] = NumericStatistics::index(NumericStatistics::pMAX);
+	mp["distance"] = NumericStatistics::index(NumericStatistics::pDISTANCE);
+	mp["delta"] = NumericStatistics::index(NumericStatistics::pDELTA);
+	mp["sum"] = NumericStatistics::index(NumericStatistics::pSUM);
+	mp["mean"] = NumericStatistics::index(NumericStatistics::pMEAN);
+	mp["median"] = NumericStatistics::index(NumericStatistics::pMEDIAN);
+	mp["variance"] = NumericStatistics::index(NumericStatistics::pVARIANCE);
+	mp["skew"] = NumericStatistics::index(NumericStatistics::pSKEW);
+	mp["kurtosis"] = NumericStatistics::index(NumericStatistics::pKURTOSIS);
+}
+
+void RasterCoverage::loadBand(const QString& attribute, const std::map < QString, int>& mapping, QJsonObject& jband) {
+	QJsonObject jattrs = jband.value("attributes").toObject();
+	QJsonObject jattr = jattrs.value(attribute).toObject();
+	QJsonObject jstats = jattr.value("statistics").toObject();
+	QString histo = jstats.value("histogram").toString();
+	QStringList parts = histo.split(" ");
+	if (histo == "")
+		return ;
+	std::vector<NumericStatistics::HistogramBin> bins;
+	for (auto part : parts) {
+		auto subParts = part.split("|");
+		if ( subParts.size() == 2)
+			bins.push_back(NumericStatistics::HistogramBin(subParts[0].toDouble(), subParts[1].toInt()));
+	}
+	QJsonArray jmark = jstats.value("markers").toArray();
+	int maxMarkers = NumericStatistics::index(NumericStatistics::pLAST);
+	std::vector<PIXVALUETYPE> markers(maxMarkers, rUNDEF);
+	for (auto item : jmark) {
+		QJsonObject jmark = item.toObject();
+		double value = jmark.begin().value().toDouble();
+		QString key = jmark.begin().key();
+		int idx = mapping.at(key);
+		markers[idx] = value;
+		
+	}
+	statisticsRef(PIXELVALUE).setContent(bins, markers);
+}
+bool RasterCoverage::loadHistograms(const QString& attribute) {
 	QString path = resource().container().toLocalFile();
-	QFileInfo container(path);
-	bool containerIsFile = container.isFile();
-	QFileInfo inf(containerIsFile ? path : resource().url(true).toLocalFile());
+	QFileInfo inf(path);
+	bool containerIsFile = inf.isFile();
+	QFileInfo dataInf = containerIsFile ? path : resource().url(true).toLocalFile();
+	QString name = resource().name();
+	QString dataName = name;
 	if (containerIsFile) {
-		path = path.mid(0, path.lastIndexOf("/"));
+		int idx = path.lastIndexOf("/");
+		dataName = path.mid(idx + 1);
+		path = path.left(idx);
 	}
 	if (inf.exists()) {
-		path += "/.ilwis/stats";
+		path += "/.ilwis";
 		QString name = resource().name();
 		QString containerFile = "";
-		if (containerIsFile) {
-			containerFile = resource().container().fileName() + "/";
-		}
-		QString histName = path + "/" + containerFile + name + ".histogram";
+		QString histName = path + "/" + dataName + ".meta";
 		QFileInfo infHist(histName);
+		std::map < QString, int> mp;
+		string2statmap(mp);
+
 		if (infHist.exists()) {
-			QFile cacheFile(histName);
-			if (cacheFile.open(QFile::ReadOnly)) {
-				QDataStream stream(&cacheFile);
-				int streamversion;
-				stream >> streamversion;
-				stream.setVersion(streamversion);
-				QDateTime modifiedDate;
-				stream >> modifiedDate;
-				if (modifiedDate == inf.lastModified()) {
-					int bincount;
-					stream >> bincount;
-					std::vector<NumericStatistics::HistogramBin> bins(bincount);
-					for (auto& bin : bins) {
-						stream >> bin._limit >> bin._count;
+			QFile jsonfile(histName);
+			if (jsonfile.open(QFile::ReadOnly)) {
+				QString jsonstring = jsonfile.readAll();
+				QJsonDocument doc = QJsonDocument::fromJson(jsonstring.toUtf8());
+				if (!doc.isNull()) {
+					QJsonObject jroot, jbands, jband, jcoverage;
+					jroot = doc.object();
+					jcoverage = jroot.value("rastercoverage").toObject();
+					jbands = jcoverage.value("bands").toObject();
+					auto d1 = jcoverage.value("lastmodified").toString();
+					auto d2 = dataInf.lastModified().toString();
+					if (d1 == d2) {
+						QJsonObject jband;
+						jband = jbands.value(name).toObject();
+						loadBand(attribute, mp, jband);
+						return true;
 					}
-					int markerCount;
-					stream >> markerCount;
-					std::vector<PIXVALUETYPE> markers(markerCount);
-					for (auto& marker : markers)
-						stream >> marker;
-					statistics().setContent(bins, markers);
-					return true;
 				}
 			}
 		}
@@ -258,63 +346,100 @@ bool RasterCoverage::loadHistogram() {
 	return false;
 }
 
-void RasterCoverage::storeHistogram()  {
+void RasterCoverage::storeHistograms(const QString& attribute)  {
 	QString path = resource().container().toLocalFile();
 	QFileInfo inf(path);
 	bool containerIsFile = inf.isFile();
+	QString name = resource().name();
+	QString dataName = name;
 	if (containerIsFile) {
-		path = path.mid(0, resource().container().toLocalFile().lastIndexOf("/"));
+		int idx = path.lastIndexOf("/");
+		dataName = path.mid(idx + 1);
+		path = path.left(idx);
 	}
 	QDir dir(path + "/.ilwis");
 	if (!dir.exists()) {
 		if (!QDir(path).mkdir(".ilwis"))
 			return;
 	}
-	if (!QDir(path + "/.ilwis/stats").exists()){
-		QDir statsPath(path + "/.ilwis");
-		if (!statsPath.mkdir("stats"))
-			return;
-	}
-	QString containerFile = "";
-	if (containerIsFile) {
-		containerFile = resource().container().fileName();
-		QDir dir(path + "/.ilwis/stats");
-		if (!QDir(path + "/.ilwis/stats/" + containerFile).exists()) {
-			if (!dir.mkdir(containerFile))
-				return;
-		}
-		containerFile += "/";
-	}
-	QString name = resource().name();
-	QString histName = path + "/.ilwis/stats/" + containerFile + name + ".histogram";
+
+	
+	QString histName = path + "/.ilwis/" + dataName + ".meta";
 	QFileInfo infHist(histName);
-	QFile cacheFile(histName);
-	if (cacheFile.open(QFile::WriteOnly)) {
-		QDataStream stream(&cacheFile);
-		stream << stream.version();
-		QFileInfo localFile(containerIsFile ?  inf : resource().url().toLocalFile());
-		stream << localFile.lastModified();
-		auto bins = statistics().histogram();
-		stream << (int)bins.size();
-		for (auto& bin : bins) {
-			stream << bin._limit << bin._count;
-		}
-		auto markers = statistics().markers();
-		stream << (int)markers.size();
-		for (auto& marker : markers)
-			stream << marker;
+	QFile file;
+	QJsonDocument doc;
+	QJsonObject jroot, jbands, jband, jcoverage, jstats, jattribute, jattributes;
+	file.setFileName(histName);
+	if (file.open(QIODevice::ReadOnly)) {
+		QString settings = file.readAll();
+		doc = QJsonDocument::fromJson(settings.toUtf8());
+		jroot = doc.object();
+		jcoverage = jroot.value("rastercoverage").toObject();
+		jbands = jcoverage.value("bands").toObject();
+		jband = jbands.value(name).toObject();
+		jattributes = jband.value("attributes").toObject();
+		file.close();
 	}
-	cacheFile.close();
+
+	storeDataDef(statistics(attribute), jstats);
+	if (containerIsFile) {
+		QJsonValue jvalue = jbands.value(name);
+		if (jvalue != QJsonValue::Undefined)
+			jband = jvalue.toObject();
+	}
+
+	jattribute.insert("statistics", jstats);
+	jattributes.insert(attribute, jattribute);
+	jband.insert("attributes", jattributes);
+	jbands.insert(name, jband);
+	jcoverage.insert("bands", jbands);
+	jcoverage.insert("version", Version::interfaceVersion42);
+	QFileInfo localFile(containerIsFile ? inf : resource().url().toLocalFile());
+	jcoverage.insert("lastmodified", localFile.lastModified().toString());
+	jroot.insert("rastercoverage", jcoverage);
+	
+
+	doc = QJsonDocument(jroot);
+	auto bytes = doc.toJson();
+	if (file.open(QIODevice::WriteOnly)) {
+		file.write(bytes);
+		file.close();
+	}
+
 }
 
-NumericStatistics &RasterCoverage::statistics(int mode, int bins)
+
+void RasterCoverage::storeDataDef(const NumericStatistics& stats, QJsonObject& jstats) const{
+	QString histogram;
+	auto bins = stats.histogram();
+	for (auto& bin : bins) {
+		if (histogram != "") histogram += " ";
+		histogram += QString::number(bin._limit) + "|" + QString::number(bin._count);
+	}
+	jstats.insert("histogram", histogram);
+
+	QJsonArray jsmarkers;
+	auto markers = stats.markers();
+	std::map < QString, int> mp;
+	string2statmap(mp);
+	for (auto mark : mp) {
+		QJsonObject data;
+		auto v = markers[mark.second];
+		if (std::isnan(v))
+			continue;
+		data.insert(mark.first, v);
+		jsmarkers.append(data);
+	}
+	jstats.insert("markers", jsmarkers);
+}
+NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode, int bins)
 {
     if ( mode == ContainerStatistics<PIXVALUETYPE>::pNONE)
-        return Coverage::statistics(mode);
+        return statisticsRef(attribute);
 
     if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM)) {
-        if (!histogramCalculated()) {
-            if (!loadHistogram()) {
+        if (!histogramCalculated(attribute)) {
+            if (!loadHistograms(attribute)) {
                 std::unique_ptr<Tranquilizer> trq;
                 bool inWorkerThread = QThread::currentThread() != QCoreApplication::instance()->thread();
                 if (inWorkerThread) {
@@ -342,20 +467,43 @@ NumericStatistics &RasterCoverage::statistics(int mode, int bins)
 					int step = sz / 1e6 + 1;
 					start.step(step);
 				}
-				statistics().calculate(start, done, trq, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
-                storeHistogram();
+				calculateHistogram(attribute, start, done, mode, bins);
+                storeHistograms(attribute);
                 QApplication::restoreOverrideCursor();
             }
         }
-	} else
-		statistics().calculate(begin(), end(), (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
+	}
+	else {
+		calculateHistogram(attribute, begin(), end(), mode, bins);
+		storeHistograms(attribute);
+	}
 
     auto rng = datadefRef().range<NumericRange>();
     if ( rng){
-        rng->min(statistics().prop(NumericStatistics::pMIN));
-        rng->max(statistics().prop(NumericStatistics::pMAX));
+        rng->min(statistics(attribute).prop(NumericStatistics::pMIN));
+        rng->max(statistics(attribute).prop(NumericStatistics::pMAX));
     }
-    return Coverage::statistics(mode);
+    return statisticsRef(attribute);
+}
+
+void RasterCoverage::calculateHistogram(const QString& attribute, const PixelIterator& begin, const PixelIterator& end, int mode, int bins) {
+	if (attribute == PIXELVALUE)
+		statisticsRef(attribute).calculate(begin, end, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
+	else {
+		if (hasAttributes()) {
+			std::unordered_map<qint32, double> mapping;
+			int pkIndex = attributeTable()->columnIndex(primaryKey());
+			int atIndex = attributeTable()->columnIndex(attribute);
+			if (pkIndex != iUNDEF && atIndex != iUNDEF) {
+				for (int r = 0; r < attributeTable()->recordCount(); ++r) {
+					quint32 key = attributeTable()->cell(pkIndex, r).toUInt();
+					double value = attributeTable()->cell(atIndex, r).toDouble();
+					mapping[key] = value;
+				}
+				statisticsRef(attribute).calculate(begin, end, mapping, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
+			}
+		}
+	}
 }
 
 UPGrid &RasterCoverage::gridRef()
@@ -703,9 +851,14 @@ QVariant RasterCoverage::coord2value(const Coordinate &c, const QString &attrnam
     return QVariant();
 }
 
-ITable RasterCoverage::attributeTable(quint32 level)
+ITable RasterCoverage::attributeTable(quint32 level) const
 {
     return _attributeTable;
+}
+
+ITable RasterCoverage::attributeTable(quint32 level) 
+{
+	return _attributeTable;
 }
 
 bool RasterCoverage::hasAttributes() const

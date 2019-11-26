@@ -93,7 +93,8 @@ public:
 
     const DataDefinition& datadef(quint32 layer=WHOLE_RASTER) const;
     DataDefinition& datadefRef(quint32 layer=WHOLE_RASTER);
-    ITable attributeTable(quint32 level=0) ;
+    ITable attributeTable(quint32 level=0) const;
+	ITable attributeTable(quint32 level = 0);
     bool hasAttributes() const;
     virtual void setAttributes(const ITable &otherTable, const QString& joinColumn=sUNDEF);
     QString primaryKey() const;
@@ -189,7 +190,7 @@ public:
 
     }
 
-    NumericStatistics& statistics(int mode=0, int bins=0);
+    NumericStatistics& statistics(const QString& attribute, int mode, int bins=0);
 
     //@override
     Resource resource(int mode=cmINPUT) const;
@@ -224,8 +225,10 @@ public:
     void setPseudoUndef(PIXVALUETYPE v);
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
-    bool histogramCalculated() const;
-    ITable histogramAsTable() ;
+    bool histogramCalculated(const QString& attribute=PIXELVALUE) const;
+    ITable histogramAsTable(const QString& attribute) ;
+	NumericStatistics statistics(const QString& attribute) const;
+	NumericStatistics& statisticsRef(const QString& attribute);
     NumericRange calcMinMax(bool force=false) const;
 	bool prepare(const IOOptions& options = IOOptions());
 	void storeAdjustment(const QString& property, const QString& value) override;
@@ -249,8 +252,11 @@ private:
 
     bool bandPrivate(quint32 bandIndex,  PixelIterator inputIter) ;
     PixelIterator bandPrivate(quint32 index, const Ilwis::BoundingBox &box=BoundingBox());
-	bool loadHistogram();
-	void storeHistogram() ;
+	bool loadHistograms(const QString& attribute);
+	void storeHistograms(const QString& attribute) ;
+	void calculateHistogram(const QString& attribute, const PixelIterator& begin, const PixelIterator& end, int mode, int bins);
+	void storeDataDef(const NumericStatistics& bins, QJsonObject& stats) const;
+	void loadBand(const QString& attribute, const std::map < QString, int>& mp, QJsonObject& jband);
 };
 
 typedef IlwisData<RasterCoverage> IRasterCoverage;
