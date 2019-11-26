@@ -225,7 +225,7 @@ public:
     void setPseudoUndef(PIXVALUETYPE v);
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
-    bool histogramCalculated(const QString& attribute=PIXELVALUE) const;
+    bool histogramCalculated(const QString& attribute=PIXELVALUE, int mode=NumericStatistics::pQUICKHISTOGRAM) const;
     ITable histogramAsTable(const QString& attribute) ;
 	NumericStatistics statistics(const QString& attribute) const;
 	NumericStatistics& statisticsRef(const QString& attribute);
@@ -252,11 +252,11 @@ private:
 
     bool bandPrivate(quint32 bandIndex,  PixelIterator inputIter) ;
     PixelIterator bandPrivate(quint32 index, const Ilwis::BoundingBox &box=BoundingBox());
-	bool loadHistograms(const QString& attribute);
-	void storeHistograms(const QString& attribute) ;
+	bool loadHistograms(const QString& attribute, int mode);
+	void storeHistograms(const QString& attribute, int mode) ;
 	void calculateHistogram(const QString& attribute, const PixelIterator& begin, const PixelIterator& end, int mode, int bins);
-	void storeDataDef(const NumericStatistics& bins, QJsonObject& stats) const;
-	void loadBand(const QString& attribute, const std::map < QString, int>& mp, QJsonObject& jband);
+	void storeDataDef(const NumericStatistics& bins, QJsonObject& stats, int mode) const;
+	bool loadBand(const QString& attribute, const std::map < QString, int>& mp, QJsonObject& jband, int mode);
 };
 
 typedef IlwisData<RasterCoverage> IRasterCoverage;

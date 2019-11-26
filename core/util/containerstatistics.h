@@ -115,10 +115,11 @@ public:
         return _bins;
     }
 
-	void setContent(const std::vector<HistogramBin>& bins, const std::vector<double> markers) {
+	void setContent(const std::vector<HistogramBin>& bins, const std::vector<double> markers, PropertySets hmode) {
 		_bins = bins;
 		_markers = markers;
 		_binCount = bins.size();
+		_histogramMode = hmode;
 
 	}
 
@@ -292,6 +293,10 @@ public:
             return prop(pMAX) != rUNDEF;
         }
 
+		PropertySets histogramMode() const {
+			return _histogramMode;
+		}
+
         double stretchLinear(double input, int stretchRange) const {
             if ( input == rUNDEF)
             return rUNDEF;
@@ -357,6 +362,7 @@ public:
 
         quint32 _sigDigits;
         std::vector<HistogramBin> _bins;
+		PropertySets _histogramMode = pNONE;
 
         quint32 _binCount=iUNDEF;
 
