@@ -141,15 +141,6 @@ OperationImplementation::State PercentileGroupsColumn::prepare(ExecutionContext 
 	
 	_createNewTable = _expression.input<bool>(3);
 	_outputTable = _createNewTable ? _inputTable->copyTable(sUNDEF) : _inputTable;
-	/* Table *tbl = static_cast<Table *>(_inputTable->clone());
-	Resource res = tbl->resource();
-	quint64 newId = Identity::newAnonymousId();
-	QString path = INTERNAL_CATALOG + "/" + ANONYMOUS_PREFIX + QString::number(newId);
-	res.setId(newId);
-	res.setUrl(path, false, false);
-	res.setUrl(path, true, false);
-	tbl->resourceRef() = res;
-	_outputTable.set(tbl);*/
 	_outputTable->addColumn("percentile", "value");
 	_outputTable->addColumn("percentileIndex", "count");
 
