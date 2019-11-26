@@ -73,6 +73,7 @@ public:
     virtual bool isDataLoaded() const;
     virtual void initValuesColumn(const QString& ) {}
 	void clearTable(bool includeDefintion) {}
+	void recalcRanges() {};
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
 private:
