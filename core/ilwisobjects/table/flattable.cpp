@@ -455,3 +455,19 @@ quint32 Ilwis::FlatTable::recordCount() const
 {
     return BaseTable::recordCount();
 }
+
+void FlatTable::recalcRanges() {
+	for (int c = 0; c < columnCount(); ++c) {
+		if (hasType(columndefinitionRef(c).datadef().domain()->ilwisType(), itNUMERICDOMAIN)) {
+			double rmin = 1e308;
+			double rmax = -1e308;
+			for (int r = 0; r <recordCount(); ++r) {
+				double v = cell(c, r).toDouble();
+				rmin = std::min(v, rmin);
+				rmax = std::max(v, rmax);
+			}
+			IlwisTypes vt = columndefinitionRef(c).datadef().domain()->valueType();
+			columndefinitionRef(c).datadef().range(new NumericRange(rmin, rmax, hasType(vt, itINTEGER) ? 1 : 0));
+		}
+	}
+}

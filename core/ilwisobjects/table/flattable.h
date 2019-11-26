@@ -107,6 +107,7 @@ public:
 
     ITable copyTable(const QString &nm) ;
     bool merge(const IlwisObject *obj);
+	void recalcRanges();
 protected:
     bool isColumnIndexValid(quint32 index) const{
         bool ok =  index != iUNDEF ;
