@@ -311,6 +311,17 @@ ITable FeatureCoverage::attributeTable(quint32 level)
     return tbl;
 }
 
+ITable FeatureCoverage::attributeTable(quint32 level) const
+{
+
+	// TODO add level parameter to access subfeature attributes
+
+	IAttributeTable tbl;
+	tbl.prepare();
+	tbl->featureCoverage(const_cast<FeatureCoverage *>(this));
+	return tbl;
+}
+
 void FeatureCoverage::setAttributes(const ITable& otherTable, const QString &joinColumn)
 {
     _attributeDefinition.clearAttributeDefinitions();
