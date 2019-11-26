@@ -244,7 +244,7 @@ bool ChartModel::addDataTable(const QString & objid, const QString& xcolumn, con
     }
     else if (hasType(obj->ilwisType(), itRASTER)) {
         IRasterCoverage raster = obj.as<RasterCoverage>();
-        tbl = raster->histogramAsTable();
+        tbl = raster->histogramAsTable(extraParams["attribute"].toString());
     }
 
     if (tbl->columnCount() < 2) {

@@ -125,7 +125,7 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         }
     }
     if ( numeric)
-        outputRaster->statistics(ContainerStatistics<double>::pBASIC);
+        outputRaster->statistics(PIXELVALUE, ContainerStatistics<double>::pBASIC);
 
     outputRaster->setAttributes(_attTable);
     QVariant value;

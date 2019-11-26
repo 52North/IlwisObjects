@@ -47,6 +47,13 @@ if (!obj.isValid())
     return !vpmodel()->layer()->isSupportLayer() && useable;
 }
 
+bool StretchLimits::canUse(const IIlwisObject &, const DataDefinition &def) const
+{
+	if (def.isValid())
+		return hasType(def.domain()->ilwisType(), itNUMERICDOMAIN);
+	return false;
+}
+
 
 
 VisualPropertyEditor *StretchLimits::create(VisualAttribute *p)
@@ -144,13 +151,13 @@ void StretchLimits::markersConfirmed() {
     vpmodel()->layer()->redraw();
 }
 
-void StretchLimits::setStretchLimit(double perc) {
+void StretchLimits::setStretchLimit(const QString& attribute, double perc) {
     ICoverage cov = coverage();
     IRasterCoverage raster = cov.as<RasterCoverage>();
     if (raster.isValid()) {
         _zoomLevel = perc;  // persist zoomlevel
 
-		auto limits = raster->statistics().calcStretchRange(perc);
+		auto limits = raster->statistics(attribute).calcStretchRange(perc);
         if (limits.first != rUNDEF && limits.second != rUNDEF)
             setMarkers({ limits.first, limits.second });
     }

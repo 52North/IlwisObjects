@@ -52,7 +52,7 @@ Ilwis::OperationImplementation *LinearStretchOperation::create(quint64 metaid,co
  */
 bool LinearStretchOperation::stretch(IRasterCoverage toStretch)
 {
-    NumericStatistics& statistics = _inputRaster->statistics();
+    NumericStatistics& statistics = _inputRaster->statistics(PIXELVALUE);
 
     // TODO: separate histogram into own class (and move
     // certain operations to it
@@ -124,7 +124,7 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
     _outputRaster->coordinateSystem(_inputRaster->coordinateSystem());
     _outputRaster->name(outputName);
 
-    NumericStatistics& statistics = _inputRaster->statistics();
+    NumericStatistics& statistics = _inputRaster->statistics(PIXELVALUE);
     //statistics.binCount(10);
     statistics.calculate(begin(_inputRaster), end(_inputRaster), NumericStatistics::pHISTOGRAM);
 

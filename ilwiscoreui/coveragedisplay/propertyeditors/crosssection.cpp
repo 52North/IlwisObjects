@@ -200,7 +200,7 @@ void CrosssectionTool::changePinData(int index, const Coordinate& crd) {
 			if (!_raster->datadef().range<NumericRange>()->isValid()) {
 				//QGuiApplication *app = static_cast<QGuiApplication *>(QApplication::instance());
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				_raster->statistics(Ilwis::NumericStatistics::pBASIC);
+				_raster->statistics(PIXELVALUE, Ilwis::NumericStatistics::pBASIC);
 				QApplication::restoreOverrideCursor();
 			}
 		}

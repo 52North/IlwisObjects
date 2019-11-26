@@ -526,7 +526,7 @@ void RasterCoverage::setDataDef(Domain& dm){
 }
 
 NumericStatistics* RasterCoverage::statistics(int mode, int bins){
-    return new NumericStatistics(this->ptr()->as<Ilwis::RasterCoverage>()->statistics(mode, bins));
+    return new NumericStatistics(this->ptr()->as<Ilwis::RasterCoverage>()->statistics(PIXELVALUE, mode, bins));
  }
 
 PixelIterator RasterCoverage::begin(){

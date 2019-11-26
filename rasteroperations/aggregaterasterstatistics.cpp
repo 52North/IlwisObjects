@@ -176,7 +176,7 @@ bool AggregateRasterStatistics::execute(ExecutionContext *ctx, SymbolTable& symT
 		zcolumn.clear(); // next column
 		xchanged = false; // reset flag as we are in the next column now
 	}
-	_outputRaster->statistics(ContainerStatistics<double>::pBASIC);
+	_outputRaster->statistics(PIXELVALUE, ContainerStatistics<double>::pBASIC);
 
 	QVariant value;
 	value.setValue<IRasterCoverage>(_outputRaster);

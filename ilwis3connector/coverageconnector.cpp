@@ -49,6 +49,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "projection.h"
 #include "tableconnector.h"
 #include "colorrange.h"
+#include "raster.h"
 #include "coordinatesystemconnector.h"
 #include "coverageconnector.h"
 #include "odfitem.h"
@@ -281,9 +282,9 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
     calcStatistics(obj,NumericStatistics::pBASIC);
 
     if ( dom->ilwisType() == itNUMERICDOMAIN) {
-
-        quint16 digits = coverage->statistics().significantDigits();
-        qint32 delta = coverage->statistics()[NumericStatistics::pDELTA];
+		RasterCoverage *raster = static_cast<RasterCoverage *>(coverage);
+        quint16 digits = raster->statistics(PIXELVALUE).significantDigits();
+        qint32 delta = raster->statistics(PIXELVALUE)[NumericStatistics::pDELTA];
         _domainName = dom->name();
 
         double resolution = datadef.range()->as<NumericRange>()->resolution();
@@ -306,7 +307,8 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
             }
         }
         else {
-            const NumericStatistics& stats = coverage->statistics();
+			RasterCoverage *raster = static_cast<RasterCoverage *>(coverage);
+            const NumericStatistics& stats = raster->statistics(PIXELVALUE);
             double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
             if (precision < 1e-06)
                 precision = 0.0;

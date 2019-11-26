@@ -40,10 +40,11 @@ namespace Ilwis {
             StretchLimits(VisualAttribute *p);
 
             Q_INVOKABLE void setMarkers(const QVariantList& marks);
-            Q_INVOKABLE void setStretchLimit(double perc);
+            Q_INVOKABLE void setStretchLimit(const QString& attribute, double perc);
             Q_INVOKABLE void markersConfirmed();
 
             bool canUse(const IIlwisObject &obj, const QString &name) const;
+			bool canUse(const IIlwisObject &, const DataDefinition &) const;
 
             static VisualPropertyEditor *create(VisualAttribute *p);
 

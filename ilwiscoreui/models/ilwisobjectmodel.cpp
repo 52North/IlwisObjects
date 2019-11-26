@@ -619,7 +619,7 @@ QString IlwisObjectModel::rangeDefinition(bool defaultRange, bool calc, const QS
                 }else{
                     if ( calc){
                         raster->loadData();
-                        raster->statistics(NumericStatistics::pBASIC);
+                        raster->statistics(PIXELVALUE, NumericStatistics::pBASIC); // TODO probabky attribute is columnnane;
                     }
                     rangeString = raster->datadef().range()->toString();
                 }

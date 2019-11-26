@@ -446,7 +446,7 @@ bool RasterCoverageConnector::storeBinaryData(IlwisObject *obj)
     bool ok = false;
     if ( dom->ilwisType() == itNUMERICDOMAIN) {
         calcStatistics(obj, NumericStatistics::pBASIC);
-        const NumericStatistics& stats = raster->statistics();
+        const NumericStatistics& stats = raster->statistics(PIXELVALUE);
         double resolution = raster->datadef().range()->as<NumericRange>()->resolution();
         double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
         if (precision < 1e-06)
@@ -503,9 +503,9 @@ QString RasterCoverageConnector::format() const
 
 void RasterCoverageConnector::calcStatistics(const IlwisObject *obj, NumericStatistics::PropertySets set) const {
     IRasterCoverage raster = mastercatalog()->get(obj->id());
-    if ( !raster->statistics().isValid()) {
+    if ( !raster->statistics(PIXELVALUE).isValid()) {
         PixelIterator iter(raster,BoundingBox(raster->size()));
-        raster->statistics().calculate(iter, iter.end(),set);
+        raster->statistics(PIXELVALUE).calculate(iter, iter.end(),set);
     }
 }
 
@@ -638,7 +638,7 @@ bool RasterCoverageConnector::storeMetaData( IlwisObject *obj, const IOOptions& 
 
     const IDomain dom = raster->datadef().domain<>();
     if ( dom->ilwisType() == itNUMERICDOMAIN) {
-        const NumericStatistics& stats = raster->statistics();
+        const NumericStatistics& stats = raster->statistics(PIXELVALUE);
         double resolution = raster->datadef().range()->as<NumericRange>()->resolution();
         double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
         if (precision < 1e-06)

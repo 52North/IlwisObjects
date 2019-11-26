@@ -235,9 +235,9 @@ QVariantMap SupervisedClassification::stretchLimits() const {
 	QVariantMap result;
 	if (_multiSpectralRaster.isValid()) {
 		if (!_multiSpectralRaster->histogramCalculated()){
-			_multiSpectralRaster->statistics(ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM).histogram();
+			_multiSpectralRaster->statistics(PIXELVALUE, ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM).histogram();
 		}
-		auto pair = _multiSpectralRaster->statistics().calcStretchRange(0.02);
+		auto pair = _multiSpectralRaster->statistics(PIXELVALUE).calcStretchRange(0.02);
 		result["min"] = pair.first;
 		result["max"] = pair.second;
 	}

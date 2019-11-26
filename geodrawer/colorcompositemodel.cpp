@@ -248,8 +248,8 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 				bool k1 = rng.isValid();
 				bool k2 = band->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
 				if (!k1 && k2) {
-					auto hist = band->statistics().histogram();   // make sure we have a reasonable number of bins.
-					auto limits = band->statistics().calcStretchRange(0.02);
+					auto hist = band->statistics(PIXELVALUE).histogram();   // make sure we have a reasonable number of bins.
+					auto limits = band->statistics(PIXELVALUE).calcStretchRange(0.02);
 					if (limits.first != rUNDEF && limits.second != rUNDEF) {
 						attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
 						visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());

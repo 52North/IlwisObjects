@@ -157,12 +157,12 @@ void OpenCVHelper::createHistogram(Ilwis::PixelIterator rasterIter, cv::SparseMa
     if ( hasType(valueType,itNUMBER) ){
         int channels[] = {0};
         int bins = 300;
-        NumericStatistics& stats = rasterIter.raster()->statistics();
+        NumericStatistics& stats = rasterIter.raster()->statistics(PIXELVALUE);
         if ( !stats.isValid()){
             stats.calculate(rasterIter,rasterIter.end());
         }
-        double lowerLimit = rasterIter.raster()->statistics()[NumericStatistics::pMIN];
-        double upperLimit = rasterIter.raster()->statistics()[NumericStatistics::pMAX];
+        double lowerLimit = rasterIter.raster()->statistics(PIXELVALUE)[NumericStatistics::pMIN];
+        double upperLimit = rasterIter.raster()->statistics(PIXELVALUE)[NumericStatistics::pMAX];
         switch(valueType){
         case itINT8:
         case itUINT8:

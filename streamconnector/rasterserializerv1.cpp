@@ -216,7 +216,7 @@ bool RasterSerializerV1::storeData(IlwisObject *obj, const IOOptions &options )
     RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
     RawConverter converter;
     if ( hasType(raster->datadef().domain()->ilwisType() , itNUMERICDOMAIN)){
-        NumericStatistics& stats = raster->statistics(ContainerStatistics<PIXVALUETYPE>::pBASIC);
+        NumericStatistics& stats = raster->statistics(PIXELVALUE, ContainerStatistics<PIXVALUETYPE>::pBASIC);
 		PIXVALUETYPE scale = raster->datadef().range()->as<NumericRange>()->resolution();
 		bool hasUndefs = stats[ContainerStatistics<PIXVALUETYPE>::pCOUNT] != stats[ContainerStatistics<PIXVALUETYPE>::pNETTOCOUNT];
         converter = RawConverter(stats[ContainerStatistics<PIXVALUETYPE>::pMIN], stats[ContainerStatistics<PIXVALUETYPE>::pMAX],scale, hasUndefs);
