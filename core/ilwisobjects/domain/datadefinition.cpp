@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "thematicitem.h"
 #include "itemrange.h"
 #include "representation.h"
+#include "containerstatistics.h" 
 #include "datadefinition.h"
 
 using namespace Ilwis;
@@ -64,6 +65,7 @@ DataDefinition &DataDefinition::operator =(const DataDefinition &def)
     else
         _range.reset(0);
 	_representation = def._representation;
+	_statistics = def._statistics;
 
     return *this;
 }
@@ -151,6 +153,14 @@ void DataDefinition::representation(const IRepresentation& rpr) {
 
 IRepresentation DataDefinition::representation() const {
 	return _representation;
+}
+
+NumericStatistics& DataDefinition::statisticsRef() {
+	return _statistics;
+}
+
+NumericStatistics DataDefinition::statistics() const {
+	return _statistics;
 }
 
 //-----------------------------------------------------------

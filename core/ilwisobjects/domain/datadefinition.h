@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #ifndef DATADEFINITION_H
 #define DATADEFINITION_H
 
+#include "containerstatistics.h"
 
 namespace Ilwis {
 
@@ -132,6 +133,8 @@ public:
 
 	void representation(const IRepresentation& rpr);
 	IRepresentation representation() const;
+	NumericStatistics& statisticsRef();
+	NumericStatistics statistics() const;
 
     /*!
      * Merges 2 DataDefinitions into 1 new DataDefinition<br>
@@ -147,6 +150,7 @@ protected:
     IDomain _domain;
 	IRepresentation _representation;
     SPRange _range;
+	NumericStatistics _statistics;
 };
 
 
