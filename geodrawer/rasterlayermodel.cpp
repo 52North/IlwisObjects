@@ -219,7 +219,7 @@ void RasterLayerModel::coverage(const ICoverage &cov)
     CoverageLayerModel::coverage(cov);
     _raster = CoverageLayerModel::coverage().as<RasterCoverage>();
     if (!_raster->histogramCalculated()) {
-        _raster->statistics(ContainerStatistics<double>::pQUICKHISTOGRAM).histogram();
+        _raster->statistics(PIXELVALUE, ContainerStatistics<double>::pQUICKHISTOGRAM).histogram();
     }
     fillAttributes();
 }
@@ -238,7 +238,9 @@ void RasterLayerModel::fillAttributes()
 
         if ( _raster->hasAttributes()){
             for(int i=0; i < _raster->attributeTable()->columnCount(); ++i){
-                ColumnDefinition coldef = _raster->attributeTable()->columndefinition(i);
+                ColumnDefinition& coldef = _raster->attributeTable()->columndefinitionRef(i);
+				if (!coldef.datadef().range()->isValid() && hasType(coldef.datadef().domain()->ilwisType(), itNUMERICDOMAIN))
+					_raster->attributeTable()->recalcRanges();
                 IlwisTypes valueType = coldef.datadef().domain()->valueType();
                 if ( hasType(valueType, itNUMBER|itDOMAINITEM|itSTRING|itCOLOR)){
                     _visualAttributes.push_back(new VisualAttribute(this, coldef.datadef(),coldef.name(), coldef.datadef().representation()));
@@ -319,7 +321,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 			bool k1 = rng.isValid();
 			bool k2 = _raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
 			if (!k1 && k2) {
-				auto limits = _raster->statistics().calcStretchRange(0.02);
+				auto limits = _raster->statistics(PIXELVALUE).calcStretchRange(0.02);
 				if (limits.first != rUNDEF && limits.second != rUNDEF) {
 					attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
 					visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());
