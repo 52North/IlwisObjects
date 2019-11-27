@@ -127,7 +127,13 @@ public:
             return false;
         IlwisData<ItemDomain<D>> itemdom = dom.as<ItemDomain<D>>();
         if ( itemdom->theme() ==sUNDEF && !parent().isValid()){
-            IlwisData<ItemDomain<D>> me;
+			ItemIterator<D> iter(itemdom);
+			while (iter != iter.end()) {
+				if (!_range->contains((*iter)->name()))
+					return false;
+				++iter;
+			}
+            /*IlwisData<ItemDomain<D>> me;
             me.prepare(id());
             ItemIterator<D> iter(me);
             while(iter != iter.end()){
@@ -146,7 +152,7 @@ public:
                     return false;
                 }
                 ++iter;
-            }
+            }*/
             return true;
         }
         if ( parent().isValid() ){
