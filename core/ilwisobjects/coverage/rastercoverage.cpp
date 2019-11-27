@@ -303,7 +303,7 @@ bool RasterCoverage::loadBand(const QString& attribute, const std::map < QString
 		markers[idx] = value;
 		
 	}
-	statisticsRef(PIXELVALUE).setContent(bins, markers, (NumericStatistics::PropertySets)mode);
+	statisticsRef(attribute).setContent(bins, markers, (NumericStatistics::PropertySets)mode);
 	return true;
 }
 bool RasterCoverage::loadHistograms(const QString& attribute, int mode) {

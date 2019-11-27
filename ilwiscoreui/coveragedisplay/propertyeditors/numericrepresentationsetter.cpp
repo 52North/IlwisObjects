@@ -55,8 +55,11 @@ bool NumericRepresentationSetter::canUse(const IIlwisObject &obj, const QString&
 
 bool NumericRepresentationSetter::canUse(const IIlwisObject &obj, const DataDefinition &def) const 
 {
-    if ( def.isValid())
-        return hasType(def.domain()->ilwisType(), itNUMERICDOMAIN);
+	if (def.isValid()) {
+		auto ok = hasType(def.domain()->ilwisType(), itNUMERICDOMAIN);
+		if (ok)
+			return true;
+	}
     return false;
 }
 
@@ -67,10 +70,11 @@ VisualPropertyEditor *NumericRepresentationSetter::create(VisualAttribute *p)
 
 void NumericRepresentationSetter::fillElements() {
 	if (vpmodel()->layer()) {
-		QVariant actAttribute = vpmodel()->layer()->vproperty("activevisualattribute");
-		if (!actAttribute.isValid())
-			return;
-		auto var = vpmodel()->layer()->vproperty("visualattribute|actualrange|" + actAttribute.toString());
+		//QVariant actAttribute = vpmodel()->layer()->vproperty("activevisualattribute");
+		//if (!actAttribute.isValid())
+		//	return;
+		QString atrName = attributeName();
+		auto var = vpmodel()->layer()->vproperty("visualattribute|actualrange|" + atrName);
 		NumericRange numrange = var.value<NumericRange>();
 		if (!numrange.isValid())
 			return;
