@@ -36,7 +36,7 @@ private:
     IRasterCoverage _outputRaster;
 
     IDomain findOutDomain(const std::vector<std::vector<QString>>&rpn,const std::vector<QString>& node);
-    void fillValues(int pindex, const QString &part, ParmValue &val);
+    void fillValues(int pindex, const QString &part, ParmValue &val, MathAction& _action);
     DataDefinition datadef(int index);
     bool check(int index) const;
 	std::vector<IIlwisObject> rasters() const;

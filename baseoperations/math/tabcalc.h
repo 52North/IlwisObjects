@@ -39,7 +39,7 @@ private:
 
     Ilwis::IDomain collectDomainInfo(std::vector<std::vector<QString> >& rpn);
     IDomain findOutDomain(const std::vector<std::vector<QString>>&rpn,const std::vector<QString>& node);
-    void fillValues(int pindex, const QString &part, ParmValue &val);
+    void fillValues(int pindex, const QString &part, ParmValue &val, MathAction& _action);
     virtual DataDefinition datadef(int index);
     bool check(int index) const;
     void preFetchColumnValues();

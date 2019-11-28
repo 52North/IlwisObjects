@@ -146,7 +146,7 @@ bool TabCalc::check(int index) const {
     return true;
 }
 
-void TabCalc::fillValues(int pindex,const QString& part, ParmValue& val)  {
+void TabCalc::fillValues(int pindex,const QString& part, ParmValue& val, MathAction& _action)  {
     auto iterP = _inputColumns.find(pindex);
     if ( iterP != _inputColumns.end()){
         val._type = CalculatorOperation::COLUMN;

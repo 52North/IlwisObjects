@@ -123,7 +123,7 @@ bool MapCalc::check(int index) const {
     return true;
 }
 
-void MapCalc::fillValues(int pindex,const QString& part, ParmValue& val)  {
+void MapCalc::fillValues(int pindex,const QString& part, ParmValue& val, MathAction& _action)  {
     auto iterP = _inputRasters.find(pindex);
     if ( iterP != _inputRasters.end()){
         val._type = MapCalc::ITERATOR;
@@ -131,6 +131,8 @@ void MapCalc::fillValues(int pindex,const QString& part, ParmValue& val)  {
         if ( part.size() > 2 ){
             if(part[2] == '[' && part.endsWith("]")){
                 val._string = part.mid(3,part.size() - 4) ;
+				_action = mATTRIBUTE;
+				val._keyMapping = val._source->raster()->keyMapping(val._string);
             }
         }
     }else {

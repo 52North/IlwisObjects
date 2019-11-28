@@ -27,7 +27,7 @@ public:
     enum ParmType {NUMERIC, ITERATOR,LINK, STRING, DOMAINITEM,COLUMN};
     enum MathAction{maIFF, maSIN, maCOS, maTAN, maASIN, maACOS,maATAN, maLOG10, maLN, maEXP,
                     maABS,maCEIL, maFLOOR,maSQ,maSQRT,maMAX,maMIN,maPOW,maADD,maMINUS,maDIVIDE,maMULT,
-                    maEQ, maNEQ,maLESSEQ,maGREATEREQ,maLESS,maGREATER,maOR, maAND,
+                    maEQ, maNEQ,maLESSEQ,maGREATEREQ,maLESS,maGREATER,maOR, maAND, mATTRIBUTE,
                     maUNKNOWN};
     const int LEFT_ASSOC = 0;
     const int RIGHT_ASSOC = 1;
@@ -45,6 +45,7 @@ protected:
         QString _columName; // for tabcalc
         QString _string; // could be a string value or a colum name
         std::vector<QVariant> _columnValues;
+		std::unordered_map<qint32, double> _keyMapping;
     };
     struct Action{
         std::vector<ParmValue> _values;
@@ -69,7 +70,7 @@ protected:
     OperationImplementation::State  prepare(ExecutionContext *ctx,const SymbolTable&);
     QStringList shuntingYard(const QString &expr);
     CalculatorOperation::MathAction string2action(const QString &action);
-    virtual void fillValues(int pindex, const QString &part, ParmValue &val) = 0;
+    virtual void fillValues(int pindex, const QString &part, ParmValue &val, MathAction& _action) = 0;
     virtual bool check(int index) const = 0;
     virtual DataDefinition datadef(int index) = 0;
     IDomain collectDomainInfo(std::vector<std::vector<QString>>& rpn);

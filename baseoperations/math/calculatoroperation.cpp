@@ -526,7 +526,7 @@ IDomain CalculatorOperation::linearize(const QStringList &tokens)
                     }
                     else if ( part[0] == '@'){
                         pindex = part.mid(1,1).toInt(&ok);
-                        fillValues(pindex, part, val);
+                        fillValues(pindex, part, val, action._action);
                     }else {
                         PIXVALUETYPE number = part.toDouble(&ok);
                         if (ok){
@@ -784,6 +784,12 @@ PIXVALUETYPE CalculatorOperation::calc() {
             calcResult = test == PIXVALUEUNDEF ? PIXVALUEUNDEF : ((bool)test ? v2 : v3);
             break;
         }
+		case mATTRIBUTE:
+		{
+			PIXVALUETYPE v1 = GetValue(action._values[0], result);
+			calcResult = action._values[0]._keyMapping[(quint32)v1];
+
+		}
 
         }
         result[i] = calcResult;
