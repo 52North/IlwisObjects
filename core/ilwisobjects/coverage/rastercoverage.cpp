@@ -497,22 +497,27 @@ NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode
     return statisticsRef(attribute);
 }
 
+std::unordered_map<qint32, double> RasterCoverage::keyMapping(const QString& attribute) const{
+	std::unordered_map<qint32, double> mapping;
+	int pkIndex = attributeTable()->columnIndex(primaryKey());
+	int atIndex = attributeTable()->columnIndex(attribute);
+	if (pkIndex != iUNDEF && atIndex != iUNDEF) {
+		for (int r = 0; r < attributeTable()->recordCount(); ++r) {
+			quint32 key = attributeTable()->cell(pkIndex, r).toUInt();
+			double value = attributeTable()->cell(atIndex, r).toDouble();
+			mapping[key] = value;
+		}
+	}
+	return mapping;
+}
 void RasterCoverage::calculateHistogram(const QString& attribute, const PixelIterator& begin, const PixelIterator& end, int mode, int bins) {
 	if (attribute == PIXELVALUE)
 		statisticsRef(attribute).calculate(begin, end, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
 	else {
 		if (hasAttributes()) {
-			std::unordered_map<qint32, double> mapping;
-			int pkIndex = attributeTable()->columnIndex(primaryKey());
-			int atIndex = attributeTable()->columnIndex(attribute);
-			if (pkIndex != iUNDEF && atIndex != iUNDEF) {
-				for (int r = 0; r < attributeTable()->recordCount(); ++r) {
-					quint32 key = attributeTable()->cell(pkIndex, r).toUInt();
-					double value = attributeTable()->cell(atIndex, r).toDouble();
-					mapping[key] = value;
-				}
+			std::unordered_map<qint32, double> mapping = keyMapping(attribute);
+			if (mapping.size() >  0)
 				statisticsRef(attribute).calculate(begin, end, mapping, (ContainerStatistics<PIXVALUETYPE>::PropertySets)mode, bins);
-			}
 		}
 	}
 }

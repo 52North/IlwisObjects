@@ -233,6 +233,7 @@ public:
 	bool prepare(const IOOptions& options = IOOptions());
 	void storeAdjustment(const QString& property, const QString& value) override;
 	void setRepresentation(const QString& atr, const IRepresentation& rpr) override;
+	std::unordered_map<qint32, double> keyMapping(const QString& attribute) const;
 
 protected:
 
