@@ -105,6 +105,7 @@ bool PythonWorkflowConnector::store(IlwisObject *obj, const IOOptions &options)
 
 
     QTextStream stream(_datasource.get());
+	stream.setCodec("UTF-8");
     QString txt = script.join("\n");
     int parmIndex;
     int count = 1;

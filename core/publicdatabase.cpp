@@ -372,6 +372,7 @@ void PublicDatabase::insertProj4Epsg(QSqlQuery& sqlPublic) {
     if (!inifile.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
     QTextStream textfile(&inifile);
+	textfile.setCodec("UTF-8");
     QString text = textfile.readAll();
 
     QStringList lines = text.split("\n");
@@ -422,6 +423,7 @@ void PublicDatabase::insertFile(const QString& filename, QSqlQuery& sqlPublic) {
     }
 
     QTextStream txtFile(&file);
+	txtFile.setCodec("UTF-8");
     bool skip = true;
     while(!txtFile.atEnd()) {
         QString line = txtFile.readLine();

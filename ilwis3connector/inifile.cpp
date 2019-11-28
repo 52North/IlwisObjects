@@ -176,6 +176,7 @@ bool IniFile::load()
         return ERROR1(ERR_COULD_NOT_OPEN_READING_1, _filename.fileName());
     }
     QTextStream textfile(&txtfile);
+	textfile.setCodec("UTF-8");
     QString text = textfile.readAll();
     if (text == ""){
         return false;
@@ -256,6 +257,7 @@ void IniFile::store(const QString& ext, const QFileInfo& file )
         return;
 
     QTextStream text(&fileIni);
+	text.setCodec("UTF-8");
     Sections::iterator iterSect;
     bool first = true;
     for (iterSect = _sections.begin(); iterSect != _sections.end(); ++iterSect)

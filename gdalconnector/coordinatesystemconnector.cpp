@@ -97,6 +97,7 @@ std::vector<double> CoordinateSystemConnector::getShifts(QString & filename, QSt
     }
 
     QTextStream txtFile(&file);
+	txtFile.setCodec("UTF-8");
     bool skip = true;
     while (!txtFile.atEnd()) {
         QString line = txtFile.readLine();

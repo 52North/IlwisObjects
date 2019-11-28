@@ -179,6 +179,7 @@ void Ilwis3ObjectFactory::insertFile(const QString& filename, InternalDatabaseCo
         return;
     }
     QTextStream txtFile(&file);
+	txtFile.setCodec("UTF-8");
     bool skip = true;
     while(!txtFile.atEnd()) {
         QString line = txtFile.readLine();
