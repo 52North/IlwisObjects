@@ -210,6 +210,7 @@ void DataseriesModel::fillOperations() {
     auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
     if (factory) {
         QVariantMap parameters = { { "dataseries", true }, {"yaxistype", axisType(ChartModel::Axis::AYAXIS) } };
+		parameters["specialtype"] = chartModel->specialType();
         _operations = factory->selectedOperations(chartModel, parameters);
         for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
             (*iter)->setParent(this);
