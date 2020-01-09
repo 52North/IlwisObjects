@@ -1352,6 +1352,9 @@
     <None Include="desktopclient\qml\workbench\propertyform\RepresentationValueProperties.qml">
       <Filter>Distribution Files\qml\workbench\metadata</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Histogram.qml">
+      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

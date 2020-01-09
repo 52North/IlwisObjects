@@ -421,6 +421,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridPropertyEditor.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Histogram.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ItemRepresentation.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerDelegate.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerInfo.qml" />
