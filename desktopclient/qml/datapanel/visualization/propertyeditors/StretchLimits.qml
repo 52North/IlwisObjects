@@ -26,7 +26,7 @@ Row {
 
             onLoaded : {
 			    var extraParams = {name : 'histogram',chartType : 'line', color : 'black', attribute : editor.visualAttribute.attributename}
-                chartArea.item.chart.addDataTable(editor.coverageId,"max","counts",extraParams)
+                chartArea.item.chart.addDataTable(editor.coverageId,"max","histogram",extraParams)
                 chartArea.item.margins.left = 0
                 chartArea.item.margins.right = 0
                 chartArea.item.margins.top = 0
