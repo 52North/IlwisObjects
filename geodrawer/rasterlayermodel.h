@@ -74,6 +74,7 @@ public:
     virtual void renderReady(bool yesno);
 	virtual QVariant vproperty(const QString& pName) const;
 	virtual void vproperty(const QString& pName, const QVariant& value);
+	bool supportsLinkType(const QString& type) const;
 
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;
@@ -118,6 +119,7 @@ private:
 
 public slots:
     virtual void requestRedraw();
+	void linkAcceptMessage(const QVariantMap& parameters);
 
 signals:
     void paletteChanged();

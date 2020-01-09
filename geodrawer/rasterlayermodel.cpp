@@ -39,6 +39,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "geos/geom/CoordinateArraySequence.h"
 #include "geos/geom/LinearRing.h"
 #include "geos/geom/Polygon.h"
+#include "colorlookup.h"
+#include "continuouscolorlookup.h"
 #include <QVector3D>
 #include <QVector4D>
 #include <QOpenGLShaderProgram>
@@ -434,13 +436,13 @@ QVariantMap RasterLayerModel::stretch() {
 #define sqr(x) ((x) * (x))
 #endif
 
-#ifndef max
+/*#ifndef max
 #define max(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
 
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
+#endif*/
 
 void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY)
 {
@@ -451,9 +453,9 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
     // if patch is outside viewport, do not display
     const IGeoReference & gr = _raster->georeference();
     Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY)); // minx, miny
-    Coordinate b2 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), imageOffsetY)); // maxx, miny
-    Coordinate b3 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), min(imageOffsetY + imageSizeY, _imageHeight))); // maxx, maxy
-    Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, min(imageOffsetY + imageSizeY, _imageHeight))); // minx, maxy
+    Coordinate b2 = gr->pixel2Coord(Pixel(std::min(imageOffsetX + imageSizeX, (quint32)_imageWidth), imageOffsetY)); // maxx, miny
+    Coordinate b3 = gr->pixel2Coord(Pixel(std::min(imageOffsetX + imageSizeX, (quint32)_imageWidth), std::min(imageOffsetY + imageSizeY, (quint32)_imageHeight))); // maxx, maxy
+    Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, std::min(imageOffsetY + imageSizeY, (quint32)_imageHeight))); // minx, maxy
     Coordinate c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
     Coordinate c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
     Coordinate c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
@@ -498,8 +500,8 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
     double screenPixelsY2 = sqrt(sqr(win4.x-win3.x)+sqr(win4.y-win3.y));
     double screenPixelsX2 = sqrt(sqr(win1.x-win4.x)+sqr(win1.y-win4.y));
 
-    unsigned int rectSizeX = min(_imageWidth - imageOffsetX, imageSizeX);
-    unsigned int rectSizeY = min(_imageHeight - imageOffsetY, imageSizeY);
+    unsigned int rectSizeX = std::min(_imageWidth - imageOffsetX, (unsigned long)imageSizeX);
+    unsigned int rectSizeY = std::min(_imageHeight - imageOffsetY, (unsigned long)imageSizeY);
 
     double zoom = min(rectSizeX/screenPixelsX1, min(rectSizeX/screenPixelsX2, min(rectSizeY/screenPixelsY1, rectSizeY/screenPixelsY2)));
     // the minimum zoomout-factor, indicating that it is necessary to plot the patch more accurately
@@ -569,13 +571,13 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
             // quad bounds (the absolute texture coordinates of the current quad, assuming the entire image is [0,1])
             double s1 = imageOffsetX / (double)_width;
             double t1 = imageOffsetY / (double)_height;
-            double s2 = min(imageOffsetX + imageSizeX, _imageWidth) / (double)_width;
-            double t2 = min(imageOffsetY + imageSizeY, _imageHeight) / (double)_height;
+            double s2 = std::min(imageOffsetX + imageSizeX, (quint32)_imageWidth) / (double)_width;
+            double t2 = std::min(imageOffsetY + imageSizeY, (quint32)_imageHeight) / (double)_height;
 
             Coordinate b1 = gr->pixel2Coord(Pixel(imageOffsetX, imageOffsetY)); // minx, miny
-            Coordinate b2 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), imageOffsetY)); // maxx, miny
-            Coordinate b3 = gr->pixel2Coord(Pixel(min(imageOffsetX + imageSizeX, _imageWidth), min(imageOffsetY + imageSizeY, _imageHeight))); // maxx, maxy
-            Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, min(imageOffsetY + imageSizeY, _imageHeight))); // minx, maxy
+            Coordinate b2 = gr->pixel2Coord(Pixel(std::min(imageOffsetX + imageSizeX, (quint32)_imageWidth), imageOffsetY)); // maxx, miny
+            Coordinate b3 = gr->pixel2Coord(Pixel(std::min(imageOffsetX + imageSizeX, (quint32)_imageWidth), std::min(imageOffsetY + imageSizeY, (quint32)_imageHeight))); // maxx, maxy
+            Coordinate b4 = gr->pixel2Coord(Pixel(imageOffsetX, std::min(imageOffsetY + imageSizeY, (quint32)_imageHeight))); // minx, maxy
             c1 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b1);
             c2 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b2);
             c3 = layerManager()->rootLayer()->screenCsy()->coord2coord(_raster->coordinateSystem(), b3);
@@ -585,8 +587,8 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
         } else {
             const unsigned int iSize = 10; // this makes 100 quads, thus 200 triangles per texture
             // avoid plotting the "added" portion of the map that was there to make the texture size a power of 2
-            double colStep = min(imageSizeX, _imageWidth - imageOffsetX) / (double)iSize;
-            double rowStep = min(imageSizeY, _imageHeight - imageOffsetY) / (double)iSize;
+            double colStep = std::min((unsigned long)imageSizeX, _imageWidth - imageOffsetX) / (double)iSize;
+            double rowStep = std::min((unsigned long)imageSizeY, _imageHeight - imageOffsetY) / (double)iSize;
             double s1 = imageOffsetX / (double)_width;
             for (int x = 0; x < iSize; ++x) {
                 double s2 = s1 + colStep / (double)_width;
@@ -702,7 +704,7 @@ void RasterLayerModel::refreshPalette() {
             VisualAttribute * attr = activeAttribute();
             IDomain dom = attr->datadefinition().domain();
             IlwisData<ItemDomain<DomainItem>> itemdom = dom.as<ItemDomain<DomainItem>>();
-            quint32 count = min(_paletteSize, itemdom->count());
+            quint32 count = std::min(_paletteSize, (int)itemdom->count());
             if (count > 0)
                 addPaletteColor(0, 0, 0, 0); // first index: undef --> first color: transparent
             for (int i = 0; i < count; ++i) {
@@ -770,4 +772,48 @@ bool RasterLayerModel::canUse(quint64 id) {
 
 VisualAttribute *RasterLayerModel::activeAttribute() {
 	return CoverageLayerModel::activeAttribute();
+}
+
+void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
+	if (parameters.contains("attribute")) {
+		VisualAttribute *attr = visualAttribute(parameters["attribute"].toString());
+		if (attr) {
+			auto rpr =attr->representation();
+			QColor clr(parameters["color"].toString());
+			double value = parameters["x"].toDouble();
+			ContinuousColorLookup *lookup = static_cast<ContinuousColorLookup *>(rpr->colors().get());
+			QString selectionMode = parameters["selectionmode"].toString();
+			if (selectionMode  == "none") {
+				lookup->addException(NumericRange(), clr, true);
+			}
+			else {
+				double rmin, rmax;
+				auto nrng = _raster->datadef().range()->as<NumericRange>();
+				double dist = nrng->distance();
+				value = (value - nrng->min()) / dist; // relative value
+				double margin = 0.01;
+				if (selectionMode == "at") {
+					rmin = max(0.0, value - margin);
+					rmax = std::min(1.0, value + margin);
+				}
+				else if (selectionMode == "above") {
+					rmin = max(0.0, value - margin);
+					rmax = 1.0;
+				}
+				else if (selectionMode == "below") {
+					rmin = 0;
+					rmax = std::min(1.0, value + margin);
+				}
+				NumericRange nr(rmin, rmax);
+				lookup->addException(nr, clr, true);
+			}
+			prepare(LayerModel::ptRENDER);
+		}
+	}
+
+}
+
+bool RasterLayerModel::supportsLinkType(const QString& type) const
+{
+	return  type.toLower() == "histogram";
 }
