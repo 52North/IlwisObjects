@@ -16,6 +16,10 @@ Item {
 	    operation.setSource(currentOperation.qmlUrl,{"operation" : currentOperation, "seriesIndex" : seriesIndex})
      }
 
+	 function currentEditor() {
+		return operation.item
+	 }
+
     Rectangle {
         id : operationLabel
         width : parent.width - 2
