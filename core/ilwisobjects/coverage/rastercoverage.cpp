@@ -230,7 +230,7 @@ ITable RasterCoverage::histogramAsTable(const QString& attribute)
     histogram.prepare();
     histogram->addColumn("min", IDomain("value"), true);
     histogram->addColumn("max", IDomain("value"), true);
-    histogram->addColumn("counts", IDomain("count"));
+    histogram->addColumn("histogram", IDomain("count"));
 
     count = 0;
 	PIXVALUETYPE vstart;
