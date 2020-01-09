@@ -74,6 +74,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "classification/supervisedclassificationmodel.h"
 #include "addcolorcomposite.h"
 #include "pointlabeling.h"
+#include "histogram.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -320,6 +321,7 @@ void UIContextModel::prepare()
 	addPropertyEditor("mousegotopixeleditor", MouseGotoPixelEditor::create);
 	addPropertyEditor("addcolorcomposite", AddColorComposite::create);
 	addPropertyEditor("pointlabellayereditor", PointLabeling::create);
+	addPropertyEditor("histogrameditor", Histogram::create);
 
 
 	modelbuilder()->registerAnalysisModel("supervisedclassification", SupervisedClassificationmodel::create);
