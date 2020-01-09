@@ -74,7 +74,7 @@ public:
     virtual QString value2string(const QVariant& value, const QString& attrName="") const;
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     bool isCoverageBased() const;
-    bool supportsLinkType(const QString& type) const;
+	virtual bool supportsLinkType(const QString& type) const;
     virtual QVariantList linkProperties() const;
     void sendLink(const QVariantMap& parameters);
     static QString mainPanelUrl() ;
