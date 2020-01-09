@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "eigen3/Eigen/Dense"
 #include "mathhelper.h"
 
-using namespace Ilwis;
+using namespace Ilwis; 
 
 #define MAXTERMS 10
 
@@ -207,7 +207,7 @@ NumericRange MathHelper::roundRange(double rmin, double rmax)
 	int side = rmin >= 0 ? 1 : -1;
 	double mult = pow(10.0, d - 1);
     step *= mult;
-    double lowerGuess = step * round(rmin / step);
+    double lowerGuess = step * round(std::abs(rmin / step));
 	double lower;
 	for(int j=0; j < 6; ++j) {
 		lower = tickLimits[j] * mult * side;
