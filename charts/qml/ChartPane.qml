@@ -94,6 +94,27 @@ Rectangle {
         legend.visible : chart ? chart.legendVisible : true
         legend.alignment : chart ? aligntoint(chart.legendAlignment) : aligntoint("top")
 
+		   Canvas {
+				id : canvas
+				property var lastPoint
+
+				anchors.fill : parent
+
+				onPaint : {
+					var ctx = getContext("2d")
+					ctx.reset();
+					ctx.beginPath()
+					ctx.clearRect(0, 0, width, height);
+					ctx.stroke();
+					antialiasing = false
+					var curOper = propertiespanel.currentEditor()
+					if (typeof curOper.handleUI === "function"){
+						curOper.handleUI(visibleGraphs, canvas)
+					}
+				}
+				z : 5
+		   }
+
 		   MouseArea {
             id : chartMouseArea
             anchors.fill: parent
@@ -103,13 +124,15 @@ Rectangle {
 			onPressed : {
 				click(mouseX, mouseY,visibleGraphs)
 				if ( activeToolBar().zoomMode){
-					console.debug("zoom is pressed", mouseX, mouseY)
 					var newPoint = mapToItem(chartspanel, mouseX, mouseY)
 					zoomRectangle.x = newPoint.x
 					zoomRectangle.y = newPoint.y
 					zoomRectangle.visible = true
 				} else if ( visibleGraphs.count > 0){
 					info(mouse.x, mouse.y)
+					canvas.lastPoint = Qt.point(mouseX, mouseY)
+					sendToLink(mouse.x, mouse.y)
+					canvas.requestPaint()
 				}
 			}
 			onReleased : {
@@ -136,10 +159,11 @@ Rectangle {
 						zoomRectangle.y = newPoint.y
 					else if ( newPoint.y > zoomRectangle.y)
 						zoomRectangle.height = newPoint.y - zoomRectangle.y
-
-					//console.debug("zoom is moved", mouseX, mouseY,zoomRectangle.width,zoomRectangle.height)
 				}else if ( floatrect.opacity > 0){
 					info(mouse.x, mouse.y)
+					canvas.lastPoint = Qt.point(mouseX, mouseY)
+					sendToLink(mouse.x, mouse.y)
+					canvas.requestPaint()
 		        }
 			}
 		}
@@ -245,7 +269,13 @@ Rectangle {
 
         return 0x20 // fallback
     }
-
+	function sendToLink(mx,my){
+		var pnt = visibleGraphs.mapToValue(Qt.point(mx,my),visibleGraphs.series(0))
+		var curOper = propertiespanel.currentEditor()
+		if (typeof curOper.handleClick === "function"){
+			curOper.handleClick(visibleGraphs, mx, my)
+		}
+	}
 	function info(mx,my){
 		var pnt = visibleGraphs.mapToValue(Qt.point(mx,my),visibleGraphs.series(0))
 		var text = pnt.x.toFixed(3) + " " + pnt.y.toFixed(3)
