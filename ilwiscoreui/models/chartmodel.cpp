@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "chartoperationeditor.h"
 #include "chartmodel.h"
 #include "dataseriesmodel.h"
+#include "coveragelayermodel.h"
 #include "colorrange.h"
 #include "mathhelper.h"
 #include "tablemerger.h"
@@ -104,6 +105,19 @@ quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const Q
     chartType(cType);
      
 	_series = QList<DataseriesModel *>(); 
+	_specialType = extraParameters["specialtype"].toString();
+	if (_specialType != "") {
+		_linkedModelId = extraParameters["linkedid"].toInt();
+		auto modelPair = modelregistry()->getModel(_linkedModelId);
+		if (modelPair.first == "rastercoverage") {
+			CoverageLayerModel *targetMap = dynamic_cast<CoverageLayerModel *>(modelPair.second);
+			if (!targetMap)
+				return iUNDEF;
+			if (targetMap->supportsLinkType(_specialType)) {  
+				connect(this, &ChartModel::linkSendMessage, targetMap, &CoverageLayerModel::linkAcceptMessage);
+			}
+		}
+	}
     QColor clr = newColor();
 	auto extra = extraParameters;
 	extra["color"] = extraParameters.contains("color") ? extraParameters["color"].value<QColor>() : clr;
@@ -111,6 +125,13 @@ quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const Q
 	fillTableData();
 	emit dataTableChanged();
     return modelId(); 
+}
+
+void ChartModel::sendOverLink(const QVariantMap& parms)  {
+
+	QVariantMap ps = parms;
+	ps["attribute"] = PIXELVALUE; // TODO later more flexible
+	emit linkSendMessage(ps);
 }
 
 QVariantList ChartModel::linkProperties() const
@@ -160,10 +181,15 @@ QString ChartModel::chartType() const
     return _chartType;
 }
 
+QString  ChartModel::specialType() const {
+	return _specialType;
+}
+
 void ChartModel::fillOperations() {
     auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
     if (factory) {
         QVariantMap parameters = { { "chart", true } };
+		parameters["specialtype"] = _specialType;
         _operations = factory->selectedOperations(this, parameters);
         for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
             (*iter)->setParent(this);
@@ -692,5 +718,7 @@ QColor ChartModel::seriesColorItem(int seriesIndex, double v) {
  //TODO
     return QColor("red");
 }
+
+
 
 

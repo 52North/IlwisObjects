@@ -49,36 +49,36 @@ namespace Ilwis {
             enum class Axis { AXAXIS = 1, AYAXIS = 2, AZAXIS = 3};
             enum class AxisType { AT_VALUE = 1, AT_DATETIME = 2, AT_CATEGORIES = 3};
             enum class NiceFormatting { NF_NONE = 0, NF_XAXIS = 1, NF_YAXIS_LEFT = 2, NF_YAXIS_RIGHT = 3, NF_XY_LEFT = 4, NF_XYRIGHT = 5, NF_XY_ALL = 6};
-            Q_ENUM(Axis)
-            Q_ENUM(AxisType)
-            Q_ENUM(NiceFormatting)
+			Q_ENUM(Axis)
+				Q_ENUM(AxisType)
+				Q_ENUM(NiceFormatting)
 
-            Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
-            Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
-            Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
-            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series            NOTIFY chartModelChanged)
-            Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
-            Q_PROPERTY(bool legendVisible READ legendVisible            WRITE setLegendVisible    NOTIFY legendChanged)
-            Q_PROPERTY(QString legendAlignment    READ legendAlignment  WRITE setLegendAlignment  NOTIFY legendChanged)
-            Q_PROPERTY(bool updateDataTable READ updateDataTable NOTIFY dataTableChanged)
-			Q_PROPERTY(Ilwis::Ui::TableModel * tableModel READ tableModel WRITE tableModel NOTIFY dataTableChanged)
+				Q_PROPERTY(QString chartType READ chartType WRITE chartType NOTIFY chartTypeChanged)
+				Q_PROPERTY(QString name      READ name                      NOTIFY nameChanged)
+				Q_PROPERTY(int seriesCount   READ seriesCount               NOTIFY seriesCountChanged)
+				Q_PROPERTY(QQmlListProperty<Ilwis::Ui::DataseriesModel> series READ series            NOTIFY chartModelChanged)
+				Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
+				Q_PROPERTY(bool legendVisible READ legendVisible            WRITE setLegendVisible    NOTIFY legendChanged)
+				Q_PROPERTY(QString legendAlignment    READ legendAlignment  WRITE setLegendAlignment  NOTIFY legendChanged)
+				Q_PROPERTY(bool updateDataTable READ updateDataTable NOTIFY dataTableChanged)
+				Q_PROPERTY(Ilwis::Ui::TableModel * tableModel READ tableModel WRITE tableModel NOTIFY dataTableChanged)
 
-            Q_PROPERTY(quint16 xaxisType   READ xaxisType)
-            Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
-            Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
-            Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
-            Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
-            Q_PROPERTY(bool fixedY         READ fixedYAxis   WRITE setFixedYAxis   NOTIFY yAxisChanged)
-            Q_PROPERTY(bool niceNumbersY   READ niceNumbersY WRITE setNiceNumbersY NOTIFY yAxisChanged)
+				Q_PROPERTY(quint16 xaxisType   READ xaxisType)
+				Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
+				Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
+				Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
+				Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
+				Q_PROPERTY(bool fixedY         READ fixedYAxis   WRITE setFixedYAxis   NOTIFY yAxisChanged)
+				Q_PROPERTY(bool niceNumbersY   READ niceNumbersY WRITE setNiceNumbersY NOTIFY yAxisChanged)
 
-            Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
-            Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
-            Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
-            Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
-            Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
+				Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
+				Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
+				Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
+				Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
+				Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
 
-            Q_PROPERTY(bool xAxisVisible   READ xAxisVisble   NOTIFY chartTypeChanged)
-            Q_PROPERTY(bool yAxisVisible   READ yAxisVisble   NOTIFY chartTypeChanged)
+				Q_PROPERTY(bool xAxisVisible   READ xAxisVisble   NOTIFY chartTypeChanged)
+				Q_PROPERTY(bool yAxisVisible   READ yAxisVisble   NOTIFY chartTypeChanged)
 
             Q_INVOKABLE QColor seriesColor(int seriesIndex);
             Q_INVOKABLE QColor seriesColorItem(int seriesIndex, double v);
@@ -90,6 +90,8 @@ namespace Ilwis {
             Q_INVOKABLE QString dataTableUrl();
 			Q_INVOKABLE QString dataTableId() const;
 			Q_INVOKABLE void clearChart();
+			Q_INVOKABLE void sendOverLink(const QVariantMap& parms) ;
+
 
             ChartModel();
             ChartModel(QObject *parent);
@@ -103,6 +105,7 @@ namespace Ilwis {
             static QString minimalPanelUrl();
             void chartType(const QString& tp);
             QString chartType() const;
+			QString specialType() const;
 
             QQmlListProperty<ChartOperationEditor> operations();
             Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
@@ -158,6 +161,7 @@ namespace Ilwis {
             void tickCountYChanged();
             void legendChanged();
 			void dataTableChanged();
+			void linkSendMessage(const QVariantMap& parameters);
 
         private:
 			QQmlListProperty<DataseriesModel> series();
@@ -189,6 +193,8 @@ namespace Ilwis {
             QString _name = sUNDEF;
             ITable _datatable;
 			TableModel *_dataTableModel = 0;
+			QString _specialType;
+			quint32 _linkedModelId=iUNDEF;
 
 			QList<DataseriesModel *> _series;
             QList<ChartOperationEditor *> _operations;
