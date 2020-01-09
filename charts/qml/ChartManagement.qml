@@ -14,6 +14,10 @@ Rectangle {
     height: showManager ? 24 : 0
 	//Layout.minimumHeight: 24
 
+	function currentEditor() {
+		return charttabs.getTab(0).item.currentEditor()
+	}
+
     TabView {
         width : parent.width
 		height : showManager ? parent.height : 0
@@ -25,6 +29,9 @@ Rectangle {
             title : qsTr("Actions for Charts")
             SplitView {
                 id : dataseriesview
+				function currentEditor() {
+					return dataseriesoperation.currentEditor()
+				}
 	            property string iconName : "../../qml/images/actions"
 
                 handleDelegate: Controls.SplitHandle {
