@@ -717,7 +717,11 @@ QString ObjectCreator::createChart(const QVariantMap &parms) {
     QString xaxis = parms["xaxis"].toString();
     QString yaxis = parms["yaxis"].toString();
 	QString zaxis = "?";  // parms["zaxis"].toString(); the combobox contains a value; not used at this moment
-    QString expr  = QString("createchart(%1,%2,%3,%4,%5,%6,%7)").arg(iUNDEF).arg(name).arg(url).arg(ctype).arg(xaxis).arg(yaxis).arg(zaxis);
+	QString extras;
+	if (parms.contains("extraparameters"))
+		extras = "\"" + parms["extraparameters"].toString() + "\"";
+
+    QString expr  = QString("createchart(%1,%2,%3,%4,%5,%6,%7,%8)").arg(iUNDEF).arg(name).arg(url).arg(ctype).arg(xaxis).arg(yaxis).arg(zaxis).arg(extras);
 
     QString output = QString("script dummy1=");
     expr = output + expr;

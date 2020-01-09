@@ -37,6 +37,7 @@ namespace Ilwis {
             QString _zaxis = sUNDEF;
             QString _chartType = sUNDEF;
             QString _name = sUNDEF;
+			QString _extras;
       
 
             NEW_OPERATION(CreateChart);

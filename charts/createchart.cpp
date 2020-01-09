@@ -51,7 +51,15 @@ bool CreateChart::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false; 
 
-    quint32 modelid = _chartmodel->createChart(_name, _table, _chartType, _xaxis, _yaxis, _zaxis, QVariantMap());
+	QVariantMap extraParms;
+	QStringList ex = _extras.split("|");
+	for (auto kvp : ex) {
+		QStringList parts = kvp.split("=");
+		if (parts.size() == 2) {
+			extraParms[parts[0]] = parts[1];
+		}
+	}
+    quint32 modelid = _chartmodel->createChart(_name, _table, _chartType, _xaxis, _yaxis, _zaxis,extraParms);
 
     logOperation(_expression);
     ctx->setOutput(symTable, modelid, "modelid", itNUMBER, Resource());
@@ -100,15 +108,17 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
 
     _zaxis = CheckAxis(_table, _expression.input<QString>(6), ChartModel::Axis::AXAXIS);
 
+	_extras = _expression.input<QString>(7);
+
      return sPREPARED;
 }
 
 quint64 CreateChart::createMetadata()
 {
     OperationResource operation({ "ilwis://operations/createchart" });
-    operation.setSyntax("createchart(modelid, table, charttype=[Line|Spline|Area|Bar|Pie|Points|Polar|3DLine|3DSpline|3Dbar], xaxis,yaxis,zaxis)");
+    operation.setSyntax("createchart(modelid, table, charttype=[Line|Spline|Area|Bar|Pie|Points|Polar|3DLine|3DSpline|3Dbar], xaxis,yaxis,zaxis,extras)");
     operation.setDescription(TR("creates a chart of the specified type"));
-    operation.setInParameterCount({ 7 });
+    operation.setInParameterCount({ 8 });
     operation.addInParameter(0, itINTEGER, TR("Chart model id"), TR("ID of the model to which this series has to be added"));
     operation.addInParameter(1, itSTRING, TR("Chart name"), TR("Name of the chart"));
     operation.addInParameter(2, itTABLE, TR("Table"), TR("Table from which the series will be collected."));
@@ -116,7 +126,8 @@ quint64 CreateChart::createMetadata()
     operation.addInParameter(4, itSTRING, TR("Name X axis"), TR("Name of the column used for the xaxis"));
     operation.addInParameter(5, itSTRING, TR("Name Y axis"), TR("Name of the column used for the yaxis")); 
     operation.addInParameter(6, itSTRING, TR("Name Z axis"), TR("Name of the column used for the yaxis. Undefined in case we have 2 dim graph"));
-    operation.setOutParameterCount({ 0 });
+	operation.addInParameter(7, itSTRING, TR("Additional Parameters"), TR("key value pairs of pairs seperated by '|' for special parameters; usually not used"));
+	operation.setOutParameterCount({ 0 });
     operation.setKeywords("table,visualization,chart");
 
     mastercatalog()->addItems({ operation });
