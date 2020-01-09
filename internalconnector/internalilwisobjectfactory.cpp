@@ -987,7 +987,7 @@ IlwisObject *InternalIlwisObjectFactory::createEllipsoidFromQuery(const QString 
         return createFromResource<Ellipsoid>(resource, IOOptions());
     }
 
-    InternalDatabaseConnection db(24);
+    InternalDatabaseConnection db;
     if (db.exec(query) && db.next()) {
         Ellipsoid *ellipsoid = createFromResource<Ellipsoid>(resource, IOOptions());
         ellipsoid->fromInternal(db.record());
