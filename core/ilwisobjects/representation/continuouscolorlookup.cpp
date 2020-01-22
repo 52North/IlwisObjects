@@ -250,9 +250,11 @@ void ContinuousColorLookup::addException(const NumericRange& range, const QColor
 	if (!range.isValid())
 		return;
 	ValueRange vr{ range.min(), range.max() };
-	for (const auto& group : _exceptions) {
-		if (group.first.overlaps(vr))
+	for (auto& group : _exceptions) {
+		if (group.first.overlaps(vr)) {
+			group.second = clr;
 			return;
+		}
 	}
 	_exceptions.push_back(std::pair<ValueRange, QColor>(vr, clr));
 }

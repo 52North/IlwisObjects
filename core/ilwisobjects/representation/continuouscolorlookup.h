@@ -31,7 +31,14 @@ class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 		double _last = rUNDEF;
 		double _reversed = false;
 		bool overlaps(const ValueRange& rng) const{
-			return _last < rng._first || (_first > rng._first && _last < rng._last) || (_first < rng._first && _last > rng._last);
+			if (_last == rng._last && _first == rng._first)
+				return true;
+
+			bool b1 = _last > rng._first && _last < rng._last;
+			bool b2 = _first <= rng._first && _last >= rng._last;
+			bool b3 = _first >= rng._first && rng._first < rng._last;
+			return b1 || b2 || b3;
+			//return _last < rng._first || (_first > rng._first && _last < rng._last) || (_first < rng._first && _last > rng._last);
 		}
 
 	};
