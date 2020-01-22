@@ -50,7 +50,7 @@ bool SetYAxisRange::canUse(ChartModel *model, const QVariantMap &parameter) cons
             auto at = static_cast<ChartModel::AxisType>(iter.value().toInt());
             ok = at == ChartModel::AxisType::AT_VALUE;
         }
-        return ok && parameter["dataseries"].toBool();
+        return ok && parameter["dataseries"].toBool(); 
     }
     return true;
 }
@@ -64,9 +64,10 @@ void SetYAxisRange::execute(const QVariantMap &parameters)
         bool niceNumbers = parameters["nice"].toBool();
         QString fixedString = fixed ? "true" : "false";
         QString niceString = niceNumbers ? "true" : "false";
+		QString useLeft = parameters["useleft"].toBool() ? "true" : "false";
 
         quint32 cid = chartModel()->modelId();
-        QString expr = QString("chartyaxisnumrange(%1,\"%2\",\"%3\",\"%4\",\"%5\")").arg(cid).arg(low).arg(high).arg(fixedString).arg(niceString);
+        QString expr = QString("chartyaxisnumrange(%1,%6,\"%2\",\"%3\",\"%4\",\"%5\")").arg(cid).arg(low).arg(high).arg(fixedString).arg(niceString).arg(useLeft);
 
         Ilwis::OperationExpression ex(expr);
         Ilwis::Operation op(ex);
