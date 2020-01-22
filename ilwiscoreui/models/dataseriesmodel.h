@@ -59,6 +59,7 @@ namespace  Ilwis {
                 Q_PROPERTY(int resolutionZ READ resolutionZ CONSTANT)
                 Q_PROPERTY(int minID       MEMBER _minID)
                 Q_PROPERTY(int maxID       MEMBER _maxID)
+				Q_PROPERTY(QString yAxisSide READ yaxisSide CONSTANT)
 
                 Q_PROPERTY(QQmlListProperty<Ilwis::Ui::ChartOperationEditor> operations READ operations NOTIFY operationsChanged)
 
@@ -78,6 +79,8 @@ namespace  Ilwis {
 
             quint16 xAxisType() const;
             quint16 yAxisType() const; 
+
+			QString yaxisSide() const { return _yaxisSide; }
 
 			double minx() {
 				return _minx;
@@ -100,6 +103,7 @@ namespace  Ilwis {
             QQmlListProperty<ChartOperationEditor> operations();
             Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
             Q_INVOKABLE QVariantMap categories(QString axis, bool unique);
+
 			void name(const QString& newName);
 
 
@@ -133,7 +137,10 @@ namespace  Ilwis {
             double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             int _minID, _maxID;
 			QVariantList _points;
+			QString _yaxisSide = "left";
             QList<ChartOperationEditor *> _operations;
+			int _xres = iUNDEF;
+			int _yres = iUNDEF;
 		};
 	}
 }

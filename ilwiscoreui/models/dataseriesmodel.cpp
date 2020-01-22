@@ -41,13 +41,26 @@ DataseriesModel::DataseriesModel(const QString name) : _name(name) {
 }
 
 DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extra)
-	: QObject(chartModel), _xaxis(xaxis), _yaxis(yaxis), _zaxis(zaxis)
+	: QObject(chartModel), _xaxis(xaxis), _zaxis(zaxis)
 {
 	if (extra.contains("color"))
 		_color = extra["color"].value<QColor>();
+	else
+		_color = chartModel->newColor(); // maybe overruled later but there is now a color
     _seriesIndex = 0;
 	if (extra.contains("chartType"))
 		_type = extra["chartType"].toString();
+	if (yaxis.indexOf("-") == 0) {
+		_yaxisSide = "right";
+		_yaxis = yaxis.mid(1);
+	} else
+		_yaxis = yaxis;
+	if (extra.contains("resx")) {
+		_xres = extra["resx"].toDouble();
+	}
+	if (extra.contains("resy")) {
+		_yres = extra["resy"].toDouble();
+	}
 }
 
 QString DataseriesModel::name() const {
@@ -126,8 +139,10 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 
 	QVariant v;
 	double vx = 0.0, vy = 0.0;
+	int xaxisIndex = inputTable->columnIndex(_xaxis);
+	int yaxisIndex = inputTable->columnIndex(_yaxis);
 	for (int row = 0; row < inputTable->recordCount(); row++) {
-		v = inputTable->cell(_xaxis, row, false);
+		v = inputTable->cell(xaxisIndex, row, false);
 		if (xtype == itITEMDOMAIN) {
 			if (valueType == itNUMERICITEM) {
 				IIntervalDomain idom = _dataDefinitions[0].domain().as<IntervalDomain>();
@@ -141,7 +156,7 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 
 		else if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vx = v.toDouble();
-		v = inputTable->cell(_yaxis, row, false);
+		v = inputTable->cell(yaxisIndex, row, false);
 		if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vy = v.toDouble();
 
@@ -168,7 +183,9 @@ int tickResolution(const DataDefinition& datadef) {
 double DataseriesModel::resolutionX()
 {
     if (_xaxis != sUNDEF) {
-        return tickResolution(_dataDefinitions[0]);
+		if ( _xres == iUNDEF)
+			return tickResolution(_dataDefinitions[0]);
+		return _xres;
 
     }
     return 0;
@@ -177,7 +194,9 @@ double DataseriesModel::resolutionX()
 double DataseriesModel::resolutionY()
 {
     if (_yaxis != sUNDEF) {
-        return tickResolution(_dataDefinitions[1]);
+		if ( _yres == iUNDEF)
+			return tickResolution(_dataDefinitions[1]);
+		return _yres;
 
     }
     return 0;
@@ -211,6 +230,7 @@ void DataseriesModel::fillOperations() {
     if (factory) {
         QVariantMap parameters = { { "dataseries", true }, {"yaxistype", axisType(ChartModel::Axis::AYAXIS) } };
 		parameters["specialtype"] = chartModel->specialType();
+		parameters["attribute"] = _yaxis;
         _operations = factory->selectedOperations(chartModel, parameters);
         for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)
             (*iter)->setParent(this);
