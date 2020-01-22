@@ -33,7 +33,7 @@ namespace Ilwis {
 
         private:
             QString _xaxis = sUNDEF;
-            QString _yaxis = sUNDEF;
+            QStringList _yaxis;
             QString _zaxis = sUNDEF;
             QString _chartType = sUNDEF;
             QString _name = sUNDEF;

@@ -45,7 +45,7 @@ CreateChart::CreateChart(quint64 metaid, const Ilwis::OperationExpression &expr)
 
 }   
 
-bool CreateChart::execute(ExecutionContext *ctx, SymbolTable &symTable)
+bool CreateChart::execute(ExecutionContext *ctx, SymbolTable &symTable) 
 {
     if (_prepState == sNOTPREPARED) 
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
@@ -59,7 +59,12 @@ bool CreateChart::execute(ExecutionContext *ctx, SymbolTable &symTable)
 			extraParms[parts[0]] = parts[1];
 		}
 	}
-    quint32 modelid = _chartmodel->createChart(_name, _table, _chartType, _xaxis, _yaxis, _zaxis,extraParms);
+    quint32 modelid = _chartmodel->createChart(_name, _table, _chartType, _xaxis, _yaxis[0], _zaxis,extraParms);
+
+	for (int i = 1; i < _yaxis.size(); ++i) {
+		_chartmodel->insertDataSeries(_table, i, _xaxis, _yaxis[i], _zaxis, extraParms);
+		_chartmodel->fillTableData();
+	}
 
     logOperation(_expression);
     ctx->setOutput(symTable, modelid, "modelid", itNUMBER, Resource());
@@ -77,12 +82,15 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
     auto CheckAxis = [](const ITable& tbl, const QString& name, ChartModel::Axis atype)->QString {
         if (atype == ChartModel::Axis::AZAXIS && (name == sUNDEF || name == ""))
             return sUNDEF;
+		QString n = name;
+		if (n.indexOf("-") == 0)
+			n = n.mid(1);
 
-        quint32 index = tbl->columnIndex(name);
+        quint32 index = tbl->columnIndex(n);
         if (index == iUNDEF) {
             return sUNDEF;
         }
-        return name; 
+        return n; 
     };
     if (!getModel()) {
         kernel()->issues()->log(TR("Invalid model id used for chart. Chart can not be added"));
@@ -103,9 +111,13 @@ Ilwis::OperationImplementation::State CreateChart::prepare(ExecutionContext *ctx
     OperationHelper::check([&]()->bool { return (_xaxis = CheckAxis(_table, _expression.input<QString>(4), ChartModel::Axis::AXAXIS)) != sUNDEF; },
     { ERR_NO_OBJECT_TYPE_FOR_2,"column", _expression.input<QString>(4) });
 
-    OperationHelper::check([&]()->bool { return (_yaxis = CheckAxis(_table, _expression.input<QString>(5), ChartModel::Axis::AYAXIS)) != sUNDEF; },
-    { ERR_NO_OBJECT_TYPE_FOR_2,"column", _expression.input<QString>(5) });
-
+	_yaxis = _expression.input<QString>(5).split("|");
+	for (auto axis : _yaxis) {
+		if (CheckAxis(_table, axis, ChartModel::Axis::AYAXIS) == sUNDEF) {
+			kernel()->issues()->log(TR("Unknown axis:") + axis);
+			return sPREPAREFAILED;
+		}
+	}
     _zaxis = CheckAxis(_table, _expression.input<QString>(6), ChartModel::Axis::AXAXIS);
 
 	_extras = _expression.input<QString>(7);
