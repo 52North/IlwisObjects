@@ -36,6 +36,7 @@ namespace Ilwis {
             double _high = rUNDEF;
             bool _fixed = false;
             bool _nice = false;
+			bool _useLeft = true;
 
             NEW_OPERATION(ChartYAxisNumrange);
         };

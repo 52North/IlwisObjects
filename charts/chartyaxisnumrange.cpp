@@ -61,19 +61,20 @@ Ilwis::OperationImplementation::State ChartYAxisNumrange::prepare(ExecutionConte
         return sPREPAREFAILED;
     }
 
+	_useLeft = _expression.input<bool>(1);
     bool ok;
-    _low = _expression.input<double>(1, ok);
+    _low = _expression.input<double>(2, ok);
     if (!ok) {
         kernel()->issues()->log(QString(TR("%1 is not a valid number").arg(_expression.parm(1).value())));
         return sPREPAREFAILED;
     }
-    _high = _expression.input<double>(2, ok);
+    _high = _expression.input<double>(3, ok);
     if (!ok) {
         kernel()->issues()->log(QString(TR("%1 is not a valid number").arg(_expression.parm(2).value())));
         return sPREPAREFAILED;
     }
 
-    _fixed = _expression.input<bool>(3, ok);
+    _fixed = _expression.input<bool>(4, ok);
     if (!ok) {
         kernel()->issues()->log(QString(TR("%1 is not a boolean").arg(_expression.parm(3).value())));
         return sPREPAREFAILED;
@@ -96,10 +97,18 @@ bool ChartYAxisNumrange::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    _chartmodel->setMinY(_low);
-    _chartmodel->setMaxY(_high);
-    _chartmodel->setFixedYAxis(_fixed);
-    _chartmodel->setNiceNumbersY(_nice);
+	if (_useLeft) {
+		_chartmodel->setMinYLeft(_low);
+		_chartmodel->setMaxYLeft(_high);
+		_chartmodel->setFixedYAxisLeft(_fixed);
+		_chartmodel->setNiceNumbersYLeft(_nice);
+	}
+	else {
+		_chartmodel->setMinYRight(_low);
+		_chartmodel->setMaxYRight(_high);
+		_chartmodel->setFixedYAxisRight(_fixed);
+		_chartmodel->setNiceNumbersYRight(_nice);    
+	}
 
     return true;
 }
@@ -108,13 +117,14 @@ quint64 ChartYAxisNumrange::createMetadata()
 {
     OperationResource resource({ "ilwis://operations/chartyaxisnumrange" });
     resource.setLongName("Change the Y-axis range of the chart");
-    resource.setSyntax("chartyaxisnumrange(parameters)");
-    resource.setInParameterCount({ 4, 5 });
+    resource.setSyntax("chartyaxisnumrange(chartid, side=true, min, max, fixedrange[,nice numers])");
+    resource.setInParameterCount({ 5, 6 });
     resource.addInParameter(0, itINT32, TR("chart ID"), TR("the ID identifying the chart."));
-    resource.addInParameter(1, itNUMBER, TR("low"), TR("the new lowest value for the Y-axis (specify ? to leave unchanged)"));
-    resource.addInParameter(2, itNUMBER, TR("high"), TR("the new highest value for the Y-axis (specify ? to leave unchanged)"));
-    resource.addInParameter(3, itBOOL, TR("fixed"), TR("fix the range to the min and max values"));
-    resource.addOptionalInParameter(4, itBOOL, TR("nice"), TR("round the axis numbers to 'nice' numbers"));
+	resource.addInParameter(1, itBOOL, TR("Left Side"), TR("Which side are you setting in case of multiple y axis"));
+    resource.addInParameter(2, itNUMBER, TR("low"), TR("the new lowest value for the Y-axis (specify ? to leave unchanged)"));
+    resource.addInParameter(3, itNUMBER, TR("high"), TR("the new highest value for the Y-axis (specify ? to leave unchanged)"));
+    resource.addInParameter(4, itBOOL, TR("fixed"), TR("fix the range to the min and max values"));
+    resource.addOptionalInParameter(5, itBOOL, TR("nice"), TR("round the axis numbers to 'nice' numbers"));
     resource.setKeywords("chart series, table, chart, Y-axis, range");
 
     mastercatalog()->addItems({ resource });
