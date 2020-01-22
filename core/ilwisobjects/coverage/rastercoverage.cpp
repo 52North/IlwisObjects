@@ -231,9 +231,11 @@ ITable RasterCoverage::histogramAsTable(const QString& attribute)
     histogram->addColumn("min", IDomain("value"), true);
     histogram->addColumn("max", IDomain("value"), true);
     histogram->addColumn("histogram", IDomain("count"));
+	histogram->addColumn("histogram_cumulative", IDomain("value"));
 
     count = 0;
 	PIXVALUETYPE vstart;
+	quint64 cnt = statistics(attribute)[NumericStatistics::pCOUNT];
 
 	if ( attribute == PIXELVALUE)
 		vstart = datadef().range<NumericRange>()->min();
@@ -249,9 +251,11 @@ ITable RasterCoverage::histogramAsTable(const QString& attribute)
 		}
 	}
 	if (hist.size() > 0) {
+		double sum = 0;
 		for (int i = 0; i < hist.size() - 1; ++i) {
 			auto& h = hist[i];
-			histogram->record(count, { vstart, h._limit, h._count });
+			sum += h._count;
+			histogram->record(count, { vstart, h._limit, h._count,(100.0 * sum/(double)cnt) });
 			vstart = h._limit;
 			++count;
 		}
