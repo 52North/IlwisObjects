@@ -22,17 +22,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "models/tablemodel.h"     
 #include "chartoperationeditor.h"      
 #include "symboltable.h"
-#include "operationmetadata.h" 
+#include "operationmetadata.h"  
 #include "commandhandler.h"
-#include "operationExpression.h"  
+#include "operationExpression.h"    
 #include "operation.h"
 #include "chartmodel.h"  
-#include "histograminteractiveslicing.h"    
+#include "histograminteractiveslicing.h"                
 
-using namespace Ilwis;
+using namespace Ilwis;   
 using namespace Ui;
 
-REGISTER_CHARTPROPERTYEDITOR("histograminteractiveslicing", HistogramInteractiveSlicing)
+REGISTER_CHARTPROPERTYEDITOR("histograminteractiveslicing", HistogramInteractiveSlicing)   
 
 HistogramInteractiveSlicing::HistogramInteractiveSlicing() : ChartOperationEditor("histograminteractiveslicing", TR("Interactive Slicing"), QUrl("HistogramInteractiveSlicing.qml"), TR("Manual slicing classification by selecting parts on the histogram function as class boundaries"))
 {
@@ -43,7 +43,9 @@ bool HistogramInteractiveSlicing::canUse(ChartModel *model, const QVariantMap &p
 	if (!parameter.empty())
 		if (parameter["dataseries"].toBool()) {
 			if (parameter.contains("specialtype")) {
-				return parameter["specialtype"] == "histogram";
+				QString attr = parameter["attribute"].toString();
+				bool ok = attr.indexOf("histogram") == 0 && attr.size() < 12;
+				return parameter["specialtype"] == "histogram" && ok;
 			}
 		}
 	return false;
