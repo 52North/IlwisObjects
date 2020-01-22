@@ -166,7 +166,7 @@ public:
         double sigDigits = 0;
         double rest = 0;
 		qint32 imax = -1e9, imin = 1e9;
-		std::vector<double> vmap;
+		std::vector<double> vmap; // this map contain a mapping of the rawvalue of the raster to a value from the attribute table; only relevant for rasters with attributes. In other cases this is empty
 		if (_mapping.size() > 0) {
 			for (auto& item : _mapping) {
 				imax = std::max(item.first, imax);
