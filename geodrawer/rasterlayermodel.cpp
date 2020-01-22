@@ -780,13 +780,14 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 		if (attr) {
 			auto rpr =attr->representation();
 			QColor clr(parameters["color"].toString());
-			double value = parameters["x"].toDouble();
+			
 			ContinuousColorLookup *lookup = static_cast<ContinuousColorLookup *>(rpr->colors().get());
 			QString selectionMode = parameters["selectionmode"].toString();
-			if (selectionMode  == "none") {
+			if (selectionMode == "none") {
 				lookup->addException(NumericRange(), clr, true);
 			}
-			else {
+			else if (parameters["type"] == "histogramselection") {
+				double value = parameters["x"].toDouble();
 				double rmin, rmax;
 				auto nrng = _raster->datadef().range()->as<NumericRange>();
 				double dist = nrng->distance();
@@ -805,6 +806,33 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 					rmax = std::min(1.0, value + margin);
 				}
 				NumericRange nr(rmin, rmax);
+				lookup->addException(nr, clr, true);
+
+			}
+			else if (parameters["type"] == "interactiveslicing") {
+				double value1 = parameters["minvalue"].toDouble();
+				double value2 = parameters["maxvalue"].toDouble();
+				double rmin, rmax;
+				auto nrng = _raster->datadef().range()->as<NumericRange>();
+				double dist = nrng->distance();
+				value1 = (value1 - nrng->min()) / dist; // relative value
+				value2 = (value2 - nrng->min()) / dist; // relative value
+				bool isFirst = parameters["first"].toBool();
+				if (!isFirst) {
+					value1 += 0.001; // to prevent possible overlaps between boundaries. Values are scaled between 0 and 1 so 0.001 is hardly a difference but still prevents overlaps
+				}
+				NumericRange nr(value1, value2);
+				lookup->addException(nr, clr, isFirst);
+			}
+			else if (parameters["type"] == "histogrambounds") {
+				double value1 = parameters["minvalue"].toDouble();
+				double value2 = parameters["maxvalue"].toDouble();
+				double rmin, rmax;
+				auto nrng = _raster->datadef().range()->as<NumericRange>();
+				double dist = nrng->distance();
+				value1 = (value1 - nrng->min()) / dist; // relative value
+				value2 = (value2 - nrng->min()) / dist; // relative value
+				NumericRange nr(value1, value2);
 				lookup->addException(nr, clr, true);
 			}
 			prepare(LayerModel::ptRENDER);
