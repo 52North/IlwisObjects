@@ -19,6 +19,7 @@
     <None Include="charts\qml\DataseriesList.qml" />
     <None Include="charts\qml\DataseriesOperate.qml" />
     <None Include="charts\qml\DataseriesOperationList.qml" />
+    <None Include="charts\qml\HistogramBounds.qml" />
     <None Include="charts\qml\HistogramInteractiveSlicing.qml" />
     <None Include="charts\qml\HistogramSelection.qml" />
     <None Include="charts\qml\MinimalChartPane.qml" />
@@ -36,6 +37,7 @@
     <ClCompile Include="charts\chartseriescolor.cpp" />
     <ClCompile Include="charts\chartyaxisnumrange.cpp" />
     <ClCompile Include="charts\deleteChartSeries.cpp" />
+    <ClCompile Include="charts\histogrambounds.cpp" />
     <ClCompile Include="charts\histograminteractiveslicing.cpp" />
     <ClCompile Include="charts\histogramselection.cpp" />
     <ClCompile Include="charts\ilwischarts_plugin.cpp" />
@@ -102,6 +104,12 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;%(PreprocessorDefinitions)</Define>
     </QtMoc>
     <QtMoc Include="charts\histograminteractiveslicing.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\ilwiscoreui\drawers;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;%(PreprocessorDefinitions)</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\ilwiscoreui\drawers;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_PLUGIN;NDEBUG;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
+    <QtMoc Include="charts\histogrambounds.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\ilwiscoreui\drawers;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_WINDOWS;UNICODE;WIN32;WIN64;QT_PLUGIN;%(PreprocessorDefinitions)</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;.\core;.\ilwiscoreui;.\core\ilwisobjects\domain;.\ilwiscoreui\models;.\ilwiscoreui\drawers;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\geos\include;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation;.\core\ilwisobjects\representation;.\core\catalog;.\ilwiscoreui\drawers;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QTCharts;.\debug;$(QTDIR)\mkspecs\win32-msvc2015;.\charts;$(INHERIT);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml</IncludePath>
