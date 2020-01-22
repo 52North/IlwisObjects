@@ -41,6 +41,7 @@ public:
     static quint8 lenDecimalDigits(double number);
     static LogicalOperator string2logicalOperator(const QString &op);
     static QString logicalOperator2string(LogicalOperator lo);
+	static bool lineLineIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, Coordinate& crdOut);
 };
 }
 #endif // MATHHELPER_H

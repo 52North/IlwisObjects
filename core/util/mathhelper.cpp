@@ -19,7 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "numericrange.h"
 #include "ilwiscoordinate.h"
 #include "eigen3/Eigen/Dense"
+#include "location.h"
+#include "box.h"
 #include "mathhelper.h"
+
 
 using namespace Ilwis; 
 
@@ -312,4 +315,51 @@ QString MathHelper::logicalOperator2string(LogicalOperator lo){
 
     }
     return sUNDEF;
+}
+
+inline double Det(double a, double b, double c, double d)
+{
+	return a * d - b * c;
+}
+
+bool MathHelper::lineLineIntersect(double x1, double y1, //Line 1 start
+	double x2, double y2, //Line 1 end
+	double x3, double y3, //Line 2 start
+	double x4, double y4, //Line 2 end
+	Coordinate& crdOut) //Output 
+{
+	double detL1 = Det(x1, y1, x2, y2);
+	double detL2 = Det(x3, y3, x4, y4);
+	double x1mx2 = x1 - x2;
+	double x3mx4 = x3 - x4;
+	double y1my2 = y1 - y2;
+	double y3my4 = y3 - y4;
+
+	double xnom = Det(detL1, x1mx2, detL2, x3mx4);
+	double ynom = Det(detL1, y1my2, detL2, y3my4);
+	double denom = Det(x1mx2, y1my2, x3mx4, y3my4);
+	if (denom == 0.0)//Lines don't seem to cross
+	{
+		return false;
+	}
+
+	crdOut.x = xnom / denom;
+	crdOut.y = ynom / denom;
+
+	// prevent rounding errors
+	if (std::abs(crdOut.x - x3) < EPS6)
+		crdOut.x = x3;
+	if (std::abs(crdOut.y - y3) < EPS6)
+		crdOut.y = y3;
+	if (std::abs(crdOut.x - x4) < EPS6)
+		crdOut.x = x4;
+	if (std::abs(crdOut.y - y4) < EPS6)
+		crdOut.y = y4;
+
+	Envelope env(Coordinate(x3, y3), Coordinate(x4, y4));
+	if (!env.contains(crdOut)) {
+		return false;
+	}
+
+	return true; //All OK
 }
