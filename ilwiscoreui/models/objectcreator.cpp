@@ -721,7 +721,7 @@ QString ObjectCreator::createChart(const QVariantMap &parms) {
 	if (parms.contains("extraparameters"))
 		extras = "\"" + parms["extraparameters"].toString() + "\"";
 
-    QString expr  = QString("createchart(%1,%2,%3,%4,%5,%6,%7,%8)").arg(iUNDEF).arg(name).arg(url).arg(ctype).arg(xaxis).arg(yaxis).arg(zaxis).arg(extras);
+    QString expr  = QString("createchart(%1,%2,%3,%4,%5,\"%6\",%7,%8)").arg(iUNDEF).arg(name).arg(url).arg(ctype).arg(xaxis).arg(yaxis).arg(zaxis).arg(extras);
 
     QString output = QString("script dummy1=");
     expr = output + expr;

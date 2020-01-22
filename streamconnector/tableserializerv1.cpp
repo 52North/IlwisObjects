@@ -131,7 +131,7 @@ bool TableSerializerV1::loadMetaData(IlwisObject *obj, const IOOptions &options)
 
         tbl->addColumn(ColumnDefinition(columnName, systemDomain.isValid() ? systemDomain : dom));
         if ( range)
-            tbl->columndefinition(col).datadef().range(range);
+            tbl->columndefinitionRef(col).datadef().range(range);
 
     }
     qint64 beginData;
@@ -152,7 +152,6 @@ bool TableSerializerV1::loadData(IlwisObject* obj, const IOOptions& options){
     for(quint32 rec = 0; rec < n; ++rec){
         Record& record = tbl->newRecord();
         record.loadData(types,_stream,options);
-
     }
 
     _dataLoaded = true;
