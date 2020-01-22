@@ -35,18 +35,50 @@ namespace Ilwis {
 			Histogram(VisualAttribute *p);
 
 			Q_PROPERTY(QString tableUrl READ tableUrlPrivate CONSTANT)
+			Q_PROPERTY(int polyCount READ polyCount NOTIFY polyChanged)
+			Q_PROPERTY(bool useAOI READ useAOI WRITE useAOI NOTIFY aoiChanged)
+			Q_PROPERTY(bool aggregateAOIs READ aggregateAOIs WRITE aggregateAOIs NOTIFY aggregateAOIsChanged)
+			
+
+			Q_INVOKABLE void addPoint(int x, int y);
+			Q_INVOKABLE QVariantList polygon(int index) const;
+			Q_INVOKABLE void addEmptyPolygon();
+			Q_INVOKABLE void deleteLastAOI();
+			Q_INVOKABLE void deleteAllAOIs();
 	
 			bool canUse(const IIlwisObject &obj, const DataDefinition &def) const;
 			bool canUse(const IIlwisObject &obj, const QString &name) const;
 			static VisualPropertyEditor *create(VisualAttribute *p);
 			void prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef);
 
+
 		signals:
+			void polyChanged();
+			void aoiChanged();
+			void aggregateAOIsChanged();
 	
 		private:
 			ITable _histogramData;
 
 			QString tableUrlPrivate();
+			int polyCount() const;
+			void useAOI(bool yesno);
+			bool useAOI() const;
+			void calculateLocalizedHistogram(const std::vector<Coordinate>& pol, std::vector<NumericStatistics::HistogramBin>& bins,
+											NumericRange& rgnCounts, NumericRange& rngCumulatives) const;
+			void bins2table(std::vector<NumericStatistics::HistogramBin>& hist, int columnStart)  const;
+			void addColumns(int index);
+			void deleteColumns(int index);
+			std::vector<NumericStatistics::HistogramBin> initializeBins() const;
+			void updateRanges(int columnStart, const NumericRange& rgnCounts, const NumericRange& rngCumulatives);
+
+			bool aggregateAOIs() const;
+			void aggregateAOIs(bool yesno);
+
+			std::vector<std::vector<Coordinate>> _polygons;
+			IRasterCoverage _raster;
+			bool _useAOI = false;
+			bool _aggregateAOIs = true;
 
 		};
 	}
