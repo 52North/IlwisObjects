@@ -333,16 +333,18 @@ bool ChartModel::updateDataTable() const {
 
 void ChartModel::clearChart() {
 	_series = QList<DataseriesModel *>();
-	_minx = _maxx = _miny = _maxy = rUNDEF;
-	_fixedY = false;
+	_minx = _maxx = _minyLeft = _maxyLeft = _minyRight = _maxyRight = rUNDEF;
+	_fixedYLeft = false;
+	_fixedYRight = false;
 	_fixedX = false;
-	_niceNumbersY = false;
+	_niceNumbersYLeft = false;
+	_niceNumbersYRight = false;
 	_legendVisible = true;
 	_alignment = "top";
 
 	_chartType = sUNDEF;
 	_tickCountX = 5;
-	_tickCountY = 5;
+	_tickCountYLeft = _tickCountYRight = 5;
 	_name = sUNDEF;
 	if (_datatable.isValid()) {
 		_datatable.prepare();
@@ -407,14 +409,24 @@ int ChartModel::tickCountX() const {
     return _tickCountX;
 }
 
-void ChartModel::tickCountY(int tc) {
+void ChartModel::tickCountYLeft(int tc) {
     if (tc > 0) {
-        _tickCountY = tc;
-        emit tickCountYChanged();
+        _tickCountYLeft = tc;
+        emit tickCountYLeftChanged();
     }
 }
-int ChartModel::tickCountY() const {
-    return _tickCountY;
+int ChartModel::tickCountYLeft() const {
+    return _tickCountYLeft;
+}
+
+void ChartModel::tickCountYRight(int tc) {
+	if (tc > 0) {
+		_tickCountYRight = tc;
+		emit tickCountYRightChanged();
+	}
+}
+int ChartModel::tickCountYRight() const {
+	return _tickCountYRight;
 }
 
 double ChartModel::minx() const {
@@ -425,12 +437,20 @@ double ChartModel::maxx() const {
     return _maxx;
 }
 
-double ChartModel::miny() const {
-    return _miny;
+double ChartModel::minyLeft() const {
+    return _minyLeft;
 }
 
-double ChartModel::maxy() const {
-    return _maxy;
+double ChartModel::maxyRight() const {
+    return _maxyRight;
+}
+
+double ChartModel::minyRight() const {
+	return _minyRight;
+}
+
+double ChartModel::maxyLeft() const {
+	return _maxyLeft;
 }
 
 void ChartModel::setMinX(double val) {
@@ -441,27 +461,52 @@ void ChartModel::setMaxX(double val) {
     _maxx = val; emit xAxisChanged();
 }
 
-void ChartModel::setMinY(double val) {
-    _miny = val; emit yAxisChanged();
+void ChartModel::setMinYLeft(double val) {
+    _minyLeft = val; emit yAxisLeftChanged();
 }
 
-void ChartModel::setMaxY(double val) {
-    _maxy = val; emit yAxisChanged();
+void ChartModel::setMaxYLeft(double val) {
+    _maxyLeft = val; emit yAxisLeftChanged();
 }
 
-bool ChartModel::fixedYAxis() const {
-    return _fixedY;
+void ChartModel::setMinYRight(double val) {
+	_minyRight = val; emit yAxisRightChanged();
 }
 
-void ChartModel::setFixedYAxis(bool fixed) {
-    _fixedY = fixed; emit yAxisChanged();
+void ChartModel::setMaxYRight(double val) {
+	_maxyRight = val; emit yAxisRightChanged();
 }
 
-bool ChartModel::niceNumbersY() const {
-    return _niceNumbersY;
+bool ChartModel::fixedYAxisLeft() const {
+    return _fixedYLeft;
 }
-void ChartModel::setNiceNumbersY(bool nice) {
-    _niceNumbersY = nice; emit yAxisChanged();
+
+void ChartModel::setFixedYAxisRight(bool fixed) {
+    _fixedYRight = fixed; emit yAxisRightChanged();
+}
+
+bool ChartModel::fixedYAxisRight() const {
+	return _fixedYRight;
+}
+
+void ChartModel::setFixedYAxisLeft(bool fixed) {
+	_fixedYLeft = fixed; emit yAxisLeftChanged();
+}
+
+bool ChartModel::niceNumbersYLeft() const {
+    return _niceNumbersYLeft;
+}
+void ChartModel::setNiceNumbersYLeft(bool nice) {
+    _niceNumbersYLeft = nice;
+	emit yAxisLeftChanged();
+}
+
+bool ChartModel::niceNumbersYRight() const {
+	return _niceNumbersYRight;
+}
+void ChartModel::setNiceNumbersYRight(bool nice) {
+	_niceNumbersYRight = nice;
+	emit yAxisRightChanged();
 }
 
 bool ChartModel::legendVisible() const
@@ -535,7 +580,10 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
     initializeDataSeries(newseries);
 
     emit xAxisChanged();
-    emit yAxisChanged();
+	if (newseries->yaxisSide() == "left")
+		emit yAxisLeftChanged();
+	else
+		emit yAxisRightChanged();
     emit chartModelChanged();
 
     return _series.size();
@@ -554,6 +602,22 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
             }
         }
     };
+
+	auto SetYAxis = [&](bool fixedY, double& miny, double& maxy, DataseriesModel* newseries)->void {
+		if (isNumericalUndef(miny) || isNumericalUndef(maxy)) {
+			miny = newseries->miny();
+			maxy = newseries->maxy();
+		}
+		else {
+			if (!fixedY) miny = std::min(miny, newseries->miny());
+			if (!fixedY) maxy = std::max(maxy, newseries->maxy());
+		}
+		double res = newseries->resolutionY();
+		double dist = std::abs(miny - maxy);
+		if (std::floor(res) == res) {
+			IntegerTicks(res, dist, (newseries->yaxisSide() == "left" ? _tickCountYLeft : _tickCountYRight), miny, maxy);
+		}
+	};
 
     if (_xaxisType == AxisType::AT_VALUE) {
         if (isNumericalUndef(_minx) || isNumericalUndef(_maxx)) {
@@ -581,24 +645,18 @@ void ChartModel::initializeDataSeries(DataseriesModel *newseries) {
     }
 
     if (newseries->yAxisType() == static_cast<quint16>(ChartModel::AxisType::AT_VALUE) ) {
-        if (isNumericalUndef(_miny) || isNumericalUndef(_maxy)) {
-            _miny = newseries->miny();
-            _maxy = newseries->maxy();
-        }
-        else {
-            if (!_fixedY) _miny = std::min(_miny, newseries->miny());
-            if (!_fixedY) _maxy = std::max(_maxy, newseries->maxy());
-        }
-        double res = newseries->resolutionY();
-        double dist = std::abs(_miny - _maxy);
-        if (std::floor(res) == res) {
-            IntegerTicks(res, dist, _tickCountY, _miny, _maxy);
-        }
+		if (newseries->yaxisSide() == "left")
+			SetYAxis(_fixedYLeft, _minyLeft, _maxyLeft, newseries);
+		else
+			SetYAxis(_fixedYRight, _minyRight, _maxyRight, newseries);
     }
     else if (newseries->yAxisType() == static_cast<quint16>(AxisType::AT_CATEGORIES)) {
         auto dd = newseries->datadefinition(Axis::AYAXIS);
         auto totalRange = dd.domain()->range();
-        _tickCountY = totalRange->count();
+		if (newseries->yaxisSide() == "left")
+			_tickCountYLeft = totalRange->count();
+		else
+			_tickCountYRight = totalRange->count();
     }
 }
 
@@ -623,13 +681,24 @@ QString ChartModel::formatXAxis() const
     return result;
 }
 
-QString ChartModel::formatYAxis() const
+QString ChartModel::formatYAxisLeft() const
 {
     QString result = "";
     for (auto *serie : _series) {
-        result = formatAxis(serie->resolutionY(), result);
+		if ( serie->yaxisSide() == "left")
+			result = formatAxis(serie->resolutionY(), result);
     }
     return result;
+}
+
+QString ChartModel::formatYAxisRight() const
+{
+	QString result = "";
+	for (auto *serie : _series) {
+		if (serie->yaxisSide() == "right")
+			result = formatAxis(serie->resolutionY(), result);
+	}
+	return result;
 }
 
 quint16 ChartModel::xaxisType() const
@@ -717,6 +786,10 @@ void ChartModel::tableModel(TableModel *tbl)  {
 QColor ChartModel::seriesColorItem(int seriesIndex, double v) {
  //TODO
     return QColor("red");
+}
+
+ITable ChartModel::dataTable() const {
+	return _datatable;
 }
 
 

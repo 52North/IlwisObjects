@@ -66,16 +66,23 @@ namespace Ilwis {
 				Q_PROPERTY(quint16 xaxisType   READ xaxisType)
 				Q_PROPERTY(double minX         READ minx                    NOTIFY xAxisChanged)
 				Q_PROPERTY(double maxX         READ maxx                    NOTIFY xAxisChanged)
-				Q_PROPERTY(double minY         READ miny                    NOTIFY yAxisChanged)
-				Q_PROPERTY(double maxY         READ maxy                    NOTIFY yAxisChanged)
-				Q_PROPERTY(bool fixedY         READ fixedYAxis   WRITE setFixedYAxis   NOTIFY yAxisChanged)
-				Q_PROPERTY(bool niceNumbersY   READ niceNumbersY WRITE setNiceNumbersY NOTIFY yAxisChanged)
+				Q_PROPERTY(double minYLeft         READ minyLeft                    NOTIFY yAxisLeftChanged)
+				Q_PROPERTY(double maxYLeft         READ maxyLeft                    NOTIFY yAxisLeftChanged)
+				Q_PROPERTY(double minYRight         READ minyRight                    NOTIFY yAxisRightChanged)
+				Q_PROPERTY(double maxYRight         READ maxyRight                    NOTIFY yAxisRightChanged)
+				Q_PROPERTY(bool fixedYLeft         READ fixedYAxisLeft   WRITE setFixedYAxisLeft   NOTIFY yAxisLeftChanged)
+				Q_PROPERTY(bool fixedYRight         READ fixedYAxisRight   WRITE setFixedYAxisRight   NOTIFY yAxisRightChanged)
+				Q_PROPERTY(bool niceNumbersYLeft   READ niceNumbersYLeft WRITE setNiceNumbersYLeft NOTIFY yAxisLeftChanged)
+				Q_PROPERTY(bool niceNumbersYRight   READ niceNumbersYRight WRITE setNiceNumbersYRight NOTIFY yAxisRightChanged)
 
 				Q_PROPERTY(bool updateSeries READ updateSeries NOTIFY updateSeriesChanged)
 				Q_PROPERTY(int tickCountX READ tickCountX WRITE tickCountX NOTIFY tickCountXChanged)
-				Q_PROPERTY(int tickCountY READ tickCountY WRITE tickCountY NOTIFY tickCountYChanged)
+				Q_PROPERTY(int tickCountYLeft READ tickCountYLeft WRITE tickCountYLeft NOTIFY tickCountYLeftChanged)
+				Q_PROPERTY(int tickCountYRight READ tickCountYRight WRITE tickCountYRight NOTIFY tickCountYRightChanged)
 				Q_PROPERTY(QString formatXAxis READ formatXAxis NOTIFY xAxisChanged)
-				Q_PROPERTY(QString formatYAxis READ formatYAxis NOTIFY yAxisChanged)
+				Q_PROPERTY(QString formatYAxisLeft READ formatYAxisLeft NOTIFY yAxisLeftChanged)
+				Q_PROPERTY(QString formatYAxisRight READ formatYAxisRight NOTIFY yAxisRightChanged)
+
 
 				Q_PROPERTY(bool xAxisVisible   READ xAxisVisble   NOTIFY chartTypeChanged)
 				Q_PROPERTY(bool yAxisVisible   READ yAxisVisble   NOTIFY chartTypeChanged)
@@ -116,12 +123,15 @@ namespace Ilwis {
             quint32 deleteSerie(const QString& ycolumn, const QString& zcolumn);
 			bool isValidSeries(const ITable& inputTable, const QString columnName) const;	// check if column with column name exists
             quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QVariantMap& extra);
+			void fillTableData();
             void updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
             bool updateSeries() const;
             void tickCountX(int tc);
             int tickCountX() const;
-            void tickCountY(int tc);
-            int tickCountY() const;
+            void tickCountYLeft(int tc);
+            int tickCountYLeft() const;
+			void tickCountYRight(int tc);
+			int tickCountYRight() const;
             QColor newColor() const;
 
             quint16 xaxisType() const;
@@ -129,16 +139,24 @@ namespace Ilwis {
             // value axis
             double minx() const;
             double maxx() const;
-            double miny() const;
-            double maxy() const;
+            double minyLeft() const;
+            double maxyLeft() const;
+			double minyRight() const;
+			double maxyRight() const;
             void setMinX(double val);
             void setMaxX(double val);
-            void setMinY(double val);
-            void setMaxY(double val);
-            bool fixedYAxis() const;
-            void setFixedYAxis(bool fixed);
-            bool niceNumbersY() const;
-            void setNiceNumbersY(bool nice);
+            void setMinYLeft(double val);
+            void setMaxYLeft(double val);
+			void setMinYRight(double val);
+			void setMaxYRight(double val);
+            bool fixedYAxisLeft() const;
+            void setFixedYAxisLeft(bool fixed);
+			bool fixedYAxisRight() const;
+			void setFixedYAxisRight(bool fixed);
+            bool niceNumbersYLeft() const;
+            void setNiceNumbersYLeft(bool nice);
+			bool niceNumbersYRight() const;
+			void setNiceNumbersYRight(bool nice);
             bool legendVisible() const;
             void setLegendVisible(bool show);
             QString legendAlignment() const;
@@ -147,6 +165,7 @@ namespace Ilwis {
 
             bool xAxisVisble();
             bool yAxisVisble();
+			ITable dataTable() const;
 
         signals:
             void chartTypeChanged();
@@ -155,10 +174,12 @@ namespace Ilwis {
 			void seriesCountChanged();
             void operationsChanged();
 			void xAxisChanged();
-			void yAxisChanged();
+			void yAxisLeftChanged();
+			void yAxisRightChanged();
             void updateSeriesChanged();
             void tickCountXChanged();
-            void tickCountYChanged();
+			void tickCountYLeftChanged();
+			void tickCountYRightChanged();
             void legendChanged();
 			void dataTableChanged();
 			void linkSendMessage(const QVariantMap& parameters);
@@ -169,26 +190,30 @@ namespace Ilwis {
 
             void initializeDataSeries(DataseriesModel *newseries);
             QString formatXAxis() const;
-            QString formatYAxis() const;
+            QString formatYAxisLeft() const;
+			QString formatYAxisRight() const;
             bool axisCompatible(const DataDefinition& inputDef, Axis axis, bool basicCheck=true);
 
 			bool checkRanges(const NumericRange *nrange1, const NumericRange *nrange2) const;
 			void tableModel(TableModel *t);
 			TableModel* tableModel() const;
 			bool updateDataTable() const;
-			void fillTableData();
 
-			double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
-            bool _fixedY = false;
+
+			double _minx = rUNDEF, _maxx = rUNDEF, _minyLeft = rUNDEF, _maxyLeft = rUNDEF, _minyRight = rUNDEF, _maxyRight = rUNDEF;
+            bool _fixedYLeft = false;
+			bool _fixedYRight = false;
             bool _fixedX = false;
-            bool _niceNumbersY = false;
+            bool _niceNumbersYLeft = false;
+			bool _niceNumbersYRight = false;
             bool _legendVisible = true;
             QString _alignment = "top";
 
             AxisType _xaxisType;
             QString _chartType = sUNDEF;
             int _tickCountX = 5;
-            int _tickCountY = 5;
+            int _tickCountYLeft = 5;
+			int _tickCountYRight = 5;
             quint32 _modelId;
             QString _name = sUNDEF;
             ITable _datatable;
