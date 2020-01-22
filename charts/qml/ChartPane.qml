@@ -32,9 +32,16 @@ Rectangle {
 
     Connections {
         target : chart
-        onYAxisChanged : {
+        onYAxisLeftChanged : {
             if (chart) {
-                if (chart.niceNumbersY) {
+                if (chart.niceNumbersYLeft) {
+                    yas.applyNiceNumbers()
+                }
+            }
+        }
+		onYAxisRightChanged : {
+            if (chart) {
+                if (chart.niceNumbersYRight) {
                     yas.applyNiceNumbers()
                 }
             }
@@ -55,12 +62,21 @@ Rectangle {
 	}
 
 	ValueAxis {
-		id : yas
-		min : chart != null  ? chart.minY : 0
-		max : chart != null  ? chart.maxY : 5
-		tickCount : chart ? chart.tickCountY : 5
-        labelFormat : chart ? chart.formatYAxis : "%.3f"
+		id : yasLeft
+		min : chart != null  ? chart.minYLeft : 0
+		max : chart != null  ? chart.maxYLeft : 5
+		tickCount : chart ? chart.tickCountYLeft : 5
+        labelFormat : chart ? chart.formatYAxisLeft : "%.3f"
         visible : chart ? chart.yAxisVisible : true
+	}
+
+	ValueAxis {
+		id : yasRight
+		min : chart != null  ? chart.minYRight : 0
+		max : chart != null  ? chart.maxYRight : 5
+		tickCount : chart ? chart.tickCountYRight : 5
+        labelFormat : chart ? chart.formatYAxisRight : "%.3f"
+        visible : false
 	}
 
     CategoryAxis {
@@ -131,7 +147,7 @@ Rectangle {
 				} else if ( visibleGraphs.count > 0){
 					info(mouse.x, mouse.y)
 					canvas.lastPoint = Qt.point(mouseX, mouseY)
-					sendToLink(mouse.x, mouse.y)
+					sendToLink(mouse.x, mouse.y,"pressed")
 					canvas.requestPaint()
 				}
 			}
@@ -144,6 +160,7 @@ Rectangle {
 					var newRect = chartspanel.mapToItem(visibleGraphs, zoomRectangle.x, zoomRectangle.y,zoomRectangle.width, zoomRectangle.height)
 					visibleGraphs.zoomIn(newRect) 
 					zoomRectangle.disable()
+					sendToLink(mouse.x, mouse.y,"released")
 				}
 			}
 
@@ -162,7 +179,7 @@ Rectangle {
 				}else if ( floatrect.opacity > 0){
 					info(mouse.x, mouse.y)
 					canvas.lastPoint = Qt.point(mouseX, mouseY)
-					sendToLink(mouse.x, mouse.y)
+					sendToLink(mouse.x, mouse.y,"moved")
 					canvas.requestPaint()
 		        }
 			}
@@ -215,6 +232,17 @@ Rectangle {
 		for (var i = 0; i < chart.seriesCount; i++) {
 			var smodel = chart.getSeries(i);
             var ctype = smodel.charttype
+			var yas
+			if ( smodel.yAxisSide == "left"){
+				yas = yasLeft
+				yas.min = smodel.minY
+				yas.max = smodel.maxY
+			}else {
+				yas = yasRight
+				yas.visible = true
+				yas.min = smodel.minY
+				yas.max = smodel.maxY
+			}
             var series = createSeries(ctype, smodel.name, currxaxis, yas)
             if (ctype == "line" || ctype == "spline" || ctype == "points") {
 			    series.pointsVisible = false;
@@ -224,6 +252,11 @@ Rectangle {
 			    for (var j = 0; j < pointsCount; j++) {
 				    series.append(points[j].x, points[j].y);
 			    }
+				if ( smodel.yAxisSide == "left")
+					series.axisYLeft =  yasLeft 
+				else
+					series.axisYRight =  yasRight 
+
             }
             if (ctype == "bar") {
 				var accu = aggregate(smodel.points);
@@ -269,11 +302,10 @@ Rectangle {
 
         return 0x20 // fallback
     }
-	function sendToLink(mx,my){
-		var pnt = visibleGraphs.mapToValue(Qt.point(mx,my),visibleGraphs.series(0))
+	function sendToLink(mx,my, mode){
 		var curOper = propertiespanel.currentEditor()
 		if (typeof curOper.handleClick === "function"){
-			curOper.handleClick(visibleGraphs, mx, my)
+			curOper.handleClick(visibleGraphs, mx, my, mode)
 		}
 	}
 	function info(mx,my){

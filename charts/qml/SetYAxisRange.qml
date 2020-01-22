@@ -15,6 +15,12 @@ Rectangle {
     height: parent ? parent.height - 10 : 0
     property var operation
 
+	CheckBox {
+		id : useleftid
+		checked : true
+		text : qStr("Use left axis")
+	}
+
     Controls.TextEditLabelPair{
         id : yaxisrangelow
         width : 300
