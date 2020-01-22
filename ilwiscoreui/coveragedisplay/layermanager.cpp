@@ -777,11 +777,16 @@ QVariantList LayerManager::yGridAxisLeft() const
 
 void LayerManager::addPostDrawer(QObject* owner, QObject* editor)
 {
-
-	auto iter = std::find(_postDrawersPerOwner[owner].begin(), _postDrawersPerOwner[owner].end(), editor);
-    if (iter == _postDrawersPerOwner[owner].end()) {
-        _postDrawers.append(editor);
-    }
+	auto iterpdpo = _postDrawersPerOwner.find(owner);
+	if (iterpdpo == _postDrawersPerOwner.end()) {
+		_postDrawersPerOwner[owner].push_back(editor);
+	}
+	else {
+		auto iterobjs = std::find(iterpdpo->second.begin(), iterpdpo->second.end(), editor);
+		if (iterobjs == iterpdpo->second.end()) {
+			_postDrawersPerOwner[owner].push_back(editor);
+		}
+	}
 }
 
 void LayerManager::removePostDrawer(QObject * owner, QObject *editor)
