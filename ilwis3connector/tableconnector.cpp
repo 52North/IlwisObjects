@@ -139,7 +139,8 @@ ColumnDefinition TableConnector::makeColumn(const QString& colName, quint64 inde
     _converters[colName] = conv;
     ColumnDefinition col(colName, dom, index );
     if ( dom->ilwisType() == itNUMERICDOMAIN){
-        QString minmax = _odf->value(section,"MinMax");
+		// range in ilwis 3 is very unreliable; it doesnt reflect the real values
+      /*  QString minmax = _odf->value(section,"MinMax");
         QString range = _odf->value(section,"Range");
         QStringList parts = range.split(":");
         double resolution = 1.0;
@@ -152,9 +153,9 @@ ColumnDefinition TableConnector::makeColumn(const QString& colName, quint64 inde
         double vmin = parts[0].toDouble();
         double vmax = parts[1].toDouble();
 
-        col.datadef().range(new NumericRange(vmin, vmax, resolution));
+        col.datadef().range(new NumericRange(vmin, vmax, resolution));*/
 
-
+		col.datadef().range(new NumericRange());
     }
     return col;
 }
