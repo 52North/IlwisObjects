@@ -18,33 +18,38 @@ Rectangle {
 	property var lastSelection : "" 
 	property var selColor : "#ff0000"
 	property var lastPnt
+	property var selectedX
 	property var chartCanvas
 
-	function handleClick(chartview, mx,my){
+	function handleClick(chartview, mx,my, mode){
+		if ( mode == "released")
+			return
+
 		var pnt = chartview.mapToValue(Qt.point(mx,my),chartview.series(0))
 		if ( lastSelection != "") {
 			lastPnt = pnt
-			chart.sendOverLink({"selectionmode" : lastSelection , "x" : lastPnt.x, "y" : lastPnt.y,"color" : selColor})
+			selectedX = mx
+			chart.sendOverLink({"type" : "histogramselection", selectionmode : lastSelection , "x" : lastPnt.x, "y" : lastPnt.y,"color"  : selColor })
 		}
 	}
 
-	function handleUI(chartview, canvas) {
-		if ( canvas.lastPoint != null && lastSelection != "" ) {
-			chartCanvas = canvas
-			var ctx = canvas.getContext("2d")
+	function handleUI(chartview, pcanvas) {
+	
+		if ( lastPnt != null && lastSelection != "" ) {
+			chartCanvas = pcanvas
+			var ctx = pcanvas.getContext("2d")
 			var minx = chart.minX
 			var maxx = chart.maxX
-			var miny = chart.minY
-			var maxy = chart.maxY
+			var miny = chart.minYLeft
+			var maxy = chart.maxYLeft
 			var pnt1 = chartview.mapToPosition(Qt.point(minx,miny),chartview.series(0))
 			var pnt2 = chartview.mapToPosition(Qt.point(minx,maxy),chartview.series(0))
 			var pnt3 = chartview.mapToPosition(Qt.point(maxx,maxy),chartview.series(0))
-			var color = Qt.rgba(255,0,0,1)
-			if ( pnt1.x < canvas.lastPoint.x && pnt3.x > canvas.lastPoint.x) {
+			if ( pnt1.x < selectedX && pnt3.x > selectedX) {
 				ctx.beginPath()
 				ctx.strokeStyle = "black"
-				ctx.moveTo(canvas.lastPoint.x, pnt1.y)
-				ctx.lineTo(canvas.lastPoint.x, pnt2.y)
+				ctx.moveTo(selectedX, pnt1.y)
+				ctx.lineTo(selectedX, pnt2.y)
 				ctx.stroke()
 			}
 		}
@@ -70,8 +75,15 @@ Rectangle {
 							chartCanvas.requestPaint()
 							chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
 						}
-					}else
+					}else{
+						// clear all selections
+						if( chartCanvas){
+							lastPnt = null
+							chartCanvas.requestPaint()
+						}
+						chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
 						lastSelection = "at"
+					}
 				}
 			}
 			Controls.ColorPicker2{
