@@ -9,7 +9,7 @@ QC2.Button{
 	background: Rectangle {
 		implicitWidth: parent.width
 		implicitHeight: parent.height
-		color: parent.down ? uicontext.paleColor :  uicontext.lighterColor //"#f6f6f6"
+		color: parent.down ? uicontext.paleColor :  ( highlighted ? uicontext.middleColor :uicontext.lighterColor) //"#f6f6f6"
 		border.color: Global.edgecolor
 		border.width: noEdge ? 0 : 1
 		radius: 4
