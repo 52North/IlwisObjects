@@ -95,7 +95,7 @@ bool TabModel::selected() const
     return _selected;
 }
 
-void TabModel::selectTab(){
+void TabModel::selectTab(const QString& dummy){
     SidePanelModel *sidemodel = qobject_cast<SidePanelModel *>(parent());
     if ( sidemodel){
         DataPaneModel *datapmodel = qobject_cast<DataPaneModel *>(sidemodel->parent());

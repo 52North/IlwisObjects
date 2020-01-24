@@ -44,7 +44,7 @@ namespace Ilwis {
 			bool selected() const;
 			QString side() const;
 			QString type() const;
-			Q_INVOKABLE void selectTab();
+			Q_INVOKABLE void selectTab(const QString& dummy);
 			Q_INVOKABLE quint32 id() const;
 		signals:
 			void displayNameChanged();
