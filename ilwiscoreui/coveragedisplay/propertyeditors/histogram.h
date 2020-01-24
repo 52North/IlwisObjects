@@ -38,6 +38,7 @@ namespace Ilwis {
 			Q_PROPERTY(int polyCount READ polyCount NOTIFY polyChanged)
 			Q_PROPERTY(bool useAOI READ useAOI WRITE useAOI NOTIFY aoiChanged)
 			Q_PROPERTY(bool aggregateAOIs READ aggregateAOIs WRITE aggregateAOIs NOTIFY aggregateAOIsChanged)
+			Q_PROPERTY(quint32 chartModelId READ chartModelId WRITE chartModelId NOTIFY chartModelIdChanged)
 			
 
 			Q_INVOKABLE void addPoint(int x, int y);
@@ -45,17 +46,20 @@ namespace Ilwis {
 			Q_INVOKABLE void addEmptyPolygon();
 			Q_INVOKABLE void deleteLastAOI();
 			Q_INVOKABLE void deleteAllAOIs();
+			Q_INVOKABLE void updateAOIs();
 	
 			bool canUse(const IIlwisObject &obj, const DataDefinition &def) const;
 			bool canUse(const IIlwisObject &obj, const QString &name) const;
 			static VisualPropertyEditor *create(VisualAttribute *p);
 			void prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef);
+			void linkAcceptMessage(const QVariantMap& parameters);
 
 
 		signals:
 			void polyChanged();
 			void aoiChanged();
 			void aggregateAOIsChanged();
+			void chartModelIdChanged();
 	
 		private:
 			ITable _histogramData;
@@ -74,11 +78,17 @@ namespace Ilwis {
 
 			bool aggregateAOIs() const;
 			void aggregateAOIs(bool yesno);
+			void chartModelId(quint32 id);
+			quint32 chartModelId() const;
+			void updateChart(const QString& sumColumn="", const QString& cumColumn="");
+			void linkChart2Editor();
+			void collectData();
 
 			std::vector<std::vector<Coordinate>> _polygons;
 			IRasterCoverage _raster;
 			bool _useAOI = false;
 			bool _aggregateAOIs = true;
+			quint32 _chartModelId = 10000000;
 
 		};
 	}

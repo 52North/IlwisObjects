@@ -41,6 +41,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "table.h"
 #include "ilwiscontext.h"
 #include "mathhelper.h"
+#include "chartmodel.h"
+#include "modelregistry.h"
 #include "pixeliterator.h"
 #include "histogram.h"
 
@@ -190,6 +192,34 @@ void Histogram::updateRanges(int columnStart, const NumericRange& rngCounts, con
 	_histogramData->columndefinitionRef(columnStart + 3).datadef().range(rngCumulatives.clone());
 }
 
+void Histogram::collectData() {
+	int index = 0;
+	std::vector<NumericStatistics::HistogramBin> bins;
+	NumericRange rngCounts;
+	NumericRange rngCumulatives;
+	bins = initializeBins();
+	addColumns(index);
+	for (auto& pol : _polygons) {
+		calculateLocalizedHistogram(pol, bins, rngCounts, rngCumulatives);
+		if (_aggregateAOIs) {
+			bins2table(bins, 4 + index * 2);
+		}
+		else {
+			bins2table(bins, 4 + index * 2);
+			++index;
+			addColumns(index);
+			bins = initializeBins(); // new bins
+		}
+	}
+	if (_aggregateAOIs) {
+		updateRanges(0, rngCounts, rngCumulatives);
+	}
+	else {
+		for (int i = 0; i < _polygons.size(); ++i)
+			updateRanges(i, rngCounts, rngCumulatives);
+	}
+}
+
 QString Histogram::tableUrlPrivate()  
 {
 	if (_histogramData.isValid()) {
@@ -197,30 +227,7 @@ QString Histogram::tableUrlPrivate()
 			return  _histogramData->resource().url().toString();
 		else {
 			if (_useAOI) {
-				int index = 0;
-				std::vector<NumericStatistics::HistogramBin> bins;
-				NumericRange rngCounts;
-				NumericRange rngCumulatives;
-				bins = initializeBins();
-				for (auto& pol : _polygons) {
-					calculateLocalizedHistogram(pol, bins, rngCounts, rngCumulatives);
-					if (_aggregateAOIs) {
-						bins2table(bins, 2 + index * 2);
-					}
-					else {
-						addColumns(index);
-						bins2table(bins, 4 + index * 2);
-						++index;
-						bins = initializeBins(); // new bins
-					}
-				}
-				if (_aggregateAOIs) {
-					updateRanges(0, rngCounts, rngCumulatives);
-				}
-				else {
-					for (int i = 0; i < _polygons.size(); ++i)
-						updateRanges(i, rngCounts, rngCumulatives);
-				}
+				collectData();
 				return _histogramData->resource().url().toString();
 			}
 		}
@@ -293,19 +300,45 @@ void Histogram::addEmptyPolygon() {
 	_polygons.resize(_polygons.size() + 1);
 }
 
-void Histogram::deleteLastAOI() {
-	if ( _polygons.size() > 0)
-		_polygons.resize(_polygons.size() - 1);
-	vpmodel()->layer()->layerManager()->updatePostDrawers();
+void Histogram::updateChart(const QString& sumColumn, const QString& cumColumn) {
+	auto modelPair = modelregistry()->getModel(_chartModelId);
+	if (modelPair.first == "chart") {
+		ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
+		if (chart) {
+			if (sumColumn == "" && cumColumn == "") {
+				for (int i = 0; i < _histogramData->columnCount(); ++i) {
+					auto sn = QString::number(i);
+					chart->deleteSerie("histogram_" + sn);
+					chart->deleteSerie("histogram_cumulative_" + sn);
+				}
+			}
+			else {
+				chart->deleteSerie(sumColumn);
+				chart->deleteSerie(cumColumn);
+			}
+		}
+	}
 }
+
+void Histogram::deleteLastAOI() {
+	if (_polygons.size() > 0 && _useAOI) {
+		_polygons.resize(_polygons.size() - 1);
+		vpmodel()->layer()->layerManager()->updatePostDrawers();
+		QString sn = QString::number(_polygons.size());
+		updateChart("histogram_" + sn, "histogram_cumulative_" + sn);
+	}
+}
+
 void Histogram::deleteAllAOIs() {
 	_polygons = std::vector<std::vector<Coordinate>>();
 	vpmodel()->layer()->layerManager()->updatePostDrawers();
+	updateChart();
+	
 }
 
 void Histogram::useAOI(bool yesno) {
 	_useAOI = yesno;
-	vpmodel()->layer()->layerManager()->updatePostDrawers();
+	deleteAllAOIs();
 }
 
 bool Histogram::useAOI() const {
@@ -317,6 +350,60 @@ bool  Histogram::aggregateAOIs() const {
 }
 void  Histogram::aggregateAOIs(bool yesno) {
 	_aggregateAOIs = yesno;
+}
+
+void Histogram::chartModelId(quint32 id) {
+	_chartModelId = id;
+	linkChart2Editor();
+	emit chartModelIdChanged();
+}
+
+quint32 Histogram::chartModelId() const {
+	return _chartModelId;
+}
+
+void Histogram::linkChart2Editor() {
+	auto modelPair = modelregistry()->getModel(_chartModelId);
+	if (modelPair.first == "chart") {
+		ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
+		if (chart) {
+			connect(chart, &ChartModel::linkSendMessage, this, &Histogram::linkAcceptMessage);
+		}
+	}
+}
+
+void Histogram::linkAcceptMessage(const QVariantMap& parameters) {
+	if (parameters.contains("chartcloses")) {
+		quint32 mid = parameters["chartcloses"].toUInt();
+		if (mid == _chartModelId) {
+			_chartModelId = 10000000;
+			emit chartModelIdChanged();
+
+		}
+	}
+}
+
+void Histogram::updateAOIs() {
+	try {
+		auto modelPair = modelregistry()->getModel(_chartModelId);
+		if (modelPair.first == "chart") {
+			ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
+			if (chart) {
+				collectData();
+				for (int i = 4; i < _histogramData->columnCount(); ++i) {
+					QString colName = _histogramData->columndefinitionRef(i).name();
+					chart->deleteSerie(colName);
+					if (colName.indexOf("cumulative") != -1)
+						colName = "-" + colName;
+					QString updateChart = QString("addchartdata(%1,%2,\"min\",%3,%4)").arg(_chartModelId).arg(_histogramData->resource().url(true).toString()).arg(colName).arg("\"specialtype=histogram|resx=2|resy=2\"");
+					ExecutionContext ctx;
+					SymbolTable symtable;
+					commandhandler()->execute(updateChart, &ctx, symtable);
+				}
+			}
+		}
+	}
+	catch (ErrorObject& err) {}
 }
 
 
