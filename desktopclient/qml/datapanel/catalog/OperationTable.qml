@@ -220,7 +220,7 @@ Rectangle {
             mastercatalog.currentCatalog = currentCatalog
             mastercatalog.setSelectedObjects(ids)
             if (!catalogViews.tabmodel.selected)
-                catalogViews.tabmodel.selectTab()
+                catalogViews.tabmodel.selectTab("6")
         }
         onDoubleClicked: {
             if ( currentRow != -1){

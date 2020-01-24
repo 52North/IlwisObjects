@@ -255,7 +255,7 @@ Rectangle{
             isSelected = !isSelected
             catalogViews.setSelected(id)
             if (catalogViews && !catalogViews.tabmodel.selected)
-                catalogViews.tabmodel.selectTab()
+                catalogViews.tabmodel.selectTab("4")
             image = Qt.createQmlObject('import QtQuick 2.0; Image{
                 id : image
                 width : 20; height : 20

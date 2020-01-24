@@ -12,9 +12,9 @@ ComboBox{
     model : mastercatalog.defaultFilters
     textRole: "name"
     onCurrentIndexChanged: {
-        if ( tabmodel)
-            tabmodel.selectTab()
-        if ( currentIndex > 0){ // first entry is a default empty one
+        if ( tabmodel){
+            tabmodel.selectTab("1")
+        }if ( currentIndex > 0){ // first entry is a default empty one
             var filter = model[currentIndex].catalogQuery
             var url = model[currentIndex].url
             if ( url === "")

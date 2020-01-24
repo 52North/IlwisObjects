@@ -184,7 +184,7 @@ id: thumbDelegate
             isSelected = !isSelected
             setSelected(id)
             if (catalogViews && !catalogViews.tabmodel.selected)
-                catalogViews.tabmodel.selectTab()
+                catalogViews.tabmodel.selectTab("5")
         }
 
         onDoubleClicked: {
