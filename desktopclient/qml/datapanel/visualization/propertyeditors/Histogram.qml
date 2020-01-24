@@ -7,6 +7,7 @@ import "../../../controls" as Controls
 import "../../.." as Base
 
 Column {
+	id : histedit
     width: 100
     height: 62
     property var editor
@@ -14,6 +15,7 @@ Column {
 	spacing : 5
 	property var currentPolygon : []
 	property var editState : false
+	objectName : uicontext.uniqueName("histogram_editor_")
 
 	function handleMousePressed(mx,my) {
 		if ( useAOI.checked && editState)
@@ -24,28 +26,38 @@ Column {
         id : usesInfo
         x : 5
         y : 5
-        text: "Open Histogram"
+        text: editor.chartModelId == 10000000 ? "Open Histogram" : "Update Chart"
 		width : 100
 		height : 22
+ 
 
 		onClicked : {
-			  var mid = editor.visualAttribute.layer.modelId()
-			  var createInfo
-			  if ( editor.aggregateAOIs)
-  				createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : 'min', yaxis :'histogram|-histogram_cumulative', zaxis : '', extraparameters : 'resx=2|resy=2|specialtype=histogram|linkedid=' + mid}
-			  else{
-				var ydata = "" 
-				for(var i=0; i < editor.polyCount; ++i) {
-					if ( ydata != "")
-						ydata += "|"
-					ydata += 'histogram_' + i + '|-histogram_cumulative_' + i
+			var mid = editor.visualAttribute.layer.modelId()
+			var createInfo
+			var ydata = 'histogram|-histogram_cumulative' 
+
+			if ( editor.chartModelId == 10000000){
+				if ( editor.useAOI) {
+					if ( editor.aggregateAOIs){
+						ydata = 'histogram_0|-histogram_cumulative_0'
+					}else{
+						for(var i=0; i < editor.polyCount; ++i) {
+							if ( ydata != "")
+								ydata += "|"
+							ydata += 'histogram_' + i + '|-histogram_cumulative_' + i
+						}
+					}
 				}
-				createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : 'min', yaxis : ydata, zaxis : '', extraparameters : 'resx=2|resy=2|specialtype=histogram|linkedid=' + mid}
-			  }
-              modelid = objectcreator.createObject(createInfo)
-			  editor.chartModelId = modelid
-              var filter = "itemid=" + modelid
-              bigthing.newCatalog(filter, "chart", "","other")
+				createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : 'min', yaxis : ydata, zaxis : '', extraparameters : 'resx=2|resy=2|specialtype=histogram|linkedid=' + mid }
+				modelid = objectcreator.createObject(createInfo)
+				editor.chartModelId = modelid
+				var filter = "itemid=" + modelid
+				bigthing.newCatalog(filter, "chart", "","other")
+				editState = false
+			}else {
+				if ( editor.useAOI)
+					editor.updateAOIs()
+			}
 		}
     }
 
@@ -74,6 +86,7 @@ Column {
 				}
 				anchors.left : useAOI.right
 				anchors.leftMargin : 8
+				visible : useAOI.checked
 			}
 		}
 		Controls.PushButton {
@@ -88,12 +101,15 @@ Column {
 			onClicked : {
 				if (!editState)
 					editor.addEmptyPolygon()
+				else {
+//					editor.deleteAllAOIs()
+				}
 				editState = !editState
 			}
 		}
 
 		Controls.PushButton {
-			text : qsTr("Delete last AOI's")
+			text : qsTr("Delete last AOI")
 			width : 140
 			height : 22
 			visible : useAOI.checked
