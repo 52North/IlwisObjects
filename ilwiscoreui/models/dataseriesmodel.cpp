@@ -307,6 +307,11 @@ quint16 DataseriesModel::xAxisType() const {
 quint16 DataseriesModel::yAxisType() const {
     return axisType(ChartModel::Axis::AYAXIS);
 }
+void DataseriesModel::updateEditors(const QVariantMap& parameters) {
+	for (auto *editor : _operations) {
+		editor->updateEditor(parameters);
+	}
+}
 
 QVariantMap DataseriesModel::categories(QString axis, bool unique)
 {

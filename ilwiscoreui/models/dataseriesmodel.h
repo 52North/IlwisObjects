@@ -105,7 +105,7 @@ namespace  Ilwis {
             Q_INVOKABLE QVariantMap categories(QString axis, bool unique);
 
 			void name(const QString& newName);
-
+			void updateEditors(const QVariantMap& parameters);
 
 
 		signals:
