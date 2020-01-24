@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "colorrange.h"
 #include "mathhelper.h"
 #include "tablemerger.h"
+#include "uicontextmodel.h"
 #include "raster.h"
 #include "ilwiscontext.h" 
 
@@ -54,6 +55,9 @@ ChartModel::ChartModel(QObject *parent) : QObject(parent)
 
 ChartModel::~ChartModel()
 {
+	QVariantMap parms;
+	parms["chartcloses"] = modelId();
+	emit linkSendMessage(parms);
     modelregistry()->unRegisterModel(modelId());
 }
 
@@ -97,6 +101,7 @@ void ChartModel::fillTableData() {
 			rec = item.second;
 		}
 	}
+	emit dataTableChanged();
 }
 
 quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const QString & cType, const QString& xaxis, const QString& yaxis, const QString& zaxis, const QVariantMap& extraParameters)
@@ -123,7 +128,6 @@ quint32 ChartModel::createChart(const QString& name, const ITable & tbl, const Q
 	extra["color"] = extraParameters.contains("color") ? extraParameters["color"].value<QColor>() : clr;
 	insertDataSeries(tbl, 0, xaxis, yaxis, zaxis, extra);		// add the first dataseries
 	fillTableData();
-	emit dataTableChanged();
     return modelId(); 
 }
 
@@ -791,6 +795,8 @@ QColor ChartModel::seriesColorItem(int seriesIndex, double v) {
 ITable ChartModel::dataTable() const {
 	return _datatable;
 }
+
+
 
 
 
