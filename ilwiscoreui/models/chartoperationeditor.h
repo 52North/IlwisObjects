@@ -46,6 +46,7 @@ namespace Ilwis {
 
 			QString qmlUrl() const;
             QString displayName() const;
+			virtual void updateEditor(const QVariantMap& parameters) {}
 
 		signals:
 
