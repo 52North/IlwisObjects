@@ -211,7 +211,7 @@ DropArea {
                     onSelectTab :{
                         if ( layerview.tabmodel){
                             if (!layerview.tabmodel.selected)
-                                   layerview.tabmodel.selectTab()
+                                   layerview.tabmodel.selectTab("7")
                         }
                     }
                 }
