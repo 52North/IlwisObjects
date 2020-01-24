@@ -163,9 +163,9 @@ quint32 AttributeDefinition::columnCount() const
     return (quint32)_columnDefinitionsByIndex.size();
 }
 
-ColumnDefinition AttributeDefinition::operator[](quint32 index)
+ColumnDefinition& AttributeDefinition::operator[](quint32 index)
 {
-    return columndefinition(index);
+    return columndefinitionRef(index);
 }
 
 std::vector<IlwisTypes> AttributeDefinition::ilwisColumnTypes() const
@@ -226,7 +226,6 @@ QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 colum
             actualval = rUNDEF;
         else {
             SPNumericRange actualRange = coldef.datadef().range<NumericRange>();
-            SPNumericRange theoreticalRange = coldef.datadef().domain()->range<NumericRange>();
             if ( !actualRange.isNull() ){
                 if ( hasType(valueType,itDATETIME))
                     actualRange->add(actualval.value<Ilwis::Time>());
