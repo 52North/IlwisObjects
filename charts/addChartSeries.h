@@ -36,6 +36,7 @@ namespace Ilwis {
 			QString _columnX = sUNDEF;
 			QString _columnY = sUNDEF;
             ITable _inputTable;
+			QVariantMap _extras;
 
 			NEW_OPERATION(AddChartSeries);
 		};

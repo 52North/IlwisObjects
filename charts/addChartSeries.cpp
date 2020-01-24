@@ -63,11 +63,21 @@ Ilwis::OperationImplementation::State AddChartSeries::prepare(ExecutionContext *
 		{ ERR_ILLEGALE_OPERATION2, _expression.input<QString>(2), "chart" }
 	);
 
+	QString col = _expression.input<QString>(3);
+	if (col.indexOf("-") == 0) // columns that use right side axis use '-' as prefix
+		col = col.mid(1);
 	OperationHelper::check(
-		[&]()->bool { return _chartmodel->isValidSeries(_inputTable, _expression.input<QString>(3)); },
+		[&]()->bool { return _chartmodel->isValidSeries(_inputTable,col); },
 		{ ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
 	);
 
+	QStringList ex = _expression.input<QString>(4).split("|");
+	for (auto kvp : ex) {
+		QStringList parts = kvp.split("=");
+		if (parts.size() == 2) {
+			_extras[parts[0]] = parts[1];
+		}
+	}
 	_columnX = _expression.input<QString>(2);
 	_columnY = _expression.input<QString>(3);
 
@@ -80,10 +90,13 @@ bool AddChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
 		if ((_prepState = prepare(ctx, symTable)) != sPREPARED) 
 			return false;
 
-    QColor clr = _chartmodel->newColor();
-	QVariantMap extra;
-	extra["color"] = clr;
-	_chartmodel->insertDataSeries(_inputTable, _chartmodel->seriesCount(), _columnX, _columnY, sUNDEF, extra); 
+	if (!_extras.contains("color")) {
+		QColor clr = _chartmodel->newColor();
+		_extras["color"] = clr;
+	}
+	_chartmodel->insertDataSeries(_inputTable, _chartmodel->seriesCount(), _columnX, _columnY, sUNDEF, _extras); 
+	_chartmodel->fillTableData();
+	_chartmodel->updateSeriesChanged();
 
 	logOperation(_expression);   
 
@@ -99,12 +112,13 @@ quint64 AddChartSeries::createMetadata()
 {
 	OperationResource resource({ "ilwis://operations/addchartdata" });
 	resource.setLongName("Add Chart Data Series");
-	resource.setSyntax("AddChartSeries(Chart ID, X Column, Y Column))");
-	resource.setInParameterCount({ 4 });
+	resource.setSyntax("addchartdata(Chart ID, table, X Column, Y Column, extras))");
+	resource.setInParameterCount({ 5 });
 	resource.addInParameter(0, itINT32, TR("Chart ID"), TR("The ID identifying the chart to which the series needs to be added. "));
     resource.addInParameter(1, itTABLE, TR("Input table"), TR("Table from which the data comes"));
 	resource.addInParameter(2, itSTRING, TR("X Column"), TR("The column to use for the X-axis"));
 	resource.addInParameter(3, itSTRING, TR("Y Column"), TR("The column to use for the Y-axis"));
+	resource.addInParameter(4, itSTRING, TR("Additional Parameters"), TR("key value pairs of pairs seperated by '|' for special parameters; usually not used"));
 	resource.setKeywords("chart series, table, chart");
 
 	mastercatalog()->addItems({ resource });
