@@ -79,7 +79,7 @@ public:
     void setCell(const QString& col, quint32 rec, const QVariant& var);
 
     //@override
-    void setCell(quint32, quint32 rec, const QVariant& var);
+    void setCell(quint32, quint32 rec, const QVariant& var, bool noCheck = false);
 
     //@override
     bool prepare(const IOOptions& options=IOOptions());

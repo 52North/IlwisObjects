@@ -325,7 +325,7 @@ QVariant FlatTable::cell(const quint32 index, quint32 rec, bool asRaw) const
     return QVariant();
 }
 
-void  FlatTable::setCell(quint32 index, quint32 rec, const QVariant& var){
+void  FlatTable::setCell(quint32 index, quint32 rec, const QVariant& var, bool noCheck){
     if (!const_cast<FlatTable *>(this)->initLoad()) {
         return ;
     }
@@ -345,7 +345,12 @@ void  FlatTable::setCell(quint32 index, quint32 rec, const QVariant& var){
         newRecord();
         rec = (quint32)_datagrid.size() - 1;
     }
-    _datagrid[rec].cell(index, checkInput(var, index));
+	if (noCheck) {
+		_datagrid[rec].cell(index, var);
+		_attributeDefinition[index].datadef().range()->add(var);
+	}
+	else
+		_datagrid[rec].cell(index, checkInput(var, index));
     _datagrid[rec].changed(true);
 
 }

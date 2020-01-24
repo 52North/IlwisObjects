@@ -59,7 +59,7 @@ public:
     void column(const quint32 columnIndex, const std::vector<QVariant>& vars, quint32 offset=0);
 
     void setCell(const QString& columnName, quint32 rec, const QVariant& var);
-    void setCell(quint32 col, quint32 rec, const QVariant& var);
+    void setCell(quint32 col, quint32 rec, const QVariant& var, bool noCheck = false);
 
 
     Record& recordRef(quint32 n);

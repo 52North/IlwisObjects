@@ -227,7 +227,7 @@ void AttributeTable::setCell(const QString &columnName, quint32 rec, const QVari
     setCell(index, rec, var);
 }
 
-void AttributeTable::setCell(quint32 col, quint32 rec, const QVariant &var)
+void AttributeTable::setCell(quint32 col, quint32 rec, const QVariant &var, bool noCheck)
 {
     if (!_features.isValid() || rec > recordCount()) {
         ERROR1(ERR_NO_INITIALIZED_1,name());
