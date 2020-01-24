@@ -90,6 +90,7 @@ public:
     explicit UIContextModel(QObject *parent = 0);
 
     Q_INVOKABLE QString uniqueName();
+	Q_INVOKABLE QString uniqueName(const QString& base);
     Q_INVOKABLE void exitUI();
     Q_INVOKABLE Ilwis::Ui::ScriptModel* scriptModel(const QString& fileorid, QObject *parent);
     Q_INVOKABLE QString moduleData() const;

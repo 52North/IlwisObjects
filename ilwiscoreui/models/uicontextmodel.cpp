@@ -95,6 +95,11 @@ QString UIContextModel::uniqueName()
     return "ilwis_ui_object_" + QString::number(_objectCounter++);
 }
 
+QString UIContextModel::uniqueName(const QString& base)
+{
+	return base + QString::number(_objectCounter++);
+}
+
 void UIContextModel::exitUI()
 {
     _abort.store(true);
