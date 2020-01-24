@@ -59,7 +59,7 @@ Rectangle {
 			var pnt1 = chartview.mapToPosition(Qt.point(minx,miny),chartview.series(0))
 			var pnt2 = chartview.mapToPosition(Qt.point(minx,maxy),chartview.series(0))
 			var pnt3 = chartview.mapToPosition(Qt.point(maxx,maxy),chartview.series(0))
-			if ( pnt1.x < lstPoint.x && pnt3.x > selX) {
+			if ( pnt1.x < selX && pnt3.x > selX) {
 				ctx.beginPath()
 				ctx.strokeStyle = "blue"
 				ctx.moveTo(selX, pnt1.y)
