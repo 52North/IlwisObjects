@@ -22,14 +22,32 @@ Rectangle {
 	property var colors : []
 	property var selectedMarker : -1
 	property var chartCanvas
+	property var chartView
+
+	function changeItem(text, oldText) {
+		var pnt1 = chartView.mapToPosition(Qt.point(text,100),chartView.series(0))
+		var pnt2 = chartView.mapToPosition(Qt.point( oldText,100),chartView.series(0))
+		for(var k=0 ; k < markers.length; ++k){
+			if ( Math.abs(pnt2.x - markers[k]) <= 1){
+				markers[k] = parseInt(pnt1.x)
+				rebuildItems(chartView, 100) 
+				redrawRaster()
+				chartCanvas.requestPaint()
+				itemtable.model = items
+				break;
+			}
+		}
+	}
 
 	function rebuildItems(chartview, my) {
 		var sortedMarkers = markers
 		sortedMarkers.sort(sortNumber)
 		var oldItems = items
+		var prevx = items.length == 0 ? chart.minX : parseInt(items[0].minvalue)
+		
 		items = []
 
-		var prevx = chart.minX
+	
 		var prevMarker = -1000
 		for(var i=0; i < sortedMarkers.length; ++i ){
 			var pnt = chartview.mapToValue(Qt.point(sortedMarkers[i],my),chartview.series(0))
@@ -45,6 +63,7 @@ Rectangle {
 			items.push(item)
 			prevx = pnt.x
 			prevMarker = sortedMarkers[i]
+			console.debug("tttttttt", item.minvalue)
 		}
 	}
 
@@ -63,19 +82,19 @@ Rectangle {
 				break;
 			}
 		}
-		items.splice(index,1)
+		rebuildItems(chartView, 100)
 		itemtable.model = items
-		for(var i=0; i < items.length; ++i) {
-				chart.sendOverLink({"type" : "interactiveslicing",  "minvalue" : items[i].minvalue, "maxvalue" : items[i].maxvalue,"color" : items[i].ecolor, "first" : i==0})
-		}
 		if ( items.length == 0)
 			chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
+		else
+			redrawRaster()
 	}
 
 	function handleClick(chartview, mx,my, mode){
 		if (!activeSelect.checked)
 			return
 
+        chartView = chartview
 		var minx = chart.minX
 		var maxx = chart.maxX
 		var miny = chart.minYLeft
@@ -100,10 +119,14 @@ Rectangle {
 				rebuildItems(chartview, my)
 				itemtable.model = items
 			}
-			for(var i=0; i < items.length; ++i) {
-				chart.sendOverLink({"type" : "interactiveslicing",  "minvalue" : items[i].minvalue, "maxvalue" : items[i].maxvalue,"color" :  items[i].ecolor, "first" : i==0})
-			}
+			redrawRaster()
 			
+		}
+	}
+
+	function redrawRaster() {
+		for(var i=0; i < items.length; ++i) {
+				chart.sendOverLink({"type" : "interactiveslicing",  "minvalue" : items[i].minvalue, "maxvalue" : items[i].maxvalue,"color" :  items[i].ecolor, "first" : i==0})
 		}
 	}
 
@@ -136,6 +159,7 @@ Rectangle {
 		width :240
 		height : 20
 		visible : false
+		useTransparency : true
 
 		Component.onCompleted : {
 			basey = picker.y
@@ -217,13 +241,18 @@ Rectangle {
 				title : qsTr("Minimum Value");
 				role : "minvalue"
 				width : itemtable.limitwidth
-				delegate: Component{
-					Text {
-						text: styleData.value
-						verticalAlignment:Text.AlignVCenter
-						font.pixelSize: 10
-						elide: Text.ElideRight
-
+				delegate:  Controls.TableTextField {
+					onAccepted : {
+							changeItem(text, styleData.value)
+					}
+					onActiveFocusChanged : {
+						if ( activeFocus){
+							itemtable.currentRow = styleData.row
+						}else {
+							if ( text != styleData.value){
+								changeItem(text, styleData.value)
+							}
+						}
 					}
 				}
 			}
@@ -231,15 +260,23 @@ Rectangle {
 				title : qsTr("MaximumValue");
 				role : "maxvalue"
 				width : itemtable.limitwidth
-				delegate: Component{
-					Text {
-						text: styleData.value
-						verticalAlignment:Text.AlignVCenter
-						font.pixelSize: 10
-						elide: Text.ElideRight
+				delegate:  Controls.TableTextField {
+					onAccepted : {
+							items[styleData.row].maxvalue = text
 					}
-				}
-			}
+					onActiveFocusChanged : {
+						if ( activeFocus){
+							itemtable.currentRow = styleData.row
+						}else {
+							if ( text != styleData.value){
+								items[styleData.row].maxvalue = text
+								rebuildItems(chartView, 100) 
+								redrawRaster()
+								chartCanvas.requestPaint()
+							}
+						}
+					}
+				}			}
 			TableViewColumn{
 				title : qsTr("Color");
 				role : "ecolor"
@@ -255,8 +292,9 @@ Rectangle {
 						items[styleData.row].ecolor = clr
 						local.color = clr;
 						picker.visible = false
-						var index = styleData.row
-						chart.sendOverLink({"type" : "interactiveslicing",  "minvalue" : items[index].minvalue, "maxvalue" : items[index].maxvalue,"color" :  clr, "first" : index==0})
+						//var index = styleData.row
+						//chart.sendOverLink({"type" : "interactiveslicing",  "minvalue" : items[index].minvalue, "maxvalue" : items[index].maxvalue,"color" :  clr, "first" : false})
+						redrawRaster()
 					}
 
 					MouseArea {
