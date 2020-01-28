@@ -110,6 +110,10 @@ Rectangle {
         legend.visible : chart ? chart.legendVisible : true
         legend.alignment : chart ? aligntoint(chart.legendAlignment) : aligntoint("top")
 
+		function requestPaint(){
+			canvas.requestPaint()
+		}
+
 		   Canvas {
 				id : canvas
 				property var lastPoint
@@ -211,7 +215,7 @@ Rectangle {
 	function loadGraphs() {
         if ( !chart)
             return
-
+		chart.setView(visibleGraphs)
         var currxaxis = xas;
         var xaxistype = chart.xaxisType;
 		var labels = []
