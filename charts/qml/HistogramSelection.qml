@@ -20,11 +20,21 @@ Rectangle {
 	property var lastPnt
 	property var selectedX
 	property var chartCanvas
+	property var currentValue : operation.currentValue
+
+	onCurrentValueChanged : {
+		lastSelection = "at"
+		activeSelect.checked = true
+		lastPnt = Qt.point(currentValue, 0)
+		chart.sendOverLink({"type" : "histogramselection", selectionmode : "at" , "x" : currentValue, "y" : 0,"color"  : selColor })
+		var pnt = chart.view().mapToPosition(Qt.point(currentValue,0),chart.view().series(0)) 
+		selectedX = pnt.x
+		chart.view().requestPaint()
+	}
 
 	function handleClick(chartview, mx,my, mode){
 		if ( mode == "released")
 			return
-
 		var pnt = chartview.mapToValue(Qt.point(mx,my),chartview.series(0))
 		if ( lastSelection != "") {
 			lastPnt = pnt

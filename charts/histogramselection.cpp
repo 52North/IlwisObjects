@@ -29,26 +29,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "chartmodel.h"  
 #include "HistogramSelection.h"              
 
-using namespace Ilwis;  
+using namespace Ilwis;   
 using namespace Ui;
 
-REGISTER_CHARTPROPERTYEDITOR("histogramselection", HistogramSelection)    
+REGISTER_CHARTPROPERTYEDITOR("histogramselection", HistogramSelection)     
 
 HistogramSelection::HistogramSelection() : ChartOperationEditor("histogramselection", TR("Histogram Selection"), QUrl("HistogramSelection.qml"), TR("Interactive setting selections in the histogram and seeing results in the corresponding raster"))
 {
 }
 
-bool HistogramSelection::canUse(ChartModel *model, const QVariantMap &parameter) const        
+bool HistogramSelection::canUse(ChartModel *model, const QVariantMap &parameter) const         
 {
 	if (!parameter.empty())
-		if (parameter["dataseries"].toBool()) {
+		if (parameter["dataseries"].toBool()) { 
 			if (parameter.contains("specialtype")) { 
 				QString attr = parameter["attribute"].toString();
 				bool ok = attr.indexOf("histogram") == 0 && attr.size() < 12;
-				return parameter["specialtype"] == "histogram" && ok;            
+				return parameter["specialtype"] == "histogram" && ok;               
 			}
 		}
 	return false;
+}
+
+void HistogramSelection::updateEditor(const QVariantMap& parameters) {
+	if (parameters["editor"] == "histogramselection") {
+		_value = parameters["value"].toDouble();
+
+		emit currentValueChanged();
+	}
+}
+
+double HistogramSelection::currentValue() const {
+	return _value;
+}
+
+
+QObject *HistogramSelection::view() {
+	return chartModel()->view();
 }
 
 void HistogramSelection::execute(const QVariantMap &parameters)

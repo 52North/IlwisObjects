@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+along with this program.  If not, see <http://www.gnu.org/licenses/>.*/ 
 
 #include "kernel.h"
 #include "ilwisdata.h"
@@ -34,11 +34,22 @@ namespace Ilwis {
 			HistogramSelection();
 
 			bool canUse(ChartModel *model, const QVariantMap &parameter) const;
+			Q_PROPERTY(double currentValue READ currentValue NOTIFY currentValueChanged)
 
 			Q_INVOKABLE void execute(const QVariantMap &parameters);
 			static Ilwis::Ui::ChartOperationEditor *create() { return new HistogramSelection(); }
+			void updateEditor(const QVariantMap& parameters) override;
+			Q_INVOKABLE QObject *view();
 
 			NEW_CHARTPROPERTYEDITOR(HistogramSelection)
+
+		signals:
+			void currentValueChanged();
+
+		private:
+			double _value;
+
+			double currentValue() const;
 		
 		};
 

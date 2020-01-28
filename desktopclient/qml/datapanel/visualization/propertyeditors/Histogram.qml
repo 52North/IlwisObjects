@@ -14,12 +14,13 @@ Column {
 	property var modelid : null
 	spacing : 5
 	property var currentPolygon : []
-	property var editState : false
 	objectName : uicontext.uniqueName("histogram_editor_")
 
 	function handleMousePressed(mx,my) {
-		if ( useAOI.checked && editState)
+		if ( useAOI.checked && editor.editState)
 			editor.addPoint(mx,my)	
+		else
+			editor.updateChart(mx,my)
 	}
 
     Button{
@@ -53,7 +54,7 @@ Column {
 				editor.chartModelId = modelid
 				var filter = "itemid=" + modelid
 				bigthing.newCatalog(filter, "chart", "","other")
-				editState = false
+				editor.editState = false
 			}else {
 				if ( editor.useAOI)
 					editor.updateAOIs()
@@ -90,21 +91,21 @@ Column {
 			}
 		}
 		Controls.PushButton {
-			text : editState ? qsTr("End current AOI") : qsTr("Add new AOI")
+			text : editor.editState ? qsTr("End current AOI") : qsTr("Add new AOI")
 			width : 140
 			height : 22
 			visible : useAOI.checked
 			checkable : true
-			checked : editState
-			highlighted : editState
+			checked : editor.editState
+			highlighted : editor.editState
 
 			onClicked : {
-				if (!editState)
+				if (!editor.editState)
 					editor.addEmptyPolygon()
 				else {
 //					editor.deleteAllAOIs()
 				}
-				editState = !editState
+				editor.editState = !editor.editState
 			}
 		}
 
@@ -115,7 +116,7 @@ Column {
 			visible : useAOI.checked
 
 			onClicked : {
-				editState = false
+				editor.editState = false
 				editor.deleteLastAOI()
 			}
 		}
@@ -127,7 +128,7 @@ Column {
 			visible : useAOI.checked
 
 			onClicked : {
-				editState = false
+				editor.editState = false
 				editor.deleteAllAOIs()
 			}
 		}

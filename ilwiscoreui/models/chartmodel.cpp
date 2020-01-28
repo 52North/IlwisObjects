@@ -779,7 +779,7 @@ QString ChartModel::dataTableId() const {
 	return QString();
 }
 
-TableModel *ChartModel::tableModel() const {
+TableModel *ChartModel::tableModel() const { 
 	return _dataTableModel;
 }
 
@@ -795,6 +795,21 @@ QColor ChartModel::seriesColorItem(int seriesIndex, double v) {
 ITable ChartModel::dataTable() const {
 	return _datatable;
 }
+
+void ChartModel::updateEditors(const QVariantMap& parameters) {
+	for (auto serie : _series) {
+		serie->updateEditors(parameters);
+	}
+}
+void ChartModel::setView(QObject *obj) {
+	_chartView = obj;
+}
+
+QObject *ChartModel::view() {
+	return _chartView;
+}
+
+
 
 
 

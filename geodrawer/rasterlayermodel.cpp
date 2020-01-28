@@ -790,10 +790,10 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 			else if (parameters["type"] == "histogramselection") {
 				double value = parameters["x"].toDouble();
 				double rmin, rmax;
-				auto nrng = _raster->datadef().range()->as<NumericRange>();
-				double dist = nrng->distance();
-				value = (value - nrng->min()) / dist; // relative value
-				double margin = 0.01;
+				auto nrng = _currentStretchRange; //_raster->datadef().range()->as<NumericRange>();
+				double dist = nrng.distance();
+				double margin = 2* 1.0 / dist;
+				value = (value - nrng.min()) / dist; // relative value
 				if (selectionMode == "at") {
 					rmin = max(0.0, value - margin);
 					rmax = std::min(1.0, value + margin);

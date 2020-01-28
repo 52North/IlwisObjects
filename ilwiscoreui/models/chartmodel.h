@@ -98,6 +98,8 @@ namespace Ilwis {
 			Q_INVOKABLE QString dataTableId() const;
 			Q_INVOKABLE void clearChart();
 			Q_INVOKABLE void sendOverLink(const QVariantMap& parms) ;
+			Q_INVOKABLE void setView(QObject *obj);
+			Q_INVOKABLE QObject *view();
 
 
             ChartModel();
@@ -125,6 +127,7 @@ namespace Ilwis {
             quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QVariantMap& extra);
 			void fillTableData();
             void updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
+			void updateEditors(const QVariantMap& parameters);
             bool updateSeries() const;
             void tickCountX(int tc);
             int tickCountX() const;
@@ -223,6 +226,7 @@ namespace Ilwis {
 
 			QList<DataseriesModel *> _series;
             QList<ChartOperationEditor *> _operations;
+			QObject *_chartView;
 
             std::vector<QString> _graphColors = { "red", "blue","green","magneta","orange","darkblue","sienna","yellowgreen", "darkslateblue","orangered", "limegreen","Indigo","goldenrod",
             "dimgray","crimson","chocolate","cyan", "mediumslateblue","orchid","seagreen","darkorchid","teal" };

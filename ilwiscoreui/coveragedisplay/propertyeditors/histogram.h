@@ -39,6 +39,7 @@ namespace Ilwis {
 			Q_PROPERTY(bool useAOI READ useAOI WRITE useAOI NOTIFY aoiChanged)
 			Q_PROPERTY(bool aggregateAOIs READ aggregateAOIs WRITE aggregateAOIs NOTIFY aggregateAOIsChanged)
 			Q_PROPERTY(quint32 chartModelId READ chartModelId WRITE chartModelId NOTIFY chartModelIdChanged)
+			Q_PROPERTY(bool editState READ editState WRITE editState NOTIFY editStateChanged)
 			
 
 			Q_INVOKABLE void addPoint(int x, int y);
@@ -47,6 +48,7 @@ namespace Ilwis {
 			Q_INVOKABLE void deleteLastAOI();
 			Q_INVOKABLE void deleteAllAOIs();
 			Q_INVOKABLE void updateAOIs();
+			Q_INVOKABLE void updateChart(int mx, int my);
 	
 			bool canUse(const IIlwisObject &obj, const DataDefinition &def) const;
 			bool canUse(const IIlwisObject &obj, const QString &name) const;
@@ -60,6 +62,7 @@ namespace Ilwis {
 			void aoiChanged();
 			void aggregateAOIsChanged();
 			void chartModelIdChanged();
+			void editStateChanged();
 	
 		private:
 			ITable _histogramData;
@@ -83,11 +86,14 @@ namespace Ilwis {
 			void updateChart(const QString& sumColumn="", const QString& cumColumn="");
 			void linkChart2Editor();
 			void collectData();
+			bool editState() const;
+			void editState(bool yesno);
 
 			std::vector<std::vector<Coordinate>> _polygons;
 			IRasterCoverage _raster;
 			bool _useAOI = false;
 			bool _aggregateAOIs = true;
+			bool _editState = false;
 			quint32 _chartModelId = 10000000;
 
 		};

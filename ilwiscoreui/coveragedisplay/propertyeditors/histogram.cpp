@@ -101,13 +101,9 @@ void Histogram::bins2table(std::vector<NumericStatistics::HistogramBin>& hist, i
 		for (int i = 0; i < hist.size() - 1; ++i) {
 			auto& h = hist[i];
 			sum += h._count;
-			//_histogramData->setCell(columnStart, i, vstart);
-			//_histogramData->setCell(columnStart + 1, i, h._limit);
 			_histogramData->setCell(columnStart , i, h._count);
 			double cum = 100.0 * sum / (double)cnt;
 			_histogramData->setCell(columnStart + 1, i, cum);
-
-			//vstart = h._limit;
 		}
 	
 	}
@@ -172,16 +168,12 @@ void Histogram::calculateLocalizedHistogram(const std::vector<Coordinate>& pol, 
 }
 
 void Histogram::addColumns(int index) {
-	//_histogramData->addColumn(QString("min_%1").arg(index), IDomain("value"), true);
-	//_histogramData->addColumn(QString("max_%1").arg(index), IDomain("value"), true);
 	_histogramData->addColumn(QString("histogram_%1").arg(index), IDomain("count"));
 	_histogramData->addColumn(QString("histogram_cumulative_%1").arg(index), IDomain("value"));
 
 }
 
 void Histogram::deleteColumns(int index) {
-	//_histogramData->deleteColumn(QString("min_%1").arg(index));
-	//_histogramData->deleteColumn(QString("max_%1").arg(index));
 	_histogramData->deleteColumn(QString("histogram_%1").arg(index));
 	_histogramData->deleteColumn(QString("histogram_cumulative_%1").arg(index));
 
@@ -382,6 +374,27 @@ void Histogram::linkAcceptMessage(const QVariantMap& parameters) {
 		}
 	}
 }
+void Histogram::updateChart(int mx, int my) {
+	try {
+		auto modelPair = modelregistry()->getModel(_chartModelId);
+		if (modelPair.first == "chart") {
+			ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
+			if (chart) {
+				Coordinate crd = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->pixel2Coord(Pixel(mx, my));
+				QVariantMap values = _raster->coord2value(crd).toMap();
+				PIXVALUETYPE v = values[PIXELVALUE].toDouble();
+				QVariantMap parms;
+				parms["editor"] = "histogramselection";
+				parms["x"] = mx;
+				parms["y"] = my;
+				parms["value"] = v;
+				qDebug() << v;
+				chart->updateEditors(parms);
+			}
+		}
+	}
+	catch (ErrorObject& err) {}
+}
 
 void Histogram::updateAOIs() {
 	try {
@@ -406,5 +419,10 @@ void Histogram::updateAOIs() {
 	catch (ErrorObject& err) {}
 }
 
-
+bool Histogram::editState() const {
+	return _editState;
+}
+void Histogram::editState(bool yesno) {
+	_editState = yesno;
+}
 
