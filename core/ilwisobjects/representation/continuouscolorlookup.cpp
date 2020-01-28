@@ -243,6 +243,20 @@ void ContinuousColorLookup::addGroup(const NumericRange& range, const Continuous
 	addGroup(vr, colorrange);
 }
 
+void ContinuousColorLookup::deleteException(const NumericRange& range) {
+
+	if (!range.isValid())
+		return;
+	ValueRange vr{ range.min(), range.max() };
+	for (auto iter = _exceptions.begin(); iter != _exceptions.end(); ++iter) {
+		auto group = iter->first;
+		if (group._first == range.min() && group._last == range.max()) {
+			_exceptions.erase(iter);
+			return;
+		}
+	}
+}
+
 void ContinuousColorLookup::addException(const NumericRange& range, const QColor& clr, bool clear) {
 
 	if (clear)

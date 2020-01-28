@@ -50,6 +50,7 @@ public:
         void addGroup(const ValueRange& range, const ContinuousColorRange& colorrange);
 		void addGroup(const NumericRange& range, const ContinuousColorRange& colorrange);
 		void addException(const NumericRange& range, const QColor& clr, bool clear=true);
+		void deleteException(const NumericRange& range);
         void setColor(double value, const QColor& clr) ;
         ColorLookUp *clone() const;
 		void store(QDataStream& stream) const override;
