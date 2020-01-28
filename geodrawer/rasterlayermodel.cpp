@@ -779,7 +779,8 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 		VisualAttribute *attr = visualAttribute(parameters["attribute"].toString());
 		if (attr) {
 			auto rpr =attr->representation();
-			QColor clr(parameters["color"].toString());
+			QString  clrString = parameters["color"].toString();
+			QColor clr(clrString);
 			
 			ContinuousColorLookup *lookup = static_cast<ContinuousColorLookup *>(rpr->colors().get());
 			QString selectionMode = parameters["selectionmode"].toString();
@@ -810,19 +811,29 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 
 			}
 			else if (parameters["type"] == "interactiveslicing") {
-				double value1 = parameters["minvalue"].toDouble();
-				double value2 = parameters["maxvalue"].toDouble();
-				double rmin, rmax;
-				auto nrng = _raster->datadef().range()->as<NumericRange>();
-				double dist = nrng->distance();
-				value1 = (value1 - nrng->min()) / dist; // relative value
-				value2 = (value2 - nrng->min()) / dist; // relative value
-				bool isFirst = parameters["first"].toBool();
-				if (!isFirst) {
-					value1 += 0.001; // to prevent possible overlaps between boundaries. Values are scaled between 0 and 1 so 0.001 is hardly a difference but still prevents overlaps
-				}
-				NumericRange nr(value1, value2);
-				lookup->addException(nr, clr, isFirst);
+					double value1 = parameters["minvalue"].toDouble();
+					double value2 = parameters["maxvalue"].toDouble();
+					double rmin, rmax;
+					auto nrng = _raster->datadef().range()->as<NumericRange>();
+					double dist = nrng->distance();
+					value1 = (value1 - nrng->min()) / dist; // relative value
+					value2 = (value2 - nrng->min()) / dist; // relative value
+					if (clrString != "transparent") {
+						bool isFirst = parameters["first"].toBool();
+						if (!isFirst) {
+							value1 += 0.001; // to prevent possible overlaps between boundaries. Values are scaled between 0 and 1 so 0.001 is hardly a difference but still prevents overlaps
+						}
+						NumericRange nr(value1, value2);
+						lookup->addException(nr, clr, isFirst);
+					}
+					else {
+						bool isFirst = parameters["first"].toBool();
+						if (!isFirst) {
+							value1 += 0.001; // to prevent possible overlaps between boundaries. Values are scaled between 0 and 1 so 0.001 is hardly a difference but still prevents overlaps
+						}
+						NumericRange nr(value1, value2);
+						lookup->deleteException(nr);
+					}
 			}
 			else if (parameters["type"] == "histogrambounds") {
 				double value1 = parameters["minvalue"].toDouble();
