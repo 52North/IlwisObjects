@@ -10,7 +10,8 @@ Rectangle {
     property alias selectedColor : colorPicker.lastSelectedColor
     property var initialColor
 	property var closeCallBack
-	  property int dropdownheight : 180
+	property int dropdownheight : 180
+	property var useTransparency : false
 
     onInitialColorChanged : {
 		if ( initialColor != null) {
@@ -93,8 +94,64 @@ Rectangle {
 
         border.width: 1
         border.color: "#B0B0B0"
+		//color : "red"
 
-        Rectangle {
+		LabeledCheckBox{
+			id : usetranspid
+			x : 4
+			y : 4
+			labelText : qsTr("Transparent")
+			width : parent.width - 100
+			labelWidth : 80
+			visible : useTransparency
+
+			onCheckedChanged : {
+				if ( checked){
+				  comboBox.state = ""
+				  colorPicker.lastSelectedColor = "transparent"
+				  if ( closeCallBack)
+						closeCallBack(colorPicker.lastSelectedColor)
+
+				}
+			}
+		}
+		Row {
+			id : lastColor
+			anchors.top : parent.top
+			anchors.right : parent.right
+			anchors.rightMargin: 3
+			anchors.topMargin: 4
+			spacing : 4
+			height : 14
+			Text {
+				x : 2
+				id : colorInfo
+				height : 16
+				width : 35
+				text :  "white"
+
+			}
+			Rectangle{
+				id : lastSelected
+				width : 25
+				height : colorInfo.height
+				color : colorPicker.lastSelectedColor ? colorPicker.lastSelectedColor : "white"
+				border.width: 1
+				border.color: "grey"
+
+			}
+			Rectangle{
+				id : currentColor
+				width : 25
+				height : colorInfo.height
+				color : colorInfo.text
+				border.width: 1
+				border.color: "grey"
+
+			}
+		}
+
+        Item {
 
             id : colorPicker
 
@@ -102,16 +159,18 @@ Rectangle {
             property int numberOfCircles : maxDisks
             property var currentDiskColor
             property var lastSelectedColor
-
-
+			anchors.top : lastColor.bottom
+			anchors.topMargin : 2
+			visible : !usetranspid.checked
+            width : Math.min(190, comboBox.width )
+            height : dropdownheight  - 12
 
             onNumberOfCirclesChanged: {
                 diskcanvas.requestPaint()
             }
             y : 2
             x : 2
-            width : Math.min(190, comboBox.width )
-            height : dropdownheight  - 10
+
             ExclusiveGroup { id: colordbuttongroup }
 
             function drawSegment(ctx, cx,cy,cellsize,radius,angle1, angle2, clr){
@@ -150,42 +209,9 @@ Rectangle {
 
             }
 
-            Text {
-                x : 2
-                id : colorInfo
-                height : 16
-                width : 70
-                text :  "white"
-                anchors.top : parent.top
-                anchors.topMargin: 4
-            }
-            Rectangle{
-                id : lastSelected
-                anchors.right : parent.right
-                anchors.rightMargin: 3
-                anchors.top : colorInfo.top
-                width : 30
-                height : colorInfo.height
-                color : colorPicker.lastSelectedColor ? colorPicker.lastSelectedColor : "white"
-                border.width: 1
-                border.color: "grey"
-
-            }
-            Rectangle{
-                id : currentColor
-                anchors.right : lastSelected.left
-                anchors.leftMargin: 3
-                anchors.top : colorInfo.top
-                width : 30
-                height : colorInfo.height
-                color : colorInfo.text
-                border.width: 1
-                border.color: "grey"
-
-            }
 
             Row {
-                anchors.top : colorInfo.bottom
+                //anchors.top : colorInfo.bottom
                 width : parent.width
                 height : colorPicker.height - 5
                 Column {
@@ -310,7 +336,7 @@ Rectangle {
     }
     states: State {
         name: "dropDown";
-        PropertyChanges { target: dropDown; height:dropdownheight }
+        PropertyChanges { target: dropDown; height:dropdownheight  }
     }
 
     transitions: Transition {
