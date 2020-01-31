@@ -243,6 +243,13 @@ public:
                             _binCount = prop(pDISTANCE) / h;
                         }*/
 						_binCount = 5 * std::sqrt(std::sqrt(pnetcount)) + 1;
+						if (std::ceil(psum) == psum) {// integer
+							double delta = prop(pDELTA);
+							double f = delta / _binCount;
+							if (pcount < psum && std::ceil(f) != f) {
+								_binCount = (int)(f) * delta;
+							}
+						}
                     }
                     else if (bins != 0) {
                         _binCount = bins - 1;
@@ -266,8 +273,11 @@ public:
                     quint16 index = (quint16)binsize - 1;
                     if (!isNumericalUndef(sample)) {
 						double d = (double)(sample - rmin);
-						double idx = (double)binsize * d / rdelta;
+						double idx = (double)(binsize-1) * d / rdelta;
 						index = idx;
+						if (index == 28) {
+							qDebug() << idx;
+						}
                         index =  index >= binsize-2 ? index - 2 : index; // -2 is the last 'real' number, -1 is the place for undefs; through rounding the index may endup at index -1 which is not what we want;
                     }
                     _bins.at(index)._count++;
