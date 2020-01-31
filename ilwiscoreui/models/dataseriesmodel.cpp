@@ -71,6 +71,10 @@ QVariantList DataseriesModel::points() const {
 	return _points;
 }
 
+QVariantList& DataseriesModel::pointsRef() {
+	return _points;
+}
+
 void DataseriesModel::name(const QString& newName) {
 	_name = newName;
 	_yaxis = newName;
@@ -80,6 +84,9 @@ void DataseriesModel::name(const QString& newName) {
 bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra) {
     _points.clear();
     _name = inputTable->columndefinition(_yaxis).name();	// use Y-axis for the name
+	if (extra.contains("name")) {
+		_name = extra["name"].toString();
+	}
     _dataDefinitions[0] = inputTable->columndefinition(_xaxis).datadef();
     _dataDefinitions[1] = inputTable->columndefinition(_yaxis).datadef();
     _dataDefinitions[2] = inputTable->columndefinition(_zaxis).datadef();

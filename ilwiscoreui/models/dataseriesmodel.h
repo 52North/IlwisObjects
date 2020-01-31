@@ -73,6 +73,7 @@ namespace  Ilwis {
             void setType(const QString type);
 
 			QVariantList points() const;
+			QVariantList& pointsRef();
             QString xColumn() const;
             QString yColumn() const;
             QString zColumn() const;
