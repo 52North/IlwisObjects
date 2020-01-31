@@ -50,6 +50,9 @@
     <None Include="charts\qml\HistogramBounds.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\HistogramShift.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -151,6 +154,9 @@
     <ClCompile Include="charts\histogrambounds.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
+    <ClCompile Include="charts\histogramshift.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="charts\ilwischarts_plugin.h">
@@ -181,6 +187,9 @@
       <Filter>Header Files\PropertyForms</Filter>
     </QtMoc>
     <QtMoc Include="charts\histogrambounds.h">
+      <Filter>Header Files\PropertyForms</Filter>
+    </QtMoc>
+    <QtMoc Include="charts\histogramshift.h">
       <Filter>Header Files\PropertyForms</Filter>
     </QtMoc>
   </ItemGroup>
