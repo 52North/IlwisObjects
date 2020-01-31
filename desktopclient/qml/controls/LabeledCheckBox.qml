@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.0
 import "../Global.js" as Global
 
-Item {
+Row {
     property alias checked : cb.checked
     property alias labelText : label.text
     property int labelWidth : 100
@@ -16,7 +16,7 @@ Item {
     height : Global.rowHeight
     width : parent.width
 
-    Text { id : label; text : qsTr("Read-only"); font.bold: true}
-    CheckBox { id : cb;  x : labelWidth}
+	CheckBox { id : cb;  x : labelWidth}
+    Text { id : label; text : label.text; font.bold: true; elide : Text.ElideRight}
 }
 
