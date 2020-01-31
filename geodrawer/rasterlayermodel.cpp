@@ -697,7 +697,9 @@ void RasterLayerModel::refreshPalette() {
     VisualAttribute * attr = activeAttribute();
     if (attr != 0) {
         if (hasType(_raster->datadef().domain()->ilwisType(), itNUMERICDOMAIN)) {
+			//NumericRange *rng = _raster->datadef().range()->as<NumericRange>();
             std::vector<QColor> colors = attr->stretchedColors(_paletteSize, _currentStretchRange);
+			//std::vector<QColor> colors = attr->stretchedColors(_paletteSize,*rng);
             for (int i = 0; i < _paletteSize; ++i)
                 addPaletteColor(colors[i].red(), colors[i].green(), colors[i].blue(), colors[i].alpha());
         } else if (hasType(_raster->datadef().domain()->ilwisType(), itITEMDOMAIN)) {
@@ -845,6 +847,24 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 				value2 = (value2 - nrng->min()) / dist; // relative value
 				NumericRange nr(value1, value2);
 				lookup->addException(nr, clr, true);
+			}
+			else if (parameters["type"] == "histogramshift") {
+				if (parameters.contains("resetstretch")) {
+					NumericRange rng = *_raster->datadef().range()->as<NumericRange>();
+					VisualAttribute * attr = activeAttribute();
+					attr->stretchRange(rng);
+				}
+				if (parameters.contains("shift")) {
+					NumericRange rng = *_raster->datadef().range()->as<NumericRange>();
+					double shift = parameters["shift"].toDouble();
+					rng.min(rng.min() + shift);
+					rng.max(rng.max() + shift);
+					VisualAttribute * attr = activeAttribute();
+					attr->stretchRange(rng);
+				}
+				prepare(LayerModel::ptRENDER);
+				layerManager()->needUpdate(true); // this is needed here but costs some performance so we do it slightly different than the other options
+				return;
 			}
 			prepare(LayerModel::ptRENDER);
 		}
