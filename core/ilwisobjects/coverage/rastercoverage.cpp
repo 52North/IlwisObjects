@@ -252,7 +252,7 @@ ITable RasterCoverage::histogramAsTable(const QString& attribute)
 	}
 	if (hist.size() > 0) {
 		double sum = 0;
-		for (int i = 0; i < hist.size() - 1; ++i) {
+		for (int i = 0; i < hist.size() - 2; ++i) {
 			auto& h = hist[i];
 			sum += h._count;
 			histogram->record(count, { vstart, h._limit, h._count,(100.0 * sum/(double)cnt) });
