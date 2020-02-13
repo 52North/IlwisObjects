@@ -1204,7 +1204,7 @@ QString IlwisObjectModel::getProperty(const QString &propertyname) const
 				IRepresentation rpr = _ilwisobject.as<Representation>();
 				if (rpr->domain()->ilwisType() == itNUMERICDOMAIN) {
 					const ContinuousColorLookup *lookup = static_cast<const ContinuousColorLookup *>( rpr->colors().get());
-					return lookup->relative() ? "true" : "false";
+					return lookup->stretchMethod() != ContinuousColorLookup::smLOGARITHMIC ? "true" : "false";
 				}
 			}
 		}
