@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QColor>
 #include <QXYSeries>
 #include <QQmlListProperty>
+#include <QAbstractSeries>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "ilwisobject.h"
@@ -46,7 +47,6 @@ namespace  Ilwis {
                 Q_PROPERTY(QString name            READ name                      NOTIFY isNameChanged)
                 Q_PROPERTY(QColor color            READ color      WRITE setColor NOTIFY onColorChanged)
                 Q_PROPERTY(QString charttype       READ charttype  WRITE setType  NOTIFY onTypeChanged)
-                Q_PROPERTY(QVariantList points     READ points                    NOTIFY onPointsChanged)
 
                 Q_PROPERTY(quint16 xAxisType   READ xAxisType)
                 Q_PROPERTY(quint16 yAxisType   READ yAxisType)
@@ -72,8 +72,6 @@ namespace  Ilwis {
 			void setColor(const QColor color);
             void setType(const QString type);
 
-			QVariantList points() const;
-			QVariantList& pointsRef();
             QString xColumn() const;
             QString yColumn() const;
             QString zColumn() const;
@@ -104,9 +102,12 @@ namespace  Ilwis {
             QQmlListProperty<ChartOperationEditor> operations();
             Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
             Q_INVOKABLE QVariantMap categories(QString axis, bool unique);
+			Q_INVOKABLE void setData(QtCharts::QAbstractSeries * series);
 
 			void name(const QString& newName);
 			void updateEditors(const QVariantMap& parameters);
+			QVector<QPointF> points() const;
+			void points(const QVector<QPointF>&);
 
 
 		signals:
@@ -134,10 +135,11 @@ namespace  Ilwis {
 			quint32 _seriesIndex;
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
             DataDefinition _dataDefinitions[3];
+			QtCharts::QAbstractSeries * _series = 0;
 
             double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             int _minID, _maxID;
-			QVariantList _points;
+			QVector<QPointF> _points;
 			QString _yaxisSide = "left";
             QList<ChartOperationEditor *> _operations;
 			int _xres = iUNDEF;

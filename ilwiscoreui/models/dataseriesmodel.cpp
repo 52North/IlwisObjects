@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <algorithm>
 #include <map>
+#include <QXYSeries>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "factory.h"
@@ -63,16 +64,18 @@ DataseriesModel::DataseriesModel(ChartModel *chartModel, const QString& xaxis, c
 	}
 }
 
+void DataseriesModel::setData(QtCharts::QAbstractSeries * series) {
+	_series = series;
+
+	if (series->type() == QtCharts::QAbstractSeries::SeriesTypeLine) {
+		QXYSeries *xyseries = static_cast<QXYSeries *>(series);
+		for(const auto& pnt : _points)
+			xyseries->append(pnt);
+	}
+
+}
 QString DataseriesModel::name() const {
 	return _name;
-}
-
-QVariantList DataseriesModel::points() const {
-	return _points;
-}
-
-QVariantList& DataseriesModel::pointsRef() {
-	return _points;
 }
 
 void DataseriesModel::name(const QString& newName) {
@@ -146,10 +149,11 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 
 	QVariant v;
 	double vx = 0.0, vy = 0.0;
-	int xaxisIndex = inputTable->columnIndex(_xaxis);
-	int yaxisIndex = inputTable->columnIndex(_yaxis);
-	for (int row = 0; row < inputTable->recordCount(); row++) {
-		v = inputTable->cell(xaxisIndex, row, false);
+	_points.resize(inputTable->recordCount());
+	std::vector<QVariant> valuesX = inputTable->column(_xaxis);
+	std::vector<QVariant> valuesY = inputTable->column(_yaxis);
+	for (int row = 0; row < valuesX.size(); row++) {
+		v = valuesX[row];
 		if (xtype == itITEMDOMAIN) {
 			if (valueType == itNUMERICITEM) {
 				IIntervalDomain idom = _dataDefinitions[0].domain().as<IntervalDomain>();
@@ -163,11 +167,11 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 
 		else if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vx = v.toDouble();
-		v = inputTable->cell(yaxisIndex, row, false);
+		v = valuesY[row];
 		if (v.toDouble() != rUNDEF && v.toDouble() != iUNDEF)
 			vy = v.toDouble();
 
-		_points.append(QPointF(vx, vy));
+		_points[row] = QPointF(vx, vy);
 	}
 	emit onPointsChanged();
 
@@ -367,4 +371,15 @@ QVariantMap DataseriesModel::categories(QString axis, bool unique)
     cat["keys"] = vkey;
     cat["labels"] = vlabel;
     return cat;
+}
+QVector<QPointF> DataseriesModel::points() const {
+	return _points;
+}
+
+void DataseriesModel::points(const QVector<QPointF>& pnts)  {
+	_points = pnts;
+	if (_series && _series->type() == QtCharts::QAbstractSeries::SeriesTypeLine) {
+		QXYSeries *xyseries = static_cast<QXYSeries *>(_series);
+		xyseries->replace(pnts);
+	}
 }
