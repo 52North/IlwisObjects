@@ -40,10 +40,10 @@ Rectangle {
 
 	ValueAxis {
 		id : yas
-		min : chart != null  ? chart.minY : 0
-		max : chart != null  ? chart.maxY : 5
+		min : chart != null  ? chart.minYLeft : 0
+		max : chart != null  ? chart.maxYLeft  : 5
 		tickCount : 5
-        labelFormat : chart ? chart.formatYAxis : "%.3f"
+        labelFormat : chart ? chart.formatYAxisLeft : "%.3f"
         visible : true
         labelsVisible : false
 	}
@@ -95,11 +95,7 @@ Rectangle {
             var series = createSeries(chart.chartType, smodel.name, xas, yas)
 			series.pointsVisible = false;
 			series.color = chart.seriesColor(i);
-			var points = smodel.points
-			var pointsCount = points.length;
-			for (var j = 0; j < pointsCount; j++) {
-				series.append(points[j].x, points[j].y);
-			}
+			smodel.setData(series)
 		}
 	}
 
