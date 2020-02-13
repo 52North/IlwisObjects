@@ -25,39 +25,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 namespace Ilwis {
 	namespace Ui {
+		class LayerModel;
 		class ChartModel;
 
-		class HistogramShift : public ChartOperationEditor
+		class HistogramStretchTool : public ChartOperationEditor
 		{
 			Q_OBJECT
 		public:
-			HistogramShift();
-
-			Q_PROPERTY(double minValue READ minValue NOTIFY minValueChanged)
-			Q_PROPERTY(double maxValue READ maxValue NOTIFY maxValueChanged)
-			Q_PROPERTY(bool isActive READ isActive NOTIFY isActiveChanged)
+			HistogramStretchTool();
 
 			bool canUse(ChartModel *model, const QVariantMap &parameter) const;
 
 			Q_INVOKABLE void execute(const QVariantMap &parameters);
+			Q_PROPERTY(double actualMin READ actualMin CONSTANT)
+			Q_PROPERTY(double actualMax READ actualMax CONSTANT)
+			Q_PROPERTY(QVariantMap markers READ markers NOTIFY onMarkersChanged)
+
 			Q_INVOKABLE void addIntensityCurve();
 			Q_INVOKABLE void removeIntensityCurve();
-			Q_INVOKABLE void shiftValues(double shift);
+			Q_INVOKABLE void stretchHistogram(bool isLower, double origValue, double newValue);
+			Q_INVOKABLE void updateTextures();
 
-			static Ilwis::Ui::ChartOperationEditor *create() { return new HistogramShift(); }
+			void prepare(ChartModel *model);
+			static Ilwis::Ui::ChartOperationEditor *create() { return new HistogramStretchTool(); }
 
-			NEW_CHARTPROPERTYEDITOR(HistogramShift)
+			NEW_CHARTPROPERTYEDITOR(HistogramStretchTool)
 
 		signals:
-			void minValueChanged();
-			void maxValueChanged();
-			void isActiveChanged();
+			void currentValueChanged();
+			void onMarkersChanged();
+
 
 		private:
-			double minValue() const;
-			double maxValue() const;
-			bool isActive() const;
-			QVector<QPointF> _basePoints; //  the points before we had any shift
+			double _value;
+			LayerModel *_rasterLayer;
+			NumericRange _actualRange;
+			QVector<QPointF> _basePoints; //  the points before we had any strecth
+			std::vector<std::pair<double, double>> _mapping;
+
+			double currentValue() const;
+			double actualMin() const;
+			double actualMax() const;
+			QVariantMap markers() const;
 
 		};
 
