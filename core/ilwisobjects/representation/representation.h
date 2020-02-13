@@ -37,6 +37,7 @@ public:
 
     IlwisData<Representation> copyWith(const IDomain& dom) const;
     const UPColorLookUp& colors() const;
+	UPColorLookUp& colors();
     void colors(ColorLookUp *lookup);
     void shapes(ShapeLookUp* lookup);
     const UPShapeLookUp& shapes() const;

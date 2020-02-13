@@ -82,6 +82,11 @@ const UPColorLookUp &Representation::colors() const
         return _colors;
 }
 
+UPColorLookUp &Representation::colors() 
+{
+	return _colors;
+}
+
 void Representation::colors(ColorLookUp *lookup)
 {
     if (isReadOnly())
