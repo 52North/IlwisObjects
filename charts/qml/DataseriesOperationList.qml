@@ -10,17 +10,18 @@ import ChartModel 1.0
 import DataseriesModel 1.0
 
 Item {
+	id : conti
     width: 140
     x : 5
     y : 5
     height: parent.height -10
     property var currentSeries          // dataseries model
-
-     function setOperations(operations) {
-        operationlist.model = operations
-     }
+	property var oldIndex : 0
 
     function setOperation(newindex) {
+		if ( newindex == -1)
+			newindex = oldIndex
+
         operationlist.currentIndex = newindex
         dataseriesoperation.seriesIndex = newindex
 
@@ -35,7 +36,7 @@ Item {
     onCurrentSeriesChanged: {
         if ( currentSeries) {
             operationlist.model = currentSeries.operations
-            setOperation(0)
+            setOperation(oldIndex)
         }
         else {
             dataseriesoperation.currentOperation = null
@@ -67,6 +68,7 @@ Item {
         height : parent.height - title.height - 5
         anchors.top : title.bottom
         anchors.topMargin: 4
+
         x : 3
         Component {
             id: operationHighlight
@@ -91,6 +93,7 @@ Item {
                             anchors.fill: parent
                             onClicked: {
                                 setOperation(index)
+								oldIndex = index
                             }
                         }
                     }

@@ -251,11 +251,12 @@ Rectangle {
             if (ctype == "line" || ctype == "spline" || ctype == "points") {
 			    series.pointsVisible = false;
 			    series.color = chart.seriesColor(i);
-			    var points = smodel.points
+				smodel.setData(series)
+			    /*var points = smodel.points
 			    var pointsCount = points.length;
 			    for (var j = 0; j < pointsCount; j++) {
 				    series.append(points[j].x, points[j].y);
-			    }
+			    }*/
 				if ( smodel.yAxisSide == "left")
 					series.axisYLeft =  yasLeft 
 				else
@@ -347,5 +348,9 @@ Rectangle {
 
 	function zoomReset() {
 		visibleGraphs.zoomReset()
+	}
+
+	function chart() {
+		return visibleGraphs
 	}
 }

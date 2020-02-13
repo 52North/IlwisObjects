@@ -13,7 +13,8 @@ Item {
     property int seriesIndex
 
     onCurrentOperationChanged: {
-	    operation.setSource(currentOperation.qmlUrl,{"operation" : currentOperation, "seriesIndex" : seriesIndex})
+		if ( currentOperation)
+			operation.setSource(currentOperation.qmlUrl,{"operation" : currentOperation, "seriesIndex" : seriesIndex})
      }
 
 	 function currentEditor() {

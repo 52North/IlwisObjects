@@ -71,6 +71,11 @@ Item {
         anchors.top : toolbar1.bottom
 		anchors.bottom : parent.bottom
 		width : parent.width
+
+			function chart() {
+				return chartpane.chart()
+			}
+
         Tab {
             id : charttab
             title: "Chart"

@@ -15,6 +15,7 @@ Item {
     y : 5
     height: parent.height -10
     property alias currentIndex : dataserieslist.currentIndex
+	property var oldIndex : -1
 
     Rectangle {
         id : title
@@ -56,14 +57,6 @@ Item {
             Row {
                 width : 130
                 height : 18
-/*                spacing : 3
-                Image{
-                    id : domicon
-                    source : chartlabel.iconsource(icon)
-                    width : 16
-                    height : 16
-                    anchors.verticalCenter: parent.verticalCenter
-                }*/
                 Text {
                     text :  modelData
                     anchors.verticalCenter: parent.verticalCenter
@@ -102,6 +95,10 @@ Item {
         onModelChanged: {
             if (model) {
                 setChartIndex()
+				setOperIndex(oldIndex)
+				//chartlabel.currentIndex = -1
+				//dataserieslist.currentIndex = oldIndex	
+				//dataseriesOperationList.setOperation(-1)
             }
         }
 
@@ -128,14 +125,6 @@ Item {
             Row {
                 width : 130
                 height : 18
-/*                spacing : 3
-                Image{
-                    id : domicon
-                    source : dataserieslist.iconsource(icon)
-                    width : 16
-                    height : 16
-                    anchors.verticalCenter: parent.verticalCenter
-                }*/
                 Text {
                     text :  modelData.name
                     anchors.verticalCenter: parent.verticalCenter
@@ -155,7 +144,8 @@ Item {
         dataserieslist.currentIndex = newindex
         if (chart) {
             dataseriesOperationList.currentSeries = dataserieslist.model[newindex]
-            dataseriesOperationList.setOperation(0)
+            dataseriesOperationList.setOperation(-1)
+			oldIndex = newindex
         }
     }
 
