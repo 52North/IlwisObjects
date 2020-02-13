@@ -63,7 +63,6 @@ Rectangle {
 			items.push(item)
 			prevx = pnt.x
 			prevMarker = sortedMarkers[i]
-			console.debug("tttttttt", item.minvalue)
 		}
 	}
 

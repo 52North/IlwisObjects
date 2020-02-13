@@ -37,6 +37,9 @@ Column {
 			}else
 				operation.removeIntensityCurve()
 		}
+		Component.onCompleted : {
+			checked = operation.isActive
+		}
 	}
 
 	Row {
