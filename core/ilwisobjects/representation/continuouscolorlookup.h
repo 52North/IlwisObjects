@@ -43,6 +43,7 @@ class KERNELSHARED_EXPORT ContinuousColorLookup : public ColorLookUp
 
 	};
 public:
+		enum StretchMethod{smLINEARA, smLINEARB, smLOGARITHMIC};
         ContinuousColorLookup();
         ContinuousColorLookup(const QString& definition, const QString& mode);
         ContinuousColorLookup(const IDomain&, const QString &rprCode="");
@@ -60,17 +61,23 @@ public:
 		NumericRange numericRange() const;
 		void steps(int st);
 		int steps() const;
-		void relative(bool yesno);
-		bool relative() const;
+		void stretchMethod(ContinuousColorLookup::StretchMethod yesno);
+		StretchMethod stretchMethod() const;
+		void setBoundMapping(int idx, double original, double mapped);
+		std::pair<double, double> boundMapping(int idx);
+
+		static double value2Color4BoundsMapping(double value, const NumericRange& stretchRange, const std::vector<std::pair<double, double>>& boundsMapping);
 		
 
 private:
 		std::vector < std::pair< ValueRange, ContinuousColorRange>> _colorranges;
 		std::vector< std::pair< ValueRange, QColor>> _exceptions;
+		std::vector<std::pair<double, double>> _boundsMappings; // used in smLINEARB
         NumericRange _numericRange;
         double _step = 0;
-        bool _linear = true;
+		StretchMethod _stretchMethod = smLINEARA;
 		bool _relative = true;
+		bool _oldStyle = false;
 
 
 		void fromDefinition(const QString& def, const IDomain& dom = IDomain()); 

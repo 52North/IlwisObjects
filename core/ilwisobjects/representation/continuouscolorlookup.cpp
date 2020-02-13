@@ -31,7 +31,6 @@ using namespace Ilwis;
 
 ContinuousColorLookup::ContinuousColorLookup()
 {
-
 }
 
 ContinuousColorLookup::ContinuousColorLookup(const QString &definition, const QString& mode) : _relative(mode == "relative")
@@ -50,8 +49,6 @@ ContinuousColorLookup::ContinuousColorLookup(const IDomain &, const QString& rpr
             fromDefinition(definition);
         }
     }
-
-
 }
 
 QColor ContinuousColorLookup::value2color(double value, const NumericRange& actualRange, const NumericRange& stretchRange) const
@@ -60,7 +57,18 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
         return QColor("transparent");
 
     if ( stretchRange.isValid())  {
-        if ( _linear){
+		auto sm = _stretchMethod;
+		if (sm == smLINEARB) {
+			// check if its valid else default to smLINEARA
+			sm = smLINEARA;
+			if (_boundsMappings.size() == 2) {
+				if (_boundsMappings[0].first < _boundsMappings[1].first && 
+					_boundsMappings[0].second < _boundsMappings[1].second) {
+					sm = smLINEARB;
+				}
+			}
+		}
+        if ( sm == smLINEARA){
             if ( value < stretchRange.center()){
                 double stretchFraction = (value - stretchRange.min())/ stretchRange.distance();
                 value = actualRange.min() + stretchFraction * actualRange.distance();
@@ -70,7 +78,10 @@ QColor ContinuousColorLookup::value2color(double value, const NumericRange& actu
                     value = actualRange.max() - stretchFraction * actualRange.distance(); 
                 }
             }
-        }
+		}
+		else if (sm == smLINEARB) {
+			value = value2Color4BoundsMapping(value, actualRange, _boundsMappings);
+		}
     }
 	if (_relative)
 		value = min(1.0, max(0.0, (value - actualRange.min()) / actualRange.distance())); // scale it between 0..1 
@@ -137,10 +148,11 @@ ColorLookUp *ContinuousColorLookup::clone() const
 {
     ContinuousColorLookup *newlookup = new ContinuousColorLookup();
     newlookup->_colorranges = _colorranges;
-    newlookup->_linear = _linear;
+    newlookup->_oldStyle = _oldStyle;
     newlookup->_numericRange = _numericRange;
     newlookup->_step = _step;
 	newlookup->_definition = _definition;
+	newlookup->_stretchMethod = _stretchMethod;
 
     return newlookup;
 }
@@ -155,9 +167,12 @@ void ContinuousColorLookup::store(QDataStream& stream) const {
 	}
 	_numericRange.store(stream);
 	stream << _step;
-	stream << _linear;
+	stream << _oldStyle;
 	stream << _relative;
 	stream << _definition;
+	if (!_oldStyle) {
+		stream << (int)_stretchMethod;
+	}
 }
 void ContinuousColorLookup::load(QDataStream& stream) {
 	quint32 n;
@@ -171,9 +186,14 @@ void ContinuousColorLookup::load(QDataStream& stream) {
 	}
 	_numericRange.load(stream);
 	stream >> _step;
-	stream >> _linear;
+	stream >> _oldStyle;
 	stream >> _relative;
 	stream >> _definition;
+	if (!_oldStyle) {
+		int temp;
+		stream >> temp;
+		_stretchMethod = (StretchMethod)temp;
+	}
 }
 
 QString ContinuousColorLookup::definition(const IDomain& dom, bool& hasChanged)  {
@@ -283,15 +303,54 @@ int ContinuousColorLookup::steps() const {
 	return _step;
 }
 
-void ContinuousColorLookup::relative(bool yesno) {
-	_relative = yesno;
-
+void ContinuousColorLookup::stretchMethod(ContinuousColorLookup::StretchMethod m) {
+	_stretchMethod = m;
 }
-
-bool ContinuousColorLookup::relative() const {
-	return _relative;
+ContinuousColorLookup::StretchMethod ContinuousColorLookup::stretchMethod() const {
+	return _stretchMethod;
 }
 
 QString ContinuousColorLookup::definition() const {
 	return _definition;
+}
+
+void ContinuousColorLookup::setBoundMapping(int idx, double original, double mapped) {
+	if (idx >= _boundsMappings.size()) {
+		_boundsMappings.resize(idx + 1);
+	}
+	_boundsMappings[idx] = { original, mapped };
+}
+std::pair<double, double> ContinuousColorLookup::boundMapping(int idx) {
+	if (idx < _boundsMappings.size())
+		return _boundsMappings[idx];
+
+	return { rUNDEF, rUNDEF };
+}
+
+double ContinuousColorLookup::value2Color4BoundsMapping(double value, const NumericRange& actualRange, const std::vector<std::pair<double, double>>& boundsMappings) {
+	double scale = 1.0;
+	if (value <= boundsMappings[0].first) {
+		double unscaledDistance = boundsMappings[0].first - actualRange.min();
+		double scaledDistance = boundsMappings[0].second - actualRange.min();
+		if (unscaledDistance != 0)
+			scale = scaledDistance / unscaledDistance;
+		double d = (value - actualRange.min());
+		value = d * scale;
+	}
+	else if (value >= boundsMappings[1].first) {
+		double unscaledDistance = actualRange.max() - boundsMappings[1].first;
+		double scaledDistance = actualRange.max() - boundsMappings[1].second;
+		if (unscaledDistance != 0)
+			scale = scaledDistance / unscaledDistance;
+		value = (value - boundsMappings[1].first) * scale + boundsMappings[1].second;
+	}
+	else {
+		double unscaledDistance = boundsMappings[1].first - boundsMappings[0].first;
+		double scaledDistance = boundsMappings[1].second - boundsMappings[0].second;
+		if (unscaledDistance != 0)
+			scale = scaledDistance / unscaledDistance;
+		double d = (value - boundsMappings[0].first);
+		value =  d * scale + boundsMappings[0].second;
+	}
+	return value;
 }
