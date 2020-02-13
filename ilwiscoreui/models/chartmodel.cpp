@@ -82,9 +82,9 @@ void ChartModel::fillTableData() {
 		int seriesSize = _series.size();
 		for (int s = 0; s < seriesSize; ++s) {
 			DataseriesModel *dataserie = getSeries(s);
-			QVariantList points = dataserie->points();
+			auto points = dataserie->points();
 			for (int r = 0; r < points.size(); ++r) { 
-				QPointF pnt = points[r].toPointF();
+				QPointF pnt = points[r];
 				double x = pnt.rx();
 				double y = pnt.ry();
 				auto &data = values[x];
@@ -146,6 +146,10 @@ QVariantList ChartModel::linkProperties() const
 quint32 ChartModel::modelId() const
 {
     return _modelId;
+}
+
+quint32 ChartModel::linkedModelId() const {
+	return _linkedModelId;
 }
 
 QString ChartModel::name() const
@@ -803,6 +807,7 @@ void ChartModel::updateEditors(const QVariantMap& parameters) {
 }
 void ChartModel::setView(QObject *obj) {
 	_chartView = obj;
+	QtCharts::DeclarativeChart *p;
 }
 
 QObject *ChartModel::view() {

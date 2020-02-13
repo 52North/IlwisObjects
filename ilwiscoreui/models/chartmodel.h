@@ -100,6 +100,7 @@ namespace Ilwis {
 			Q_INVOKABLE void sendOverLink(const QVariantMap& parms) ;
 			Q_INVOKABLE void setView(QObject *obj);
 			Q_INVOKABLE QObject *view();
+			Q_INVOKABLE void updateEditors(const QVariantMap& parameters);
 
 
             ChartModel();
@@ -127,7 +128,6 @@ namespace Ilwis {
             quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QVariantMap& extra);
 			void fillTableData();
             void updateDataSeries(const ITable& inputTable, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn);
-			void updateEditors(const QVariantMap& parameters);
             bool updateSeries() const;
             void tickCountX(int tc);
             int tickCountX() const;
@@ -169,6 +169,7 @@ namespace Ilwis {
             bool xAxisVisble();
             bool yAxisVisble();
 			ITable dataTable() const;
+			quint32 linkedModelId() const;
 
         signals:
             void chartTypeChanged();

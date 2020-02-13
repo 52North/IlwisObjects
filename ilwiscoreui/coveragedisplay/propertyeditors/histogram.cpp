@@ -388,7 +388,6 @@ void Histogram::updateChart(int mx, int my) {
 				parms["x"] = mx;
 				parms["y"] = my;
 				parms["value"] = v;
-				qDebug() << v;
 				chart->updateEditors(parms);
 			}
 		}
@@ -412,6 +411,8 @@ void Histogram::updateAOIs() {
 					ExecutionContext ctx;
 					SymbolTable symtable;
 					commandhandler()->execute(updateChart, &ctx, symtable);
+					QVariantMap parms;
+					parms["raster"] = _raster->id(); chart->updateEditors(parms);
 				}
 			}
 		}
