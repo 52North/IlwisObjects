@@ -337,6 +337,11 @@ VisualAttribute * Ilwis::Ui::LayerModel::activeAttribute()
     return nullptr;
 }
 
+const VisualAttribute * Ilwis::Ui::LayerModel::activeAttribute() const
+{
+	return nullptr;
+}
+
 void Ilwis::Ui::LayerModel::isSupportLayer(bool yesno)
 {
 	_isSupportLayer = yesno;

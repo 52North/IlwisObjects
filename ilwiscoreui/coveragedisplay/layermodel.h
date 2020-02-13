@@ -100,6 +100,7 @@ public:
     Q_INVOKABLE quint32 modelId() const;
 	Q_INVOKABLE virtual bool canUse(quint64 id) ;
 	Q_INVOKABLE virtual Ilwis::Ui::VisualAttribute *activeAttribute();
+
 	Q_INVOKABLE virtual void redraw() const;
 
 	LayerModel();
@@ -157,6 +158,7 @@ public:
     virtual bool renderReady();
     virtual void renderReady(bool yesno);
 	bool isVirtual() const;
+	virtual const Ilwis::Ui::VisualAttribute *activeAttribute() const;
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:
