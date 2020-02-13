@@ -91,6 +91,11 @@ VisualAttribute * CoverageLayerModel::activeAttribute()
 	return visualAttribute(_activeAttribute);
 }
 
+const VisualAttribute * CoverageLayerModel::activeAttribute() const
+{
+	return visualAttribute(_activeAttribute);
+}
+
 QVariant CoverageLayerModel::vproperty(const QString &pName) const
 {
     QVariant v = LayerModel::vproperty(pName);

@@ -50,6 +50,7 @@ public:
     Q_INVOKABLE virtual void linkMessage(const QVariantMap& parms);
 	Q_INVOKABLE bool canUse(quint64 id) override;
 	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
+	const Ilwis::Ui::VisualAttribute *activeAttribute() const;
 
 
 	CoverageLayerModel();
