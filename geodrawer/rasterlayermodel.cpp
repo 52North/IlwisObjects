@@ -256,7 +256,24 @@ void RasterLayerModel::fillAttributes()
 }
 
 QVariant RasterLayerModel::vproperty(const QString& pName) const {
-	return CoverageLayerModel::vproperty(pName);
+	QVariant value =  CoverageLayerModel::vproperty(pName);
+	if (!value.isValid()) {
+		if (pName == "stretchrange") {
+			const VisualAttribute * attr = activeAttribute();
+			if (attr != 0) {
+				auto rng = attr->stretchRange(true);
+				value.setValue(rng);
+			}
+		}
+		if (pName == "actualrange") {
+			const VisualAttribute * attr = activeAttribute();
+			if (attr != 0) {
+				auto rng = attr->actualRange();
+				value.setValue(rng);
+			}
+		}
+	}
+	return value;
 }
 
 void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
@@ -273,7 +290,7 @@ void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
 			return;
 		}    if (pName == "undefinedvalue") {
 			coverage()->setPseudoUndef(value.toDouble());
-		}
+		} 
 		CoverageLayerModel::vproperty(pName, value);
 	}
 	catch (const ErrorObject&) {}
@@ -323,7 +340,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 			bool k1 = rng.isValid();
 			bool k2 = _raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
 			if (!k1 && k2) {
-				auto limits = _raster->statistics(PIXELVALUE).calcStretchRange(0.02);
+				auto limits = _raster->statistics(PIXELVALUE).calcStretchRange(0.01);
 				if (limits.first != rUNDEF && limits.second != rUNDEF) {
 					attr->stretchRange(NumericRange(limits.first, limits.second, attr->actualRange().resolution()));
 					visualAttribute(LAYER_WIDE_ATTRIBUTE)->stretchRange(attr->stretchRange());
@@ -776,6 +793,11 @@ VisualAttribute *RasterLayerModel::activeAttribute() {
 	return CoverageLayerModel::activeAttribute();
 }
 
+const VisualAttribute *RasterLayerModel::activeAttribute() const{
+	return CoverageLayerModel::activeAttribute();
+}
+
+
 void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 	if (parameters.contains("attribute")) {
 		VisualAttribute *attr = visualAttribute(parameters["attribute"].toString());
@@ -865,6 +887,18 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 				prepare(LayerModel::ptRENDER);
 				layerManager()->needUpdate(true); // this is needed here but costs some performance so we do it slightly different than the other options
 				return;
+			}
+			else if (parameters["type"] == "histogramstretchbounds") {
+				if (parameters.contains("resetstretch")) {
+					NumericRange rng = *_raster->datadef().range()->as<NumericRange>();
+					VisualAttribute * attr = activeAttribute();
+					attr->stretchRange(rng);
+				}
+				else {
+					int idx = parameters["lower"].toBool() ? 0 : 1;
+					lookup->stretchMethod(ContinuousColorLookup::smLINEARB);
+					lookup->setBoundMapping(idx, parameters["oldvalue"].toDouble(), parameters["newvalue"].toDouble());
+				}
 			}
 			prepare(LayerModel::ptRENDER);
 		}
