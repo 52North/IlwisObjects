@@ -37,7 +37,11 @@ public:
 	QString definition(const IDomain& dom, bool& hasChanged)  override;
 	QString definition() const override;
 
-
+protected:
+	void setBoundMapping(int idx, double original, double mapped) {};
+	std::pair<double, double> boundMapping(int idx) {
+		return { rUNDEF, rUNDEF };
+	}
 private:
     boost::container::flat_map<quint32, QColor> _colors;
     bool _cyclic = true;

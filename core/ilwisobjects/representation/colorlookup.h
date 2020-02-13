@@ -39,6 +39,8 @@ public:
 	virtual void fromDefinition(const QString& def, const IDomain& dom = IDomain()) = 0;
 	virtual void reset(const IDomain& dom) = 0;
 	virtual QString definition() const = 0;
+	virtual void setBoundMapping(int idx, double original, double mapped) = 0;
+	virtual std::pair<double, double> boundMapping(int idx) = 0;
 protected:
     QColor string2color(const QString &colorstring);
 
