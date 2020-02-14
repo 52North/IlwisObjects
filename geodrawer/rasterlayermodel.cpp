@@ -892,6 +892,7 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 				if (parameters.contains("resetstretch")) {
 					NumericRange rng = *_raster->datadef().range()->as<NumericRange>();
 					VisualAttribute * attr = activeAttribute();
+					lookup->stretchMethod(ContinuousColorLookup::smLINEARA);
 					attr->stretchRange(rng);
 				}
 				else {
