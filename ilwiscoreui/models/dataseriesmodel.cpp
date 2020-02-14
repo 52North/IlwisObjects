@@ -90,6 +90,8 @@ bool DataseriesModel::setData(const ITable& inputTable, const QVariantMap& extra
 	if (extra.contains("name")) {
 		_name = extra["name"].toString();
 	}
+	if (extra.contains("specialtype"))
+		_specialType = extra["specialtype"].toString();
     _dataDefinitions[0] = inputTable->columndefinition(_xaxis).datadef();
     _dataDefinitions[1] = inputTable->columndefinition(_yaxis).datadef();
     _dataDefinitions[2] = inputTable->columndefinition(_zaxis).datadef();
@@ -240,7 +242,8 @@ void DataseriesModel::fillOperations() {
     auto *factory = Ilwis::kernel()->factory<ChartOperationFactory>("ilwis::chartoperationfactory");
     if (factory) {
         QVariantMap parameters = { { "dataseries", true }, {"yaxistype", axisType(ChartModel::Axis::AYAXIS) } };
-		parameters["specialtype"] = chartModel->specialType();
+		if ( _specialType != sUNDEF)
+			parameters["specialtype"] =_specialType;
 		parameters["attribute"] = _yaxis;
         _operations = factory->selectedOperations(chartModel, parameters);
         for (auto iter = _operations.begin(); iter != _operations.end(); ++iter)

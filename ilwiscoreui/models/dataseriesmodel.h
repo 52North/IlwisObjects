@@ -136,6 +136,7 @@ namespace  Ilwis {
 			QString _xaxis=sUNDEF, _yaxis=sUNDEF, _zaxis=sUNDEF;
             DataDefinition _dataDefinitions[3];
 			QtCharts::QAbstractSeries * _series = 0;
+			QString _specialType = sUNDEF;
 
             double _minx = rUNDEF, _maxx = rUNDEF, _miny = rUNDEF, _maxy = rUNDEF;
             int _minID, _maxID;
