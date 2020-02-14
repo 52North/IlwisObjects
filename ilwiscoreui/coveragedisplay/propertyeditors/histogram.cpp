@@ -249,22 +249,21 @@ void Histogram::addPoint(int x, int y) {
 
 	auto crd = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->pixel2Coord(Pixel(x, y));
 
-	for (auto& pol : _polygons) {
-		Coordinate last;
-		if (pol.size() > 2 && _polygons.back().size() > 0) {
-			auto crdLast = _polygons.back().back();
-			for (auto& cr : pol) {
-				if (last != Coordinate()) {
-					Coordinate pnt;
-					if (MathHelper::lineLineIntersect(crd.x, crd.y, crdLast.x, crdLast.y, last.x, last.y, cr.x, cr.y, pnt)) {
-						// the newline will always intersect with that current end of the polygons last line; which is fine as it needs to connect there
-						if ( !(cr.x == pnt.x && cr.y == pnt.y && crdLast.x == pnt.x && crdLast.y == pnt.y))  
-							return;
-					}
-
+	Coordinate last;
+	auto pol = _polygons.back();
+	if (pol.size() > 2 ) {
+		auto crdLast = pol.back();
+		for (auto& cr : pol) {
+			if (last != Coordinate()) {
+				Coordinate pnt;
+				if (MathHelper::lineLineIntersect(crd.x, crd.y, crdLast.x, crdLast.y, last.x, last.y, cr.x, cr.y, pnt)) {
+					// the newline will always intersect with that current end of the polygons last line; which is fine as it needs to connect there
+					if ( !(cr.x == pnt.x && cr.y == pnt.y && crdLast.x == pnt.x && crdLast.y == pnt.y))  
+						return;
 				}
-				last = cr;
+
 			}
+			last = cr;
 		}
 	}
 	_polygons.back().push_back(crd);
@@ -425,5 +424,6 @@ bool Histogram::editState() const {
 }
 void Histogram::editState(bool yesno) {
 	_editState = yesno;
+	emit editStateChanged();
 }
 
