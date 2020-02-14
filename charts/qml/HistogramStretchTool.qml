@@ -108,7 +108,9 @@ Column {
 				operation.addIntensityCurve()
 			}else{
 				operation.removeIntensityCurve()
+				//chart.sendOverLink({"type" : "histogramstretchbounds", "resetstretch" : true})
 				chart.view().requestPaint()
+
 			}
 		}
 		Component.onCompleted : {

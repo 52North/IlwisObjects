@@ -34,8 +34,10 @@ Column {
 				chart.sendOverLink({"type" : "histogramshift", "shift" : control.value})
 			if ( useshiftid.checked) {
 				operation.addIntensityCurve()
-			}else
+			}else{
 				operation.removeIntensityCurve()
+				chart.view().requestPaint()
+			}
 		}
 		Component.onCompleted : {
 			checked = operation.isActive
