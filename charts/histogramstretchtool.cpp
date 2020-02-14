@@ -107,7 +107,8 @@ void HistogramStretchTool::addIntensityCurve() {
 
 }
 
-void HistogramStretchTool::removeIntensityCurve() {       
+void HistogramStretchTool::removeIntensityCurve() { 
+	chartModel()->deleteSerieByName("stretched_histogram");
 }
 
 void  HistogramStretchTool::stretchHistogram(bool isLower, double origValue, double newValue) {

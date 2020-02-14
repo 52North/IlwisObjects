@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "kernel.h"  
 #include "ilwisdata.h" 
 #include "datadefinition.h"   
-#include "columndefinition.h"          
+#include "columndefinition.h"           
 #include "table.h"
 #include "models/tablemodel.h"      
 #include "chartoperationeditor.h"          
@@ -83,7 +83,7 @@ void HistogramShift::addIntensityCurve() {
 			QPointF pnt = v;
 			pntsTable->record(count++, { pnt.x(), pnt.y() });
 		}
-		QString updateChart = QString("addchartdata(%1,%2,\"min\",%3,%4)").arg(chartModel()->modelId()).arg(pntsTable->resource().url(true).toString()).arg("histogram").arg("\"specialtype=histogram|resx=2|resy=2|name=shifted_histogram\"");
+		QString updateChart = QString("addchartdata(%1,%2,\"min\",%3,%4)").arg(chartModel()->modelId()).arg(pntsTable->resource().url(true).toString()).arg("histogram").arg("\"resx=2|resy=2|name=shifted_histogram\"");
 		ExecutionContext ctx;
 		SymbolTable symtable;
 		commandhandler()->execute(updateChart, &ctx, symtable);   
@@ -93,7 +93,7 @@ void HistogramShift::addIntensityCurve() {
 }
 
 void HistogramShift::removeIntensityCurve() { 
-
+	chartModel()->deleteSerieByName("shifted_histogram");
 
 }
 
