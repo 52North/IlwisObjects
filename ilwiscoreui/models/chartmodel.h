@@ -124,6 +124,7 @@ namespace Ilwis {
 			DataseriesModel* getSeriesByName(const QString name) const;
             DataseriesModel* getSeries(const QString& xcolumn, const QString& ycolumn, const QString& zcolumn) const;
             quint32 deleteSerie(const QString& ycolumn, const QString& zcolumn=sUNDEF);
+			quint32 deleteSerieByName(const QString& name);
 			bool isValidSeries(const ITable& inputTable, const QString columnName) const;	// check if column with column name exists
             quint32 insertDataSeries(const ITable& inputTable, quint32 index, const QString& xcolumn, const QString& ycolumn, const QString& zcolumn, const QVariantMap& extra);
 			void fillTableData();
@@ -222,7 +223,7 @@ namespace Ilwis {
             QString _name = sUNDEF;
             ITable _datatable;
 			TableModel *_dataTableModel = 0;
-			QString _specialType;
+			QString _specialType = sUNDEF;
 			quint32 _linkedModelId=iUNDEF;
 
 			QList<DataseriesModel *> _series;

@@ -238,7 +238,7 @@ DataseriesModel* ChartModel::getSeries(const QString& xcolumn, const QString& yc
 quint32 ChartModel::deleteSerie(const QString& ycolumn, const QString& zcolumn)  {
     for (int i = 0; i < _series.size(); ++i) {
         auto *series = _series[i];
-        if (series->yColumn() == ycolumn && series->zColumn() == zcolumn) {
+        if (series->yColumn() == ycolumn) {
             _series.removeAt(i);
             emit updateSeriesChanged();
 			emit chartModelChanged();
@@ -246,6 +246,19 @@ quint32 ChartModel::deleteSerie(const QString& ycolumn, const QString& zcolumn) 
         }
     }
     return iUNDEF;
+}
+// sometimes the name of the series is not equal to the columnname
+quint32 ChartModel::deleteSerieByName(const QString& name) {
+	for (int i = 0; i < _series.size(); ++i) {
+		auto *series = _series[i];
+		if (series->name() == name) {
+			_series.removeAt(i);
+			emit updateSeriesChanged();
+			emit chartModelChanged();
+			return i;
+		}
+	}
+	return iUNDEF;
 }
 
 QQmlListProperty<DataseriesModel> ChartModel::series()
