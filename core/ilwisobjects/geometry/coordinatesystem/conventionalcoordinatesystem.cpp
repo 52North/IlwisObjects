@@ -340,8 +340,8 @@ bool ConventionalCoordinateSystem::prepare(const QString &parms)
     if ( _projection.isValid())  {
         ok = _projection->prepare(parms);
     }
-    QString unit = proj4["units"];
-    if ( ok && (_projection->code().contains("longlat") || _projection->code().contains("latlon") || unit=="?"))
+	QString unit = "m"; // proj4["units"];
+    if ( ok && (_projection->code().contains("longlat") || _projection->code().contains("latlon") ))
         _unit = "degrees";
     else{
         if ( unit == "m")
