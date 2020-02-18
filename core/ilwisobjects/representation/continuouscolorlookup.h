@@ -65,6 +65,8 @@ public:
 		StretchMethod stretchMethod() const;
 		void setBoundMapping(int idx, double original, double mapped);
 		std::pair<double, double> boundMapping(int idx);
+		void relative(bool yesno);
+		bool relative() const;
 
 		static double value2Color4BoundsMapping(double value, const NumericRange& stretchRange, const std::vector<std::pair<double, double>>& boundsMapping);
 		

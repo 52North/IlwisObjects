@@ -293,6 +293,15 @@ void ContinuousColorLookup::addException(const NumericRange& range, const QColor
 	_exceptions.push_back(std::pair<ValueRange, QColor>(vr, clr));
 }
 
+void ContinuousColorLookup::relative(bool yesno) {
+	_relative = yesno;
+
+}
+
+bool ContinuousColorLookup::relative() const {
+	return _relative;
+}
+
 void ContinuousColorLookup::steps(int st) {
 	if (st > 0) {
 		_step = st;
