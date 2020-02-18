@@ -37,7 +37,8 @@ public:
     QString format() const;
     static ConnectorInterface *create(const Resource &resource, bool load, const IOOptions &options);
 protected:
-	bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
+	bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+	void flush(const IlwisObject *obj, const QJsonObject& jroot);
 
 private:
     IlwisObject *create() const;

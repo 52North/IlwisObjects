@@ -71,7 +71,7 @@ void Ilwis4ConnectorModule::prepare()
 	factory->addCreator(itTABLE, "ilwis4", Ilwis4TableConnector::create);
 	   
 
-	factory->addCreator("table", "ilwis4", Ilwis4TableConnector::create);
+	factory->addCreator("i4table", "ilwis4", Ilwis4TableConnector::create);
 
 
 	QFileInfo ilw = context()->ilwisFolder();

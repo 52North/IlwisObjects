@@ -25,6 +25,9 @@
     <ClCompile Include="ilwis4connector\ilwis4tableconnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ilwis4connector\ilwis4catalogexplorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwis4connector\iwis4connectormodule.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ilwis4connector\ilwis4tableconnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\ilwis4catalogexplorer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

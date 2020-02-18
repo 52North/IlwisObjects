@@ -15,6 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "version.h"
 #include "ilwisdata.h"
 #include "connectorinterface.h"
@@ -44,15 +47,17 @@ Ilwis4TableConnector::Ilwis4TableConnector(const Ilwis::Resource &resource, bool
 
 bool Ilwis4TableConnector::store(IlwisObject *obj, const IOOptions &options)
 {
-    if (!Ilwis4Connector::store(obj, options))
+	QJsonObject jroot;
+    if (!Ilwis4Connector::store(obj, options, jroot))
         return false;
     Table *tbl = static_cast<Table *>(obj);
 
+	flush(obj, jroot);
     return true;
 }
 
 bool Ilwis4TableConnector::storeData(IlwisObject *obj, const IOOptions &options ){
- 
+	
     return true;
 }
 

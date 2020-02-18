@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ilwis4connector\ilwis4catalogexplorer.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4connector.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4objectfactory.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4tableconnector.cpp" />
@@ -20,6 +21,7 @@
     <QtMoc Include="ilwis4connector\iwis4connectormodule.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ilwis4connector\ilwis4catalogexplorer.h" />
     <ClInclude Include="ilwis4connector\ilwis4connector.h" />
     <ClInclude Include="ilwis4connector\ilwis4objectfactory.h" />
     <ClInclude Include="ilwis4connector\ilwis4tableconnector.h" />

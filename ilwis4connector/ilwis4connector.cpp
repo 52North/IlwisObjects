@@ -16,6 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QBuffer>
 #include <QColor>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "raster.h"
 #include "version.h"
 #include "connectorinterface.h"
@@ -146,11 +149,51 @@ bool Ilwis4Connector::loadData(IlwisObject *object, const IOOptions &options){
 
 
 
-bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options){
+bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObject& jroot){
+
+	Resource res = obj->resource(IlwisObject::cmINPUT);
+
+	QJsonDocument doc;
+	QJsonObject jphysical, jcontext;
+	jphysical.insert("creationdate", Time(res.createTime()).toString());
+	jphysical.insert("modifieddate", Time(res.modifiedTime()).toString());
+	jphysical.insert("logicalreadonly", obj->isReadOnly());
+
+	QString nm = res.hasProperty("longname") ? obj->name() + "|" + res["longname"].toString() : obj->name();
+	if (options.find("storename") != options.end())
+		nm = options.value("storename").toString();
+	jphysical.insert("name", nm);
+	jphysical.insert("extendedtype", (qint64)obj->extendedType());
+	jphysical.insert("code", obj->code());
+
+	auto metadata = res.metadata();
+	QJsonArray jsmetadata;
+	for (auto item : metadata) {
+		QJsonObject data;
+		data.insert(item.first, item.second);
+		jsmetadata.append(data);
+	}
+	jcontext.insert("metadata", jsmetadata);
+	jcontext.insert("description", obj->description());
+
+	jroot.insert("physical", jphysical);
+	jroot.insert("context", jcontext);
+	
 	return true;
 
 }
+void Ilwis4Connector::flush(const IlwisObject *obj, const QJsonObject& jroot) {
+	QFile file;
+	Resource res = obj->resource(IlwisObject::cmOUTPUT);
+	file.setFileName(res.url(true).toLocalFile());
 
+	auto doc = QJsonDocument(jroot);
+	auto bytes = doc.toJson();
+	if (file.open(QIODevice::WriteOnly)) {
+		file.write(bytes);
+		file.close();
+	}
+}
 QString Ilwis4Connector::provider() const
 {
     return "Ilwis4";
