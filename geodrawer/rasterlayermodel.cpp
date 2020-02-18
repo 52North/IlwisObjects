@@ -665,7 +665,7 @@ QVariantMap RasterLayerModel::texture(qint32 bufferIndex) {
         Texture * tex = textureHeap->GetTexture(optimal, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, true);
         if (tex != 0) {
             quad.dirty = !optimal;
-            const QVector<int> & pixelData = tex->data();
+            const TextureData & pixelData = tex->data();
             double s = tex->getOffsetX() / (double)_width;
             double t = tex->getOffsetY() / (double)_height;
             int sizeX = tex->getSizeX();

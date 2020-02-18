@@ -45,7 +45,7 @@ void CCTexture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
     dirty = !DrawTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
 }
 
-bool CCTexture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
+bool CCTexture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, TextureData & texture_data, volatile bool* fDrawStop)
 {
     long imageWidth = _ccBands->at(0)->size().xsize();
     long imageHeight = _ccBands->at(0)->size().ysize();

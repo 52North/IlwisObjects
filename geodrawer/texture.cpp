@@ -111,11 +111,11 @@ const unsigned long Texture::getSizeY() const {
     return sizeY;
 }
 
-const QVector<int> & Texture::data() const {
+const TextureData & Texture::data() const {
     return texture_data;
 }
 
-bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
+bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, TextureData & texture_data, volatile bool* fDrawStop)
 {
     long imageWidth = _raster->size().xsize();
     long imageHeight = _raster->size().ysize();
@@ -210,7 +210,7 @@ double Texture::getStretchedValue(double value, const NumericRange& actualRange,
     return value;
 }
 
-bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop)
+bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, TextureData & texture_data, volatile bool* fDrawStop)
 {
     long imageWidth = _raster->size().xsize();
     long imageHeight = _raster->size().ysize();

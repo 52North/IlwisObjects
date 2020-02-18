@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "raster.h"
 
+#define TextureData QByteArray 
+
 namespace Ilwis {
 
 	namespace Ui {
@@ -39,12 +41,12 @@ namespace Ilwis {
             const long getOffsetY() const;
             const unsigned long getSizeX() const;
             const unsigned long getSizeY() const;
-            const QVector<int> & data() const;
+            const TextureData & data() const;
         protected:
-            bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);
-            bool DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);            
+            bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor,TextureData & texture_data, volatile bool* fDrawStop);
+            bool DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, TextureData & texture_data, volatile bool* fDrawStop);
             double getStretchedValue(double value, const NumericRange& actualRange, const NumericRange& stretchRange) const;
-            QVector<int> texture_data;
+            TextureData texture_data;
             const unsigned long sizeX, sizeY;
             const long offsetX, offsetY;
             const unsigned int zoomFactor;

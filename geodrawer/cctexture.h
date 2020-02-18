@@ -29,7 +29,7 @@ namespace Ilwis {
             virtual void CreateTexture(bool fInThread, volatile bool * fDrawStop);
             virtual void ReCreateTexture(bool fInThread, volatile bool * fDrawStop);
         protected:
-            bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, QVector<int> & texture_data, volatile bool* fDrawStop);
+            bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, TextureData & texture_data, volatile bool* fDrawStop);
 			const std::vector<IRasterCoverage> * _ccBands;
 	    };
 	}
