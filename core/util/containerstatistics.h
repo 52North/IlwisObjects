@@ -247,7 +247,7 @@ public:
 							double delta = prop(pDELTA);
 							double f = delta / _binCount;
 							if (pcount < psum && std::ceil(f) != f) {
-								_binCount = (int)(f) * delta;
+								_binCount = (int)(std::ceil(f) * delta);
 							}
 						}
                     }
