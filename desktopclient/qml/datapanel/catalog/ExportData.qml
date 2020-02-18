@@ -94,7 +94,7 @@ Rectangle {
 								}
 							}
 							var ff = formats.split(":")
-							var expr = "saveas(" + inpUrl + "," + outputUrl + "," + ff[1] + "," + ff[0] + ")"
+							var expr = "saveas(\"" + inpUrl + "\",\"" + outputUrl + "\",\"" + ff[1] + "\",\"" + ff[0] + "\")"
 							operations.executeoperation(expr,true)
 
 						}
