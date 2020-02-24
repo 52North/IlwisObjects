@@ -13,7 +13,11 @@
   <ItemGroup>
     <ClCompile Include="ilwis4connector\ilwis4catalogexplorer.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4connector.cpp" />
+    <ClCompile Include="ilwis4connector\ilwis4coordinatesystemconnector.cpp" />
+    <ClCompile Include="ilwis4connector\ilwis4domainconnector.cpp" />
+    <ClCompile Include="ilwis4connector\ilwis4georefconnector.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4objectfactory.cpp" />
+    <ClCompile Include="ilwis4connector\ilwis4rasterconnector.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4tableconnector.cpp" />
     <ClCompile Include="ilwis4connector\iwis4connectormodule.cpp" />
   </ItemGroup>
@@ -23,7 +27,11 @@
   <ItemGroup>
     <ClInclude Include="ilwis4connector\ilwis4catalogexplorer.h" />
     <ClInclude Include="ilwis4connector\ilwis4connector.h" />
+    <ClInclude Include="ilwis4connector\ilwis4coordinatesystemconnector.h" />
+    <ClInclude Include="ilwis4connector\ilwis4domainconnector.h" />
+    <ClInclude Include="ilwis4connector\ilwis4georefconnector.h" />
     <ClInclude Include="ilwis4connector\ilwis4objectfactory.h" />
+    <ClInclude Include="ilwis4connector\ilwis4rasterconnector.h" />
     <ClInclude Include="ilwis4connector\ilwis4tableconnector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

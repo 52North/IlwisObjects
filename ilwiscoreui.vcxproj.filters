@@ -311,9 +311,6 @@
     <ClCompile Include="ilwiscoreui\models\chartoperation.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
-    <ClCompile Include="ilwiscoreui\models\dataseriesmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\crosssection.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
     </ClCompile>
@@ -382,6 +379,12 @@
     </ClCompile>
     <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\histogram.cpp">
       <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\spatial_animation.cpp">
+      <Filter>Source Files\catalog\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\dataseriesmodel.cpp">
+      <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -651,6 +654,9 @@
     </QtMoc>
     <QtMoc Include="ilwiscoreui\coveragedisplay\propertyeditors\histogram.h">
       <Filter>Header Files\spatialdrawing\editors</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\spatial_animation.h">
+      <Filter>Header Files\catalog\operations</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,18 @@
     <ClCompile Include="ilwis4connector\ilwis4catalogexplorer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ilwis4connector\ilwis4domainconnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\ilwis4rasterconnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\ilwis4coordinatesystemconnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\ilwis4georefconnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwis4connector\iwis4connectormodule.h">
@@ -45,6 +57,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ilwis4connector\ilwis4catalogexplorer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\ilwis4domainconnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\ilwis4rasterconnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\ilwis4coordinatesystemconnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\ilwis4georefconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

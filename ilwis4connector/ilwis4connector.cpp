@@ -60,6 +60,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "analysispattern.h"
 #include "applicationmodel.h"
 #include "combinationmatrix.h"
+#include "ilwis4domainconnector.h"
 #include "model.h"
 
 
@@ -149,35 +150,45 @@ bool Ilwis4Connector::loadData(IlwisObject *object, const IOOptions &options){
 
 
 
-bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObject& jroot){
+bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObject& jroot) {
 
 	Resource res = obj->resource(IlwisObject::cmINPUT);
+	bool isSupport = options.contains("status") ? options["status"].toString() == "support" : false;
 
 	QJsonDocument doc;
-	QJsonObject jphysical, jcontext;
-	jphysical.insert("creationdate", Time(res.createTime()).toString());
-	jphysical.insert("modifieddate", Time(res.modifiedTime()).toString());
-	jphysical.insert("logicalreadonly", obj->isReadOnly());
+	QJsonObject jbase, jcontext;
+	if (!isSupport) {
+		jbase.insert("creationdate", Time(res.createTime()).toString());
+		jbase.insert("modifieddate", Time(res.modifiedTime()).toString());
+		jbase.insert("logicalreadonly", obj->isReadOnly());
+	}
+	jbase.insert("ilwistype", TypeHelper::type2name(obj->ilwisType()));
 
 	QString nm = res.hasProperty("longname") ? obj->name() + "|" + res["longname"].toString() : obj->name();
 	if (options.find("storename") != options.end())
 		nm = options.value("storename").toString();
-	jphysical.insert("name", nm);
-	jphysical.insert("extendedtype", (qint64)obj->extendedType());
-	jphysical.insert("code", obj->code());
+	jbase.insert("name", nm);
+	if (!isSupport)
+		jbase.insert("extendedtype", (qint64)obj->extendedType());
+	jbase.insert("code", obj->code());
 
-	auto metadata = res.metadata();
-	QJsonArray jsmetadata;
-	for (auto item : metadata) {
-		QJsonObject data;
-		data.insert(item.first, item.second);
-		jsmetadata.append(data);
+	if (!isSupport) {
+		auto metadata = res.metadata();
+		if (metadata.size() > 0) {
+			QJsonArray jsmetadata;
+			for (auto item : metadata) {
+				QJsonObject data;
+				data.insert(item.first, item.second);
+				jsmetadata.append(data);
+			}
+			jcontext.insert("metadata", jsmetadata);
+		}
+		jcontext.insert("description", obj->description());
 	}
-	jcontext.insert("metadata", jsmetadata);
-	jcontext.insert("description", obj->description());
 
-	jroot.insert("physical", jphysical);
-	jroot.insert("context", jcontext);
+	jroot.insert("base", jbase);
+	if(!isSupport)
+		jroot.insert("context", jcontext);
 	
 	return true;
 
@@ -194,6 +205,14 @@ void Ilwis4Connector::flush(const IlwisObject *obj, const QJsonObject& jroot) {
 		file.close();
 	}
 }
+
+void Ilwis4Connector::storeDataDef(const DataDefinition& def, QJsonObject& jdatadef)  {
+	QJsonObject jdom;
+	Ilwis4DomainConnector::store(def.domain().ptr(), { "status", "support" }, jdom);
+	jdatadef.insert("domain", jdom);
+	jdatadef.insert("actualrange", def.range<Range>()->toString());
+}
+
 QString Ilwis4Connector::provider() const
 {
     return "Ilwis4";

@@ -1,3 +1,4 @@
+#pragma once
 /*IlwisObjects is a framework for analysis, processing and visualization of remote sensing and gis data
 Copyright (C) 2018  52n North
 
@@ -16,23 +17,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 namespace Ilwis {
-namespace Ilwis4C {
+	namespace Ilwis4C {
 
-class Ilwis4TableConnector : public Ilwis4Connector
-{
-public:
-    Ilwis4TableConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
+		class Ilwis4GeorefConnector : public Ilwis4Connector
+		{
+		public:
+			Ilwis4GeorefConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
 
-    bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
-    bool loadMetaData(IlwisObject*obj, const IOOptions & options);
-	static ConnectorInterface *create(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
-    bool loadData(IlwisObject *, const IOOptions &options = IOOptions());
-    bool storeData(IlwisObject *obj, const IOOptions &options);
-	static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+			bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
+			bool loadMetaData(IlwisObject*obj, const IOOptions & options);
+			static ConnectorInterface *create(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
+			bool loadData(IlwisObject *, const IOOptions &options = IOOptions());
+			bool storeData(IlwisObject *obj, const IOOptions &options);
+			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
 
-protected:
-
-};
+		protected:
+			
+		};
+	}
 }
-}
+
+
 

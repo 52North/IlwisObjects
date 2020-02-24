@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QNetworkAccessManager>
 
 namespace Ilwis {
+	class DataDefinition;
+
 namespace Ilwis4C {
 
 
@@ -37,7 +39,8 @@ public:
     QString format() const;
     static ConnectorInterface *create(const Resource &resource, bool load, const IOOptions &options);
 protected:
-	bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+	static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+	static void storeDataDef(const DataDefinition& def, QJsonObject& obj) ;
 	void flush(const IlwisObject *obj, const QJsonObject& jroot);
 
 private:

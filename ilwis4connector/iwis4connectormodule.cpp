@@ -39,6 +39,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobjectconnector.h"
 #include "ilwis4connector.h"
 #include "ilwis4tableconnector.h"
+#include "ilwis4domainconnector.h"
+#include "ilwis4rasterconnector.h"
+#include "ilwis4coordinatesystemconnector.h"
 #include "dataformat.h"
 #include "ilwiscontext.h"
 
@@ -60,7 +63,7 @@ QString Ilwis4ConnectorModule::getInterfaceVersion() const
 void Ilwis4ConnectorModule::prepare()
 {
 
-	Ilwis4ObjectFactory *objfactory = new Ilwis4ObjectFactory();
+	Ilwis4ObjectFactory *objfactory = new Ilwis4ObjectFactory(); 
 	objfactory->prepare();
 	kernel()->addFactory(objfactory);
 
@@ -69,9 +72,15 @@ void Ilwis4ConnectorModule::prepare()
 		return;
 
 	factory->addCreator(itTABLE, "ilwis4", Ilwis4TableConnector::create);
+	factory->addCreator(itDOMAIN, "ilwis4", Ilwis4DomainConnector::create);
+	factory->addCreator(itRASTER, "ilwis4", Ilwis4RasterConnector::create);
+	factory->addCreator(itCOORDSYSTEM, "ilwis4", Ilwis4CoordinateSystemConnector::create);
 	   
 
 	factory->addCreator("i4table", "ilwis4", Ilwis4TableConnector::create);
+	factory->addCreator("i4raster", "ilwis4", Ilwis4RasterConnector::create);
+	factory->addCreator("i4domain", "ilwis4", Ilwis4DomainConnector::create);
+	factory->addCreator("i4coordinatesystem", "ilwis4", Ilwis4CoordinateSystemConnector::create);
 
 
 	QFileInfo ilw = context()->ilwisFolder();

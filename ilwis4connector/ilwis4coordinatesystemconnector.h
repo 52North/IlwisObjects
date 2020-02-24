@@ -16,23 +16,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 namespace Ilwis {
-namespace Ilwis4C {
+	namespace Ilwis4C {
 
-class Ilwis4TableConnector : public Ilwis4Connector
-{
-public:
-    Ilwis4TableConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
+		class Ilwis4CoordinateSystemConnector : public Ilwis4Connector
+		{
+		public:
+			Ilwis4CoordinateSystemConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
 
-    bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
-    bool loadMetaData(IlwisObject*obj, const IOOptions & options);
-	static ConnectorInterface *create(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
-    bool loadData(IlwisObject *, const IOOptions &options = IOOptions());
-    bool storeData(IlwisObject *obj, const IOOptions &options);
-	static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+			bool store(IlwisObject *obj, const IOOptions& options = IOOptions());
+			bool loadMetaData(IlwisObject*obj, const IOOptions & options);
+			static ConnectorInterface *create(const Ilwis::Resource &resource, bool load, const IOOptions& options = IOOptions());
+			bool loadData(IlwisObject *, const IOOptions &options = IOOptions());
+			bool storeData(IlwisObject *obj, const IOOptions &options);
+			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
 
-protected:
+		protected:
 
-};
+		};
+	}
 }
-}
+
+
 

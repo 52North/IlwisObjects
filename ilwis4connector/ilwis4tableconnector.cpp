@@ -50,10 +50,30 @@ bool Ilwis4TableConnector::store(IlwisObject *obj, const IOOptions &options)
 	QJsonObject jroot;
     if (!Ilwis4Connector::store(obj, options, jroot))
         return false;
-    Table *tbl = static_cast<Table *>(obj);
-
+ 	QJsonObject jtable;
+	Ilwis4TableConnector::store(obj, options, jtable);
+	jroot.insert("table", jtable);
 	flush(obj, jroot);
+
     return true;
+}
+bool Ilwis4TableConnector::store(IlwisObject *obj, const IOOptions& options, QJsonObject& jtable) {
+	Table *tbl = static_cast<Table *>(obj);
+
+	jtable.insert("columns", (int)tbl->columnCount());
+	jtable.insert("rows", (int)tbl->recordCount());
+	QJsonArray defs;
+	for (int col = 0; col < tbl->columnCount(); ++col) {
+		const ColumnDefinition& coldef = tbl->columndefinitionRef(col);
+		QJsonObject jcolumnDef;
+		jcolumnDef.insert("name", coldef.name());
+		QJsonObject jdatadef;
+		storeDataDef(coldef.datadef(), jdatadef);
+		jcolumnDef.insert("datadefinition", jdatadef);
+		defs.append(jcolumnDef);
+	}
+	jtable.insert("datadefinitions", defs);
+	return true;
 }
 
 bool Ilwis4TableConnector::storeData(IlwisObject *obj, const IOOptions &options ){
