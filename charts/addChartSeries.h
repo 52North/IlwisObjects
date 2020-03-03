@@ -34,7 +34,7 @@ namespace Ilwis {
 		private:
 			QString _name = sUNDEF;
 			QString _columnX = sUNDEF;
-			QString _columnY = sUNDEF;
+			std::vector<QString> _columnYs;
             ITable _inputTable;
 			QVariantMap _extras;
 

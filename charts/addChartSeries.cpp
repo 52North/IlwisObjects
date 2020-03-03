@@ -63,13 +63,18 @@ Ilwis::OperationImplementation::State AddChartSeries::prepare(ExecutionContext *
 		{ ERR_ILLEGALE_OPERATION2, _expression.input<QString>(2), "chart" }
 	);
 
-	QString col = _expression.input<QString>(3);
-	if (col.indexOf("-") == 0) // columns that use right side axis use '-' as prefix
-		col = col.mid(1);
-	OperationHelper::check(
-		[&]()->bool { return _chartmodel->isValidSeries(_inputTable,col); },
-		{ ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
-	);
+	QString cols = _expression.input<QString>(3);
+	auto columns = cols.split("|");
+	for (int i = 0; i < columns.size(); ++i) {
+		QString col = columns[i];
+		if (col.indexOf("-") == 0) // columns that use right side axis use '-' as prefix
+			col = col.mid(1);
+		OperationHelper::check(
+			[&]()->bool { return _chartmodel->isValidSeries(_inputTable, col); },
+			{ ERR_ILLEGALE_OPERATION2, _expression.input<QString>(3), "chart" }
+		);
+		_columnYs.push_back(columns[i]);
+	}
 
 	QStringList ex = _expression.input<QString>(4).split("|");
 	for (auto kvp : ex) {
@@ -79,7 +84,6 @@ Ilwis::OperationImplementation::State AddChartSeries::prepare(ExecutionContext *
 		}
 	}
 	_columnX = _expression.input<QString>(2);
-	_columnY = _expression.input<QString>(3);
 
 	return sPREPARED;
 } 
@@ -94,7 +98,9 @@ bool AddChartSeries::execute(ExecutionContext *ctx, SymbolTable &symTable)
 		QColor clr = _chartmodel->newColor();
 		_extras["color"] = clr;
 	}
-	_chartmodel->insertDataSeries(_inputTable, _chartmodel->seriesCount(), _columnX, _columnY, sUNDEF, _extras); 
+	for(auto colName : _columnYs)
+		_chartmodel->insertDataSeries(_inputTable, _chartmodel->seriesCount(), _columnX, colName, sUNDEF, _extras); 
+
 	_chartmodel->fillTableData();
 	_chartmodel->updateSeriesChanged();
 
