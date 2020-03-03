@@ -49,7 +49,7 @@ bool HistogramStretchTool::canUse(ChartModel *model, const QVariantMap &paramete
 		if (parameter["dataseries"].toBool()) {  
 			if (parameter.contains("specialtype")) {
 				QString attr = parameter["attribute"].toString();
-				bool ok = attr.indexOf("histogram") == 0 && attr.size() < 12;     
+				bool ok = attr.indexOf("histogram") == 0 && attr.size() < 12;
 				return parameter["specialtype"] == "histogram" && ok;    
 			}
 		}
@@ -121,6 +121,9 @@ void  HistogramStretchTool::stretchHistogram(bool isLower, double origValue, dou
 		_mapping[idx].first = origValue;
 		_mapping[idx].second = newValue; 
 		for (auto& pnt : newPoints) { 
+			if (pnt.x() > 0.0) {
+				qDebug() << "stop";
+			}
 			pnt.setX(ContinuousColorLookup::value2Color4BoundsMapping(pnt.x(), _actualRange, _mapping));
 		}
 		dm->points(newPoints);   

@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/ 
+along with this program.  If not, see <http://www.gnu.org/licenses/>.*/  
 
 #include "kernel.h"  
 #include "ilwisdata.h" 
@@ -45,7 +45,7 @@ bool HistogramShift::canUse(ChartModel *model, const QVariantMap &parameter) con
 		if (parameter["dataseries"].toBool()) { 
 			if (parameter.contains("specialtype")) { 
 				QString attr = parameter["attribute"].toString();
-				bool ok = attr.indexOf("histogram") == 0 && attr.size() < 12;  
+				bool ok = attr.indexOf("histogram") == 0 && attr.size() < 12;
 				return parameter["specialtype"] == "histogram" && ok;  
 			}
 		}
@@ -113,5 +113,6 @@ void HistogramShift::shiftValues(double shift) {
 		dm->points(newPoints);
 	}
 }
+
 
 

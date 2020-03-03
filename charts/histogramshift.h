@@ -37,6 +37,7 @@ namespace Ilwis {
 			Q_PROPERTY(double maxValue READ maxValue NOTIFY maxValueChanged)
 			Q_PROPERTY(bool isActive READ isActive NOTIFY isActiveChanged)
 
+
 			bool canUse(ChartModel *model, const QVariantMap &parameter) const;
 
 			Q_INVOKABLE void execute(const QVariantMap &parameters);
@@ -58,6 +59,7 @@ namespace Ilwis {
 			double maxValue() const;
 			bool isActive() const;
 			QVector<QPointF> _basePoints; //  the points before we had any shift
+
 
 		};
 
