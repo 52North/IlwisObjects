@@ -198,7 +198,7 @@ double DataseriesModel::resolutionX()
     if (_xaxis != sUNDEF) {
 		if ( _xres == iUNDEF)
 			return tickResolution(_dataDefinitions[0]);
-		return _xres;
+		return std::pow(10,-_xres);
 
     }
     return 0;
@@ -209,7 +209,7 @@ double DataseriesModel::resolutionY()
     if (_yaxis != sUNDEF) {
 		if ( _yres == iUNDEF)
 			return tickResolution(_dataDefinitions[1]);
-		return _yres;
+		return std::pow(10, -_yres);
 
     }
     return 0;
@@ -268,6 +268,17 @@ ChartOperationEditor * DataseriesModel::operation(quint32 index)
         return _operations[index];
 
     return nullptr;
+}
+
+ChartOperationEditor* DataseriesModel::operation(const QString& operationName) const{
+	if (_operations.size() == 0) {
+		const_cast<DataseriesModel *>(this)->fillOperations();
+	}
+	for (auto *op : _operations) {
+		if (op->name() == operationName)
+			return op;
+	}
+	return 0;
 }
 
 QColor DataseriesModel::color() const {

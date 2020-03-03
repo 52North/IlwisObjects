@@ -100,7 +100,8 @@ namespace  Ilwis {
             DataDefinition datadefinition(ChartModel::Axis axis) const;
 
             QQmlListProperty<ChartOperationEditor> operations();
-            Q_INVOKABLE ChartOperationEditor* operation(quint32 index);
+            Q_INVOKABLE ChartOperationEditor* operation(quint32 index) ;
+			ChartOperationEditor* operation(const QString& operationName) const;
             Q_INVOKABLE QVariantMap categories(QString axis, bool unique);
 			Q_INVOKABLE void setData(QtCharts::QAbstractSeries * series);
 
