@@ -35,7 +35,7 @@ Column {
 		onClicked : {
 			var mid = editor.visualAttribute.layer.modelId()
 			var createInfo
-			var ydata = 'histogram|-histogram_cumulative' 
+			var ydata = editor.isColorComposite ? 'histogram_red|histogram_green|histogram_blue' : 'histogram|-histogram_cumulative' 
 
 			if ( editor.chartModelId == 10000000){
 				if ( editor.useAOI) {
@@ -49,7 +49,11 @@ Column {
 						}
 					}
 				}
-				createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : 'min', yaxis : ydata, zaxis : '', extraparameters : 'resx=2|resy=2|specialtype=histogram|linkedid=' + mid }
+				var xc = editor.isColorComposite ? 'min_red' : 'min'
+				var extras = 'resx=2|resy=2|specialtype=histogram|linkedid=' + mid;
+				if ( useAOI.checked)
+					extras += '|aoi=true'
+				createInfo = {type : "chart", url : editor.tableUrl, ctype : 'line', name : editor.editorName , xaxis : xc, yaxis : ydata, zaxis : '', extraparameters : extras }
 				modelid = objectcreator.createObject(createInfo)
 				editor.chartModelId = modelid
 				var filter = "itemid=" + modelid
