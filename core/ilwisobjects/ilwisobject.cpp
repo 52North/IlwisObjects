@@ -90,6 +90,7 @@ void IlwisObject::connectTo(const QUrl& outurl, const QString& format, const QSt
         res = Resource(url,ilwisType(), false);
         res.setId(id());
     }
+	bool updatedb = cmode != IlwisObject::cmOUTPUT; // we dont update the database for outpur redirection as the original object remains the same; a scan should take care of adding new objects
     if ( url != QUrl()) {
         QString currenturl = res.url().toString();
         // we dont replace the normalized urls for internal objects if the url is pointing to the (disk based) cache
@@ -98,12 +99,12 @@ void IlwisObject::connectTo(const QUrl& outurl, const QString& format, const QSt
 
         }
         if ( url.scheme() != "ilwis") // raw urls can never go to an ilwis scheme
-            res.setUrl(url,true);
+            res.setUrl(url,true, updatedb);
         else {
             // if we are going to the internalcatalog ensure that the physical path is good
             if ( url.toString().indexOf(INTERNAL_CATALOG) == 0){
                 QString rawUrl = context()->persistentInternalCatalog().toString() + "/" + res.name();
-                res.setUrl(rawUrl, true);
+                res.setUrl(rawUrl, true,updatedb);
             }
         }
 
