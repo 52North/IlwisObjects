@@ -443,6 +443,15 @@ void RasterLayerModel::refreshStretch() {
 	_stretch["offset_g"] = offset;
 	_stretch["scale_b"] = scale;
 	_stretch["offset_b"] = offset;
+	_stretch["limitmin_r"] = UNDEFSHADERLIMIT;
+	_stretch["limitmin_g"] = UNDEFSHADERLIMIT;
+	_stretch["limitmin_b"] = UNDEFSHADERLIMIT;
+	_stretch["limitmax_r"] = UNDEFSHADERLIMIT;
+	_stretch["limitmax_g"] = UNDEFSHADERLIMIT;
+	_stretch["limitmax_b"] = UNDEFSHADERLIMIT;
+	_stretch["select_r"] = 0;
+	_stretch["select_g"] = 0;
+	_stretch["select_b"] = 0;
 }
 
 QVariantMap RasterLayerModel::stretch() {
@@ -816,7 +825,7 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 				double rmin, rmax;
 				auto nrng = _currentStretchRange; //_raster->datadef().range()->as<NumericRange>();
 				double dist = nrng.distance();
-				double margin = 2* 1.0 / dist;
+				double margin = 0.01;
 				value = (value - nrng.min()) / dist; // relative value
 				if (selectionMode == "at") {
 					rmin = max(0.0, value - margin);
@@ -910,4 +919,17 @@ void RasterLayerModel::linkAcceptMessage(const QVariantMap& parameters) {
 bool RasterLayerModel::supportsLinkType(const QString& type) const
 {
 	return  type.toLower() == "histogram";
+}
+
+QVariant RasterLayerModel::coord2value(const Coordinate &c, const QString &attrname) const {
+	if (_raster.isValid()) {
+		QVariant v =  _raster->coord2value(c, attrname);
+		if (v.toMap().isEmpty()) {
+			QVariantMap data;
+			data[attrname] = v;
+			return data;
+		}
+		return v;
+	}
+	return QVariant();
 }

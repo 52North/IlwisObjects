@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
 class RasterCoverage;
 typedef IlwisData<RasterCoverage> IRasterCoverage;
+const float UNDEFSHADERLIMIT = 9999999.0;
 
 namespace Ui {
 
@@ -85,6 +86,7 @@ public:
 	Q_INVOKABLE bool canUse(quint64 id) override;
 	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
 	const Ilwis::Ui::VisualAttribute *activeAttribute() const;
+	QVariant coord2value(const Coordinate &c, const QString &attrname) const override; 
 
 protected:
     void DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY);
