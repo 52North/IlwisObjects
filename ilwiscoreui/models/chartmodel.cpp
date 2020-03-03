@@ -591,7 +591,7 @@ quint32 ChartModel::insertDataSeries(const ITable& inputTable, quint32 index, co
 
     if (_series.size() == 0) {
         _xaxisType = ChartModel::AxisType(newseries->xAxisType());
-    }
+	}
 
 	if ( newseries->charttype() ==  sUNDEF)
 		newseries->setType(_chartType);

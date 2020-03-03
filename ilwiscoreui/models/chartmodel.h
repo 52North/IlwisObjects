@@ -230,7 +230,7 @@ namespace Ilwis {
             QList<ChartOperationEditor *> _operations;
 			QObject *_chartView;
 
-            std::vector<QString> _graphColors = { "red", "blue","green","magneta","orange","darkblue","sienna","yellowgreen", "darkslateblue","orangered", "limegreen","Indigo","goldenrod",
+            std::vector<QString> _graphColors = { "red", "green", "blue","magneta","orange","darkblue","sienna","yellowgreen", "darkslateblue","orangered", "limegreen","Indigo","goldenrod",
             "dimgray","crimson","chocolate","cyan", "mediumslateblue","orchid","seagreen","darkorchid","teal" };
         };
     }
