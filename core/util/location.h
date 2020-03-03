@@ -119,6 +119,12 @@ public:
         return isValid() && (z != undefined());
     }
 
+	QString toString() const {
+		if (z == undefined())
+			return QString("%1 %2").arg(x).arg(y);
+		return QString("%1 %2").arg(x).arg(y).arg(z);
+	}
+
     operator std::vector<CrdType> () {
         std::vector<CrdType> v {this->x, this->y, this->z};
         return v;
