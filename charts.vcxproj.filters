@@ -59,6 +59,12 @@
     <None Include="charts\qml\SliderRow.qml">
       <Filter>qml\PropertForms</Filter>
     </None>
+    <None Include="charts\qml\HistogramSelectionCC.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
+    <None Include="charts\qml\HistogramSelectionSingle.qml">
+      <Filter>qml\PropertForms</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -166,6 +172,9 @@
     <ClCompile Include="charts\histogramstretchtool.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
+    <ClCompile Include="charts\histogramselectioncc.cpp">
+      <Filter>Source Files\PropertyForms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="charts\ilwischarts_plugin.h">
@@ -202,6 +211,9 @@
       <Filter>Header Files\PropertyForms</Filter>
     </QtMoc>
     <QtMoc Include="charts\histogramstretchtool.h">
+      <Filter>Header Files\PropertyForms</Filter>
+    </QtMoc>
+    <QtMoc Include="charts\histogramselectioncc.h">
       <Filter>Header Files\PropertyForms</Filter>
     </QtMoc>
   </ItemGroup>
