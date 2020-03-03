@@ -42,7 +42,7 @@ Row {
 	Text {
 		width : 30
 		height : Global.rowHeight
-		text : minV
+		text : minV.toFixed(2)
 		anchors.verticalCenter: parent.verticalCenter
 	}
 	QC2.Slider {
@@ -63,8 +63,8 @@ Row {
 			border.color: Global.edgecolor
 			Text {
 				anchors.centerIn : parent
-				text : control1.value.toFixed(0)
-				font.pointSize : 8
+				text : control1.value.toFixed(2)
+				font.pointSize : 6
 			}
 		
 		}
@@ -82,7 +82,7 @@ Row {
 	Text {
 		width : 30
 		height : Global.rowHeight
-		text : maxV
+		text : maxV.toFixed(2)
 		anchors.verticalCenter: parent.verticalCenter
 	}
 }
