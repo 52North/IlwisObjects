@@ -100,6 +100,7 @@ public:
     Q_INVOKABLE quint32 modelId() const;
 	Q_INVOKABLE virtual bool canUse(quint64 id) ;
 	Q_INVOKABLE virtual Ilwis::Ui::VisualAttribute *activeAttribute();
+	virtual QVariant coord2value(const Coordinate &c, const QString &attrname) const;
 
 	Q_INVOKABLE virtual void redraw() const;
 

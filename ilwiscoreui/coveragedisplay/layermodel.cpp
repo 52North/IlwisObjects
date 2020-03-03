@@ -648,3 +648,7 @@ void LayerModel::renderReady(bool yesno) {
 bool LayerModel::canUse(quint64 id)  {
 	return false;
 }
+
+QVariant LayerModel::coord2value(const Coordinate &c, const QString &attrname) const {
+	return QVariant();
+}
