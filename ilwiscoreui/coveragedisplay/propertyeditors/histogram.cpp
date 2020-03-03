@@ -214,26 +214,79 @@ void Histogram::collectData() {
 
 QString Histogram::tableUrlPrivate()  
 {
-	if (_histogramData.isValid()) {
-		if ( _polygons.size() == 0 && !_useAOI)
-			return  _histogramData->resource().url().toString();
-		else {
-			if (_useAOI) {
-				collectData();
-				return _histogramData->resource().url().toString();
+	if (!_histogramData.isValid()) {
+		if (_raster.isValid()) {
+			auto *layer = vpmodel()->layer();
+			QVariant ccIds = layer->vproperty("colorcompositerasters");
+			if (ccIds.isValid()) {
+				QStringList ids = ccIds.toString().split("|");
+				std::vector<std::vector<NumericStatistics::HistogramBin>> hist(3);
+				getBins(ids, hist);
+				_histogramData = makeCCTable(hist);
 			}
+			else
+				_histogramData = _raster->histogramAsTable(PIXELVALUE);
+		}
+	}
+	if ( _polygons.size() == 0 && !_useAOI)
+			return  _histogramData->resource().url().toString();
+	else {
+		if (_useAOI) {
+			collectData();
+			return _histogramData->resource().url().toString();
 		}
 	}
 	return QString();
+}
+
+void Histogram::getBins(const QStringList& ids, std::vector<std::vector<NumericStatistics::HistogramBin>>& hist) const{
+	for (int i = 0; i < hist.size(); ++i) {
+		quint64 id = ids[i].toULongLong();
+		IRasterCoverage rasterBand;
+		if (rasterBand.prepare(id)) {
+			if (rasterBand->histogramCalculated(PIXELVALUE))
+				hist[i] = rasterBand->statistics(PIXELVALUE).histogram();
+			else {
+				hist[i] = rasterBand->statistics(PIXELVALUE, ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM, 0).histogram();
+			}
+		}
+	}
+}
+
+ITable Histogram::makeCCTable(const std::vector<std::vector<NumericStatistics::HistogramBin>>& bins) const{
+
+	auto fillCell = [&](const std::vector<NumericStatistics::HistogramBin>& bbin, int i, int columnIndex, ITable& tbl)->void {
+		if (i < bbin.size()) {
+			auto&  h = bbin[i];
+			tbl->setCell(columnIndex, i, h._limit);
+			tbl->setCell(columnIndex + 1, i, h._count);
+		}
+	};
+	ITable histogram;
+
+	histogram.prepare();
+	histogram->addColumn("min_red", IDomain("value"), true);
+	histogram->addColumn("histogram_red", IDomain("count"));
+	histogram->addColumn("min_green", IDomain("value"), true);
+	histogram->addColumn("histogram_green", IDomain("count"));
+	histogram->addColumn("min_blue", IDomain("value"), true);
+	histogram->addColumn("histogram_blue", IDomain("count"));
+
+	for (int i = 0; i < bins[0].size() - 1; ++i) {
+		fillCell(bins[0], i, 0, histogram);
+		fillCell(bins[1], i, 2, histogram);
+		fillCell(bins[2], i, 4, histogram);
+	}
+
+	return histogram;
+
 }
 
 void Histogram::prepare(const Ilwis::IIlwisObject& bj, const DataDefinition &datadef) {
 	auto *layer = vpmodel()->layer();
 	auto *clayer = layer->as<CoverageLayerModel>();
 	IRasterCoverage raster = clayer->coverage().as<RasterCoverage>();
-	if (raster.isValid()) {
-		_histogramData = raster->histogramAsTable(PIXELVALUE);
-	}
+
 	_raster = raster;
 	auto *lm = vpmodel()->layer()->layerManager();
 	QString path = context()->ilwisFolder().absoluteFilePath();
@@ -330,6 +383,25 @@ void Histogram::deleteAllAOIs() {
 void Histogram::useAOI(bool yesno) {
 	_useAOI = yesno;
 	deleteAllAOIs();
+	if (_useAOI == false) {
+		if (_raster.isValid()) {
+			auto modelPair = modelregistry()->getModel(_chartModelId);
+			if (modelPair.first == "chart") {
+				ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
+				if (chart) {
+					_histogramData = _raster->histogramAsTable(PIXELVALUE);
+					QString colName = "histogram|-histogram_cumulative" ;
+					QString updateChart = QString("addchartdata(%1,%2,\"min\",%3,%4)").arg(_chartModelId).arg(_histogramData->resource().url(true).toString()).arg(colName).arg("\"specialtype=histogram|resx=2|resy=2\"");
+					ExecutionContext ctx;
+					SymbolTable symtable;
+					commandhandler()->execute(updateChart, &ctx, symtable);
+						//QVariantMap parms;
+						//parms["raster"] = _raster->id(); 
+						//chart->updateEditors(parms);
+				}
+			}
+		}
+	}
 }
 
 bool Histogram::useAOI() const {
@@ -380,8 +452,15 @@ void Histogram::updateChart(int mx, int my) {
 			ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
 			if (chart) {
 				Coordinate crd = vpmodel()->layer()->layerManager()->rootLayer()->screenGrf()->pixel2Coord(Pixel(mx, my));
-				QVariantMap values = _raster->coord2value(crd).toMap();
-				PIXVALUETYPE v = values[PIXELVALUE].toDouble();
+				QVariantMap values = vpmodel()->layer()->coord2value(crd, PIXELVALUE).toMap();
+				QString v;
+				if (values.size() == 1) {
+					v = values.first().value<double>();
+				}
+				else if ( values.size() == 3){
+					v = values["red"].toString() + "|" + values["green"].toString() + "|" + values["blue"].toString();
+				}
+
 				QVariantMap parms;
 				parms["editor"] = "histogramselection";
 				parms["x"] = mx;
@@ -401,12 +480,20 @@ void Histogram::updateAOIs() {
 			ChartModel *chart = dynamic_cast<ChartModel *>(modelPair.second);
 			if (chart) {
 				collectData();
+				chart->deleteSerie("histogram");
+				chart->deleteSerie("histogram_cumulative");
+				chart->setMaxYLeft(rUNDEF); // forces to reset the min/max
+				chart->setMaxYRight(rUNDEF);
 				for (int i = 4; i < _histogramData->columnCount(); ++i) {
 					QString colName = _histogramData->columndefinitionRef(i).name();
 					chart->deleteSerie(colName);
 					if (colName.indexOf("cumulative") != -1)
 						colName = "-" + colName;
-					QString updateChart = QString("addchartdata(%1,%2,\"min\",%3,%4)").arg(_chartModelId).arg(_histogramData->resource().url(true).toString()).arg(colName).arg("\"specialtype=histogram|resx=2|resy=2\"");
+					QString updateChart = QString("addchartdata(%1,%2,\"min\",%3,%4").arg(_chartModelId).arg(_histogramData->resource().url(true).toString()).arg(colName).arg("\"specialtype=histogram|resx=2|resy=2");;
+					if ( _useAOI) 
+						updateChart += "|aoi=true";
+
+					updateChart += "\")";
 					ExecutionContext ctx;
 					SymbolTable symtable;
 					commandhandler()->execute(updateChart, &ctx, symtable);
@@ -427,3 +514,11 @@ void Histogram::editState(bool yesno) {
 	emit editStateChanged();
 }
 
+bool Histogram::isColorComposite() const {
+	auto *layer = vpmodel()->layer();
+	if (layer) {
+		QVariant v = layer->vproperty("colorcompositerasters");
+		return v.isValid();
+	}
+	return false;
+}

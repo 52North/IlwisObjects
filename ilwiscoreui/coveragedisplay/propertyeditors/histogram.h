@@ -40,6 +40,7 @@ namespace Ilwis {
 			Q_PROPERTY(bool aggregateAOIs READ aggregateAOIs WRITE aggregateAOIs NOTIFY aggregateAOIsChanged)
 			Q_PROPERTY(quint32 chartModelId READ chartModelId WRITE chartModelId NOTIFY chartModelIdChanged)
 			Q_PROPERTY(bool editState READ editState WRITE editState NOTIFY editStateChanged)
+			Q_PROPERTY(bool isColorComposite READ isColorComposite NOTIFY isColorCompositeChanged)
 			
 
 			Q_INVOKABLE void addPoint(int x, int y);
@@ -63,6 +64,7 @@ namespace Ilwis {
 			void aggregateAOIsChanged();
 			void chartModelIdChanged();
 			void editStateChanged();
+			void isColorCompositeChanged();
 	
 		private:
 			ITable _histogramData;
@@ -78,6 +80,8 @@ namespace Ilwis {
 			void deleteColumns(int index);
 			std::vector<NumericStatistics::HistogramBin> initializeBins() const;
 			void updateRanges(int columnStart, const NumericRange& rgnCounts, const NumericRange& rngCumulatives);
+			void getBins(const QStringList& ids, std::vector<std::vector<NumericStatistics::HistogramBin>>& hist) const;
+			ITable makeCCTable(const std::vector<std::vector<NumericStatistics::HistogramBin>>& bins) const;
 
 			bool aggregateAOIs() const;
 			void aggregateAOIs(bool yesno);
@@ -88,6 +92,7 @@ namespace Ilwis {
 			void collectData();
 			bool editState() const;
 			void editState(bool yesno);
+			bool isColorComposite() const;
 
 			std::vector<std::vector<Coordinate>> _polygons;
 			IRasterCoverage _raster;
