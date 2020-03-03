@@ -304,6 +304,7 @@
     <None Include="desktopclient\qml\datapanel\catalog\QuickProps.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\SelectedSpatialItems.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\SetKeyWords.qml" />
+    <None Include="desktopclient\qml\datapanel\catalog\SpatialAnimation.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\ThumbImage.qml" />
     <None Include="desktopclient\qml\datapanel\catalog\ToolBarButton.qml" />
     <None Include="desktopclient\qml\datapanel\DataPane.qml" />

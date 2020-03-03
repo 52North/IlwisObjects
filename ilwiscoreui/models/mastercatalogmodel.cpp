@@ -61,6 +61,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "menumodel.h"
 #include "colorcompositecreation.h"
 #include "setkeywords.h"
+#include "spatial_animation.h"
 #include "mastercatalogmodel.h"
 
 using namespace Ilwis;
@@ -1040,6 +1041,7 @@ void MasterCatalogModel::prepare()
 	_catalogOperations.registerCatalogOperation("exportdata", ExportData::create);
 	_catalogOperations.registerCatalogOperation("colorcompositecreation", ColorCompositeCreation::create);
 	_catalogOperations.registerCatalogOperation("setkeywords", SetKeywords::create);
+	_catalogOperations.registerCatalogOperation("spatialanimation", SpatialAnimation::create);
 
     _bookmarks.push_back(addBookmark(TR("Temporary Catalog"),TR("Temporary"),
                INTERNAL_CATALOG_URL,

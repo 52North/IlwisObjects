@@ -1358,6 +1358,9 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PostDrawerDrawPolygons.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\catalog\SpatialAnimation.qml">
+      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

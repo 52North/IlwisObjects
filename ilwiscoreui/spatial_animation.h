@@ -14,9 +14,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-#ifndef BUILDNR_H
-#define BUILDNR_H
-#define ILWIS_BUILDNR 20200219900
-#define ILWIS_VERSION_TYPE "Alpha"
-#define ILWIS_VERSION_NUMBER 28
-#endif
+#pragma once
+
+#include "kernel.h"
+#include "ilwisdata.h"
+#include "factory.h"
+#include "abstractfactory.h"
+#include "catalogoperationfactory.h"
+#include "catalogoperationeditor.h"
+
+namespace Ilwis {
+	namespace Ui {
+
+		class SpatialAnimation : public CatalogOperationEditor
+		{
+			Q_OBJECT
+		public:
+			SpatialAnimation();
+
+			bool canUse(const std::vector<ResourceModel *>& resosurces);
+			Q_INVOKABLE QVariant execute(const QVariantMap& parameters);
+			static Ilwis::Ui::CatalogOperationEditor *create() { return new SpatialAnimation(); }
+
+		private:
+
+		};
+
+	}
+}
+
+#pragma once
+

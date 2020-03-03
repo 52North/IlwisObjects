@@ -16,12 +16,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
  
 #include "kernel.h"                                
 #include "mastercatalog.h"    
-#include "models/resourcemodel.h"                                        
+#include "models/resourcemodel.h"                                          
 #include "operationmetadata.h"         
 #include "dataformat.h"                  
 #include "uicontextmodel.h" 
 #include "mastercatalogmodel.h"   
-#include "applicationformexpressionparser.h"                                                                                                                                                   
+#include "applicationformexpressionparser.h"                                                                                                                                                    
  
  
 using namespace Ilwis;                                                                                     
