@@ -60,15 +60,9 @@ ColorCompositeLayerModel::ColorCompositeLayerModel(LayerManager *manager, QStand
 				 _ccBands.push_back(raster);
 			 }
 		}
-		/*for (int i = ccBands; i < 3; ++i) { // fill up to 3 bands in case we got less
-			_ccBands.push_back(0);
-		}*/
 	}
-	else {
-		/*for (int i = 0; i < 3; ++i) {
-			_ccBands.push_back(3 - i); // TODO: this is a temporary default for Sentinel
-		}*/
-	}
+	_limitMax.resize(3, UNDEFSHADERLIMIT);
+	_limitMin.resize(3, UNDEFSHADERLIMIT);
 }
 
 IGeoReference ColorCompositeLayerModel::georeference() const {
@@ -85,7 +79,22 @@ LayerModel *ColorCompositeLayerModel::create(LayerManager *manager, QStandardIte
 
 
 QVariant ColorCompositeLayerModel::vproperty(const QString& pName) const {
-	return RasterLayerModel::vproperty(pName);
+	QVariant var =  RasterLayerModel::vproperty(pName);
+	if (!var.isValid()) {
+		if (pName == "colorcompositerasters") {
+			if (_ccBands.size() == 3) {
+				QString bandids;
+				for (auto raster : _ccBands) {
+					if (bandids != "") {
+						bandids += "|";
+					}
+					bandids += QString::number( raster->id());
+				}
+				var = bandids;
+			}
+		}
+	}
+	return var;
 }
 
 void ColorCompositeLayerModel::vproperty(const QString& pName, const QVariant& value) {
@@ -328,8 +337,87 @@ void ColorCompositeLayerModel::refreshStretch() {
 
 	_stretch["scale_r"] = scale_r;
 	_stretch["offset_r"] = offset_r;
+	_stretch["limitmax_r"] = _limitMax[0];
+	_stretch["limitmin_r"] = _limitMin[0];
+	_stretch["select_r"] = _selectColor.redF();
 	_stretch["scale_g"] = scale_g;
 	_stretch["offset_g"] = offset_g;
+	_stretch["limitmax_g"] = _limitMax[1];
+	_stretch["limitmin_g"] = _limitMin[1];
+	_stretch["select_g"] = _selectColor.greenF();
 	_stretch["scale_b"] = scale_b;
 	_stretch["offset_b"] = offset_b;
+	_stretch["limitmax_b"] = _limitMax[2];
+	_stretch["limitmin_b"] = _limitMin[2];
+	_stretch["select_b"] = _selectColor.blueF();
+}
+
+void ColorCompositeLayerModel::calcMinMaxSelection(double value, const SPNumericRange& nrng, double& rmin, double& rmax) const {
+	if (value == UNDEFSHADERLIMIT) {
+		rmin = UNDEFSHADERLIMIT;
+		rmax = UNDEFSHADERLIMIT;
+		return;
+	}
+	double dist = nrng->distance();
+	double margin = 0.01;
+	rmin = std::max(0.0, value - dist * margin);
+	rmax = std::min(1.0, value + dist * margin);
+}
+void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) {  
+	if (parameters.contains("attribute")) {
+		VisualAttribute *attr = visualAttribute(parameters["attribute"].toString());  
+		if (attr) {
+			auto rpr = attr->representation();
+			QString  clrString = parameters["color"].toString();
+			QColor clr(clrString);
+
+			QString selectionMode = parameters["selectionmode"].toString();
+			if (selectionMode == "none") {
+			}
+			else if (parameters["type"] == "histogramselectioncc") {
+				if (parameters.contains("resetstretch")) {
+
+					_currentStretchRanges[0] = *(_ccBands[0]->datadef().range<NumericRange>());
+					VisualAttribute * attr = layer(0)->activeAttribute();
+					attr->stretchRange(_currentStretchRanges[0]);
+					_currentStretchRanges[1] = *(_ccBands[1]->datadef().range<NumericRange>());
+					attr = layer(1)->activeAttribute();
+					attr->stretchRange(_currentStretchRanges[1]);
+					_currentStretchRanges[2] = *(_ccBands[2]->datadef().range<NumericRange>());
+					attr = layer(2)->activeAttribute();
+					attr->stretchRange(_currentStretchRanges[2]);
+					_texturesNeedUpdate = true;
+					layerManager()->needUpdate(true);
+				} else {
+					QStringList parts = parameters["x"].toString().split("|");
+					if (parts.size() == 3) {
+
+						calcMinMaxSelection(parts[0].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), _limitMin[0], _limitMax[0]);
+						calcMinMaxSelection(parts[1].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), _limitMin[1], _limitMax[1]);
+						calcMinMaxSelection(parts[2].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), _limitMin[2], _limitMax[2]);
+
+					}
+				}
+				prepare(LayerModel::ptRENDER);
+			}
+		}
+	}
+}
+
+QVariant ColorCompositeLayerModel::coord2value(const Coordinate &c, const QString &attrname) const {
+	if (_raster.isValid()) {
+		QVariantMap bandValues;
+		if (_ccBands[0].isValid()) {
+			bandValues["red"] = _ccBands[0]->coord2value(c, attrname);
+		}
+		if (_ccBands[1].isValid()) {
+			bandValues["green"] = _ccBands[1]->coord2value(c, attrname);
+		}
+		if (_ccBands[2].isValid()) {
+			bandValues["blue"] = _ccBands[2]->coord2value(c, attrname);
+		}
+		return bandValues;
+	}
+		
+	return QVariant();
 }

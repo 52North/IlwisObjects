@@ -44,6 +44,8 @@ namespace Ilwis {
 			void setActiveAttribute(int idx);
 			void fillAttributes();
 			IGeoReference georeference() const;
+			void linkAcceptMessage(const QVariantMap& parameters) override;
+			QVariant coord2value(const Coordinate &c, const QString &attrname) const override;
 
 			static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 		protected:
@@ -54,6 +56,11 @@ namespace Ilwis {
 			bool usesColorData() const;
 			std::vector<IRasterCoverage> _ccBands;
 			std::vector<NumericRange> _currentStretchRanges;
+			std::vector <double> _limitMax;
+			std::vector<double> _limitMin;
+			QColor _selectColor;
+
+			void calcMinMaxSelection(double value, const SPNumericRange& nrng, double& rmin, double& rmax) const;
 
 			NEW_LAYERMODEL(ColorCompositeLayerModel);
 		};
