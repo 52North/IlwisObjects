@@ -34,11 +34,11 @@ using namespace Ui;
 
 REGISTER_CHARTPROPERTYEDITOR("histogramselection", HistogramSelection)     
 
-HistogramSelection::HistogramSelection() : ChartOperationEditor("histogramselection", TR("Histogram Selection"), QUrl("HistogramSelection.qml"), TR("Interactive setting selections in the histogram and seeing results in the corresponding raster"))
+HistogramSelection::HistogramSelection() : ChartOperationEditor("histogramselection", TR("Histogram Selection"), QUrl("HistogramSelectionSingle.qml"), TR("Interactive setting selections in the histogram and seeing results in the corresponding raster"))
 {
 }
 
-bool HistogramSelection::canUse(ChartModel *model, const QVariantMap &parameter) const         
+bool HistogramSelection::canUse(ChartModel *model, const QVariantMap &parameter) const          
 {
 	if (!parameter.empty())
 		if (parameter["dataseries"].toBool()) { 
