@@ -135,7 +135,7 @@ Item {
 					    GL.THREE.UnsignedByteType,
 					    GL.THREE.UVMapping);
 				    tTexture.needsUpdate = true;
-				    var uniforms = {
+				  var uniforms = {
                         alpha: { type: "f", value: layer.vproperty("opacity") },
                         stretchscale_r: { type: "f", value: layer.stretch.scale_r },
                         stretchoffset_r: { type: "f", value: layer.stretch.offset_r },
@@ -143,6 +143,15 @@ Item {
                         stretchoffset_g: { type: "f", value: layer.stretch.offset_g },
                         stretchscale_b: { type: "f", value: layer.stretch.scale_b },
                         stretchoffset_b: { type: "f", value: layer.stretch.offset_b },
+						limitmax_r : { type: "f", value: layer.stretch.limitmax_r},
+						limitmin_r : { type: "f", value: layer.stretch.limitmin_r},
+						limitmax_g : { type: "f", value: layer.stretch.limitmax_g},
+						limitmin_g : { type: "f", value: layer.stretch.limitmin_g},
+						limitmax_b : { type: "f", value: layer.stretch.limitmax_b},
+						limitmin_b : { type: "f", value: layer.stretch.limitmin_b},
+						select_r : { type: "f", value: layer.stretch.select_r},
+						select_g : { type: "f", value: layer.stretch.select_g},
+						select_b : { type: "f", value: layer.stretch.select_b},
                         texture1: { type: "t", value: tTexture },
                         uvst1: { type: "v4", value: new GL.THREE.Vector4(texture.uvmap.s, texture.uvmap.t, texture.uvmap.sscale, texture.uvmap.tscale)},
 				    };
@@ -394,12 +403,22 @@ Item {
 			        for(var i=0; i < meshes.children.length; ++i) {
 			            var mesh = meshes.children[i];
 			            if ( mesh){
-			                mesh.material.uniforms.stretchscale_r.value = layer.stretch.scale_r;
+							mesh.material.uniforms.stretchscale_r.value = layer.stretch.scale_r;
 			                mesh.material.uniforms.stretchoffset_r.value = layer.stretch.offset_r;
 			                mesh.material.uniforms.stretchscale_g.value = layer.stretch.scale_g;
 			                mesh.material.uniforms.stretchoffset_g.value = layer.stretch.offset_g;
 			                mesh.material.uniforms.stretchscale_b.value = layer.stretch.scale_b;
 			                mesh.material.uniforms.stretchoffset_b.value = layer.stretch.offset_b;
+							mesh.material.uniforms.limitmax_r.value = layer.stretch.limitmax_r;
+							mesh.material.uniforms.limitmin_r.value = layer.stretch.limitmin_r;
+							mesh.material.uniforms.limitmax_g.value = layer.stretch.limitmax_g;
+							mesh.material.uniforms.limitmin_g.value = layer.stretch.limitmin_g;
+							mesh.material.uniforms.limitmax_b.value = layer.stretch.limitmax_b;
+							mesh.material.uniforms.limitmin_b.value = layer.stretch.limitmin_b;
+							mesh.material.uniforms.select_r.value = layer.stretch.select_r;
+							mesh.material.uniforms.select_g.value = layer.stretch.select_g;
+							mesh.material.uniforms.select_b.value = layer.stretch.select_b;
+
 			            }
 			        }
 			    }
@@ -488,16 +507,42 @@ Item {
 			colorShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
 			colorShaderMaterialTemplate.fragmentShader =
 				'varying vec2 vUv;' +
-				'uniform sampler2D texture1;uniform float alpha;uniform float stretchscale_r;uniform float stretchoffset_r;uniform float stretchscale_g;uniform float stretchoffset_g;uniform float stretchscale_b;uniform float stretchoffset_b;' +
+				'uniform sampler2D texture1;uniform float alpha;uniform float stretchscale_r;uniform float stretchoffset_r;' +
+				'uniform float stretchscale_g;uniform float stretchoffset_g;uniform float stretchscale_b;uniform float stretchoffset_b;' +
+				'uniform float limitmax_r;uniform float limitmin_r;uniform float limitmax_g;uniform float limitmin_g;uniform float limitmax_b;uniform float limitmin_b;' +
+				'uniform float select_r; uniform float select_g; uniform float select_b;' +
+				'bool adaptColor(bool useful, float clrComponent, float limit);' +
+				'bool adaptColor(bool useful, float clrComponent, float limit) {' +
+						'bool used  = true;' +
+						'if ( useful){'+
+							'float delta = abs(clrComponent - limit);'+
+							'used = delta < 0.01;'+ 
+						'}'+ 
+						'return(used);'+
+				'}'+
 				'void main() { ' +
 					'gl_FragColor = texture2D(texture1,vUv);' +
-					'gl_FragColor.r *= stretchscale_r;' +
-					'gl_FragColor.r += stretchoffset_r;' +
-					'gl_FragColor.g *= stretchscale_g;' +
-					'gl_FragColor.g += stretchoffset_g;' +
-					'gl_FragColor.b *= stretchscale_b;' +
-					'gl_FragColor.b += stretchoffset_b;' +
-					'gl_FragColor.a *= alpha;' +
+					'bool useRed = limitmax_r != 9999999.0;'+ 
+					'bool useGreen = limitmax_g != 9999999.0;'+ 
+					'bool useBlue = limitmax_b != 9999999.0 ;'+ 
+					'if ( useRed || useGreen || useBlue){'+
+						'bool redUsed = adaptColor(useRed, gl_FragColor.r,  limitmax_r);'+ 
+						'bool greenUsed = adaptColor(useGreen, gl_FragColor.g,  limitmax_g);'+ 
+						'bool blueUsed = adaptColor(useBlue, gl_FragColor.b,  limitmax_b);'+ 		
+						'if ( redUsed  && greenUsed && blueUsed){'+
+							'gl_FragColor.r = 0;'+ 
+							'gl_FragColor.g = 1;'+ 
+							'gl_FragColor.b = 0;'+ 
+						'}'+
+					'} else {'+ 
+ 					    'gl_FragColor.r *= stretchscale_r;' +
+						'gl_FragColor.r += stretchoffset_r;' +
+						'gl_FragColor.g *= stretchscale_g;' +
+						'gl_FragColor.g += stretchoffset_g;' +
+						'gl_FragColor.b *= stretchscale_b;' +
+						'gl_FragColor.b += stretchoffset_b;' +
+						'gl_FragColor.a *= alpha;'+ 
+					'}' + 
 				'}'
             paletteShaderMaterialTemplate = new GL.THREE.ShaderMaterial({ side : GL.THREE.DoubleSide, transparent : true });
 			paletteShaderMaterialTemplate.vertexShader = 'varying vec2 vUv;uniform vec4 uvst1;void main() {gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);vUv=(uv-uvst1.st)*uvst1.pq;}'
