@@ -52,7 +52,7 @@ Column {
 		Text {
 			width : 30
 			height : Global.rowHeight
-			text : -(operation.maxValue - operation.minValue)/2
+			text : -((operation.maxValue - operation.minValue)/2).toFixed(2)
 			anchors.verticalCenter: parent.verticalCenter
 		}
 		QC2.Slider {
@@ -86,7 +86,7 @@ Column {
 		Text {
 			width : 30
 			height : Global.rowHeight
-			text : (operation.maxValue - operation.minValue)/2
+			text : ((operation.maxValue - operation.minValue)/2).toFixed(2)
 			anchors.verticalCenter: parent.verticalCenter
 		}
 	}
