@@ -317,7 +317,8 @@ QVariant FlatTable::cell(const quint32 index, quint32 rec, bool asRaw) const
         QVariant var = _datagrid[rec].cell(index);
         if ( !asRaw) {
             ColumnDefinition coldef = columndefinition(index);
-            return coldef.datadef().domain<>()->impliedValue(var);
+			if ( coldef.isValid())
+				return coldef.datadef().domain<>()->impliedValue(var);
         }
         return var;
     }
