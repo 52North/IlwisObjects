@@ -34,7 +34,7 @@ namespace Ilwis {
 			HistogramSelectionCC();
 
 			bool canUse(ChartModel *model, const QVariantMap &parameter) const;
-			Q_PROPERTY(double currentValue READ currentValue NOTIFY currentValueChanged)
+			Q_PROPERTY(double currentValue READ currentValue WRITE currentValue NOTIFY currentValueChanged)
 			Q_PROPERTY(double currentX READ currentX WRITE currentX NOTIFY currentXChanged)
 			Q_PROPERTY(QString band READ band CONSTANT)
 
