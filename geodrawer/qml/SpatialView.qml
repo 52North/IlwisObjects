@@ -511,12 +511,13 @@ Item {
 				'uniform float stretchscale_g;uniform float stretchoffset_g;uniform float stretchscale_b;uniform float stretchoffset_b;' +
 				'uniform float limitmax_r;uniform float limitmin_r;uniform float limitmax_g;uniform float limitmin_g;uniform float limitmax_b;uniform float limitmin_b;' +
 				'uniform float select_r; uniform float select_g; uniform float select_b;' +
-				'bool adaptColor(bool useful, float clrComponent, float limit);' +
-				'bool adaptColor(bool useful, float clrComponent, float limit) {' +
+				'bool adaptColor(bool useful, float clrComponent, float limitMin, float limitMax);' +
+				'bool adaptColor(bool useful, float clrComponent, float limitMin, float limitMax) {' +
 						'bool used  = true;' +
 						'if ( useful){'+
-							'float delta = abs(clrComponent - limit);'+
-							'used = delta < 0.01;'+ 
+							//'float delta = abs(clrComponent - limitMax);'+
+							//'used = delta < 0.01;'+ 
+							'used = clrComponent >= limitMin && clrComponent <= limitMax;'+
 						'}'+ 
 						'return(used);'+
 				'}'+
@@ -526,13 +527,13 @@ Item {
 					'bool useGreen = limitmax_g != 9999999.0;'+ 
 					'bool useBlue = limitmax_b != 9999999.0 ;'+ 
 					'if ( useRed || useGreen || useBlue){'+
-						'bool redUsed = adaptColor(useRed, gl_FragColor.r,  limitmax_r);'+ 
-						'bool greenUsed = adaptColor(useGreen, gl_FragColor.g,  limitmax_g);'+ 
-						'bool blueUsed = adaptColor(useBlue, gl_FragColor.b,  limitmax_b);'+ 		
+						'bool redUsed = adaptColor(useRed, gl_FragColor.r, limitmin_r, limitmax_r);'+ 
+						'bool greenUsed = adaptColor(useGreen, gl_FragColor.g, limitmin_g,  limitmax_g);'+ 
+						'bool blueUsed = adaptColor(useBlue, gl_FragColor.b, limitmin_b,  limitmax_b);'+ 		
 						'if ( redUsed  && greenUsed && blueUsed){'+
-							'gl_FragColor.r = 0;'+ 
-							'gl_FragColor.g = 1;'+ 
-							'gl_FragColor.b = 0;'+ 
+							'gl_FragColor.r = select_r;'+ 
+							'gl_FragColor.g = select_g;'+ 
+							'gl_FragColor.b = select_b;'+ 
 						'}'+
 					'} else {'+ 
  					    'gl_FragColor.r *= stretchscale_r;' +
