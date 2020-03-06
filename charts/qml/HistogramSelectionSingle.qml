@@ -108,7 +108,7 @@ Rectangle {
 			}
 		}
 
-		ExclusiveGroup { id: tabPositionGroup }
+	ExclusiveGroup { id: tabPositionGroup }
 	Column {
 		x : 15
 		//height : 80

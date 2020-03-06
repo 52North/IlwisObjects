@@ -12,7 +12,7 @@ import ChartModel 1.0
 import DataseriesModel 1.0
 
 Rectangle {
-    width: parent.width - 5
+    width: Math.min(parent.width - 5, 500)
     height: parent ? parent.height - 10 : 0
     property var operation
 
