@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.5 as QC2
 import QtQuick.Controls.Styles 1.1
 import "../../../Global.js" as Global
 import "../../../controls" as Controls
@@ -11,6 +12,7 @@ Row {
     clip : true
     property var editor
     property int offset : 30
+	property bool updateMarkers : false
     Column {
         id : minihist
         width : parent.width - 60
@@ -20,7 +22,7 @@ Row {
         Loader {
             id : chartArea
             width : parent.width + offset
-            height : parent.height - slider.height - 10
+            height : parent.height - control.height - 10
             source : models.mainPanelUrl("minimalchart")
             x : -offset
 
@@ -31,40 +33,83 @@ Row {
                 chartArea.item.margins.right = 0
                 chartArea.item.margins.top = 0
                 chartArea.item.margins.bottom = 0
-				slider.minValue = editor.min //initStretchMin;
-                slider.maxValue = editor.max //initStretchMax;
-
-                 if (editor.zoomOnPreset) {
-                    chartArea.item.xmin = editor.min;
-                    chartArea.item.xmax = editor.max;
-                    slider.minValue = editor.min;
-                    slider.maxValue = editor.max;
-                }
 				item.height = parent.height
             }
         }
-        Connections {
-            target: slider
-            onMarkerPositions : {
-                editor.setMarkers(positions);
-            }  
-        }
-        Connections {
-            target: slider
-            onMarkerReleased :{
-                editor.markersConfirmed()
-            }
-        }
-            
-        Controls.MultiPointSlider {
-            id : slider
-            model : editor.markers
-            minValue : editor.min
-            maxValue : editor.max
-            width : parent.width - 20
-            resolution : editor.resolution
-            x : 12
-        }
+                
+		QC2.RangeSlider {
+			id : control
+			x: 12
+			width : parent.width - 20
+			from : editor.min
+			to : editor.max
+
+			first.value: editor.initStretchMin
+			second.value: editor.initStretchMax
+
+			first.handle: Rectangle {
+				x: control.leftPadding + control.first.visualPosition * (control.availableWidth - width)
+				y: control.topPadding + control.availableHeight / 2 - height / 2
+				implicitWidth: 26
+				implicitHeight: 26
+				radius: 13
+				color: control.first.pressed ? "#f0f0f0" : "#f6f6f6"
+				border.color: "#bdbebf"
+
+				Text {
+					anchors.centerIn : parent
+					text : control.first.value.toFixed(2)
+					font.pointSize : 6
+				}
+
+			}
+
+			first.onPressedChanged : {
+				if ( !control.first.pressed){
+					editor.markersConfirmed()
+
+				}
+			}
+
+			first.onValueChanged : {
+				var positions = []
+				positions.push(control.first.value)
+				positions.push(control.second.value)
+				if ( updateMarkers)
+					editor.setMarkers(positions)
+			}
+
+			second.onPressedChanged : {
+				if ( !control.second.pressed){
+					editor.markersConfirmed()
+
+				}
+				
+			}
+			second.onValueChanged : {
+				var positions = []
+				positions.push(control.first.value)
+				positions.push(control.second.value)
+				if ( updateMarkers)
+					editor.setMarkers(positions)
+			}
+
+			second.handle: Rectangle {
+				x: control.leftPadding+ control.second.visualPosition * (control.availableWidth - width)
+				y: control.topPadding + control.availableHeight / 2 - height / 2
+				implicitWidth: 26
+				implicitHeight: 26
+				radius: 13
+				color: control.second.pressed ? "#f0f0f0" : "#f6f6f6"
+				border.color: "#bdbebf"
+
+				Text {
+					anchors.centerIn : parent
+					text : control.second.value.toFixed(2)
+					font.pointSize : 6
+				}
+			}
+		}
     }
     Column {
         width : 70
@@ -93,7 +138,6 @@ Row {
             text : "1%"
 
             onClicked : {
-                var limits = []
                 updateMarkerPositions(0.01)
             }
         }
@@ -105,6 +149,7 @@ Row {
 
             onClicked : {
                 updateMarkerPositions(0.02)
+			
             }
         }
 
@@ -117,45 +162,14 @@ Row {
                 updateMarkerPositions(0.05)
             }
         }
-        Text {
-            width : parent.width
-            height : 24
-            text : "Zoom on preset"
-        }
-        Switch {
-            id : zoomonpreset
-            checked : editor.zoomOnPreset
-
-            onClicked : {
-                editor.zoomOnPreset = checked
-
-                if (!zoomonpreset.checked) {
-                    var oldzoom = editor.zoomlevel
-                    updateMarkerPositions(0.0);     // first reset to full scale
-                    slider.minValue = editor.min;
-                    slider.maxValue = editor.max;
-                    chartArea.item.xmin = editor.min;
-                    chartArea.item.xmax = editor.max;
-//                    updateMarkerPositions(oldzoom);    // put slider in position of selected %
-                    slider.paint();
-                }
-
-            }
-
-        }
     }
     function updateMarkerPositions(fraction){
         editor.setStretchLimit(editor.visualAttribute.attributename, fraction); // calls editor.setMarkers(positions)
+		updateMarkers = false
+		control.first.value = fraction !== 0 ? editor.initStretchMin : editor.min;
+		control.second.value = fraction !== 0 ? editor.initStretchMax : editor.max;
+		updateMarkers = true
         editor.markersConfirmed();
-
-        if (zoomonpreset.checked) {
-            chartArea.item.xmin = editor.min;
-            chartArea.item.xmax = editor.max;
-            slider.minValue = editor.min;
-            slider.maxValue = editor.max;
-        }
-
-        slider.paint();
     }
 }
 
