@@ -53,7 +53,7 @@ Item {
         anchors.leftMargin: 3
         Loader {
             id : operation
-            width : 250
+            width : parent.width - 25
             height : parent.height
         }
 
