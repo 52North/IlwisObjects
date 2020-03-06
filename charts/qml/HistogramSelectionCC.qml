@@ -15,9 +15,10 @@ Rectangle {
     width: 300
     height: parent ? parent.height - 10 : 0
     property var operation
-	property var selColor : "#ff0000"
+	property var selColor : "#000000"
 	property var lastPnt
 	property var chartCanvas
+	property var lastSelection : "at"  
 	property var currentValue : operation.currentValue
 
 	onCurrentValueChanged : {
@@ -46,7 +47,7 @@ Rectangle {
 		if ( pnt1.x < mx && pnt3.x > mx) {
 			lastPnt = pnt
 			operation.currentX = mx
-			chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : "at" , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color"  : selColor })
+			chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color"  : selColor })
 		}
 	}
 
@@ -110,6 +111,7 @@ Rectangle {
 							operation.currentX = -100000
 							operation.currentValue = 9999999.0
 							chartCanvas.requestPaint()
+							chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
 						}
 					}else{
 						// clear all selections
@@ -118,6 +120,7 @@ Rectangle {
 							chartCanvas.requestPaint()
 						}
 						chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
+						lastSelection = "at"
 					}
 				}
 
@@ -128,7 +131,7 @@ Rectangle {
 				visible : activeSelect.checked
 				onSelectedColorChanged: {
 					selColor = selectedColor
-					chart.sendOverLink({"selectionmode" : "at" , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
 				}
 				z : 100
 			}
@@ -142,6 +145,45 @@ Rectangle {
 				chart.sendOverLink({"type" : "histogramselectioncc", "resetstretch" : true})
 			}
 		}
+
+		ExclusiveGroup { id: tabPositionGroup }
+
+		RadioButton {
+			id : b21
+			text: "Above"
+			exclusiveGroup: tabPositionGroup
+			checked : lastSelection == "above"
+
+			onClicked: {
+				lastSelection = "above"
+				if ( lastPnt)
+					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+			}
+		}
+		RadioButton {
+			id : b22
+			text: "Below"
+			exclusiveGroup: tabPositionGroup
+			checked : lastSelection == "below"
+
+			onClicked: {
+				lastSelection = "below"
+				if ( lastPnt)
+					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+				}
+		}
+		RadioButton {
+			id : b23
+			text: "At"
+			exclusiveGroup: tabPositionGroup
+			checked : lastSelection == "at" 
+			onClicked: {
+				lastSelection = "at"
+				if ( lastPnt)
+					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+			}
+		}
 	}
 }
+
 

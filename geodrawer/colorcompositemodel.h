@@ -60,7 +60,7 @@ namespace Ilwis {
 			std::vector<double> _limitMin;
 			QColor _selectColor;
 
-			void calcMinMaxSelection(double value, const SPNumericRange& nrng, double& rmin, double& rmax) const;
+			void calcMinMaxSelection(const QString& mode, double value, const SPNumericRange& nrng, double& rmin, double& rmax) const;
 
 			NEW_LAYERMODEL(ColorCompositeLayerModel);
 		};

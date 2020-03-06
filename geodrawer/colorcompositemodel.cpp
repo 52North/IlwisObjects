@@ -352,7 +352,7 @@ void ColorCompositeLayerModel::refreshStretch() {
 	_stretch["select_b"] = _selectColor.blueF();
 }
 
-void ColorCompositeLayerModel::calcMinMaxSelection(double value, const SPNumericRange& nrng, double& rmin, double& rmax) const {
+void ColorCompositeLayerModel::calcMinMaxSelection(const QString& mode, double value, const SPNumericRange& nrng, double& rmin, double& rmax) const {
 	if (value == UNDEFSHADERLIMIT) {
 		rmin = UNDEFSHADERLIMIT;
 		rmax = UNDEFSHADERLIMIT;
@@ -362,6 +362,12 @@ void ColorCompositeLayerModel::calcMinMaxSelection(double value, const SPNumeric
 	double margin = 0.01;
 	rmin = std::max(0.0, value - dist * margin);
 	rmax = std::min(1.0, value + dist * margin);
+	if (mode == "above") {
+		rmax = nrng->max();
+	}
+	else if (mode == "below") {
+		rmin = nrng->min();
+	}
 }
 void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) {  
 	if (parameters.contains("attribute")) {
@@ -369,10 +375,13 @@ void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) 
 		if (attr) {
 			auto rpr = attr->representation();
 			QString  clrString = parameters["color"].toString();
-			QColor clr(clrString);
+			_selectColor =  QColor(clrString);
 
 			QString selectionMode = parameters["selectionmode"].toString();
 			if (selectionMode == "none") {
+				calcMinMaxSelection(selectionMode, UNDEFSHADERLIMIT, _ccBands[0]->datadef().range<NumericRange>(), _limitMin[0], _limitMax[0]);
+				calcMinMaxSelection(selectionMode, UNDEFSHADERLIMIT, _ccBands[1]->datadef().range<NumericRange>(), _limitMin[1], _limitMax[1]);
+				calcMinMaxSelection(selectionMode, UNDEFSHADERLIMIT, _ccBands[2]->datadef().range<NumericRange>(), _limitMin[2], _limitMax[2]);
 			}
 			else if (parameters["type"] == "histogramselectioncc") {
 				if (parameters.contains("resetstretch")) {
@@ -392,14 +401,26 @@ void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) 
 					QStringList parts = parameters["x"].toString().split("|");
 					if (parts.size() == 3) {
 
-						calcMinMaxSelection(parts[0].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), _limitMin[0], _limitMax[0]);
-						calcMinMaxSelection(parts[1].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), _limitMin[1], _limitMax[1]);
-						calcMinMaxSelection(parts[2].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), _limitMin[2], _limitMax[2]);
+						calcMinMaxSelection(selectionMode, parts[0].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), _limitMin[0], _limitMax[0]);
+						calcMinMaxSelection(selectionMode, parts[1].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), _limitMin[1], _limitMax[1]);
+						calcMinMaxSelection(selectionMode, parts[2].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), _limitMin[2], _limitMax[2]);
 
 					}
 				}
-				prepare(LayerModel::ptRENDER);
 			}
+			else if (parameters["type"] == "histogramstretchcc") {
+				double lower = parameters["lower"].toDouble();
+				double upper = parameters["upper"].toDouble();
+				QString band = parameters["band"].toString();
+				LayerModel *rasterLayer = 0;
+				if (band == "histogram_red")
+					rasterLayer = findLayerByName("Red Layer " + CoverageLayerModel::coverage()->name());
+				else if (band == "histogram_green")
+					rasterLayer = findLayerByName("Green Layer " + CoverageLayerModel::coverage()->name());
+				else if (band == "histogram_blue")
+					rasterLayer = findLayerByName("Blue Layer " + CoverageLayerModel::coverage()->name());
+			}
+			prepare(LayerModel::ptRENDER);
 		}
 	}
 }
