@@ -239,24 +239,19 @@ Rectangle {
 			var yas
 			if ( smodel.yAxisSide == "left"){
 				yas = yasLeft
-				yas.min = smodel.minY
-				yas.max = smodel.maxY
+				yas.min = Math.min(yas.min, smodel.minY)
+				yas.max = Math.max(yas.max, smodel.maxY)
 			}else {
 				yas = yasRight
 				yas.visible = true
-				yas.min = smodel.minY
-				yas.max = smodel.maxY
+				yas.min =  Math.min(yas.min, smodel.minY)
+				yas.max = Math.max(yas.max, smodel.maxY)
 			}
             var series = createSeries(ctype, smodel.name, currxaxis, yas)
             if (ctype == "line" || ctype == "spline" || ctype == "points") {
 			    series.pointsVisible = false;
 			    series.color = chart.seriesColor(i);
 				smodel.setData(series)
-			    /*var points = smodel.points
-			    var pointsCount = points.length;
-			    for (var j = 0; j < pointsCount; j++) {
-				    series.append(points[j].x, points[j].y);
-			    }*/
 				if ( smodel.yAxisSide == "left")
 					series.axisYLeft =  yasLeft 
 				else
