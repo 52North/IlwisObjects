@@ -352,23 +352,45 @@ void ColorCompositeLayerModel::refreshStretch() {
 	_stretch["select_b"] = _selectColor.blueF();
 }
 
-void ColorCompositeLayerModel::calcMinMaxSelection(const QString& mode, double value, const SPNumericRange& nrng, double& rmin, double& rmax) const {
-	if (value == UNDEFSHADERLIMIT) {
+
+double ColorCompositeLayerModel::getStretchedValue(double value, const SPNumericRange& actualRange, const NumericRange& stretchRange) const
+{
+	if (stretchRange.isValid()) {
+			if (value < stretchRange.center()) {
+				double stretchFraction = (value - stretchRange.min()) / stretchRange.distance();
+				value = actualRange->min() + stretchFraction * actualRange->distance();
+			}
+			else {
+				if (value >= stretchRange.center()) {
+					double stretchFraction = (stretchRange.max() - value) / stretchRange.distance();
+					value = actualRange->max() - stretchFraction * actualRange->distance();
+				}
+			}
+	}
+
+	value = std::min(1.0, std::max(0.0, (value - actualRange->min()) / actualRange->distance())); // scale it between 0..1
+	return value;
+}
+void ColorCompositeLayerModel::calcMinMaxSelection(const QString& mode, double value, const SPNumericRange& actualrng, const NumericRange& stretchrng, double& rmin, double& rmax) const {
+	if (value == UNDEFSHADERLIMIT || value == rUNDEF) {
 		rmin = UNDEFSHADERLIMIT;
 		rmax = UNDEFSHADERLIMIT;
 		return;
 	}
-	double dist = nrng->distance();
+
+	double dist = actualrng->distance();
 	double margin = 0.01;
-	rmin = std::max(0.0, value - dist * margin);
-	rmax = std::min(1.0, value + dist * margin);
-	if (mode == "above") {
-		rmax = nrng->max();
+	if (mode == "") {
+		rmin = getStretchedValue(value - dist * margin, actualrng, stretchrng); 
+		rmax = getStretchedValue(value + dist * margin, actualrng, stretchrng);
 	}
-	else if (mode == "below") {
-		rmin = nrng->min();
-	}
+	else if ( mode != "max")
+		rmin = getStretchedValue(value - dist * margin, actualrng, stretchrng);
+	else if ( mode != "min")
+		rmax = getStretchedValue(value + dist * margin, actualrng, stretchrng);
+
 }
+
 void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) {  
 	if (parameters.contains("attribute")) {
 		VisualAttribute *attr = visualAttribute(parameters["attribute"].toString());  
@@ -379,9 +401,9 @@ void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) 
 
 			QString selectionMode = parameters["selectionmode"].toString();
 			if (selectionMode == "none") {
-				calcMinMaxSelection(selectionMode, UNDEFSHADERLIMIT, _ccBands[0]->datadef().range<NumericRange>(), _limitMin[0], _limitMax[0]);
-				calcMinMaxSelection(selectionMode, UNDEFSHADERLIMIT, _ccBands[1]->datadef().range<NumericRange>(), _limitMin[1], _limitMax[1]);
-				calcMinMaxSelection(selectionMode, UNDEFSHADERLIMIT, _ccBands[2]->datadef().range<NumericRange>(), _limitMin[2], _limitMax[2]);
+				calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[0]->datadef().range<NumericRange>(), layer(0)->activeAttribute()->stretchRange(), _limitMin[0], _limitMax[0]);
+				calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[1]->datadef().range<NumericRange>(), layer(1)->activeAttribute()->stretchRange(), _limitMin[1], _limitMax[1]);
+				calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[2]->datadef().range<NumericRange>(), layer(2)->activeAttribute()->stretchRange(), _limitMin[2], _limitMax[2]);
 			}
 			else if (parameters["type"] == "histogramselectioncc") {
 				if (parameters.contains("resetstretch")) {
@@ -400,11 +422,17 @@ void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) 
 				} else {
 					QStringList parts = parameters["x"].toString().split("|");
 					if (parts.size() == 3) {
-
-						calcMinMaxSelection(selectionMode, parts[0].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), _limitMin[0], _limitMax[0]);
-						calcMinMaxSelection(selectionMode, parts[1].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), _limitMin[1], _limitMax[1]);
-						calcMinMaxSelection(selectionMode, parts[2].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), _limitMin[2], _limitMax[2]);
-
+						calcMinMaxSelection("", parts[0].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), layer(0)->activeAttribute()->stretchRange(), _limitMin[0], _limitMax[0]);
+						calcMinMaxSelection("", parts[1].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), layer(1)->activeAttribute()->stretchRange(), _limitMin[1], _limitMax[1]);
+						calcMinMaxSelection("", parts[2].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), layer(2)->activeAttribute()->stretchRange(), _limitMin[2], _limitMax[2]);
+					}
+					else if (parts.size() == 6) {
+						calcMinMaxSelection("min", parts[0].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), layer(0)->activeAttribute()->stretchRange(), _limitMin[0], _limitMax[0]);
+						calcMinMaxSelection("max", parts[1].toDouble(), _ccBands[0]->datadef().range<NumericRange>(), layer(0)->activeAttribute()->stretchRange(), _limitMin[0], _limitMax[0]);
+						calcMinMaxSelection("min", parts[2].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), layer(1)->activeAttribute()->stretchRange(), _limitMin[1], _limitMax[1]);
+						calcMinMaxSelection("max", parts[3].toDouble(), _ccBands[1]->datadef().range<NumericRange>(), layer(1)->activeAttribute()->stretchRange(), _limitMin[1], _limitMax[1]);
+						calcMinMaxSelection("min", parts[4].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), layer(2)->activeAttribute()->stretchRange(), _limitMin[2], _limitMax[2]);
+						calcMinMaxSelection("max", parts[5].toDouble(), _ccBands[2]->datadef().range<NumericRange>(), layer(2)->activeAttribute()->stretchRange(), _limitMin[2], _limitMax[2]);
 					}
 				}
 			}
