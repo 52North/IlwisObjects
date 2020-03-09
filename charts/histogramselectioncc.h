@@ -34,39 +34,49 @@ namespace Ilwis {
 			HistogramSelectionCC();
 
 			bool canUse(ChartModel *model, const QVariantMap &parameter) const;
-			Q_PROPERTY(double currentValue READ currentValue WRITE currentValue NOTIFY currentValueChanged)
-			Q_PROPERTY(double currentX READ currentX WRITE currentX NOTIFY currentXChanged)
 			Q_PROPERTY(QString band READ band CONSTANT)
+
+			//Q_PROPERTY(double minRange READ minRange CONSTANT)
+			//Q_PROPERTY(double maxRange READ maxRange CONSTANT)
+			Q_PROPERTY(double currentMin READ currentMinValue WRITE currentMinValue NOTIFY currentValueChanged)
+			Q_PROPERTY(double currentMax READ currentMaxValue WRITE currentMaxValue NOTIFY currentValueChanged)
+            Q_PROPERTY(bool useRange READ useRange WRITE useRange NOTIFY userRangeChanged)
 
 			Q_INVOKABLE void execute(const QVariantMap &parameters);
 			static Ilwis::Ui::ChartOperationEditor *create() { return new HistogramSelectionCC(); } 
 			void updateEditor(const QVariantMap& parameters) override;
 			Q_INVOKABLE QObject *view();
-			Q_INVOKABLE QString getValues(double localX) ;
-			Q_INVOKABLE double bandX(const QString& bandName) ;
-			Q_INVOKABLE double bandValue(const QString& bandName);
-			Q_INVOKABLE void setXs(int redX, int GreenX, int blueX);
+			Q_INVOKABLE double bandMinValue(const QString& bandName);
+			Q_INVOKABLE double bandMaxValue(const QString& bandName);
+			Q_INVOKABLE QString getValues();
+			Q_INVOKABLE void markersConfirmed();
 
 			NEW_CHARTPROPERTYEDITOR(HistogramSelectionCC)
 
 		signals:
 			void currentValueChanged();
 			void currentXChanged();
+			void userRangeChanged();
+			void rangeChanged();
 
 		private:
-			double _value = 9999999.0;
+			double _minValue = 9999999.0;
+			double _maxValue = 9999999.0;
+			bool _useRange = false;
 			HistogramSelectionCC * _cceditorRed = 0;
 			HistogramSelectionCC * _cceditorBlue = 0;
 			HistogramSelectionCC * _cceditorGreen = 0;
-			double _currentX = -100000;
 
 			QString _band = sUNDEF;
 
-			double currentValue() const;
-			void currentValue(double v);
+			double currentMinValue() const;
+			void currentMinValue(double v);
+			double currentMaxValue() const;
+			void currentMaxValue(double v);
+			bool useRange() const;
+			void useRange(bool yesno);
+
 			QString band() const;
-			double currentX() const;
-			void currentX(double x);
 			void initBands();
 
 		};

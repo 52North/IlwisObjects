@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import OperationCatalogModel 1.0
 import OperationModel 1.0
+import QtQuick.Controls 2.5 as QC2
 import ApplicationFormExpressionParser 1.0
 import "../../../../qml/Global.js" as Global
 import "../../../../qml/controls" as Controls
@@ -16,21 +17,17 @@ Rectangle {
     height: parent ? parent.height - 10 : 0
     property var operation
 	property var selColor : "#000000"
-	property var lastPnt
 	property var chartCanvas
 	property var lastSelection : "at"  
-	property var currentValue : operation.currentValue
+	property var currentValue : operation.currentMin
 
 	onCurrentValueChanged : {
 		activeSelect.checked = true
 
-		lastPnt = Qt.point(currentValue, 0)
-		chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : "at" , "x" : operation.getValues(currentValue), "y" : 0,"color"  : selColor })
-		var pntRed = chart.view().mapToPosition(Qt.point(operation.bandValue("histogram_red"),0),chart.view().series(0)) 
-		var pntGreen = chart.view().mapToPosition(Qt.point(operation.bandValue("histogram_green"),0),chart.view().series(0))
-		var pntBlue = chart.view().mapToPosition(Qt.point(operation.bandValue("histogram_blue"),0),chart.view().series(0)) 		
-		operation.setXs(pntRed.x, pntGreen.x, pntBlue.x)
-		chart.view().requestPaint()
+		if ( !operation.useRange){
+			//chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : "at" , "x" : operation.getValues(currentValue), "y" : 0,"color"  : selColor })
+			chart.view().requestPaint()
+		}
 	}
 
 	function handleClick(chartview, mx,my, mode){
@@ -44,50 +41,45 @@ Rectangle {
 		var maxy = chart.maxYLeft
 		var pnt1 = chartview.mapToPosition(Qt.point(minx,miny),chartview.series(0))
 		var pnt3 = chartview.mapToPosition(Qt.point(maxx,maxy),chartview.series(0))
+		console.debug("aaaaaaa", pnt.x)
 		if ( pnt1.x < mx && pnt3.x > mx) {
-			lastPnt = pnt
-			operation.currentX = mx
-			chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color"  : selColor })
+			if (operation.useRange){
+				var xpmin = operation.currentMin != 9999999.0 ? chartview.mapToPosition(Qt.point(operation.currentMin,chart.minY),chartview.series(0)) : mx
+				var xpmax = operation.currentMin != 9999999.0  ? chartview.mapToPosition(Qt.point(operation.currentMax,chart.minY),chartview.series(0)) : mx
+				if ( Math.abs(xpmin - mx) < 4)
+					operation.currentMin = pnt.x
+				else ( Math.abs(xpmax - mx) < 4)
+					operation.currentMax = pnt.x
+			}
+			else
+				operation.currentMin = pnt.x
+
+			chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : lastSelection , "x" : operation.getValues(), "y" : my,"color"  : selColor })
 		}
 	}
 
+	function drawLimitLine(ctx, chartview,evalue, ecolor){
+		if ( evalue != 9999999.0){
+			var pnt1 = chartview.mapToPosition(Qt.point(evalue,chart.minYLeft),chartview.series(0))
+			var pnt2 = chartview.mapToPosition(Qt.point(evalue,chart.maxYLeft),chartview.series(0))
+			ctx.beginPath()
+			ctx.strokeStyle = ecolor;
+			ctx.moveTo(pnt1.x, pnt1.y)
+			ctx.lineTo(pnt2.x, pnt2.y)
+			ctx.stroke()
+		}
+	}
 	function handleUI(chartview, pcanvas) {
-	
-		var xred =  operation.bandX("histogram_red")
-		var xgreen =  operation.bandX("histogram_green")
-		var xblue =  operation.bandX("histogram_blue")
-		if ( xred !=  -100000 || xblue !=  -100000 || xgreen !=  -100000 ) {
-			chartCanvas = pcanvas
-			var ctx = pcanvas.getContext("2d")
-			var minx = chart.minX
-			var maxx = chart.maxX
-			var miny = chart.minYLeft
-			var maxy = chart.maxYLeft
-			var pnt1 = chartview.mapToPosition(Qt.point(minx,miny),chartview.series(0))
-			var pnt2 = chartview.mapToPosition(Qt.point(minx,maxy),chartview.series(0))
-			var pnt3 = chartview.mapToPosition(Qt.point(maxx,maxy),chartview.series(0))
+		chartCanvas = pcanvas
+		var ctx = pcanvas.getContext("2d")
+		drawLimitLine(ctx,chartview, operation.bandMinValue("histogram_red"), "red")
+		drawLimitLine(ctx,chartview, operation.bandMinValue("histogram_green"), "green")
+		drawLimitLine(ctx,chartview, operation.bandMinValue("histogram_blue"), "blue")
 
-			if ( xred != -100000){
-				ctx.beginPath()
-				ctx.strokeStyle = "red";
-				ctx.moveTo(xred, pnt1.y)
-				ctx.lineTo(xred, pnt2.y)
-				ctx.stroke()
-			}
-			if ( xgreen != -100000){
-				ctx.beginPath()
-				ctx.strokeStyle = "green";
-				ctx.moveTo(xgreen, pnt1.y)
-				ctx.lineTo(xgreen, pnt2.y)
-				ctx.stroke()
-			}
-			if ( xblue != -100000){
-				ctx.beginPath()
-				ctx.strokeStyle = "blue";
-				ctx.moveTo(xblue, pnt1.y)
-				ctx.lineTo(xblue, pnt2.y)
-				ctx.stroke()
-			}
+		if ( operation.useRange){
+			drawLimitLine(ctx,chartview, operation.bandMaxValue("histogram_red"), "red")
+			drawLimitLine(ctx, chartview,operation.bandMaxValue("histogram_green"), "green")
+			drawLimitLine(ctx, chartview,operation.bandMaxValue("histogram_blue"), "blue")
 		}
 	}
 
@@ -107,16 +99,14 @@ Rectangle {
 				onClicked : {
 					if (!checked){
 						if ( chartCanvas) {
-							lastPnt = null
-							operation.currentX = -100000
-							operation.currentValue = 9999999.0
+							operation.currentMin = 9999999.0
+							operation.currentMax = 9999999.0
 							chartCanvas.requestPaint()
 							chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
 						}
 					}else{
 						// clear all selections
 						if( chartCanvas){
-							lastPnt = null
 							chartCanvas.requestPaint()
 						}
 						chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
@@ -131,10 +121,10 @@ Rectangle {
 				visible : activeSelect.checked
 				onSelectedColorChanged: {
 					selColor = selectedColor
-					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(), "y" : 0,"color" : selColor})
 				}
-				z : 100
 			}
+			z: 100
 		}
 		Controls.PushButton {
 			width : 120
@@ -146,41 +136,105 @@ Rectangle {
 			}
 		}
 
-		ExclusiveGroup { id: tabPositionGroup }
+		Row {
+			spacing : 4
+			width : Math.min(parent.width, 500)
+			height : 50
+			CheckBox {
+				id : cbUseRange
+				width : 100
+				text : "Use range"
+				checked : false
 
-		RadioButton {
-			id : b21
-			text: "Above"
-			exclusiveGroup: tabPositionGroup
-			checked : lastSelection == "above"
-
-			onClicked: {
-				lastSelection = "above"
-				if ( lastPnt)
-					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
-			}
-		}
-		RadioButton {
-			id : b22
-			text: "Below"
-			exclusiveGroup: tabPositionGroup
-			checked : lastSelection == "below"
-
-			onClicked: {
-				lastSelection = "below"
-				if ( lastPnt)
-					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+				onCheckedChanged : {
+					operation.useRange = checked
+					if ( checked){
+						if ( operation.currentMin != 9999999.0)
+							control.first.value = operation.currentMin
+						if ( operation.currentMax !=  9999999.0)
+							control.second.value = operation.currentMax
+						chart.view().requestPaint()
+						chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : "range" , "x" : operation.getValues(), "y" : 0,"color"  : selColor })
+					}else{
+							operation.currentMin = 9999999.0
+							operation.currentMax = 9999999.0
+							chartCanvas.requestPaint()
+							chart.sendOverLink({"selectionmode" : "none" , "x" : 0, "y" : 0,"color" : "" })
+					}
 				}
-		}
-		RadioButton {
-			id : b23
-			text: "At"
-			exclusiveGroup: tabPositionGroup
-			checked : lastSelection == "at" 
-			onClicked: {
-				lastSelection = "at"
-				if ( lastPnt)
-					chart.sendOverLink({"selectionmode" : lastSelection , "x" : operation.getValues(lastPnt.x), "y" : lastPnt.y,"color" : selColor})
+			}
+			QC2.RangeSlider {
+				id : control
+				width : parent.width - 100
+				from : chart.minX
+				to : chart.maxX
+				visible : cbUseRange.checked
+
+				//first.value: operation.currentMin
+				//second.value: operation.currentMax
+
+				first.handle: Rectangle {
+					x: control.leftPadding + control.first.visualPosition * (control.availableWidth - width)
+					y: control.topPadding + control.availableHeight / 2 - height / 2
+					implicitWidth: 2
+					implicitHeight: 26
+					//radius: 13
+					color: control.first.pressed ? "#f0f0f0" : "#f6f6f6"
+					border.color: "#bdbebf"
+
+					Text {
+						y : 32
+						anchors.horizontalCenter : parent.horizontalCenter
+						text : control.first.value.toFixed(2)
+						font.pointSize : 8
+					}
+
+				}
+
+				first.onPressedChanged : {
+					if ( !control.first.pressed){
+						operation.markersConfirmed()
+
+					}
+				}
+
+				first.onValueChanged : {
+					operation.currentMin = control.first.value
+					operation.currentMax = control.second.value
+					chart.view().requestPaint()
+					chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : "range" , "x" : operation.getValues(), "y" : 0,"color"  : selColor })
+				}
+
+				second.onPressedChanged : {
+					if ( !control.second.pressed){
+						operation.markersConfirmed()
+
+					}
+				
+				}
+				second.onValueChanged : {
+					operation.currentMin = control.first.value
+					operation.currentMax = control.second.value
+					chart.view().requestPaint()
+					chart.sendOverLink({"type" : "histogramselectioncc", selectionmode : "range" , "x" : operation.getValues(), "y" : 0,"color"  : selColor })
+				}
+
+				second.handle: Rectangle {
+					x: control.leftPadding+ control.second.visualPosition * (control.availableWidth - width)
+					y: control.topPadding + control.availableHeight / 2 - height / 2
+					implicitWidth: 2
+					implicitHeight: 26
+					//radius: 13
+					color: control.second.pressed ? "#f0f0f0" : "#f6f6f6"
+					border.color: "#bdbebf"
+
+					Text {
+						y : -6
+						anchors.horizontalCenter : parent.horizontalCenter
+						text : control.second.value.toFixed(2)
+						font.pointSize : 8
+					}
+				}
 			}
 		}
 	}

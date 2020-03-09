@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "columndefinition.h"         
 #include "table.h"
 #include "models/tablemodel.h"      
-#include "chartoperationeditor.h"         
+#include "chartoperationeditor.h"          
 #include "symboltable.h"
 #include "operationmetadata.h"   
 #include "commandhandler.h"
@@ -28,6 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operation.h"
 #include "chartmodel.h"  
 #include "dataseriesmodel.h"
+#include "modelregistry.h"
+#include "coveragedisplay\layermanager.h"
+#include "coveragedisplay\layermodel.h" 
 #include "histogramselectioncc.h"               
 
 using namespace Ilwis;
@@ -39,7 +42,7 @@ HistogramSelectionCC::HistogramSelectionCC() : ChartOperationEditor("histogramse
 {
 }
 
-bool HistogramSelectionCC::canUse(ChartModel *model, const QVariantMap &parameter) const
+bool HistogramSelectionCC::canUse(ChartModel *model, const QVariantMap &parameter) const  
 {
 	if (!parameter.empty())
 		if (parameter["dataseries"].toBool()) {
@@ -47,7 +50,7 @@ bool HistogramSelectionCC::canUse(ChartModel *model, const QVariantMap &paramete
 				QString attr = parameter["attribute"].toString();
 				bool ok = attr == "histogram_red" || attr == "histogram_green" || attr == "histogram_blue"; 
 				const_cast<HistogramSelectionCC *>(this)->_band = attr;
-				return parameter["specialtype"] == "histogram" && ok;  
+				return parameter["specialtype"] == "histogram" && ok;     
 			}
 		}
 	return false;
@@ -58,40 +61,68 @@ void HistogramSelectionCC::updateEditor(const QVariantMap& parameters) {
 		initBands();
 		QStringList parts = parameters["value"].toString().split("|");
 		if (parts.size() == 3) {
-			_cceditorRed->currentValue(parts[0].toDouble());
-			_cceditorGreen->currentValue(parts[1].toDouble());
-			_cceditorBlue->currentValue(parts[2].toDouble()); 
+			_cceditorRed->currentMinValue(parts[0].toDouble());
+			_cceditorGreen->currentMinValue(parts[1].toDouble());
+			_cceditorBlue->currentMinValue(parts[2].toDouble());   
 		}
 
 		_cceditorRed->currentValueChanged();
-		_cceditorGreen->currentValueChanged();
-		_cceditorBlue->currentValueChanged();
+		_cceditorGreen->currentValueChanged(); 
+		_cceditorBlue->currentValueChanged();  
 	}
 }
 
-double HistogramSelectionCC::currentValue() const {
-	return _value;
+double HistogramSelectionCC::currentMinValue() const {   
+	return _minValue;
 }
 
-void HistogramSelectionCC::currentValue(double v) {
-	_value = v;
+void HistogramSelectionCC::currentMinValue(double v) {          
+	initBands();
+	_minValue = v;
+	if (!_useRange) {
+		_maxValue = v;
+	}
 }
 
-QString HistogramSelectionCC::getValues(double localX) {
-	_value = localX;
+double HistogramSelectionCC::currentMaxValue() const {  
+	return _maxValue;
+}
+
+void HistogramSelectionCC::currentMaxValue(double v) { 
+	initBands();
+	_maxValue = v;
+	if (!_useRange) {
+		_minValue = v;
+	}
+}
+
+bool HistogramSelectionCC::useRange() const {
+	return _useRange;
+}
+void HistogramSelectionCC::useRange(bool yesno) { 
+	_minValue = 9999999.0;
+	_maxValue = 9999999.0;
+	_useRange = yesno;
+}
+
+QString HistogramSelectionCC::getValues() {
 	QString values;
-	values = _cceditorRed ? (QString::number(_cceditorRed->currentValue(), 'f')) : "9999999.0";
-
-	values += _cceditorGreen ? ("|"+ QString::number(_cceditorGreen->currentValue(), 'f')) : "|9999999.0";  
-
-	values += _cceditorBlue ? (" | " + QString::number(_cceditorBlue->currentValue(), 'f')) : "|9999999.0";   
+	if (_useRange) {
+		values = _cceditorRed ? (QString::number(_cceditorRed->currentMinValue(), 'f')) : "9999999.0";
+		values += _cceditorRed ? ("|" + QString::number(_cceditorRed->currentMaxValue(), 'f')) : "|9999999.0";
+		values += _cceditorGreen ? ("|" + QString::number(_cceditorGreen->currentMinValue(), 'f')) : "|9999999.0";
+		values += _cceditorGreen ? ("|" + QString::number(_cceditorGreen->currentMaxValue(), 'f')) : "|9999999.0";
+		values += _cceditorBlue ? (" | " + QString::number(_cceditorBlue->currentMinValue(), 'f')) : "|9999999.0";
+		values += _cceditorBlue ? ("|" + QString::number(_cceditorBlue->currentMaxValue(), 'f')) : "|9999999.0";
+	}
+	else {
+		values = _cceditorRed ? (QString::number(_cceditorRed->currentMinValue(), 'f')) : "9999999.0";
+		values += _cceditorGreen ? ("|" + QString::number(_cceditorGreen->currentMinValue(), 'f')) : "|9999999.0";
+		values += _cceditorBlue ? (" | " + QString::number(_cceditorBlue->currentMinValue(), 'f')) : "|9999999.0";
+	}
 
 	return values;
 		
-}
-
-double HistogramSelectionCC::currentX() const { 
-		return _currentX;
 }
 
 void HistogramSelectionCC::initBands() {
@@ -101,60 +132,35 @@ void HistogramSelectionCC::initBands() {
 		series = chartModel()->getSeriesByName("histogram_green");
 		_cceditorGreen = static_cast<HistogramSelectionCC *>(series->operation("histogramselectioncc"));
 		series = chartModel()->getSeriesByName("histogram_blue");
-		_cceditorBlue = static_cast<HistogramSelectionCC *>(series->operation("histogramselectioncc"));
+		_cceditorBlue = static_cast<HistogramSelectionCC *>(series->operation("histogramselectioncc")); 
 	}
 }
-double HistogramSelectionCC::bandX(const QString& bandName)  {
+double HistogramSelectionCC::bandMinValue(const QString& bandName)  {
 	initBands();
 	if (bandName == "histogram_red" && _cceditorRed) {
-		return _cceditorRed->currentX();
+		return _cceditorRed->currentMinValue();
 	}
 	if (bandName == "histogram_green" && _cceditorGreen) { 
-		return _cceditorGreen->currentX();
+		return _cceditorGreen->currentMinValue();
 	}
 	if (bandName == "histogram_blue" && _cceditorBlue) {
-		return _cceditorBlue->currentX();
+		return _cceditorBlue->currentMinValue();
 	}
-	return -100000;
+	return -9999999.0;
 }
 
-void HistogramSelectionCC::setXs(int redX, int greenX, int blueX) {
-	initBands();
-	_cceditorRed->_currentX = redX;
-	_cceditorBlue->_currentX = blueX;
-	_cceditorGreen->_currentX = greenX;
-
-	_cceditorRed->currentXChanged();
-	_cceditorGreen->currentXChanged();
-	_cceditorBlue->currentXChanged();
-}
-
-double HistogramSelectionCC::bandValue(const QString& bandName) {
+double HistogramSelectionCC::bandMaxValue(const QString& bandName) {
 	initBands();
 	if (bandName == "histogram_red" && _cceditorRed) {
-		return _cceditorRed->currentValue();
+		return _cceditorRed->currentMaxValue();
 	}
 	if (bandName == "histogram_green" && _cceditorGreen) {
-		return _cceditorGreen->currentValue();
+		return _cceditorGreen->currentMaxValue();
 	}
 	if (bandName == "histogram_blue" && _cceditorBlue) {
-		return _cceditorBlue->currentValue();
+		return _cceditorBlue->currentMaxValue();
 	}
-	return 9999999.0;
-}
-
-void HistogramSelectionCC::currentX(double x) {
-
-	initBands();
-	if (_band == "histogram_red") {
-		_cceditorRed->_currentX = x;
-	}else if (_band == "histogram_green") {
-		_cceditorGreen->_currentX = x;
-	}
-	else {
-		_cceditorBlue->_currentX = x;
-	}
-	emit currentXChanged();
+	return -9999999.0;
 }
 
 QObject *HistogramSelectionCC::view() {
@@ -163,6 +169,16 @@ QObject *HistogramSelectionCC::view() {
 
 QString HistogramSelectionCC::band() const {
 	return _band;
+}
+
+void HistogramSelectionCC::markersConfirmed() {
+	auto modelPair = modelregistry()->getModel(chartModel()->linkedModelId());
+	if (modelPair.first == "rastercoverage") {
+		LayerModel *rasterLayer = dynamic_cast<LayerModel *>(modelPair.second);
+		rasterLayer->layerManager()->needUpdate(true); // get prepare(ptGEOMETRY) be called at the next redraw
+		rasterLayer->redraw();
+	}
+
 }
 
 void HistogramSelectionCC::execute(const QVariantMap &parameters)

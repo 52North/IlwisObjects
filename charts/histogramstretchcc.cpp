@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Ui; 
 
-REGISTER_CHARTPROPERTYEDITOR("HistogramStretchCC", HistogramStretchCC) 
+REGISTER_CHARTPROPERTYEDITOR("HistogramStretchCC", HistogramStretchCC)  
 
 HistogramStretchCC::HistogramStretchCC() : ChartOperationEditor("HistogramStretchCC", TR("Histogram Stretch CC"), QUrl("HistogramStretchCC.qml"), TR(""))
 {
