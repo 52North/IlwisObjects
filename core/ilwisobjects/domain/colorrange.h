@@ -92,6 +92,8 @@ private:
 class KERNELSHARED_EXPORT ColorPalette : public ItemRange, public ColorRangeBase  {
 public:
     ColorPalette();
+	ColorPalette(const QString& definition);
+
     QVariant impliedValue(const QVariant& v) const;
 
     SPDomainItem item(quint32 raw) const;

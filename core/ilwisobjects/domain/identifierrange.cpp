@@ -38,6 +38,18 @@ IndexedIdentifierRange::IndexedIdentifierRange(const QString &prefix, quint32 co
     add(new IndexedIdentifier(prefix,0, count));
 }
 
+IndexedIdentifierRange::IndexedIdentifierRange(const QString& definition) {
+
+	QStringList parts = definition.split(":");
+	if (parts.size() == 2 && parts[0] == "indexedidentifierrange") {
+		QStringList numberParts = parts[1].split("|");
+		if (numberParts.size() == 2 ) {
+			add(new IndexedIdentifier(parts[0], 0, parts[1].toInt()));
+	
+		}
+	}
+}
+
 bool IndexedIdentifierRange::contains(const QVariant &item , bool ) const{
     if (_start->prefix() != "") {
         if ( _start->prefix() != item.toString().left(_start->prefix().size()))
@@ -167,15 +179,7 @@ void IndexedIdentifierRange::add(const QVariant &v)
 
 QString IndexedIdentifierRange::toString() const
 {
-    QString resource;
-    for(quint32 i=0; i < _count; ++i) {
-        if ( resource!= "")
-            resource = resource +  "|";
-        if ( _start->prefix() != "")
-            resource += _start->prefix() + "_";
-        resource += QString::number(i);
-    }
-    return "indexedidentifierrange:" + resource;
+    return "indexedidentifierrange:" + _start->prefix() + "|" + QString::number(_count);
 }
 
 void IndexedIdentifierRange::remove(const QString& item)
@@ -247,6 +251,17 @@ QString IndexedIdentifierRange::valueAsString(quint32 &index, const Range *rng)
 //-------------------------------------------------------------------------
 NamedIdentifierRange::NamedIdentifierRange()
 {
+}
+
+NamedIdentifierRange::NamedIdentifierRange(const QString& definition)
+{
+	QStringList parts = definition.split(":");
+	if (parts.size() == 2 && parts[0] == "namedidentifierrange") {
+		QStringList items = parts[1].split("|");
+		for (auto item : items) {
+			add(item);
+		}
+	}
 }
 
 NamedIdentifierRange::~NamedIdentifierRange()
@@ -567,6 +582,20 @@ ThematicRange::ThematicRange()
 {
 }
 
+ThematicRange::ThematicRange(const QString& definition) {
+	QStringList parts = definition.split(":");
+	if (parts.size() == 2 && parts[0] == "thematicrange") {
+		QStringList items = parts[1].split("|");
+		for (int i = 0; i < items.size(); i+=4) {
+			quint32 raw = items[i].toUInt();
+			QString name = items[i + 1];
+			QString code = items[i + 2];
+			QString description = items[i + 3];
+			add(new ThematicItem({ name, code, description }, raw));
+		}
+	}
+}
+
 ThematicRange *ThematicRange::merge(const QSharedPointer<ThematicRange> &nr1, const QSharedPointer<ThematicRange> &nr2,RenumberMap *renumberer)
 {
     ThematicRange *newRange = new ThematicRange();
@@ -627,7 +656,12 @@ void ThematicRange::store(QDataStream &stream)  const
 }
 
 QString ThematicRange::toString() const {
-    QString resource = asString();
+	QString resource;
+	for (auto item : _byName) {
+		if (resource != "")
+			resource += "|";
+		resource += QString::number(item.second->raw()) + "|" + item.second->name() + "|" + item.second->as<ThematicItem>()->description() + "|" + item.second->as<ThematicItem>()->code();
+	}
     return "thematicrange:"+ resource;
 }
 

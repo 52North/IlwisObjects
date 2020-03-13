@@ -534,6 +534,18 @@ ColorPalette::ColorPalette() : ColorRangeBase(itPALETTECOLOR,ColorRangeBase::cmR
 
 }
 
+ColorPalette::ColorPalette(const QString& definition) : ColorRangeBase(itPALETTECOLOR, ColorRangeBase::cmRGBA) {
+	QStringList parts = definition.split(":");
+	if (parts.size() == 2 && parts[0] == "colorpalette") {
+		QStringList items = parts[1].split("|");
+		for (auto item : items) {
+			QStringList parts = item.split("=");
+			QColor clr = ColorRangeBase::toColor(parts[1], ColorRangeBase::cmRGBA);
+			add(new ColorItem(clr));
+		}
+	}
+}
+
 QVariant ColorPalette::impliedValue(const QVariant &v) const
 {
     QColor clr = ColorRangeBase::toColor(v, defaultColorModel());

@@ -45,6 +45,25 @@ Ilwis::Coordinate::Coordinate(const Ilwis::Coordinate& crd) : geos::geom::Coordi
 Ilwis::Coordinate::Coordinate(double px, double py, double pz) : geos::geom::Coordinate(px,py,pz){
 }
 
+Ilwis::Coordinate::Coordinate(const QString& scrd)  {
+	QStringList parts = scrd.split(" ");
+	if (parts.size() >= 2 && parts.size() < 4) {
+		bool ok1, ok2;
+		x = parts[0].toDouble(&ok1);
+		y = parts[0].toDouble(&ok2);
+		if (!ok1 || !ok2) {
+			*this = Coordinate();
+			return;
+		}
+		if (parts.size() == 3) {
+			z= parts[2].toDouble(&ok1);
+			if (!ok1 ) {
+				*this = Coordinate();
+			}
+		}
+	}
+}
+
 Ilwis::Coordinate::Coordinate(const std::vector<double>& v)  {
     if ( v.size() < 2) {
         *this = Ilwis::Coordinate();

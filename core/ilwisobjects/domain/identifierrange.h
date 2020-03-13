@@ -48,6 +48,8 @@ public:
      */
     IndexedIdentifierRange(const QString& prefix, quint32 count, quint32 start=0);
 
+	IndexedIdentifierRange(const QString& def);
+
     /**
      * Checks if a certain string is contained in this IndexedIdentifierRange.
      *
@@ -208,6 +210,7 @@ public:
      * Constructs an empty NamedIdentifierRange
      */
     NamedIdentifierRange();
+	NamedIdentifierRange(const QString& definition);
 
     ~NamedIdentifierRange();
 
@@ -387,6 +390,7 @@ private:
 class KERNELSHARED_EXPORT ThematicRange : public NamedIdentifierRange {
 public:
     ThematicRange();
+	ThematicRange(const QString& definition);
     ~ThematicRange() {}
     ThematicRange& operator<<(const QString& itemdef);
     static ThematicRange *merge(const QSharedPointer<ThematicRange> &nr1, const QSharedPointer<ThematicRange> &nr2, Ilwis::RenumberMap *renumberer);

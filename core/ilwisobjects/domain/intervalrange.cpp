@@ -34,6 +34,28 @@ IntervalRange::IntervalRange()
 {
 }
 
+IntervalRange::IntervalRange(const QString& definition) {
+	QStringList parts = definition.split(":");
+	if (parts.size() == 2 && parts[0] == "intervalrange") {
+		QStringList items = parts[1].split("|");
+		for (int i = 0; i < items.size(); i += 7) {
+			quint32 raw = items[i].toUInt();
+			double dmin = items[i + 1].toDouble();
+			double dmax = items[i + 2].toDouble();
+			double res = items[i + 3].toDouble();
+			QString name = items[i + 4];
+			QString code = items[i + 5];
+			QString description = items[i + 6];
+			NumericRange nr(dmin, dmax, res);
+			auto interval = new Interval (name, nr);
+			interval->raw(raw);
+			interval->description(description);
+			interval->code(code);
+			add(interval);
+		}
+	}
+}
+
 QVariant IntervalRange::impliedValue(const QVariant& v) const
 {
     bool ok;
@@ -350,16 +372,20 @@ void IntervalRange::remove(const QString &nm)
      }
 }
 
-QString IntervalRange::toString() const
-{   if ( _items.size() == 0)
-        return sUNDEF;
-    QString names;
-    for(const SPInterval& it: _items) {
-        if ( names != "")
-            names += "|";
-        names += it->name();
-    }
-    return "intervalrange:"+ names;
+QString IntervalRange::toString() const {
+	QString resource;
+	for (auto item : _items) {
+		if (resource != "")
+			resource += "|";
+		resource += QString::number(item->raw()) 
+			+ "|" + item->name() 
+			+ "|" + QString::number(item->range().min()) 
+			+ "|" + QString::number(item->range().max())
+			+ "|" + QString::number(item->range().resolution())
+			+ "|" + item->as<Interval>()->description() 
+			+ "|" + item->as<Interval>()->code();
+	}
+	return "intervalrange:" + resource;
 }
 
 void IntervalRange::store(QDataStream &stream)  const

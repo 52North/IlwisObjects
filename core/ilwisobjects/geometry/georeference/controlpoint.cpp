@@ -36,6 +36,10 @@ ControlPoint::ControlPoint(const Coordinate &crd, const LatLon &ll) : Coordinate
 {
 }
 
+ControlPoint::ControlPoint(const Coordinate &crd, const LatLon &ll, const Pixeld &pix) : Coordinate(crd), _llLocation(ll), _gridLocation(pix), _active(false)
+{
+}
+
 LatLon ControlPoint::llLocation() const
 {
     return _llLocation;

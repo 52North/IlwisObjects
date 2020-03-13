@@ -33,6 +33,7 @@ public:
      * Constructs an empty NumericItemRange
      */
     IntervalRange();
+	IntervalRange(const QString& rng);
 
     //@override
     QVariant impliedValue(const QVariant& v) const;

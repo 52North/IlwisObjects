@@ -48,6 +48,7 @@ NumericRange::NumericRange(const QString& defintion){
                 _min = 1e300;
                 _max = -1;
             }
+			_valuetype = determineType(true);
         }
     }
 }

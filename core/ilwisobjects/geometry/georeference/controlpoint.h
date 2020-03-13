@@ -24,6 +24,7 @@ public:
     ControlPoint(const Coordinate& crd, const Pixel& pix);
     ControlPoint(const Coordinate& crd, const Pixeld& pix );
     ControlPoint(const Coordinate& crd, const LatLon& ll);
+	ControlPoint(const Coordinate& crd, const LatLon& ll, const Pixeld& pix);
 
     LatLon llLocation() const;
     void llLocation(const LatLon& ll);

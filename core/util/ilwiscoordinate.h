@@ -34,6 +34,7 @@ public:
     Coordinate(const geos::geom::Coordinate& crd);
     Coordinate(const Ilwis::Coordinate& crd);
     Coordinate(const std::vector<double> &v);
+	Coordinate(const QString& scrd);
     Coordinate(const QVector3D& crd);
     virtual ~Coordinate();
 

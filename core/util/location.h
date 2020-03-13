@@ -66,6 +66,16 @@ public:
         }
     }
 
+	Location(const QString& ssize) {
+		QStringList parts = ssize.split(" ");
+		if (parts.size() >= 2) {
+			this->x = parts[0].toDouble();
+			this->y = parts[1].toDouble();
+			if (parts.size() == 3)
+				this->z = parts[2].toDouble();
+		}
+	}
+
     Location(Location<CrdType>&& crd) : x(crd.x), y(crd.y), z(crd.z){
         crd.x = crd.y = this->undefined();
     }

@@ -51,6 +51,18 @@ public:
      * \param other QSize
      */
     Size(const QSize& sz) : _xsize(sz.width()), _ysize(sz.height()), _zsize(1) {}
+
+	Size(const QString& sz) {
+		QStringList parts = sz.split(" ");
+		if (parts.size() >= 2) {
+			this->_xsize = parts[0].toDouble();
+			this->_ysize = parts[1].toDouble();
+			if (parts.size() == 3)
+				this->_zsize = parts[2].toDouble();
+			else
+				this->_zsize = 1;
+		}
+	}
     /*!
     Adds a size to another Size. It extends the size with the values of the other Size
      * \param other Size
