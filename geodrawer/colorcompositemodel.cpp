@@ -401,9 +401,12 @@ void ColorCompositeLayerModel::linkAcceptMessage(const QVariantMap& parameters) 
 
 			QString selectionMode = parameters["selectionmode"].toString();
 			if (selectionMode == "none") {
-				calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[0]->datadef().range<NumericRange>(), layer(0)->activeAttribute()->stretchRange(), _limitMin[0], _limitMax[0]);
-				calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[1]->datadef().range<NumericRange>(), layer(1)->activeAttribute()->stretchRange(), _limitMin[1], _limitMax[1]);
-				calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[2]->datadef().range<NumericRange>(), layer(2)->activeAttribute()->stretchRange(), _limitMin[2], _limitMax[2]);
+				if ( parameters["band"].toString() == "histogram_red" || parameters["band"].toString() == "all")
+					calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[0]->datadef().range<NumericRange>(), layer(0)->activeAttribute()->stretchRange(), _limitMin[0], _limitMax[0]);
+				if (parameters["band"].toString() == "histogram_green" || parameters["band"].toString() == "all")
+					calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[1]->datadef().range<NumericRange>(), layer(1)->activeAttribute()->stretchRange(), _limitMin[1], _limitMax[1]);
+				if (parameters["band"].toString() == "histogram_blue" || parameters["band"].toString() == "all")
+					calcMinMaxSelection("", UNDEFSHADERLIMIT, _ccBands[2]->datadef().range<NumericRange>(), layer(2)->activeAttribute()->stretchRange(), _limitMin[2], _limitMax[2]);
 			}
 			else if (parameters["type"] == "histogramselectioncc") {
 				if (parameters.contains("resetstretch")) {
