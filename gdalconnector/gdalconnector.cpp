@@ -239,6 +239,10 @@ QString GdalConnector::constructOutputName(GDALDriverH hdriver) const
     const char *cext = gdal()->getMetaDataItem(hdriver,GDAL_DMD_EXTENSION,NULL);
     QFileInfo fileinfo =sourceRef().toLocalFile();
     QString filename = fileinfo.absoluteFilePath();
+	int index = filename.indexOf(".ilwis4.");
+	if (index != -1) {
+		filename = filename.remove(".ilwis4");
+	}
     if ( cext != 0 ) {
         QString ext(cext);
         int index = filename.lastIndexOf(".");
