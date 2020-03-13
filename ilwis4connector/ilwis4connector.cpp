@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QUuid>
 #include "raster.h"
 #include "version.h"
 #include "connectorinterface.h"
@@ -137,9 +138,34 @@ Ilwis4Connector::~Ilwis4Connector()
 
 }
 
-bool Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options)
+bool Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options, const QJsonValue& jvalue)
 {
- 
+
+	QJsonObject obj = jvalue.toObject();
+	QJsonValue base = obj.value("base");
+	object->code(toString(base, "code"));
+	object->createTime(toString(base, "creationdate"));
+	object->modifiedTime(toString(base, "modifieddate"));
+	object->extendedType(toString(base, "extendedtype").toULongLong());
+	object->readOnly(toBool(base, "logicalreadonly"));
+	object->name(toString(base, "name"));
+
+	QJsonValue context = obj.value("context");
+	if (!context.isUndefined()) {
+		QJsonArray metaobjects = obj.value("metadata").toArray();
+		for (auto&& metat : metaobjects) {
+			QJsonObject meta = metat.toObject();
+			QStringList keys = meta.keys();
+			for (auto key : keys) {
+				QJsonValue v = meta[key];
+				object->resourceRef().addMetaTag(key, v.toString());
+			}
+
+		}
+		object->setDescription(obj.value("description").toString());
+	}
+
+
 	return true;
 }
 
@@ -169,7 +195,7 @@ bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObj
 		nm = options.value("storename").toString();
 	jbase.insert("name", nm);
 	if (!isSupport)
-		jbase.insert("extendedtype", (qint64)obj->extendedType());
+		jbase.insert("extendedtype", QString::number(obj->extendedType()));
 	jbase.insert("code", obj->code());
 
 	if (!isSupport) {
@@ -187,18 +213,22 @@ bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObj
 	}
 
 	jroot.insert("base", jbase);
-	if(!isSupport)
+
+	if (!isSupport) {
+		QString id = QUuid::createUuid().toString() + "/" + obj->name();
+		jroot.insert("aid", id);
 		jroot.insert("context", jcontext);
+	}
 	
 	return true;
 
 }
-void Ilwis4Connector::flush(const IlwisObject *obj, const QJsonObject& jroot) {
+void Ilwis4Connector::flush(const IlwisObject *obj, const QJsonArray& jobjects) {
 	QFile file;
 	Resource res = obj->resource(IlwisObject::cmOUTPUT);
 	file.setFileName(res.url(true).toLocalFile());
 
-	auto doc = QJsonDocument(jroot);
+	auto doc = QJsonDocument(jobjects);
 	auto bytes = doc.toJson();
 	if (file.open(QIODevice::WriteOnly)) {
 		file.write(bytes);
@@ -211,6 +241,14 @@ void Ilwis4Connector::storeDataDef(const DataDefinition& def, QJsonObject& jdata
 	Ilwis4DomainConnector::store(def.domain().ptr(), { "status", "support" }, jdom);
 	jdatadef.insert("domain", jdom);
 	jdatadef.insert("actualrange", def.range<Range>()->toString());
+}
+
+void Ilwis4Connector::loadDataDef(DataDefinition& def, QJsonObject& jdatadef) {
+	IDomain ilobj = Ilwis4DomainConnector::createDomain(IOOptions(), jdatadef["domain"].toObject());
+	Ilwis4DomainConnector::loadMetaData(ilobj.ptr(), IOOptions(), jdatadef["domain"].toObject());
+	QString rangedef = jdatadef["actualrange"].toString();
+	def.domain(ilobj);
+	def.range(Ilwis4DomainConnector::getRange(rangedef));
 }
 
 QString Ilwis4Connector::provider() const

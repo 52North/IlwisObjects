@@ -29,6 +29,7 @@ namespace Ilwis {
 			bool loadData(IlwisObject *, const IOOptions &options = IOOptions());
 			bool storeData(IlwisObject *obj, const IOOptions &options);
 			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+			static bool loadMetaData(IlwisObject* object, const IOOptions&, const QJsonValue& jvalue);
 
 		protected:
 

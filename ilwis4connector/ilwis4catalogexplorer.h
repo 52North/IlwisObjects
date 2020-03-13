@@ -34,6 +34,7 @@ namespace Ilwis {
 
 		private:
 			QFileInfo toLocalFile(const QUrl &datasource) const { return QFileInfo(); }
+			Resource createResource(const QUrl& url) const;
 
 
 			NEW_CATALOGEXPLORER(Ilwis4CatalogExplorer);

@@ -31,6 +31,9 @@ namespace Ilwis {
 			bool loadData(IlwisObject *, const IOOptions &options = IOOptions());
 			bool storeData(IlwisObject *obj, const IOOptions &options);
 			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+			static IDomain createDomain(const IOOptions& options, const QJsonObject& jdomain);
+			static bool loadMetaData(IlwisObject* object, const IOOptions& options, const QJsonValue& jvalue);
+			static Range *getRange(const QString& rangedef);
 		};
 	}
 }

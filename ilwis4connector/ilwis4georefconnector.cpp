@@ -26,12 +26,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobjectconnector.h"
 #include "geometries.h"
 #include "coordinatesystem.h"
+#include "conventionalcoordinatesystem.h"
 #include "georeference.h"
 #include "georefimplementation.h"
 #include "simpelgeoreference.h"
 #include "cornersgeoreference.h"
 #include "controlpoint.h"
 #include "ctpgeoreference.h"
+#include "boundsonlycoordinatesystem.h"
 #include "eigen3/Eigen/LU"
 #include "mathhelper.h"
 #include "planarctpgeoreference.h"
@@ -54,13 +56,81 @@ Ilwis4GeorefConnector::Ilwis4GeorefConnector(const Ilwis::Resource &resource, bo
 
 bool Ilwis4GeorefConnector::store(IlwisObject *obj, const IOOptions &options)
 {
+	QJsonArray objects;
 	QJsonObject jroot;
 
 	store(obj, options, jroot);
+	objects.append(jroot);
 
-	flush(obj, jroot);
+	flush(obj, objects);
+
+	storeData(obj, options);
 
 	return true;
+}
+
+bool Ilwis4GeorefConnector::loadMetaData(IlwisObject* object, const IOOptions& options, const QJsonValue& jvalue) {
+	Ilwis4Connector::loadMetaData(object, options, jvalue);
+
+	GeoReference *grf = static_cast<GeoReference *>(object);
+
+
+	QString typen = jvalue["typename"].toString();
+	
+	if (typen == CTPGeoReference::typeName()) {
+		grf->create(CTPGeoReference::typeName());
+		QJsonArray jtpoints = jvalue["controlpoints"].toArray();
+		QSharedPointer<PlanarCTPGeoReference> ctpgrf = grf->as<PlanarCTPGeoReference>();
+		for (auto jtpoint : jtpoints) {
+			QJsonObject tp = jtpoint.toObject();
+			QString ll = tp["latlonlocation"].toString();
+			QStringList parts = ll.split(",");
+			LatLon llLocation({ parts[0], parts[1] });
+			Coordinate crdPrj(tp["projlocation"].toString());
+			Pixeld pix(tp["gridlocation"].toString());
+			ControlPoint ctp( crdPrj, llLocation,  pix);
+			bool active = tp["isactive"].toBool();
+			ctp.active(active);
+			ctpgrf->setControlPoint(ctp);
+		}
+		int transformation = jvalue["transformation"].toInt();
+		ctpgrf->transformation((PlanarCTPGeoReference::Transformation)transformation);
+		QString slave = jvalue["slaveraster"].toString();
+		grf->resourceRef()["slaveraster"] = slave;
+
+	}
+	else if (typen == CornersGeoReference::typeName()) {
+		grf->create(CornersGeoReference::typeName());
+		QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
+		spGrf->internalEnvelope(jvalue["envelope"].toString());
+		spGrf->compute();
+	}
+	else if (typen == UndeterminedGeoReference::typeName()) {
+
+	}
+	QJsonValue jsize = jvalue["size"];
+	grf->size(jsize.toString());
+	grf->centerOfPixel(jvalue["centerofpixel"].toBool());
+
+	QJsonValue jcsy = jvalue["coordinatesystem"];
+	QJsonValue jcsybase = jcsy["base"];
+	IlwisTypes tp = TypeHelper::name2type(jcsybase["ilwistype"].toString());
+	ICoordinateSystem csy;
+	if (tp == itCONVENTIONALCOORDSYSTEM) {
+		IConventionalCoordinateSystem ccsy;
+		ccsy.prepare();
+		csy = ccsy;
+	}
+	if (tp == itBOUNDSONLYCSY) {
+		IBoundsOnlyCoordinateSystem bcsy;;
+		bcsy.prepare();
+		csy = bcsy;
+	}
+	Ilwis4CoordinateSystemConnector::loadMetaData(csy.ptr(), options, jcsy);
+	grf->coordinateSystem(csy);
+
+	return true;
+
 }
 bool Ilwis4GeorefConnector::store(IlwisObject *obj, const IOOptions& options, QJsonObject& jgrf) {
 
@@ -83,10 +153,11 @@ bool Ilwis4GeorefConnector::store(IlwisObject *obj, const IOOptions& options, QJ
 		int nrOfControlPoints = ctpgrf->nrControlPoints();
 		for (int i = 0; i < nrOfControlPoints; ++i) {
 			QJsonObject jctp;
-			jctp.insert("latlonlocation", ctpgrf->controlPoint(i).llLocation().toString());
-			jctp.insert("projlocation", ctpgrf->controlPoint(i).toString());
-			jctp.insert("gridlocation", ctpgrf->controlPoint(i).gridLocation().toString());
-			jctp.insert("isactive", ctpgrf->controlPoint(i).isActive());
+			ControlPoint ctp = ctpgrf->controlPoint(i);
+			jctp.insert("latlonlocation", ctp.llLocation().toString());
+			jctp.insert("projlocation", ctp.toString());
+			jctp.insert("gridlocation", ctp.gridLocation().toString());
+			jctp.insert("isactive", ctp.isActive());
 			jctps.append(jctp);
 		}
 		jgrf.insert("controlpoints", jctps);
@@ -106,10 +177,6 @@ bool Ilwis4GeorefConnector::storeData(IlwisObject *obj, const IOOptions &options
 
 bool Ilwis4GeorefConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
-	if (!Ilwis4Connector::loadMetaData(obj, options))
-		return false;
-
-
 	return true;
 }
 

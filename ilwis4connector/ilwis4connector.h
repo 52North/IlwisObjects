@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define Ilwis4Connector_H
 
 #include <QNetworkAccessManager>
+#include <QJsonValue> 
 
 namespace Ilwis {
 	class DataDefinition;
@@ -31,7 +32,6 @@ public:
     Ilwis4Connector(const Ilwis::Resource &resource, bool load=true,const IOOptions& options=IOOptions());
     virtual ~Ilwis4Connector();
 
-    bool loadMetaData(IlwisObject* object, const IOOptions&);
     bool loadData(IlwisObject *data, const IOOptions &options);
 
     QString provider() const;
@@ -40,11 +40,33 @@ public:
     static ConnectorInterface *create(const Resource &resource, bool load, const IOOptions &options);
 protected:
 	static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+	static bool loadMetaData(IlwisObject* object, const IOOptions&, const QJsonValue& jvalue);
 	static void storeDataDef(const DataDefinition& def, QJsonObject& obj) ;
-	void flush(const IlwisObject *obj, const QJsonObject& jroot);
+	static void loadDataDef(DataDefinition& def, QJsonObject& jdatadef);
+	void flush(const IlwisObject *obj, const QJsonArray& jobjects);
+	static QString toString(const QJsonValue& value, const QString& key) {
+		QJsonValue v = value[key];
+		if (v == QJsonValue::Undefined)
+			return sUNDEF;
+		return v.toString();
+	}
+	static double toDouble(const QJsonValue& value, const QString& key) {
+		QJsonValue v = value[key];
+		if (v == QJsonValue::Undefined || !v.isDouble())
+			return rUNDEF;
+		return v.toDouble();
+	}
+
+	static bool toBool(const QJsonValue& value, const QString& key) {
+		QJsonValue v = value[key];
+		if (v == QJsonValue::Undefined || !v.isBool())
+			return bUNDEF;
+		return v.toBool();
+	}
 
 private:
     IlwisObject *create() const;
+
 };
 
 }

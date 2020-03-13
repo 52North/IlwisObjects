@@ -22,6 +22,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisdata.h"
 #include "connectorinterface.h"
 #include "domain.h"
+#include "numericdomain.h"
+#include "itemdomain.h"
+#include "textdomain.h"
+#include "colordomain.h"
+#include "numericrange.h"
+#include "domainitem.h"
+#include "itemdomain.h"
+#include "identifieritem.h"
+#include "thematicitem.h"
+#include "itemrange.h"
+#include "identifierrange.h"
+#include "interval.h"
+#include "intervalrange.h"
 #include "datadefinition.h"
 #include "columndefinition.h"
 #include "table.h"
@@ -47,14 +60,57 @@ Ilwis4DomainConnector::Ilwis4DomainConnector(const Ilwis::Resource &resource, bo
 
 bool Ilwis4DomainConnector::store(IlwisObject *obj, const IOOptions &options)
 {
+	QJsonArray objects;
 	QJsonObject jroot;
 
 	store(obj, options, jroot);
+	objects.append(jroot);
 
-	flush(obj, jroot);
+	flush(obj, objects);
+
+	storeData(obj, options);
+
 	return true;
 }
 
+IDomain Ilwis4DomainConnector::createDomain(const IOOptions& options, const QJsonObject& jdomain) {
+	IDomain dom;
+	QJsonObject base = jdomain["base"].toObject();
+	IlwisTypes tp = TypeHelper::name2type(base["ilwistype"].toString());
+	IlwisTypes vt = TypeHelper::name2type(jdomain["valuetype"].toString());
+	QString code = base["code"].toString();
+	if (code == sUNDEF) {
+		if (tp == itNUMERICDOMAIN) {
+			dom = INumericDomain();
+		}
+		else if (tp == itITEMDOMAIN) {
+			if (vt == itINDEXEDITEM) {
+				dom = IIndexedIdDomain();
+			}
+			else if (vt == itNAMEDITEM) {
+				dom = INamedIdDomain();
+			}
+			else if (vt == itTHEMATICITEM) {
+				dom = IThematicDomain();
+			}
+			else if (vt == itNUMERICITEM) {
+				dom = IIntervalDomain();
+			}
+			dom.prepare();
+		}
+		else if (tp == itTEXTDOMAIN) {
+			dom = ITextDomain();
+			dom.prepare();
+		}
+	}
+	else
+		dom = IDomain(code, tp, options);
+	//TODO colordomain
+
+	return dom;
+
+
+}
 bool Ilwis4DomainConnector::store(IlwisObject *obj, const IOOptions& options, QJsonObject& jdomain) {
 	Domain *dom = static_cast<Domain *>(obj);
 	Ilwis4Connector::store(obj, options, jdomain);
@@ -64,16 +120,46 @@ bool Ilwis4DomainConnector::store(IlwisObject *obj, const IOOptions& options, QJ
 	return true;
 }
 
-
 bool Ilwis4DomainConnector::storeData(IlwisObject *obj, const IOOptions &options) {
 
 	return true;
 }
 
+bool Ilwis4DomainConnector::loadMetaData(IlwisObject* object, const IOOptions& options, const QJsonValue& jvalue) {
+	Ilwis4Connector::loadMetaData(object, options, jvalue);
+	
+	static_cast<Domain *>(object)->range(Ilwis4DomainConnector::getRange(jvalue["defaultrange"].toString()));
+
+	return true;
+}
+
+Ilwis::Range  *Ilwis4DomainConnector::getRange(const QString& rangedef) {
+	
+	QStringList parts = rangedef.split(":");
+	if (parts[0] == "numericrange") {
+		return new NumericRange(rangedef);
+	}if (parts[0] == "indexedidentifierrange") {
+		return new IndexedIdentifierRange(rangedef);
+	}
+	else if (parts[0] == "namedidentifierrange") {
+		return new NamedIdentifierRange(rangedef);
+	}
+	else if (parts[0] == "thematicrange") {
+		return new ThematicRange(rangedef);
+	}
+	else if (parts[0] == "intervalrange") {
+		return new IntervalRange(rangedef);
+	}
+	else if (parts[0] == "colorpalette") {
+		return new ColorPalette(rangedef);
+	}
+
+	return 0;
+}
 bool Ilwis4DomainConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
-	if (!Ilwis4Connector::loadMetaData(obj, options))
-		return false;
+	//if (!Ilwis4Connector::loadMetaData(obj, options))
+	//	return false;
 
 
 	return true;

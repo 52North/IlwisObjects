@@ -47,13 +47,15 @@ Ilwis4TableConnector::Ilwis4TableConnector(const Ilwis::Resource &resource, bool
 
 bool Ilwis4TableConnector::store(IlwisObject *obj, const IOOptions &options)
 {
+	QJsonArray objects;
 	QJsonObject jroot;
     if (!Ilwis4Connector::store(obj, options, jroot))
         return false;
  	QJsonObject jtable;
 	Ilwis4TableConnector::store(obj, options, jtable);
 	jroot.insert("table", jtable);
-	flush(obj, jroot);
+	objects.append(jroot);
+	flush(obj, objects);
 
     return true;
 }
@@ -83,9 +85,7 @@ bool Ilwis4TableConnector::storeData(IlwisObject *obj, const IOOptions &options 
 
 bool Ilwis4TableConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
-    if (!Ilwis4Connector::loadMetaData(obj, options))
-        return false;
-  
+
 
     return true;
 }

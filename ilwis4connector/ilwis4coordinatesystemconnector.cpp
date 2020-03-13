@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobjectconnector.h"
 #include "factory.h"
 #include "abstractfactory.h"
+#include "projectionfactory.h"
 
 
 using namespace Ilwis;
@@ -49,13 +50,79 @@ Ilwis4CoordinateSystemConnector::Ilwis4CoordinateSystemConnector(const Ilwis::Re
 
 bool Ilwis4CoordinateSystemConnector::store(IlwisObject *obj, const IOOptions &options)
 {
+	QJsonArray objects;
 	QJsonObject jroot;
 
 	store(obj, options, jroot);
+	objects.append(jroot);
 
-	flush(obj, jroot);
+	flush(obj, objects);
+
+	storeData(obj, options);
 
 	return true;
+}
+
+bool Ilwis4CoordinateSystemConnector::loadMetaData(IlwisObject* object, const IOOptions& options, const QJsonValue& jvalue) {
+	
+
+	Ilwis4Connector::loadMetaData(object, options, jvalue);
+
+	CoordinateSystem *csy = static_cast<CoordinateSystem *>(object);
+
+	if (csy->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
+		ConventionalCoordinateSystem *ccsy = static_cast<ConventionalCoordinateSystem *>(csy);
+		const ProjectionFactory *factory = kernel()->factory<ProjectionFactory>("ProjectionFactory", "proj4");
+		if (!factory)
+			return false;
+		IProjection proj;
+		proj.prepare();
+		QString proj4Def = jvalue["projection"].toString();
+		
+		QString projtype = jvalue["projectioncode"].toString();
+		ProjectionImplementation *impl = factory->create(projtype, proj4Def);
+		if (!impl)
+			return false;
+		proj->setImplementation(impl);
+		ccsy->setProjection(proj);
+
+		QString sell = jvalue["ellipsoid"].toString();
+		QStringList parts = sell.split(" ");
+		if (parts.size() == 2) {
+			double a = parts[0].toDouble();
+			double f = parts[1].toDouble();
+			IEllipsoid ell;
+			ell.prepare();
+			ell->setEllipsoid(a, f);
+			ccsy->setEllipsoid(ell);
+		}
+		else {
+			IEllipsoid ell;
+			ell.prepare(sell);
+			ccsy->setEllipsoid(ell);
+		}
+		QJsonValue jdatum = jvalue["datum"];
+		if (jdatum != QJsonValue::Undefined) {
+			QJsonArray parms = jdatum["parameters"].toArray();
+			std::vector<double> dparms;
+			for (auto& parm : parms) {
+				dparms.push_back(parm.toDouble());
+			}
+			GeodeticDatum gdatum(dparms, ccsy->ellipsoid());
+			gdatum.name(jdatum["name"].toString());
+			gdatum.setArea(jdatum["area"].toString());
+			gdatum.setDescription(jdatum["description"].toString());
+			gdatum.setAuthority(jdatum["authority"].toString());
+			gdatum.code(jdatum["code"].toString());
+		}
+
+	}
+	QString env = jvalue["envelope"].toString();
+	csy->envelope(env);
+
+	return true;
+
+
 }
 bool Ilwis4CoordinateSystemConnector::store(IlwisObject *obj, const IOOptions& options, QJsonObject& jcsy) {
 	CoordinateSystem *csy = static_cast<CoordinateSystem *>(obj);
@@ -63,8 +130,12 @@ bool Ilwis4CoordinateSystemConnector::store(IlwisObject *obj, const IOOptions& o
 
 	if (csy->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
 		ConventionalCoordinateSystem *ccsy = static_cast<ConventionalCoordinateSystem *>(csy);
+		jcsy.insert("projectioncode", ccsy->projection()->code());
 		jcsy.insert("projection", ccsy->projection()->toProj4());
-		jcsy.insert("ellipsoid", ccsy->ellipsoid()->toProj4());
+		if (ccsy->ellipsoid()->code() != "?")
+			jcsy.insert("ellipsoid", ccsy->ellipsoid()->code());
+		else
+			jcsy.insert("ellipsoid", QString("%1 %2").arg(ccsy->ellipsoid()->majorAxis()).arg(ccsy->ellipsoid()->flattening()));
 
 		const std::unique_ptr<GeodeticDatum>& datum = ccsy->datum();
 		if (datum) {
@@ -79,6 +150,7 @@ bool Ilwis4CoordinateSystemConnector::store(IlwisObject *obj, const IOOptions& o
 				parms.append(datum->parameter((GeodeticDatum::DatumParameters)i));
 			}
 			jdatum.insert("parameters", parms);
+			jcsy.insert("datum", jdatum);
 		}
 		jcsy.insert("unit", ccsy->unit());
 	}
@@ -94,10 +166,6 @@ bool Ilwis4CoordinateSystemConnector::storeData(IlwisObject *obj, const IOOption
 
 bool Ilwis4CoordinateSystemConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
-	if (!Ilwis4Connector::loadMetaData(obj, options))
-		return false;
-
-
 	return true;
 }
 

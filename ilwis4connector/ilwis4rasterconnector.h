@@ -16,6 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 namespace Ilwis {
+	class RasterCoverage;
+	typedef IlwisData<RasterCoverage> IRasterCoverage;
+
 	namespace Ilwis4C {
 
 		class Ilwis4RasterConnector : public Ilwis4Connector
@@ -31,6 +34,11 @@ namespace Ilwis {
 
 		protected:
 			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
+
+		private:
+			QString _datafile;
+			IRasterCoverage _dataRaster;
+
 		};
 	}
 }

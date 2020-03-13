@@ -15,6 +15,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "connectorinterface.h"
 #include "mastercatalog.h"
 #include "ilwisobjectconnector.h"
@@ -81,11 +84,39 @@ std::vector<Resource> Ilwis4CatalogExplorer::loadItems(const IOOptions &)
 				for (auto resource : resources)
 					items.push_back(resource);
 			}
+			else {
+				auto res = createResource(url);
+				if ( res.isValid())
+					items.push_back(res);
+			}
 		}
 	}
 	mastercatalog()->addItems(items);
 	return items;
 
+}
+
+Resource Ilwis4CatalogExplorer::createResource(const QUrl& url) const {
+	Resource res;
+	QFileInfo inf = url.toLocalFile();
+	QFile file;
+	file.setFileName(inf.absoluteFilePath());
+	if (file.open(QIODevice::ReadOnly)) {
+		QString meta = file.readAll();
+		QJsonDocument doc = QJsonDocument::fromJson(meta.toUtf8());
+		if (!doc.isNull()) {
+			QJsonArray jobjects = doc.array();
+			QJsonValue jvalue = jobjects.at(0);
+			QJsonValue jilwisobject = jvalue["ilwisobject"];
+			QJsonValue jbase = jilwisobject["base"];
+			res = Resource(url, TypeHelper::name2type(jbase["ilwistype"].toString()),true);
+			res.modifiedTime(Time(jbase["modifieddate"].toString()), true);
+			res.createTime(Time(jbase["creationdate"].toString()));
+			res.setExtendedType(jbase["extendedtype"].toString().toULongLong());
+			res.code(jbase["code"].toString());
+		}
+	}
+	return res;
 }
 
 IlwisObject *Ilwis4CatalogExplorer::createType(IlwisTypes tp) {
