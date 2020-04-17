@@ -20,6 +20,7 @@
     <ClInclude Include="opencv\histogramequalization.h" />
     <ClInclude Include="opencv\laplacefilter.h" />
     <ClInclude Include="opencv\medianblurfilter.h" />
+    <ClInclude Include="opencv\mergepictures.h" />
     <ClInclude Include="opencv\opencvhelper.h" />
     <ClInclude Include="opencv\scharrfilter.h" />
     <ClInclude Include="opencv\sobelfilter.h" />
@@ -36,6 +37,7 @@
     <ClCompile Include="opencv\histogramequalization.cpp" />
     <ClCompile Include="opencv\laplacefilter.cpp" />
     <ClCompile Include="opencv\medianblurfilter.cpp" />
+    <ClCompile Include="opencv\mergepictures.cpp" />
     <ClCompile Include="opencv\opencvhelper.cpp" />
     <ClCompile Include="opencv\opencvmodule.cpp" />
     <ClCompile Include="opencv\opencvoperation.cpp" />

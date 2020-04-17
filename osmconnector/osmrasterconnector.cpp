@@ -72,65 +72,40 @@ bool OSMRasterConnector::loadMetaData(IlwisObject *obj, const IOOptions &options
 
 bool OSMRasterConnector::loadData(IlwisObject* obj, const IOOptions& options) {
 
-	auto ftilex = [](const Coordinate& ll, int zoomLevel) ->int {
-		return (int)(floor((ll.x + 180.0) / 360.0 * (1 << zoomLevel)));
-	};
-
-	auto ftiley = [](const Coordinate& ll, int zoomLevel) ->int {
-		double latrad = ll.y * M_PI / 180.0;
-		return (int)(floor((1.0 - asinh(tan(latrad)) / M_PI) / 2.0 * (1 << zoomLevel)));
-	};
-
-	auto llTile = [](const Pixel& tile, int zoomLevel) -> Coordinate {
-		double f = (double)tile.x / (double)(1 << zoomLevel);
-		double lonLeft = f * 360.0 - 180;
-		double n = M_PI - 2.0 * M_PI * tile.y / (double)(1 << zoomLevel);
-		double latBottom = 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
-
-		return Coordinate(lonLeft, latBottom);
-	};
-
-	qDebug() << "calling loaddata";
+	_binaryIsLoaded = false;
 	if (!_dataRaster.isValid()) {
 		if (!_dataRaster.prepare(source())) {
 			return false;
 		}
-
-		//vsicurl/ftp://user:password@example.com/foldername/file.zip/example.shp
-		auto bb = _dataRaster->resourceRef()["tileboundingbox"].toString();
-		QStringList tilebb = bb.split(" ");
-		if (tilebb.size() != 5) {
-			kernel()->issues()->log("Tile boundaries are not set correctly. OSM layer can not be retrieved:" + bb);
-			return false;
-		}
-			   		 	
+	}
+	auto tilebb = _dataRaster->resourceRef()["tileboundingbox"].toString();
+	QStringList tilebbs = tilebb.split(" ");
+	if (tilebbs.size() != 5) {
+		kernel()->issues()->log("Tile boundaries are not set correctly. OSM layer can not be retrieved:" + tilebb);
+		return false;
+	}
+	
+	tilebb.replace(" ", "_");
+	QString basePath = context()->cacheLocation().toLocalFile();
+	QString inputFileName = basePath + "/osm_mergedtiles_" + tilebb + ".png";
+	if (QFile::exists(inputFileName)) {
+		QUrl localUrl = QUrl::fromLocalFile(inputFileName);
 		Resource res = obj->resource();
-		QString path = res.url(true).toString();
-		res.setUrl(path, true, false);
-		res.setUrl(path, false, false);
-		QFileInfo inf(res.url(true).toLocalFile());
-		QString server = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/backgroundmap-server", QString(""));
+		res.setUrl(localUrl, true, false);
+		res.setUrl(localUrl, false, false);
+		res.addProperty("colormodel", "rgba");
 
 		const ConnectorFactory *factory = kernel()->factory<ConnectorFactory>("ilwis::ConnectorFactory");
 		ConnectorInterface *connector = factory->createFromResource<>(res, "gdal");
-		int startTileX = tilebb[0].toInt();
-		int startTileY = tilebb[1].toInt();
-		int endTileX = tilebb[2].toInt();
-		int endTileY = tilebb[3].toInt();
-		int zoom = tilebb[4].toInt();
-		for (int y = startTileY; y < endTileY; ++y) {
-			for (int x = startTileX; x < endTileX; ++x) {
-				QString request = server + QString::number(zoom) + "/" + QString::number(x) + "/" + QString::number(y) + ".png";
-				QString gdalReq = "vsicurl/" + request;
-				IOOptions opt = options;
-				opt.addOption("vsicurl", gdalReq);
-				connector->loadData(obj, opt);
-			}
-		}
 
-
+		connector->loadData(obj, options);
+		_binaryIsLoaded = true;
+		emit finishedReadingData();
+		RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
+		qDebug() << "SIZESSSS" << raster->size().toString() << raster->grid()->size().toString();
 		return true;
 	}
+
 	return false;
 }
 

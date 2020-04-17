@@ -104,11 +104,6 @@ bool SentinelRasterConnector::loadMetaData(IlwisObject *obj, const IOOptions &op
 bool SentinelRasterConnector::loadData(IlwisObject* obj, const IOOptions& options) {
 
 	if (!_binaryIsLoaded) {
-		const ConnectorFactory *factory = kernel()->factory<ConnectorFactory>("ilwis::ConnectorFactory");
-		if (!factory) {
-			kernel()->issues()->log("Couldn't find factory for gdal connector");
-			return false;
-		}
 		Resource res = obj->resource();
 		if (!res.hasProperty("datafile"))
 			return false;

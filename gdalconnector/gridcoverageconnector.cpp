@@ -227,23 +227,27 @@ bool RasterCoverageConnector::handlePaletteCase(Size<> &rastersize, RasterCovera
     return true;
 }
 
-bool RasterCoverageConnector::handleColorCase(const Size<> &rastersize, RasterCoverage* raster, GDALColorInterp colorType){
+bool RasterCoverageConnector::handleColorCase(const Size<> &rastersize, RasterCoverage* raster, GDALColorInterp colorType) {
 
+	int layerCount = gdal()->layerCount(_handle->handle());
+	if (colorType >= 3 && colorType <= 5) {
+		_colorModel = ColorRangeBase::cmRGBA;
+	} else if (colorType >= 7 && colorType <= 9) {
+		_colorModel = ColorRangeBase::cmHSLA;
+	}
+	else {
+		_colorModel = ColorRangeBase::cmCYMKA;
+	}
 
-    if ( colorType >= 3 && colorType <=5)
-        _colorModel = ColorRangeBase::cmRGBA;
-    else if ( colorType >= 7 && colorType <= 9)
-        _colorModel = ColorRangeBase::cmHSLA;
-    else
-        _colorModel = ColorRangeBase::cmCYMKA;
-
-     for(int layer =1 ; layer < rastersize.zsize(); ++layer){
-         auto layerHandle = gdal()->getRasterBand(_handle->handle(), 1);
-        GDALColorInterp ctype = gdal()->colorInterpretation(layerHandle);
-        if ( ctype == GCI_AlphaBand){
-            _hasTransparency = true;
-            break;
-        }
+     for(int layer =1 ; layer <= layerCount; ++layer){
+         auto layerHandle = gdal()->getRasterBand(_handle->handle(), layer);
+		 if (layerHandle) {
+			 GDALColorInterp ctype = gdal()->colorInterpretation(layerHandle);
+			 if (ctype == GCI_AlphaBand) {
+				 _hasTransparency = true;
+				 break;
+			 }
+		 }
      }
     quint32 noOfComponents = _hasTransparency ? 4 : 3;
     std::map<int, int> vminRasterAll, vmaxRasterAll;
@@ -452,13 +456,13 @@ void RasterCoverageConnector::setColorValues(GDALColorInterp colorType, std::vec
         switch (colorType){
         case GCI_RedBand:
         case GCI_HueBand:
-            values[i] = ( colorpart << 16) | ( _hasTransparency ? 0 : 0xFF000000); break;
+            values[i] = ( colorpart ) | ( _hasTransparency ? 0 : 0xFF000000); break;
         case GCI_GreenBand:
         case GCI_SaturationBand:
             values[i] = ((quint32)values[i]) | ( colorpart << 8);break;
         case GCI_BlueBand:
         case GCI_LightnessBand:
-            values[i] = ((quint32)values[i]) | colorpart;
+            values[i] = ((quint32)values[i] ) | colorpart << 16;
         case GCI_AlphaBand:
              values[i] = ((quint32)values[i]) | ( colorpart << 24);break;
         default:
@@ -511,6 +515,21 @@ bool RasterCoverageConnector::loadData(IlwisObject* data, const IOOptions& optio
 		_offsetScales.resize(1);
 		_offsetScales[0].offset = sourceRef()["offset"].toDouble();
 		_offsetScales[0].scale = sourceRef()["scale"].toDouble();
+	}
+
+	if (sourceRef().hasProperty("colormodel")) {
+		QString cmodel = sourceRef()["colormodel"].toString();
+		if (cmodel == "rgba") {
+			_colorModel = ColorRangeBase::cmRGBA;
+			_gdalValueType = GDT_Byte;
+			_typeSize = 1;
+		}
+		else if (cmodel == "hsla") {
+			_colorModel = ColorRangeBase::cmHSLA;
+			_gdalValueType = GDT_Byte;
+			_typeSize = 1;
+		} if (cmodel == "cmyka")
+			_colorModel = ColorRangeBase::cmCYMKA;
 	}
 
     UPGrid& grid = raster->gridRef();

@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QDir>
 #include <QDesktopServices>
 #include <QJsonDocument>
+#include <QLibrary>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "errorobject.h"
@@ -108,6 +109,15 @@ void IlwisContext::init(const QString &ilwisDir)
             file.setFile(configfile);
         }
     }
+	QLibrary lib;
+	QString ssl1 = _ilwisDir.absoluteFilePath() + "/libeay32.dll";
+	lib.setFileName(ssl1);
+	bool r = lib.load();
+	QString ssl2 = _ilwisDir.absoluteFilePath() + "/ssleay32.dll";
+	QLibrary lib2;
+	lib2.setFileName(ssl2);
+	r = lib2.load();
+
     _configuration.prepare(file.absoluteFilePath());
 
     QString location = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/cache-location",QString(sUNDEF));
@@ -122,7 +132,7 @@ void IlwisContext::init(const QString &ilwisDir)
     if (!cacheDir.exists()){
         cacheDir.mkpath(location);
     }
-    QStringList files = cacheDir.entryList(QStringList() << "gridblock*.*", QDir::Files);
+    QStringList files = cacheDir.entryList(QStringList() << "gridblock*.*" << "osm*.png", QDir::Files);
     for(QString file : files)
         cacheDir.remove(file);
 

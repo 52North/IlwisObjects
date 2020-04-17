@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QObject>
 #include <QVariant>
+#include <QtNetwork>
+#include <QtCore>
 #include <QColor>
 #include "box.h"
 #include "ilwisdata.h"
@@ -51,12 +53,24 @@ namespace Ilwis {
 
             NEW_LAYERMODEL(BackgroundLayer);
 
+		public slots:
+			void downloadFinished();
+			void downloadReadyRead();
+			void activateLayer();
+
         private:
             QColor _backgroundcolor;
             OGLBuffer _buffer;
 			IRasterCoverage _osmRaster;
+			QNetworkAccessManager _manager;
+			QNetworkReply *_currentDownload = nullptr;
+			QQueue<QUrl> _downloadQueue;
+			QString _osmInputFiles;
+			QFile _output;
 
 			void updateOSMRaster();
+			QString makeFileName(const QString& url) const;
+			void getData();
 
         };
     }

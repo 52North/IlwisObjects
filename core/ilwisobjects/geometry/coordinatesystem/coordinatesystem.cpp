@@ -116,8 +116,12 @@ bool CoordinateSystem::addCsyProperty(const ICoordinateSystem& csy, Resource& re
 			resource.setExtendedType(resource.extendedType() | itCOORDSYSTEM);
 		}
 		else if (csy->ilwisType() == itBOUNDSONLYCSY) {
-			QString code("code=envelope:" + csy->envelope().toString());
-			resource.addProperty("coordinatesystem", code, true);
+			if (csy->code() == "unknown" || csy->code() == "code=csy:unknown") {
+				resource.addProperty("coordinatesystem", "unknown");
+			}else
+				resource.addProperty("coordinatesystem", "boundsonly");
+
+			resource.addProperty("envelope", csy->envelope().toString(), true);
 		}
 		else {
 			QUrl url = csy->resourceRef().url(true);

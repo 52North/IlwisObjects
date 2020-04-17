@@ -44,7 +44,8 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
 	if (handle) {
 		QUrl url = QUrl::fromLocalFile(file.absoluteFilePath());
 		quint64 sz = file.size();
-		int count = layerCount(handle);
+		bool isColor;
+		int count = layerCount(handle, isColor);
 		if (count == 0) {// could be a complex dataset
 			handleComplexDataSet(handle->handle());
 		}
@@ -102,11 +103,22 @@ GDALItems::GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTy
 	}
 }
 
-int GDALItems::layerCount(GdalHandle* handle)
+int GDALItems::layerCount(GdalHandle* handle, bool& isColorRaster)
 {
 	int count = 0;
+	isColorRaster = false;
 	if (handle->type() == GdalHandle::etGDALDatasetH) {
 		count = gdal()->layerCount(handle->handle());
+		if (count == 3) {
+			auto layerHandle = gdal()->getRasterBand(handle->handle(), 1);
+			if (layerHandle) {
+				int colorType = gdal()->colorInterpretation(layerHandle);
+				if (colorType >= 3 && colorType <= 5) {
+					count = 1;
+					isColorRaster = true;
+				}
+			}
+		}
 	}
 	else if (handle->type() == GdalHandle::etOGRDataSourceH) {
 		count = gdal()->getLayerCount(handle->handle());
@@ -122,7 +134,8 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 	GdalHandle* handle = gdal()->openFile(file.absoluteFilePath(), i64UNDEF, GA_ReadOnly, false);
 	if (handle) {
 		quint64 sz = file.size();
-		int count = layerCount(handle);
+		bool isColor;
+		int count = layerCount(handle, isColor);
 		if (count == 0) {// could be a complex dataset
 			if (handle->type() == GdalHandle::etGDALDatasetH) { // doesnt work for ogr datassets
 				addItem(handle, QUrl::fromLocalFile(file.absoluteFilePath()), QString::number(handleComplexDataSet(handle->handle())), iUNDEF, itCATALOG, itFILE | itRASTER);
@@ -475,8 +488,9 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
     if ( srshandle)
         gdal()->releaseSrsHandle(handle, srshandle, path);
 
-    if(ret == i64UNDEF){
-        Resource resource("code=csy:unknown",itCOORDSYSTEM);
+    if(isNumericalUndef(ret)){
+		code = "code=csy:unknown";
+        Resource resource(code,itCOORDSYSTEM);
         Envelope env = gdal()->envelope(handle,0);
         if ( env.isValid() && !env.isNull()){
             QString dim = QString("%1 x %2 x %3 x %4").arg(env.min_corner().x).arg(env.min_corner().y).arg(env.max_corner().x).arg(env.max_corner().y);

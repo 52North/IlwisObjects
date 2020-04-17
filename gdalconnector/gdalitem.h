@@ -35,7 +35,7 @@ private:
     int handleComplexDataSet(void *handle);
     quint64 numbertype2domainid(const QString &numbertype) const;
     quint64 findSize(const QFileInfo &inf);
-    int layerCount(GdalHandle* handle);
+    int layerCount(GdalHandle* handle, bool& isColorRaster);
     quint64 caseWithurl(const QStringList &parts, Size<> &sz, QString &shortname);
     quint64 caseWithSquareBrackets(const QStringList &parts, Size<> &sz, QString &shortnames);
     Size<> getSize(const QStringList& szMembers);

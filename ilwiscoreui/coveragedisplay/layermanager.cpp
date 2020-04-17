@@ -453,6 +453,7 @@ QQmlListProperty<LayerModel> Ilwis::Ui::LayerManager::childLayersPrivate()
         LayerModel *lyr = static_cast<LayerModel *>(root->child(layerIndex));
         _childeren.push_back(lyr);
     }
+	//std::reverse(_childeren.begin(), _childeren.end());
     return QQmlListProperty<LayerModel>(this, _childeren);
 }
 

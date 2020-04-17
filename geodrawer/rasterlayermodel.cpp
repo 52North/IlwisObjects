@@ -395,6 +395,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
         refreshPalette();
         add2ChangedProperties("palette");
         _prepared |= LayerModel::ptRENDER;
+		fChanges = true;
     }
 	return fChanges;
 }

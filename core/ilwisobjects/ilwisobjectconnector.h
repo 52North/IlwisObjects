@@ -81,8 +81,7 @@ private:
 
 signals:
     void dataAvailable(QBuffer *buf, bool lastBlock);
-public slots:
-
+	void finishedReadingData();
 
 
 };

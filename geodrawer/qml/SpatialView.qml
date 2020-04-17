@@ -271,7 +271,7 @@ Item {
                 sceneObject = new GL.THREE.Group();
                 sceneObject.name = layer.nodeId;
                 sceneObject.renderOrder = zorder++;
-                scene.add(sceneObject);
+				scene.add(sceneObject);
             }
             if (layer.drawType != "raster") {
 			    // remove all previous renderings of this layer
@@ -354,7 +354,6 @@ Item {
                 }else{
 					ok = layer.prepare(1) // ptRENDER = 1
 				}
-				console.debug("aaaaaaaaaaaa", layer.name, ok,layer.updateGeometry)
 				if ( ok){
 					setScene(layer)
 				}
