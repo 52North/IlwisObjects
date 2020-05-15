@@ -44,6 +44,7 @@ Item {
         var selectedIds
         if ( !uicontext.keyPressed(Qt.Key_Control) &&  !uicontext.keyPressed(Qt.Key_Shift))    {
             selectedIds = objectid
+					console.debug("aaaaaaaaaaa3")
             for(var i = 0; i < currentCatalog.resources.length; ++i){
                 if (currentCatalog.resources[i].isSelected && currentCatalog.resources[i].id !== objectid)
                     currentCatalog.resources[i].isSelected=false
