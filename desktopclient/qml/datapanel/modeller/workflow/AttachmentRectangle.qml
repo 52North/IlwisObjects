@@ -36,7 +36,6 @@ Rectangle {
     function finishFlow(){
         var pnt = wfCanvas.workingLineBegin
         if ( pnt.x !== -1 && pnt.y !== -1){
-		console.debug("ccccccccccccccccc2", isSelected)
             attachFlow(owner, index)
             wfCanvas.workingLineBegin = Qt.point(-1,-1)
             currentItem.isSelected = false
