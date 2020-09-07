@@ -70,6 +70,14 @@ void JunctionNode::nodeId(quint64 id)
     name(QString("junction_%1").arg(id));
 }
 
+quint32 JunctionNode::conditionId() const {
+	WorkFlowParameter parm = _inputParameters1[WorkFlowCondition::cpTEST];
+	if (parm.inputLink()) {
+		return parm.inputLink()->id();
+	}
+	return iUNDEF;
+}
+
 bool JunctionNode::isValid(const Workflow *workflow, WorkFlowNode::ValidityCheck) const
 {
     WorkFlowParameter trueParm = input(WorkFlowCondition::cpTRUECASE);

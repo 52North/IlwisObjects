@@ -101,7 +101,7 @@ MenuModel *MasterCatalogModel::bookMarkMenu() {
 		if (res.url().toString().indexOf("ilwis://system") != 0) {
 			auto *item = _bookmarkMenu->newItem();
 			item->setData(res.name(), _bookmarkMenu->roleid("men_title"));
-			item->setData(res.url().toString(), _bookmarkMenu->roleid("men_url"));
+			item->setData(res.url().toString(), _bookmarkMenu->roleid("men_url"));  
 		}
 	}
 	return _bookmarkMenu;
@@ -121,7 +121,7 @@ void MasterCatalogModel::addDefaultFilters(){
     _defaultFilters.append(new CatalogFilterModel(this,"ilwis://system/projections","Projections"));
     _defaultFilters.append(new CatalogFilterModel(this,"ilwis://system/ellipsoids","Ellipsoids"));
     _defaultFilters.append(new CatalogFilterModel(this,INTERNAL_CATALOG,"Temporary Catalog"));
-    _defaultFilters.append(new CatalogFilterModel(this,"","-- Most recently used --------------------------",""));
+    //_defaultFilters.append(new CatalogFilterModel(this,"","-- Most recently used --------------------------",""));
 
     _defaultFilters.append(new CatalogFilterModel(this,"","-- Master Catalog-------------------------------",""));
     _defaultFilters.append(new CatalogFilterModel(this,filter.arg(QString::number(itRASTER)),"Master Catalog Rasters","raster20.png"));
@@ -536,8 +536,12 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
     try {
         auto clearList = [&](){
             for(ResourceModel *model : _selectedResources){
-                model->setParent(0);
-                model->deleteLater();
+				model->setParent(0);
+				model->deleteLater();
+				model->setIsSelected(false);
+				auto *res = currentCatalog()->id2ResourceModel(model->resourceRef().id());
+				if ( res)
+					res->setIsSelected(false);
             }
 			for (IlwisObjectModel *model : _selectedObjects) {
 				model->setParent(0);
@@ -559,12 +563,16 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
         kernel()->issues()->silent(true);
         for(auto objectid : parts){
             bool ok;
-            Resource resource = mastercatalog()->id2Resource(objectid.toULongLong(&ok));
+			quint64 curId = objectid.toULongLong(&ok);
+            Resource resource = mastercatalog()->id2Resource(curId);
             if (!ok)
                 continue;
 
 			mastercatalog()->noRefreshCatalog(true);
 			ResourceModel *ioModel = new ResourceModel(resource, this);
+			auto *res = currentCatalog()->id2ResourceModel(curId);
+			if (res)
+				res->setIsSelected(true);
 			mastercatalog()->noRefreshCatalog(false);
             _selectedResources.append(ioModel);
             emit selectionChanged();
@@ -582,9 +590,8 @@ void MasterCatalogModel::setSelectedObjects(const QString &objects)
 QQmlListProperty < Ilwis::Ui::CatalogOperationEditor> MasterCatalogModel::catalogOperationEditors() {
 	std::vector<ResourceModel *> maps;
 	for (auto *object : _selectedResources) {
-		//if (hasType(object->type(), itCOVERAGE)) {
+		if ( object)
 			maps.push_back(object);
-		//}
 	}
 	return QQmlListProperty<CatalogOperationEditor>(this, _catalogOperations.selectedOperations(maps));
 }
@@ -627,7 +634,7 @@ CatalogModel *MasterCatalogModel::newCatalog(const QString &inpath, const QStrin
         }else
             res = Resource(inpath, itCATALOG);
 
-        if ( filter != "container=ilwis://mastercatalog")
+       // if ( filter != "container=ilwis://mastercatalog")
             res.addProperty("filter",filter);
         res.addProperty("canbeanimated",canBeAnimated);
 
@@ -1065,9 +1072,11 @@ QString MasterCatalogModel::selectedIds() const
 {
     QString selected;
     for(auto obj : _selectedResources ){
-        if ( selected != "")
-            selected += "|";
-        selected += obj->id();
+		if (obj) {
+			if (selected != "")
+				selected += "|";
+			selected += obj->id();
+		}
 
     }
     return selected;
@@ -1203,7 +1212,7 @@ void CatalogWorker::process(){
             emit updateBookmarks();
         }
         if (!uicontext()->abort()){
-            calculatelatLonEnvelopes();
+            addAdjustements();
             emit finished();
         }
         emit updateCatalog();
@@ -1246,7 +1255,7 @@ void CatalogWorker::calcLatLon(const ICoordinateSystem& csyWgs84,Ilwis::Resource
     }
 }
 
-void CatalogWorker::calculatelatLonEnvelopes(){
+void CatalogWorker::addAdjustements(){
     kernel()->issues()->silent(true);
     QString query = QString("(type & %1) != 0").arg(QString::number(itCOVERAGE));
     std::vector<Resource> resources =mastercatalog()->select(query);

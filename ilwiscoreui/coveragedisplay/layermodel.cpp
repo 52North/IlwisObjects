@@ -652,3 +652,7 @@ bool LayerModel::canUse(quint64 id)  {
 QVariant LayerModel::coord2value(const Coordinate &c, const QString &attrname) const {
 	return QVariant();
 }
+
+QColor LayerModel::color(const IRepresentation &rpr, const QString& propName, double value, LayerModel::ColorValueMeaning cvm) {
+	return QColor();
+}

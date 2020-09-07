@@ -129,7 +129,7 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             kernel()->issues()->log(TR("Domain must have a valid name"));
             return QString::number(i64UNDEF);
         }
-        expression = QString("script %1{format(stream,\"domain\")}=createthematicdomain(\"%2\",%3,\"%4\"")
+        expression = QString("script %1{format(ilwis4,\"i4domain\")}=createthematicdomain(\"%2\",%3,\"%4\"")
                 .arg(parms["name"].toString())
                 .arg(parms["items"].toString())
                 .arg(parms["strict"].toBool() ? "yes" : "no")
@@ -145,7 +145,7 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             return sUNDEF;
         }
 		QString v = OperationHelper::quote(parms["name"].toString());
-        expression = QString("script %1{format(stream,\"domain\")}=createidentifierdomain(\"%2\",%3,\"%4\"")
+        expression = QString("script %1{format(ilwis4,\"i4domain\")}=createidentifierdomain(\"%2\",%3,\"%4\"")
                 .arg(v)
                 .arg(parms["items"].toString())
                 .arg(parms["strict"].toBool() ? "yes" : "no")
@@ -160,7 +160,7 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             return sUNDEF;
         }
 		QString v = OperationHelper::quote(parms["name"].toString());
-        expression = QString("script %1{format(stream,\"domain\")}=createpalettedomain(\"%2\",%3,\"%4\"")
+        expression = QString("script %1{format(ilwis4,\"i4domain\")}=createpalettedomain(\"%2\",%3,\"%4\"")
                 .arg(v)
                 .arg(parms["items"].toString())
                 .arg(parms["strict"].toBool() ? "yes" : "no")
@@ -175,7 +175,7 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
             return sUNDEF;
         }
 		QString v = OperationHelper::quote(parms["name"].toString());
-        expression = QString("script %1{format(stream,\"domain\")}=createintervaldomain(\"%2\",%3,%4,\"%5\"")
+        expression = QString("script %1{format(ilwis4,\"i4domain\")}=createintervaldomain(\"%2\",%3,%4,\"%5\"")
                 .arg(v)
                 .arg(parms["items"].toString())
                 .arg(parms["resolution"].toDouble())
@@ -191,7 +191,7 @@ QString ObjectCreator::createItemDomain(const QVariantMap &parms){
 			return sUNDEF;
 		}
 		QString v = OperationHelper::quote(parms["name"].toString());
-		expression = QString("script %1{format(stream,\"domain\")}=createtimeintervaldomain(\"%2\",\"%3\",\"%4\"")
+		expression = QString("script %1{format(ilwis4,\"i4domain\")}=createtimeintervaldomain(\"%2\",\"%3\",\"%4\"")
 			.arg(v)
 			.arg(parms["items"].toString())
 			.arg(parms["resolution"].toString())
@@ -216,7 +216,7 @@ QString ObjectCreator::createNumericDomain(const QVariantMap &parms)
     }
 
 	QString v = OperationHelper::quote(parms["name"].toString());
-    QString expression = QString("script %1{format(stream,\"domain\")}=createnumericdomain(%2,%3,%4,%5,\"%6\"")
+    QString expression = QString("script %1{format(ilwis4,\"i4domain\")}=createnumericdomain(%2,%3,%4,%5,\"%6\"")
             .arg(v)
             .arg(parms["minvalue"].toDouble())
             .arg(parms["maxvalue"].toDouble())
@@ -244,7 +244,7 @@ QString ObjectCreator::createTimeDomain(const QVariantMap &parms)
 	}
 
 	QString v = OperationHelper::quote(parms["name"].toString());
-	QString expression = QString("script %1{format(stream,\"domain\")}=createtimeddomain(\"%2\", \"%3\", \"%4\", \"%5\"")
+	QString expression = QString("script %1{format(ilwis4,\"i4domain\")}=createtimeddomain(\"%2\", \"%3\", \"%4\", \"%5\"")
 		.arg(v)
 		.arg(parms["minvalue"].toString())
 		.arg(parms["maxvalue"].toString())
@@ -269,7 +269,7 @@ QString ObjectCreator::createBoundsOnlyCoordinateSystem(const QVariantMap &parms
 		return sUNDEF;
 	}
 	QString v = OperationHelper::quote(name);
-    expression = QString("script %1{format(stream,\"coordinatesystem\")}=createboundsonlycsy(%2,%3,%4,%5,\"%6\")").arg(v)
+    expression = QString("script %1{format(ilwis4,\"i4coordinatesystem\")}=createboundsonlycsy(%2,%3,%4,%5,\"%6\")").arg(v)
             .arg(parms["minx"].toDouble())
             .arg(parms["miny"].toDouble())
             .arg(parms["maxx"].toDouble())
@@ -290,7 +290,7 @@ QString ObjectCreator::createGeoreference(const QVariantMap &parms){
     QString expression;
     if (parms["subtype"].toString() == "corners") {
 		QString v = OperationHelper::quote(parms["name"].toString());
-        expression = QString("script %1{format(stream,\"georeference\")}=createcornersgeoreference(%2,%3,%4,%5,%6,%7,%8,\"%9\")").arg(v)
+        expression = QString("script %1{format(ilwis4,\"i4georef\")}=createcornersgeoreference(%2,%3,%4,%5,%6,%7,%8,\"%9\")").arg(v)
             .arg(parms["minx"].toDouble())
             .arg(parms["miny"].toDouble())
             .arg(parms["maxx"].toDouble())
@@ -336,14 +336,14 @@ QString ObjectCreator::createProjectedCoordinateSystemFromCode(const QVariantMap
     QString expression;
     if ( parms.contains("epsg")){
 		QString v = OperationHelper::quote(parms["name"].toString());
-        expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(%2)").
+        expression = QString("script %1{format(ilwis4,\"i4coordinatesystem\")}=createprojectedcoordinatesystem(%2)").
                 arg(v).
                 arg(parms["epsg"].toString());
 
     }
     if ( parms.contains("proj4")){
 		QString v = OperationHelper::quote(parms["name"].toString());
-        expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\")").
+        expression = QString("script %1{format(ilwis4,\"i4coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\")").
                 arg(v).
                 arg(parms["proj4"].toString());
 
@@ -395,7 +395,7 @@ QString ObjectCreator::createProjectedCoordinateSystemFromBase(const QVariantMap
 	}
 	name = OperationHelper::quote(name);
 	QString v = OperationHelper::quote(name);
-    expression = QString("script %1{format(stream,\"coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\",\"%3\",\"%4\"").
+    expression = QString("script %1{format(ilwis4,\"i4coordinatesystem\")}=createprojectedcoordinatesystem(\"%2\",\"%3\",\"%4\"").
             arg(v).
             arg(proj).
             arg(kvps).
@@ -441,12 +441,12 @@ QString ObjectCreator::createWorkflow(const QVariantMap &parms)
 		return sUNDEF;
 	}
     wf->resourceRef().name(name,false,false);
-    wf->resourceRef().setUrl(QUrl("ilwis://operations/" + name + ".ilwis"));
+    wf->resourceRef().setUrl(QUrl("ilwis://operations/" + name ));
     wf->resourceRef().setUrl(parms["url"].toString(), true);
     wf->resourceRef().setDescription(parms["description"].toString());
     wf->resourceRef().addProperty("keyword", parms["keywords"].toString());
     wf->resourceRef().addProperty("longname", parms["longname"].toString());
-    wf->connectTo(parms["url"].toString(),"workflow","stream",IlwisObject::cmOUTPUT);
+    wf->connectTo(parms["url"].toString(),"i4workflow","ilwis4",IlwisObject::cmOUTPUT);
     wf->store();
     mastercatalog()->addItems({wf->resource()});
     QVariant mastercatalog = uicontext()->rootContext()->contextProperty("mastercatalog");
@@ -654,7 +654,7 @@ QString ObjectCreator::createTable(const QVariantMap &parms) {
 
     QString expr = "createtable('" + parms["columns"].toString() + "')";
 	name = OperationHelper::quote(name);
-    QString output = QString("script %1{format(stream,\"table\")}=").arg(name);
+    QString output = QString("script %1{format(ilwis4,\"i4table\")}=").arg(name);
     expr = output + expr;
     executeoperation(expr);
 
@@ -672,8 +672,8 @@ QString ObjectCreator::createSupervisedClassification(const QVariantMap &parms) 
 	}
 	model->resourceRef().name(name, false, false);
 	QString url = parms["url"].toString();
-	if (url.indexOf(".ilwis") == -1)
-		url += ".ilwis";
+	if (url.indexOf(".ilwis4") == -1)
+		url += ".ilwis4";
 	model->resourceRef().setUrl(url);
 	model->resourceRef().setUrl(url, true);
 	model->resourceRef().setDescription(parms["description"].toString());
@@ -824,7 +824,7 @@ QString ObjectCreator::createFeatureCoverage(const QVariantMap& parms) {
 
 	expr += ")";
 
-	QString output = QString("script %1{format(stream,\"featurecoverage\")}=").arg(name);
+	QString output = QString("script %1{format(ilwis4,\"i4features\")}=").arg(name);
 	expr = output + expr;
 	executeoperation(expr);
 
@@ -871,7 +871,7 @@ if (parms["resolution"] != "") {
 
 expr += ")";
 
-QString output = QString("script %1{format(stream,\"rastercoverage\")%2}=").arg(name).arg(res);
+QString output = QString("script %1{format(ilwis4,\"i4raster\")%2}=").arg(name).arg(res);
 expr = output + expr;
 executeoperation(expr);
 
@@ -917,12 +917,12 @@ QString ObjectCreator::createRepresentationContinousValue(const QVariantMap& par
 			return sUNDEF;
 		}
 
-		if (name.indexOf(".ilwis") == -1)
-			name += ".ilwis";
+		if (name.indexOf(".ilwis4") == -1)
+			name += ".ilwis4";
 		name = OperationHelper::quote(name);
 		QString expression;
 		if (type == "item") {
-			expression = QString("script %1{format(stream,\"representation\")}=createvaluerepresentation(\"%2\",\"%3\"")
+			expression = QString("script %1{format(ilwis4,\"i4representatiom\")}=createvaluerepresentation(\"%2\",\"%3\"")
 				.arg(name)
 				.arg(parms["domain"].toString())
 				.arg(parms["items"].toString());
@@ -946,18 +946,18 @@ QString ObjectCreator::createRepresentation(const QVariantMap& parms) {
 			return sUNDEF;
 		}
 
-		if (name.indexOf(".ilwis") == -1)
-			name += ".ilwis";
+		if (name.indexOf(".ilwis4") == -1)
+			name += ".ilwis4";
 		name = OperationHelper::quote(name);
 		QString expression;
 		if (type == "item") {
-			expression = QString("script %1{format(stream,\"representation\")}=createitemrepresentation(\"%2\",\"%3\"")
+			expression = QString("script %1{format(ilwis4,\"i4representation\")}=createitemrepresentation(\"%2\",\"%3\"")
 				.arg(name)
 				.arg(parms["domain"].toString())
 				.arg(parms["items"].toString());
 			expression += ")";
 		} else if (type == "continous"){
-			expression = QString("script %1{format(stream,\"representation\")}=createvaluerepresentation(\"%2\",\"%3\",%4,%5")
+			expression = QString("script %1{format(ilwis4,\"i4representation\")}=createvaluerepresentation(\"%2\",\"%3\",%4,%5")
 				.arg(name)
 				.arg(parms["domain"].toString())
 				.arg(parms["items"].toString())

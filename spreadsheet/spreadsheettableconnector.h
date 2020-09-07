@@ -45,6 +45,7 @@ public:
     static ConnectorInterface *create(const Ilwis::Resource &resource, bool load, const Ilwis::IOOptions &options=IOOptions());
 
     QString format() const;
+	void fillValidColumns(Table * tbl);
 private:
     struct ColInfo{
         IlwisTypes _type = itUNKNOWN;

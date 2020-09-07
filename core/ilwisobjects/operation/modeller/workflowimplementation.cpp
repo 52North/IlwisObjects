@@ -154,9 +154,9 @@ Ilwis::OperationImplementation *WorkflowImplementation::create(quint64 metaid, c
 Ilwis::OperationImplementation::State WorkflowImplementation::prepare(ExecutionContext *ctx, const SymbolTable &)
 {
 
-    QString url = "ilwis://operations/" + _expression.name();
-    if ( url.indexOf(".ilwis") == -1)
-        url += ".ilwis";
+    QString url = "ilwis://operations/" + _expression.name() + "=" + QString::number(id()) ;
+   //if ( url.indexOf(".ilwis4") == -1)
+    //    url += ".ilwis4";
     quint64 id = mastercatalog()->name2id(url, itWORKFLOW);
     if ( id == i64UNDEF){
         kernel()->issues()->log(TR("Couldnt find a valid workflow for ") + _expression.name());

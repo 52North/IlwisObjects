@@ -66,6 +66,7 @@ public:
     Q_INVOKABLE void scanContainer(bool threaded, bool forceScan);
     Q_INVOKABLE QStringList filters() const;
 	Q_INVOKABLE QString specialFolder(const QString& folderType);
+	Q_INVOKABLE ResourceModel *id2ResourceModel(quint64 id);
 
     bool isScanned() const;
     bool initNode() const;
@@ -105,11 +106,10 @@ private:
     mutable std::recursive_mutex _guard;
     QStringList objectCounts();
     void fillSpatialFilter();
-    void fillObjectFilter();
-    bool isActiveFilter(const QString& name) const;
-    void fillNameFilter();
-    void fillEPSGFilter();
-    void fillKeywordFilter();
+    void fillObjectFilter(bool respectFilteredItems);
+    void fillNameFilter(bool respectFilteredItems);
+    void fillEPSGFilter(bool respectFilteredItems);
+    void fillKeywordFilter(bool respectFilteredItems);
     QStringList dataProviders() const;
 	bool isFileBased() const;
 

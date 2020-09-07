@@ -208,7 +208,7 @@ class GDALProxy {
             return fp;
         }
 
-        GdalHandle* openFile(const QFileInfo &filename, quint64 asker, GDALAccess mode=GA_ReadOnly, bool message=true);
+        GdalHandle* openFile(const QString &filename, quint64 asker, GDALAccess mode=GA_ReadOnly, bool message=true);
         GdalHandle* openUrl(const QUrl &url, quint64 asker, GDALAccess mode=GA_ReadOnly, bool message=true);
         void closeFile(const QString& filename, quint64 asker);
         OGRSpatialReferenceH srsHandle(GdalHandle* handle, const QString& source, bool message=true);

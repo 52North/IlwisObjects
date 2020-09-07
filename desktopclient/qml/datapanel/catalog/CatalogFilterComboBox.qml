@@ -11,7 +11,7 @@ ComboBox{
     height : 22
     model : mastercatalog.defaultFilters
     textRole: "name"
-    onCurrentIndexChanged: {
+    onActivated: {
         if ( tabmodel){
             tabmodel.selectTab("1")
         }if ( currentIndex > 0){ // first entry is a default empty one

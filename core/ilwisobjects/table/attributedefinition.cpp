@@ -186,7 +186,7 @@ void AttributeDefinition::clearAttributeDefinitions()
 QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 columnIndex)  const{
     QVariant actualval= inputVar;
     const ColumnDefinition& coldef = columndefinitionRef(columnIndex);
-    QString typenm = inputVar.typeName();
+	QVariant::Type vtype = inputVar.type();
     if ( !coldef.datadef().domain<>().isValid()){
         ERROR2(ERR_NO_INITIALIZED_2,"Domain",coldef.name());
         return QVariant();
@@ -197,7 +197,7 @@ QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 colum
     if ( domtype == itITEMDOMAIN){
         if ( inputVar == sUNDEF){
             return QVariant((int)iUNDEF);
-        } else if ( typenm == "QString"){
+        } else if ( vtype == QMetaType::QString){
             actualval = dm->impliedValue(inputVar);
 
             SPItemRange rng2 = coldef.datadef().range<ItemRange>();
@@ -213,10 +213,24 @@ QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 colum
                 }
                 actualval = item->raw();
             }
-        }
+		}
+		else if (vtype == QMetaType::Double || vtype == QMetaType::Int || vtype == QMetaType::UInt) {
+			SPItemRange rng2 = coldef.datadef().range<ItemRange>();
 
+			if (!hasType(valueType, itINDEXEDITEM)) {
+				SPItemRange rng1 = dm->range<ItemRange>();
+				SPDomainItem item = rng1->item(inputVar.toUInt());
+				if (item.isNull()) {
+					return QVariant((int)iUNDEF);
+				}
+				if (!rng2->contains(item->name())) {
+					rng2->add(item->clone());
+				}
+				actualval = item->raw();
+			}
+		}
     }else if ( domtype == itNUMERICDOMAIN){
-        if (typenm == "QString")
+        if (vtype == QMetaType::QString)
             actualval =  dm->impliedValue(inputVar);
         if ( hasType(valueType,itDATETIME) && actualval.value<Ilwis::Time>() == tUNDEF)
             return actualval;

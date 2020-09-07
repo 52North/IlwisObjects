@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "geometries.h"
 #include "ilwisdata.h"
 #include "ilwiscontext.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "ellipsoid.h"
 
 using namespace Ilwis;

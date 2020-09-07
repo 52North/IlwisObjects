@@ -121,6 +121,8 @@ public:
     static IlwisTypes name2type(const QString& name);
     static IlwisTypes variant2type(const QVariant &v);
 
+	static const int _timeUserId;
+
 };
 }
 

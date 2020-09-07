@@ -343,6 +343,7 @@ public:
     QString code() const;
 	std::map<QString, QString> metadata(const QString& filter="") const;
 	void addMetaTag(const QString& tag, const QString& value);
+	void applyAdjustments(const std::map<QString, QString>& adjustments);
 protected:
     void stringAsUrl(const QString& txt, IlwisTypes tp, bool isNew);
     QHash<QString, QVariant> _properties;

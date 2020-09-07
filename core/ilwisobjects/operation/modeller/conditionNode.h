@@ -32,9 +32,7 @@ class KERNELSHARED_EXPORT WorkFlowCondition : public WorkFlowNode
 public:
     enum ConditionParts{cpTEST=0, cpTRUECASE=1, cpFALSECASE=2};
     struct Test{
-        LogicalOperator _pre= loNONE;
         SPWorkFlowNode _operation;
-        LogicalOperator _post = loNONE;
 
         bool isValid() const;
     };
@@ -46,7 +44,7 @@ public:
     std::vector<SPWorkFlowNode> subnodes(const QString& reason="") const;
     void addSubNode(const SPWorkFlowNode &node, const QString &reason);
     void removeSubNode(Ilwis::NodeId dNodeId);
-    void addTest(SPWorkFlowNode node, LogicalOperator pre, LogicalOperator post);
+    void addTest(SPWorkFlowNode node);
     void setTestValue(int testIndex, int parameterIndex, const QString& value, const IWorkflow &wf);
     QString testValue(int testIndex, int parameterIndex, const IWorkflow &wf) const;
     Test test(int index) const;

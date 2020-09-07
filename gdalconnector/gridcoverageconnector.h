@@ -47,8 +47,8 @@ public:
     void createRasterDataDef(double vminRaster, double vmaxRaster, double resolution, RasterCoverage* raster);
 
 private:
-    GDALDataType _gdalValueType;
-    int _typeSize;
+    GDALDataType _gdalValueType = GDT_Unknown;
+    int _typeSize = iUNDEF;
     GDALDriverH _driver;
     ColorRangeBase::ColorModel _colorModel = ColorRangeBase::cmNONE;
     bool _hasTransparency = false;   
@@ -102,7 +102,7 @@ private:
     bool loadDriver();
     DataDefinition createDataDef(double vmin, double vmax, double resolution, bool accurate, GdalOffsetScale gdalOffsetScale);
     DataDefinition createDataDefColor(std::map<int, int> &vminRaster, std::map<int, int> &vmaxRaster);
-    void loadNumericBlock(GDALRasterBandH bandhandle, quint32 index, quint32 gdalindex, quint32 linesPerBlock, quint64 linesLeft, char *block, Ilwis::RasterCoverage *raster, int bandIndex) const;
+    void loadNumericBlock(GDALRasterBandH bandhandle, quint32 index, quint32 gdalindex, quint32 linesPerBlock, quint64 linesLeft, char *block, Ilwis::RasterCoverage *raster, int bandIndex, double nodata) const;
     void loadColorBlock(quint32 ilwisLayer, quint32 index, quint32 gdalindex, quint32 linesPerBlock, quint64 linesLeft, char *block, UPGrid &grid) const;
     bool handleNumericCase(const Size<> &rastersize, RasterCoverage *raster);
     bool handleColorCase(const Size<> &rastersize, RasterCoverage *raster, GDALColorInterp colorType);

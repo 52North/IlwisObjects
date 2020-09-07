@@ -225,7 +225,7 @@ void PublicDatabase::loadPublicTables() {
     insertFile("filters.csv",sqlPublic);
     insertFile("codes_with_latlon_order.csv",sqlPublic);
     insertFile("representations.csv", sqlPublic);
-    insertFile("teritories.csv", sqlPublic);
+    insertFile("teritories.csv", sqlPublic); 
     insertProj4Epsg(sqlPublic);
     insertItemDomains(sqlPublic);
 
@@ -290,7 +290,7 @@ void PublicDatabase::addRegionallEnvelopes() {
     }
     for(auto& region : regions){
         QString parms = QString("'%1','%2','%3','%4','%5',%6,%7,%8,%9,'%10'").arg(region.first).arg(region.first).arg("")
-                .arg(region.second._continent).arg("").arg(region.second._env.min_corner().x).arg(region.second._env.min_corner().y)
+                .arg(region.second._continent).arg("").arg(region.second._env.min_corner().x).arg(region.second._env.min_corner().y) 
                 .arg(region.second._env.max_corner().x).arg(region.second._env.max_corner().y).arg("region");
         QString stmt = QString("INSERT INTO teritories VALUES(%1)").arg(parms);
         if(!db.exec(stmt)) {
@@ -463,7 +463,7 @@ void PublicDatabase::insertFile(const QString& filename, QSqlQuery& sqlPublic) {
         else if ( filename == "representations.csv"){
             ok = fillRepresentationRecord(parts, sqlPublic);
         } else if ( filename == "teritories.csv"){
-            ok = fillTeritoryRecord(parts, sqlPublic);
+            ok = fillTeritoryRecord(parts, sqlPublic); 
         }
         if (!ok)
             return ;

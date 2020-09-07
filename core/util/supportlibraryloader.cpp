@@ -79,7 +79,8 @@ void SupportLibraryLoader::loadLibraries() const{
         if (QFileInfo(name.second).exists()) {
             file = QFileInfo(name.second);
         } else {
-            file = QFileInfo(_configLocation.absolutePath() + "/../" + name.second);
+			QString p = _configLocation.absolutePath() + "/../" + name.second;
+            file = QFileInfo(p);
         }
         QString path = file.canonicalFilePath();
         lib.setFileName(path);

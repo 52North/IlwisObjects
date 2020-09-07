@@ -95,18 +95,12 @@ void WorkFlowNode::setFlow(const SPWorkFlowNode &fromNode, qint32 inParmIndex, q
     if ( fromNode->type() == WorkFlowNode::ntRANGEJUNCTION) {
         if (owner() && owner()->id() == fromNode->owner()->id() ){
             inputRef(inParmIndex).inputLink(fromNode,RangeNode::rpOUTPUT);
-            inputRef(inParmIndex).attachement(attachRctIndxFrom, true);
-            inputRef(inParmIndex).attachement(attachRctIndxTo, false);
         }
         else if ( !owner() || (owner()->id() != fromNode->owner()->id()) ){
             inputRef(inParmIndex).inputLink(fromNode,RangeNode::rpFINALOUTPUT);
-            inputRef(inParmIndex).attachement(attachRctIndxFrom, true);
-            inputRef(inParmIndex).attachement(attachRctIndxTo, false);
         }
     }else {
         inputRef(inParmIndex).inputLink(fromNode,outParmIndex);
-        inputRef(inParmIndex).attachement(attachRctIndxFrom, true);
-        inputRef(inParmIndex).attachement(attachRctIndxTo, false);
     }
 }
 

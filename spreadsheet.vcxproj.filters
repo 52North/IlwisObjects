@@ -191,6 +191,9 @@
     <ClInclude Include="spreadsheet\xlsx\qtprivates.h">
       <Filter>Header Files\xlsx</Filter>
     </ClInclude>
+    <ClInclude Include="spreadsheet\odsformat.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="spreadsheet\spreadsheetcatalogexplorer.cpp">
@@ -209,6 +212,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="spreadsheet\ilwisxlsxformat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="spreadsheet\odsformat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

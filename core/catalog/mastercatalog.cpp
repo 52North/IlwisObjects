@@ -109,7 +109,7 @@ bool MasterCatalog::addContainer(const QUrl &inlocation, bool forceScan)
     if ( !inlocation.isValid()) // it is valid to try this with an empty url; just wont do anything
         return true;
 
-    QString original = OSHelper::neutralizeFileName(inlocation.toString().trimmed());
+    QString original = OSHelper::neutralizeFileName(inlocation.toString().trimmed()); 
     if ( Resource::isRoot(original))
         return true;
 
@@ -534,10 +534,13 @@ Resource MasterCatalog::name2Resource(const QString &nm, IlwisTypes tp) const
                 return id2Resource(propertyid);
         }
         if ( !isExternalRef) { // it was not an external reference but an internal one; if it was external it will never come here
-            // this is a new resource which only existed as reference but now gets real, so add it to the catalog
-            Resource resource(QUrl(resolvedName), tp);
-            const_cast<MasterCatalog *>(this)->addItems({resource});
-            return resource;
+            // this is a new resource which only existed as reference but now gets real, so add it to the catalog; but it never can be a file as this would have been cuaght
+			// by the scan. It might be an on the fly temporary object
+			if (resolvedName.toString().indexOf("file:/") == -1) {
+				Resource resource(QUrl(resolvedName), tp);
+				const_cast<MasterCatalog *>(this)->addItems({ resource });
+				return resource;
+			}
         }
     }
     return Resource();
@@ -681,7 +684,9 @@ std::vector<Resource> MasterCatalog::select(const QString &filter) const
 	std::vector<Resource> items;
 	for (auto newfilter : filters) {
 		QString query;
-		if (newfilter.indexOf("catalogitemproperties.") == -1)
+		if (newfilter == "container='ilwis:://mastercatalog'")
+			query = QString("select * from mastercatalog");
+		else if (newfilter.indexOf("catalogitemproperties.") == -1)
 			query = QString("select * from mastercatalog where  %2").arg(newfilter);
 		else
 			query = QString("select * from mastercatalog,catalogitemproperties where mastercatalog.itemid = catalogitemproperties.itemid and %2").arg(newfilter);
@@ -762,6 +767,7 @@ void MasterCatalog::registerObject(ESPIlwisObject &data)
 }
 
 
+
 //----------------------------------------------------------
 
 void calcLatLon(const ICoordinateSystem& csyWgs84,Ilwis::Resource& resource, std::vector<Resource>& updatedResources){
@@ -790,7 +796,7 @@ void calcLatLon(const ICoordinateSystem& csyWgs84,Ilwis::Resource& resource, std
 
 }
 
-void CalcLatLon::calculatelatLonEnvelopes(std::vector<Resource>& items, const QString& name){
+void Adjustments::addAdjustements(std::vector<Resource>& items, const QString& name){
     try{
         if ( name.indexOf("ilwis://") == 0)
             return;
@@ -807,6 +813,7 @@ void CalcLatLon::calculatelatLonEnvelopes(std::vector<Resource>& items, const QS
             calcLatLon(csyWgs84, resource, updatedResources);
             if(!trq->update(1))
                 return;
+			applyAdjustements(resource);
             ++count;
 
         }
@@ -817,10 +824,26 @@ void CalcLatLon::calculatelatLonEnvelopes(std::vector<Resource>& items, const QS
     }
 }
 
-void CalcLatLon::calculatelatLonEnvelopes(const QString& query, const QString& name){
+void Adjustments::applyAdjustements(Resource& resource) {
+	InternalDatabaseConnection db;
+	QString tpName = TypeHelper::type2name(resource.ilwisType());
+	if (hasType(resource.ilwisType(), itFEATURE)) // itPOLYGON, itLINE, itpOINT are merged
+		tpName = TypeHelper::type2name(itFEATURE);
+	QString query = QString("Select * from objectadjustments where objecturl = '%1' and ilwistype='%2' and ismodel=0").arg(resource.url(true).toString()).arg(tpName);
+	if (db.exec(query)) {
+		while (db.next()) {
+			QSqlRecord record = db.record();
+			QString property = record.field("propertyname").value().toString();
+			QString value = record.field("propertyvalue").value().toString();
+			resource.addProperty(property,value);
+		}
+	}
+}
+
+void Adjustments::calculatelatLonEnvelopes(const QString& query, const QString& name){
     try{
         std::vector<Resource> resources =mastercatalog()->select(query);
-        calculatelatLonEnvelopes(resources, name);
+		addAdjustements(resources, name);
     } catch(const ErrorObject&){
     } catch( std::exception& ){
     }

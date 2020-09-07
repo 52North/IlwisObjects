@@ -187,6 +187,10 @@ OperationImplementation::State MapCalc::prepare(ExecutionContext *ctx,const Symb
             _inputNumbers[parmIndex] = v;
         }
     }
+	if (_inputRasters.size() == 0) {
+		kernel()->issues()->log(TR("Missing input raster coverages"));
+		return sPREPAREFAILED;
+	}
     OperationHelperRaster helper;
     helper.initialize((*_inputRasters.begin()).second.raster(), _outputRaster, itRASTERSIZE | itENVELOPE | itCOORDSYSTEM | itGEOREF);
     if ( stackdef.isValid()){
@@ -218,9 +222,9 @@ quint64 MapCalc1::createMetadata()
     OperationResource operation({"ilwis://operations/mapcalc"});
     operation.setLongName("MapCalc 1");
     operation.setSyntax("mapcalc(expression,gridcoverage|number)");
-    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels"));
+    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels."));
     operation.setInParameterCount({2});
-    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list. So @1 would mean the first raster of the parameters. Expressions take than the from of for example (@1 + @2)/2"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.setOutParameterCount({1});
@@ -246,9 +250,9 @@ quint64 MapCalc2::createMetadata()
     OperationResource operation({"ilwis://operations/mapcalc"});
     operation.setLongName("MapCalc 2");
     operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number)");
-    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels"));
+    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels"));
     operation.setInParameterCount({3});
-    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the number behind the at symbol indicate indexes in the parameter list. So @1 would mean the first raster of the parameters. Expressions take than the from of for example (@1 + @2)/2"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -275,9 +279,9 @@ quint64 MapCalc3::createMetadata()
     OperationResource operation({"ilwis://operations/mapcalc"});
     operation.setLongName("MapCalc 3");
     operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 3 parameters"));
+    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 3 parameters"));
     operation.setInParameterCount({4});
-    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list. So @1 would mean the first raster of the parameters. Expressions take than the from of for example (@1 + @2)/2"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -305,9 +309,9 @@ quint64 MapCalc4::createMetadata()
     OperationResource operation({"ilwis://operations/mapcalc"});
     operation.setLongName("MapCalc 4");
     operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 4 parameters"));
+    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 4 parameters"));
     operation.setInParameterCount({5});
-    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list. So @1 would mean the first raster of the parameters. Expressions take than the from of for example (@1 + @2)/2"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -336,9 +340,9 @@ quint64 MapCalc5::createMetadata()
     OperationResource operation({"ilwis://operations/mapcalc"});
     operation.setLongName("MapCalc 5");
     operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 5 parameters"));
+    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 5 parameters"));
     operation.setInParameterCount({6});
-    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list. So @1 would mean the first raster of the parameters. Expressions take than the from of for example (@1 + @2)/2"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -369,9 +373,9 @@ quint64 MapCalc6::createMetadata()
     OperationResource operation({"ilwis://operations/mapcalc"});
     operation.setLongName("MapCalc 6");
     operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 6 parameters"));
+    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 6 parameters"));
     operation.setInParameterCount({6});
-    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list. So @1 would mean the first raster of the parameters. Expressions take than the from of for example (@1 + @2)/2"));
     operation.parameterNeedsQuotes(0);
     operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
     operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -402,9 +406,9 @@ MapCalc6::MapCalc6(quint64 metaid,const Ilwis::OperationExpression &expr) : MapC
 //    OperationResource operation({"ilwis://operations/mapcalc"});
 //    operation.setLongName("MapCalc 7");
 //    operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-//    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 7 parameters"));
+//    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 7 parameters"));
 //    operation.setInParameterCount({6});
-//    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+//    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list"));
 //    operation.parameterNeedsQuotes(0);
 //    operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
 //    operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -436,9 +440,9 @@ MapCalc6::MapCalc6(quint64 metaid,const Ilwis::OperationExpression &expr) : MapC
 //    OperationResource operation({"ilwis://operations/mapcalc"});
 //    operation.setLongName("MapCalc 8");
 //    operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-//    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 8 parameters"));
+//    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 8 parameters"));
 //    operation.setInParameterCount({6});
-//    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+//    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list"));
 //    operation.parameterNeedsQuotes(0);
 //    operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
 //    operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
@@ -472,9 +476,9 @@ MapCalc6::MapCalc6(quint64 metaid,const Ilwis::OperationExpression &expr) : MapC
 //    OperationResource operation({"ilwis://operations/mapcalc"});
 //    operation.setLongName("MapCalc 9");
 //    operation.setSyntax("mapcalc(expression,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number,gridcoverage|number)");
-//    operation.setDescription(TR("Generates a new numerical rastercoverage based on the operation, applied to all the pixels, max 9 parameters"));
+//    operation.setDescription(TR("Generates a new numerical rastercoverage based on the expression, applied to all the pixels, max 9 parameters"));
 //    operation.setInParameterCount({6});
-//    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an abstract expression were the numbers indicate indexes in the parameter list"));
+//    operation.addInParameter(0,itSTRING, TR("Expression"), TR("The expression is an mathematical expression were the numbers indicate indexes in the parameter list"));
 //    operation.parameterNeedsQuotes(0);
 //    operation.addInParameter(1,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));
 //    operation.addInParameter(2,itRASTER | itNUMBER, TR("raster or number"), TR("Rasters with numerical domain"));

@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <set>
 #include "kernel_global.h"
 #include "identity.h"
-#include "resource.h"
+#include "catalog/resource.h"
 //#include "connectorinterface.h"
 //#include "catalogconnector.h"
 

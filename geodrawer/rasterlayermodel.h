@@ -66,6 +66,7 @@ public:
 	ICoverage coverage() const override;
     void fillAttributes();
 	bool prepare(int);
+
     QString value2string(const QVariant &value, const QString &attrName) const;
     QString layerData(const Coordinate &crdIn, const QString& attrName, QVariantList &items) const;
     static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
@@ -85,6 +86,7 @@ public:
     Q_INVOKABLE void setQuadId(qint32 bufferIndex, qint32 id);
 	Q_INVOKABLE bool canUse(quint64 id) override;
 	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
+	Q_INVOKABLE int updateCurrentAnimationIndex(int step);
 	const Ilwis::Ui::VisualAttribute *activeAttribute() const;
 	QVariant coord2value(const Coordinate &c, const QString &attrname) const override; 
 
@@ -93,6 +95,7 @@ protected:
     void init();
     QVariantMap stretch(); // for "live" RGB stretching of a Color Composite; thus not for Palette rasters (Palette rasters "live" stretch their palette)
     virtual void refreshStretch();
+	int currentAnimationIndex() const;
     TextureHeap * textureHeap = 0;
     std::vector<Quad> _quads;
     std::vector<qint32> _addQuads;
@@ -109,6 +112,8 @@ protected:
 	bool _texturesNeedUpdate = false;
 	bool _quadsNeedUpdate = false;
 	QVariantMap _stretch;
+	int _currentAnimationIndex = 0;
+	void updateQuads(int idx);
 
 private:
     void GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor);
@@ -119,6 +124,9 @@ private:
     QVariantMap _palette;
     bool _refreshPaletteAtNextCycle;
     bool _renderReady = false;
+	bool _asAnimation = false;
+	std::recursive_mutex _mutex;
+
 
 public slots:
     virtual void requestRedraw();
@@ -129,6 +137,7 @@ signals:
     void stretchChanged();
 
     NEW_LAYERMODEL(RasterLayerModel);
+	NEW_LAYERMODEL2(RasterLayerModel);
 };
 
 }

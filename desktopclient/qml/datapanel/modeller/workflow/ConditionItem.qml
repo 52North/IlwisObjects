@@ -165,7 +165,7 @@ Rectangle {
 
     function addToOperationList(operation) {
         operationsList.push(operation);
-        if ( type == "condtionitem")
+        if ( type == "conditionitem")
             operation.condition = conditionItem
         else
             operation.range = conditionItem

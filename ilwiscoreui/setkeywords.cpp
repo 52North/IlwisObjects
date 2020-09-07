@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "mastercatalog.h"
 #include "operationhelper.h"
 #include "uicontextmodel.h"
+#include "catalogmodel.h"
+#include "mastercatalogmodel.h"
 #include "modelregistry.h"
 #include "setkeywords.h"
 
@@ -78,7 +80,11 @@ QVariant SetKeywords::execute(const QVariantMap &parameters)
 					result += ",";
 				result += key;
 			}
-
+			MasterCatalogModel *masterc = uicontext()->masterCatalogModel();
+			CatalogModel *cmodel = masterc->currentCatalog();
+			ResourceModel *rmodel = cmodel->id2ResourceModel(res.id());
+			if (rmodel)
+				rmodel->resourceRef().addProperty("keyword", result.toLower());
 			res.addProperty("keyword", result.toLower(),true);
 
 		}

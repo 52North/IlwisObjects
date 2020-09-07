@@ -16,7 +16,7 @@ Rectangle {
             displayName = storeAdjustment("displayname", objectDisplayName.content)
             description = storeAdjustment("description", descarea.text)
             isReadonly = readOnlyStatus1.checked
-            keywords = keys.content
+            keywords = storeAdjustment("keyword", keys.content)
             mastercatalog.currentCatalog.refresh()
 
 

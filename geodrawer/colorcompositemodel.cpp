@@ -288,7 +288,7 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 			Quad & quad = _quads[i];
 			bool refresh = false;
 			if (quad.active && quad.dirty)
-				refresh = textureHeap->optimalTextureAvailable(quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
+				refresh = textureHeap->optimalTextureAvailable(_currentAnimationIndex,quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
 			if ((quad.id > -1) && (!quad.active || refresh))
 				_removeQuads.push_back(quad.id);
 			if ((quad.active) && ((quad.id == -1) || refresh)) {

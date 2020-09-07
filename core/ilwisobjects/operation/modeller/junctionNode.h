@@ -32,6 +32,7 @@ public:
     void link2falseCase(SPWorkFlowNode falseNode, int parmIndex);
     void link2condition(Ilwis::SPWorkFlowNode conditionnode);
     void nodeId(quint64 id);
+	quint32 conditionId() const;
     bool isValid(const Ilwis::Workflow *workflow, WorkFlowNode::ValidityCheck) const;
 
 private:

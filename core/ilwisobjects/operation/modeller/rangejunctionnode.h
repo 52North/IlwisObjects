@@ -35,9 +35,8 @@ public:
     void nodeId(quint64 id);
     void setFlow(const SPWorkFlowNode& fromNode, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom, int attachRctIndxTo);
     bool isValid(const Ilwis::Workflow *workflow, WorkFlowNode::ValidityCheck) const;
+	quint32 rangeId() const;
 
-private:
-    SPWorkFlowNode  _linkedRange;
 };
 
 typedef std::shared_ptr<RangeJunctionNode> SPRangeJunctionNode;

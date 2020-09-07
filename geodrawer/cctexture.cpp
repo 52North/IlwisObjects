@@ -26,7 +26,7 @@ using namespace Ilwis;
 using namespace Ui;
 
 CCTexture::CCTexture(RasterLayerModel * rasterLayerModel, const std::vector<IRasterCoverage> * ccBands, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor)
-: Texture(rasterLayerModel, ccBands->at(0), offsetX, offsetY, sizeX, sizeY, zoomFactor, 0)
+: Texture(rasterLayerModel, ccBands->at(0), 0, offsetX, offsetY, sizeX, sizeY, zoomFactor, 0)
 , _ccBands(ccBands)
 {
 }

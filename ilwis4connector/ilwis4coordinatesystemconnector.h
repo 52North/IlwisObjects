@@ -30,6 +30,7 @@ namespace Ilwis {
 			bool storeData(IlwisObject *obj, const IOOptions &options);
 			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
 			static bool loadMetaData(IlwisObject* object, const IOOptions&, const QJsonValue& jvalue);
+			static ICoordinateSystem createCsy(const IOOptions& options, const QJsonObject& jcsy);
 
 		protected:
 

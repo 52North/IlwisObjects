@@ -127,6 +127,7 @@ Item {
     function setSelected(objectid){
 	    var currentSelection = mastercatalog.selectedIds()
         mastercatalog.setSelectedObjects("")
+		
         var resources = currentCatalog.resources
         var sz = resources.length
         var selectedIds = ""
@@ -134,6 +135,7 @@ Item {
             selectedIds = objectid
             for(var i = 0; i < sz; ++i){
                 var resource = resources[i]
+				if ( resource.id == objectid)
                 resource.isSelected=resource.id == objectid
             }
         }else if ( uicontext.keyPressed(Qt.Key_Shift)){
@@ -174,8 +176,9 @@ Item {
     }
 
     function setResources(){
-        if ( currentCatalog)
+        if ( currentCatalog){
             return currentCatalog.resources
+		}
     }
 
     function iconsource(name) {

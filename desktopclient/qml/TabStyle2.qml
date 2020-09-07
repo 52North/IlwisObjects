@@ -121,9 +121,10 @@ TabViewStyle {
 			Controls.SmallRoundButton {
 				id : refreshbut
 				anchors.verticalCenter: thetab.verticalCenter
-				height : 25
+				radius : 12
 				iconBase : "../images/refresh"
 				visible :label.showMarker("catalog") 
+				height : 25
 				width : visible ? height : 0
 				onClicked: {
 					mastercatalog.currentCatalog.scanContainer(true,true)
@@ -137,6 +138,7 @@ TabViewStyle {
 				id : rplusbut
 				height : 25
 				width : visible ? height : 0
+				radius : visible ? 20 : 0
 				iconBase : "../images/add"
 				visible : label.showMarker("catalog") 
 				onClicked: menu.open()
@@ -147,6 +149,7 @@ TabViewStyle {
 					id : menu
 				}
 			}
+
 
 			Controls.SmallRoundButton {
 				id : minbut
@@ -159,6 +162,7 @@ TabViewStyle {
 					datapanesplit.closeTab(side == 1, styleData.index)
 				}
 			}
+		
 		}
 	}
     

@@ -27,12 +27,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationExpression.h"    
 #include "operation.h"
 #include "chartmodel.h"  
-#include "histograminteractiveslicing.h"                
+#include "histograminteractiveslicing.h"                   
 
 using namespace Ilwis;   
 using namespace Ui;
 
-REGISTER_CHARTPROPERTYEDITOR("histograminteractiveslicing", HistogramInteractiveSlicing)   
+REGISTER_CHARTPROPERTYEDITOR("histograminteractiveslicing", HistogramInteractiveSlicing)    
 
 HistogramInteractiveSlicing::HistogramInteractiveSlicing() : ChartOperationEditor("histograminteractiveslicing", TR("Interactive Slicing"), QUrl("HistogramInteractiveSlicing.qml"), TR("Manual slicing classification by selecting parts on the histogram function as class boundaries"))
 {

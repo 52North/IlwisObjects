@@ -193,6 +193,8 @@ void Kernel::init() {
     modFac->prepare();
     addFactory(modFac);
 
+	int p = TypeHelper::_timeUserId;
+
     loadModulesFromLocation(context()->ilwisFolder().absoluteFilePath() + "/extensions/");
 
 }

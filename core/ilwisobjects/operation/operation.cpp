@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis;
 
-OperationImplementation::   OperationImplementation(quint64 metaid, const Ilwis::OperationExpression &e) : _prepState(sNOTPREPARED)
+OperationImplementation::   OperationImplementation(quint64 metaid, const Ilwis::OperationExpression &e) : Identity(e.name(), metaid),  _prepState(sNOTPREPARED)
 {
    _expression = e;
    if(!_metadata.prepare(metaid)) {

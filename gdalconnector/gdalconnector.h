@@ -32,7 +32,7 @@ public:
     bool loadMetaData(IlwisObject* data,const IOOptions&);
 
     QString provider() const;
-    void format(const QString&);
+    void format(const QString& n, const IOOptions& op=IOOptions());
     QString format() const;
     OGRLayerH getLayerHandle() const;
     bool isReadOnly() const;
@@ -41,11 +41,13 @@ protected:
     static OGRFieldType ilwisType2GdalFieldType(IlwisTypes tp);
     QString constructOutputName(GDALDriverH hdriver) const;
     void getTypes(const std::multimap<QString, DataFormat>& formats, IlwisTypes & tp, IlwisTypes & extendedType) const;
+	bool getHandle(IlwisObject *data);
     QUrl _fileUrl;
     QString _internalPath;
     QString _gdalShortName;
     bool _readOnly = true;
-    GdalHandle* _handle;
+    GdalHandle* _handle = 0;
+	QString _prefix;
 };
 }
 }

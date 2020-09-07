@@ -70,9 +70,9 @@ public:
     Q_PROPERTY(qint32 runid READ runid CONSTANT)
 
     Q_INVOKABLE quint32 addNode(const QString &id, const QVariantMap &parameters);
-    Q_INVOKABLE void addFlow(int nodeIdFrom, int nodeIdTo, qint32 inParmIndex, qint32 outParmIndex, int rectFrom, int rectTo);
+    Q_INVOKABLE void addFlow(int nodeIdFrom, int nodeIdTo, qint32 inParmIndex, qint32 outParmIndex);
     Q_INVOKABLE void addConditionFlow(int conditionIdTo, const QString &operationIdFrom, int testIndex, int inParameterIndex, int outParmIndex, int rectFrom, int rectTo);
-    Q_INVOKABLE void addTest2Condition(int conditionId, const QString& operationId, const QString& pre, const QString& post);
+    Q_INVOKABLE void addTest2Condition(int conditionId);
     Q_INVOKABLE void addCondition2Junction(int conditionId, int junctionId);
     Q_INVOKABLE void setTestValues(int conditionId, int testIndex, int parameterIndex, const QString& value);
     Q_INVOKABLE void setRangeTestValues(int rangeid, const QString& rangeDef);
@@ -80,7 +80,7 @@ public:
     Q_INVOKABLE QString testValue(int conditionId, int testIndex, int parameterIndex);
     Q_INVOKABLE QVariantList getTestParameters(int nodeId, int testIndex);
     Q_INVOKABLE void updateOperationParameters(quint32 nodeid, int paramterIndex, const QString& txt);
-    Q_INVOKABLE void addJunctionFlows(int junctionIdTo, const QString& operationIdFrom, int paramterIndex, int rectFrom, int rectTo, bool truecase);
+    Q_INVOKABLE void addJunctionFlows(int junctionIdTo, int operationIdFrom, int paramterIndex, bool truecase);
     Q_INVOKABLE void changeBox(int nodeId, int x, int y, int w, int h);
     Q_INVOKABLE bool hasValueDefined(int nodeId, int parameterIndex);
     Q_INVOKABLE int operationInputParameterCount(int nodeId);
@@ -114,6 +114,7 @@ public:
 	Q_INVOKABLE void setBaseFolder(const QString& folder);
 
     QString modelType() const;
+	IWorkflow workflow() const { return _workflow; }
 
 
 

@@ -42,6 +42,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwis4domainconnector.h"
 #include "ilwis4rasterconnector.h"
 #include "ilwis4coordinatesystemconnector.h"
+#include "ilwis4featureconnector.h"
+#include "ilwis4georefconnector.h"
+#include "ilwis4workflowconnector.h"
+#include "ilwis4scriptconnector.h"
+#include "ilwis4representationconnector.h"
 #include "dataformat.h"
 #include "ilwiscontext.h"
 
@@ -75,12 +80,22 @@ void Ilwis4ConnectorModule::prepare()
 	factory->addCreator(itDOMAIN, "ilwis4", Ilwis4DomainConnector::create);
 	factory->addCreator(itRASTER, "ilwis4", Ilwis4RasterConnector::create);
 	factory->addCreator(itCOORDSYSTEM, "ilwis4", Ilwis4CoordinateSystemConnector::create);
+	factory->addCreator(itFEATURE, "ilwis4", Ilwis4FeatureConnector::create);
+	factory->addCreator(itGEOREF, "ilwis4", Ilwis4GeorefConnector::create);
+	factory->addCreator(itWORKFLOW, "ilwis4", Ilwis4WorkflowConnector::create);
+	factory->addCreator(itSCRIPT, "ilwis4", Ilwis4ScriptConnector::create);
+	factory->addCreator(itREPRESENTATION, "ilwis4", Ilwis4RepresentationConnector::create);
 	   
 
 	factory->addCreator("i4table", "ilwis4", Ilwis4TableConnector::create);
 	factory->addCreator("i4raster", "ilwis4", Ilwis4RasterConnector::create);
 	factory->addCreator("i4domain", "ilwis4", Ilwis4DomainConnector::create);
 	factory->addCreator("i4coordinatesystem", "ilwis4", Ilwis4CoordinateSystemConnector::create);
+	factory->addCreator("i4features", "ilwis4", Ilwis4FeatureConnector::create);
+	factory->addCreator("i4georef", "ilwis4", Ilwis4GeorefConnector::create);
+	factory->addCreator("i4workflow", "ilwis4", Ilwis4WorkflowConnector::create);
+	factory->addCreator("i4script", "ilwis4", Ilwis4ScriptConnector::create);
+	factory->addCreator("i4representation", "ilwis4", Ilwis4RepresentationConnector::create);
 
 
 	QFileInfo ilw = context()->ilwisFolder();

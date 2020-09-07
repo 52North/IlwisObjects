@@ -377,6 +377,8 @@ bool RasterCoverageConnector::handleNumericCase(const Size<> &rastersize, Raster
         }
     }
     createRasterDataDef(vminRaster, vmaxRaster, resolution, raster);
+	if (!raster->datadef().isValid())
+		return false;
     _typeSize = gdal()->getDataTypeSize(_gdalValueType) / 8;  
 
     return true;
@@ -385,12 +387,15 @@ bool RasterCoverageConnector::handleNumericCase(const Size<> &rastersize, Raster
 
 void RasterCoverageConnector::createRasterDataDef(double vminRaster, double vmaxRaster, double resolution, RasterCoverage* raster)
 {
-    if (_offsetScales[0].offset != rUNDEF && _offsetScales[0].scale != rUNDEF) {
-        vminRaster = vminRaster * _offsetScales[0].scale  + _offsetScales[0].offset ;
-        vmaxRaster = vmaxRaster * _offsetScales[0].scale  + _offsetScales[0].offset ;
-    }
+	if (_offsetScales.size() > 0) {
+		if (_offsetScales[0].offset != rUNDEF && _offsetScales[0].scale != rUNDEF) {
+			vminRaster = vminRaster * _offsetScales[0].scale + _offsetScales[0].offset;
+			vmaxRaster = vmaxRaster * _offsetScales[0].scale + _offsetScales[0].offset;
+		}
 
-    raster->datadefRef() = DataDefinition(raster->datadef(0).domain(), new NumericRange(vminRaster, vmaxRaster, resolution));
+
+		raster->datadefRef() = DataDefinition(raster->datadef(0).domain(), new NumericRange(vminRaster, vmaxRaster, resolution));
+	}
 }
 
 DataDefinition RasterCoverageConnector::createDataDef(double vmin, double vmax, double resolution, bool accurate, GdalOffsetScale gdalOffsetScale){
@@ -491,6 +496,9 @@ bool RasterCoverageConnector::moveIndexes(quint32& linesPerBlock, quint64& lines
 }
 
 bool RasterCoverageConnector::loadData(IlwisObject* data, const IOOptions& options ){
+	if (!getHandle(data)) {
+		return false;
+	}
     quint32 bandindex = sourceRef().hasProperty("bandindex") ? sourceRef()["bandindex"].toUInt(): iUNDEF;
     auto layerHandle = gdal()->getRasterBand(_handle->handle(), bandindex != iUNDEF ? bandindex + 1 : 1);
     if (!layerHandle) {
@@ -498,6 +506,12 @@ bool RasterCoverageConnector::loadData(IlwisObject* data, const IOOptions& optio
         return false;
     }
     RasterCoverage *raster = static_cast<RasterCoverage *>(data);
+	if (sourceRef().hasProperty("scale"))
+	{
+		_offsetScales.resize(1);
+		_offsetScales[0].offset = sourceRef()["offset"].toDouble();
+		_offsetScales[0].scale = sourceRef()["scale"].toDouble();
+	}
 
     UPGrid& grid = raster->gridRef();
 
@@ -515,6 +529,17 @@ bool RasterCoverageConnector::loadData(IlwisObject* data, const IOOptions& optio
             blocklimits[bandindex].push_back(i);
     }
 
+	double nodata;
+	if (sourceRef().hasProperty("undefined")) {
+		nodata = sourceRef()["undefined"].toDouble();
+	}
+	else {
+		int ok;
+		nodata = gdal()->getUndefinedValue(layerHandle, &ok);
+		if (ok == 0)
+			nodata = rUNDEF;
+	}
+
     for(const auto& layer : blocklimits){
         int inLayerBlockIndex = layer.second[0] % grid->blocksPerBand(); //
         quint64 linesLeft = totalLines - grid->maxLines() * inLayerBlockIndex; //std::min((quint64)grid->maxLines(), totalLines - grid->maxLines() * layer.second[0]);
@@ -522,7 +547,7 @@ bool RasterCoverageConnector::loadData(IlwisObject* data, const IOOptions& optio
             layerHandle = gdal()->getRasterBand(_handle->handle(), layer.first + 1);
             for(const auto& index : layer.second) {
                 quint32 offsetIndex = bandindex == iUNDEF ? layer.first : (layer.first - bandindex);
-                loadNumericBlock(layerHandle, index, inLayerBlockIndex, linesPerBlock, linesLeft, block, raster,offsetIndex );
+                loadNumericBlock(layerHandle, index, inLayerBlockIndex, linesPerBlock, linesLeft, block, raster,offsetIndex, nodata );
                 if(!moveIndexes(linesPerBlock, linesLeft, inLayerBlockIndex))
                     break;
             }
@@ -565,11 +590,10 @@ void RasterCoverageConnector::loadNumericBlock(GDALRasterBandH layerHandle,
                                                quint32 linesPerBlock,
                                                quint64 linesLeft,
                                                char *block, RasterCoverage *raster,
-                                               int bandIndex) const {
+                                               int bandIndex, double nodata) const {
     UPGrid& grid = raster->gridRef();
     readData(grid, layerHandle, inLayerBlockIndex, linesPerBlock, block, linesLeft);
-    int ok;
-    const double nodata = gdal()->getUndefinedValue(layerHandle,&ok);
+    
     quint32 noItems = grid->blockSize(index);
     if ( noItems == iUNDEF)
         return ;
@@ -584,10 +608,10 @@ void RasterCoverageConnector::loadNumericBlock(GDALRasterBandH layerHandle,
             if (hasScaleOffset)
                 v = v * _offsetScales[bandIndex].scale + _offsetScales[bandIndex].offset;
 
-            if (ok == 0)
+            if (nodata == rUNDEF)
                 values[i] = v;
             else
-                values[i] = (ok && (nodata == v)) ? rUNDEF : v;
+                values[i] =nodata == v ? rUNDEF : v;
         }
     } // else we are trying to read beyond the available data, perhaps because a new band was added; just return the undef block
     grid->setBlockData(index, values);

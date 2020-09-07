@@ -95,7 +95,7 @@ Ilwis::OperationImplementation::State ShowCoverage::prepare(ExecutionContext *ct
 quint64 ShowCoverage::createMetadata()
 {
     OperationResource operation({"ilwis://operations/showcoverage"});
-    operation.setSyntax("showcoverage(coverageurl,!other|left|right)");
+    operation.setSyntax("showcoverage(coverageurl,!other|left|right, extra)");
     operation.setDescription(TR("Creates a new mappanel with the indicated coverage"));
     operation.setInParameterCount({3});
     operation.addInParameter(0,itCOVERAGE , TR("Coverage url"),TR("The url of the coverage to be displayed"));

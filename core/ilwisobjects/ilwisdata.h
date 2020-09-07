@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "errorobject.h"
 #include "iooptions.h"
 #include "ilwisobject.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "mastercatalog.h"
 
 
@@ -173,6 +173,7 @@ public:
         res.name(name);
         res.setUrl(url);
         res.setUrl(url, true);
+		res.createTime(Time::now());
         return prepare(res);
 
     }

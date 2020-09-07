@@ -36,12 +36,13 @@ StretchLimits::StretchLimits(VisualAttribute *p) : VisualPropertyEditor(p, "stre
 
 bool StretchLimits::canUse(const IIlwisObject &obj, const QString &name) const
 {
-if (!obj.isValid())
+	if (!obj.isValid())
         return false;
     if (!hasType(obj->ilwisType(), itCOVERAGE))
         return false;
     Ilwis::ICoverage cov = obj.as<Coverage>();
-
+	if (name == VisualAttribute::LAYER_ONLY)
+		return false;
     IDomain dom = vpmodel()->domain();
     bool useable = dom.isValid() && dom->ilwisType() == itNUMERICDOMAIN;
     return !vpmodel()->layer()->isSupportLayer() && useable;

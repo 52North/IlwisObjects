@@ -1,4 +1,5 @@
 import QtQuick 2.1
+import QtQuick.Controls 1.4 as QC1
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
@@ -15,6 +16,7 @@ Rectangle {
 	Column {
 		width : parent.width
 		height : 60
+		spacing : 4
 		Controls.TextEditLabelPair {
 		    id : keys
 			labelText : "Keywords"
@@ -22,7 +24,7 @@ Rectangle {
 			width : Math.min(450, parent.width)
 
 		}
-		Button{
+		QC1.Button{
 			width : 100
 			height : 22
 			text : "apply"

@@ -75,6 +75,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "addcolorcomposite.h"
 #include "pointlabeling.h"
 #include "histogram.h"
+#include "animation.h"
+#include "QuickQanava.h"
+#include "workflow\workflowgraph.h"
+#include "rangenode.h"
 #include "ilwiscontext.h"
 
 using namespace Ilwis;
@@ -327,6 +331,7 @@ void UIContextModel::prepare()
 	addPropertyEditor("addcolorcomposite", AddColorComposite::create);
 	addPropertyEditor("pointlabellayereditor", PointLabeling::create);
 	addPropertyEditor("histogrameditor", Histogram::create);
+	addPropertyEditor("animationproperties", AnimationProperties::create);
 
 
 	modelbuilder()->registerAnalysisModel("supervisedclassification", SupervisedClassificationmodel::create);
@@ -344,7 +349,7 @@ void UIContextModel::prepare()
     Resource scriptResource(url, itSCRIPT);
     scriptResource.code("script:console");
     scriptResource.name("Console", false);
-    scriptResource.setDescription(TR("Generic scrupt resource that functions as backend script for the console when no specific script is called for"));
+    scriptResource.setDescription(TR("Generic script resource that functions as backend script for the console when no specific script is called for"));
 
     mastercatalog()->addItems({mapResource, scriptResource}) ;
     _consoleScript.prepare(scriptResource);
@@ -360,6 +365,10 @@ void UIContextModel::prepare()
 		_mruFormats.push_back(v);
 
 	}
+
+	QuickQanava::initialize(_qmlcontext->engine());
+
+	WorkflowGraph::initialize();
 }
 
 bool UIContextModel::abort() const

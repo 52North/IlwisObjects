@@ -153,7 +153,7 @@ std::vector<QString> GenerateScriptNode::executeCondition(const OperationExpress
         int index = testLine.indexOf("=");
         testLine = testLine.mid(index+1);
 
-        if ( test._pre != loNONE){
+        /*if ( test._pre != loNONE){
             if ( test._pre == loNOT)
                 testLine += "!" + testLines[0];
         }
@@ -161,7 +161,7 @@ std::vector<QString> GenerateScriptNode::executeCondition(const OperationExpress
             testLine  += " && " + testLines[0];
         }else if ( test._post == loOR)
             testLine  += " || " + testLines[0];
-        expr += testLine;
+        expr += testLine;*/
 
     }
     expr += ":";

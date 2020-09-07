@@ -40,7 +40,9 @@ public:
     static ConnectorInterface *create(const Resource &resource, bool load, const IOOptions &options);
 protected:
 	static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
-	static bool loadMetaData(IlwisObject* object, const IOOptions&, const QJsonValue& jvalue);
+	static void store(const QString& v, IlwisTypes valueType, QJsonObject& jobj, const IOOptions &options);
+	static int loadMetaData(IlwisObject* object, const IOOptions&, const QJsonValue& jvalue);
+	static bool loadMetaData(const QJsonObject& jvalue, IlwisTypes tp, QString& v);
 	static void storeDataDef(const DataDefinition& def, QJsonObject& obj) ;
 	static void loadDataDef(DataDefinition& def, QJsonObject& jdatadef);
 	void flush(const IlwisObject *obj, const QJsonArray& jobjects);
@@ -64,8 +66,13 @@ protected:
 		return v.toBool();
 	}
 
+	int _version = 0;
+protected:
+	QString _datafile;
 private:
     IlwisObject *create() const;
+
+
 
 };
 

@@ -247,8 +247,12 @@ bool GDALProxy::prepare() {
             GDALDriverH driverH = getDriver(index);
             if ( driverH) {
                 QString cext = getMetaDataItem(driverH,GDAL_DMD_EXTENSION,NULL);//raster extensions only
+				if (cext == "")
+					continue;
                 if ( cext == "mpr/mpl") // ilwis3 formats have their own handling
                     continue;
+				if (cext == "xml") // xml is too widely used for non spatial data. 
+					continue;
                 QString create1 = getMetaDataItem(driverH,GDAL_DCAP_CREATE,NULL);//raster extensions only
                 QString create2 = getMetaDataItem(driverH,GDAL_DCAP_CREATECOPY,NULL);//raster extensions only
                 QString access = create1.size() == 0 && create2.size() == 0 ? "r" : "rc";
@@ -278,12 +282,12 @@ bool GDALProxy::prepare() {
         _allExtensions += _rasterExtensions;
         _allExtensions += _featureExtensions;
 
-		DataFormat senzip("gdal", "zip", "Sentinel2", "zip", "r", itRASTER);
+		/*DataFormat senzip("gdal", "zip", "Sentinel2", "zip", "r", itRASTER);
 		senzip.store();
         DataFormat senxml("gdal", "xml", "Sentinel2", "xml", "r", itRASTER);
         senxml.store();
         _allExtensions += "*.zip";	// S2[AB]_MSIL(1C|2A)
-        _allExtensions += "*.xml";	// S2[AB]_MSIL(1C|2A)
+        _allExtensions += "*.xml";	// S2[AB]_MSIL(1C|2A)(*/
 
     }
 
@@ -370,7 +374,12 @@ bool GDALProxy::supports(const Resource &resource) const{
             return true;
         return false;
     };
-    QString sAllIlwisExtensions = ".mpr.mpa.mps.mpp.tbt.mpl.ioc.mpv.ilo.atx.grh.dom.rpr.grf.csy.his.hsa.hss.hsp.sms.stp.smc.ta2.mat.fil.fun.isl";
+	QString container = resource.container().toString();
+	QRegExp re("MTD_MSIL*.xml", Qt::CaseInsensitive, QRegExp::Wildcard);
+	int idx = container.indexOf(re);
+	if (idx > 0) // sentinel has its own connector
+		return false;
+    QString sNotUsedExtensions = ".mpr.mpa.mps.mpp.tbt.mpl.ioc.mpv.ilo.atx.grh.dom.rpr.grf.csy.his.hsa.hss.hsp.sms.stp.smc.ta2.mat.fil.fun.isl";
     if (! testFunc(resource.toLocalFile()))   {
         QFileInfo info(resource.container(true).toLocalFile()); // possible case that the container is a gdal catalog
         if (info.isFile() && testFunc(info)) // for the moment a gdal catalog has to be another file
@@ -378,7 +387,7 @@ bool GDALProxy::supports(const Resource &resource) const{
         else {
             QFileInfo info (resource.toLocalFile());
             QString ext = info.suffix();
-            if (ext != "" && sAllIlwisExtensions.contains("." + ext))
+            if (ext != "" && sNotUsedExtensions.contains("." + ext))
                 return false;
             else
                 return 0 != gdal()->identifyDriver(resource.toLocalFile().toLocal8Bit(), 0); // last resort, let GDAL actually probe the file
@@ -389,9 +398,8 @@ bool GDALProxy::supports(const Resource &resource) const{
 
 }
 
-GdalHandle* GDALProxy::openFile(const QFileInfo& filename, quint64 asker, GDALAccess mode, bool message){
+GdalHandle* GDALProxy::openFile(const QString& name, quint64 asker, GDALAccess mode, bool message){
     void* handle = nullptr;
-    auto name = filename.absoluteFilePath();
     if (message){
         setCPLErrorHandler(GDALProxy::cplErrorHandler);
     }else

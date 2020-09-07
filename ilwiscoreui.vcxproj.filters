@@ -93,6 +93,15 @@
     <Filter Include="Header Files\modeller\classification">
       <UniqueIdentifier>{1ab52bc9-0656-42c9-80dd-b6cb0245084d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\quickqanava">
+      <UniqueIdentifier>{31828e9f-cf78-4fe5-8617-a8e50a676479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\quickqanava\gtpo">
+      <UniqueIdentifier>{c5777dc2-20ee-4486-9733-ce650cc891d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\quickqanava">
+      <UniqueIdentifier>{9231b0f2-1c35-4fbf-8dff-3234bc49fd03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwiscoreui\models\workflow\applicationmodelui.cpp">
@@ -386,6 +395,78 @@
     <ClCompile Include="ilwiscoreui\models\dataseriesmodel.cpp">
       <Filter>Source Files\ilwisobjects</Filter>
     </ClCompile>
+    <ClCompile Include="ilwiscoreui\coveragedisplay\propertyeditors\animation.cpp">
+      <Filter>Source Files\spatialdrawing\editors</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanBehaviour.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanBottomRightResizer.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanConnector.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanDraggable.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanDraggableCtrl.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanEdge.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanEdgeItem.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanGraph.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanGraphView.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanGrid.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanGroup.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanGroupItem.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanLineGrid.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanNavigable.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanNavigablePreview.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanNode.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanNodeItem.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanPortItem.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanSelectable.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanStyle.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanStyleManager.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\quickqanava\qanUtils.cpp">
+      <Filter>Source Files\quickqanava</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwiscoreui\models\workflow\workflowgraph.cpp">
+      <Filter>Source Files\modeller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwiscoreui\models\workflow\applicationmodelui.h">
@@ -658,10 +739,79 @@
     <QtMoc Include="ilwiscoreui\spatial_animation.h">
       <Filter>Header Files\catalog\operations</Filter>
     </QtMoc>
+    <QtMoc Include="ilwiscoreui\coveragedisplay\propertyeditors\animation.h">
+      <Filter>Header Files\spatialdrawing\editors</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanBehaviour.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanBottomRightResizer.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanConnector.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanEdge.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanEdgeItem.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanGraph.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanGraphView.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanGrid.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanGroup.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanGroupItem.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanLineGrid.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanNavigable.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanNavigablePreview.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanNode.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanNodeItem.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanPortItem.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanStyle.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qanStyleManager.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qcmAbstractContainer.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\quickqanava\qcmContainerModel.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </QtMoc>
+    <QtMoc Include="ilwiscoreui\models\workflow\workflowgraph.h">
+      <Filter>Header Files\modeller</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwiscoreui\models\.gitignore">
       <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="ilwiscoreui\quickqanava\gtpo\GTpo">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -691,6 +841,114 @@
     </ClInclude>
     <ClInclude Include="ilwiscoreui\catalogoperationfactory.h">
       <Filter>Header Files\catalog</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanAbstractDraggableCtrl.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanContainerAdapter.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanDraggable.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanDraggableCtrl.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanGraphConfig.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanSelectable.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanUtils.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qcmAdapter.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qcmContainer.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\QuickContainers.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\QuickQanava.h">
+      <Filter>Header Files\quickqanava</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\algorithm.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\algorithm.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\behaviour.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\behaviourable.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\behaviourable.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\config.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\container_adapter.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\edge.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\edge.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\functional.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\generator.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\generator.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\graph.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\graph.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\graph_behaviour.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\graph_behaviour.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\graph_property.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\GTpo.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\node.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\node.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\node_behaviour.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\node_behaviour.hpp">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\qt_container_adapter.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\gtpo\utils.h">
+      <Filter>Header Files\quickqanava\gtpo</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwiscoreui\quickqanava\qanGraph.hpp">
+      <Filter>Header Files\quickqanava</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

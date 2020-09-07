@@ -68,7 +68,7 @@ bool Histogram::canUse(const IIlwisObject &obj, const QString &name) const
 	if (name == VisualAttribute::LAYER_ONLY)
 		return false;
 
-	if (!hasType(obj->ilwisType(), itCOVERAGE))
+	if (!hasType(obj->ilwisType(), itRASTER))
 		return false;
 	Ilwis::ICoverage cov = obj.as<Coverage>();
 
@@ -77,8 +77,11 @@ bool Histogram::canUse(const IIlwisObject &obj, const QString &name) const
 	return !vpmodel()->layer()->isSupportLayer() && useable;
 }
 
-bool Histogram::canUse(const IIlwisObject &, const DataDefinition &def) const
+bool Histogram::canUse(const IIlwisObject &obj, const DataDefinition &def) const
 {
+	if (!hasType(obj->ilwisType(), itRASTER))
+		return false;
+
 	if (def.isValid())
 		return hasType(def.domain()->ilwisType(), itNUMERICDOMAIN);
 	return false;
@@ -455,7 +458,7 @@ void Histogram::updateChart(int mx, int my) {
 				QVariantMap values = vpmodel()->layer()->coord2value(crd, PIXELVALUE).toMap();
 				QString v;
 				if (values.size() == 1) {
-					v = values.first().value<double>();
+					v = values.first().toString();
 				}
 				else if ( values.size() == 3){
 					v = values["red"].toString() + "|" + values["green"].toString() + "|" + values["blue"].toString();

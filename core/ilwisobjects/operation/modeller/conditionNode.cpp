@@ -73,16 +73,9 @@ void WorkFlowCondition::addSubNode(const SPWorkFlowNode &node, const QString &re
     }
 }
 
-void WorkFlowCondition::addTest(SPWorkFlowNode node,LogicalOperator pre, LogicalOperator post){
+void WorkFlowCondition::addTest(SPWorkFlowNode node){
     Test test;
-    if ( pre != loNONE && pre != loNOT)
-        kernel()->issues()->log(TR("Illegal construct in test of a condtion:") + QString::number(node->id()));
-    if ( _tests.size() == 0 && post != loNONE)
-        kernel()->issues()->log(TR("Illegal construct in test of a condtion:") + QString::number(node->id()));
-    if ( _tests.size() > 0 && !( post == loAND || post == loOR))
-         kernel()->issues()->log(TR("Illegal construct in test of a condtion:") + QString::number(node->id()));
-    test._pre = pre;
-    test._post = post;
+ 
     test._operation = node;
     _tests.push_back(test);
 

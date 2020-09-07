@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "kernel.h"
 #include "ilwisdata.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "identity.h"
 #include "symboltable.h"
 #include "operationExpression.h"

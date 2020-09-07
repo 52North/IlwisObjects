@@ -214,7 +214,26 @@ public:
 	bool noRefreshCatalog() const;
 	void noRefreshCatalog(bool yesno);
 
+	struct Adjustement {
+		QString _url;
+		IlwisTypes _objectType;
 
+		bool operator<(const Adjustement& adj) const {
+			return _url < adj._url && _objectType < adj._objectType;
+		}
+
+		bool operator==(const Adjustement& adj) const {
+			return _url == adj._url && _objectType == adj._objectType;
+		}
+
+	};
+
+	struct AdjustementValue {
+		QString _property;
+		QString _value;
+	};
+
+	
 #ifdef QT_DEBUG
     quint32 lookupSize() const { return _lookup.size(); }
     const QHash<quint64, ESPIlwisObject>& dumpLookup() const;
@@ -235,16 +254,20 @@ private:
     mutable std::recursive_mutex _guard;
     QString replaceSymbols(const QString &selection) const;
 	bool _noRefresh = false; // temporarily blocks refreshes ( selections trigger a refresh which is unwanted)
+
+
+
 };
 
 //typedef QHash<IlwisResource, QList<CatalogCreate>  > CatalogCollection;
 
 KERNELSHARED_EXPORT MasterCatalog* mastercatalog();
 
-class KERNELSHARED_EXPORT CalcLatLon {
+class KERNELSHARED_EXPORT Adjustments {
 public:
     static void calculatelatLonEnvelopes(const QString& query, const QString& name);
-    static void calculatelatLonEnvelopes(std::vector<Resource> &resources, const QString &name);
+    static void addAdjustements(std::vector<Resource> &resources, const QString &name);
+	static void applyAdjustements(Resource& resource);
 };
 
 }

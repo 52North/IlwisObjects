@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisdata.h"
 #include "ilwiscontext.h"
 #include "connectorinterface.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "ilwisobject.h"
 #include "operationmetadata.h"
 #include "mastercatalog.h"
@@ -70,6 +70,23 @@ QString OperationModel::inputparameterTypeNames(quint32 index) const
             break;
     }
     return type;
+}
+
+QString OperationModel::inputparameterTypeInternalNames(quint32 index) const
+{
+	quint64 ilwtype = getProperty("pin_" + QString::number(index + 1) + "_type").toULongLong();
+	QString type;
+	for (quint64 i = 0; i < 64; ++i) {
+		quint64 result = 1LL << i;
+		if (hasType(ilwtype, result)) {
+			if (type != "")
+				type += "|";
+			type += TypeHelper::type2name(result);
+		}
+		if (result > ilwtype)
+			break;
+	}
+	return type;
 }
 
 QString OperationModel::inputparameterType(quint32 index) const
@@ -288,8 +305,23 @@ QStringList OperationModel::choiceList(quint32 paramIndex) const
 
 QStringList OperationModel::parameterIndexes(const QString &typefilter, bool fromOperation)
 {
-    QStringList indexes;
-    IlwisTypes tp1 = typefilter.toULongLong();
+	QStringList indexes;
+	bool ok;
+	IlwisTypes tp1;
+	if (typefilter == sUNDEF)
+		tp1 = itANY;
+	else {
+		tp1 = typefilter.toULongLong(&ok);
+		if (!ok) {
+			QStringList types = typefilter.split("|");
+
+			for (auto s : types) {
+				quint64 tp = TypeHelper::name2type(s.trimmed());
+				if (tp != itUNKNOWN)
+					tp1 |= tp;
+			}
+		}
+	}
 
     bool found = true;
     for(int i = 0; i < maxParameterCount(!fromOperation); ++i){
@@ -401,3 +433,4 @@ QString OperationModel::fullDescription() const {
 	}
 	return result + "</table></p>";
 }
+

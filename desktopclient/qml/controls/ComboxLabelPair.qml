@@ -43,11 +43,13 @@ Item {
         y :10
     }
     QC2.ComboBox{
+		y : 6
         id : control
         anchors.left : label.right
         height : parent.height
         width : parent.width - label.width
         model : itemModel
+		font.pointSize : fontSize + 1
 
         editable : textEditable
         textRole: role
@@ -62,9 +64,11 @@ Item {
 				height : 20
 				color: "black"
 				font.bold : isSpecial(control.textRole ? modelData[control.textRole] : modelData) 
+				font.pointSize : fontSize
 				elide: Text.ElideRight
 				verticalAlignment: Text.AlignVCenter
-			}
+			} 
+
 			highlighted: control.highlightedIndex === index
 			background: Rectangle {
 				anchors.fill: itdelg
@@ -86,36 +90,37 @@ Item {
 			}
 
 			onPaint: {
-				context.reset();
-				context.moveTo(0, 0);
-				context.lineTo(width, 0);
-				context.lineTo(width / 2, height);
-				context.closePath();
-				context.fillStyle = control.pressed ? "#17a81a" : "#21be2b";
-				context.fill();
+				if ( context) {
+					context.reset();
+					context.moveTo(0, 0);
+					context.lineTo(width, 0);
+					context.lineTo(width / 2, height);
+					context.closePath();
+					context.fillStyle = control.pressed ? "#17a81a" : "#21be2b";
+					context.fill();
+				}
 			}
 		}
 
-		contentItem: Item {
+		contentItem: Rectangle {
+			id : ttid
 		     width : control.width - 12
-			 height : control.height - 12
+			 height : control.height
 
 			 DropArea {
 			 		width : parent.width - 15
 					height : parent.height
 					TextEdit {
 						id : editid
-						x : 4
-						y : 5
-						leftPadding: 0
 						width : parent.width
+						height : parent.height
+						leftPadding: 4
+						topPadding : 4
 						rightPadding: control.indicator.width + control.spacing
 
 						text: stripName(control.displayText)
 						font: control.font
 						color: "black"
-						verticalAlignment: Text.AlignVCenter
-						//elide: Text.ElideRight
 						clip : true
 						readOnly : !cbox.textEditable
 
@@ -143,8 +148,7 @@ Item {
 
 		background: Rectangle {
 		    id : backgr
-			implicitWidth: 120
-			implicitHeight: 40
+			anchors.fill : parent
 			color : transparentBackgrond ? "transparent" : "white"
 			Rectangle {
 				width : parent.width - 15
@@ -201,14 +205,19 @@ Item {
     }
 
 	function stripName(txt) {
-		if ( txt && txt.charAt(0) == "*")
+		if(!txt)
+		return ""
+
+		if (txt.charAt(0) == "*")
 			return txt.substr(1)
 		return txt
 
 	}
 
 	function isSpecial(txt) {
-		return txt.charAt(0) == "*"
+		if (txt)
+			return txt.charAt(0) == "*"
+		return false
 
 	}
 }

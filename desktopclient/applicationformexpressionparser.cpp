@@ -11,30 +11,30 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                     
 GNU General Public License for more details.     
 
-You should have received a copy of the GNU General Public License 
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/                
+You should have received a copy of the GNU General Public License   
+along with this program.  If not, see <http://www.gnu.org/licenses/>.*/                 
  
 #include "kernel.h"                                
 #include "mastercatalog.h"    
 #include "models/resourcemodel.h"                                          
 #include "operationmetadata.h"         
 #include "dataformat.h"                  
-#include "uicontextmodel.h" 
-#include "mastercatalogmodel.h"   
-#include "applicationformexpressionparser.h"                                                                                                                                                    
+#include "uicontextmodel.h"  
+#include "mastercatalogmodel.h"     
+#include "applicationformexpressionparser.h"                                                                                                                                                              
  
  
-using namespace Ilwis;                                                                                     
+using namespace Ilwis;                                                                                       
 using namespace Ui; 
 
-ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                        
+ApplicationFormExpressionParser::ApplicationFormExpressionParser()                                           
 {
-}                                                                                                                                 
+}                                                                                                                                  
 
-ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,
+ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::addParameter(const Resource& resource,  
                                                                                              quint32 index,
                                                                                                const QStringList& choices,
-                                                                                              bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{ 
+                                                                                              bool optional, int optionGroup, bool workflowContex,const QString& defvalue) const{  
     FormParameter parm;                                                           
     QString prefix = QString("pin_%1_").arg(index + 1);  
     FieldType alternateUIType = ftNONE;    
@@ -67,18 +67,18 @@ ApplicationFormExpressionParser::FormParameter ApplicationFormExpressionParser::
             }
         } 
     }  
-    else if ( parm._dataType == itBOOL){ 
+    else if ( parm._dataType == itBOOL){   
         parm._fieldType = ftRADIOBUTTON;
-        QStringList lst = {"!yes", "no"};      
-        parm._choiceList = lst;      
+        QStringList lst = {"!yes", "no"};       
+        parm._choiceList = lst;           
 
     }   
-    else if (hasType(parm._dataType, itCOLLECTION)){ 
-       parm._fieldType = ftTEXTAREA; 
+    else if (hasType(parm._dataType, itCOLLECTION)){  
+       parm._fieldType = ftTEXTAREA;  
     }else
         parm._fieldType = ftTEXTEDIT; 
     if ( alternateUIType != ftNONE){
-        parm._fieldType = alternateUIType;     
+        parm._fieldType = alternateUIType;      
     }
     return parm;      
 }    

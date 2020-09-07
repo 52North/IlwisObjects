@@ -196,7 +196,7 @@ Controls.DropableItem{
 
                         var name = nameedit.content
                         var displayName = displayname.content == "" ? name : displayname.content
-                        var url = topItem.currentCatalogCorrectUrl() + '/' + name + '.ilwis'
+                        var url = topItem.currentCatalogCorrectUrl() + '/' + name + '.ilwis4'
                         var createInfo = {
                             type : "workflow",
                             name : name,

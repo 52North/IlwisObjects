@@ -32,17 +32,25 @@ ODSFormat::ODSFormat()
 {
 }
 
+ODSFormat::~ODSFormat()
+{
+	delete _book;
+}
+
 
 bool Ilwis::SpreadSheetConnectors::ODSFormat::openSheet(const QString &spreadsheetPath, bool isLoading)
 {
     QFileInfo odsinfo(spreadsheetPath);
     QString sheetName;
-    if ( odsinfo.suffix() != "ods"){ // the path was a path inside a catalog of an ods file, so strip the sheetname to get the filename, retain the sheetname
+    if ( odsinfo.suffix() != "ods" && odsinfo.suffix() != "ods_"){ // the path was a path inside a catalog of an ods file, so strip the sheetname to get the filename, retain the sheetname
         int index  = odsinfo.absoluteFilePath().lastIndexOf("/");
         sheetName = odsinfo.absoluteFilePath().mid(index + 1);
         odsinfo = QFileInfo(odsinfo.absolutePath());
     }
-    _book.reset(new ods::Book(odsinfo.absoluteFilePath()));
+    _book = new ods::Book(odsinfo.absoluteFilePath());
+	if (!odsinfo.exists())
+		_book->InitDefault();
+	//_book->InitDefault();
     if ( sheetName == ""){ // no sheetname given so we have to figure out one for our selves
         if ( isLoading) {
             if (!_book->sheet(0)) // vby default, when loading we choose the first sheet (if it exists)
@@ -73,7 +81,7 @@ ods::Cell *ODSFormat::getCellInternal(quint32 col, quint32 row) const{
     if ( !cell)
         return 0;
     ods::Value &value = cell->value();
-    if ( !value.Ok())
+    if ( !value.get())
         return 0;
     return cell;
 }
@@ -92,7 +100,7 @@ QVariant ODSFormat::cellValue(quint32 col, quint32 row) const
             return QVariant(*value.AsDouble());
         } else if ( value.IsDate()){
             return QVariant(*value.AsDate());
-        } else if ( value.IsTime()){
+        } else if ( value.IsDuration()){
             return QVariant(*value.AsDate());
         } else if ( value.IsString()){
             return QVariant(*value.AsString());

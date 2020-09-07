@@ -35,8 +35,7 @@ const double rad2sec = 206264.80624709635515647335733078; //amount of arcseconds
 
 GeodeticDatum::GeodeticDatum(const QString& name) : Identity(name)
 {
-    _datumParams.resize(10);
-    std::fill(_datumParams.begin(),_datumParams.end(), 0.0);
+    _datumParams.resize(10,0);
     _datumParams[dmSCALE] = 1;
     _mode = dtMolodensky;
     _isValid = false;
@@ -45,6 +44,9 @@ GeodeticDatum::GeodeticDatum(const QString& name) : Identity(name)
 
 GeodeticDatum::GeodeticDatum(std::vector<double> &datumParameters, const IEllipsoid &ellips)
 {
+	_datumParams.resize(10,0);
+	_mode = dtMolodensky;
+	_isValid = false;
     if ( datumParameters.size() == 3) {
         set3TransformationParameters(datumParameters[0], datumParameters[1], datumParameters[2], ellips);
     } else if ( datumParameters.size() == 7) {

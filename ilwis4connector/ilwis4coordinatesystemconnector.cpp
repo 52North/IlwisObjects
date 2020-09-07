@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobjectconnector.h"
 #include "coordinatesystem.h"
 #include "conventionalcoordinatesystem.h"
+#include "boundsonlycoordinatesystem.h"
 #include "projection.h"
 #include "ellipsoid.h"
 #include "geodeticdatum.h"
@@ -46,14 +47,19 @@ ConnectorInterface *Ilwis4CoordinateSystemConnector::create(const Ilwis::Resourc
 
 Ilwis4CoordinateSystemConnector::Ilwis4CoordinateSystemConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options) : Ilwis4Connector(resource, load, options)
 {
+	_version = 1;
 }
 
 bool Ilwis4CoordinateSystemConnector::store(IlwisObject *obj, const IOOptions &options)
 {
 	QJsonArray objects;
-	QJsonObject jroot;
+	QJsonObject jroot, jcsy;
 
-	store(obj, options, jroot);
+	IOOptions newOptions = options;
+	newOptions.addOption("version", _version);
+
+	store(obj, newOptions, jcsy);
+	jroot.insert("ilwisobject", jcsy);
 	objects.append(jroot);
 
 	flush(obj, objects);
@@ -63,6 +69,22 @@ bool Ilwis4CoordinateSystemConnector::store(IlwisObject *obj, const IOOptions &o
 	return true;
 }
 
+ICoordinateSystem Ilwis4CoordinateSystemConnector::createCsy(const IOOptions& options, const QJsonObject& jcsy) {
+	QJsonValue jcsybase = jcsy["base"];
+	IlwisTypes tp = TypeHelper::name2type(jcsybase["ilwistype"].toString());
+	ICoordinateSystem csy;
+	if (tp == itCONVENTIONALCOORDSYSTEM) {
+		IConventionalCoordinateSystem ccsy;
+		ccsy.prepare();
+		csy = ccsy;
+	}
+	if (tp == itBOUNDSONLYCSY) {
+		IBoundsOnlyCoordinateSystem bcsy;;
+		bcsy.prepare();
+		csy = bcsy;
+	}
+	return csy;
+}
 bool Ilwis4CoordinateSystemConnector::loadMetaData(IlwisObject* object, const IOOptions& options, const QJsonValue& jvalue) {
 	
 
@@ -108,12 +130,13 @@ bool Ilwis4CoordinateSystemConnector::loadMetaData(IlwisObject* object, const IO
 			for (auto& parm : parms) {
 				dparms.push_back(parm.toDouble());
 			}
-			GeodeticDatum gdatum(dparms, ccsy->ellipsoid());
-			gdatum.name(jdatum["name"].toString());
-			gdatum.setArea(jdatum["area"].toString());
-			gdatum.setDescription(jdatum["description"].toString());
-			gdatum.setAuthority(jdatum["authority"].toString());
-			gdatum.code(jdatum["code"].toString());
+			GeodeticDatum *gdatum = new GeodeticDatum(dparms, ccsy->ellipsoid());
+			gdatum->name(jdatum["name"].toString());
+			gdatum->setArea(jdatum["area"].toString());
+			gdatum->setDescription(jdatum["description"].toString());
+			gdatum->setAuthority(jdatum["authority"].toString());
+			gdatum->code(jdatum["code"].toString());
+			ccsy->setDatum(gdatum);
 		}
 
 	}
@@ -166,6 +189,18 @@ bool Ilwis4CoordinateSystemConnector::storeData(IlwisObject *obj, const IOOption
 
 bool Ilwis4CoordinateSystemConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
+	QFileInfo inf = _resource.url(true).toLocalFile();
+	QFile file;
+	file.setFileName(inf.absoluteFilePath());
+	if (file.open(QIODevice::ReadOnly)) {
+		QString meta = file.readAll();
+		QJsonDocument doc = QJsonDocument::fromJson(meta.toUtf8());
+		if (!doc.isNull()) {
+			QJsonArray jobjects = doc.array();
+			QJsonValue jvalue = jobjects.at(0);
+			return loadMetaData(obj, options, jvalue["ilwisobject"]);
+		}
+	}
 	return true;
 }
 

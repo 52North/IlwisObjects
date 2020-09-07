@@ -37,7 +37,7 @@ Rectangle  {
         onClicked: {
             var currentOperation = workflowView.currentOperation()
             if ( currentOperation){
-                workflowView.workflow.setFixedValues(currentOperation.itemid, appFrame.currentAppForm.formresult)
+                workflowView.workflow.setFixedValues(currentOperation.nodeid, appFrame.currentAppForm.formresult)
                 workflowView.workflow.createMetadata()
                 currentOperation.resetColors()
                 workflowView.updateInputNamesList()
@@ -49,12 +49,15 @@ Rectangle  {
         var currentOperation = workflowView.currentOperation()
         if (!currentOperation)
             return
-        var node = workflowView.workflow.getNode(currentOperation.itemid)
+        var node = workflowView.workflow.getNode(currentOperation.nodeid)
+	
         if (!node)
             return
         var constantValues = []
         var parms = node.parameters
         if ( parms){
+			var operation = operations.operation(node.operationid)
+			currentOperation.operation = operation
             var form = formbuilder.index2Form(currentOperation.operation.id,node)
             appFrame.formQML = ""
             appFrame.formQML = form

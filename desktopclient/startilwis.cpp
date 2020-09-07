@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QFileSystemModel>
 #include "kernel.h"
 #include "errorobject.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "ilwistype.h"
 #include "catalog.h"
 #include "mastercatalog.h"
@@ -215,8 +215,9 @@ void StartIlwis::init() {
 		//ctx->setContextProperty("filesystem", _filesystemmodel);
 		//ctx->setContextProperty("rootPathIndex", _filesystemmodel->index(_filesystemmodel->rootPath()));
 
+		uicontext()->qmlContext(ctx);
         uicontext()->prepare();
-        uicontext()->qmlContext(ctx);
+
         _mastercatalogmodel->prepare();
         _operations->prepare({"globaloperationscatalog", true});
 

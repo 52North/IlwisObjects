@@ -74,6 +74,10 @@ Rectangle {
         dataForm.updateMetadata()
     }
 
+	function updateSelectedForm() {
+		dataForm.updateSelectedForm()
+	}
+
     function stepMode() {
 //            if ( model){
 //                var wf = model.workflow(workflows.currentIndex) // atm we assume one workflow per scenario

@@ -38,9 +38,10 @@ NumericRange::NumericRange(const QString& defintion){
     if ( parts.size() == 2 && parts[0] == "numericrange"){
         QStringList numberParts = parts[1].split("|");
         if ( numberParts.size() == 2 || numberParts.size() == 3){
-            bool ok1, ok2, ok3;
-            _min = numberParts[0].toDouble(&ok1);
-            _max = numberParts[1].toDouble(&ok2);
+            bool ok1, ok2, ok3=true;
+            _min = (numberParts[0] != "-infinite") ? numberParts[0].toDouble(&ok1) : -1e300;
+            _max = (numberParts[1] != "+infinite") ? numberParts[1].toDouble(&ok2) : 1e300;
+			_resolution = 0;
             if ( numberParts.size() == 3){
                 _resolution = numberParts[2].toDouble(&ok3);
             }
@@ -255,7 +256,7 @@ bool NumericRange::contains(const QVariant &value, bool inclusive) const
 {
     bool ok;
     double v = value.toDouble(&ok);
-    if(QString(value.typeName()).compare("Ilwis::Time") == 0){
+    if(value.type() == TypeHelper::_timeUserId){
         Time temp = value.value<Ilwis::Time>();
         QVariant qVar ((double)temp);
         v = qVar.toDouble(&ok);

@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "coverage.h"
 #include "representation.h"
 #include "connectorinterface.h"
-#include "resource.h"
+#include "catalog/resource.h"
 //#include "raster.h"
 //#include "drawers/attributevisualproperties.h"
 #include "geometries.h"
@@ -61,7 +61,7 @@ CatalogModel::CatalogModel() : ResourceModel(Resource(), 0)
     _level = 0;
 }
 
-CatalogModel::CatalogModel(const Resource &res, int tp, QObject *parent) : ResourceModel(res,parent)
+CatalogModel::CatalogModel(const Resource &res, int tp, QObject *parent) : ResourceModel(res,parent) 
 {
     _initNode = true;
     _isScanned = false;
@@ -206,22 +206,28 @@ QQmlListProperty<ResourceModel> CatalogModel::resources() {
             _objectCounts[resource->type()]+= 1;
         }
         _filteredItems.clear();
+		bool respectFilteredItems = false;
 		if (_view.filterCount() == 1) {// only base filter
 			sortItems(_allItems);
 			return  QQmlListProperty<ResourceModel>(this, _allItems);
-		}if (_view.isActiveFilter("spatial"))
-            fillSpatialFilter();
-        if ( _view.isActiveFilter("object")){
-            fillObjectFilter();
+		}if (_view.isActiveFilter("spatial")) {
+			respectFilteredItems = true;
+			fillSpatialFilter();
+		}if (_view.isActiveFilter("object")) {
+            fillObjectFilter(respectFilteredItems);
+			respectFilteredItems = true;
         }
         if ( _view.isActiveFilter("keyword")){
-            fillKeywordFilter();
+            fillKeywordFilter(respectFilteredItems);
+			respectFilteredItems = true;
         }
         if ( _view.isActiveFilter("name")){
-            fillNameFilter();
+            fillNameFilter(respectFilteredItems);
+			respectFilteredItems = true;
         }
         if (_view.isActiveFilter("epsg")) {
-            fillEPSGFilter();
+            fillEPSGFilter(respectFilteredItems);
+			respectFilteredItems = true;
         }
 		sortItems(_filteredItems);
         return QQmlListProperty<ResourceModel>(this, _filteredItems);
@@ -248,11 +254,11 @@ QQmlListProperty<ResourceModel> CatalogModel::coverages()
 
 
 
-void CatalogModel::fillObjectFilter() {
+void CatalogModel::fillObjectFilter(bool respectFilteredItems) {
 
     IlwisTypes allowedObjects = _view.objectFilter();
 
-    auto &currentList = _filteredItems.size() > 0 ? _filteredItems : _allItems;
+	auto &currentList =  _filteredItems.size() > 0 || respectFilteredItems ? _filteredItems : _allItems;
     QList<ResourceModel *> tempList;
     for(ResourceModel * resource : currentList){
         if(hasType(resource->type(), allowedObjects)){
@@ -263,8 +269,8 @@ void CatalogModel::fillObjectFilter() {
 
 }
 
-void CatalogModel::fillNameFilter(){
-    auto &currentList = _filteredItems.size() > 0 ? _filteredItems : _allItems;
+void CatalogModel::fillNameFilter(bool respectFilteredItems){
+    auto &currentList = _filteredItems.size() > 0 || respectFilteredItems ? _filteredItems : _allItems;
     QList<ResourceModel *> tempList;
     auto filter = _view.filter("name").toString();
     for(ResourceModel * resource : currentList){
@@ -275,8 +281,8 @@ void CatalogModel::fillNameFilter(){
     _filteredItems = QList<ResourceModel *>(tempList);
 }
 
-void CatalogModel::fillEPSGFilter() {
-    auto &currentList = _filteredItems.size() > 0 ? _filteredItems : _allItems;
+void CatalogModel::fillEPSGFilter(bool respectFilteredItems) {
+    auto &currentList = _filteredItems.size() > 0 || respectFilteredItems ? _filteredItems : _allItems;
     QList<ResourceModel *> tempList;
     auto filter = _view.filter("epsg").toString();
     for (ResourceModel * resource : currentList) {
@@ -286,8 +292,8 @@ void CatalogModel::fillEPSGFilter() {
     _filteredItems = QList<ResourceModel *>(tempList);
 }
 
-void CatalogModel::fillKeywordFilter(){
-    auto &currentList = _filteredItems.size() > 0 ? _filteredItems : _allItems;
+void CatalogModel::fillKeywordFilter(bool respectFilteredItems){
+    auto &currentList = _filteredItems.size() > 0 || respectFilteredItems ? _filteredItems : _allItems;
     QList<ResourceModel *> tempList;
     for(ResourceModel * resource : currentList){
         if ( _view.keywordFilter(resource->resource()))
@@ -428,13 +434,17 @@ void CatalogModel::gatherItems() {
     QUrl previousContainer;
 
 	std::map<QString, std::vector<Resource>> folderClashes;
+	MasterCatalogModel *mastercatelog = getMasterCatalogModel();
+	auto selItems = mastercatelog->selectedIds().split("|");
     for(const Resource& resource : items){
         //if (resource.ilwisType() == itCATALOG && hasType(resource.extendedType(), itRASTER)) // skip container catalog Resources; the main Resource already functions as the container.
         //    continue;
 		if (resource.ilwisType() == itCATALOG || resource.ilwisType() == itRASTER) {
 			folderClashes[resource.url().toString()].push_back(resource);
-		}else
-			_allItems.push_back( new ResourceModel(resource, this));
+		}
+		else {
+			_allItems.push_back(new ResourceModel(resource, this));
+		}
         hasParent &= (previousContainer.isValid() ? resource.container() == previousContainer : true);
         previousContainer = resource.container();
         if ( previousContainer.toString() == "ilwis://")
@@ -458,6 +468,11 @@ void CatalogModel::gatherItems() {
 		}
 		if (previousContainer.isValid())
 			_allItems.push_front(new ResourceModel(Resource(previousContainer.toString() + "/..", itCATALOG), this));
+	}
+	for (ResourceModel* rm : _allItems) {
+		for (const QString& selItem : selItems) {
+			rm->setIsSelected(selItem.toULongLong() == rm->item().id());
+		}
 	}
 
 
@@ -564,6 +579,16 @@ void CatalogModel::maxNameLength(qint32 l) {
 		emit maxNameLengthChanged();
 	}
 }
+
+ResourceModel *CatalogModel::id2ResourceModel(quint64 id) {
+	for (auto *rm : _allItems) {
+		if (rm->resourceRef().id() == id)
+			return rm;
+	}
+	return 0;
+}
+
+
 
 //-------------------------------------------------
 CatalogWorker2::CatalogWorker2(const QUrl& url, const QUrl &workingcatalog, bool forceScan) : _container(url), _workingCatalog(workingcatalog), _scan(forceScan)

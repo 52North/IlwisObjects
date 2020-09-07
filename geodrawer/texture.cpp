@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Ui;
 
-Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
+Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, int bIndex, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize)
 : _rasterLayerModel(rasterLayerModel)
 , _raster(raster)
 , offsetX(offsetX)
@@ -39,6 +39,7 @@ Texture::Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & ra
 , valid(false)
 , dirty(false)
 , domain(raster->datadef().domain()->ilwisType())
+, _bandIndex(bIndex)
 {
 }
 
@@ -286,3 +287,8 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
     }
 	return true;
 }
+
+int Texture::bandIndex() const {
+	return _bandIndex;
+}
+

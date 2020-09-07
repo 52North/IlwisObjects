@@ -121,9 +121,6 @@ void  HistogramStretchTool::stretchHistogram(bool isLower, double origValue, dou
 		_mapping[idx].first = origValue;
 		_mapping[idx].second = newValue; 
 		for (auto& pnt : newPoints) { 
-			if (pnt.x() > 0.0) {
-				qDebug() << "stop";
-			}
 			pnt.setX(ContinuousColorLookup::value2Color4BoundsMapping(pnt.x(), _actualRange, _mapping));
 		}
 		dm->points(newPoints);   

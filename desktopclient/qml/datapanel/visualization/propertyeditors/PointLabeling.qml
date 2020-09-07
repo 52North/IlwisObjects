@@ -3,7 +3,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import "../../../Global.js" as Global
-import "../../../Controls" as Controls
+import "qrc:/qml/controls" as Controls
 
 Column {
     width : Math.min(300,parent ? Math.min(parent.width,500) : 300)

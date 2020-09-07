@@ -167,7 +167,7 @@ Rectangle {
     }
 
     function containedInLinkedCondition(operationItem){
-        if ( operationItem.condition)
+	       if ( operationItem.condition)
             return operationItem.condition.itemid === condition.itemid
         return false
     }

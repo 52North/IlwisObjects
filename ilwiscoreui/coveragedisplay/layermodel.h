@@ -22,7 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QVector>
 #include <QStandardItemModel>
 #include <set>
-#include "identity.h"
+#include "kernel.h"
+#include "ilwisdata.h"
+#include "representation.h"
 #include "ilwiscoreui_global.h"
 
 #define NEW_LAYERMODEL(name) \
@@ -160,6 +162,7 @@ public:
     virtual void renderReady(bool yesno);
 	bool isVirtual() const;
 	virtual const Ilwis::Ui::VisualAttribute *activeAttribute() const;
+	virtual QColor color(const IRepresentation &rpr, const QString& propName, double value, LayerModel::ColorValueMeaning cvm);
 
     static LayerModel *create(LayerManager *manager, LayerModel *layer, const QString &name, const QString &desc, const IOOptions& options);
 protected:

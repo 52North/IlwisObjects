@@ -81,7 +81,7 @@ public:
     virtual Resource& sourceRef() = 0;
     virtual const Resource& source() const = 0;
     virtual QString provider() const = 0;
-    virtual void format(const QString&) {}
+    virtual void format(const QString&, const IOOptions& opt=IOOptions()) {}
     virtual QString format() const { return sUNDEF; }
     virtual bool isValid() const { return true;}
     virtual bool canUse(const Resource& ) const { return true; }

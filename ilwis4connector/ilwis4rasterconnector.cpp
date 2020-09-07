@@ -38,8 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwis4domainconnector.h"
 #include "ilwis4tableconnector.h"
 #include "ilwisobjectconnector.h"
-#include "factory.h"
-#include "abstractfactory.h"
+
 
 
 using namespace Ilwis;
@@ -52,14 +51,17 @@ ConnectorInterface *Ilwis4RasterConnector::create(const Ilwis::Resource &resourc
 
 Ilwis4RasterConnector::Ilwis4RasterConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options) : Ilwis4Connector(resource, load, options)
 {
+	_version = 1;
 }
 
 bool Ilwis4RasterConnector::store(IlwisObject *obj, const IOOptions &options)
 {
 	QJsonArray objects;
 	QJsonObject jroot, jraster;
+	IOOptions newOptions = options;
+	newOptions.addOption("version", _version);
+	store(obj, newOptions, jraster);
 
-	store(obj, options, jraster);
 	jroot.insert("ilwisobject", jraster);
 	objects.append(jroot);
 
@@ -113,7 +115,7 @@ bool Ilwis4RasterConnector::store(IlwisObject *obj, const IOOptions& options, QJ
 	}
 	QString path = raster->resource().url(true).toLocalFile();
 	QFileInfo inf(path);
-	jraster.insert("binarydata", inf.baseName() + ".tif");
+	jraster.insert("binarydata", inf.baseName() + ".tif_");
 	jraster.insert("size", raster->size().toString());
 	
 	return true;
@@ -130,6 +132,15 @@ bool Ilwis4RasterConnector::storeData(IlwisObject *obj, const IOOptions &options
 	ConnectorInterface *connector = factory->createFromResource<>(obj->resource(), "gdal");
 	connector->format("GTiff");
 	connector->store(obj);
+
+	QString path = obj->resource().url(true).toLocalFile();
+	QString pathdata = path;
+	pathdata = pathdata.replace(".ilwis4", ".tif");
+	path = path.replace(".ilwis4", ".tif_");
+
+	QFile::rename(pathdata, path);
+
+	delete connector;
 	return true;
 }
 
@@ -146,51 +157,81 @@ bool Ilwis4RasterConnector::loadMetaData(IlwisObject *obj, const IOOptions &opti
 			QJsonArray jobjects = doc.array();
 			QJsonValue jvalue = jobjects.at(0);
 			QJsonValue jraster = jvalue["ilwisobject"];
-			Ilwis4Connector::loadMetaData(obj, options, jraster);
-			_datafile = jraster["binarydata"].toString();
-			
-			IGeoReference grf;
-			grf.prepare();
-			Ilwis4GeorefConnector::loadMetaData(grf.ptr(), options, jraster["georeference"].toObject());
-			raster->georeference(grf);
-			raster->size(jraster["size"].toString());
-			
-			QJsonObject jdata = jraster["data"].toObject();
+			bool issubRaster = obj->resource().code().indexOf("band=") == 0;
+			if (issubRaster) {
+				int band = obj->resource().code().mid(5).toInt();
+				_datafile = jraster["binarydata"].toString();
+				IGeoReference grf;
+				grf.prepare();
+				Ilwis4GeorefConnector::loadMetaData(grf.ptr(), options, jraster["georeference"].toObject());
 
-			DataDefinition def;
-			Ilwis4Connector::loadDataDef(def, jdata);
-			raster->datadefRef() = def;
+				raster->georeference(grf);
+				raster->size(jraster["size"].toString());
+				QJsonObject jdata = jraster["data"].toObject();
+				QJsonObject jstackDomain = jdata["stackdomain"].toObject();
+				IDomain ilobj = Ilwis4DomainConnector::createDomain(options, jstackDomain);
+				Ilwis4DomainConnector::loadMetaData(ilobj.ptr(), options, jstackDomain);
+				QStringList indexes = jstackDomain["stackindexes"].toString().split("|");
+				std::vector<QString> variants(1);
 
-			QJsonArray jbanddefs = jdata["banddefinitions"].toArray();
-			for (int i = 0; i < raster->size().zsize(); ++i) {
-				QJsonObject jbanddef = jbanddefs[i].toObject();
-				Ilwis4Connector::loadDataDef(raster->datadefRef(i), jbanddef);
+				QJsonArray jbanddefs = jdata["banddefinitions"].toArray();
+				for (int i = 0; i < raster->size().zsize(); ++i) {
+					QJsonObject jbanddef = jbanddefs[i].toObject();
+					if (i == band) {
+						Ilwis4Connector::loadDataDef(raster->datadefRef(i), jbanddef);
+						raster->datadefRef() = raster->datadefRef(i);
+						variants[0] = indexes[i];
+						raster->stackDefinitionRef().setSubDefinition(ilobj, variants);
+						break;
+					}
+				}
 			}
+			else {
+				Ilwis4Connector::loadMetaData(obj, options, jraster);
+				_datafile = jraster["binarydata"].toString();
 
-			QJsonObject jstackDomain = jdata["stackdomain"].toObject();
-			IDomain ilobj = Ilwis4DomainConnector::createDomain(options, jstackDomain);
-			Ilwis4DomainConnector::loadMetaData(ilobj.ptr(), options, jstackDomain);
-			QStringList indexes = jstackDomain["stackindexes"].toString().split("|");
-			std::vector<QString> variants(indexes.size());
-			for (int i = 0; i < indexes.size(); ++i) {
-				variants[i] = indexes[i];
-			}
-			raster->stackDefinitionRef().setSubDefinition(ilobj, variants);
+				IGeoReference grf;
+				grf.prepare();
+				Ilwis4GeorefConnector::loadMetaData(grf.ptr(), options, jraster["georeference"].toObject());
 
-			QJsonValue v = jraster["attributes"];
-			if (v != QJsonValue::Undefined) {
-				QString url = v.toString();
-				ITable tbl;
-				if (tbl->prepare(url)) {
-					raster->primaryKey(jraster["primarykey"].toString());
-					raster->setAttributes(tbl);
+				raster->georeference(grf);
+				raster->size(jraster["size"].toString());
+
+				QJsonObject jdata = jraster["data"].toObject();
+
+				DataDefinition def;
+				Ilwis4Connector::loadDataDef(def, jdata);
+				raster->datadefRef() = def;
+
+				QJsonArray jbanddefs = jdata["banddefinitions"].toArray();
+				for (int i = 0; i < raster->size().zsize(); ++i) {
+					QJsonObject jbanddef = jbanddefs[i].toObject();
+					Ilwis4Connector::loadDataDef(raster->datadefRef(i), jbanddef);
+				}
+
+				QJsonObject jstackDomain = jdata["stackdomain"].toObject();
+				IDomain ilobj = Ilwis4DomainConnector::createDomain(options, jstackDomain);
+				Ilwis4DomainConnector::loadMetaData(ilobj.ptr(), options, jstackDomain);
+				QStringList indexes = jstackDomain["stackindexes"].toString().split("|");
+				std::vector<QString> variants(indexes.size());
+				for (int i = 0; i < indexes.size(); ++i) {
+					variants[i] = indexes[i];
+				}
+				raster->stackDefinitionRef().setSubDefinition(ilobj, variants);
+
+				QJsonValue v = jraster["attributes"];
+				if (v != QJsonValue::Undefined) {
+					QString url = v.toString();
+					ITable tbl;
+					if (tbl->prepare(url)) {
+						raster->primaryKey(jraster["primarykey"].toString());
+						raster->setAttributes(tbl);
+					}
 				}
 			}
 		}
 	}
-
-
-
+   
 	return true;
 }
 
@@ -199,10 +240,15 @@ bool Ilwis4RasterConnector::loadData(IlwisObject* obj, const IOOptions& options)
 	QFileInfo inf(sourceRef().toLocalFile());
 	QString path = inf.absolutePath() + "/" + _datafile;
 	if (!_dataRaster.isValid()){
-		if (_dataRaster.prepare(QUrl::fromLocalFile(path).toString())) {
-			_dataRaster->constConnector()->loadData(obj, options);
+		if (!_dataRaster.prepare(QUrl::fromLocalFile(path).toString())) {
+			return false;
 		}
 	}
+	if (obj->code().indexOf("band=") == 0) {
+		int band = obj->code().mid(5).toInt();
+		_dataRaster->resourceRef().addProperty("bandindex", band);
+	}
+	_dataRaster->constConnector()->loadData(obj, options);
 
 	return true;
 }

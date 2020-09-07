@@ -79,15 +79,16 @@ std::vector<Resource> Ilwis4CatalogExplorer::loadItems(const IOOptions &)
 		if (localfile.isDir())
 			continue;
 		if (localfile.isFile()) {
-			std::vector<Resource> resources = CatalogConnector::cache()->find(url, Time(localfile.lastModified()));
+			std::vector<Resource> resources; // = CatalogConnector::cache()->find(url, Time(localfile.lastModified()));
 			if (resources.size() != 0) {
 				for (auto resource : resources)
 					items.push_back(resource);
 			}
 			else {
-				auto res = createResource(url);
-				if ( res.isValid())
+				auto resources = createResources(url);
+				for(auto res : resources){
 					items.push_back(res);
+				}
 			}
 		}
 	}
@@ -96,8 +97,8 @@ std::vector<Resource> Ilwis4CatalogExplorer::loadItems(const IOOptions &)
 
 }
 
-Resource Ilwis4CatalogExplorer::createResource(const QUrl& url) const {
-	Resource res;
+std::vector<Resource> Ilwis4CatalogExplorer::createResources(const QUrl& url) const {
+	std::vector<Resource> result;
 	QFileInfo inf = url.toLocalFile();
 	QFile file;
 	file.setFileName(inf.absoluteFilePath());
@@ -105,6 +106,7 @@ Resource Ilwis4CatalogExplorer::createResource(const QUrl& url) const {
 		QString meta = file.readAll();
 		QJsonDocument doc = QJsonDocument::fromJson(meta.toUtf8());
 		if (!doc.isNull()) {
+			Resource res;
 			QJsonArray jobjects = doc.array();
 			QJsonValue jvalue = jobjects.at(0);
 			QJsonValue jilwisobject = jvalue["ilwisobject"];
@@ -114,9 +116,40 @@ Resource Ilwis4CatalogExplorer::createResource(const QUrl& url) const {
 			res.createTime(Time(jbase["creationdate"].toString()));
 			res.setExtendedType(jbase["extendedtype"].toString().toULongLong());
 			res.code(jbase["code"].toString());
+			result.push_back(res);
+
+			if (res.ilwisType() == itRASTER) {
+				QString ssize = jilwisobject["size"].toString();
+				QStringList parts = ssize.split(" ");
+				if (parts.size() == 3) {
+					if (parts[2].toInt() > 1) {
+						QJsonValue jdata = jilwisobject["data"];
+						QJsonValue jstack = jdata["stackdomain"];
+						QString sstackNames = jstack["stackindexes"].toString();
+						auto names = sstackNames.split("|");
+						int band = 0;
+						for (auto name : names) {
+							Resource resBand = res;
+							resBand.newId();
+							resBand.createTime(Time::now());
+							resBand.modifiedTime(Time::now());
+							QUrl newUrl = resBand.url().toString();
+							//QString newName = resBand.name() + "_" + name;
+							QString newName = name;
+							newName.remove(".ilwis4");
+							QString path = newUrl.toString() + "/" + newName;
+							resBand.setUrl(path, false, false);
+							resBand.code("band=" + QString::number(band++));
+							resBand.addContainer(newUrl);
+							resBand.setExtendedType(resBand.extendedType() & ~itCATALOG);
+							result.push_back(resBand);
+						}
+					}
+				}
+			}
 		}
 	}
-	return res;
+	return result;
 }
 
 IlwisObject *Ilwis4CatalogExplorer::createType(IlwisTypes tp) {

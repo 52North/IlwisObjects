@@ -332,7 +332,6 @@ public:
     void valueType(IlwisTypes tp);
 
     double gregorianToJulian(int year, int month, int day, int hour, int minutes, double seconds) const;
-
 protected:
     void checkDate(int year, int month, int day); // alters _valid
     void checkTime(int hour, int minute, double seconds); //alters _valid

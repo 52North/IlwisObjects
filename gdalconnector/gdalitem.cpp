@@ -27,16 +27,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobjectconnector.h"
 #include "catalogexplorer.h"
 #include "catalogconnector.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "gdalproxy.h"
 #include "gdalitem.h"
 #include "proj4parameters.h"
 #include "mastercatalog.h"
 #include "size.h"
 #include "raster.h"
-#include "quazip/quazip.h"
-#include "quazip/quazipfile.h"
-#include "quazip//quazipdir.h"
+
 
 using namespace Ilwis;
 using namespace Gdal;
@@ -122,27 +120,13 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 		return;
 	QFileInfo file = localFile;
 	GdalHandle* handle = gdal()->openFile(file.absoluteFilePath(), i64UNDEF, GA_ReadOnly, false);
-	if (!handle) {
-		// try sentinel
-		if (file.suffix().toLower() == "zip") {
-			if (file.baseName().left(4).toLower() == "s2a_") { // sentinel 2 candidate
-				QuaZip zip(file.absoluteFilePath());
-				zip.open(QuaZip::Mode::mdUnzip);
-				QuaZipDir nav(&zip);
-				QStringList filters;
-				filters.append("*.xml");
-				QList<QuaZipFileInfo64> entries = nav.entryInfoList64();
-				//            QList<QuaZipFileInfo> allitems = zip.getFileInfoList();
-				int err = zip.getZipError();
-				zip.close();
-			}
-		}
-	}
 	if (handle) {
 		quint64 sz = file.size();
 		int count = layerCount(handle);
 		if (count == 0) {// could be a complex dataset
-			addItem(handle, QUrl::fromLocalFile(file.absoluteFilePath()), QString::number(handleComplexDataSet(handle->handle())), iUNDEF, itCATALOG, itFILE | itRASTER);
+			if (handle->type() == GdalHandle::etGDALDatasetH) { // doesnt work for ogr datassets
+				addItem(handle, QUrl::fromLocalFile(file.absoluteFilePath()), QString::number(handleComplexDataSet(handle->handle())), iUNDEF, itCATALOG, itFILE | itRASTER);
+			}
 			return;
 		}
 		//TODO: at the moment simplistic approach; all is corners georef and domain value

@@ -26,7 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 int main(int argc, char *argv[])               
 {
 	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication app(argc, argv);                                
+    QApplication app(argc, argv); 
+	QQuickStyle::setStyle("Material");
 		   
 #ifdef _WIN32                
 		 
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
             QUrl url = engine.baseUrl(); 
             engine.rootContext()->setContextProperty("startilwis", &start);
 			QString path = qApp->applicationDirPath();
-            engine.load(path + "/qml/StartWindow.qml");
+            engine.load(QUrl("qrc:/qml/StartWindow.qml"));
             QObject *topLevel = engine.rootObjects().value(0); 
             QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel); 
             window->setDefaultAlphaBuffer(true);

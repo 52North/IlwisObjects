@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QSqlError>
 #include <QList>
 #include "kernel.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "geometries.h"
 #include "ilwisdata.h"
 #include "coordinatesystem.h"

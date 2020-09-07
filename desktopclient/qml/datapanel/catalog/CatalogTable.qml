@@ -227,7 +227,6 @@ Rectangle {
             //    catalogViews.showObject(model[currentRow].id)
 
             //}
-				console.debug("ccccccc", model[currentRow].name)
                 if ( model[currentRow].name == "..")
                     catalogViews.showObject(-1)
                 else {

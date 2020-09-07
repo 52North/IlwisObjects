@@ -27,7 +27,7 @@ namespace Ilwis {
 	    class Texture
 	    {
 	    public:
-            Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize);
+            Texture(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, int bIndex, const long offsetX, const long offsetY, const unsigned long sizeX, const unsigned long sizeY, unsigned int zoomFactor, unsigned int iPaletteSize);
             virtual ~Texture();
             virtual void CreateTexture(bool fInThread, volatile bool * fDrawStop);
             virtual void ReCreateTexture(bool fInThread, volatile bool * fDrawStop);
@@ -42,6 +42,7 @@ namespace Ilwis {
             const unsigned long getSizeX() const;
             const unsigned long getSizeY() const;
             const TextureData & data() const;
+			int bandIndex() const;
         protected:
             bool DrawTexture(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor,TextureData & texture_data, volatile bool* fDrawStop);
             bool DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, long texSizeY, unsigned int zoomFactor, TextureData & texture_data, volatile bool* fDrawStop);
@@ -56,6 +57,7 @@ namespace Ilwis {
             bool dirty;
             const IRasterCoverage & _raster;
             RasterLayerModel * _rasterLayerModel;
+			int _bandIndex = 0;
 	    };
 	}
 }

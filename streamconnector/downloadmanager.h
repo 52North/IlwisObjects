@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QDataStream>
 #include "ilwis.h"
 #include "identity.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "iooptions.h"
 #include "connectorinterface.h"
 #include "rawconverter.h"

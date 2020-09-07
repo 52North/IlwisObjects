@@ -41,7 +41,6 @@ Rectangle {
 		var maxy = chart.maxYLeft
 		var pnt1 = chartview.mapToPosition(Qt.point(minx,miny),chartview.series(0))
 		var pnt3 = chartview.mapToPosition(Qt.point(maxx,maxy),chartview.series(0))
-		console.debug("aaaaaaa", pnt.x)
 		if ( pnt1.x < mx && pnt3.x > mx) {
 			if (operation.useRange){
 				var xpmin = operation.currentMin != 9999999.0 ? chartview.mapToPosition(Qt.point(operation.currentMin,chart.minY),chartview.series(0)) : mx

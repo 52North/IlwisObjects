@@ -65,7 +65,7 @@ QVariant SpatialAnimation::execute(const QVariantMap &parameters)
 			Resource res = mastercatalog()->id2Resource(id);
 			if (!res.isValid() || hasType(res.ilwisType(), itCOVERAGE) == false)
 				return QVariant();
-			QString expr = QString("showcoverage(%1, %2,\"type=animation\")").arg(res.url(true).toString()).arg(side);
+			QString expr = QString("showcoverage(%1, %2,\"createtype=animation\")").arg(res.url(true).toString()).arg(side);
 
 			Ilwis::OperationExpression ex(expr);
 			Ilwis::Operation op(ex);

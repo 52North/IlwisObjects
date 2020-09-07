@@ -157,7 +157,6 @@ Rectangle {
                 currentFolder = Global.createfileUrlFromParts(pathText.comboText, "")
                 folderModel.folder = currentFolder
                 var filter = "container='" + folderModel.folder + "'"
-				console.debug("aaaa", filter, currentFolder,pathText.comboText)
                 mainSplit.changeCatalog(filter,"catalog", currentFolder)
             }
         }

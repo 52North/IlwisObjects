@@ -843,7 +843,7 @@ OperationExpression OperationExpression::createExpression(quint64 operationid, c
                 formatName == "Temporary";
             if ( formatName != "Temporary"){ // special case
                 if ( format == "") {
-                    QString query = "name='" + formatName + "'";
+                    QString query = "name='" + formatName + "' and (readwrite='rc' or readwrite='rcu')";
                     std::multimap<QString, Ilwis::DataFormat>  formats = Ilwis::DataFormat::getSelectedBy(Ilwis::DataFormat::fpNAME, query);
                     if ( formats.size() == 1){
                         format = "{format(" + (*formats.begin()).second.property(DataFormat::fpCONNECTOR).toString() + ",\"" +

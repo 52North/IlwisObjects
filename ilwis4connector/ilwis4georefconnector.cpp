@@ -52,14 +52,19 @@ ConnectorInterface *Ilwis4GeorefConnector::create(const Ilwis::Resource &resourc
 
 Ilwis4GeorefConnector::Ilwis4GeorefConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options) : Ilwis4Connector(resource, load, options)
 {
+	_version = 1;
 }
 
 bool Ilwis4GeorefConnector::store(IlwisObject *obj, const IOOptions &options)
 {
 	QJsonArray objects;
-	QJsonObject jroot;
+	QJsonObject jroot, jgrf;
 
-	store(obj, options, jroot);
+	IOOptions newOptions = options;
+	newOptions.addOption("version", _version);
+
+	store(obj, newOptions, jgrf);
+	jroot.insert("ilwisobject", jgrf);
 	objects.append(jroot);
 
 	flush(obj, objects);
@@ -113,19 +118,7 @@ bool Ilwis4GeorefConnector::loadMetaData(IlwisObject* object, const IOOptions& o
 	grf->centerOfPixel(jvalue["centerofpixel"].toBool());
 
 	QJsonValue jcsy = jvalue["coordinatesystem"];
-	QJsonValue jcsybase = jcsy["base"];
-	IlwisTypes tp = TypeHelper::name2type(jcsybase["ilwistype"].toString());
-	ICoordinateSystem csy;
-	if (tp == itCONVENTIONALCOORDSYSTEM) {
-		IConventionalCoordinateSystem ccsy;
-		ccsy.prepare();
-		csy = ccsy;
-	}
-	if (tp == itBOUNDSONLYCSY) {
-		IBoundsOnlyCoordinateSystem bcsy;;
-		bcsy.prepare();
-		csy = bcsy;
-	}
+	ICoordinateSystem csy = Ilwis4CoordinateSystemConnector::createCsy(options, jcsy.toObject());
 	Ilwis4CoordinateSystemConnector::loadMetaData(csy.ptr(), options, jcsy);
 	grf->coordinateSystem(csy);
 
@@ -177,6 +170,18 @@ bool Ilwis4GeorefConnector::storeData(IlwisObject *obj, const IOOptions &options
 
 bool Ilwis4GeorefConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
+	QFileInfo inf = _resource.url(true).toLocalFile();
+	QFile file;
+	file.setFileName(inf.absoluteFilePath());
+	if (file.open(QIODevice::ReadOnly)) {
+		QString meta = file.readAll();
+		QJsonDocument doc = QJsonDocument::fromJson(meta.toUtf8());
+		if (!doc.isNull()) {
+			QJsonArray jobjects = doc.array();
+			QJsonValue jvalue = jobjects.at(0);
+			return loadMetaData(obj, options, jvalue["ilwisobject"]);
+		}
+	}
 	return true;
 }
 

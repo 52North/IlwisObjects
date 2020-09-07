@@ -31,6 +31,7 @@ class ODSFormat : public SpreadSheet
 {
 public:
     ODSFormat();
+	~ODSFormat();
 
     bool openSheet(const QString& spreadsheetPath, bool isLoading=true);
     QVariant cellValue(quint32 col, quint32 row) const;
@@ -52,7 +53,7 @@ public:
 
     QString format() const;
 private:
-    std::unique_ptr<ods::Book> _book;
+    ods::Book *_book = 0;
     ods::Sheet *_currentSheet;
     QVector<ods::Row*>* _rows;
     quint32 _columnCount = iUNDEF;

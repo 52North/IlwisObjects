@@ -63,7 +63,7 @@ Rectangle  {
     }
 
     function executeRunForm(runparms) {
-        workflowView.storeRangeDefinitions()
+       // workflowView.storeRangeDefinitions()
 		workflowView.workflow.setBaseFolder(basefolder.content)
         var ret = operations.executeoperation(runparms.id,appFrame.currentAppForm.formresult, runparms)
         if ( ret === "?")

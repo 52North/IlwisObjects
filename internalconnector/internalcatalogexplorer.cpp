@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QSqlRecord>
 #include "kernel.h"
 #include "identity.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "mastercatalog.h"
 #include "connectorinterface.h"
 #include "abstractfactory.h"

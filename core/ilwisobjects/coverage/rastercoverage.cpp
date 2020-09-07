@@ -311,7 +311,7 @@ bool RasterCoverage::loadBand(const QString& attribute, const std::map < QString
 	return true;
 }
 bool RasterCoverage::loadHistograms(const QString& attribute, int mode) {
-	QString path = resource().container().toLocalFile();
+	QString path = resource().container(true).toLocalFile();
 	QFileInfo inf(path);
 	bool containerIsFile = inf.isFile();
 	QFileInfo dataInf = containerIsFile ? path : resource().url(true).toLocalFile();
@@ -357,7 +357,7 @@ bool RasterCoverage::loadHistograms(const QString& attribute, int mode) {
 }
 
 void RasterCoverage::storeHistograms(const QString& attribute, int mode)  {
-	QString path = resource().container().toLocalFile();
+	QString path = resource().container(true).toLocalFile();
 	QFileInfo inf(path);
 	bool containerIsFile = inf.isFile();
 	QString name = resource().name();

@@ -348,7 +348,8 @@ Item {
 
 		function changeProperty(propertyType, layer){
 			var ok = true
-			if ( propertyType == "buffers"){
+  		if ( propertyType == "buffers"){
+				
 	            if ( layer.updateGeometry){
                     ok = layer.prepare(2) // ptGEOMETRY = 2
                 }else{
@@ -422,6 +423,8 @@ Item {
 			            }
 			        }
 			    }
+			}else if ( propertyType == "animation"){
+				setScene(layer)
 			}
 		}
 

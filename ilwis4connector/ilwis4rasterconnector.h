@@ -36,7 +36,6 @@ namespace Ilwis {
 			static bool store(IlwisObject *obj, const IOOptions& options, QJsonObject& jroot);
 
 		private:
-			QString _datafile;
 			IRasterCoverage _dataRaster;
 
 		};

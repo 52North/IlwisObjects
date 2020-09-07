@@ -35,7 +35,7 @@ class IOOptions;
 typedef std::shared_ptr<CatalogExplorer> SPCatalogExplorer;
 
 }
-class CatalogExplorerWorker : public QObject, private Ilwis::CalcLatLon {
+class CatalogExplorerWorker : public QObject, private Ilwis::Adjustments {
     Q_OBJECT
 
 public:

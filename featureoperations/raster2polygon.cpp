@@ -59,74 +59,58 @@ RasterToPolygon::RasterToPolygon(quint64 metaid, const Ilwis::OperationExpressio
 	
 }
 
-void RasterToPolygon::neighbourvalues(PixelIterator& inIter, PixelIterator& handledIterr, std::vector<PIXVALUETYPE>& neighbours) {
 
-}
+RasterToPolygon::NetworkPoint RasterToPolygon::makeConnection(const Pixel& pCenter, bool isTemp, std::vector<RasterToPolygon::PrevLinePoint>& previousLine) {
+	
+	if (previousLine[pCenter.x].isValid()) {
+		RasterToPolygon::NetworkPoint currentPoint;
+		RasterToPolygon::PrevLinePoint newPPoint;
+		currentPoint._x = pCenter.x;
+		currentPoint._y = pCenter.y;
+		auto topPoint = previousLine[pCenter.x];
+		if (isTemp) {
+			if (topPoint._shadowLink != iUNDEF) {
+				newPPoint._shadowLink = topPoint._shadowLink;
+			}
+			else {
+			}
 
-
-int RasterToPolygon::countNeighbours(BlockIterator& inIter, PIXVALUETYPE refValue) {
-	DoubleVector3D values = (*inIter).to3DVector();
-	int nNeighbours = 0;
-	for (int y = 0; y < values[0].size(); ++y) {
-		for (int x = 0; x < values[0][y].size(); ++x) {
-				if (values[0][y][x] != refValue) {
-					++nNeighbours;
-				}
 		}
 	}
-	return nNeighbours;
+	return RasterToPolygon::NetworkPoint();
 }
-
-bool RasterToPolygon::addLine(const R2PPoint& p1, const R2PPoint& p2, R2PRing& ring) const{
-	bool empty = ring._points.size() == 0;
-	bool added = false;
-	if (!empty) {
-		if (p1 == ring._points.back()) {
-			ring._points.push_back(p2);
-			added = true;
-		}
-	}
-	else {
-		ring._points.push_back(p1);
-		ring._points.push_back(p2);
-		added = true;
-
-	}
-	return added;
-};
 
 bool RasterToPolygon::execute(ExecutionContext *ctx, SymbolTable& symTable) {
 	if (_prepState == sNOTPREPARED)
 		if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
 			return false;
 
-	BlockIterator iterIn(_inputraster, Size<>(3, 3, 1), BoundingBox(), { 1,1,1}, true);
-	PixelIterator neighbourCountIter(_neighbourCount);
-	//BlockIterator iterHandled(_handledPixels, Size<>(5, 5, 1), BoundingBox(), Size<>(), true);
-	auto endPos = iterIn.end();
-	auto begin = _inputraster->begin();
-	//(*iterHandled)(0, 0, 0) = HANDLED; // by definition the start pixel is handled
-
-	R2PRing ring;
-	while (true) {
-		auto data = (*iterIn).to3DVector();
-		PIXVALUETYPE vRef = (*iterIn)(0,0,0);
-		std::pair<double, double> center; //
-		center.first = iterIn.x() + 0.5;
-		center.second = iterIn.y() + 0.5;
-		int shiftx = 0; int shifty = 0;
-		if (data[0][2][1] != vRef) { // bottom
-			addLine({ center.first + 0.5, center.second + 0.5 }, { center.first - 0.5, center.second + 0.5 }, ring);
+	bool canConnect;
+	NetworkPoint previousPoint;
+	std::vector<PrevLinePoint> previousLine(_inputraster->size().xsize());
+	BlockIterator iterBlock(_inputraster, Size<>(3, 3, 1), BoundingBox(), { 1,1,1}, true);
+	auto end = iterBlock.end();
+	while (iterBlock != end) {
+		auto block = (*iterBlock).to3DVector();
+		auto currentValue = block[1][1][0];
+		auto pCenter = (*iterBlock).position();
+		if (currentValue != block[0][1][0] && currentValue != block[0][0][0]) {
+			// temporary points are points that do not end up in the network but are in _previousLine. As they represent a
+			// intermediate point on a straight vertical line segment they have no place in the final network but are needed
+			// to give the _previousline the correct linkage.
+			bool  isTempPoint = block[0][0][0] != currentValue && 
+								block[0][0][0] == block[0][2][0] &&
+								currentValue == block[0][1][0];
+			if (canConnect) {
+				previousPoint = makeConnection(pCenter, isTempPoint, previousLine);
+			}
+			canConnect = true;
 		}
-		if (data[0][1][1] != vRef) { // left
-			addLine({ center.first - 0.5, center.second + 0.5 }, { center.first - 0.5, center.second - 0.5 }, ring);
-		} if ( data[0][0][1] != vRef) // top
-			addLine({ center.first - 0.5, center.second - 0.5 }, { center.first + 0.5, center.second - 0.5 }, ring);
-		if (data[0][1][2] != vRef) { // right
-			addLine({ center.first + 0.5, center.second - 0.5 }, { center.first + 0.5, center.second + 0.5 }, ring);
+		// if the topmid value equals the current value we are looking at a point in the middle of a filled area. so no lines we be drawn here
+		if (block[1][1][0] == currentValue) {
+			canConnect = false;
+			previousPoint = NetworkPoint();
 		}
-
-		iterIn = Pixel(iterIn.x() + shiftx, iterIn.y() + shifty,0);
 	}
 
 
@@ -137,22 +121,7 @@ bool RasterToPolygon::execute(ExecutionContext *ctx, SymbolTable& symTable) {
 	return true;
 }
 
-void RasterToPolygon::shifts(const DoubleVector3D& data, BlockIterator& iterIn) {
-	// we follow clockwise
-	PIXVALUETYPE vRef;
-	int shiftx = 0; int shifty = 0;
-	if (data[0][0][1] == vRef) {
-		shifty = -1;
-		if (data[0][0][0] == vRef)
-			shiftx = -1;
-	}
-	else if (data[0][1][1] == vRef) {
-
-	}
-
 	
-}
-
 Ilwis::OperationImplementation *RasterToPolygon::create(quint64 metaid, const Ilwis::OperationExpression &expr)
 {
 	return new RasterToPolygon(metaid, expr);
@@ -169,14 +138,7 @@ Ilwis::OperationImplementation::State RasterToPolygon::prepare(ExecutionContext 
 		ERROR2(ERR_COULD_NOT_LOAD_2, raster, "");
 		return sPREPAREFAILED;
 	}
-	OperationHelperRaster::initialize(_inputraster, _handledPixels, itGEOREF | itCOORDSYSTEM | itENVELOPE);
-	std::vector<double> indexes = { 0 };
-	_handledPixels->setDataDefintions(IDomain("integer"), indexes);
-	_handledPixels->name("PixelSelection");
 
-	OperationHelperRaster::initialize(_inputraster, _neighbourCount, itGEOREF | itCOORDSYSTEM | itENVELOPE);
-	_handledPixels->setDataDefintions(IDomain("integer"), indexes);
-	_handledPixels->name("NeighbourCount");
 
 	return sPREPARED;
 }

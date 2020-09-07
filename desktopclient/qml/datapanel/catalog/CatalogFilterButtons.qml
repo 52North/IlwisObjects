@@ -17,6 +17,7 @@ Row {
             showProj.checked = showAll.checked
             showEll.checked = showAll.checked
             showOper.checked = showAll.checked
+			resetCombos()
         }
 
         currentCatalog.filterChanged(objecttype, togglestate)

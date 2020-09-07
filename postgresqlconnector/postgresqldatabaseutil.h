@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define POSTGRESQLDATABASEUTIL_H
 
 #include "kernel.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "geometries.h"
 #include "coordinatesystem.h"
 #include "georeference.h"

@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QVector>
 #include "identity.h"
 #include "kernel.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "mastercatalog.h"
 #include "connectorinterface.h"
 #include "ilwisobjectconnector.h"

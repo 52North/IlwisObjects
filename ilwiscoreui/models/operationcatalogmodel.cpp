@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 //#include "dirent.h"
 #include "kernel.h"
 #include "connectorinterface.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "ilwisobject.h"
 #include "raster.h"
 #include "table.h"
@@ -260,42 +260,43 @@ void OperationCatalogModel::fillByName(QList<ResourceModel*>& currentOperations)
 }
 void OperationCatalogModel::fillByKeyword(QList<ResourceModel*>& currentOperations) {
     _operationsByKey.clear();
-    auto &currentList = currentOperations.size() > 0 ? currentOperations : _allItems;
-    QList<ResourceModel *> tempList;
+    auto currentList = currentOperations.size() > 0 ? currentOperations : _allItems;
+
     std::map<QString, std::vector<OperationModel *>> operationsByKey;
     std::set<QString> keywordset;
     QStringList temp = _keyFilter.split(",");
     QStringList filterKeys;
     for(auto k : temp)
         filterKeys.append(k.trimmed());
-    for(ResourceModel * item : currentList){
-        if ( !( item->resource().ilwisType() & itOPERATIONMETADATA) )
-            continue;
+	for (auto filterKey : filterKeys) {
+		QList<ResourceModel *> tempList;
+		for(ResourceModel * item : currentList){
+			if ( !( item->resource().ilwisType() & itOPERATIONMETADATA) )
+				continue;
 
-        if ( item->resource().hasProperty("keyword")){
-            QStringList validKeys;
-            QString keysstring = item->resource()["keyword"].toString();
-            if ( keysstring.indexOf("internal") != -1)
-                continue;
-            QStringList keys = keysstring.split(",");
-            bool found = true;
-            for(auto filterKey : filterKeys){
-                for(auto key : keys){
-                    if(key.indexOf(filterKey) >= 0){
-                        found &= true;
-                        validKeys.append(key);
-                    }
+			if (item->resource().hasProperty("keyword")) {
+				QStringList validKeys;
+				QString keysstring = item->resource()["keyword"].toString();
+				if (keysstring.indexOf("internal") != -1)
+					continue;
+				QStringList keys = keysstring.split(",");
+				bool found = true;
 
-                }
-            }
-            if(found && validKeys.size() > 0){
-                tempList.push_back(item);
-            }
+				for (auto key : keys) {
+					if (key.indexOf(filterKey) >= 0) {
+						found &= true;
+						validKeys.append(key);
+					}
 
-
+				}
+				if (found && validKeys.size() > 0) {
+					tempList.push_back(item);
+				}
+			}
         }
+		currentList = tempList;
     }
-    for(ResourceModel *operation : tempList){
+    for(ResourceModel *operation : currentList){
         QString keysstring = operation->resource()["keyword"].toString();
         QStringList keys = keysstring.split(",");
         for(auto key : keys){
@@ -315,7 +316,7 @@ void OperationCatalogModel::fillByKeyword(QList<ResourceModel*>& currentOperatio
     qSort(_keywords.begin(), _keywords.end());
 
     _keywords.push_front(""); // all
-    currentOperations = QList<ResourceModel *>(tempList);
+    currentOperations = QList<ResourceModel *>(currentList);
 }
 
 QQmlListProperty<OperationModel> OperationCatalogModel::operations()

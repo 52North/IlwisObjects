@@ -177,3 +177,19 @@ void VectorLayerModel::renderReady(bool yesno)
     _renderReady = yesno;
 }
 
+QColor VectorLayerModel::color(const IRepresentation &rpr, const QString& propName, double value, LayerModel::ColorValueMeaning cvm) {
+	if (_activeAttribute != sUNDEF) {
+		VisualAttribute* attr = visualAttribute(_activeAttribute);
+		if (!attr)
+			return QColor();
+
+		if (cvm == LayerModel::cvmFRACTION) {
+			NumericRange numrange = attr->actualRange();
+			value = numrange.min() + numrange.distance() * value;
+
+		}
+		QColor clr = attr->value2color(value);
+		return clr;
+	}
+	return QColor();
+}

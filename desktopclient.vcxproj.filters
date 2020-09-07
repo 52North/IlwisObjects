@@ -45,78 +45,78 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Distribution Files\qml">
-      <UniqueIdentifier>{670c100d-e982-4b27-bab7-18b3e8aab2fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\controls">
-      <UniqueIdentifier>{b45b067e-0a88-4dd8-aecd-79fdbb4dfc7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel">
-      <UniqueIdentifier>{880b0561-a397-4617-bc32-91e68d0c8fa5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\catalog">
-      <UniqueIdentifier>{3251b8dc-2f0b-46b4-b70f-2e452bdb0552}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\modeller">
-      <UniqueIdentifier>{9e540dfd-eb90-47a5-a94d-177eb22fb47c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\modeller\analysisview">
-      <UniqueIdentifier>{5ada8244-9078-4ad7-8f6e-ed72fb57c8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\modeller\applicationview">
-      <UniqueIdentifier>{9a5fe8d0-4c2a-4074-9ce0-9fc12b7fcb81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\modeller\conceptualview">
-      <UniqueIdentifier>{930d12f1-460a-4623-9407-f5dff77d54ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\modeller\workflow">
-      <UniqueIdentifier>{f0a3d059-5888-4523-8fba-185ee30ae1d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\script">
-      <UniqueIdentifier>{93d096c5-6d5f-476d-b7ba-c76285219586}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\table">
-      <UniqueIdentifier>{926df652-b8fe-4f69-a037-60305d192ded}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\visualization">
-      <UniqueIdentifier>{cdfbf990-2b3d-483b-87dc-694113e3a06e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\visualization\propertyeditors">
-      <UniqueIdentifier>{49fb3097-cbc3-4854-8095-6bf7f7827ea2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\images">
-      <UniqueIdentifier>{3c02c150-42cb-4058-9000-8fd14cfaceb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\workbench">
-      <UniqueIdentifier>{8e4fbd96-8e9a-4f2b-aa05-feab4b4af3ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\workbench\metadata">
-      <UniqueIdentifier>{cf46a216-2ad3-48cb-a443-2444c4113c8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\workbench\creators">
-      <UniqueIdentifier>{8a503274-64ee-4a71-bc48-f86c710a143e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\workbench\modeller">
-      <UniqueIdentifier>{145eff59-136f-43ee-8e40-84e65725eddb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\workbench\preferences">
-      <UniqueIdentifier>{0ea68250-ef0c-480c-877f-2ada05e3b4c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\workbench\workspace">
-      <UniqueIdentifier>{52124ac2-9d88-4f58-b185-9ef5030707eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\catalog\operations">
-      <UniqueIdentifier>{7134d997-c6f3-42a0-bea4-1fa8df89e9ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Distribution Files\qml\datapanel\modeller\analysisview\classification">
+    <Filter Include="Resource Files\qml">
+      <UniqueIdentifier>{670c100d-e982-4b27-bab7-18b3e8aab2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\controls">
+      <UniqueIdentifier>{b45b067e-0a88-4dd8-aecd-79fdbb4dfc7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel">
+      <UniqueIdentifier>{880b0561-a397-4617-bc32-91e68d0c8fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\catalog">
+      <UniqueIdentifier>{3251b8dc-2f0b-46b4-b70f-2e452bdb0552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\catalog\operations">
+      <UniqueIdentifier>{7134d997-c6f3-42a0-bea4-1fa8df89e9ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\modeller">
+      <UniqueIdentifier>{9e540dfd-eb90-47a5-a94d-177eb22fb47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\modeller\analysisview">
+      <UniqueIdentifier>{5ada8244-9078-4ad7-8f6e-ed72fb57c8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\modeller\analysisview\classification">
       <UniqueIdentifier>{4285b7ff-9c64-495e-ade9-677a099bc571}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Distribution Files\qml\workbench\customforms">
+    <Filter Include="Resource Files\qml\datapanel\modeller\applicationview">
+      <UniqueIdentifier>{9a5fe8d0-4c2a-4074-9ce0-9fc12b7fcb81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\modeller\conceptualview">
+      <UniqueIdentifier>{930d12f1-460a-4623-9407-f5dff77d54ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\modeller\workflow">
+      <UniqueIdentifier>{f0a3d059-5888-4523-8fba-185ee30ae1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\script">
+      <UniqueIdentifier>{93d096c5-6d5f-476d-b7ba-c76285219586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\table">
+      <UniqueIdentifier>{926df652-b8fe-4f69-a037-60305d192ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\visualization">
+      <UniqueIdentifier>{cdfbf990-2b3d-483b-87dc-694113e3a06e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\datapanel\visualization\propertyeditors">
+      <UniqueIdentifier>{49fb3097-cbc3-4854-8095-6bf7f7827ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\images">
+      <UniqueIdentifier>{3c02c150-42cb-4058-9000-8fd14cfaceb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench">
+      <UniqueIdentifier>{8e4fbd96-8e9a-4f2b-aa05-feab4b4af3ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench\metadata">
+      <UniqueIdentifier>{cf46a216-2ad3-48cb-a443-2444c4113c8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench\creators">
+      <UniqueIdentifier>{8a503274-64ee-4a71-bc48-f86c710a143e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench\modeller">
+      <UniqueIdentifier>{145eff59-136f-43ee-8e40-84e65725eddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench\preferences">
+      <UniqueIdentifier>{0ea68250-ef0c-480c-877f-2ada05e3b4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench\workspace">
+      <UniqueIdentifier>{52124ac2-9d88-4f58-b185-9ef5030707eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\qml\workbench\customforms">
       <UniqueIdentifier>{101ed1a1-3690-4398-86a3-92956d6573e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -165,2419 +165,2532 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="desktopclient\qml\CheckBoxStyle1.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\CommandLineArea.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\DesktopClient.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\Global.js">
-      <Filter>Distribution Files\qml</Filter>
-    </None>
-    <None Include="desktopclient\qml\MainSplit.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\RotateTranslateSplash.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\Splash.qml">
-      <Filter>Distribution Files\qml</Filter>
-    </None>
-    <None Include="desktopclient\qml\StartBlock.qml">
-      <Filter>Distribution Files\qml</Filter>
-    </None>
-    <None Include="desktopclient\qml\StartWindow.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\TabStyle1.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\TabStyle2.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\TabStyleCatalog.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\TopArea.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ActionButtonH.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ActionButtonV.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\CatalogTab.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\CollapsiblePanel.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ColorList.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ColorPicker.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ColorPicker2.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ComboxLabelPair.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\CommandLine.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ConsoleLineDelegate.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\CoordinateSystemBounds.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\CreateProjection.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\DropableItem.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\DropListLablePair.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\DummySpatial.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\EllipsoidSelector.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ExpandableText.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\FilteredTextEditLabelPair.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\FlatButton.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\FloatingRectangle.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\FolderSelection.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\FormatsComboBox.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\HScrollBar.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\IlwisComboBox.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\LabeledCheckBox.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\LatLonCoordinate.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\LatLonEnvelopeLine.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\LayerExtentMouseActions.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\LayerExtentsToolbar.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\MapExtentButton.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ProjectionParametersEditor.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\SelectProjection.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\SpatialSelection.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\SpatialSelectionDropDown.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\SpatialSelectionToolbar.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\SplitHandle.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\TextAreaLabelPair.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\TextEditLabelPair.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\TextFieldDropArea.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ToolButton.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ToolTip.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ToolTipLabel.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\Tree.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\TreeNode.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ValidatedTextField.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\VScrollBar.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\WideButton.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\ButtonBarTabViewStyle.qml">
-      <Filter>Distribution Files\qml\datapanel</Filter>
+      <Filter>Resource Files\qml\datapanel</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\DataPane.qml">
-      <Filter>Distribution Files\qml\datapanel</Filter>
+      <Filter>Resource Files\qml\datapanel</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\DataTabView2.qml">
-      <Filter>Distribution Files\qml\datapanel</Filter>
+      <Filter>Resource Files\qml\datapanel</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\FloatingWindow.qml">
-      <Filter>Distribution Files\qml\datapanel</Filter>
+      <Filter>Resource Files\qml\datapanel</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogButton.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogButtonBar.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogContextMenu.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogFilterButtons.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogFilterComboBox.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogFilterOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogGrid.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogGridDelegate.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogLayoutButtonBar.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogLocationView.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogMap.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogPanel.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogProperties.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogRefreshOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogTable.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogThumbGrid.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogViews.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\DCatalogListThumb.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\DCatalogThumb.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\DropConversionFormats.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ObjectCopyOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ObjectDeleteOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\OperationLayoutButtonBar.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\OperationPanel.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\OperationTable.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\QuickProps.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\SelectedSpatialItems.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ThumbImage.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ToolBarButton.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\GenericTools.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\ModellerDataPane.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\ModellerErrorView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\ModellerWorkArea.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\ModelManager.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisCreateForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\AnalysisList.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\ManagerAnalysisView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\ModellerAnalysisView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\applicationview\AppAddForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\applicationview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\applicationview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\applicationview\ApplicationList.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\applicationview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\applicationview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\applicationview\ManagerApplicationView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\applicationview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\applicationview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\applicationview\ModellerApplicationView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\applicationview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\applicationview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\conceptualview\ManagerConceptualView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\conceptualview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\conceptualview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\conceptualview\ModellerConceptualView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\conceptualview</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\conceptualview</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\AttachmentRectangle.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionItem.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionTests.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\FlowParametersChoiceForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\JunctionItem.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ManagerWorkflowView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ModellerWorkflowView.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\OperationItem.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\SaveAsBox.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\SelectedOperationForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\SelectedOperationMetaData.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\StepForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\TestDetailFlowChoiceForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WFCanvas.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WFCanvasMouseArea.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowChoiceForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowCreateForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowDataForms.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowPythonScript.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
-    </None>
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowRunForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\Workflows.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTabStyle.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowTools.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\script\ScriptActions.qml">
-      <Filter>Distribution Files\qml\datapanel\script</Filter>
+      <Filter>Resource Files\qml\datapanel\script</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\script\ScriptArea.qml">
-      <Filter>Distribution Files\qml\datapanel\script</Filter>
+      <Filter>Resource Files\qml\datapanel\script</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\script\ScriptMetaDataOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\script</Filter>
+      <Filter>Resource Files\qml\datapanel\script</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\script\ScriptPane.qml">
-      <Filter>Distribution Files\qml\datapanel\script</Filter>
+      <Filter>Resource Files\qml\datapanel\script</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\script\ScriptRunOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\script</Filter>
+      <Filter>Resource Files\qml\datapanel\script</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\AggregateCell.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ChartsPanel.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnHeader.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnManagement.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnMetadataList.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnOperation.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnOperationList.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ConvertColumn.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\FirstColumn.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\NormalCell.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\SortColumn.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\TableColumn.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\TablePane.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\LayersInfo.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\LocationBar.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MapArea.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MapPanel.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MapScrollers.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MapWindow.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MetaData.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MetaDataLayerList.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MetaDataSpatialInfo.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\OverViewDrawer.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\OverviewExtentToolbar.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\RepresentationProperties.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\ViewManager.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridPropertyEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ItemRepresentation.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerDelegate.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerOpacity.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerPropertyManagement.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayersList.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerTransparency.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LegendGrid.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LegendItemEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LineStyleSetter.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MapinfoProperties.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\NumericRepresentation.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PolygonProperties.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PropertyEditorsList.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\UndefinedValueSetter.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ViewAttributes.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeEditorList.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\VisualAttributeList.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\images\pannel-center.sci">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </None>
     <None Include="desktopclient\qml\images\pannel-top.sci">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </None>
     <None Include="desktopclient\qml\images\raster20.png.backup">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\ApplicationForm.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\Bookmarks.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\CreateCatalogForm.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\DataSourceFormButtons.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\DebugInfo.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\DOperation.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\FileSelectionPanel.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\FunctionBarHeader.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\Info.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\MessagesPane.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\Navigator.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\NavigatorTopButtonBar.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\ObjectCreation.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\ObjectProperties.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\OperationCatagoriesList.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\OperationFormArea.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\OperationList.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\OperationSearchBar.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\OperationSelection.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\Preferences.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\SelectServiceForm.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\Tranquilizers.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\WorkBench.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\WorkBenchButton.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\WorkBenchButtonBar.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\WorkBenchShifter.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\Workspaces.qml">
-      <Filter>Distribution Files\qml\workbench</Filter>
+      <Filter>Resource Files\qml\workbench</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ActualNumericRange.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\AttributeProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\CatalogProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\CombinationMatrixProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\CoordinateSystemProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\CoverageDataProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\DataPropertyPane.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\DPropertyForm.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\EllipsoidProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\Envelope.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\FeatureCoverageDataProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\GeneralPropertyPane.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\GeoreferencePart.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\GeoreferenceProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\IndexedItemDomainProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\IndexItemRange.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\IntervalItemProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ItemDomainProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\NumericDomainProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\OperationProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ParameterDelegate.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ProjectionProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ProjectionPropertiesAll.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\PropertyEditButtons.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\RangeValuesCombo.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\RasterCoverageDataProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\SpatialProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\TableProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\TextRangeDefinition.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\pubsub.js">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\controls\RotatingArrow.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\CopyAsBox.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\AddNewColorItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\AddNewIdentifierItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\AddNewNumericInterval.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\AddNewThematicItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ApplyCreateButtons.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateBoundsOnlyCsy.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateCombinationMatrix.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateContinousColorDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateGeorefCorners.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateGeorefTiepoints.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateIdentifierDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateIntervalDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateLatLonCoordinateSystem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateModel.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateNumDom.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreatePaletteDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateProjectedCoordinateSystem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateProjectionFromBase.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateRasterCoverage.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateScript.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateThematicDom.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateWorkflow.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreatorList.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\EditorHeader.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\EPSGSelector.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\IlwisObjectCommon.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\IntervalTable.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ItemDomainCommonPart.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ItemList.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ItemTable.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ObjectList.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\PaletteColorList.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ParameterDetails.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ParameterList.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\SelectColorItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\SelectIdentifierItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\SelectNumericIntervalItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\SelectThematicItem.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\UnderDevelopment.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\modeller\ModellerCatagoriesList.qml">
-      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+      <Filter>Resource Files\qml\workbench\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\modeller\ModellerList.qml">
-      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+      <Filter>Resource Files\qml\workbench\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\modeller\ModellerMetadataForm.qml">
-      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+      <Filter>Resource Files\qml\workbench\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\modeller\ModellerSelection.qml">
-      <Filter>Distribution Files\qml\workbench\modeller</Filter>
+      <Filter>Resource Files\qml\workbench\modeller</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\workspace\WorkSpaceCreation.qml">
-      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+      <Filter>Resource Files\qml\workbench\workspace</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\workspace\WorkSpaceDataDelegate.qml">
-      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+      <Filter>Resource Files\qml\workbench\workspace</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\workspace\WorkSpaceDataGrid.qml">
-      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+      <Filter>Resource Files\qml\workbench\workspace</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\workspace\WorkSpaceInfo.qml">
-      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+      <Filter>Resource Files\qml\workbench\workspace</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\workspace\WorkSpaceMetadata.qml">
-      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+      <Filter>Resource Files\qml\workbench\workspace</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\workspace\WorkSpaceOperationGrid.qml">
-      <Filter>Distribution Files\qml\workbench\workspace</Filter>
+      <Filter>Resource Files\qml\workbench\workspace</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\preferences\DisplayOptions.qml">
-      <Filter>Distribution Files\qml\workbench\preferences</Filter>
+      <Filter>Resource Files\qml\workbench\preferences</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\preferences\Locations.qml">
-      <Filter>Distribution Files\qml\workbench\preferences</Filter>
+      <Filter>Resource Files\qml\workbench\preferences</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\preferences\PreferencesButton.qml">
-      <Filter>Distribution Files\qml\workbench\preferences</Filter>
+      <Filter>Resource Files\qml\workbench\preferences</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineColorEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineOpacityEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridCellCountEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateTable.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\ColumnCreator.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ItemDomainSelector.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ChartPane.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateChart.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\TableTools.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\LinkTable.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LinkCoverage.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrosssectionTool.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionPinManager.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSources.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PostDrawerCrossSection.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnVisibility.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\table\ColumnList.qml">
-      <Filter>Distribution Files\qml\datapanel\table</Filter>
+      <Filter>Resource Files\qml\datapanel\table</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\TextFieldStyleTiePoints.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\StretchLimits.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\controls\MultiPointSlider.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\LayerPanelLayout.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers2v.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\MapPanelTopToolBar.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers2h.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers3h.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers3v.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers4.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers32b1.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\SubPanelBox.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\Layers32v1.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\LayerInfo.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\controls\ExtraZoomOptions.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </None>
     <None Include="desktopclient\qml\controls\Busy.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogManager.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogOperations.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\CatalogOperationList.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\OpenCoverages.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\GenerateThumbs.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
     </None>
     <None Include="desktopclient\qml\controls\FolderBrowser.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ExportData.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateSupervisedClassification.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\controls\SmallRoundButton.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreatePythonConsole.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\ColorComposite.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
     </None>
     <None Include="desktopclient\qml\Tab2Menu.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </None>
     <None Include="desktopclient\qml\controls\DateTimeCalendar.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\DateTimeDropDown.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\TimePicker.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\AreaHeader.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\controls\CircularSlider.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SetMultiSpectralData.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\Statistics.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationForm.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SupervisedClassificationPanel.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ConstructClasses.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeItem.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeJunctionItem.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
-    </None>
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeTests.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\workflow</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaces.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\LayerList.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpaceDelegate.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\ChartPanelLayout.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace1.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace2.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace12.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\FeatureSpace22.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\modeller\analysisview\classification\SampleStatistics.qml">
-      <Filter>Distribution Files\qml\datapanel\modeller\analysisview\classification</Filter>
+      <Filter>Resource Files\qml\datapanel\modeller\analysisview\classification</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\controls\TableTextField.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\TiePointsTable.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ControlPoints.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\MouseGoToPixelEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\MasterSlaveFields.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\PostDrawerTiepointEditor.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\AddColorComposite.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\controls\PushButton.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ContextPropertyPane.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateTimeDom.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateTimeIntervalDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\AddNewTimeInterval.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\SetKeyWords.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
     </None>
     <None Include="desktopclient\qml\controls\NumericResolution.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\Ellipseinfo2.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PointLabeling.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\customforms\RasterSelection.qml">
-      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+      <Filter>Resource Files\qml\workbench\customforms</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\customforms\RSAttributeByValue.qml">
-      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+      <Filter>Resource Files\qml\workbench\customforms</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\customforms\RSAttributes.qml">
-      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+      <Filter>Resource Files\qml\workbench\customforms</Filter>
     </None>
     <None Include="desktopclient\qml\controls\BoundingBox.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\customforms\RSBoundingBox.qml">
-      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+      <Filter>Resource Files\qml\workbench\customforms</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\customforms\RSBands.qml">
-      <Filter>Distribution Files\qml\workbench\customforms</Filter>
+      <Filter>Resource Files\qml\workbench\customforms</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateRepresentationItemDomain.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\RepresentationItemProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\ItemDomainItems.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\creators\CreateRepresentationContinousValue.qml">
-      <Filter>Distribution Files\qml\workbench\creators</Filter>
+      <Filter>Resource Files\qml\workbench\creators</Filter>
     </None>
     <None Include="desktopclient\qml\controls\LegendBar.qml">
-      <Filter>Distribution Files\qml\controls</Filter>
+      <Filter>Resource Files\qml\controls</Filter>
     </None>
     <None Include="desktopclient\qml\workbench\propertyform\RepresentationValueProperties.qml">
-      <Filter>Distribution Files\qml\workbench\metadata</Filter>
+      <Filter>Resource Files\qml\workbench\metadata</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Histogram.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\PostDrawerDrawPolygons.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
     <None Include="desktopclient\qml\datapanel\catalog\SpatialAnimation.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog\operations</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml">
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\MainSplit.qml">
+      <Filter>Resource Files\qml</Filter>
+    </None>
+    <None Include="desktopclient\qml\StartBlock.qml">
+      <Filter>Resource Files\qml</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\NavigablePreview.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\LineGrid.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Edge.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\EdgeTemplate.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\GraphView.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Node.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Port.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\VerticalDock.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\HorizontalDock.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Group.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGroupTemplate.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\CanvasNodeTemplate.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectNodeTemplate.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidBackground.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidShadowBackground.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectShadowEffect.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidGlowBackground.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGlowEffect.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientBackground.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientShadowBackground.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientGlowBackground.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\SelectionItem.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\StyleListView.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\VisualConnector.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\LabelEditor.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\qmldir_static">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\OperationNode.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConnectDialog.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionNode.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionTestValueNode.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\JunctionNode.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeNode.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeValue.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeJunctionNode.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\WorkflowRunForm.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\DataFlowEdge.qml">
+      <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\addbookmarkCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\all20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\all35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\all35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\analysis_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\analysis_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\animation20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\app_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\app_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\apply20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrowdown.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrowdownlight.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrowleftlight.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrowright.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrowrightlight.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrowuplight.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\back1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\back2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\blank.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bluebuttonr.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bookmark.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bookmark_add.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bookmark_close.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bookmark_delete.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bookmark_open.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bookmarkCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\bool20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\boundsonlycsy20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\catalogGrid20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\catalogsources.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\catalogSpatial20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\catalogTable20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\catalogThumbGrid20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\catalogThumbList20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\choice20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\close_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\close_white.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\close20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\collapse.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\collection.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\colordom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\colorpalette20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\concept_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\concept_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\configCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\configCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\connection20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\connectionselect20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\console.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\coord20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\coordinate.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\coordinatesystem20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\coordsys35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\coordsys35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\copy.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\copy_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\copy_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\copy20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\coverage20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\create.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\createCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\createCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\createCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\csy.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\csy1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\csy20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\csyCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\csyCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\customcontainer.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\customcontainerCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\customCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\darkbluearrow.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\data_close.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\data_drive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\data_folder.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\data_open.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\databasecatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\delete20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deletebookmark20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deletebookmarkCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deleteC.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deleteCatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deleteconnection20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deleteH.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deleteO.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\deleteoperation20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\display_options_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\display_options_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\dm.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\domain.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\domain35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\domain35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\domainn.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\down.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\down20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\drive20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\drop1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ellipsoid.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ellipsoid20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\entiremap20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\error_sign.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\expand20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\eye.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\feature20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\feature20CS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\feature35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\feature35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\featureCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\featureCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\filter.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\filter_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\filter_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\filtercatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\filterSC2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\filterSC3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folder.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folder16.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folder20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\foldercatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folderdisk.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folderdiskCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folderFeature20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folderzip.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\folderzipCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\font20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georef35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georef35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georefCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georefCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georeference.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georeference20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\georeftiepoints20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\graph_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\graph_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\greenbacksh.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\greenbuttonr.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\greybuttonr.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\greybuttonrect.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\grf.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\grid.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\grid_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\grid20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\gridCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\gridCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\headerblue.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\headerblue2CS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\headerblueCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\headergreen.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\helpCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\iddom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ilwis.ico">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ilwis_logo_top.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ilwis_logo_txt.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ilwis4.bmp">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ilwis4.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\ilwislogobig.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\indexeddom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\info.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\info_s_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\info_s_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\inmove20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\internalcatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\intervaldom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\itclogobig.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\itemdom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\itemdomain.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\junction.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\label3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\label4.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\latloncsy20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\layers.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\layers_s_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\layers_s_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\leftbottom.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\lefttop.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\line20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\lineCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\lineCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\list.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\list_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\list20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\listCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\listCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\location20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\locator.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\locator_start.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\loop.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\maplist20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\maps40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\mapsdisabled40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\mapview.bmp">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\mapview.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\max1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\maximize.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\maximize_small_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_large_critical.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_large_error.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_large_result.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_large_warning.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_orange.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_red.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_small_critical.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_small_error.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message_small_warning.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\message40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messageCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messageorange40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messageorangeCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messagepurple40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messagepurpleCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messagered40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\messageredCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\metadata.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\metadata_s_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\metadata_s_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\metadata20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\min1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\minimize.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\minimize_small_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\minisave.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\minus.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\model.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\modeller40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\modellerCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\move20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\navigatorCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\navigatorCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\navigatorCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\newCatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\newcatalog_left.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\newcatalog_left_white.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\newcatalog_right.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\newcatalog_right_white.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\newcatalogCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\numbers20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\numericdomain.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\openCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\openfloat20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\openmult20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\opensingle20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operation.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operation20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operationCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operationitem.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operationitemSelected.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operationitemSelectedStep.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operationitemStep.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\operations.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\page.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pan20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pan20A.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\panel-center2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\panel-top2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pause20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pixel20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\plus.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\plus20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\point20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pointCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pointCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\polygon.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\polygon20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\polygon20CS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\polygonCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\polygonCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\preferencesCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\process.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\progress.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\progress2CS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\progress40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\progressCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\projectedcsy20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\projection.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\projection20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\properties40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\propertiesCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\propertiesCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\propertiesCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster_set.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster20CS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\raster203d.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\rasterCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\rasterCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\redbuttonr.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\refresh.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\refresh_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\refresh_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\refresh20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\refreshCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\remote.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\remoteBig.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\representation.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\representation20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\right.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\rightbottom.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\righttop.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\run20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\rundelete.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\runkeep.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\runselected.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\save.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\save20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\saveas.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\saveasb.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\saveb.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\script.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\selection.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\selection_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\selection_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\service.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\service2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\servicecatalog.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\serviceFolder.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\serviceFolderCS3.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\settings.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\spatial.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\spatial_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\splash.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\splithandle.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\splithandledark.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\splithandlegreen.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\start_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\start_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\stat_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\stat_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\step20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\stop.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\stop20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\stop40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_big_active.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_big_active2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_big_green.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_big_inactive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_big_inactive2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_grid_active.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_grid_inactive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_list_active.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_list_inactive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_spatial_active.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_spatial_inactive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_thin_active.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_thin_inactive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_thumb_active.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tab_thumb_inactive.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tabborderdrag.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\table.jpg">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\table.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\table20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\table20CS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\table35.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\table35-grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tableCS.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\tableCS2.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\text20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\textdom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\textdomain.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\thematicdom.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\thematicdomian.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\thumblist20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\thumblistCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\thumbnail.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\thumbnail_grey.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\timedom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\timeintervaldom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\transparent.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\trash20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\up.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\users20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\valuedom20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\vector.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\vector_fill.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\vector_line.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\vector_point.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\vector_set.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\view.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\visualization40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\visualizationCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\visualizationdisabled40.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\workflow.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\workflow20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\workflowitem.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\workflowitemSelected.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\workinprogress.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\workspaceCS1.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\worldlines.PNG">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\zoomin20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\zoomin20A.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\zoomout20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\zoomout20A.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrow20.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\arrow20A.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\pan20B.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
     <Image Include="desktopclient\qml\images\zoomout20B.png">
-      <Filter>Distribution Files\qml\images</Filter>
+      <Filter>Resource Files\qml\images</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </Text>
     <Text Include="desktopclient\qml\datapanel\visualization\ViewManagerTabs.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization</Filter>
+      <Filter>Resource Files\qml\datapanel\visualization</Filter>
     </Text>
     <Text Include="desktopclient\qml\datapanel\catalog\CatalogOperationEditor.qml">
-      <Filter>Distribution Files\qml\datapanel\catalog</Filter>
+      <Filter>Resource Files\qml\datapanel\catalog</Filter>
     </Text>
     <Text Include="desktopclient\qml\Tab2MenuItemDelegate.qml">
-      <Filter>Distribution Files\qml</Filter>
+      <Filter>Resource Files\qml</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="desktopclient\desktopclient.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtRcc Include="desktopclient\qml\quickqanava\QuickQanava_static.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="desktopclient.rc" />
   </ItemGroup>
 </Project>

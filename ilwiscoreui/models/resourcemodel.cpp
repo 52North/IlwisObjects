@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QDir>
 #include "kernel.h"
 #include "connectorinterface.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "ilwisdata.h"
 #include "geometries.h"
 #include "ellipsoid.h"
@@ -259,6 +259,11 @@ QString ResourceModel::iconPath() const
             else if (tp == itTABLE || tp == itRASTER)
                 return iconPath(tp | itCATALOG);
         }
+		if (tp == itCATALOG) {
+			if (hasType(itemRef().extendedType(), itRASTER)) {
+				return "raster_set2.png";
+			}
+		}
         if ( hasType(tp, itCOORDSYSTEM))
             return iconPath(itCOORDSYSTEM);
 		if (hasType(tp, itDOMAIN) && hasType(itemRef().extendedType(), itDATETIME)) {
@@ -688,7 +693,7 @@ void ResourceModel::setUrl(const QUrl &url, bool asRaw)
 
 QString ResourceModel::keywords() const
 {
-    QString kw = _item["keyword"].toString();
+    QString kw = itemRef()["keyword"].toString();
     if ( kw == sUNDEF)
         return "";
     return kw;

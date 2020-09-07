@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis;
 
+const int TypeHelper::_timeUserId = qMetaTypeId<Ilwis::Time>(); 
+
 QString TypeHelper::type2HumanReadable(IlwisTypes t)
 {
     switch(t) {
@@ -238,7 +240,7 @@ QString TypeHelper::type2name(IlwisTypes t)
     case itENVELOPE:
         return "envelope";
     case itBOOL:
-        return "boolean";
+        return "bool";
     case itBOUNDINGBOX:
         return "boundingbox";
     case itRASTERSIZE:
@@ -466,6 +468,23 @@ IlwisTypes TypeHelper::name2type(const QString &dname)
         return  itSTRING;
     if ( name == "char *")
         return  itSTRING;
+
+	if (name == "thematicclass")
+		return itTHEMATICITEM;
+	if (name == "namedidentifier")
+		return itNAMEDITEM;
+	if (name == "indexidentifier")
+		return itINDEXEDITEM;
+	if (name == "numericinterval")
+		return itNUMERICITEM;
+	if (name == "timeinterval")
+		return itTIMEITEM;
+	if (name == "palettecolor")
+		return itPALETTECOLOR;
+	if (name == "number")
+		return itNUMBER;
+
+
 
 
 

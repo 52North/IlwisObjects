@@ -34,7 +34,8 @@ ToolBar{
             tooltip: qsTr("Saves the workflow in the current active catalog(if possible)")
 
             onClicked: {
-                workflowView.storeRangeDefinitions()
+                //workflowView.storeRangeDefinitions()
+				workflowView.updateBoundingBoxes()
                 var url = mastercatalog.currentCatalog.url
                 if ( url.indexOf("file://") !== 0) {
                     url = workflow.rawUrl
@@ -50,7 +51,7 @@ ToolBar{
             iconSource: iconsource("saveasb.png")
             tooltip: qsTr("Copies the workflow in the current active catalog under a different name(if possible)")
             onClicked: {
-                workflowView.storeRangeDefinitions()
+                //workflowView.storeRangeDefinitions()
                 workarea.dropSaveBox(x)
             }
         }
@@ -111,33 +112,6 @@ ToolBar{
         }
 
         Controls.ToolButton {
-            height : buttonSize
-            width : buttonSize
-            id : newcondition
-            checked: false
-            checkable: true
-            exclusiveGroup: toolgroup
-            iconSource: iconsource("choice20.png")
-            tooltip : qsTr("Create a new condition on the next click in the workflow, when activated")
-            onClicked: {
-                workarea.dropCondition = checked
-            }
-        }
-        Controls.ToolButton {
-            height : buttonSize
-            width : buttonSize
-            id : loop
-            checked: false
-            checkable: true
-            exclusiveGroup: toolgroup
-            iconSource: iconsource("loop.png")
-            tooltip : qsTr("Create a new loop item on the next click in the workflow, when activated")
-            onClicked: {
-                workarea.dropLoop = checked
-            }
-        }
-
-        Controls.ToolButton {
             id : colbut
             property bool collapsed: false
             height : buttonSize
@@ -166,27 +140,6 @@ ToolBar{
         width: childrenRect.width
         spacing : 2
 
-        PanButton{
-            height : buttonSize
-            width : buttonSize
-            direction : "up"
-        }
-        PanButton{
-            height : buttonSize
-            width : buttonSize
-            direction : "left"
-        }
-        PanButton{
-            height : buttonSize
-            width : buttonSize
-            direction : "right"
-        }
-        PanButton{
-            height : buttonSize
-            width : buttonSize
-            direction : "down"
-        }
-
         Button {
             height : buttonSize
             width : buttonSize
@@ -206,7 +159,7 @@ ToolBar{
             editable: true
             height : buttonSize
             width : 75
-              model : ["10%","25%","50%","70%","80%","90%","100%","125%","150%", "200%"]
+              model : ["25%","50%","70%","80%","90%","100%","125%","150%", "200%"]
 
             onCurrentIndexChanged: {
                 if ( currentText == "")

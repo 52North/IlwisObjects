@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.1
 import ModelRegistry 1.0
 import CoverageLayerModel 1.0
 import LayerModel 1.0
-import "../../../Controls" as Controls
+import "qrc:/qml/controls" as Controls
 import "../../.." as Base
 import "../../../Global.js" as Global
 

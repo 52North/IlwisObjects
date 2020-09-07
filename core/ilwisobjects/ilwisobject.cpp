@@ -952,23 +952,13 @@ void IlwisObject::storeAdjustment(const QString& property, const QString& value)
 	}
 	else if (property.indexOf("metadata.") == 0) {
 		changeData(resourceRef(), property, value);
+	}else if (property.indexOf("keyword") == 0) {
+		changeData(resourceRef(), property, value);
 	}
 }
 
 void IlwisObject::applyAdjustments(const std::map<QString, QString>& adjustments) {
-	auto iter = adjustments.find("name");
-	if (iter != adjustments.end()) {
-		name((*iter).second);
-	}
-	iter = adjustments.find("description");
-	if (iter != adjustments.end()) {
-		setDescription((*iter).second);
-	}
-	for (auto item : adjustments) {
-		if (item.first.indexOf("metadata.") == 0) {
-			resourceRef().addMetaTag(item.first, item.second);
-		}
-	}
+	resourceRef().applyAdjustments(adjustments);
 }
 
 void IlwisObject::applyAdjustments() {

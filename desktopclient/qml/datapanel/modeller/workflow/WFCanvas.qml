@@ -39,9 +39,9 @@ Canvas {
         id : testForm
     }
 
-    WFCanvasMouseArea{
-        id :mousearea
-    }
+   // WFCanvasMouseArea{
+    //    id :mousearea
+    //}
 
 
     function createItem(x,y, resource, nodeId, parentItem) {
@@ -66,7 +66,7 @@ Canvas {
     }
 
     function draw(force){
-        if (!ctx)
+       /* if (!ctx)
             ctx = getContext('2d');
         ctx.clearRect(0,0,width, height);
 
@@ -109,7 +109,7 @@ Canvas {
             }
         }
 
-        wfCanvas.requestPaint();
+        wfCanvas.requestPaint();*/
     }
 
     function showAttachmentForm(target, attachRectTo, typeFilter){

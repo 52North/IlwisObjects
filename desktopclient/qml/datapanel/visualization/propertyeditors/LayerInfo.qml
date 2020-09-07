@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import IlwisObjectModel 1.0
 import "../../../Global.js" as Global
-import "../../../Controls" as Controls
+import "qrc:/qml/controls" as Controls
 
 Column {
     id : layerInfoPanel

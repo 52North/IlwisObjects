@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "thematicitem.h"
 #include "interval.h"
 #include "coloritem.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "intervalrange.h"
 #include "ellipsoid.h"
 #include "geodeticdatum.h"
@@ -106,7 +106,7 @@ Ilwis::IlwisObject *InternalIlwisObjectFactory::create(const Resource& resource,
     if ( resource.url(true).scheme() == "file") { // we might have a streamed object
         QString filename = resource.url(true).toLocalFile();
         QFileInfo inf(filename);
-        if ( inf.exists() && resource.ilwisType() != itSINGLEOPERATION) // internal objects never exist on disk,
+        if ( inf.exists() && !hasType(resource.ilwisType(), itSINGLEOPERATION | itCATALOG)) // internal objects never exist on disk,
             return 0;
     }
 
@@ -323,7 +323,7 @@ bool InternalIlwisObjectFactory::canUse(const Resource& resource) const
     if ( resource.url(true).scheme() == "file") { // we might have a streamed object
         QString filename = resource.url(true).toLocalFile();
         QFileInfo inf(filename);
-        if ( inf.exists() && resource.ilwisType() != itSINGLEOPERATION) // internal objects never exist on disk,
+        if ( inf.exists() && !hasType(resource.ilwisType() ,itSINGLEOPERATION|itCATALOG)) // internal objects never exist on disk,
             return false;
     }
 
@@ -838,7 +838,9 @@ GeoReference *InternalIlwisObjectFactory::createGrfFromCode(const Resource& reso
                 QString name = kvp.second;
                 if ( name.left(4) == "epsg" ||  name.left(5) == "proj4")
                     name = "code=" + name;
-                csy.prepare(kvp.second);
+				if (name.indexOf("+proj") == 0)
+					name = "code=proj4:" + name;
+                csy.prepare(name);
             }
             if (!csy.isValid())
                 return 0;

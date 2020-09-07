@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "kernel_global.h"
 #include "locker.h"
 #include "identity.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "numericrange.h"
 #include "juliantime.h"
 #include "iooptions.h"

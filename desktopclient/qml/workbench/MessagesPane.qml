@@ -38,11 +38,11 @@ WorkBenchShifter {
                     id : clearArea
                     width : parent.width
                     height : 26
-                    Control.PushButton{
+                    Button{
                         id : clearButton
                         text : "Clear error/warning status"
                         anchors.verticalCenter: parent.verticalCenter
-                        height : 20
+                        height : 22
                         width: parent.width - 20
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: {

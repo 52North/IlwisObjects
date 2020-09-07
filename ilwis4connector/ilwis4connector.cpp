@@ -138,17 +138,25 @@ Ilwis4Connector::~Ilwis4Connector()
 
 }
 
-bool Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options, const QJsonValue& jvalue)
+int Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options, const QJsonValue& jvalue)
 {
 
 	QJsonObject obj = jvalue.toObject();
-	QJsonValue base = obj.value("base");
-	object->code(toString(base, "code"));
-	object->createTime(toString(base, "creationdate"));
-	object->modifiedTime(toString(base, "modifieddate"));
-	object->extendedType(toString(base, "extendedtype").toULongLong());
-	object->readOnly(toBool(base, "logicalreadonly"));
-	object->name(toString(base, "name"));
+	QJsonValue jbase = obj.value("base");
+	object->code(toString(jbase, "code"));
+	object->createTime(toString(jbase, "creationdate"));
+	object->modifiedTime(toString(jbase, "modifieddate"));
+	object->extendedType(toString(jbase, "extendedtype").toULongLong());
+	object->readOnly(toBool(jbase, "logicalreadonly"));
+	object->name(toString(jbase, "name"));
+	QJsonValue jv = jbase["longname"];
+	if (jv != QJsonValue::Undefined) {
+		object->resourceRef().addProperty("longname", jv.toString());
+	}
+	jv = jbase["storename"];
+	if (jv != QJsonValue::Undefined) {
+		object->resourceRef().addProperty("storename", jv.toString());
+	}
 
 	QJsonValue context = obj.value("context");
 	if (!context.isUndefined()) {
@@ -164,9 +172,7 @@ bool Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options
 		}
 		object->setDescription(obj.value("description").toString());
 	}
-
-
-	return true;
+	return jvalue["version"].toInt();
 }
 
 bool Ilwis4Connector::loadData(IlwisObject *object, const IOOptions &options){
@@ -186,14 +192,18 @@ bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObj
 	if (!isSupport) {
 		jbase.insert("creationdate", Time(res.createTime()).toString());
 		jbase.insert("modifieddate", Time(res.modifiedTime()).toString());
-		jbase.insert("logicalreadonly", obj->isReadOnly());
 	}
+	jbase.insert("logicalreadonly", obj->isReadOnly());
 	jbase.insert("ilwistype", TypeHelper::type2name(obj->ilwisType()));
 
-	QString nm = res.hasProperty("longname") ? obj->name() + "|" + res["longname"].toString() : obj->name();
-	if (options.find("storename") != options.end())
-		nm = options.value("storename").toString();
-	jbase.insert("name", nm);
+	if (res.hasProperty("longname")) {
+		jbase.insert("longname", res["longname"].toString());
+	}
+
+	if (res.hasProperty("storename")) {
+		jbase.insert("storename", res["storename"].toString());
+	}
+	jbase.insert("name", obj->name());
 	if (!isSupport)
 		jbase.insert("extendedtype", QString::number(obj->extendedType()));
 	jbase.insert("code", obj->code());
@@ -219,6 +229,7 @@ bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObj
 		jroot.insert("aid", id);
 		jroot.insert("context", jcontext);
 	}
+	jroot.insert("version", options["version"].toInt());
 	
 	return true;
 
@@ -249,6 +260,46 @@ void Ilwis4Connector::loadDataDef(DataDefinition& def, QJsonObject& jdatadef) {
 	QString rangedef = jdatadef["actualrange"].toString();
 	def.domain(ilobj);
 	def.range(Ilwis4DomainConnector::getRange(rangedef));
+}
+
+void Ilwis4Connector::store(const QString& v, IlwisTypes valueType, QJsonObject& jroot, const IOOptions &options) {
+
+	if (hasType(valueType, itILWISOBJECT)) {
+		bool storeall = options.contains("storeall") ? options["storall"].toBool() : false;
+		jroot.insert("storeall", storeall);
+		if (storeall) {
+			IIlwisObject obj;
+			obj.prepare(v, valueType);
+			if (obj.isValid()) {
+				QJsonObject jobj;
+				IOOptions opt = options;
+				opt.addOption({"status", "support"});
+				Ilwis4Connector::store(obj.ptr(), opt, jobj);
+				jroot.insert("fixed", jobj);
+			}
+		}else
+			jroot.insert("fixed", v);
+	}
+	else {
+		jroot.insert("fixed", v);
+	}
+}
+
+bool Ilwis4Connector::loadMetaData(const QJsonObject& jvalue, IlwisTypes tp, QString& v)
+{
+	if (hasType(tp, itILWISOBJECT)) {
+		bool storeall = jvalue["storeall"].toBool();
+		if (storeall) {
+			// :TODO			
+		}
+		else {
+			v = jvalue["fixed"].toString();
+		}
+	}
+	else {
+		v = jvalue["fixed"].toString();
+	}
+	return true;
 }
 
 QString Ilwis4Connector::provider() const

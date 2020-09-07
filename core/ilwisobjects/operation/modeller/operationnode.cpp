@@ -128,3 +128,5 @@ bool OperationNode::isWorkflow() const
 {
     return _isWorkflow;
 }
+
+

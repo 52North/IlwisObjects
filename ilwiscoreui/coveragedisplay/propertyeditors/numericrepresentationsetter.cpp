@@ -97,9 +97,8 @@ QColor NumericRepresentationSetter::color(const QString& property, double frac)
 {
     if ( vpmodel()->layer()){
 		auto *layer = vpmodel()->layer();
-		auto *clayer = layer->as<CoverageLayerModel>();
 		auto rpr = vpmodel()->representation();
-        return clayer->color(rpr, property, frac,LayerModel::cvmFRACTION) ;
+        return layer->color(rpr, property, frac,LayerModel::cvmFRACTION) ;
     }
     return QColor();
 }

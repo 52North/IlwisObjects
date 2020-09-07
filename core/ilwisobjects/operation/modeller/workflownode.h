@@ -43,7 +43,7 @@ public:
     WorkFlowParameter& inputRef(int index);
     WorkFlowParameter input(int index) const;
     void addInput(const WorkFlowParameter& param, int index=iUNDEF);
-    virtual void setFlow(const SPWorkFlowNode& fromNode, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom, int attachRctIndxTo);
+    virtual void setFlow(const SPWorkFlowNode& fromNode, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom=-1, int attachRctIndxTo=-1);
     void removedInput(int index);
     virtual void nodeId(quint64 id);
     void box(const BoundingBox& box);

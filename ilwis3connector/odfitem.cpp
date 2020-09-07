@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "catalogconnector.h"
 #include "geometries.h"
 #include "identity.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "catalog.h"
 #include "ilwiscontext.h"
 #include "odfitem.h"

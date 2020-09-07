@@ -29,20 +29,20 @@ namespace Ilwis {
 	    public:
             friend class TextureGenerator;
 			TextureHeap(RasterLayerModel * rasterLayerModel, const std::vector<IRasterCoverage> * ccBands);
-		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize);
+		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize, bool asAnimation);
 		    virtual ~TextureHeap();
 
-		    Texture * GetTexture(bool & optimal, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread); // Pre: optimal = false; Post; optimal = true if and only if the texture was an exact match with no dirty flag
+		    Texture * GetTexture(int bandIndex,bool & optimal, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread); // Pre: optimal = false; Post; optimal = true if and only if the texture was an exact match with no dirty flag
 		    void ClearQueuedTextures();
 		    void ReGenerateAllTextures();
 		    bool renderingComplete();
-            bool optimalTextureAvailable(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor);
+            bool optimalTextureAvailable(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor);
 
 	    protected:
-		    Texture * GenerateTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
+		    Texture * GenerateTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
 		    void ReGenerateTexture(Texture * texture, bool fInThread);
 		    Texture * GenerateNextTexture(bool fInThread);
-		    std::vector<Texture*> textures;
+		    std::vector<std::vector<Texture*>> textures;
 		    std::vector<Texture*> textureRequest;
 		    IRasterCoverage raster;
 			const std::vector<IRasterCoverage> * _ccBands = 0;

@@ -71,6 +71,7 @@ IlwisObjectModel::IlwisObjectModel(const Ilwis::Resource &source, QObject *paren
                 _modelId = modelregistry()->newModelId();
                 modelregistry()->registerModel(modelId(), "ilwisobject", this);
 				applyAdjustments();
+
             }
         }
     } catch (const ErrorObject& ){

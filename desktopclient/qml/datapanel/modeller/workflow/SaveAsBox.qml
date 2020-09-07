@@ -55,7 +55,7 @@ Controls.DropableItem {
                             url = url.slice(0,index)
                         }
                         var obj = mastercatalog.id2object(workflow.id,0)
-                        obj.copy(url + "/" + newname.content,"workflow", "stream")
+                        obj.copy(url + "/" + newname.content,"i4workflow", "ilwis4")
                         operations.refreshAllOperationCatalogs()
                         obj.suicide()
                         dropContainer.state = "invisible"

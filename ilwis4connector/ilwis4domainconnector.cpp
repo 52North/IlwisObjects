@@ -56,14 +56,20 @@ ConnectorInterface *Ilwis4DomainConnector::create(const Ilwis::Resource &resourc
 
 Ilwis4DomainConnector::Ilwis4DomainConnector(const Ilwis::Resource &resource, bool load, const IOOptions& options) : Ilwis4Connector(resource, load, options)
 {
+	_version = 1;
 }
 
 bool Ilwis4DomainConnector::store(IlwisObject *obj, const IOOptions &options)
 {
 	QJsonArray objects;
-	QJsonObject jroot;
+	QJsonObject jroot, jdomain;
 
-	store(obj, options, jroot);
+	IOOptions newOptions = options;
+	newOptions.addOption("version", _version);
+
+	store(obj, newOptions, jdomain);
+	jroot.insert("ilwisobject", jdomain);
+
 	objects.append(jroot);
 
 	flush(obj, objects);
@@ -77,7 +83,7 @@ IDomain Ilwis4DomainConnector::createDomain(const IOOptions& options, const QJso
 	IDomain dom;
 	QJsonObject base = jdomain["base"].toObject();
 	IlwisTypes tp = TypeHelper::name2type(base["ilwistype"].toString());
-	IlwisTypes vt = TypeHelper::name2type(jdomain["valuetype"].toString());
+	IlwisTypes vt = QString(jdomain["valuetype"].toString()).toULongLong();
 	QString code = base["code"].toString();
 	if (code == sUNDEF) {
 		if (tp == itNUMERICDOMAIN) {
@@ -85,22 +91,31 @@ IDomain Ilwis4DomainConnector::createDomain(const IOOptions& options, const QJso
 		}
 		else if (tp == itITEMDOMAIN) {
 			if (vt == itINDEXEDITEM) {
-				dom = IIndexedIdDomain();
+				IIndexedIdDomain d;
+				d.prepare();
+				dom = d;
 			}
 			else if (vt == itNAMEDITEM) {
-				dom = INamedIdDomain();
+				INamedIdDomain d;
+				d.prepare();
+				dom = d;
 			}
 			else if (vt == itTHEMATICITEM) {
-				dom = IThematicDomain();
+				IThematicDomain d;
+				d.prepare();
+				dom = d;
 			}
 			else if (vt == itNUMERICITEM) {
-				dom = IIntervalDomain();
+				IIntervalDomain d;
+				d.prepare();
+				dom = d;
 			}
-			dom.prepare();
+			//dom.prepare();
 		}
 		else if (tp == itTEXTDOMAIN) {
-			dom = ITextDomain();
-			dom.prepare();
+			ITextDomain d;
+			d.prepare();
+			dom = d;
 		}
 	}
 	else
@@ -114,7 +129,7 @@ IDomain Ilwis4DomainConnector::createDomain(const IOOptions& options, const QJso
 bool Ilwis4DomainConnector::store(IlwisObject *obj, const IOOptions& options, QJsonObject& jdomain) {
 	Domain *dom = static_cast<Domain *>(obj);
 	Ilwis4Connector::store(obj, options, jdomain);
-	jdomain.insert("valuetype", TypeHelper::type2name(dom->valueType()));
+	jdomain.insert("valuetype", QString::number(dom->valueType()));
 	jdomain.insert("defaultrange", dom->range<Range>()->toString());
 
 	return true;
@@ -128,7 +143,8 @@ bool Ilwis4DomainConnector::storeData(IlwisObject *obj, const IOOptions &options
 bool Ilwis4DomainConnector::loadMetaData(IlwisObject* object, const IOOptions& options, const QJsonValue& jvalue) {
 	Ilwis4Connector::loadMetaData(object, options, jvalue);
 	
-	static_cast<Domain *>(object)->range(Ilwis4DomainConnector::getRange(jvalue["defaultrange"].toString()));
+	Domain * dom = static_cast<Domain *>(object);
+	dom->range(Ilwis4DomainConnector::getRange(jvalue["defaultrange"].toString()));
 
 	return true;
 }
@@ -158,15 +174,24 @@ Ilwis::Range  *Ilwis4DomainConnector::getRange(const QString& rangedef) {
 }
 bool Ilwis4DomainConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
 {
-	//if (!Ilwis4Connector::loadMetaData(obj, options))
-	//	return false;
+	QFileInfo inf = _resource.url(true).toLocalFile();
+	QFile file;
+	file.setFileName(inf.absoluteFilePath());
+	if (file.open(QIODevice::ReadOnly)) {
+		QString meta = file.readAll();
+		QJsonDocument doc = QJsonDocument::fromJson(meta.toUtf8());
+		if (!doc.isNull()) {
+			QJsonArray jobjects = doc.array();
+			QJsonValue jvalue = jobjects.at(0);
+			return loadMetaData(obj, options, jvalue["ilwisobject"]);
+		}
+	}
+	return true;
 
 
 	return true;
 }
 
 bool Ilwis4DomainConnector::loadData(IlwisObject* obj, const IOOptions& options) {
-	Table *tbl = static_cast<Table *>(obj);
-
 	return true;
 }

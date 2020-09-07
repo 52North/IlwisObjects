@@ -399,18 +399,10 @@ bool ExecutionNode::executeTest(ExecutionContext *ctx, SymbolTable &symTable, Wo
        // combine result test with previous tests
        if ( ctx._results.size() == 1){
            Symbol sym = symTableLocal.getSymbol(ctx._results[0]);
-           if ( sym._type == itBOOL){
-            bool val = sym._var.toBool();
-            if ( test._pre != loNONE){
-                if ( test._pre == loNOT)
-                    val = !val;
-            }
-            if ( test._post == loAND){
-                testRestult &= val;
-            }else if ( test._post == loOR)
-                testRestult |= val;
-           }
-       }
+		   if (sym._type == itBOOL) {
+			   testRestult = sym._var.toBool();
+		   }
+        }
     }
     ctx->_results.push_back("testresult") ;
     symTable.addSymbol("testresult",10000, itBOOL, testRestult);
@@ -511,6 +503,7 @@ bool ExecutionNode::executeRangeJunction(ExecutionContext *ctx, SymbolTable &sym
     WorkFlowParameter& parameter = _node->inputRef(RangeNode::rpINITIALINPUT);
 
     QVariant v = parameterValue(0);
+	// the initial input might not have been set so if no so we will first make sure it is calcualted
     if ( !v.isValid() || v.toString() == sUNDEF){
         if(! executeLink(ctx, symTable, parameter, workflowImpl, mapping))
             return false;

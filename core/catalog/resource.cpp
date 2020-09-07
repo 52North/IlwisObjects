@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis;
 
+
 uint Ilwis::qHash2(const QUrl& url, IlwisTypes tp ){
     return (::qHash(OSHelper::neutralizeFileName(url.toString())) + ::qHash(tp)) / 2;
 }
@@ -191,7 +192,6 @@ Resource::Resource(quint64 tp, const QUrl &normalizedUrl, const QUrl& rawUrl) :
 {
     if ( tp == itUNKNOWN)
         return;
-
     checkUrl(tp);
     prepare();
     if ( normalizedUrl == INTERNAL_CATALOG_URL) {
@@ -199,6 +199,8 @@ Resource::Resource(quint64 tp, const QUrl &normalizedUrl, const QUrl& rawUrl) :
         _normalizedUrl = QUrl(resext);
     }
     QString nm = _normalizedUrl.toString();
+
+
     int index = nm.lastIndexOf("/");
     if ( index != -1){
         addContainer(nm.left(index));
@@ -480,6 +482,7 @@ void Resource::setUrl(const QUrl &url, bool asRaw, bool updateDatabase)
         else
             name("root", false,updateDatabase);
     }
+	QString pp = _rawUrl.toString();
 }
 
 QUrlQuery Resource::urlQuery() const
@@ -1000,4 +1003,24 @@ std::map<QString, QString> Resource::metadata(const QString& keyfilter) const {
 		}
 	}
 	return result;
+}
+
+void Resource::applyAdjustments(const std::map<QString, QString>& adjustments) {
+	auto iter = adjustments.find("name");
+	if (iter != adjustments.end()) {
+		name((*iter).second);
+	}
+	iter = adjustments.find("description");
+	if (iter != adjustments.end()) {
+		setDescription((*iter).second);
+	}
+	for (auto item : adjustments) {
+		if (item.first.indexOf("metadata.") == 0) {
+			addMetaTag(item.first, item.second);
+		}
+	}
+	iter = adjustments.find("keyword");
+	if (iter != adjustments.end()) {
+		addProperty("keyword", (*iter).second);
+	}
 }

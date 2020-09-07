@@ -75,6 +75,7 @@ bool CreateCornersGeoreference::execute(ExecutionContext *ctx, SymbolTable &symT
     QVariant value;
     value.setValue<IGeoReference>(georef);
 	logOperation(georef, _expression, { _csy });
+	qDebug() << georef->resourceRef().url(true).toString() << georef->name() << georef->size().xsize() << georef->size().ysize();
     ctx->setOutput(symTable,value,georef->name(),itGEOREF,georef->resource());
 
     return true;

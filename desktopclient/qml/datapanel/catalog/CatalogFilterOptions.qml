@@ -41,7 +41,8 @@ Rectangle {
             CatalogFilterButtons{
                 id : objectfilters
             }
-            Row {
+
+			Row {
                 width : parent.width
                 height : 22
                 Text {
@@ -61,6 +62,7 @@ Rectangle {
                     }
                 }
             }
+    
             Controls.ComboxLabelPair{
                 id : countryselect
                 labelText: qsTr("Country select")
@@ -69,6 +71,7 @@ Rectangle {
                 itemModel: internaldatabase.query("Select * from teritories where type='country' order by name")
                 role : "name"
                 fontSize: 8
+				height : 20
 
                 Controls.ToolTip{
                     target: countryselect
@@ -104,6 +107,7 @@ Rectangle {
                 itemModel: internaldatabase.query("Select * from teritories where type='region' order by name")
                 role : "name"
                 fontSize: 8
+				height : 20
 
                 Controls.ToolTip{
                     target: regionselect
@@ -130,22 +134,6 @@ Rectangle {
                     }
                 }
             }
-            Controls.TextEditLabelPair{
-                id : keyselect
-                labelText: qsTr("Keyword filters")
-                labelWidth: 100
-                width : parent.width - 5
-                transparentBackgrond : false
-                fontSize: 8
-                onContentChanged: {
-                    currentCatalog.filter("keyword", content)
-                }
-                Controls.ToolTip{
-                    target: keyselect
-                    text : qsTr("Comma seperated list with keywords that define the filter for this catalog. Only objects that have these keywords will appear")
-                }
-            }
-
             Item { 
                 height : 20
                 width : parent.width
@@ -165,10 +153,28 @@ Rectangle {
                     }
                 }
             }
+
+            Controls.TextEditLabelPair{
+                id : keyselect
+                labelText: qsTr("Keyword filters")
+                labelWidth: 100
+                width : parent.width - 5
+                transparentBackgrond : false
+                fontSize: 8
+                onContentChanged: {
+                    currentCatalog.filter("keyword", content)
+                }
+                Controls.ToolTip{
+                    target: keyselect
+                    text : qsTr("Comma seperated list with keywords that define the filter for this catalog. Only objects that have these keywords will appear")
+                }
+            }
+
+
             Item {
                 height : 20
                 width : parent.width
-                visible : currentCatalog ? checkCatalogType(currentCatalog.filters(), "filebased") : false
+                visible : false // currentCatalog ? checkCatalogType(currentCatalog.filters(), "filebased") : false
                 Controls.TextEditLabelPair{
                     id : label2
                     labelText: qsTr("Time filter")
@@ -185,6 +191,7 @@ Rectangle {
                     text : qsTr("Apply")
                 }
             }
+
             Item {
                 height : 20
                 width : parent.width
@@ -228,15 +235,6 @@ Rectangle {
         width : 370
         filterTarget: currentCatalog
     }
-	Controls.DateTimeDropDown{
-		width : 370
-		anchors.left: spatselect.right
-		anchors.leftMargin: 6
-		anchors.top : mapLabel.bottom
-		labelText : qsTr("Begin Date/Time")
-		labelWidth : 100
-	}
-
 
     function checkCatalogType(filterList, type){
         for(var i=0; i < filterList.length; ++i){
@@ -251,5 +249,13 @@ Rectangle {
         }
         return true
     }
+
+	function resetCombos() {
+		regionselect.currentIndex = -1
+		countryselect.currentIndex = -1
+		label1.content = ""
+		keyselect.content = ""
+
+	}
 }
 

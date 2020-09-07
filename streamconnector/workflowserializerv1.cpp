@@ -122,8 +122,8 @@ bool WorkflowSerializerV1::storeNode(const SPWorkFlowNode& node, const IOOptions
         _stream << sz;
         for(qint32 t=0; t < sz; ++t){
             WorkFlowCondition::Test test = condition->test(t)    ;
-            _stream << (qint32)test._pre;
-            _stream << (qint32)test._post;
+            _stream << (qint32)0;
+			_stream << (qint32)0;
            storeNode(test._operation);
         }
         auto operations = condition->subnodes("operations")    ;
@@ -302,7 +302,7 @@ bool WorkflowSerializerV1::loadNode(SPWorkFlowNode& node,Workflow *workflow, con
             _stream >> post;
             SPWorkFlowNode operationNode;
             loadNode(operationNode, workflow);
-            cnode->addTest(operationNode, (LogicalOperator) pre,(LogicalOperator) post);
+            cnode->addTest(operationNode);
             operationNode->conditionIdOfTest(cnode->id());
         }
         _stream >> ocount;

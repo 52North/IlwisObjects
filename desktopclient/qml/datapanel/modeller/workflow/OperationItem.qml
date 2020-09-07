@@ -446,8 +446,8 @@ Rectangle {
                         attachRectIndex
                         )
         }else if (testIndex === -2) {
-            var truecase = target.containedInLinkedCondition(operationItem)
-            workflow.addJunctionFlows(target.itemid, itemid,flowPoints.fromParameterIndex,selectedAttach.index,attachRectIndex,truecase)
+            var targetOutside = target.containedInLinkedCondition(operationItem)
+            workflow.addJunctionFlows(target.itemid, itemid,flowPoints.fromParameterIndex,selectedAttach.index,attachRectIndex,targetOutside && operationItem.condition !=null)
         }else {
             workflow.addConditionFlow(
                         itemid,

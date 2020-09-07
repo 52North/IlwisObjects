@@ -124,9 +124,6 @@ void SimpleLineSetter::getVertices(const geos::geom::Geometry *geometry, Vertice
         const geos::geom::Geometry *subgeom = geometry->getGeometryN(geom);
         if (!subgeom)
             continue;
-		if (geom == 5917) {
-			qDebug() << "stop";
-		}
 		getGeometryVertices(subgeom, vertices, indices);
      }
 }

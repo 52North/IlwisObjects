@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "basetable.h"
 #include "flattable.h"
 #include "SpreadSheet.h"
-//#include "odsformat.h"
+#include "odsformat.h"
 //#include "xlsformat.h"
 #include "ilwisxlsxformat.h"
 #include "spreadsheettableconnector.h"
@@ -36,12 +36,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace SpreadSheetConnectors;
 
-const std::vector<QString> SpreadSheetTableConnector::_suffixes = {"xls", "ods", "xlsx"};
+const std::vector<QString> SpreadSheetTableConnector::_suffixes = {"xls", "ods", "xlsx","ods_", "xls_", "xslx_"};
 
 SpreadSheetTableConnector::SpreadSheetTableConnector(const QString& file) : IlwisObjectConnector(Resource(file,itTABLE), true, IOOptions()){
     QFileInfo path(file);
-     if ( path.suffix().toLower() == "ods"){
-       // _spreadsheet.reset( new ODSFormat());
+     if ( path.suffix().toLower() == "ods" ) {
+       _spreadsheet.reset( new ODSFormat());
     } else if ( path.suffix().toLower() == "xls"){
        // _spreadsheet.reset( new XLSFormat());
     } else if ( path.suffix().toLower() == "xlsx"){
@@ -55,7 +55,8 @@ SpreadSheetTableConnector::SpreadSheetTableConnector(const QString& file) : Ilwi
 
 SpreadSheetTableConnector::SpreadSheetTableConnector(const Ilwis::Resource &resource, bool load, const Ilwis::IOOptions &options) :  IlwisObjectConnector(resource, load, options)
 {
-    QFileInfo odsinfo = resource.toLocalFile();
+	QString p = resource.toLocalFile();
+    QFileInfo odsinfo(p);
     QString sheetName;
     QString suffix =  odsinfo.suffix();
     if ( suffix == "" && options.contains("format")){
@@ -75,11 +76,11 @@ SpreadSheetTableConnector::SpreadSheetTableConnector(const Ilwis::Resource &reso
             sourceRef().setUrl(correctUrl,true);
         }
     }
-    if ( suffix.toLower() == "ods"){
-       // _spreadsheet.reset( new ODSFormat());
-    } else if ( suffix.toLower() == "xls"){
+    if ( suffix.toLower() == "ods" || suffix.toLower() == "ods_"){
+        _spreadsheet.reset( new ODSFormat());
+    } else if ( suffix.toLower() == "xls" || suffix.toLower() == "xls_"){
        // _spreadsheet.reset( new XLSFormat());
-    } else if ( suffix.toLower() == "xlsx"){
+    } else if ( suffix.toLower() == "xlsx" || suffix.toLower() == "xlsx_"){
         _spreadsheet.reset( new XLSXFormat());
     }
 
@@ -168,9 +169,22 @@ bool SpreadSheetTableConnector::loadData(IlwisObject *object, const IOOptions &o
     if (!_spreadsheet->isValid())
         return false;
 
+	Table * tbl = static_cast<Table *>(object);
+	if (options.contains("nometadata")) { // means, we load solely by loadData; all metatdata is already in the table object; so make sure the connector is valid
+		_validColumns = std::vector<bool>(tbl->columnCount(), true);
+		_validColumnCount = tbl->columnCount();
+		bool ok;
+		quint32 headerline = options["headerline"].toUInt(&ok);
+		if (ok) {
+			_headerline = headerline;
+		}
+
+	}
+
     int rowShift = _headerline != iUNDEF ? 1 : 0;
 
     std::vector<std::vector<QVariant>> data(_spreadsheet->rowCount() - rowShift);
+	
 
     // number of columns per row is equal to the valid columns we have seen
     for(auto& row : data)
@@ -196,7 +210,7 @@ bool SpreadSheetTableConnector::loadData(IlwisObject *object, const IOOptions &o
         }
     }
 
-    Table * tbl = static_cast<Table *>(object);
+ 
 
     for(int rec = 0; rec < _spreadsheet->rowCount() - rowShift; ++rec){
         if ( data[rec].size() > 0)

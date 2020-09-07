@@ -53,6 +53,7 @@ namespace Ilwis {
 			void setActiveFeatureColors(const SPFeatureI& feature, VisualAttribute *attr, const QVariant& value);
 			virtual bool renderReady();
 			virtual void renderReady(bool yesno);
+			QColor color(const IRepresentation &rpr, const QString& propName, double value, LayerModel::ColorValueMeaning cvm) override;
 
 
 		signals:

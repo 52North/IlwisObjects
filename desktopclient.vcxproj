@@ -86,7 +86,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(QTDIR)\lib\qtmain.lib;shell32.lib;..\libraries\win32release\ilwiscore.lib;..\libraries\win32release\ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Charts.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR)\lib\qtmain.lib;shell32.lib;..\libraries\win32release\ilwiscore.lib;..\libraries\win32release\ilwiscoreui.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5OpenGL.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Sql.lib;$(QTDIR)\lib\Qt5Charts.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\Qt5QuickControls2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\utils\postgresql\pgsql\lib;C:\utils\my_sql\my_sql\lib;$(QTDIR)\lib;D:\Projects\Ilwis\ilwismsvc64\libraries\win32release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -118,6 +118,10 @@
       <DynamicSource>output</DynamicSource>
       <IncludePath>$(QTDIR)\include\QtQuickControls2;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;ilwiscoreui;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core\ilwisobjects\representation;core\catalog;core\geos\include;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui\models\workflow;ilwiscoreui/models/coveragedisplay;..\external;$(QTDIR)\include;$(QTDIR)\include\QtCharts;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtWidgets</IncludePath>
     </QtMoc>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -172,6 +176,10 @@
       <DynamicSource>output</DynamicSource>
       <IncludePath>$(QTDIR)\include\QtQuickControls2;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;core;ilwiscoreui;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core\ilwisobjects\representation;core\catalog;core\geos\include;core\ilwisobjects\domain;ilwiscoreui\models;ilwiscoreui\models\workflow;ilwiscoreui/models/coveragedisplay;..\external;$(QTDIR)\include;$(QTDIR)\include\QtCharts;release;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtWidgets</IncludePath>
     </QtMoc>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="desktopclient\applicationformexpressionparser.cpp" />
@@ -342,15 +350,23 @@
     <None Include="desktopclient\qml\datapanel\modeller\ModelManager.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\AttachmentRectangle.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionTestValueNode.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionNode.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ConditionTests.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\ConnectDialog.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\DataFlowEdge.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\FlowParametersChoiceForm.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\JunctionItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\JunctionNode.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ManagerWorkflowView.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\ModellerWorkflowView.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\OperationItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\OperationNode.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeItem.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeJunctionNode.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeJunctionItem.qml" />
-    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeTests.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeNode.qml" />
+    <None Include="desktopclient\qml\datapanel\modeller\workflow\RangeValue.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\SaveAsBox.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\SelectedOperationForm.qml" />
     <None Include="desktopclient\qml\datapanel\modeller\workflow\SelectedOperationMetaData.qml" />
@@ -412,6 +428,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\OverviewExtentToolbar.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\PostMapPanelCanvas.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\AddColorComposite.qml" />
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\BackgroundLayerEditor.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\ConvertAttributeDomain.qml" />
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\CrossSectionDataSourceEditor.qml" />
@@ -458,10 +475,113 @@
     <None Include="desktopclient\qml\images\raster20.png.backup" />
     <None Include="desktopclient\qml\MainSplit.qml" />
     <None Include="desktopclient\qml\pubsub.js" />
+    <None Include="desktopclient\qml\quickqanava\CanvasNodeTemplate.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Edge.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\EdgeTemplate.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\GraphView.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Group.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\HorizontalDock.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\LabelEditor.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\LineGrid.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\NavigablePreview.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Node.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Port.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\qmldir_static">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGlowEffect.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientBackground.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientGlowBackground.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientShadowBackground.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGroupTemplate.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectNodeTemplate.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectShadowEffect.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidBackground.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidGlowBackground.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidShadowBackground.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\SelectionItem.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\StyleListView.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\VerticalDock.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\VisualConnector.qml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
     <None Include="desktopclient\qml\RotateTranslateSplash.qml" />
     <None Include="desktopclient\qml\Splash.qml" />
     <None Include="desktopclient\qml\StartBlock.qml" />
-    <None Include="desktopclient\qml\StartWindow.qml" />
     <None Include="desktopclient\qml\Tab2Menu.qml" />
     <None Include="desktopclient\qml\TabStyle1.qml" />
     <None Include="desktopclient\qml\TabStyle2.qml" />
@@ -1008,6 +1128,13 @@
     <Text Include="desktopclient\qml\datapanel\visualization\propertyeditors\GridLineDistanceEditor.qml" />
     <Text Include="desktopclient\qml\datapanel\visualization\ViewManagerTabs.qml" />
     <Text Include="desktopclient\qml\Tab2MenuItemDelegate.qml" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="desktopclient\desktopclient.qrc" />
+    <QtRcc Include="desktopclient\qml\quickqanava\QuickQanava_static.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="desktopclient.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

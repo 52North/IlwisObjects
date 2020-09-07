@@ -35,9 +35,10 @@ TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const std::vector<
 , rasterLayerModel(rasterLayerModel)
 , fColorComposite(true)
 {
+	textures.resize(1);
 }
 
-TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize)
+TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize, bool asAnimation)
 : textureThread(0)
 , fAbortTexGen(false)
 , fStopThread(false)
@@ -47,6 +48,7 @@ TextureHeap::TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCover
 , rasterLayerModel(rasterLayerModel)
 , fColorComposite(false)
 {
+	textures.resize(asAnimation ? raster->size().zsize() : 1);
 }
 
 TextureHeap::~TextureHeap()
@@ -60,9 +62,10 @@ TextureHeap::~TextureHeap()
 
 	ClearQueuedTextures();
 
-	for (int i = 0; i < textures.size(); ++i)
-		if (textures[i] != 0)
-			delete textures[i];
+	for(int j=0; j < textures.size(); ++j)
+		for (int i = 0; i < textures[j].size(); ++i)
+			if (textures[j][i] != 0)
+			delete textures[j][i];
 }
 
 void TextureHeap::ClearQueuedTextures()
@@ -81,27 +84,28 @@ void TextureHeap::ClearQueuedTextures()
 
 void TextureHeap::ReGenerateAllTextures()
 {
-	for (int i = 0; i < textures.size(); ++i)
-		textures[i]->SetDirty();
+	for (int j = 0; j < textures.size(); ++j)
+		for (int i = 0; i < textures[j].size(); ++i)
+			textures[j][i]->SetDirty();
 }
 
-Texture * TextureHeap::GetTexture(bool & optimal, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
+Texture * TextureHeap::GetTexture(int bandIndex, bool & optimal, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
 {
 	Texture * tex = 0;
 	if (fInThread) { // call Invalidate when done, to redraw the mapwindow
-		for (int i = 0; i < textures.size(); ++i) {
-			if (textures[i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
-				if (textures[i]->fDirty())
-					ReGenerateTexture(textures[i], fInThread);
+		for (int i = 0; i < textures[bandIndex].size(); ++i) {
+			if (textures[bandIndex][i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
+				if (textures[bandIndex][i]->fDirty())
+					ReGenerateTexture(textures[bandIndex][i], fInThread);
 				else
-					optimal = true;
-				return textures[i];
-			} else if (textures[i]->contains(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY)) {
+					optimal = true; 
+				return textures[bandIndex][i];
+			} else if (textures[bandIndex][i]->contains(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY)) {
 				if (tex != 0) {
-					if (tex->getZoomFactor() > textures[i]->getZoomFactor())
-						tex = textures[i];
+					if (tex->getZoomFactor() > textures[bandIndex][i]->getZoomFactor())
+						tex = textures[bandIndex][i];
 				} else
-					tex = textures[i];
+					tex = textures[bandIndex][i];
 			}
 		}
 		// if it is queued already, don't add it again, just be patient as it will come
@@ -113,14 +117,14 @@ Texture * TextureHeap::GetTexture(bool & optimal, const unsigned int offsetX, co
 		}
 		csChangeTexCreatorList.unlock();
 		if (!fQueued)
-			GenerateTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
+			GenerateTexture(bandIndex, offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
 	} else { // caller is waiting for the Texture*
 		for (int i = 0; i < textures.size(); ++i) {
-			if (textures[i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor))
-				tex = textures[i];
+			if (textures[bandIndex][i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor))
+				tex = textures[bandIndex][i];
 		}
 		if (0 == tex)
-			tex = GenerateTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
+			tex = GenerateTexture(bandIndex,offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
 		else if (tex->fDirty())
 			ReGenerateTexture(tex, fInThread);
 	}
@@ -128,11 +132,11 @@ Texture * TextureHeap::GetTexture(bool & optimal, const unsigned int offsetX, co
 	return tex;
 }
 
-bool TextureHeap::optimalTextureAvailable(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) {
-	for (int i = 0; i < textures.size(); ++i) {
-		if (textures[i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
-			if (textures[i]->fDirty()) {
-				ReGenerateTexture(textures[i], true);
+bool TextureHeap::optimalTextureAvailable(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) {
+	for (int i = 0; i < textures[bandIndex].size(); ++i) {
+		if (textures[bandIndex][i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
+			if (textures[bandIndex][i]->fDirty()) {
+				ReGenerateTexture(textures[bandIndex][i], true);
 				return false;
 			}
 			return true;
@@ -147,17 +151,17 @@ bool TextureHeap::optimalTextureAvailable(const unsigned int offsetX, const unsi
 	}
 	csChangeTexCreatorList.unlock();
 	if (!fQueued)
-		GenerateTexture(offsetX, offsetY, sizeX, sizeY, zoomFactor, true);
+		GenerateTexture(bandIndex, offsetX, offsetY, sizeX, sizeY, zoomFactor, true);
 	return false;
 }
 
-Texture * TextureHeap::GenerateTexture(const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
+Texture * TextureHeap::GenerateTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread)
 {
 	csChangeTexCreatorList.lock();
 	if (fColorComposite)
 		textureRequest.push_back(new CCTexture(rasterLayerModel, _ccBands, offsetX, offsetY, sizeX, sizeY, zoomFactor));
 	else if (raster.isValid()) {
-		textureRequest.push_back(new Texture(rasterLayerModel, raster, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
+		textureRequest.push_back(new Texture(rasterLayerModel, raster, bandIndex, offsetX, offsetY, sizeX, sizeY, zoomFactor, iPaletteSize));
 	}
 	csChangeTexCreatorList.unlock();
 	if (fInThread) {
@@ -219,7 +223,7 @@ Texture * TextureHeap::GenerateNextTexture(bool fInThread)
 			//TRACE("Texture generated in %2.2f milliseconds;\n", duration);
 			if (!fReGenerate) {
 				if (tex->fValid())
-					textures.push_back(tex);
+					textures[tex->bandIndex()].push_back(tex);
 				else {
 					delete tex;
 					tex = 0;

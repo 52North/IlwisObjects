@@ -261,17 +261,19 @@ Rectangle {
 				width : itemtable.limitwidth
 				delegate:  Controls.TableTextField {
 					onAccepted : {
-							items[styleData.row].maxvalue = text
+							changeItem(text, styleData.value)
+							//items[styleData.row].maxvalue = text
 					}
 					onActiveFocusChanged : {
 						if ( activeFocus){
 							itemtable.currentRow = styleData.row
 						}else {
 							if ( text != styleData.value){
-								items[styleData.row].maxvalue = text
-								rebuildItems(chartView, 100) 
-								redrawRaster()
-								chartCanvas.requestPaint()
+								changeItem(text, styleData.value)
+								//items[styleData.row].maxvalue = text
+								//rebuildItems(chartView, 100) 
+								//redrawRaster()
+								//chartCanvas.requestPaint()
 							}
 						}
 					}

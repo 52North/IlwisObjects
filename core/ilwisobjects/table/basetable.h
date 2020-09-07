@@ -128,9 +128,9 @@ protected:
     void initRecord(std::vector<QVariant>& values) const;
     void removeRecord(quint32 rec);
 private:
-    quint32 _rows;
-    quint32 _columns;
-    bool _dataloaded;
+    quint32 _rows = 0;
+    quint32 _columns = 0;
+    bool _dataloaded = false;
 };
 }
 

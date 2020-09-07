@@ -101,6 +101,12 @@ void RangeJunctionNode::setFlow(const SPWorkFlowNode &fromNode, qint32 inParmInd
     }
 }
 
+quint32 RangeJunctionNode::rangeId() const {
+	if (owner())
+		return owner()->id();
+	return iUNDEF;
+}
+
 bool RangeJunctionNode::isValid(const Ilwis::Workflow *workflow, WorkFlowNode::ValidityCheck) const
 {
     return true;

@@ -209,7 +209,7 @@ signals:
 
 private:
     QList<CatalogModel *> _models;
-    void calculatelatLonEnvelopes();
+    void addAdjustements();
     QUrl _workingCatalog;
     void calcLatLon(const Ilwis::ICoordinateSystem &csyWgs84, Ilwis::Resource &resource, std::vector<Ilwis::Resource> &updatedResources);
 };

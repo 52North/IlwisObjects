@@ -63,10 +63,10 @@ public:
     void removeNode(NodeId id);
     std::vector<SPWorkFlowNode> outputNodes();
     void setFixedParameter(const QString &data, NodeId nodeId, qint32 parmIndex);
-    void addFlow(NodeId fromNode, NodeId toNode, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom, int attachRctIndxTo);
-    void addConditionFlow(NodeId fromNode, NodeId toNode, qint32 testIndex, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom, int attachRctIndxTo);
+    void addFlow(NodeId fromNode, NodeId toNode, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom=-1, int attachRctIndxTo=-1);
+    void addConditionFlow(NodeId fromNode, NodeId toNode, qint32 testIndex, qint32 inParmIndex, qint32 outParmIndex, int attachRctIndxFrom=-1, int attachRctIndxTo=-1);
     void removeFlow(NodeId toNode, qint32 parameterIndex);
-    void addJunctionFlow(int junctionIdTo, const QString &operationIdFrom, int paramIndex, int recFrom, int rectTo, bool truecase);
+    void addJunctionFlow(NodeId junctionIdTo, NodeId operationIdFrom, int paramIndex, bool truecase);
     qint32 operationInputParameterCount(NodeId nodeId);
     qint32 operationOutputParameterCount(NodeId nodeId);
     bool isParameterValueDefined(NodeId node, qint32 parameterIndex) const;

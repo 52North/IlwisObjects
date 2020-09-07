@@ -38,6 +38,9 @@ GdalConnector::GdalConnector(const Resource &resource, bool load, const IOOption
     if ( resource.url(true).hasFragment())
         _internalPath = resource.url(true).fragment();
     _fileUrl = resource.url(true);
+	if (options.contains("prefix")) {
+		_prefix = options["prefix"].toString();
+	}
 }
 
 GdalConnector::~GdalConnector()
@@ -84,19 +87,32 @@ IlwisTypes GdalConnector::ilwisType(const QString &name)
     return itUNKNOWN; //TODO: add table formats here
 }
 
+bool GdalConnector::getHandle(IlwisObject *data) {
+	if (_handle == 0) {
+		if (!gdal()->isValid()) {
+			return ERROR1(ERR_NO_INITIALIZED_1, "gdal library");
+		}
+		if (!_fileUrl.isValid()) {
+			return ERROR1(ERR_MISSING_DATA_FILE_1, "Gdal reading");
+		}
+
+		QFileInfo fileinf(_fileUrl.toLocalFile());
+		QString filen = fileinf.absoluteFilePath();
+		if (_prefix != "") {
+
+			filen = _prefix + fileinf.fileName();
+		}
+		_handle = gdal()->openFile(filen, data->id(), GA_ReadOnly, false); // no messages here
+	}
+	return true;
+}
 bool GdalConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
     if (data == nullptr)
         return false;
 
-    if (!gdal()->isValid()) {
-        return ERROR1(ERR_NO_INITIALIZED_1,"gdal library");
-    }
-    if ( !_fileUrl.isValid()) {
-        return ERROR1(ERR_MISSING_DATA_FILE_1,"Gdal reading");
-    }
+	getHandle(data);
+	QFileInfo fileinf(_fileUrl.toLocalFile());
 
-    QFileInfo fileinf (_fileUrl.toLocalFile());
-    _handle = gdal()->openFile(fileinf, data->id(), GA_ReadOnly,false); // no messages here
     if (!_handle){ // could be a container based object
         QString code = sourceRef().code();
         if ( code != sUNDEF){
@@ -131,7 +147,7 @@ bool GdalConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
                 _handle = gdal()->openUrl(code,data->id(), GA_ReadOnly,false);
                 data->name(sourceRef().name());
             } else { // last resort: attempt opening the parent container, but this will probably fail; if we reached here it is because we encountered a new type gdal-container-file, which is not handled correctly in GDALItems
-                _handle = gdal()->openFile(file, data->id(), GA_ReadOnly);
+                _handle = gdal()->openFile(file.absoluteFilePath(), data->id(), GA_ReadOnly);
                 data->name(fileinf.fileName());
             }
         }
@@ -173,9 +189,10 @@ QString GdalConnector::provider() const
     return "gdal";
 }
 
-void GdalConnector::format(const QString &f)
+void GdalConnector::format(const QString &f, const IOOptions& op)
 {
     _gdalShortName = f;
+
     QVariantList values = DataFormat::getFormatProperties(DataFormat::fpEXTENSION,itCOVERAGE,"gdal", _gdalShortName);
     if ( values.size() > 0 && _fileUrl.toString().indexOf(values[0].toString())){
         QString ext = "." + values[0].toString();
@@ -187,6 +204,7 @@ void GdalConnector::format(const QString &f)
             sourceRef().setUrl(path);
             sourceRef().setUrl(path, true);
         }
+
     }
 }
 

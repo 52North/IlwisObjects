@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "domain.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "connectorinterface.h"
 #include "mastercatalog.h"
 #include "ilwisobjectconnector.h"

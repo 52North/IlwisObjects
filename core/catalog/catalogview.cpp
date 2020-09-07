@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "identity.h"
 #include "kernel.h"
 #include "ilwisdata.h"
-#include "resource.h"
+#include "catalog/resource.h"
 #include "catalogview.h"
 #include "catalogquery.h"
 #include "catalog.h"
@@ -112,7 +112,11 @@ void CatalogView::filterChanged(const QString& typeIndication, bool state){
     if ( iter == _filters.end()){
         _filters["object"] = FilterItem("object",itANY);
 
-    }
+	}
+	if (typeIndication == "all" && state == true) {
+			_activeFilters.clear();
+			_activeFilters.insert("basefilter");
+	}
     quint64 currentTypes = _filters["object"]._filter.toULongLong();
     if ( exclusive){
         if ( tp != itUNKNOWN){

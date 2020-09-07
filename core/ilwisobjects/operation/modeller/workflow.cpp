@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "junctionNode.h"
 #include "rangenode.h"
 #include "executionnode.h"
+#include "rangejunctionnode.h"
 #include "workflowimplementation.h"
 #include "modeller/workflow.h"
 
@@ -168,7 +169,7 @@ void Workflow::addFlow(NodeId fromNode, NodeId toNode, qint32 inParmIndex, qint3
     SPWorkFlowNode to = nodeById(toNode);
     if ( from && to){
         if ( inParmIndex < to->inputCount()){
-            to->setFlow(from, inParmIndex, outParmIndex, attachRctIndxFrom, attachRctIndxTo);
+            to->setFlow(from, inParmIndex, outParmIndex);
         }
         changed(true);
     }
@@ -185,21 +186,27 @@ void Workflow::removeFlow(NodeId toNode, qint32 parameterIndex)
     }
 }
 
-void Workflow::addJunctionFlow(int junctionIdTo, const QString &operationIdFrom, int paramIndex, int rectFrom, int rectTo, bool truecase)
+void Workflow::addJunctionFlow(NodeId junctionIdTo, NodeId operationIdFrom, int paramIndex, bool truecase)
 {
     SPWorkFlowNode node = nodeById(junctionIdTo);
-    SPWorkFlowNode operationFrom = nodeById(operationIdFrom.toULongLong());
-    std::shared_ptr<JunctionNode> junction = std::static_pointer_cast<JunctionNode>(node);
-    if ( truecase){
+    SPWorkFlowNode operationFrom = nodeById(operationIdFrom);
+	if (node->type() == WorkFlowNode::NodeTypes::ntJUNCTION) {
+		std::shared_ptr<JunctionNode> junction = std::static_pointer_cast<JunctionNode>(node);
+		if (truecase) {
 
-        junction->link2trueCase(operationFrom, paramIndex);
-        junction->inputRef(1).attachement(rectFrom, true);
-        junction->inputRef(1).attachement(rectTo, false);
-    }else{
-        junction->link2falseCase(operationFrom, paramIndex);
-        junction->inputRef(2).attachement(rectFrom, true);
-        junction->inputRef(2).attachement(rectTo, false);
-    }
+			junction->link2trueCase(operationFrom, paramIndex);
+		}
+		else {
+			junction->link2falseCase(operationFrom, paramIndex);
+		}
+	}
+	else {
+		std::shared_ptr<RangeJunctionNode> junction = std::static_pointer_cast<RangeJunctionNode>(node);
+		if (truecase)
+			junction->link2initialInput(operationFrom, paramIndex);
+		else
+			junction->link2Input(operationFrom, paramIndex);
+	}
     changed(true);
 
 }
@@ -453,6 +460,7 @@ NodeId Workflow::addNode(SPWorkFlowNode node, NodeId parent)
         if ( parent != i64UNDEF){
             SPWorkFlowNode parentNode = nodeById(parent);
             if ( parentNode){
+				node->owner(parentNode);
                 parentNode->addSubNode(node, node->type() == WorkFlowNode::ntOPERATION ? "operations" : "junctions");
             }
         }else
@@ -542,7 +550,7 @@ quint64 Workflow::createMetadata(int offset){
         QString opname = name();
         OperationResource operation = resource();
         operation.addProperty("namespace","ilwis");
-        opname.remove(".ilwis");
+        opname.remove(".ilwis4");
         if (!operation.isValid())
             operation = OperationResource(QUrl("ilwis://operations/" + opname));
         std::vector<WorkFlowParameter> inputparams = freeInputParameters();

@@ -58,31 +58,33 @@ MenuItem {
 		width : parent.width
 		id : textrow
 		spacing : 3
-		RoundButton {
+
+		Rectangle {
 			id : button1
 			width : 20
 			height : 20
-			text : "L"
-			visible: menuItem.subMenu == null
+			radius : 5
 			anchors.verticalCenter :  textrow.verticalCenter
+			border.width : 1
+			border.color : Global.edgecolor
+			opacity : 0.5
+			visible: menuItem.subMenu == null
 
-			background: Rectangle {
-				implicitWidth: 20
-				implicitHeight: 20
-				color: button1.down ? "#d6d6d6" : "transparent"
-				border.color: "darkgrey"
-				border.width: 1
-				radius: parent.radius
-
+			Text {
+				anchors.centerIn : parent
+				text : "L"
 			}
 
-			onClicked : {
-				actionFunc(menuItem.text, "left",menuItem.menu)
-
+			MouseArea {
+				anchors.fill : parent
+				onClicked : {
+					actionFunc(menuItem.text, "left",menuItem.menu)
+				}
 			}
 		}
+
 		Text {
-			width : parent.width - 45
+			width : parent.width - 35
 			height : 24
 			text: menuItem.text
 			font: menuItem.font
@@ -93,27 +95,26 @@ MenuItem {
 			elide: Text.ElideRight
 			anchors.verticalCenter :  textrow.verticalCenter
 		}
-		RoundButton {
-		    id : button2
+		Rectangle {
+			id : button2
 			width : 20
 			height : 20
-			//flat : true
-			text : "R"
-			visible: menuItem.subMenu == null
-
+			radius : 5
 			anchors.verticalCenter :  textrow.verticalCenter
-
-				background: Rectangle {
-				implicitWidth: 20
-				implicitHeight: 20
-				color: button2.down ? "#d6d6d6" : "transparent"
-				border.color: "darkgrey"
-				border.width: 1
-				radius: parent.radius
-
+			border.width : 1
+			border.color : Global.edgecolor
+			visible: menuItem.subMenu == null
+			opacity : 0.5
+			Text {
+				anchors.centerIn : parent
+				text : "R"
 			}
-			onClicked : {
-				actionFunc(menuItem.text, "right",menuItem.menu)
+
+			MouseArea {
+				anchors.fill : parent
+				onClicked : {
+					actionFunc(menuItem.text, "right",menuItem.menu)
+				}
 			}
 		}
 	}

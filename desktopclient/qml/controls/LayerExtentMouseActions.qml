@@ -124,7 +124,7 @@ MouseArea {
             var coords = {minx : pminx, maxx : pmaxx, miny : pminy, maxy : pmaxy } 
         }                   
         var bb = layerManager.rootLayer.coord2Screen(coords)
-		if ( bb){
+		if ( bb && ("minx" in bb)){
 			targetRectangle.x = bb.minx
 			targetRectangle.width = bb.maxx - bb.minx
 			targetRectangle.y = bb.miny

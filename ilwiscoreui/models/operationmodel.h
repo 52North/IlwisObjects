@@ -46,6 +46,7 @@ public:
 
     Q_INVOKABLE QString inputparameterName(quint32 index) const;
     Q_INVOKABLE QString inputparameterTypeNames(quint32 index) const;
+	Q_INVOKABLE QString inputparameterTypeInternalNames(quint32 index) const;
     Q_INVOKABLE QString inputparameterType(quint32 index) const;
     Q_INVOKABLE QString inputparameterDescription(quint32 index) const;
 
@@ -66,6 +67,7 @@ public:
     Q_INVOKABLE QStringList choiceList(quint32 paramIndex) const;
     Q_INVOKABLE QStringList parameterIndexes(const QString &typefilter, bool fromOperation);
 	Q_INVOKABLE QString fullDescription() const;
+	
 
 
     QStringList inParamNames() const;
