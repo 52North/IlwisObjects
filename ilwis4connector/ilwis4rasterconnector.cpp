@@ -113,7 +113,8 @@ bool Ilwis4RasterConnector::store(IlwisObject *obj, const IOOptions& options, QJ
 		jraster.insert("attributes", raster->attributeTable()->resourceRef().url(true).toString());
 		jraster.insert("primarykey", raster->primaryKey());
 	}
-	QString path = raster->resource().url(true).toLocalFile();
+	Resource res = obj->resource(IlwisObject::cmOUTPUT);
+	QString path = res.url(true).toLocalFile();
 	QFileInfo inf(path);
 	jraster.insert("binarydata", inf.baseName() + ".tif_");
 	jraster.insert("size", raster->size().toString());
@@ -131,14 +132,12 @@ bool Ilwis4RasterConnector::storeData(IlwisObject *obj, const IOOptions &options
 
 	ConnectorInterface *connector = factory->createFromResource<>(obj->resource(), "gdal");
 	connector->format("GTiff");
-	connector->store(obj);
 
-	QString path = obj->resource().url(true).toLocalFile();
-	QString pathdata = path;
-	pathdata = pathdata.replace(".ilwis4", ".tif");
-	path = path.replace(".ilwis4", ".tif_");
+	Resource resOut = obj->resource(IlwisObject::cmOUTPUT);
+	QString pathOut = resOut.url(true).toLocalFile().remove(".ilwis4");
+	pathOut += ".tif_";
 
-	QFile::rename(pathdata, path);
+	connector->store(obj,{"outputname", pathOut});
 
 	delete connector;
 	return true;
