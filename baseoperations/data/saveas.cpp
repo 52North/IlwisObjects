@@ -91,6 +91,7 @@ quint64 SaveAs::createMetadata()
     operation.addInParameter(3,itSTRING, TR("Provider"), TR("provider/library that will translate the object"));
     operation.setOutParameterCount({0});
     operation.setKeywords("export,format");
+	operation.parameterNeedsQuotes(1);
 
     mastercatalog()->addItems({operation});
     return operation.id();
