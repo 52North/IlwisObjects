@@ -184,7 +184,7 @@ bool Ilwis4Connector::loadData(IlwisObject *object, const IOOptions &options){
 
 bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObject& jroot) {
 
-	Resource res = obj->resource(IlwisObject::cmINPUT);
+	Resource res = obj->resource(IlwisObject::cmOUTPUT);
 	bool isSupport = options.contains("status") ? options["status"].toString() == "support" : false;
 
 	QJsonDocument doc;
@@ -203,7 +203,9 @@ bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObj
 	if (res.hasProperty("storename")) {
 		jbase.insert("storename", res["storename"].toString());
 	}
-	jbase.insert("name", obj->name());
+	QString nm = res.name();
+	nm.remove(".ilwis4");
+	jbase.insert("name", nm);
 	if (!isSupport)
 		jbase.insert("extendedtype", QString::number(obj->extendedType()));
 	jbase.insert("code", obj->code());
