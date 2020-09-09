@@ -653,7 +653,7 @@ bool RasterCoverageConnector::loadDriver()
 
 
 
-bool RasterCoverageConnector::store(IlwisObject *obj, const IOOptions & )
+bool RasterCoverageConnector::store(IlwisObject *obj, const IOOptions &options )
 {
     if(!loadDriver())
         return false;
@@ -671,7 +671,12 @@ bool RasterCoverageConnector::store(IlwisObject *obj, const IOOptions & )
     }
     Size<> sz = raster->size();
     GDALDataType gdalType = ilwisType2GdalType(currentDef.range()->valueType());
-    QString filename = constructOutputName(_driver);
+	QString filename;
+	if (options.contains("outputname")) {
+		filename = options["outputname"].toString();
+	}else
+		filename = constructOutputName(_driver);
+
     bool isColorMap = currentDef.domain()->ilwisType() == itCOLORDOMAIN;
     bool ispaletteMap = currentDef.domain()->valueType() == itPALETTECOLOR;
 
