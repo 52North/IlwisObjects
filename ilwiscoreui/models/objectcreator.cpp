@@ -441,7 +441,7 @@ QString ObjectCreator::createWorkflow(const QVariantMap &parms)
 		return sUNDEF;
 	}
     wf->resourceRef().name(name,false,false);
-    wf->resourceRef().setUrl(QUrl("ilwis://operations/" + name ));
+    wf->resourceRef().setUrl(QUrl("ilwis://operations/" + name + "=" + QString::number(wf->id())));
     wf->resourceRef().setUrl(parms["url"].toString(), true);
     wf->resourceRef().setDescription(parms["description"].toString());
     wf->resourceRef().addProperty("keyword", parms["keywords"].toString());
