@@ -219,7 +219,7 @@ void RasterLayerModel::coverage(const ICoverage &cov)
 {
     CoverageLayerModel::coverage(cov);
     _raster = CoverageLayerModel::coverage().as<RasterCoverage>();
-    if (!_raster->histogramCalculated()) {
+    if (!_raster->histogramCalculated() && _raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
         _raster->statistics(PIXELVALUE, ContainerStatistics<double>::pQUICKHISTOGRAM).histogram();
     }
     fillAttributes();
@@ -301,7 +301,10 @@ void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
 				updateCurrentAnimationIndex(value.toInt());
 			}
 		}
-		CoverageLayerModel::vproperty(pName, value);
+		else if (pName == "calcdimensions") {
+			calcDimensions();
+		}else
+			CoverageLayerModel::vproperty(pName, value);
 	}
 	catch (const ErrorObject&) {}
 }
@@ -418,20 +421,7 @@ void RasterLayerModel::init()
 
     textureHeap = new TextureHeap(this, _raster, _paletteSize, _asAnimation);
 
-    if ( _raster->georeference().isValid() && _raster->georeference()->isValid()) {
-        _imageWidth = _raster->georeference()->size().xsize();
-        _imageHeight = _raster->georeference()->size().ysize();
-    } else if ( _raster.isValid()) {
-        _imageWidth = _raster->size().xsize();
-        _imageHeight = _raster->size().ysize();
-    }
-
-    double log2width = log((double)_imageWidth)/log(2.0);
-    log2width = max(6, ceil(log2width)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
-    _width = pow(2, log2width);
-    double log2height = log((double)_imageHeight)/log(2.0);
-    log2height = max(6, ceil(log2height)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
-    _height = pow(2, log2height);
+	calcDimensions();
 
     VisualAttribute * attr = activeAttribute();
     if (attr != 0)
@@ -442,6 +432,23 @@ void RasterLayerModel::init()
     connect(layerManager(), &LayerManager::needUpdateChanged, this, &RasterLayerModel::requestRedraw);
 }
 
+void RasterLayerModel::calcDimensions() {
+	if (_raster->georeference().isValid() && _raster->georeference()->isValid()) {
+		_imageWidth = _raster->georeference()->size().xsize();
+		_imageHeight = _raster->georeference()->size().ysize();
+	}
+	else if (_raster.isValid()) {
+		_imageWidth = _raster->size().xsize();
+		_imageHeight = _raster->size().ysize();
+	}
+
+	double log2width = log((double)_imageWidth) / log(2.0);
+	log2width = max(6, ceil(log2width)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
+	_width = pow(2, log2width);
+	double log2height = log((double)_imageHeight) / log(2.0);
+	log2height = max(6, ceil(log2height)); // 2^6 = 64 = the minimum texture size that OpenGL/TexImage2D supports
+	_height = pow(2, log2height);
+}
 void RasterLayerModel::refreshStretch() {
     double scale = 1.0;
     double offset = 0;

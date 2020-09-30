@@ -114,6 +114,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ilwis4connector", "ilwis4co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sentinelconnector", "sentinelconnector.vcxproj", "{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osmconnector", "osmconnector.vcxproj", "{11F6CE3A-83F0-40A3-92E2-9EB7AB56D292}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -216,12 +218,16 @@ Global
 		{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}.Debug|x64.Build.0 = Debug|x64
 		{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}.Release|x64.ActiveCfg = Release|x64
 		{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}.Release|x64.Build.0 = Release|x64
+		{11F6CE3A-83F0-40A3-92E2-9EB7AB56D292}.Debug|x64.ActiveCfg = Debug|x64
+		{11F6CE3A-83F0-40A3-92E2-9EB7AB56D292}.Debug|x64.Build.0 = Debug|x64
+		{11F6CE3A-83F0-40A3-92E2-9EB7AB56D292}.Release|x64.ActiveCfg = Release|x64
+		{11F6CE3A-83F0-40A3-92E2-9EB7AB56D292}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = QT5MSVC_64
 		SolutionGuid = {C38EC393-1AE2-41F5-922B-154E0612E72F}
+		Qt5Version = QT5MSVC_64
 	EndGlobalSection
 EndGlobal

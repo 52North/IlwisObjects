@@ -44,7 +44,11 @@ public:
     virtual bool isLatLon() const = 0;
     virtual bool isUnknown() const = 0;
     virtual QString toWKT(quint32 spaces=0) const=0;
+
 	static bool addCsyProperty(const ICoordinateSystem& csy, Resource& resource);
+	static Envelope latLonEnvelope(const ICoordinateSystem& cs, const Envelope& env);
+
+
 
 protected:
     void copyTo(IlwisObject *obj);

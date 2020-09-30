@@ -19,7 +19,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "geometries.h"
 #include "coveragedisplay\layermanager.h"
 #include "coveragedisplay\layermodel.h"
+#include "coveragedisplay\coveragelayermodel.h"
 #include "coveragedisplay\visualattribute.h"
+#include "georeference.h"
+#include "georefimplementation.h"
+#include "simpelgeoreference.h"
+#include "cornersgeoreference.h"
+#include "raster.h"
+#include "connectorinterface.h"
+#include "ilwiscontext.h"
 #include "backgroundlayer.h"
 
 using namespace Ilwis;
@@ -85,6 +93,17 @@ bool BackgroundLayer::prepare(int prepType)
         _prepared |= (LayerModel::ptGEOMETRY);
 
     }
+	if (!_osmRaster.isValid()) {
+		QString server = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/backgroundmap-server", QString(""));
+		Resource res(itRASTER, QUrl(server + "ilwis4_background_layer"), QUrl(server));
+		res.name("ilwis4_background_layer");
+
+		_osmRaster.prepare(res);
+		
+		auto *rlayer = layerManager()->create(this, "rastercoverage", layerManager(), OSMLAYERNAME,"");
+		CoverageLayerModel *covModel = static_cast<CoverageLayerModel *>(rlayer);
+		covModel->coverage(_osmRaster);
+	}
     return true;
 }
 
@@ -98,6 +117,9 @@ QVariant BackgroundLayer::vproperty(const QString & key) const
 void BackgroundLayer::vproperty(const QString & key, const QVariant & value)
 {
     LayerModel::vproperty(key, value);
+	if (key == "zoomchanged") {
+		updateOSMRaster();
+	}
 }
 
 LayerModel *BackgroundLayer::create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options)
@@ -131,3 +153,69 @@ bool BackgroundLayer::renderReady() {
 void BackgroundLayer::renderReady(bool yesno) {
     // TODO
 }
+
+void BackgroundLayer::updateOSMRaster() {
+	auto ftilex = [](const Coordinate& ll, int zoomLevel) ->int {
+		return (int)(floor((ll.x + 180.0) / 360.0 * (1 << zoomLevel)));
+	};
+
+	auto ftiley = [](const Coordinate& ll, int zoomLevel) ->int {
+		double latrad = ll.y * M_PI / 180.0;
+		return (int)(floor((1.0 - asinh(tan(latrad)) / M_PI) / 2.0 * (1 << zoomLevel)));
+	};
+
+	auto llTile = [](const Pixel& tile, int zoomLevel) -> Coordinate {
+		double f = (double)tile.x / (double)(1 << zoomLevel);
+		double lonLeft = f * 360.0 - 180;
+		double n = M_PI - 2.0 * M_PI * tile.y / (double)(1 << zoomLevel);
+		double latBottom = 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
+
+		return Coordinate(lonLeft, latBottom);
+	};
+
+	if (_osmRaster.isValid()) {
+	
+
+		Envelope env = layerManager()->rootLayer()->zoomEnvelope();
+		BoundingBox bb = layerManager()->rootLayer()->screenGrf()->coord2Pixel(env);
+
+		Envelope llEnv = CoordinateSystem::latLonEnvelope(layerManager()->rootLayer()->screenCsy(), env);
+		Envelope pmEnv = _osmRaster->coordinateSystem()->convertEnvelope(layerManager()->rootLayer()->screenCsy(), env);
+
+		auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
+
+		Envelope envWorld({ -20026376.39, -20048966.10 }, { 20026376.39, 20048966.10 });
+		double zoomSize = std::min(pmEnv.xlength(), pmEnv.ylength());
+		int z = std::ceil(std::log(envWorld.xlength() / zoomSize) / log(2)) + 1;
+		z = std::min(z, 18);
+
+		int tileMinX = ftilex(llEnv.min_corner(), z);
+		int tileMinY = ftiley(llEnv.min_corner(), z);
+
+		int tileMaxX = ftilex(llEnv.max_corner(), z);
+		int tileMaxY = ftiley(llEnv.max_corner(), z);
+
+		BoundingBox tilesBB({ tileMinX, tileMinY }, { tileMaxX, tileMaxY });
+
+		Coordinate llMin = llTile(tilesBB.min_corner(), z);
+		Coordinate llMax = llTile({ tilesBB.max_corner().x + 1, tilesBB.max_corner().y + 1}, z);
+		Envelope tileEnvelope(llMin, llMax);
+		ICoordinateSystem csyWgs84("code=epsg:4326");
+
+		env = _osmRaster->coordinateSystem()->convertEnvelope(csyWgs84, tileEnvelope);
+
+		_osmRaster->resourceRef().addProperty("tileboundingbox", tilesBB.toString() + " " + QString::number(z));
+		_osmRaster->size({ tilesBB.size().xsize() * 256, tilesBB.size().ysize() * 256, 1 });
+		_osmRaster->coordinateSystem()->envelope(env);
+		_osmRaster->georeference()->as<CornersGeoReference>()->internalEnvelope(env);
+		_osmRaster->georeference()->compute();
+	
+	
+		if (layer) {
+			layer->vproperty("calcdimensions");
+			layer->add2ChangedProperties("buffers", true); // forces the calculation of the points through the prepare
+			layer->vproperty("updatetextures","dummy");
+		}
+	}
+}
+

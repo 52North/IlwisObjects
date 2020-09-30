@@ -77,6 +77,7 @@ public:
 	virtual QVariant vproperty(const QString& pName) const;
 	virtual void vproperty(const QString& pName, const QVariant& value);
 	bool supportsLinkType(const QString& type) const;
+	void calcDimensions();
 
     Q_INVOKABLE virtual int numberOfBuffers(const QString&) const;
     Q_INVOKABLE virtual QVector<qreal> vertices(qint32 bufferIndex, const QString& ) const;

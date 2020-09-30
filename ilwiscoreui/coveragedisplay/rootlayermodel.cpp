@@ -119,6 +119,7 @@ void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
 	emit zoomEnvelopeChanged();
     layerManager()->updateAxis();
     layerManager()->updatePostDrawers();
+	layerManager()->updateBackground();
 }
 
 Envelope RootLayerModel::coverageEnvelope() const

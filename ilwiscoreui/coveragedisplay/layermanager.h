@@ -152,6 +152,7 @@ public:
     QVariantList yGridAxisLeft() const;
 	bool doPostRenderCallBack();
 	void doPostRenderCallBack(bool yesno);
+	void updateBackground();
 
 public slots:
         //void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);

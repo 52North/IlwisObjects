@@ -858,6 +858,15 @@ void LayerManager::doPostRenderCallBack(bool yesno) {
     }
 }
 
+void LayerManager::updateBackground()
+{
+	for (auto *layer : _childeren) {
+		if (layer->text() == "Background") {
+			layer->vproperty("zoomchanged", "");
+		}
+	}
+}
+
 void LayerManager::qmlDrawer(const QString& objectname) {
 	_qmlDrawerName = objectname;
 }

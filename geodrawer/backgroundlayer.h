@@ -27,6 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 namespace Ilwis {
     class CoordinateSystem;
     typedef IlwisData<CoordinateSystem> ICoordinateSystem;
+	class RasterCoverage;
+	typedef IlwisData<RasterCoverage> IRasterCoverage;
+	const QString OSMLAYERNAME = "OSM Layer";
 
     namespace Ui {
 
@@ -51,6 +54,9 @@ namespace Ilwis {
         private:
             QColor _backgroundcolor;
             OGLBuffer _buffer;
+			IRasterCoverage _osmRaster;
+
+			void updateOSMRaster();
 
         };
     }

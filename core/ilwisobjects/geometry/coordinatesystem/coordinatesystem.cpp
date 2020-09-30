@@ -76,6 +76,19 @@ Envelope CoordinateSystem::envelope(bool tolatlon) const
     return _envelope;
 }
 
+Envelope  CoordinateSystem::latLonEnvelope(const ICoordinateSystem& cs, const Envelope& env) {
+	Envelope result;
+	if (!cs->isLatLon() && cs->code() != "csy:unknown") {
+		LatLon c1 = cs->coord2latlon(env.min_corner());
+		LatLon c2 = cs->coord2latlon(env.max_corner());
+		return Envelope(c1, c2);
+	}
+	else if (cs->isLatLon()) {
+		result = env;
+	}
+	return result;
+}
+
 void CoordinateSystem::envelope(const Envelope &env)
 {
     _envelope = env;

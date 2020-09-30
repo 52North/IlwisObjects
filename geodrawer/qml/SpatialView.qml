@@ -349,12 +349,12 @@ Item {
 		function changeProperty(propertyType, layer){
 			var ok = true
   		if ( propertyType == "buffers"){
-				
 	            if ( layer.updateGeometry){
                     ok = layer.prepare(2) // ptGEOMETRY = 2
                 }else{
 					ok = layer.prepare(1) // ptRENDER = 1
 				}
+				console.debug("aaaaaaaaaaaa", layer.name, ok,layer.updateGeometry)
 				if ( ok){
 					setScene(layer)
 				}
