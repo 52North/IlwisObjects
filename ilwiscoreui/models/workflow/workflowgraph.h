@@ -109,6 +109,9 @@ namespace Ilwis {
 			Q_INVOKABLE Ilwis::Ui::ConditionJunction* addJunction();
 			Q_PROPERTY(int nodeId READ nodeId NOTIFY nodeIdChanged)
 			Q_PROPERTY(Ilwis::Ui::WorkflowGraphNode::Type type READ getType CONSTANT FINAL)
+			Q_PROPERTY(Ilwis::Ui::ConditionTestValue *conditionTest READ conditionTest CONSTANT FINAL);
+
+			Q_INVOKABLE void addNode2GroupNode(qan::Node *node);
 
 			WorkflowGraphNode::Type getType() const { return WorkflowGraphNode::Type::Condition; }
 
@@ -122,6 +125,7 @@ namespace Ilwis {
 			WorkflowModel *workflow();
 			void setConditionNode(SPCondition node);
 			void updateBoundingBox();
+			Ilwis::Ui::ConditionTestValue* conditionTest() { return _testNode; }
 		signals:
 			void			nodeIdChanged();
 		private:
@@ -223,7 +227,7 @@ namespace Ilwis {
 		{
 			Q_OBJECT
 		public:
-			Q_PROPERTY(Ilwis::Ui::OperationModel *operation READ operation CONSTANT)
+			Q_PROPERTY(Ilwis::Ui::OperationModel *operation READ operation NOTIFY operationChanged)
 
 			OperationGraphNode() : WorkflowGraphNode{ WorkflowGraphNode::Type::Operation } {  }
 			static  QQmlComponent*      delegate(QQmlEngine& engine) noexcept;
@@ -238,7 +242,7 @@ namespace Ilwis {
 		private:
 			Ilwis::Ui::OperationModel *_operation = 0;
 
-			Ilwis::Ui::OperationModel *operation() { return _operation; }
+			Ilwis::Ui::OperationModel *operation();
 		};
 
 		class DataFlowEdge : public qan::Edge
@@ -284,6 +288,7 @@ namespace Ilwis {
 			Q_INVOKABLE qan::Node*  insertOperationNode(int nodeId, const QString& operationId);       // FlowNode::Type could not be used from QML, Qt 5.10 bug???
 			Q_INVOKABLE qan::Node*  insertOperationNode(const QVariantMap& parms);
 			Q_INVOKABLE qan::Group*  insertConditionGroup(quint32 conditionId);
+			Q_INVOKABLE qan::Group*  insertConditionGroup(const QVariantMap& parms);
 			Q_INVOKABLE qan::Group* insertRangeGroup(quint32 conditionId);
 			Q_INVOKABLE qan::Group* insertRangeGroup(const QVariantMap& parms);
 			Q_INVOKABLE qan::Edge* insertDataFlowEdge(qan::Node* source, qan::Node* destination, int from, int to);
@@ -292,6 +297,7 @@ namespace Ilwis {
 			Q_INVOKABLE Ilwis::Ui::WorkflowModel *workflow() const { return _workflowModel; }
 			Q_INVOKABLE void updateBoundingBoxes();
 			Q_INVOKABLE void removeLinksFrom(WorkflowGraphNode* source);
+			Q_INVOKABLE bool containedInLinkedCondition(int sourceId, int targetId) const;
 			qan::EdgeStyle *junctionEdgeStyle() const;
 
 		private:
@@ -318,4 +324,5 @@ QML_DECLARE_TYPE(Ilwis::Ui::WorkflowGraph)
 //QML_DECLARE_TYPE(Ilwis::Ui::WorkflowView);
 Q_DECLARE_METATYPE(Ilwis::Ui::WorkflowGraphNode::Type)
 QML_DECLARE_TYPE(Ilwis::Ui::ConditionGroup)
+QML_DECLARE_TYPE(Ilwis::Ui::ConditionTestValue)
 //Q_DECLARE_METATYPE(qan::OperationNode::Operation)

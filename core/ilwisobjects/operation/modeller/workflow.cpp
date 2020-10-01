@@ -168,7 +168,8 @@ void Workflow::addFlow(NodeId fromNode, NodeId toNode, qint32 inParmIndex, qint3
     SPWorkFlowNode from = nodeById(fromNode);
     SPWorkFlowNode to = nodeById(toNode);
     if ( from && to){
-        if ( inParmIndex < to->inputCount()){
+		int inpCount = to->type() == WorkFlowNode::ntJUNCTION ? 3 : inParmIndex < to->inputCount();
+        if ( inParmIndex < inpCount ){
             to->setFlow(from, inParmIndex, outParmIndex);
         }
         changed(true);

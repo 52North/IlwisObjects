@@ -47,37 +47,42 @@ Rectangle {
        
 			var inParameterNames = []
 			var validTypes = []
+			var firstValidIn = -1
 			inModel.clear()
 			outModel.clear()
-							console.debug("yyyyy", nodeFrom, nodeTo)
 			if ( nodeFrom && nodeTo){
 
 				var outParameterNames = [], count=0
+
 				if (nodeFrom.type === WorkflowGraphNode.Type.Operation && nodeTo.type === WorkflowGraphNode.Type.Operation){
 					inParameterNames = nodeTo.operation.parameterIndexes(typeFilter,false)
 					for (var i in inParameterNames) {
 						var type = nodeTo.operation.inputparameterType(i)
-										console.debug("yyyyy2", type)
 						if (validTypes.indexOf(type) === -1) {
 							validTypes.push(type)
 							outParameterNames = nodeFrom.operation.parameterIndexes(type,true)
 							count += outParameterNames.length
 
 							for (var j in outParameterNames) {
-							console.debug("yyyyy3", outParameterNames[j])
 								outModel.append({'text': outParameterNames[j]})
+								if ( firstValidIn == -1)
+									firstValidIn = i
 							}
+			
+							if ( firstValidIn != -1)
+								toParameterIndex = firstValidIn;
 						}
 					}
 					if (count === 0) {
 						modellerDataPane.addError(1, 'There were no possible matches found between ' + nodeFrom.itemid + ' and ' + nodeTo.itemid)
 						//refresh()
 					} else {
-						console.debug("yyyyy6", fromParameterIndex)
+						
 						fillInputModel(nodeFrom.operation.outputparameterType(fromParameterIndex))
 					}
 				}else if ( nodeFrom.type === WorkflowGraphNode.Type.Operation && nodeTo.type === WorkflowGraphNode.Type.ConditionTestValue){
 					outParameterNames = nodeFrom.operation.parameterIndexes("bool",true)
+					inModel.append({'text': 'dummy'})
 					if ( outParameterNames.length > 0) {
 
 						for (var i in outParameterNames) {
@@ -105,6 +110,10 @@ Rectangle {
 						var tp = nodeFrom.outputType()
 						outModel.append({'text': 'dummy'})
 						fillInputModel(tp)
+
+				}else if ( nodeFrom.type === WorkflowGraphNode.Type.ConditionJunction && nodeTo.type === WorkflowGraphNode.Type.Operation){
+						outModel.append({'text': 'dummy'})
+						fillInputModel('?')
 
 				} else if ( nodeFrom.type === WorkflowGraphNode.Type.RangeValue && nodeTo.type === WorkflowGraphNode.Type.Operation){
 						inParameterNames = nodeTo.operation.parameterIndexes("string|number",false)
@@ -210,10 +219,8 @@ Rectangle {
 		function addFlow() {
 			bindingDialog.visible = false
 
-			if ( outModel.count == 1 && inModel.count == 1){
-				fromParameterIndex = 0
-				toParameterIndex = 0
-			}else {
+			console.debug("yyyyyyyyyy",  outModel.count,  inModel.count)
+			if ( outModel.count >= 1 && inModel.count > 1){
 				fromParameterIndex =  outModel.count > 1 ? getIndex(outComboBox.content) : 0
 				if ( !nodeTo)
 					return
@@ -221,11 +228,14 @@ Rectangle {
 					toParameterIndex = getIndex(inComboBox.content)
 				else if ( nodeTo.type === WorkflowGraphNode.Type.ConditionTestValue){
 					toParameterIndex = 0
-				}else{
-					toParameterIndex = nodeTo.containedInLinkedCondition(nodeFrom) ? 1 : 2 // 0=condition, 1=truecase, 2=falsecase
-					nodeTo.dataType = nodeFrom.parameterType(fromParameterIndex, true)
 				}
 			}
+			if ( nodeTo.type == WorkflowGraphNode.Type.ConditionJunction){
+							toParameterIndex = workflowGraph.containedInLinkedCondition(nodeFrom.nodeId, nodeTo.nodeId) ? 1 : 2 // 0=condition, 1=truecase, 2=falsecase
+				// nodeTo.containedInLinkedCondition(nodeFrom) 
+				//nodeTo.dataType = nodeFrom.parameterType(fromParameterIndex, true)
+			}
+			console.debug("yyyyyyyyyy",  nodeFrom, toParameterIndex)
 			if (!nodeFrom) {
 				if ( workarea.currentItem.type === WorkflowGraphNode.Type.Operation)
 					nodeFrom = workarea.currentItem
@@ -247,7 +257,6 @@ Rectangle {
 		}
 
 		function fillInputModel(type) {
-			console.debug("yyyy4", nodeTo, type)
 			if (nodeTo) {
 				inModel.clear()
 				if (nodeFrom.type === WorkflowGraphNode.Type.Operation && nodeTo.type === WorkflowGraphNode.Type.Operation){
@@ -255,13 +264,23 @@ Rectangle {
 
 					for (var i in parameterName) {
 						var name = parameterName[i]
-						console.debug("yyyy5", name)
 						if (!workarea.workflow.hasValueDefined(nodeTo.nodeId, name.split(':')[0])) {
 							inModel.append({'text': name})
 						}
 					}
 				}
 				if (nodeFrom.type === WorkflowGraphNode.Type.RangeJunction && nodeTo.type === WorkflowGraphNode.Type.Operation){
+					var parameterName = nodeTo.operation.parameterIndexes(type, false)
+
+					for (var i in parameterName) {
+						var name = parameterName[i]
+
+						if (!workarea.workflow.hasValueDefined(nodeTo.nodeId, name.split(':')[0])) {
+							inModel.append({'text': name})
+						}
+					}
+				}
+				if (nodeFrom.type === WorkflowGraphNode.Type.ConditionJunction && nodeTo.type === WorkflowGraphNode.Type.Operation){
 					var parameterName = nodeTo.operation.parameterIndexes(type, false)
 
 					for (var i in parameterName) {

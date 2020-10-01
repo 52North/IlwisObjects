@@ -34,6 +34,7 @@ public:
     void nodeId(quint64 id);
 	quint32 conditionId() const;
     bool isValid(const Ilwis::Workflow *workflow, WorkFlowNode::ValidityCheck) const;
+	std::shared_ptr<WorkFlowNode> owner() const override;
 
 private:
 };

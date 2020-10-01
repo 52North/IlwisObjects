@@ -112,7 +112,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <InputFile>%(FullPath)</InputFile>
-      <Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG</Define>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;%(PreprocessorDefinitions)</Define>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <DynamicSource>output</DynamicSource>
@@ -134,7 +134,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>QT_QML_DEBUG;_WINDOWS;UNICODE;WIN32;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -170,7 +170,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <InputFile>%(FullPath)</InputFile>
-      <Define>_WINDOWS;UNICODE;WIN32;WIN64</Define>
+      <Define>QT_QML_DEBUG;_WINDOWS;UNICODE;WIN32;WIN64;%(PreprocessorDefinitions)</Define>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <DynamicSource>output</DynamicSource>

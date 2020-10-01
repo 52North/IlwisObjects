@@ -415,6 +415,9 @@ bool WorkflowModel::usableLink(int sourceNodeId, int targetNodeId, int sourcePar
 	else if (source->type() == WorkFlowNode::ntOPERATION && target->type() == WorkFlowNode::ntRANGEJUNCTION) {
 		return checkRangeJunctionParamters2(source, target, sourceParmIndex, source->owner()== 0);
 	}
+	else if (source->type() == WorkFlowNode::ntJUNCTION && target->type() == WorkFlowNode::ntOPERATION) {
+		return checkRangeJunctionParamters1(source, target, targetParmIndex);
+	}
 	return false;
 }
 

@@ -120,9 +120,9 @@ quint64 Compare::createMetadata()
     operation.setSyntax("compare(firstvalue,operator=!equals|notequals|greatherthan|lessthan|greaterorequal|lessorequal,secondvalue)");
     operation.setDescription(TR("Returns set values. compares two values and returns a boolean result"));
     operation.setInParameterCount({3});
-    operation.addInParameter(0,itNUMBER|itSTRING, TR("first value"),TR("left hand of the compare operation"));
+    operation.addInParameter(0,itNUMBER|itSTRING|itBOOL, TR("first value"),TR("left hand of the compare operation"));
     operation.addInParameter(1,itSTRING, TR("operator"),TR("Logical operator for the comparison"));
-    operation.addInParameter(2,itNUMBER|itSTRING, TR("second value"),TR("right hand of the compare method"));
+    operation.addInParameter(2,itNUMBER|itSTRING|itBOOL, TR("second value"),TR("right hand of the compare method"));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itBOOL, TR("result"), TR("Result of the comparison"));
     operation.setKeywords("tests, math,workflow");

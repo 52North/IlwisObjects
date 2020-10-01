@@ -108,7 +108,7 @@ Item {
     function addDataSource(filter, sourceName, sourceType, options){
         if ( filter !== "" ){
 
-            if (sourceType === "model" ) {
+            if (sourceType === "model" || sourceType === "workflow") {
                 var resource = mastercatalog.id2Resource(filter.split('=')[1],modellerDataPane);
                 if ( resource){
                     modellerDataPane.model = modelbuilder.createModel(resource, modellerDataPane)

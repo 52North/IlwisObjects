@@ -19,7 +19,7 @@ Qan.NodeItem {
     property color backColor: Material.background
     property var condition : null
 	property string type : "operationitem"
-	property OperationModel operation
+	property OperationModel operation : node.operation
 	property var nodeid
 
 	onStyleBackColorChanged: nodeColor = Qt.rgba( style.backColor.r, style.backColor.g, style.backColor.b, 0.2 )

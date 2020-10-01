@@ -292,16 +292,18 @@ void Ilwis4WorkflowConnector::loadNodeLinks(const  QJsonObject& jnode, SPWorkFlo
 			loadNodeLinks(jclink, junctionNode, workflow);
 		}
 	}
-	QJsonArray jparmlinks = jnode["parmlinks"].toArray();
+	if (jnode.contains("parmlinks")) {
+		QJsonArray jparmlinks = jnode["parmlinks"].toArray();
 
-	for (qint32 j = 0; j < jparmlinks.size(); ++j) {
-		QJsonObject jparmLink = jparmlinks[j].toObject();
-		qint32 outParmindex = jparmLink["outputindex"].toInt();
-		QJsonValue jnodeid = jparmLink["inputid"];
-		if (jnodeid != QJsonValue::Undefined) {
-			SPWorkFlowNode prevNode = workflow->nodeById(jnodeid.toInt());
-			if (prevNode)
-				node->inputRef(j).inputLink(prevNode, outParmindex);
+		for (qint32 j = 0; j < jparmlinks.size(); ++j) {
+			QJsonObject jparmLink = jparmlinks[j].toObject();
+			qint32 outParmindex = jparmLink.contains("outputindex") ? jparmLink["outputindex"].toInt() : iUNDEF;
+			QJsonValue jnodeid = jparmLink["sourceid"];
+			if (jnodeid != QJsonValue::Undefined) {
+				SPWorkFlowNode prevNode = workflow->nodeById(jnodeid.toInt());
+				if (prevNode)
+					node->inputRef(j).inputLink(prevNode, outParmindex);
+			}
 		}
 	}
 }
@@ -310,6 +312,7 @@ void Ilwis4WorkflowConnector::storeNodeLinks(const SPWorkFlowNode& node, QJsonOb
 		std::shared_ptr<WorkFlowCondition> condition = std::static_pointer_cast<WorkFlowCondition>(node);
 		qint32 sz = (qint32)condition->subnodes("tests").size();
 		QJsonArray jclinks;
+		// these two members are not needed but are written to make the jspn more readable.
 		for (qint32 t = 0; t < sz; ++t) {
 			QJsonObject jlink;
 			WorkFlowCondition::Test test = condition->test(t);
@@ -357,18 +360,24 @@ void Ilwis4WorkflowConnector::storeNodeLinks(const SPWorkFlowNode& node, QJsonOb
 		count = 4;
 
 	QJsonArray jparmLinks;
+
 	for (qint32 i = 0; i < count; ++i) {
 		QJsonObject jparmlink;
 		WorkFlowParameter& wp = node->inputRef(i);
 		int idx = wp.outputParameterIndex();
-		jparmlink.insert("outputindex", idx);
+		if ( idx != iUNDEF)
+			jparmlink.insert("outputindex", idx);
 		if (wp.isValid()) {
 			if (wp.inputLink())
-				jparmlink.insert("inputid", (qint32)wp.inputLink()->id());
+				jparmlink.insert("sourceid", (qint32)wp.inputLink()->id());
 		}
-		jparmLinks.append(jparmlink); // dummy, the storage must reflect the number of expected parameterss  even if one of those parameters is empty (loading expects this)
+		jparmLinks.append(jparmlink); 
 	}
-	jnode.insert("parmlinks", jparmLinks);
+	if (jparmLinks.size() > 0) {
+		jnode.insert("targetid", (int)node->id());
+		jnode.insert("name", node->name());
+		jnode.insert("parmlinks", jparmLinks);
+	}
 }
 
 void Ilwis4WorkflowConnector::storeNode(const SPWorkFlowNode& node, QJsonObject& jnode, const IOOptions &options)  {

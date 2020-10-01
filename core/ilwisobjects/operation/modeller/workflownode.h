@@ -50,7 +50,7 @@ public:
     BoundingBox box() const;
     bool collapsed() const;
     void collapsed(bool yesno);
-    std::shared_ptr<WorkFlowNode> owner() const;
+    virtual std::shared_ptr<WorkFlowNode> owner() const;
     void owner(std::shared_ptr<WorkFlowNode> own);
     virtual QString label() const;
     void label(const QString& lbl);

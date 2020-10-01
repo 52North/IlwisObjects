@@ -121,3 +121,13 @@ int JunctionNode::inputCount() const
 {
     return 1; // though there are three parameters in the junction, there is only one that is not optional and that is the link to the condition (actually thet tests)
 }
+
+std::shared_ptr<WorkFlowNode> JunctionNode::owner() const {
+	WorkFlowParameter condParm = input(WorkFlowCondition::cpTEST);
+	if (condParm.isValid()) {
+		if (condParm.inputLink() && condParm.inputLink()->type() == WorkFlowNode::ntCONDITION) {
+			return condParm.inputLink();
+		}
+	}
+	return std::shared_ptr<WorkFlowNode>();
+}

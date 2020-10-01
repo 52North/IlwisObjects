@@ -98,7 +98,7 @@ Modeller.ModellerWorkArea {
 					n.item.operation = operation
 					n.item.nodeid = nodeId
 				}
-                
+              
             }
             if ( workflowManager){
                 workflowManager.updateRunForm()
@@ -186,6 +186,7 @@ Modeller.ModellerWorkArea {
 				connectorEdgeColor: Material.accent
 				//onConnectorRequestEdgeCreation: { notifyUser("Requesting Edge creation from " + src.label + " to " + ( dst ? dst.label : "UNDEFINED" ) ); bindingDialog.open() }
 				onConnectorRequestEdgeCreation: { 
+					console.debug("xxxxxxxxx", src, dst)
 					bindingDialog.workflowGraph = topology
 					bindingDialog.nodeFrom = src
 					if ( src.type == 0 && dst.type ==5) {
@@ -299,32 +300,28 @@ Modeller.ModellerWorkArea {
         return jnode
     }
 
+	  function createConditionJunctionItem(conditionNode, nodeData){
+        var jnode = conditionNode.addJunction()
+		jnode.item.x = nodeData.x
+		jnode.item.y = nodeData.y
+		jnode.item.width = nodeData.w 
+		jnode.item.height = nodeData.h
+		jnode.setWorkflowNode(nodeData.nodeid)
+        return jnode
+    }
+
 	function createRangeNode(nodeData){
         var rnode = graphView.graph().insertRangeGroup(nodeData);
         rangesList.push(rnode)
 		return rnode
 	}
 
-    function recreateJunctionFlow(junctionItem, kvp){
-    }
+	function createConditionNode(nodeData){
+        var cnode = graphView.graph().insertConditionGroup(nodeData);
+        conditionsList.push(cnode)
+		return cnode
+	}
 
-    function recreateConditionFlow(conditionItem, kvp, op){
-        var node = workflow.getNode(conditionItem.itemid)
-        if(!node)
-            return
-
-        var tests = node.tests
-        for(var i=0; i < tests.length; ++i){
-            var testParameters = tests[i].operation.parameters
-
-            for(var j=0; j < testParameters.length; ++j){
-                recreateFlow(testParameters[j], kvp,conditionItem,j)
-            }
-        }
-        for(var k=0; k < conditionItem.operationsList.length; ++k){
-            recreateFlows(conditionItem.operationsList[k], kvp)
-        }
-    }
 
     function recreateFlow(parm,kvp,targetItem){
 			
@@ -378,28 +375,23 @@ Modeller.ModellerWorkArea {
         var nodes = workflow.getNodes()
         var kvp = {}
         var unlinkedJunctions = []
+		var conditions = {}
+		
         for(var i=0; i < nodes.length; ++i){
             var node = nodes[i];
             if ( node.type === "conditionnode"){
-                var component = Qt.createComponent("ConditionItem.qml");
-                if (component.status === Component.Ready){
-                    currentItem = component.createObject(wfCanvas, {"x": node.x, "y": node.y, "height" : node.h, "width" : node.w,"itemid" : node.nodeid, "scale": wfCanvas.scale});
-                    workarea.conditionsList.push(currentItem)
-                    currentItem.setTests()
-                    kvp[currentItem.itemid] = currentItem
-                    var ownedoperations = node.ownedoperations;
-                   // recreateConditionFlow(currentItem, kvp)
-                    for(var j = 0;  j < ownedoperations.length; ++j){
-                        var oper = ownedoperations[j]
-                        var item = createOperationItem(oper)
-                        if ( item){
-                            kvp[item.itemid] = item
-                            item.condition = currentItem
-                            currentItem.operationsList.push(item)
-                        }
-                    }
-
+                currentItem = createConditionNode(node)
+                var ownedoperations = node.ownedoperations;
+                for(var j = 0;  j < ownedoperations.length; ++j){
+					var oper = ownedoperations[j]
+                    var opNode = createOperationItem(oper)
+                    kvp[opNode.nodeId] = opNode
+                    opNode.condition = currentItem                            
+					currentItem.addNode2GroupNode(opNode)
+					operationsList.push(opNode)
                 }
+				conditions[currentItem.nodeId] = currentItem
+				operationsList.push(currentItem.conditionTest)
             } else if ( node.type === "rangenode"){
 				currentItem = createRangeNode(node)
                 var ownedoperations = node.ownedoperations;
@@ -431,12 +423,10 @@ Modeller.ModellerWorkArea {
                     kvp[currentItem.nodeId] = currentItem
                 }
             }else if ( node.type === "junctionnode"){
-                var comp = Qt.createComponent("JunctionItem.qml");
-                if (comp.status === Component.Ready){
-                    currentItem = comp.createObject(wfCanvas, {"x": node.x, "y": node.y, "height" : node.h, "width" : node.w,"itemid" : node.nodeid, "scale": wfCanvas.scale});
-                    kvp[currentItem.itemid] = currentItem
-                    unlinkedJunctions.push({"condition": node.linkedcondition, "junction" : currentItem})
-                }
+				var condition = conditions[node.linkedcondition]
+                currentItem = createConditionJunctionItem(condition, node)
+                 kvp[currentItem.nodeId] = currentItem
+                 unlinkedJunctions.push(node)
             }
         }
         for(i=0; i < operationsList.length; ++i){
@@ -444,7 +434,7 @@ Modeller.ModellerWorkArea {
             recreateFlows(operationItem, kvp)
 
         }
-        for(i=0; i < conditionsList.length; ++i){
+        /*for(i=0; i < conditionsList.length; ++i){
             var conditionItem = conditionsList[i]
             recreateConditionFlow(conditionItem, kvp)
         }
@@ -452,18 +442,28 @@ Modeller.ModellerWorkArea {
         for(i=0; i < rangesList.length; ++i){
             var rangeItem = rangesList[i]
             recreateRangeFlows(rangeItem, kvp)
-        }
+        }*/
 
         for(i=0; i < unlinkedJunctions.length;++i){
-			var item = unlinkedJunctions[i]
-            conditionItem  = getItem(item.condition)
-	        var junction = item.junction
-            if ( junction){
-
-                conditionItem.junctionsList.push(junction)
-                junction.condition = conditionItem
-            }
-            recreateJunctionFlow(junction, kvp)
+			var node = unlinkedJunctions[i]
+			var trueCase = node.linkedtrueoperation
+			if ( trueCase.outputIndex != -1) {
+				var linkid = trueCase.outputNodeId
+				if ( linkid != -1){
+					var linkedOper = kvp[linkid]
+					var junctionNode = kvp[node.nodeid]
+					insertFlow(linkedOper, junctionNode, 0,  1)
+				}
+			}
+			var falseCase = node.linkedfalseoperation
+			if ( falseCase.outputIndex != -1) {
+				var linkid = falseCase.outputNodeId
+				if ( linkid != -1){
+					var junctionNode = kvp[node.nodeid]
+					var linkedOper = kvp[linkid]
+					insertFlow(linkedOper, junctionNode, 0,  2)
+				}
+			}
         }
         if ( workflowManager){
             workflowManager.updateRunForm()

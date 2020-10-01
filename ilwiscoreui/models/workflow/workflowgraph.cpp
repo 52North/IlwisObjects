@@ -121,6 +121,11 @@ void ConditionGroup::updateBoundingBox() {
 	}
 }
 
+void ConditionGroup::addNode2GroupNode(qan::Node *node) {
+	auto gitem = static_cast<qan::GroupItem *>(getItem());
+	gitem->groupNodeItem(node->getItem(), false);
+}
+
 QQmlComponent *RangeGroup::delegate(QQmlEngine &engine) noexcept {
 	static std::unique_ptr<QQmlComponent> delegate;
 	if (!delegate)
@@ -281,7 +286,12 @@ void OperationGraphNode::inNodeOutputChanged()
 void OperationGraphNode::operationModel(const QString& operationId) {
 	auto ocatalog = uicontext()->globalOperationCatalog();
 	_operation = ocatalog->operation(operationId);
+	emit operationChanged();
 
+}
+Ilwis::Ui::OperationModel *OperationGraphNode::operation()
+{ 
+	return _operation; 
 }
 
 QQmlComponent*  ConditionTestValue::delegate(QQmlEngine& engine) noexcept {
@@ -479,6 +489,15 @@ qan::Group* WorkflowGraph::insertRangeGroup(const QVariantMap& parms) {
 
 }
 
+qan::Group* WorkflowGraph::insertConditionGroup(const QVariantMap& parms) {
+	RangeGroup *cgroup = static_cast<RangeGroup *>(insertConditionGroup(parms["nodeid"].toUInt()));
+	QRectF rect(parms["x"].toDouble(), parms["y"].toDouble(), parms["w"].toDouble(), parms["h"].toDouble());
+	if (cgroup->getItem())
+		static_cast<qan::GroupItem *>(cgroup->getItem())->setRect(rect);
+	return cgroup;
+
+}
+
 void WorkflowGraph::setWorkflow(Ilwis::Ui::WorkflowModel *fmodel) {
 	_workflowModel = fmodel;
 }
@@ -504,11 +523,9 @@ void WorkflowGraph::setFlow(int nodeFromId, int nodetoId, int inParmIndex, int o
 		}
 		if (nodeTo->type() == WorkFlowNode::ntJUNCTION) {
 			auto nodeOwnerFrom = nodeFrom->owner();
-			if (nodeOwnerFrom) {
-				std::shared_ptr<JunctionNode> junction = std::static_pointer_cast<JunctionNode>(nodeTo);
-				bool trueCase = nodeOwnerFrom->id() == junction->conditionId();
-				_workflowModel->addFlow(nodeFromId, nodetoId, trueCase ? 1 : 2, outParmIndex);
-			}
+			std::shared_ptr<JunctionNode> junction = std::static_pointer_cast<JunctionNode>(nodeTo);
+			bool trueCase = nodeOwnerFrom && (nodeOwnerFrom->id() == junction->conditionId());
+			_workflowModel->addFlow(nodeFromId, nodetoId, trueCase ? 1 : 2, outParmIndex);
 		}
 		if (nodeTo->type() == WorkFlowNode::ntRANGEJUNCTION) {
 			auto nodeFrom = _workflowModel->workflow()->nodeById(nodeFromId);
@@ -561,4 +578,15 @@ void WorkflowGraph::removeLinksFrom(WorkflowGraphNode* node) {
 	std::for_each(node->get_in_edges().begin(), node->get_in_edges().end(), removeConnectEdge);
 	std::for_each(node->get_out_edges().begin(), node->get_out_edges().end(), removeConnectEdge);
 
+}
+
+bool WorkflowGraph::containedInLinkedCondition(int sourceId, int targetId) const {
+	auto sourceNode = _workflowModel->workflow()->nodeById(sourceId);
+	auto targetNode = _workflowModel->workflow()->nodeById(targetId);
+	if (sourceNode && targetNode) {
+		if (sourceNode->type() == WorkFlowNode::ntOPERATION &&  targetNode->type() == WorkFlowNode::ntJUNCTION) {
+			return  sourceNode->owner() && sourceNode->owner()->id() == targetNode->owner()->id();
+		}
+	}
+	return false;
 }
