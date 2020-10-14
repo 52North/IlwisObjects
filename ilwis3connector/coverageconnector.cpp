@@ -309,7 +309,8 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
         else {
 			RasterCoverage *raster = static_cast<RasterCoverage *>(coverage);
             const NumericStatistics& stats = raster->statistics(PIXELVALUE);
-            double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
+          //  double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
+			double precision = resolution;
             if (precision < 1e-06)
                 precision = 0.0;
             RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision);           
@@ -330,7 +331,7 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
             _odf->setKeyValue("BaseMap","MinMax",QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]));
             _domainInfo = QString("%1;%2;value;0;%3;%4;%5:offset=%6").arg(_domainName).arg(storeType).arg(dom->range<NumericRange>()->min()).arg(dom->range<NumericRange>()->max()).arg(dom->range<NumericRange>()->resolution()).arg(conv.offset());
             _odf->setKeyValue("BaseMap","DomainInfo",_domainInfo);
-            QString rng = QString("%1:%2:%3:offset=%4").arg(stats[NumericStatistics::pMIN] - precision).arg(stats[NumericStatistics::pMAX] + precision).arg(precision).arg(conv.offset());
+            QString rng = QString("%1:%2:%3:offset=%4").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]).arg(precision).arg(conv.offset());
             _odf->setKeyValue("BaseMap","Range",rng);
         }
     }

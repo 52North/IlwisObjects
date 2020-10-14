@@ -448,7 +448,7 @@ bool RasterCoverageConnector::storeBinaryData(IlwisObject *obj)
         calcStatistics(obj, NumericStatistics::pBASIC);
         const NumericStatistics& stats = raster->statistics(PIXELVALUE);
         double resolution = raster->datadef().range()->as<NumericRange>()->resolution();
-        double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
+		double precision = resolution;
         if (precision < 1e-06)
             precision = 0.0;
         RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision);
@@ -459,9 +459,9 @@ bool RasterCoverageConnector::storeBinaryData(IlwisObject *obj)
 
         qint32 delta = stats[NumericStatistics::pDELTA];
         if ( delta >= 0 && delta < 256 && resolution == 1 && stats[NumericStatistics::pMIN] >= 0){
-            ok = save<quint8>(output_file,conv.scale() == 1 ? RawConverter() : conv, raster,sz);
+            ok = save<quint8>(output_file,(conv.scale() == 1 && conv.offset() == 0) ? RawConverter() : conv, raster,sz);
         } else if ( conv.storeType() == itUINT8) {
-            ok = save<quint8>(output_file,conv.scale() == 1 ? RawConverter() : conv, raster,sz);
+            ok = save<quint8>(output_file,(conv.scale() == 1 && conv.offset() == 0) ? RawConverter() : conv, raster,sz);
         } else if ( conv.storeType() == itINT16) {
             ok = save<qint16>(output_file,conv, raster,sz);
         } else if ( conv.storeType() == itINT32) {
@@ -505,7 +505,7 @@ void RasterCoverageConnector::calcStatistics(const IlwisObject *obj, NumericStat
     IRasterCoverage raster = mastercatalog()->get(obj->id());
     if ( !raster->statistics(PIXELVALUE).isValid()) {
         PixelIterator iter(raster,BoundingBox(raster->size()));
-        raster->statistics(PIXELVALUE).calculate(iter, iter.end(),set);
+        raster->statisticsRef(PIXELVALUE).calculate(iter, iter.end(),set);
     }
 }
 
@@ -640,7 +640,8 @@ bool RasterCoverageConnector::storeMetaData( IlwisObject *obj, const IOOptions& 
     if ( dom->ilwisType() == itNUMERICDOMAIN) {
         const NumericStatistics& stats = raster->statistics(PIXELVALUE);
         double resolution = raster->datadef().range()->as<NumericRange>()->resolution();
-        double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
+        //double precision = (resolution == 0.0) ? resolution : pow(10, -stats.significantDigits());
+		double precision = resolution;
         if (precision < 1e-06)
             precision = 0.0;
         RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision);
