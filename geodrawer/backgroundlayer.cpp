@@ -174,8 +174,8 @@ void BackgroundLayer::updateOSMRaster() {
 
 		return Coordinate(lonLeft, latBottom);
 	};
-
-	if (_osmRaster.isValid()) {
+	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
+	if (_osmRaster.isValid() && layer && layer->active()) {
 	
 
 		Envelope env = layerManager()->rootLayer()->zoomEnvelope();

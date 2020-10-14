@@ -13,6 +13,7 @@ Rectangle {
     property int viewportHorizontalScrollPosition: -1
 
     signal scrolled(double position)
+	signal scrolledStopped(double position)
 
     anchors.right : parent.right
 	anchors.left : parent.left
@@ -119,6 +120,8 @@ Rectangle {
 
 		onReleased: {
 			oldPosition = -10000
+			scrolledStopped(currentPosition)
+
 		}
 
         onPositionChanged: {

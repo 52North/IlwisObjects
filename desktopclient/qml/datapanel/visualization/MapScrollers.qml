@@ -41,6 +41,10 @@ Item {
                    viewmanager.newZoomExtent(layerContainer.layerManager().rootLayer.zoomEnvelope)
              }
         }
+
+		onScrolledStopped : {
+			layerContainer.layerManager().updateBackground()
+		}
     }
     Controls.VScrollBar{
         anchors.right : parent.right
@@ -57,6 +61,10 @@ Item {
                    viewmanager.newZoomExtent(layerContainer.layerManager().rootLayer.zoomEnvelope)
              }
         }
+
+		onScrolledStopped : {
+			layerContainer.layerManager().updateBackground()
+		}
     }
 }
 

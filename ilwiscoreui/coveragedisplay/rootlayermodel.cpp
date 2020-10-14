@@ -118,8 +118,6 @@ void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
     SetCameraPosition();
 	emit zoomEnvelopeChanged();
     layerManager()->updateAxis();
-    layerManager()->updatePostDrawers();
-	layerManager()->updateBackground();
 }
 
 Envelope RootLayerModel::coverageEnvelope() const
@@ -343,6 +341,7 @@ void RootLayerModel::viewEnvelope(const Envelope &env)
         emit xGridAxisValuesChanged();
         layerManager()->updateAxis();
         layerManager()->updatePostDrawers();
+		layerManager()->updateBackground();
     }
 }
 

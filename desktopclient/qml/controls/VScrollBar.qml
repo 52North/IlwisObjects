@@ -13,6 +13,7 @@ Rectangle {
     property int viewportVerticalScrollPosition: -1
 
     signal scrolled(double position)
+	signal scrolledStopped(double position)
 
     width: 16
     height: parent.height
@@ -119,6 +120,7 @@ Rectangle {
 
 		onReleased: {
 			oldPosition = -10000
+			scrolledStopped(currentPosition)
 		}
 
         onPositionChanged: {

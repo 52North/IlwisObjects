@@ -112,6 +112,7 @@ public:
 	Q_INVOKABLE QModelIndex modelIndex(int row) const;
 	Q_INVOKABLE void setAssociatedLayerManager(LayerManager * lm);
 	Q_INVOKABLE void doneRemoving();
+	Q_INVOKABLE void updateBackground();
 
     RootLayerModel *rootLayer() const;
     
@@ -152,7 +153,7 @@ public:
     QVariantList yGridAxisLeft() const;
 	bool doPostRenderCallBack();
 	void doPostRenderCallBack(bool yesno);
-	void updateBackground();
+
 
 public slots:
         //void linkAcceptMessage(quint32 id, const QString& sourceType, const QVariantMap& parameters);

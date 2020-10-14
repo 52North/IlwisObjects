@@ -271,6 +271,7 @@ Item {
         if ( activeLayerManager()){
                 activeLayerManager().zoomOutMode = false
                 activeLayerManager().panningMode = false
+				activeLayerManager().updateBackground()
         }
     }
 

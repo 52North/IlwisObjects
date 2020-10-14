@@ -101,8 +101,6 @@ bool OSMRasterConnector::loadData(IlwisObject* obj, const IOOptions& options) {
 		connector->loadData(obj, options);
 		_binaryIsLoaded = true;
 		emit finishedReadingData();
-		RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
-		qDebug() << "SIZESSSS" << raster->size().toString() << raster->grid()->size().toString();
 		return true;
 	}
 

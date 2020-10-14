@@ -101,8 +101,9 @@ bool SetViewExtent::execute(ExecutionContext *ctx, SymbolTable &symTable)
                 RecenterZoomVert(_newExtents, cbMap);
                 layerManager()->rootLayer()->zoomEnvelope(_newExtents);
             }
-        }
+	      }
     }
+	layerManager()->updateBackground();
 	layerManager()->needUpdate(true);
 
     return true;
