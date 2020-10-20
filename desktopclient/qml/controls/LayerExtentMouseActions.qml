@@ -23,6 +23,7 @@ MouseArea {
     property var pStart
     property var pEnd
     signal zoomEnded(string envelope)
+	signal panChanged(string envelope, var updatebackground)
     signal setZoomPanButton(bool enablePanAndZoomOut)
     signal checkZoomNormalButton(bool enablePanAndZoomOut)
     signal checkZoomOutButton(bool checked)
@@ -186,7 +187,7 @@ MouseArea {
             cbZoom.miny += deltay;
             cbZoom.maxy += deltay;
             var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
-            zoomEnded(envelope)
+            panChanged(envelope, false)
         }
 		var mposition = mouseX + "|" + mouseY
 		layerManager.rootLayer.currentCoordinate = mposition
@@ -279,7 +280,7 @@ MouseArea {
                 cbZoom.miny += deltay;
                 cbZoom.maxy += deltay;
                 var envelope = cbZoom.minx + "," + cbZoom.miny + "," + cbZoom.maxx + "," + cbZoom.maxy
-                zoomEnded(envelope)
+                panChanged(envelope, true)
             }
             panStarted = false
             panPrevMouseX = -1

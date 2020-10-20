@@ -355,15 +355,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="geodrawer\qml\SpatialView.qml">
-      <Filter>Resource Files</Filter>
-    </None>
     <QtRcc Include="geodrawer\qml.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <None Include="geodrawer\qml\three.js">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="geodrawer\qml\SpatialView.qml" />
     <None Include="geodrawer\qml\three.js" />
     <None Include="geodrawer\qml\SpatialView.qml" />
@@ -381,6 +375,12 @@
     </None>
     <None Include="geodrawer\qml\three.js">
       <Filter>Distribution Files</Filter>
+    </None>
+    <None Include="geodrawer\qml\SpatialView.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="geodrawer\qml\three.js">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

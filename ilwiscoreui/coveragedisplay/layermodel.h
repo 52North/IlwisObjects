@@ -73,7 +73,7 @@ public:
 	Q_PROPERTY(double opacity READ opacity WRITE opacity NOTIFY opacityChanged)
 	Q_PROPERTY(QStringList changedProperties READ changedProperties CONSTANT)
 	Q_PROPERTY(bool updateGeometry READ updateGeometry WRITE updateGeometry NOTIFY geometryChanged)
-    Q_PROPERTY(bool isValid READ isValid NOTIFY validChanged)
+    Q_PROPERTY(bool isValid READ isValid WRITE valid NOTIFY validChanged)
 	Q_PROPERTY(bool isSupportLayer READ isSupportLayer CONSTANT)
 	Q_PROPERTY(QString drawType READ drawType CONSTANT)
     Q_PROPERTY(bool isCoverageBased READ isCoverageBased CONSTANT)
@@ -140,6 +140,7 @@ public:
 	void updateGeometry(bool yesno);
     void updateGeometry(bool yesno, bool propagate);
 	bool isValid() const;
+	void valid(bool yesno);
 	bool isDrawable() const;
 	bool isVectorLayer() const;
 	bool isSupportLayer() const;

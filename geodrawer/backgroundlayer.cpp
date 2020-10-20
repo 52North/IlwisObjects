@@ -177,7 +177,7 @@ void BackgroundLayer::updateOSMRaster() {
 	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
 	if (_osmRaster.isValid() && layer && layer->active()) {
 	
-
+		layer->active(true);
 		Envelope env = layerManager()->rootLayer()->zoomEnvelope();
 		BoundingBox bb = layerManager()->rootLayer()->screenGrf()->coord2Pixel(env);
 
@@ -317,6 +317,7 @@ void BackgroundLayer::getData() {
 
 void BackgroundLayer::activateLayer() {
 	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
+
 	layer->active(true);
 }
 

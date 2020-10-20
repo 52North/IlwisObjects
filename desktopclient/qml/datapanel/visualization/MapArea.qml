@@ -255,6 +255,26 @@ DropArea {
                         }
                     }
                 }
+
+				Connections {
+                    target: mouseActions
+                    onPanChanged :{
+					   layerview.oldZoomEnvelope = layerview.lastZoomEnvelope
+					    layerview.lastZoomEnvelope = envelope
+						var command
+						if(updatebackground)
+							command = "setviewextent("+ layerManager().viewid + "," + envelope + ")"
+						else
+							command = "setviewextent("+ layerManager().viewid + "," + envelope + ",false)"
+						console.debug(command)
+                        layerManager().addCommand(command);
+                        broadCastNewExtent(layerManager(), envelope)
+
+                        if ( typeof viewmanager != 'undefined' && viewmanager){
+                            viewmanager.newZoomExtent(envelope)
+                        }
+                    }
+                }
 		        Controls.LayerExtentMouseActions{
 			        id : mouseActions
 			        layerManager: layerContainer.layerManager()

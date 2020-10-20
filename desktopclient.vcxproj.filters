@@ -119,6 +119,9 @@
     <Filter Include="Resource Files\qml\workbench\customforms">
       <UniqueIdentifier>{101ed1a1-3690-4398-86a3-92956d6573e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\qml\qanava">
+      <UniqueIdentifier>{21bfdaac-3c02-416b-9d5e-1d5234a947fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="desktopclient\applicationformexpressionparser.cpp">
@@ -1355,84 +1358,6 @@
     <None Include="desktopclient\qml\StartBlock.qml">
       <Filter>Resource Files\qml</Filter>
     </None>
-    <None Include="desktopclient\qml\quickqanava\NavigablePreview.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\LineGrid.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\Edge.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\EdgeTemplate.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\GraphView.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\Node.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\Port.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\VerticalDock.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\HorizontalDock.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\Group.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectGroupTemplate.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\CanvasNodeTemplate.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectNodeTemplate.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectSolidBackground.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectSolidShadowBackground.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectShadowEffect.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectSolidGlowBackground.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectGlowEffect.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectGradientBackground.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectGradientShadowBackground.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\RectGradientGlowBackground.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\SelectionItem.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\StyleListView.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\VisualConnector.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\LabelEditor.qml">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="desktopclient\qml\quickqanava\qmldir_static">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="desktopclient\qml\datapanel\modeller\workflow\OperationNode.qml">
       <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
@@ -1465,6 +1390,84 @@
     </None>
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml">
       <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\CanvasNodeTemplate.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Edge.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\EdgeTemplate.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\GraphView.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Group.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\HorizontalDock.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\LabelEditor.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\LineGrid.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\NavigablePreview.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Node.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\Port.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\qmldir_static">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGlowEffect.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientBackground.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientGlowBackground.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGradientShadowBackground.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectGroupTemplate.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectNodeTemplate.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectShadowEffect.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidBackground.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidGlowBackground.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\RectSolidShadowBackground.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\SelectionItem.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\StyleListView.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\VerticalDock.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\quickqanava\VisualConnector.qml">
+      <Filter>Resource Files\qml\qanava</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2690,7 +2693,7 @@
       <Filter>Resource Files</Filter>
     </QtRcc>
     <QtRcc Include="desktopclient\qml\quickqanava\QuickQanava_static.qrc">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\qml\qanava</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>

@@ -668,7 +668,6 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
 int RasterLayerModel::numberOfBuffers(const QString& type) const
 {
 	if (type == "rastercoverage") {
-		qDebug() << this << _addQuads.size();
 		return _addQuads.size();
 	}
 	return 0;

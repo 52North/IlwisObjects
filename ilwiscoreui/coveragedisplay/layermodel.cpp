@@ -449,6 +449,7 @@ bool Ilwis::Ui::LayerModel::isDrawable() const
 	return _isDrawable;
 }
 
+
 bool Ilwis::Ui::LayerModel::isVectorLayer() const
 {
 	return _isVector;
@@ -583,6 +584,10 @@ void LayerModel::updateGeometry(bool yesno, bool propagate)
 bool LayerModel::isValid() const
 {
 	return _isValid;
+}
+
+void LayerModel::valid(bool yesno) {
+	_isValid = yesno;
 }
 
 bool LayerModel::prepare(int) {

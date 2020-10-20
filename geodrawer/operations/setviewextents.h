@@ -38,6 +38,8 @@ private:
    bool _entiremap = false;
    void RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap);
    void RecenterZoomVert(Envelope & cbZoom, const Envelope & cbMap);
+
+   bool _updateBackground = true;
 };
 }
 }

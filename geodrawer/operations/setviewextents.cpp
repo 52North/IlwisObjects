@@ -103,7 +103,8 @@ bool SetViewExtent::execute(ExecutionContext *ctx, SymbolTable &symTable)
             }
 	      }
     }
-	layerManager()->updateBackground();
+	if ( _updateBackground)
+		layerManager()->updateBackground();
 	layerManager()->needUpdate(true);
 
     return true;
@@ -130,7 +131,7 @@ Ilwis::OperationImplementation::State SetViewExtent::prepare(ExecutionContext *c
         return value;
     };
     double xmin=rUNDEF, ymin=rUNDEF, xmax=rUNDEF, ymax=rUNDEF;
-    if ( _expression.parameterCount() == 5){
+    if ( _expression.parameterCount() == 5 || _expression.parameterCount() == 6){
         xmin = checkCoords(_expression,1);
         ymin = checkCoords(_expression,2);
         xmax = checkCoords(_expression,3);
@@ -162,6 +163,9 @@ Ilwis::OperationImplementation::State SetViewExtent::prepare(ExecutionContext *c
     _newExtents = Envelope(Coordinate(xmin, ymin), Coordinate(xmax, ymax));
     if ( !_newExtents.isValid() && _entiremap != true)
         return sPREPAREFAILED;
+	if (_expression.parameterCount() == 6) {
+		_updateBackground = _expression.input<bool>(5);
+	}
 
     return sPREPARED;
 }
@@ -169,14 +173,15 @@ Ilwis::OperationImplementation::State SetViewExtent::prepare(ExecutionContext *c
 quint64 SetViewExtent::createMetadata()
 {
     OperationResource operation({"ilwis://operations/setviewextent"});
-    operation.setSyntax("setviewextent(viewid, xmin, ymin, xmax, ymax)");
+    operation.setSyntax("setviewextent(viewid, xmin, ymin, xmax, ymax[,updatebackground=true])");
     operation.setDescription(TR("changes the view extent"));
-    operation.setInParameterCount({2,5});
+    operation.setInParameterCount({2,5,6});
     operation.addInParameter(0,itINTEGER , TR("view id"),TR("id of the view to which this drawer has to be added"));
     operation.addInParameter(1,itDOUBLE|itSTRING , TR("minimum x coordinate or (in the two parameter version) ogc compatible coordinate string or size-directive"));
     operation.addInParameter(2,itDOUBLE , TR("minimum y coordinate"));
     operation.addInParameter(3,itDOUBLE , TR("maximum x coordinate"));
     operation.addInParameter(4,itDOUBLE , TR("maximum y coordinate"));
+	operation.addOptionalInParameter(5, itBOOL, TR("Update background"), TR("Can block the update of the background osm map as this would cost too much performace in cases were the extent changes in a continous mode"));
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization");
 
