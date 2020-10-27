@@ -149,7 +149,7 @@
     <PostBuildEvent>
       <Command>xcopy "$(OutDir)*.dll" ..\output\release\bin\extensions\opencv\* /Y/I
 xcopy  opencv\resources\* ..\output\release\bin\extensions\opencv\resources /S /Y /I
-xcopy ..\external\libraries\$(Configuration)\$(ProjectName)\*.dll ..\output\debug\bin\extensions\$(ProjectName)\* /y/i</Command>
+xcopy ..\external\libraries\$(Configuration)\$(ProjectName)\*.dll ..\output\release\bin\extensions\$(ProjectName)\* /y/i</Command>
       <Message>Copy opencv.dll to ..\output\release\bin\extensions\opencv</Message>
     </PostBuildEvent>
     <QtMoc>

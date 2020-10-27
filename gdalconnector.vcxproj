@@ -109,11 +109,10 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)*.dll" ..\output\release\bin\extensions\gdalconnector\* /i/y
-
+      <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\gdalconnector\* /i /y
 xcopy  gdalconnector\resources\* ..\output\release\bin\extensions\gdalconnector\resources /S /Y /I
 xcopy ..\external\libraries\$(ProjectName)\*.dll ..\output\release\bin\extensions\$(ProjectName)\* /y/i</Command>
-      <Message>xCopy gdalconnector.dll to ..\output\release\bin\extensions\gdalconnector </Message>
+      <Message>xCopy gdalconnector.dll to ..\output\release\bin\extensions\gdalconnector   </Message>
     </PostBuildEvent>
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>

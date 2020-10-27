@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QLibrary>
+#include <QDir>
 #include <QLibraryInfo>
 #include "kernel.h"
 #include "ilwiscontext.h"
@@ -90,7 +91,10 @@ void SupportLibraryLoader::loadLibraries() const{
         lib.setFileName(path);
         ok = lib.load();
         if ( !ok){
-            kernel()->issues()->log(TR("Could not load library ") + path + ",error :" + lib.errorString());
+			QString path = _configLocation.absoluteFilePath();
+			QStringList parts = path.split(QRegExp("\\\\|/"));
+			QString modulen = parts.size() > 4 ? parts[parts.size() - 3] : "";
+            kernel()->issues()->log(TR("Could not load library in module:") + modulen + ", name: " + name.second + ",error :" + lib.errorString());
         }
     }
 }

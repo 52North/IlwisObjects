@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "coveragedisplay/draweroperation.h"
 #include "coveragedisplay/layermodel.h"
 #include "coveragedisplay/layermanager.h"
-#include "coveragedisplay\/visualattribute.h"
+#include "coveragedisplay/visualattribute.h"
 #include "setactiveattribute.h"
 #include "uicontextmodel.h"
 
