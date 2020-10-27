@@ -27,6 +27,9 @@
     <Filter Include="Header Files\xlsx">
       <UniqueIdentifier>{acfc8c30-5fac-4b33-a219-edfb941ea35b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{5067c7d4-7502-43d2-8ec0-a971bf0a23c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="spreadsheet_global.h">
@@ -221,6 +224,12 @@
   <ItemGroup>
     <None Include="spreadsheet\spreadsheetconnectors.json">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="spreadsheet\resources\libraries.config">
+      <Filter>config</Filter>
+    </None>
+    <None Include="spreadsheet\resources\spreadsheetformats.config">
+      <Filter>config</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

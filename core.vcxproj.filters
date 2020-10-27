@@ -393,6 +393,12 @@
     <Filter Include="Source Files\ilwisobjects\representation">
       <UniqueIdentifier>{efebb6a2-12c3-4ae3-b936-9fa39b4417f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{446dd3fd-2628-4de1-b7c9-176cdb780ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\classifications">
+      <UniqueIdentifier>{058932eb-6b1f-4805-8cfb-9b347d9f1e8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\geos\src\index\strtree\AbstractNode.cpp">
@@ -3255,6 +3261,90 @@
     <None Include="core\geos\include\config.h.in">
       <Filter>Distribution Files</Filter>
     </None>
+    <None Include="core\resources\codes_with_latlon_order.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\color_chart.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\country_boundaries.ilwis">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\datums.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\ellipsoids.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\epsg.pcs">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\extract_epsgCodes_with_forcedXY.py">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\featurefragmentshader_nvdia.glsl">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\featurevertexshader_nvdia.glsl">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\filters.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\ilwis.config">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\index.html">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\numericdomains.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\projections.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\rasterfragmentshader_nvdia.glsl">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\rastervertexshader_nvdia.glsl">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\referencesystems.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\representations.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\spectral_library_metadata.json">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\teritories.csv">
+      <Filter>data</Filter>
+    </None>
+    <None Include="core\resources\classifications\ceres_igbp_type1.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\corine_lvl3.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\fao_ecological_zones.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\koeppen_climate_scheme.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\landcover_usgs.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\lithological_classes.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\nlcd92_landcover.json">
+      <Filter>data\classifications</Filter>
+    </None>
+    <None Include="core\resources\classifications\taxnwrb.json">
+      <Filter>data\classifications</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="core\catalog\catalog.h">
@@ -3266,5 +3356,21 @@
     <QtMoc Include="core\catalog\catalogexplorer.h">
       <Filter>Header Files\catalog</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="core\resources\epsg_forced_xy.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="core\resources\spectral_library_data.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="core\resources\svgcolornames.txt">
+      <Filter>data</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="core\resources\ilwisobjectsgeneral.PNG">
+      <Filter>data</Filter>
+    </Image>
   </ItemGroup>
 </Project>

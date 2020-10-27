@@ -35,6 +35,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{47296932-a60d-4d6f-bd1a-7080f93c5694}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gdalconnector\coordinatesystemconnector.cpp">
@@ -82,8 +85,6 @@
     <ClCompile Include="gdalconnector\gridcoverageconnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gdalconnector\coordinatesystemconnector.h">
@@ -134,5 +135,13 @@
     <ClInclude Include="gdalconnector\gridcoverageconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gdalconnector\resources\libraries.config">
+      <Filter>config</Filter>
+    </None>
+    <None Include="gdalconnector\resources\ogr_formats.config">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

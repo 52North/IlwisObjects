@@ -40,17 +40,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ilwis3connector", "ilwis3co
 		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remotedataaccesshandler", "remotedataaccesshandler.vcxproj", "{ABD5D06D-8B79-3C5E-B745-6F3E5D412FDA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
-		{9C6AB185-67E2-3824-AA38-9E98069B82B9} = {9C6AB185-67E2-3824-AA38-9E98069B82B9}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "httpserver", "httpserver.vcxproj", "{9C6AB185-67E2-3824-AA38-9E98069B82B9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "featureoperations", "featureoperations.vcxproj", "{7B4F8760-125F-3CD3-8607-090319093172}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
@@ -154,14 +143,6 @@ Global
 		{5C8A53B2-8D0F-3CAE-9A5E-54A70F671020}.Debug|x64.Build.0 = Debug|x64
 		{5C8A53B2-8D0F-3CAE-9A5E-54A70F671020}.Release|x64.ActiveCfg = Release|x64
 		{5C8A53B2-8D0F-3CAE-9A5E-54A70F671020}.Release|x64.Build.0 = Release|x64
-		{ABD5D06D-8B79-3C5E-B745-6F3E5D412FDA}.Debug|x64.ActiveCfg = Debug|x64
-		{ABD5D06D-8B79-3C5E-B745-6F3E5D412FDA}.Debug|x64.Build.0 = Debug|x64
-		{ABD5D06D-8B79-3C5E-B745-6F3E5D412FDA}.Release|x64.ActiveCfg = Release|x64
-		{ABD5D06D-8B79-3C5E-B745-6F3E5D412FDA}.Release|x64.Build.0 = Release|x64
-		{9C6AB185-67E2-3824-AA38-9E98069B82B9}.Debug|x64.ActiveCfg = Debug|x64
-		{9C6AB185-67E2-3824-AA38-9E98069B82B9}.Debug|x64.Build.0 = Debug|x64
-		{9C6AB185-67E2-3824-AA38-9E98069B82B9}.Release|x64.ActiveCfg = Release|x64
-		{9C6AB185-67E2-3824-AA38-9E98069B82B9}.Release|x64.Build.0 = Release|x64
 		{7B4F8760-125F-3CD3-8607-090319093172}.Debug|x64.ActiveCfg = Debug|x64
 		{7B4F8760-125F-3CD3-8607-090319093172}.Debug|x64.Build.0 = Debug|x64
 		{7B4F8760-125F-3CD3-8607-090319093172}.Release|x64.ActiveCfg = Release|x64
@@ -227,7 +208,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C38EC393-1AE2-41F5-922B-154E0612E72F}
 		Qt5Version = QT5MSVC_64
+		SolutionGuid = {C38EC393-1AE2-41F5-922B-154E0612E72F}
 	EndGlobalSection
 EndGlobal

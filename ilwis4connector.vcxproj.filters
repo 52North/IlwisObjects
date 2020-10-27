@@ -11,6 +11,9 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{02599091-08df-44fa-b045-427e4f388657}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwis4connector\iwis4connectormodule.cpp">
@@ -95,5 +98,10 @@
     <ClInclude Include="ilwis4connector\ilwis4representationconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ilwis4connector\resources\ilwis4formats.config">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

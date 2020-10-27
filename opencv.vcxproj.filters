@@ -11,6 +11,9 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{d05cb3a9-ea72-4ae3-afa9-649672017666}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="opencv\opencvhelper.h">
@@ -105,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="opencv\opencvconnector.json" />
+    <None Include="opencv\resources\libraries.config">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="opencv\opencvmodule.h">

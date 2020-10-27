@@ -68,6 +68,7 @@ bool Ilwis::SpreadSheetConnectors::ODSFormat::openSheet(const QString &spreadshe
         return ERROR2(ERR_NO_OBJECT_TYPE_FOR_2,"worksheet", sheetName);
 
     _rows = _currentSheet->rows();
+
     return true;
 
 }

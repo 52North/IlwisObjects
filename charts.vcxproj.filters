@@ -127,12 +127,6 @@
     <ClCompile Include="charts\setseriescolor.cpp">
       <Filter>Source Files\PropertyForms</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SetSeriesColor.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SetSeriesColor.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="charts\chartdataseriestype.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

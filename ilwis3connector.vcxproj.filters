@@ -35,6 +35,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{413bdeb1-ce9d-4627-b347-3bea59338d1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwis3connector\RawConverter.cpp">
@@ -97,8 +100,6 @@
     <ClCompile Include="ilwis3connector\tableconnector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ilwis3connector\Ilwis3Connector_global.h">
@@ -164,5 +165,22 @@
     <ClInclude Include="ilwis3connector\tableconnector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ilwis3connector\resources\datum_allias.csv">
+      <Filter>config</Filter>
+    </None>
+    <None Include="ilwis3connector\resources\domain_allias.csv">
+      <Filter>config</Filter>
+    </None>
+    <None Include="ilwis3connector\resources\ellipsoid_allias.csv">
+      <Filter>config</Filter>
+    </None>
+    <None Include="ilwis3connector\resources\ilwis3formats.config">
+      <Filter>config</Filter>
+    </None>
+    <None Include="ilwis3connector\resources\projection_allias.csv">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

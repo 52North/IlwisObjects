@@ -19,7 +19,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <PlatformToolSet>v141</PlatformToolSet>
-    <OutputDirectory>..\libraries\win32release\</OutputDirectory>
+    <OutputDirectory>..\libraries\release\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -28,7 +28,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <PlatformToolSet>v141</PlatformToolSet>
-    <OutputDirectory>..\libraries\win32debug\</OutputDirectory>
+    <OutputDirectory>..\libraries\debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -54,21 +54,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\libraries\win32release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\core\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\libraries\release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\temp\$(Configuration)\core\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ilwiscore</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PostBuildEventUseInBuild>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libraries\win32debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\core\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libraries\debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\temp\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ilwiscore</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\include\QtWidgets;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\temp\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\include\QtWidgets;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -109,8 +109,11 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32release\bin
-xcopy  core\resources ..\output\win32release\bin\resources\* /S /Y /I</Command>
+      <Command>xcopy "$(OutDir)*.dll" ..\output\release\bin /Y/i 
+
+
+xcopy  core\resources ..\output\release\bin\resources\* /S /Y /I
+xcopy ..\external\libraries\$(Configuration)\*.dll ..\output\debug\bin\* /y/i</Command>
       <Message>
       </Message>
     </PostBuildEvent>
@@ -119,9 +122,9 @@ xcopy  core\resources ..\output\win32release\bin\resources\* /S /Y /I</Command>
       <InputFile>%(FullPath)</InputFile>
       <Define>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_NO_DEBUG;NDEBUG;_WINDLL</Define>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <OutputFile>..\temp\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\include\QtWidgets;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;.\debug;$(QTDIR)\mkspecs\win32-msvc2015</IncludePath>
+      <IncludePath>..\temp\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\include\QtWidgets;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</IncludePath>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -166,19 +169,19 @@ xcopy  core\resources ..\output\win32release\bin\resources\* /S /Y /I</Command>
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_GUI_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" ..\output\win32debug\bin
-xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
-      <Message>
-      </Message>
+      <Command>xcopy "$(OutDir)*.dll" ..\output\debug\bin /y/i
+xcopy core\resources ..\output\debug\bin\resources\* /S /Y /I
+xcopy ..\external\libraries\$(Configuration)\*.dll ..\output\debug\bin\* /y/i</Command>
+      <Message>copy $(TargetPath) $(OutDir)</Message>
     </PostBuildEvent>
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <InputFile>%(FullPath)</InputFile>
       <Define>_WINDOWS;UNICODE;WIN32;WIN64;CORE_LIBRARY;QT_$(Configuration);_WINDLL</Define>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <OutputFile>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\moc_%(Filename).cpp</OutputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\include\QtWidgets;.;.\core;.\core\ilwisobjects;.\core\ilwisobjects\geometry;.\core\util;.\core\ilwisobjects\geometry\geodeticdatum;.\core\ilwisobjects\geometry\projection;.\core\ilwisobjects\geometry\coordinatesystem;.\core\ilwisobjects\geometry\georeference;.\core\ilwisobjects\coverage;.\core\ilwisobjects\table;.\core\ilwisobjects\operation\model;.\core\ilwisobjects\operation;.\core\ilwisobjects\operation\modeller;.\core\ilwisobjects\workflow;.\core\ilwisobjects\representation;.\core\catalog;.\core\ilwisobjects\domain;.\core\geos\include;.\..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;.\$(Configuration);$(QTDIR)\mkspecs\win32-msvc2015</IncludePath>
+      <IncludePath>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName);..\temp\GeneratedFile\$(ProjectName)s;$(QTDIR)\include\QtWidgets;.;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtXmlPatterns;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtConcurrent;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories)</IncludePath>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -1156,10 +1159,44 @@ xcopy  core\resources ..\output\win32debug\bin\resources\* /S /Y /I</Command>
     <ClInclude Include="core\util\xpathparser.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="core\resources\epsg_forced_xy.txt" />
+    <Text Include="core\resources\spectral_library_data.txt" />
+    <Text Include="core\resources\svgcolornames.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="core\geos\include\geos\._version.h.vc" />
     <None Include="core\geos\include\config.h.in" />
+    <None Include="core\resources\classifications\ceres_igbp_type1.json" />
+    <None Include="core\resources\classifications\corine_lvl3.json" />
+    <None Include="core\resources\classifications\fao_ecological_zones.json" />
+    <None Include="core\resources\classifications\koeppen_climate_scheme.json" />
+    <None Include="core\resources\classifications\landcover_usgs.json" />
+    <None Include="core\resources\classifications\lithological_classes.json" />
+    <None Include="core\resources\classifications\nlcd92_landcover.json" />
+    <None Include="core\resources\classifications\taxnwrb.json" />
+    <None Include="core\resources\codes_with_latlon_order.csv" />
+    <None Include="core\resources\color_chart.csv" />
+    <None Include="core\resources\country_boundaries.ilwis" />
+    <None Include="core\resources\datums.csv" />
+    <None Include="core\resources\ellipsoids.csv" />
+    <None Include="core\resources\epsg.pcs" />
+    <None Include="core\resources\extract_epsgCodes_with_forcedXY.py" />
+    <None Include="core\resources\featurefragmentshader_nvdia.glsl" />
+    <None Include="core\resources\featurevertexshader_nvdia.glsl" />
+    <None Include="core\resources\filters.csv" />
+    <None Include="core\resources\ilwis.config" />
+    <None Include="core\resources\index.html" />
+    <None Include="core\resources\numericdomains.csv" />
+    <None Include="core\resources\projections.csv" />
+    <None Include="core\resources\rasterfragmentshader_nvdia.glsl" />
+    <None Include="core\resources\rastervertexshader_nvdia.glsl" />
+    <None Include="core\resources\referencesystems.csv" />
+    <None Include="core\resources\representations.csv" />
+    <None Include="core\resources\spectral_library_metadata.json" />
+    <None Include="core\resources\teritories.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="core\resources\ilwisobjectsgeneral.PNG" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

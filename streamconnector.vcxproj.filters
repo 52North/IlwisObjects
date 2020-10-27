@@ -35,6 +35,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{028c471c-2e29-4a53-b205-e2e5751ae8eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="streamconnector\catalogconnection.cpp">
@@ -189,5 +192,10 @@
     <ClInclude Include="streamconnector\representationserializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="streamconnector\resources\streamformats.config">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

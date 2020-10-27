@@ -35,6 +35,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{cb7d1811-2d5b-4677-a160-4d2d68d44005}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pythonscript\callpythonoperation.cpp">
@@ -64,8 +67,6 @@
     <ClCompile Include="pythonscript\runpythonprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    
-    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pythonscript\callpythonoperation.h">
@@ -95,5 +96,10 @@
     <ClInclude Include="pythonscript\runpythonprogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="pythonscript\resources\libraries.config">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

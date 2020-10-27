@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QLibrary>
+#include <QLibraryInfo>
 #include "kernel.h"
 #include "ilwiscontext.h"
 #include "supportlibraryloader.h"
@@ -48,7 +49,10 @@ SupportLibraryLoader::SupportLibraryLoader(const QFileInfo &configPath) : _confi
                         QJsonArray libraries = os["libraries"].toArray();
                         for(auto oslibsvalue : libraries){
                             QJsonObject osprops = oslibsvalue.toObject();
-                            _order[osprops["order"].toDouble()] = osprops["library"].toString();
+							if (osprops.contains("dlibrary") && QLibraryInfo::isDebugBuild()) {
+								_order[osprops["order"].toDouble()] = osprops["dlibrary"].toString();
+							}else
+								_order[osprops["order"].toDouble()] = osprops["library"].toString();
                         }
                         return;
 
