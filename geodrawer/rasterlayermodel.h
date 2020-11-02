@@ -32,7 +32,7 @@ namespace Ui {
 
 class Quad {
 public:
-    Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, const unsigned int imageSizeX, const unsigned int imageSizeY, const unsigned int zoomFactor);
+    Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, const unsigned int imageSizeX, const unsigned int imageSizeY, const unsigned int zoomFactor, const Coordinate& leftTop);
     void addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinate & c3, const Coordinate & c4, const double s1, const double t1, const double s2, const double t2);
     void setId(qint32 id);
     bool operator ==(const Ilwis::Ui::Quad &_quad);
@@ -47,6 +47,7 @@ public:
 	QVector<int> indices;
     bool active;
     bool dirty;
+	Coordinate _leftTop;
 };
 
 class TextureHeap;

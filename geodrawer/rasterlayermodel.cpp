@@ -51,7 +51,7 @@ using namespace Ui;
 REGISTER_LAYERMODEL("rastercoverage",RasterLayerModel)
 REGISTER_LAYERMODEL2("animation", RasterLayerModel)
 
-Quad::Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, const unsigned int imageSizeX, const unsigned int imageSizeY, const unsigned int zoomFactor)
+Quad::Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, const unsigned int imageSizeX, const unsigned int imageSizeY, const unsigned int zoomFactor, const Coordinate& leftTop)
 : imageOffsetX(imageOffsetX)
 , imageOffsetY(imageOffsetY)
 , imageSizeX(imageSizeX)
@@ -60,12 +60,18 @@ Quad::Quad(const unsigned int imageOffsetX, const unsigned int imageOffsetY, con
 , id(-1)
 , active(true)
 , dirty(false)
+, _leftTop(leftTop)
 {
 }
 
 bool Quad::operator ==(const Ilwis::Ui::Quad &_quad)
 {
-    return imageOffsetX == _quad.imageOffsetX && imageOffsetY == _quad.imageOffsetY && imageSizeX == _quad.imageSizeX && imageSizeY == _quad.imageSizeY && zoomFactor == _quad.zoomFactor;
+	return imageOffsetX == _quad.imageOffsetX &&
+		imageOffsetY == _quad.imageOffsetY &&
+		imageSizeX == _quad.imageSizeX &&
+		imageSizeY == _quad.imageSizeY &&
+		zoomFactor == _quad.zoomFactor &&
+		_leftTop == _quad._leftTop;
 }
 
 void Quad::addQuad(const Coordinate & c1, const Coordinate & c2, const Coordinate & c3, const Coordinate & c4, const double s1, const double t1, const double s2, const double t2)
@@ -612,9 +618,9 @@ void RasterLayerModel::DivideImage(unsigned int imageOffsetX, unsigned int image
 void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor)
 {
     const IGeoReference & gr = _raster->georeference();
-    Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor);
+    Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor, c1);
     std::vector<Quad>::iterator & _quad = std::find(_quads.begin(), _quads.end(), quad);
-    if (_quad != _quads.end()) {
+    if (_quad != _quads.end() && false) {
         _quad->active = true;
     } else {
         if (_linear) {
