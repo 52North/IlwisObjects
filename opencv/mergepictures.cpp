@@ -48,18 +48,25 @@ bool MergePictures::execute(ExecutionContext *ctx, SymbolTable &symTable)
 		if ((_prepState = prepare(ctx, symTable)) != sPREPARED)
 			return false;
 
-	cv::Mat3b imgInit = cv::imread(_inputPaths[0].toStdString().c_str());
-	cv::Mat3b outputImage(imgInit.rows * _rowsPerImage, imgInit.cols * _imagesPerRow, cv::Vec3b(0, 0, 0));
+	
+	
+	if (_xszImage > 0 && _yszImage > 0) {
+		cv::Mat3b outputImage(_yszImage * _rowsPerImage, _xszImage * _imagesPerRow, cv::Vec3b(0, 0, 0));
 
-	int idx = 0;
-	for (int y = 0; y < _rowsPerImage; ++y) {
-		for (int x = 0; x < _imagesPerRow; ++x) {
-			cv::Mat3b img = cv::imread(_inputPaths[idx].toStdString().c_str());
-			img.copyTo(outputImage(cv::Rect(x*256, y*256, img.cols, img.rows)));
-			++idx;
+		int idx = 0;
+		for (int y = 0; y < _rowsPerImage; ++y) {
+			for (int x = 0; x < _imagesPerRow; ++x) {
+				cv::Mat3b img = cv::imread(_inputPaths[idx].toStdString().c_str());
+				if (img.rows == _yszImage && img.cols == _xszImage) {
+					img.copyTo(outputImage(cv::Rect(x * 256, y * 256, img.cols, img.rows)));
+				}
+				++idx;
+			}
 		}
+		cv::imwrite(_outputPath.toStdString().c_str(), outputImage);
 	}
-	cv::imwrite(_outputPath.toStdString().c_str(), outputImage);
+
+
 	try {
 		return true;
 
@@ -85,6 +92,21 @@ Ilwis::OperationImplementation::State MergePictures::prepare(ExecutionContext *c
 		_rowsPerImage = _expression.input<int>(3);
 		if (_imagesPerRow * _rowsPerImage != _inputPaths.size()) {
 			kernel()->issues()->log("Number of input images doesn't match the sizes given");
+			return sPREPAREFAILED;
+		}
+
+		for (int i = 0; i < _inputPaths.size(); ++i) {
+			cv::Mat3b imgInit = cv::imread(_inputPaths[i].toStdString().c_str());
+			if (imgInit.rows > 0 && imgInit.cols > 0) {
+				_xszImage = imgInit.cols;
+				_yszImage = imgInit.rows;
+				break;
+			}
+
+		}
+
+		if (_xszImage == 0 || _yszImage == 0) {
+			kernel()->issues()->log(TR("No valid images found in the list"));
 			return sPREPAREFAILED;
 		}
 	
