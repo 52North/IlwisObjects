@@ -105,6 +105,8 @@ bool BackgroundLayer::prepare(int prepType)
 		CoverageLayerModel *covModel = static_cast<CoverageLayerModel *>(rlayer);
 		covModel->coverage(_osmRaster);
 		rlayer->add2ChangedProperties("buffers", true); // forces the layer to be added to the scene
+		rlayer->active(false);
+		connect(this, &LayerModel::onActiveChanged, this, &BackgroundLayer::activateLayer);
 	}
     return true;
 }
@@ -175,9 +177,10 @@ void BackgroundLayer::updateOSMRaster() {
 		return Coordinate(lonLeft, latBottom);
 	};
 	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
+	if (_downloadQueue.size() > 0) // are we already done with the previoud batch?
+		return;
 	if (_osmRaster.isValid() && layer && layer->active()) {
 	
-		layer->active(true);
 		Envelope env = layerManager()->rootLayer()->zoomEnvelope();
 		BoundingBox bb = layerManager()->rootLayer()->screenGrf()->coord2Pixel(env);
 
@@ -204,41 +207,49 @@ void BackgroundLayer::updateOSMRaster() {
 
 		env = _osmRaster->coordinateSystem()->convertEnvelope(csyWgs84, tileEnvelope);
 
-		qDebug() << llMin.toString() << llMax.toString() << tilesBB.toString() << "|" << env.toString();
+		QString tilebb = tilesBB.toString() + " " + QString::number(z);
+		_osmRaster->resourceRef().addProperty("tileboundingbox", tilebb);
 
-		_osmRaster->resourceRef().addProperty("tileboundingbox", tilesBB.toString() + " " + QString::number(z));
 		_osmRaster->size({ tilesBB.size().xsize() * 256, tilesBB.size().ysize() * 256, 1 });
 		_osmRaster->coordinateSystem()->envelope(env);
 		_osmRaster->georeference()->as<CornersGeoReference>()->internalEnvelope(env);
 		_osmRaster->georeference()->compute();
-	
-		QString server = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/backgroundmap-server", QString(""));
-		_downloadQueue.clear();
+		QString basePath = context()->cacheLocation().toLocalFile();
+		tilebb.replace(" ", "_");
+		QString outputFileName = basePath + "/osm_mergedtiles_" + tilebb + ".png";
 
-		int startTileX = tilesBB.min_corner().x;
-		int startTileY = tilesBB.min_corner().y;
-		int endTileX = tilesBB.max_corner().x;
-		int endTileY = tilesBB.max_corner().y;
-		QStringList requests;
-		for (int y = startTileY; y <= endTileY; ++y) {
-			for (int x = startTileX; x <= endTileX; ++x) {
-				QString request = server + QString::number(z) + "/" + QString::number(x) + "/" + QString::number(y) + ".png";
-				QUrl url(request);
-				_downloadQueue.enqueue(url);
+		if (!QFile::exists(outputFileName)) {
+			int startTileX = tilesBB.min_corner().x;
+			int startTileY = tilesBB.min_corner().y;
+			int endTileX = tilesBB.max_corner().x;
+			int endTileY = tilesBB.max_corner().y;
+			QStringList requests;
+			QString server = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/backgroundmap-server", QString(""));
+			for (int y = startTileY; y <= endTileY; ++y) {
+				for (int x = startTileX; x <= endTileX; ++x) {
+					QString request = server + QString::number(z) + "/" + QString::number(x) + "/" + QString::number(y) + ".png";
+					QUrl url(request);
+					_downloadQueue.enqueue(url);
+
+				}
 
 			}
-
+			_osmInputFiles = "";
+			getData();
 		}
-		_osmInputFiles = "";
-		getData();
+		else {
+			layer->vproperty("calcdimensions", "dummy");
+			layer->vproperty("updatetextures", "dummy");
+		}
+
 	}
 
 }
 
 void BackgroundLayer::downloadFinished() {
 
-	_output.close();
 
+	_output.close();
 	if (_currentDownload->error()) {
 		// download failed
 		kernel()->issues()->log(QString("OSM tile download Failed: %1\n").arg(qPrintable(_currentDownload->errorString())));
@@ -269,55 +280,59 @@ QString BackgroundLayer::makeFileName(const QString& url) const {
 
 void BackgroundLayer::getData() {
 	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
-	if (_downloadQueue.size() > 0) {
-		layer->active(false);
-		QUrl url = _downloadQueue.dequeue();
-		QString fname = makeFileName(url.toString());
-		if (_osmInputFiles != "")
-			_osmInputFiles += QString("|");
-		_osmInputFiles += fname;
+	if (layer->active()) {
+		if (_downloadQueue.size() > 0) {
+			QUrl url = _downloadQueue.dequeue();
+			QString fname = makeFileName(url.toString());
+			if (_osmInputFiles != "")
+				_osmInputFiles += QString("|");
+			_osmInputFiles += fname;
 
-		if (!QFile::exists(fname)) {
-			_output.setFileName(fname);
-			_output.open(QFile::WriteOnly);
+			if (!QFile::exists(fname)) {
+				_output.setFileName(fname);
+				_output.open(QFile::WriteOnly);
 
-			QNetworkRequest nrequest(url);
-			_currentDownload = _manager.get(nrequest);
+				QNetworkRequest nrequest(url);
+				_currentDownload = _manager.get(nrequest);
 
-			connect(_currentDownload, &QNetworkReply::finished, this, &BackgroundLayer::downloadFinished);
-			connect(_currentDownload, &QNetworkReply::readyRead, this, &BackgroundLayer::downloadReadyRead);
+				connect(_currentDownload, &QNetworkReply::finished, this, &BackgroundLayer::downloadFinished);
+				connect(_currentDownload, &QNetworkReply::readyRead, this, &BackgroundLayer::downloadReadyRead);
+			}
+			else {
+				getData();
+			}
 		}
 		else {
-			getData();
-		}
-	}
-	else {
-		
-		if (layer) {
-			QString tilebb = _osmRaster->resourceRef()["tileboundingbox"].toString();
-			tilebb.replace(" ", "_");
-			QString basePath = context()->cacheLocation().toLocalFile();
-			QString outputFileName = basePath + "/osm_mergedtiles_" + tilebb + ".png";
-			int xsize = _osmRaster->size().xsize() / 256;
-			int ysize = _osmRaster->size().ysize() / 256;
 
-			QString expr = QString("mergepictures(%1, '%2', %3, %4)").arg(outputFileName).arg(_osmInputFiles).arg(xsize).arg(ysize);
+			if (layer) {
+				QString tilebb = _osmRaster->resourceRef()["tileboundingbox"].toString();
+				tilebb.replace(" ", "_");
+				QString basePath = context()->cacheLocation().toLocalFile();
+				QString outputFileName = basePath + "/osm_mergedtiles_" + tilebb + ".png";
+				int xsize = _osmRaster->size().xsize() / 256;
+				int ysize = _osmRaster->size().ysize() / 256;
 
-			ExecutionContext ctx;
-			commandhandler()->execute(expr, &ctx);
+				QString expr = QString("mergepictures(%1, '%2', %3, %4)").arg(outputFileName).arg(_osmInputFiles).arg(xsize).arg(ysize);
 
-			layer->vproperty("calcdimensions");
-			layer->add2ChangedProperties("buffers", true); // forces the calculation of the points through the prepare
-			layer->vproperty("updatetextures", "dummy");
-			const IlwisObjectConnector *ioObjectConnector = static_cast<const IlwisObjectConnector *>(_osmRaster->constConnector().get());
-			connect(ioObjectConnector, &IlwisObjectConnector::finishedReadingData, this, &BackgroundLayer::activateLayer);
+				ExecutionContext ctx;
+				if (commandhandler()->execute(expr, &ctx)) {
+					layer->vproperty("calcdimensions", "dummy");
+					layer->vproperty("updatetextures", "dummy");
+					QStringList files = _osmInputFiles.split("|");
+					for (auto fname : files) {
+						QFile file(fname);
+						if (file.size() == 0) {
+							qDebug() << fname;
+							file.remove();
+						}
+					}
+				}
+			}
 		}
 	}
 }
 
 void BackgroundLayer::activateLayer() {
-	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
-
-	layer->active(true);
+	updateOSMRaster();
 }
 
