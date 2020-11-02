@@ -41,6 +41,7 @@ namespace Ilwis {
 			QStringList _inputPaths;
 			int _imagesPerRow = 0;
 			int _rowsPerImage = 0;
+			int _xszImage = 0; int _yszImage = 0;
 
 
 		};
