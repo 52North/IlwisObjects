@@ -112,7 +112,7 @@ void MasterCatalogCache::load()
                 }
             }
 
-            //Identity::setBaseId(baseid);
+            Identity::setBaseId(baseid);
         }
 
     }
