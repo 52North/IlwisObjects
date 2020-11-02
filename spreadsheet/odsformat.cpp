@@ -34,7 +34,7 @@ ODSFormat::ODSFormat()
 
 ODSFormat::~ODSFormat()
 {
-	delete _book;
+	//delete _book;
 }
 
 
