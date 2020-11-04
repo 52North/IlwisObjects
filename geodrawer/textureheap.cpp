@@ -94,7 +94,7 @@ Texture * TextureHeap::GetTexture(int bandIndex, bool & optimal, const unsigned 
 	Texture * tex = 0;
 	if (fInThread) { // call Invalidate when done, to redraw the mapwindow
 		for (int i = 0; i < textures[bandIndex].size(); ++i) {
-			if (textures[bandIndex][i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
+			if (textures[bandIndex][i]->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
 				if (textures[bandIndex][i]->fDirty())
 					ReGenerateTexture(textures[bandIndex][i], fInThread);
 				else
@@ -110,17 +110,17 @@ Texture * TextureHeap::GetTexture(int bandIndex, bool & optimal, const unsigned 
 		}
 		// if it is queued already, don't add it again, just be patient as it will come
 		csChangeTexCreatorList.lock();
-		bool fQueued = workingTexture && workingTexture->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
+		bool fQueued = workingTexture && workingTexture->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
 		if (!fQueued) {
 			for (std::vector<Texture*>::iterator it = textureRequest.begin(); it != textureRequest.end() && !fQueued; ++it)
-				fQueued = (*it)->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
+				fQueued = (*it)->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
 		}
 		csChangeTexCreatorList.unlock();
 		if (!fQueued)
 			GenerateTexture(bandIndex, offsetX, offsetY, sizeX, sizeY, zoomFactor, fInThread);
 	} else { // caller is waiting for the Texture*
 		for (int i = 0; i < textures.size(); ++i) {
-			if (textures[bandIndex][i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor))
+			if (textures[bandIndex][i]->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor))
 				tex = textures[bandIndex][i];
 		}
 		if (0 == tex)
@@ -134,7 +134,7 @@ Texture * TextureHeap::GetTexture(int bandIndex, bool & optimal, const unsigned 
 
 bool TextureHeap::optimalTextureAvailable(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) {
 	for (int i = 0; i < textures[bandIndex].size(); ++i) {
-		if (textures[bandIndex][i]->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
+		if (textures[bandIndex][i]->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
 			if (textures[bandIndex][i]->fDirty()) {
 				ReGenerateTexture(textures[bandIndex][i], true);
 				return false;
@@ -144,10 +144,10 @@ bool TextureHeap::optimalTextureAvailable(int bandIndex, const unsigned int offs
 	}
 	// if it is queued already, don't add it again, just be patient as it will come
 	csChangeTexCreatorList.lock();
-	bool fQueued = workingTexture && workingTexture->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
+	bool fQueued = workingTexture && workingTexture->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
 	if (!fQueued) {
 		for (std::vector<Texture*>::iterator it = textureRequest.begin(); it != textureRequest.end() && !fQueued; ++it)
-			fQueued = (*it)->equals(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
+			fQueued = (*it)->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);
 	}
 	csChangeTexCreatorList.unlock();
 	if (!fQueued)

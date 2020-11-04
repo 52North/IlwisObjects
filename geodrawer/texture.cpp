@@ -63,9 +63,9 @@ void Texture::ReCreateTexture(bool fInThread, volatile bool * fDrawStop)
         dirty = !DrawTexturePaletted(offsetX, offsetY, sizeX, sizeY, zoomFactor, texture_data, fDrawStop);
 }
 
-bool Texture::equals(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor)
+bool Texture::equals(int bandIndex, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor)
 {
-    if (this->offsetX == offsetX1 && this->offsetY == offsetY1 && this->offsetX + this->sizeX == offsetX2 && this->offsetY + sizeY == offsetY2 && this->zoomFactor == zoomFactor) {
+    if (this->_bandIndex == bandIndex && this->offsetX == offsetX1 && this->offsetY == offsetY1 && this->offsetX + this->sizeX == offsetX2 && this->offsetY + sizeY == offsetY2 && this->zoomFactor == zoomFactor) {
         return true;
     } else
         return false;
@@ -135,7 +135,7 @@ bool Texture::DrawTexture(long offsetX, long offsetY, long texSizeX, long texSiz
     if (*fDrawStop)
         return false;
 
-    BoundingBox bb(Pixel(offsetX, offsetY), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1));
+    BoundingBox bb(Pixel(offsetX, offsetY, _bandIndex), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1, _bandIndex));
     quint32 size = texSizeX * texSizeY * 4; // r,g,b,a
     if (texture_data.size() == 0)
         texture_data.resize(size); // allowed the first time only; after this the vector will always be in-use by a webGL object
@@ -230,7 +230,7 @@ bool Texture::DrawTexturePaletted(long offsetX, long offsetY, long texSizeX, lon
     if (*fDrawStop)
         return false;
 
-    BoundingBox bb(Pixel(offsetX, offsetY), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1));
+    BoundingBox bb(Pixel(offsetX, offsetY, _bandIndex), Pixel(offsetX + sizeX - 1, offsetY + sizeY - 1, _bandIndex));
     quint32 size = texSizeX * texSizeY;
     if (texture_data.size() == 0)
         texture_data.resize(size); // allowed the first time only; after this the vector will always be in-use by a webGL object
