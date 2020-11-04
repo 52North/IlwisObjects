@@ -112,16 +112,20 @@ Item {
 			}
         }
 
+		function removeQuad(sceneObject, quadid){
+		    var obj = sceneObject.getObjectById(quadid)
+            if ( obj){
+                sceneObject.remove(obj);
+                obj.material.tTexture.dispose();
+                obj.material.dispose();
+                obj.geometry.dispose();
+            }
+		}
+
         function drawRasterAsColor(sceneObject,layer) {
             var removeQuads = layer.removeQuads;
             for (var i=0; i < removeQuads.length; ++i) {
-                var obj = sceneObject.getObjectById(removeQuads[i])
-                if ( obj){
-                    sceneObject.remove(obj);
-                    obj.material.tTexture.dispose();
-                    obj.material.dispose();
-                    obj.geometry.dispose();
-                }
+				removeQuad(sceneObject, removeQuads[i])
             }
             var quads = layer.numberOfBuffers("rastercoverage");
             for (var i=0; i < quads;++i){
@@ -173,6 +177,8 @@ Item {
             }
 		}
 
+
+
         function drawRasterAsValue(sceneObject,layer) {
             if (layer.tPalette == undefined) {
                 var palette = layer.palette;
@@ -185,16 +191,12 @@ Item {
                 layer.tPalette.needsUpdate = true;
             }
             var removeQuads = layer.removeQuads;
+			console.debug("zzzzzzzzzzz1",Date().toString(), removeQuads.length) 
             for (var i=0; i < removeQuads.length; ++i) {
-                var obj = sceneObject.getObjectById(removeQuads[i])
-                if ( obj){
-                    sceneObject.remove(obj);
-                    obj.material.tTexture.dispose();
-                    obj.material.dispose();
-                    obj.geometry.dispose();
-                }
+				removeQuad(sceneObject, removeQuads[i])
             }
             var quads = layer.numberOfBuffers("rastercoverage");
+			console.debug("zzzzzzzzzzz2",Date().toString(), quads) 
             for (var i=0; i < quads;++i) {
                 var texture = layer.texture(i);
                 if (texture.valid) {
@@ -422,7 +424,7 @@ Item {
 			            }
 			        }
 			    }
-			}else if ( propertyType == "animation"){
+			}else if ( propertyType == "updateanimation"){
 				setScene(layer)
 			}
 		}
@@ -432,7 +434,7 @@ Item {
 				var changedProperties = layer.changedProperties
                 for(var j=0; j < changedProperties.length; ++j){
 				    var property = changedProperties[j]
-				    changeProperty(property, layer)
+					changeProperty(property, layer)
 				    layer.removeFromChangedProperties(property) // note: the loop as it is here will not handle a list of properties in one go
 				}
                 var layerList = layer.childLayers

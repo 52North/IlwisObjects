@@ -11,23 +11,30 @@ Item {
     width: 100
     height: 62
     property var editor
+	property var test : 0
 
 	  Timer {
 		id : timerid
         interval: 1000; running: false; repeat: true
         onTriggered: 
 			{
+				console.debug("zzzzzzzzzz0", test, " --> ",Date().toString())
 				editor.updateAnimation(1)
+				++test
+
 			}
 	  }
 
-	 Controls.PushButton {
+	 Button {
 		width : 199
-		height : 22
+		height : 27
 		text : qsTr("Run")
 
 		onClicked :{
 			timerid.running = !timerid.running;
+			//editor.updateAnimation(1)
+			//++test
+			//console.debug("zzzzzzzzzzzzzz", test)
 		}
 	 }
 
