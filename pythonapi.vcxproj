@@ -176,7 +176,7 @@ if errorlevel 1 goto VCEnd
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd pythonapi
-"C:\Program Files (x86)\swigwin\swig.exe" -python -c++ ilwisobjects.i</Command>
+"..\..\external\programs\swigwin\swig.exe" -python -c++ ilwisobjects.i</Command>
       <Message>Performing Custom Build Step SWIG</Message>
       <Outputs>ilwisobjects.py;ilwisobjects_wrap.cxx</Outputs>
       <Inputs>ilwisobjects.i</Inputs>
@@ -302,7 +302,7 @@ if errorlevel 1 goto VCEnd
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd pythonapi
-"C:\Program Files (x86)\swigwin\swig.exe" -python -c++ ilwisobjects.i</Command>
+"..\..\external\programs\swigwin\swig.exe" -python -c++ ilwisobjects.i</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Message>Performing Custom Build Step SWIG</Message>
