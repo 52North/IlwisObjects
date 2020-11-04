@@ -392,7 +392,7 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 
         // generate "addQuads" and "removeQuads" queues
 
-		updateQuads(_currentAnimationIndex);
+		updateQuads();
 
         fChanges = (_removeQuads.size() > 0) || (_addQuads.size() > 0);
         _prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
@@ -406,13 +406,13 @@ bool Ilwis::Ui::RasterLayerModel::prepare(int prepType)
 	return fChanges;
 }
 
-void Ilwis::Ui::RasterLayerModel::updateQuads(int idx)
+void Ilwis::Ui::RasterLayerModel::updateQuads()
 {
 	for (int i = 0; i < _quads.size(); ++i) {
 		Quad & quad = _quads[i];
 		bool refresh = false;
 		if (quad.active && quad.dirty)
-			refresh = textureHeap->optimalTextureAvailable(_currentAnimationIndex, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
+			refresh = textureHeap->optimalTextureAvailable(currentAnimationIndex(), quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
 		if ((quad.id > -1) && (!quad.active || refresh))
 			_removeQuads.push_back(quad.id);
 		if ((quad.active) && ((quad.id == -1) || refresh)) {
@@ -620,7 +620,7 @@ void RasterLayerModel::GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate
     const IGeoReference & gr = _raster->georeference();
     Quad quad(imageOffsetX, imageOffsetY, imageSizeX, imageSizeY, zoomFactor, c1);
     std::vector<Quad>::iterator & _quad = std::find(_quads.begin(), _quads.end(), quad);
-    if (_quad != _quads.end() && false) {
+    if (_quad != _quads.end()) {
         _quad->active = true;
     } else {
         if (_linear) {
@@ -968,14 +968,12 @@ QVariant RasterLayerModel::coord2value(const Coordinate &c, const QString &attrn
 int RasterLayerModel::updateCurrentAnimationIndex(int step) {
 	Locker<> lock(_mutex);
 	int idx = (_currentAnimationIndex + step) % _raster->size().zsize();
-	if (idx != _currentAnimationIndex) {
-		for (int i = 0; i < _quads.size(); ++i) {
-			Quad & quad = _quads[i];
-			bool refresh = false;
-			if (quad.active)
-				refresh = textureHeap->optimalTextureAvailable(idx, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
-		}
+	_currentAnimationIndex = idx;
+	for (int i = 0; i < _quads.size(); ++i) {
+		_quads[i].dirty = true;
 	}
+	updateQuads();
+	add2ChangedProperties("updateanimation", idx);
 	return idx;
 }
 
@@ -983,3 +981,4 @@ int RasterLayerModel::currentAnimationIndex()  const{
 	Locker<> lock(const_cast<RasterLayerModel *>(this)->_mutex);
 	return _currentAnimationIndex;
 }
+

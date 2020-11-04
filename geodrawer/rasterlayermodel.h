@@ -115,7 +115,7 @@ protected:
 	bool _quadsNeedUpdate = false;
 	QVariantMap _stretch;
 	int _currentAnimationIndex = 0;
-	void updateQuads(int idx);
+	void updateQuads();
 
 private:
     void GenerateQuad(Coordinate & c1, Coordinate & c2, Coordinate & c3, Coordinate & c4, unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY, unsigned int zoomFactor);
