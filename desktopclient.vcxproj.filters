@@ -1349,9 +1349,6 @@
     <None Include="desktopclient\qml\datapanel\catalog\SpatialAnimation.qml">
       <Filter>Resource Files\qml\datapanel\catalog\operations</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml">
-      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
-    </None>
     <None Include="desktopclient\qml\MainSplit.qml">
       <Filter>Resource Files\qml</Filter>
     </None>
@@ -1468,6 +1465,9 @@
     </None>
     <None Include="desktopclient\qml\quickqanava\VisualConnector.qml">
       <Filter>Resource Files\qml\qanava</Filter>
+    </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml">
+      <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
