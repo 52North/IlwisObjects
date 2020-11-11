@@ -132,16 +132,28 @@ Texture * TextureHeap::GetTexture(int bandIndex, bool & optimal, const unsigned 
 	return tex;
 }
 
-bool TextureHeap::optimalTextureAvailable(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) {
+int TextureHeap::hasOptimalTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) const {
 	for (int i = 0; i < textures[bandIndex].size(); ++i) {
 		if (textures[bandIndex][i]->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor)) {
 			if (textures[bandIndex][i]->fDirty()) {
-				ReGenerateTexture(textures[bandIndex][i], true);
-				return false;
+				return i;
 			}
-			return true;
+			return TEXAVAILABLE;
 		}
 	}
+	return TEXNONE;
+}
+
+bool TextureHeap::findTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) {
+	auto texIndex = hasOptimalTexture(bandIndex, offsetX, offsetY, sizeX, sizeY, zoomFactor);
+	if (texIndex >=0 ) {
+		ReGenerateTexture(textures[bandIndex][texIndex], true);
+		return false;
+	}
+	else if (texIndex == TEXAVAILABLE)
+		return true;
+
+
 	// if it is queued already, don't add it again, just be patient as it will come
 	csChangeTexCreatorList.lock();
 	bool fQueued = workingTexture && workingTexture->equals(bandIndex, offsetX, offsetY, offsetX + sizeX, offsetY + sizeY, zoomFactor);

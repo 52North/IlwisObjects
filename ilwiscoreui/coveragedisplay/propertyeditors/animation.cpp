@@ -57,7 +57,13 @@ VisualPropertyEditor *AnimationProperties::create(VisualAttribute *p)
 
 int AnimationProperties::updateAnimation(int step) {
 	vpmodel()->layer()->vproperty("updateanimation", 1);
-	return vpmodel()->layer()->vproperty("animationindex").toInt();
+	int idx = vpmodel()->layer()->vproperty("animationindex").toInt();
+	emit frameLabelChanged();
+	return idx;
+}
+
+QString AnimationProperties::frameLabel() const {
+	return vpmodel()->layer()->vproperty("framelabel").toString();
 }
 
 

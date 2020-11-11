@@ -101,10 +101,10 @@ void RootLayerModel::zoomEnvelope(const Envelope &zoomEnvelope)
         if ( abs(factCur - factIn) > 0.01 ) {
 	        if ( factCur < 1.0) {
 	            double newHeight = (zoomEnvelope.xlength() - 1) / factCur;
-	            cb = Envelope(zoomEnvelope.min_corner(), Coordinate(zoomEnvelope.max_corner().x, zoomEnvelope.max_corner().y + newHeight, zoomEnvelope.max_corner().z));
+	            cb = Envelope(zoomEnvelope.min_corner(), Coordinate(zoomEnvelope.max_corner().x, std::min(zoomEnvelope.max_corner().y + newHeight, _coverageEnvelope.max_corner().y), zoomEnvelope.max_corner().z));
 	        } else {
 	            double newWidth = (zoomEnvelope.ylength() - 1) * factCur;
-	            cb = Envelope(zoomEnvelope.min_corner(), Coordinate(zoomEnvelope.min_corner().x + newWidth, zoomEnvelope.max_corner().y, zoomEnvelope.max_corner().z));
+	            cb = Envelope(zoomEnvelope.min_corner(), Coordinate(std::min(zoomEnvelope.min_corner().x + newWidth, _coverageEnvelope.max_corner().x), zoomEnvelope.max_corner().y, zoomEnvelope.max_corner().z));
 	        }
         }
     }
@@ -455,6 +455,7 @@ void RootLayerModel::setCurrentCoordinate(const QString &var)
 			_currentCoordinate = _screenGrf->pixel2Coord(Ilwis::Pixel(parts[0].toDouble(), parts[1].toDouble()));
 			emit currentcurrentCoordinateChanged();
 			emit currentLatLonChanged();
+			emit layerInfoStringChanged();
 		}
 	}
 }
@@ -565,7 +566,7 @@ QVariantList RootLayerModel::layerInfoItems()
 void RootLayerModel::updateLayerInfo()  {
 
 	layerInfo(_currentCoordinate);
-	emit layerInfoItemsChanged();
+	emit layerInfoStringChanged();
 }
 
 void RootLayerModel::RecenterZoomHorz(Envelope & cbZoom, const Envelope & cbMap)
@@ -840,4 +841,12 @@ QVariantMap RootLayerModel::coord2coord(LayerModel* source, double x, double y) 
     }
     catch (const ErrorObject& err) {}
     return result;
+}
+
+QString RootLayerModel::layerInfoString()  {
+	if (_currentCoordinate.isValid()) {
+		QString p = layerInfo(_currentCoordinate);
+		return p;
+	}
+	return "";
 }

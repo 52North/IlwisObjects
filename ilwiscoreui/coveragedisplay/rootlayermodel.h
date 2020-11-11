@@ -43,6 +43,7 @@ public:
     Q_PROPERTY(bool panningMode READ panningMode WRITE setPanningMode NOTIFY panningModeChanged)
     Q_PROPERTY(bool showLayerInfo READ showLayerInfo WRITE showLayerInfo NOTIFY showLayerInfoChanged)
     Q_PROPERTY(QVariantList layerInfoItems READ layerInfoItems NOTIFY layerInfoItemsChanged)
+	Q_PROPERTY(QString layerInfoString READ layerInfoString NOTIFY layerInfoStringChanged)
     Q_PROPERTY(Ilwis::Ui::IlwisObjectModel* screenCsy READ screenCsyPrivate NOTIFY coordinateSystemChanged)
     Q_PROPERTY(Ilwis::Ui::IlwisObjectModel* screenGrf READ screenGrfPrivate NOTIFY georefChanged)
     Q_PROPERTY(QString projectionInfo READ projectionInfoPrivate NOTIFY projectionInfoChanged)
@@ -113,6 +114,7 @@ public:
      void zoomEnvelope(const Envelope &zoomEnvelope);
      bool showLayerInfo() const;
      void showLayerInfo(bool showLayerInfo);
+	 QString layerInfoString() ;
 	 void scrollInfo(const QVariantMap& si);
 	 QVariantMap scrollInfo() const;
      bool prepare(int prepType);
@@ -141,6 +143,7 @@ signals:
      void activeAttributeChanged();
      void georefChanged();
      void projectionInfoChanged();
+	 void layerInfoStringChanged();
      
 
 private:

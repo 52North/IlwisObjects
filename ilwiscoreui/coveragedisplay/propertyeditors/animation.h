@@ -32,13 +32,17 @@ namespace Ilwis {
 			AnimationProperties(VisualAttribute *p);
 			AnimationProperties();
 
+			Q_PROPERTY(QString frameLabel READ frameLabel NOTIFY frameLabelChanged)
+
 			Q_INVOKABLE int updateAnimation(int step);
 
 			bool canUse(const IIlwisObject &obj, const QString &name) const;
 			static VisualPropertyEditor *create(VisualAttribute *p);
 
+			QString frameLabel() const;
 
 		signals:
+			void frameLabelChanged();
 
 		};
 	}

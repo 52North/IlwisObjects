@@ -88,16 +88,15 @@ public:
     Q_INVOKABLE void setQuadId(qint32 bufferIndex, qint32 id);
 	Q_INVOKABLE bool canUse(quint64 id) override;
 	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
-	Q_INVOKABLE int updateCurrentAnimationIndex(int step);
 	const Ilwis::Ui::VisualAttribute *activeAttribute() const;
 	QVariant coord2value(const Coordinate &c, const QString &attrname) const override; 
+	int updateCurrentAnimationIndex(int step) override;
 
 protected:
     void DivideImage(unsigned int imageOffsetX, unsigned int imageOffsetY, unsigned int imageSizeX, unsigned int imageSizeY);
     void init();
     QVariantMap stretch(); // for "live" RGB stretching of a Color Composite; thus not for Palette rasters (Palette rasters "live" stretch their palette)
     virtual void refreshStretch();
-	int currentAnimationIndex() const;
     TextureHeap * textureHeap = 0;
     std::vector<Quad> _quads;
     std::vector<qint32> _addQuads;
@@ -114,7 +113,6 @@ protected:
 	bool _texturesNeedUpdate = false;
 	bool _quadsNeedUpdate = false;
 	QVariantMap _stretch;
-	int _currentAnimationIndex = 0;
 	void updateQuads();
 
 private:
@@ -122,12 +120,13 @@ private:
     QVariantMap palette();
     void refreshPalette();
     QVector<qint32> removeQuads();
+	void updateQuads4Animation();
 	NumericRange _currentStretchRange;
     QVariantMap _palette;
     bool _refreshPaletteAtNextCycle;
     bool _renderReady = false;
-	bool _asAnimation = false;
-	std::recursive_mutex _mutex;
+
+
 
 
 public slots:

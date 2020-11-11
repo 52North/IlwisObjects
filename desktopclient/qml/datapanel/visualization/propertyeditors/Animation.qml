@@ -11,31 +11,46 @@ Item {
     width: 100
     height: 62
     property var editor
-	property var test : 0
 
 	  Timer {
 		id : timerid
         interval: 1000; running: false; repeat: true
         onTriggered: 
 			{
-				console.debug("zzzzzzzzzz0", test, " --> ",Date().toString())
 				editor.updateAnimation(1)
-				++test
-
 			}
 	  }
 
-	 Button {
-		width : 199
-		height : 27
-		text : qsTr("Run")
-
-		onClicked :{
-			timerid.running = !timerid.running;
-			//editor.updateAnimation(1)
-			//++test
-			//console.debug("zzzzzzzzzzzzzz", test)
+	Column {
+		x : 4
+		y : 4
+		width : 200
+		height : 80
+		spacing : 8
+		Text {
+			text : "Frame : " + editor.frameLabel
 		}
+		Controls.TextEditLabelPair {
+			labelText : qsTr("Seconds per frame")
+			labelWidth : 140
+			width : 160
+			content : "1"
+
+			onContentChanged : {
+				if ( content > 0 && !isNaN(content))
+					timerid.interval = content * 1000
+			}
+
+		}
+		 Button {
+			width : 199
+			height : 27
+			text : qsTr(timerid.running ? "Stop" : "Run")
+
+			onClicked :{
+				timerid.running = !timerid.running;
+			}
+		 }
 	 }
 
 }

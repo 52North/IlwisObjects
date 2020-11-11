@@ -37,6 +37,7 @@ MouseArea {
 
     FloatingRectangle{
         id : floatrect
+		text : layerManager.rootLayer.layerInfoString
     }
 
     Rectangle {
@@ -100,7 +101,6 @@ MouseArea {
               floatrect.x = mouseX
               floatrect.y = mouseY
               var mposition = mouseX + "|" + mouseY
-              floatrect.text = layerManager.rootLayer.layerInfo(mposition)
               layerManager.setSelection(mposition);
               mousePressed(mouseX, mouseY)
             }
@@ -194,7 +194,6 @@ MouseArea {
         if ( showInfo && floatrect.opacity > 0){
             floatrect.x = mouseX
             floatrect.y = mouseY
-            floatrect.text = layerManager.rootLayer.layerInfo(mposition)
             mouseMoved(mouseX, mouseY)
         }
     }
@@ -202,10 +201,13 @@ MouseArea {
     
         if ( !layerManager)
             return
+
+
         if (layerManager.zoomInMode ){
             pEnd = {x : mouseX , y : mouseY }
             setRect()
             if (zoomStarted) {
+				
                 if (targetRectangle.width < 3 && targetRectangle.height < 3) { // case of clicking on the map in zoom mode
                     var cbZoom = layerManager.rootLayer.zoomEnvelope
                     var posx = cbZoom.minx + (cbZoom.maxx - cbZoom.minx) * targetRectangle.x / width; // determine click point

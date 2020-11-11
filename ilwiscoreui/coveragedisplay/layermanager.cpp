@@ -508,6 +508,7 @@ quint32 Ilwis::Ui::LayerManager::modelId() const
 
 void LayerManager::setSelectionPrivate(const Coordinate& crd, LayerModel * layer) {
     CoverageLayerModel *coverageLayer = dynamic_cast<CoverageLayerModel *>(layer);
+	rootLayer()->updateLayerInfo();
     if (coverageLayer) {
         Coordinate coord = crd;
         if (coverageLayer->coverage()->coordinateSystem() != rootLayer()->screenCsy()) {
@@ -526,6 +527,7 @@ void LayerManager::setSelectionPrivate(const Coordinate& crd, LayerModel * layer
                 data["ilwistype"] = coverageLayer->coverage()->ilwisType();
                 data["index"] = mp["index"].toUInt();
                 coverageLayer->sendLink(data);
+
             }
 
         }
@@ -721,6 +723,7 @@ void LayerManager::linkAcceptMessage(const QVariantMap& parameters) {
                         crd2 = rootLayer()->screenCsy()->coord2coord(csy, crd2);
                         if (!crd1.isValid() || !crd2.isValid())
                             return;
+						qDebug() << env << QString("%1,%2,%3,%4").arg(crd1.x).arg(crd1.y).arg(crd2.x).arg(crd2.y);
                         env = QString("%1,%2,%3,%4").arg(crd1.x).arg(crd1.y).arg(crd2.x).arg(crd2.y);
                     }
                 }
