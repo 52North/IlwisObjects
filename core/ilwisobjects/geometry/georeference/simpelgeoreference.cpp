@@ -79,6 +79,8 @@ Pixeld SimpelGeoReference::coord2Pixel(const Coordinate &crd) const
     double rRow = _a21 * crd.x + _a22 * crd.y + _b2; // - 1;
     Pixeld pix(rCol, rRow);
 
+	if (!isNumericalUndef(crd.z))
+		pix.z = crd.z;
     return pix;
 }
 

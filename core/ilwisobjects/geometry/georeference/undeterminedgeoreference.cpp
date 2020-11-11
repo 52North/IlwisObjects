@@ -57,7 +57,10 @@ Pixeld UndeterminedGeoReference::coord2Pixel(const Coordinate &crd) const
         return Pixeld();
     if ( crd.is3D())
         return Pixeld(crd.x, size().ysize() - crd.y, crd.z);
-    return Pixeld(crd.x, size().ysize() - crd.y);
+    auto pix =  Pixeld(crd.x, size().ysize() - crd.y);
+	if (!isNumericalUndef(crd.z))
+		pix.z = pix.z;
+	return pix;
 }
 
 double UndeterminedGeoReference::pixelSize() const

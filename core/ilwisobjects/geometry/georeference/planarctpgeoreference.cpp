@@ -115,6 +115,8 @@ Pixeld PlanarCTPGeoReference::coord2Pixel(const Coordinate &crd) const
         return Pixeld();
 
     }
+	if (!isNumericalUndef(crd.z))
+		rc.z = crd.z;
     return rc;
 }
 
