@@ -111,6 +111,13 @@ QVariant CoverageLayerModel::vproperty(const QString &pName) const
 	if (pName == "id") {
 		return _coverage->id();
 	}
+	if (pName == "isanimation") {
+		return _asAnimation;
+	}
+	if (pName == "animationindex") {
+		return currentAnimationIndex();
+	}
+
     return QVariant();
 }
 
@@ -119,6 +126,11 @@ void CoverageLayerModel::vproperty(const QString &attr, const QVariant &value)
 	LayerModel::vproperty(attr, value);
 	if (attr == "activeattribute") {
 		activeAttributeName(value.toString());
+	}
+	else if (attr == "updateanimation") {
+		if (_asAnimation) {
+			updateCurrentAnimationIndex(value.toInt());
+		}
 	}
 }
 
@@ -220,23 +232,27 @@ QString CoverageLayerModel::value2string(const QVariant &value, const QString &a
 
 QString CoverageLayerModel::layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const
 {
-    Coordinate crd = crdIn;
+	Coordinate crd = crdIn;
 
-    if ( coverage()->coordinateSystem() != layerManager()->rootLayer()->screenCsy()){
-        crd = coverage()->coordinateSystem()->coord2coord(layerManager()->rootLayer()->screenCsy(), crd);
-    }
+	if (coverage()->coordinateSystem() != layerManager()->rootLayer()->screenCsy()) {
+		crd = coverage()->coordinateSystem()->coord2coord(layerManager()->rootLayer()->screenCsy(), crd);
+	}
 
-    QVariantMap item;
-    item["name"] = "Layer";
-    item["value"] = coverage()->name();
-    item["icon"] = ResourceModel::icon(coverage()->resource());
-    item["color"] =  QObject::parent() ? "darkblue" : "green";
+	QVariantMap item;
+	item["name"] = "Layer";
+	item["value"] = coverage()->name();
+	item["icon"] = ResourceModel::icon(coverage()->resource());
+	item["color"] = QObject::parent() ? "darkblue" : "green";
 	item["header"] = true;
-    items.push_back(item);
+	items.push_back(item);
 
-    std::vector<QString> texts;
+	std::vector<QString> texts;
+	if (_asAnimation) {
+		crd.z = currentAnimationIndex();
+	}
 
     QVariant value = coverage()->coord2value(crd,attrName);
+	
     if ( value.isValid()){
 		QVariantMap vmap = value.value<QVariantMap>();
 		vmap["coordinate"] = QString::number(crd.x, 'g', 8) + " " + QString::number(crd.y, 'g', 8);
@@ -359,6 +375,15 @@ bool CoverageLayerModel::canUse(quint64 id) {
 		}
 	}
 	return false;
+}
+
+int CoverageLayerModel::currentAnimationIndex()  const {
+	Locker<> lock(const_cast<CoverageLayerModel *>(this)->_mutex);
+	return _currentAnimationIndex;
+}
+
+int CoverageLayerModel::updateCurrentAnimationIndex(int step) {
+	return iUNDEF;
 }
 
 

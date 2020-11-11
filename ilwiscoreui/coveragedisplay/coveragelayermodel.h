@@ -50,6 +50,8 @@ public:
     Q_INVOKABLE virtual void linkMessage(const QVariantMap& parms);
 	Q_INVOKABLE bool canUse(quint64 id) override;
 	Q_INVOKABLE Ilwis::Ui::VisualAttribute *activeAttribute();
+	Q_INVOKABLE virtual int updateCurrentAnimationIndex(int step);
+
 	const Ilwis::Ui::VisualAttribute *activeAttribute() const;
 
 
@@ -79,6 +81,7 @@ public:
     virtual QVariantList linkProperties() const;
     void sendLink(const QVariantMap& parameters);
     static QString mainPanelUrl() ;
+	int currentAnimationIndex()  const;
 
 public slots:
     virtual void linkAcceptMessage(const QVariantMap& parameters);
@@ -92,6 +95,10 @@ protected:
     void addVisualAttribute(const QString &attrName, const QString& propertyName, VisualPropertyEditor *newProp);
     bool needsCoordConversion() const;
     QString v2s(const ColumnDefinition &coldef, const QVariant &value) const;
+
+	bool _asAnimation = false;
+	int _currentAnimationIndex = 0;
+	std::recursive_mutex _mutex;
 private:
     //quint32 layerIndex() const;
     VisualPropertyEditor *visualProperty(const QString& attrName, const QString &propertyName);
@@ -102,6 +109,7 @@ private:
     bool _coordConversionNeeded = false;
     QString _activeAttribute;
     ICoverage _coverage;
+
 
 };
 }

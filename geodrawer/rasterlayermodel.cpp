@@ -277,11 +277,14 @@ QVariant RasterLayerModel::vproperty(const QString& pName) const {
 				value.setValue(rng);
 			}
 		}
-		if (pName == "isanimation") {
-			return _asAnimation;
-		}
-		if (pName == "animationindex") {
-			return currentAnimationIndex();
+		if (pName == "framelabel") {
+			quint32 idx = currentAnimationIndex();
+			QString bandName = _raster->stackDefinitionRef().index(idx);
+			QString label = QString("band %1 : %2").arg(idx).arg(bandName);
+			if (bandName.toInt() == idx)
+				label = QString("band %1").arg(idx);
+			return label;
+			
 		}
 	}
 	return value;
@@ -301,11 +304,6 @@ void RasterLayerModel::vproperty(const QString& pName, const QVariant& value) {
 			return;
 		}    if (pName == "undefinedvalue") {
 			coverage()->setPseudoUndef(value.toDouble());
-		}
-		else if (pName == "updateanimation") {
-			if (_asAnimation) {
-				updateCurrentAnimationIndex(value.toInt());
-			}
 		}
 		else if (pName == "calcdimensions") {
 			calcDimensions();
@@ -412,10 +410,30 @@ void Ilwis::Ui::RasterLayerModel::updateQuads()
 		Quad & quad = _quads[i];
 		bool refresh = false;
 		if (quad.active && quad.dirty)
-			refresh = textureHeap->optimalTextureAvailable(currentAnimationIndex(), quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
+			refresh = textureHeap->findTexture(currentAnimationIndex(), quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
 		if ((quad.id > -1) && (!quad.active || refresh))
 			_removeQuads.push_back(quad.id);
 		if ((quad.active) && ((quad.id == -1) || refresh)) {
+			_addQuads.push_back(i);
+		}
+	}
+}
+
+void Ilwis::Ui::RasterLayerModel::updateQuads4Animation()
+{
+	for (int i = 0; i < _quads.size(); ++i) {
+		Quad & quad = _quads[i];
+		int texIndex = textureHeap->TEXAVAILABLE;
+		if (quad.active && quad.dirty) {
+			int idx = currentAnimationIndex();
+			texIndex = textureHeap->hasOptimalTexture(idx, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
+			if ( texIndex != textureHeap->TEXAVAILABLE){
+				textureHeap->GenerateTexture(idx, quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor, false);
+			}
+		}
+		if ((quad.id > -1))
+			_removeQuads.push_back(quad.id);
+		if ((quad.active) ) {
 			_addQuads.push_back(i);
 		}
 	}
@@ -972,13 +990,13 @@ int RasterLayerModel::updateCurrentAnimationIndex(int step) {
 	for (int i = 0; i < _quads.size(); ++i) {
 		_quads[i].dirty = true;
 	}
-	updateQuads();
+	_addQuads.clear(); // reset "addQuads" and "removeQuads" queues
+	_removeQuads.clear();
+	updateQuads4Animation();
 	add2ChangedProperties("updateanimation", idx);
+	layerManager()->rootLayer()->updateLayerInfo();
 	return idx;
 }
 
-int RasterLayerModel::currentAnimationIndex()  const{
-	Locker<> lock(const_cast<RasterLayerModel *>(this)->_mutex);
-	return _currentAnimationIndex;
-}
+
 

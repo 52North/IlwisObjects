@@ -27,6 +27,8 @@ namespace Ilwis {
         class TextureHeap
 	    {
 	    public:
+			const int TEXAVAILABLE = -1;
+			const int TEXNONE = -2;
             friend class TextureGenerator;
 			TextureHeap(RasterLayerModel * rasterLayerModel, const std::vector<IRasterCoverage> * ccBands);
 		    TextureHeap(RasterLayerModel * rasterLayerModel, const IRasterCoverage & raster, const unsigned int iPaletteSize, bool asAnimation);
@@ -36,10 +38,13 @@ namespace Ilwis {
 		    void ClearQueuedTextures();
 		    void ReGenerateAllTextures();
 		    bool renderingComplete();
-            bool optimalTextureAvailable(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor);
+            bool findTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor);
+			int hasOptimalTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor) const;
+			Texture * GenerateTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
 
 	    protected:
-		    Texture * GenerateTexture(int bandIndex, const unsigned int offsetX, const unsigned int offsetY, const unsigned int sizeX, const unsigned int sizeY, unsigned int zoomFactor, bool fInThread);
+
+
 		    void ReGenerateTexture(Texture * texture, bool fInThread);
 		    Texture * GenerateNextTexture(bool fInThread);
 		    std::vector<std::vector<Texture*>> textures;
