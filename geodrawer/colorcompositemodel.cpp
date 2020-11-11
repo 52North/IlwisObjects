@@ -284,17 +284,8 @@ bool ColorCompositeLayerModel::prepare(int prepType)
 		}
 
 		// generate "addQuads" and "removeQuads" queues
-		for (int i = 0; i < _quads.size(); ++i) {
-			Quad & quad = _quads[i];
-			bool refresh = false;
-			if (quad.active && quad.dirty)
-				refresh = textureHeap->optimalTextureAvailable(_currentAnimationIndex,quad.imageOffsetX, quad.imageOffsetY, quad.imageSizeX, quad.imageSizeY, quad.zoomFactor);
-			if ((quad.id > -1) && (!quad.active || refresh))
-				_removeQuads.push_back(quad.id);
-			if ((quad.active) && ((quad.id == -1) || refresh)) {
-				_addQuads.push_back(i);
-			}
-		}
+		updateQuads();
+
 		fChanges = (_removeQuads.size() > 0) || (_addQuads.size() > 0);
 		_prepared |= (LayerModel::ptGEOMETRY | LayerModel::ptRENDER);
 	}
