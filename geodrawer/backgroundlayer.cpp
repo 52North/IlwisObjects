@@ -336,3 +336,7 @@ void BackgroundLayer::activateLayer() {
 	updateOSMRaster();
 }
 
+QString BackgroundLayer::layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const {
+	return "";
+}
+

@@ -48,6 +48,7 @@ namespace Ilwis {
             Q_INVOKABLE bool prepare(int);
             virtual bool renderReady();
             virtual void renderReady(bool yesno);
+			QString layerData(const Coordinate &crdIn, const QString &attrName, QVariantList &items) const override;
 
             static LayerModel *create(LayerManager *manager, QStandardItem *parentLayer, const QString &name, const QString &desc, const IOOptions& options);
 
