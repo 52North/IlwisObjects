@@ -191,12 +191,10 @@ Item {
                 layer.tPalette.needsUpdate = true;
             }
             var removeQuads = layer.removeQuads;
-			console.debug("zzzzzzzzzzz1",Date().toString(), removeQuads.length) 
             for (var i=0; i < removeQuads.length; ++i) {
 				removeQuad(sceneObject, removeQuads[i])
             }
             var quads = layer.numberOfBuffers("rastercoverage");
-			console.debug("zzzzzzzzzzz2",Date().toString(), quads) 
             for (var i=0; i < quads;++i) {
                 var texture = layer.texture(i);
                 if (texture.valid) {
