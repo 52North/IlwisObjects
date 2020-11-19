@@ -49,7 +49,7 @@ public:
 private:
     GDALDataType _gdalValueType = GDT_Unknown;
     int _typeSize = iUNDEF;
-    GDALDriverH _driver;
+    GDALDriverH _driver = 0;
     ColorRangeBase::ColorModel _colorModel = ColorRangeBase::cmNONE;
     bool _hasTransparency = false;   
     GdalOffsetScales _offsetScales;

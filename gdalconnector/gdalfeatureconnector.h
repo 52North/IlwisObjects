@@ -40,7 +40,7 @@ public:
 protected:
 
 private:
-    OGRSFDriverH _driver;
+    OGRSFDriverH _driver = 0;
 
     enum OutputState { osIndex2Layer=1,osType2Layer=2, osLayer2DataSource=4};
 
