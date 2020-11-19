@@ -88,6 +88,7 @@ public:
     virtual void removeDataSource() { return;}
     virtual void unload() { return;}
     virtual bool dataIsLoaded() const { return true; }
+	virtual void dataIsLoaded(bool yesno) {};
     /*!
      * \brief isReadOnly returns if a connector can write to a source.
      *
