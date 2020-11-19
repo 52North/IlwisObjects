@@ -69,6 +69,9 @@ namespace Ilwis {
 			QString _osmInputFiles;
 			QFile _output;
 
+			BoundingBox _tilesBB;
+			int _tailZoom;
+
 			void updateOSMRaster();
 			QString makeFileName(const QString& url) const;
 			void getData();

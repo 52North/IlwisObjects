@@ -168,14 +168,7 @@ void BackgroundLayer::updateOSMRaster() {
 		return (int)(floor((1.0 - asinh(tan(latrad)) / M_PI) / 2.0 * (1 << zoomLevel)));
 	};
 
-	auto llTile = [](const Pixel& tile, int zoomLevel) -> Coordinate {
-		double f = (double)tile.x / (double)(1 << zoomLevel);
-		double lonLeft = f * 360.0 - 180;
-		double n = M_PI - 2.0 * M_PI * tile.y / (double)(1 << zoomLevel);
-		double latBottom = 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
 
-		return Coordinate(lonLeft, latBottom);
-	};
 	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
 	if (_downloadQueue.size() > 0) // are we already done with the previoud batch?
 		return;
@@ -185,52 +178,51 @@ void BackgroundLayer::updateOSMRaster() {
 		BoundingBox bb = layerManager()->rootLayer()->screenGrf()->coord2Pixel(env);
 
 		Envelope llEnv = CoordinateSystem::latLonEnvelope(layerManager()->rootLayer()->screenCsy(), env);
+		if (!llEnv.isValid()) {
+			kernel()->issues()->log("OSM will not functions as the used projection is not (always) convertible to latlon", IssueObject::itWarning);
+			return;
+		}
+
 		Envelope pmEnv = _osmRaster->coordinateSystem()->convertEnvelope(layerManager()->rootLayer()->screenCsy(), env);
+		if (!pmEnv.isValid()) {
+			kernel()->issues()->log("OSM will not functions as the used projection is not (always) convertible", IssueObject::itWarning);
+			return;
+		}
+
 
 		Envelope envWorld({ -20026376.39, -20048966.10 }, { 20026376.39, 20048966.10 });
 		double zoomSize = std::min(pmEnv.xlength(), pmEnv.ylength());
-		int z = std::ceil(std::log(envWorld.xlength() / zoomSize) / log(2)) + 1;
-		z = std::min(z, 18);
+		_tailZoom = std::ceil(std::log(envWorld.xlength() / zoomSize) / log(2)) + 1;
+		_tailZoom = std::min(_tailZoom, 18);
 
-		int tileMinX = ftilex(llEnv.min_corner(), z);
-		int tileMinY = ftiley(llEnv.min_corner(), z);
+		int tileMinX = ftilex(llEnv.min_corner(), _tailZoom);
+		int tileMinY = ftiley(llEnv.min_corner(), _tailZoom);
 
-		int tileMaxX = ftilex(llEnv.max_corner(), z);
-		int tileMaxY = ftiley(llEnv.max_corner(), z);
+		int tileMaxX = ftilex(llEnv.max_corner(), _tailZoom);
+		int tileMaxY = ftiley(llEnv.max_corner(), _tailZoom);
 
-		BoundingBox tilesBB({ tileMinX, tileMinY }, { tileMaxX, tileMaxY });
+		_tilesBB = BoundingBox({ tileMinX, tileMinY }, { tileMaxX, tileMaxY });
+		if (!_tilesBB.isValid())
+			return;
 
-		Coordinate llMin = llTile(tilesBB.min_corner(), z);
-		Coordinate llMax = llTile({ tilesBB.max_corner().x + 1, tilesBB.max_corner().y + 1}, z);
-		Envelope tileEnvelope(llMin, llMax);
-		ICoordinateSystem csyWgs84("code=epsg:4326");
+		QString tilebb = _tilesBB.toString() + " " + QString::number(_tailZoom);
 
-		env = _osmRaster->coordinateSystem()->convertEnvelope(csyWgs84, tileEnvelope);
-
-		QString tilebb = tilesBB.toString() + " " + QString::number(z);
-		_osmRaster->resourceRef().addProperty("tileboundingbox", tilebb);
-
-		_osmRaster->size({ tilesBB.size().xsize() * 256, tilesBB.size().ysize() * 256, 1 });
-		_osmRaster->coordinateSystem()->envelope(env);
-		_osmRaster->georeference()->as<CornersGeoReference>()->internalEnvelope(env);
-		_osmRaster->georeference()->compute();
 		QString basePath = context()->cacheLocation().toLocalFile();
 		tilebb.replace(" ", "_");
 		QString outputFileName = basePath + "/osm_mergedtiles_" + tilebb + ".png";
 
 		if (!QFile::exists(outputFileName)) {
-			int startTileX = tilesBB.min_corner().x;
-			int startTileY = tilesBB.min_corner().y;
-			int endTileX = tilesBB.max_corner().x;
-			int endTileY = tilesBB.max_corner().y;
-			QStringList requests;
+			int startTileX = _tilesBB.min_corner().x;
+			int startTileY = _tilesBB.min_corner().y;
+			int endTileX = _tilesBB.max_corner().x;
+			int endTileY = _tilesBB.max_corner().y;
+				QStringList requests;
 			QString server = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/backgroundmap-server", QString(""));
 			for (int y = startTileY; y <= endTileY; ++y) {
 				for (int x = startTileX; x <= endTileX; ++x) {
-					QString request = server + QString::number(z) + "/" + QString::number(x) + "/" + QString::number(y) + ".png";
+					QString request = server + QString::number(_tailZoom) + "/" + QString::number(x) + "/" + QString::number(y) + ".png";
 					QUrl url(request);
 					_downloadQueue.enqueue(url);
-
 				}
 
 			}
@@ -279,6 +271,16 @@ QString BackgroundLayer::makeFileName(const QString& url) const {
 }
 
 void BackgroundLayer::getData() {
+
+	auto llTile = [](const Pixel& tile, int zoomLevel) -> Coordinate {
+		double f = (double)tile.x / (double)(1 << zoomLevel);
+		double lonLeft = f * 360.0 - 180;
+		double n = M_PI - 2.0 * M_PI * tile.y / (double)(1 << zoomLevel);
+		double latBottom = 180.0 / M_PI * atan(0.5 * (exp(n) - exp(-n)));
+
+		return Coordinate(lonLeft, latBottom);
+	};
+
 	auto *layer = layerManager()->findLayerByName(OSMLAYERNAME);
 	if (layer->active()) {
 		if (_downloadQueue.size() > 0) {
@@ -305,7 +307,20 @@ void BackgroundLayer::getData() {
 		else {
 
 			if (layer) {
-				QString tilebb = _osmRaster->resourceRef()["tileboundingbox"].toString();
+				QString tilebb = _tilesBB.toString() + " " + QString::number(_tailZoom);
+				Coordinate llMin = llTile(_tilesBB.min_corner(), _tailZoom);
+				Coordinate llMax = llTile({ _tilesBB.max_corner().x + 1, _tilesBB.max_corner().y + 1 }, _tailZoom);
+				Envelope tileEnvelope(llMin, llMax);
+				ICoordinateSystem csyWgs84("code=epsg:4326");
+
+				auto env = _osmRaster->coordinateSystem()->convertEnvelope(csyWgs84, tileEnvelope);
+				_osmRaster->resourceRef().addProperty("tileboundingbox", tilebb);
+
+				_osmRaster->size({ _tilesBB.size().xsize() * 256, _tilesBB.size().ysize() * 256, 1 });
+				_osmRaster->coordinateSystem()->envelope(env);
+				_osmRaster->georeference()->as<CornersGeoReference>()->internalEnvelope(env);
+				_osmRaster->georeference()->compute();
+
 				tilebb.replace(" ", "_");
 				QString basePath = context()->cacheLocation().toLocalFile();
 				QString outputFileName = basePath + "/osm_mergedtiles_" + tilebb + ".png";
@@ -316,13 +331,13 @@ void BackgroundLayer::getData() {
 
 				ExecutionContext ctx;
 				if (commandhandler()->execute(expr, &ctx)) {
+					_osmRaster->dataIsLoaded(false);
 					layer->vproperty("calcdimensions", "dummy");
 					layer->vproperty("updatetextures", "dummy");
 					QStringList files = _osmInputFiles.split("|");
 					for (auto fname : files) {
 						QFile file(fname);
 						if (file.size() == 0) {
-							qDebug() << fname;
 							file.remove();
 						}
 					}
