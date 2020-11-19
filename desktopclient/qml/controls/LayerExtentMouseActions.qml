@@ -22,6 +22,7 @@ MouseArea {
     property string selectiondrawerColor : "basic"
     property var pStart
     property var pEnd
+	property int wheelCounter : 0
     signal zoomEnded(string envelope)
 	signal panChanged(string envelope, var updatebackground)
     signal setZoomPanButton(bool enablePanAndZoomOut)
@@ -38,6 +39,29 @@ MouseArea {
     FloatingRectangle{
         id : floatrect
 		text : layerManager.rootLayer.layerInfoString
+    }
+
+	  Timer {
+		id : wheelTimer
+        interval: 500; running: false; repeat: true
+		property int prevCounter : 0
+		property var lastEnvelope
+
+        onTriggered: {
+			if ( wheelCounter != 0){
+				if ( wheelTimer.prevCounter - wheelCounter  == 0){
+					running = false
+					wheelTimer.prevCounter = 0
+					wheelCounter = 0
+					if ( lastEnvelope)
+						zoomEnded(wheelTimer.lastEnvelope + ",true")
+				}else {
+					prevCounter = wheelCounter	
+				}
+			}
+		}
+
+
     }
 
     Rectangle {
@@ -305,7 +329,11 @@ MouseArea {
             var zoomposition = {x: mouseX / width, y: 1.0 - mouseY / height};
             envelope = Global.calcZoomOutEnvelope(envelope, zoomposition, viewmanager, wheel.angleDelta.y < 0 ? 1.1 : 1.0/1.1 );
             envelope = envelope.minx + "," + envelope.miny + "," + envelope.maxx + "," + envelope.maxy
-            zoomEnded(envelope);
+			if ( !wheelTimer.running)
+				wheelTimer.running = true
+			wheelTimer.lastEnvelope = envelope
+			++wheelCounter
+            zoomEnded(envelope + ",false");
             var enablePanAndZoomOut = layerManager.rootLayer.scrollInfo.xsizeperc < 1.0 || layerManager.rootLayer.scrollInfo.ysizeperc < 1.0
             setZoomPanButton(enablePanAndZoomOut)
             if (!enablePanAndZoomOut && (layerManager.zoomOutMode || layerManager.panningMode)) {
@@ -326,5 +354,6 @@ MouseArea {
         }
     }
 }
+
 
 
