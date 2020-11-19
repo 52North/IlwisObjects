@@ -411,6 +411,7 @@ public:
     void resetOutputConnector();
 	virtual void storeAdjustment(const QString& property, const QString& value);
 	void updateAdjustementsDatabase(const Resource& oldRes);
+	void dataIsLoaded(bool yesno);
 
 
 protected:
