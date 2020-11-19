@@ -56,7 +56,6 @@ Rectangle  {
         var constantValues = []
         var parms = node.parameters
         if ( parms){
-			console.debug("ppppppppppp",currentOperation.operation) 
             var form = formbuilder.index2Form(currentOperation.operation.id,node)
             appFrame.formQML = ""
             appFrame.formQML = form
