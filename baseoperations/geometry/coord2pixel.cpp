@@ -101,6 +101,7 @@ quint64 Coord2Pixel::createMetadata()
     operation.addOutParameter(0,itPIXEL, TR("Pixel"));
     operation.setKeywords("pixel, coordinate, geometry,transformation,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

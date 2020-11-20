@@ -359,6 +359,7 @@ quint64 ClusterRaster::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("classified raster"), TR("output raster were all the pixels have been classified"));
     operation.setKeywords("raster, classification");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

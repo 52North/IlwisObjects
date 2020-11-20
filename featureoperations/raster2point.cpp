@@ -127,6 +127,7 @@ quint64 RasterToPoint::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itPOINT, TR("output point coverage"), TR("output point coverage with the domain of the input map"));
     operation.setKeywords("point,raster");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

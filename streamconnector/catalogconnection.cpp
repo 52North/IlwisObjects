@@ -86,6 +86,8 @@ quint64 CatalogConnection::createMetadata()
     operation.addOutParameter(0,itSTRING, TR("connection url"),TR("string that is sufficient to access the remote catalog"));
     operation.setKeywords("service,ilwisremote");
 
+    operation.checkAlternateDefinition();
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

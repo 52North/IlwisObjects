@@ -168,6 +168,7 @@ quint64 RasterSlicing::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("classified raster"));
     operation.setKeywords("raster, classification");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

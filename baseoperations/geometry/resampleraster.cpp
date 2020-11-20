@@ -154,6 +154,7 @@ quint64 ResampleRaster::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage"), TR("output rastercoverage with the domain of the input map"));
     operation.setKeywords("raster, geometry, transformation,georeference,projection,coordinatesystem,reprojection");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

@@ -26,6 +26,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QSqlField>
 #include <QThread>
 #include <QDir>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 #ifdef COMPILER_GCC
 #include <cxxabi.h>
 #endif
@@ -71,6 +76,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operation.h"
 #include "tranquilizer.h"
 #include "tranquilizerfactory.h"
+#include "operationmetadata.h"
 #include "modeller/workflownode.h"
 #include "modeller/workflow.h"
 #include "modeller/applicationmodel.h"
@@ -193,7 +199,7 @@ void Kernel::init() {
     modFac->prepare();
     addFactory(modFac);
 
-	int p = TypeHelper::_timeUserId;
+	loadAlternateOperationDefintions();
 
     loadModulesFromLocation(context()->ilwisFolder().absoluteFilePath() + "/extensions/");
 
@@ -383,6 +389,108 @@ QWaitCondition &Kernel::waitcondition(quint32 runid, bool &ok)
     }
     ok = false;
     return _dummyWait;
+}
+
+void Kernel::loadAlternateOperationDefintions() {
+	QString path = context()->ilwisFolder().absoluteFilePath() + "/resources/alternateoperationdefinitions.json";
+	QFile file;
+	file.setFileName(path);
+	if (file.open(QIODevice::ReadOnly)) {
+		QString settings = file.readAll();
+		QJsonDocument doc = QJsonDocument::fromJson(settings.toUtf8());
+		if (!doc.isNull()) {
+			QJsonObject obj = doc.object();
+			QJsonValue defs = obj.value("definitions");
+			QJsonArray arrDefs = defs.toArray();
+			for (auto iter = arrDefs.begin(); iter != arrDefs.end(); ++iter) {
+				auto jsonValue = *iter;
+				if (jsonValue.isObject()) {
+					QJsonObject objv = jsonValue.toObject();
+					AltOperation oper;
+					QString syntax = objv.value("syntax").toString(sUNDEF);
+					oper._description = objv.value("description").toString(sUNDEF);
+					oper._keywords = objv.value("keywords").toString(sUNDEF);
+					QJsonValue inparams = objv.value("inparameters");
+
+					if (!inparams.isNull()) {
+						QJsonArray parms = inparams.toArray();
+						for (auto iter2 = parms.begin(); iter2 != parms.end(); ++iter2) {
+							auto jsonParm = *iter2;
+							if (jsonParm.isObject()) {
+								QJsonObject objParm = jsonParm.toObject();
+								int idx = objParm.value("index").toInt(-1);
+								if (idx >= 0) {
+									AltParm parm;
+									parm._index = idx;
+									parm._name = objParm.value("name").toString(sUNDEF);
+									parm._description = objParm.value("description").toString(sUNDEF);
+									oper._inParms.push_back(parm);
+								}
+							}
+						}
+					}
+					QJsonValue outparams = objv.value("outparameters");
+
+					if (!outparams.isNull()) {
+						QJsonArray parms = outparams.toArray();
+						for (auto iter2 = parms.begin(); iter2 != parms.end(); ++iter2) {
+							auto jsonParm = *iter2;
+							if (jsonParm.isObject()) {
+								QJsonObject objParm = jsonParm.toObject();
+								int idx = objParm.value("index").toInt(-1);
+								if (idx >= 0) {
+									AltParm parm;
+									parm._index = idx;
+									parm._name = objParm.value("name").toString(sUNDEF);
+									parm._description = objParm.value("description").toString(sUNDEF);
+									oper._outParms.push_back(parm);
+								}
+							}
+						}
+					}
+					_alternateOperationDefs[syntax] = oper;
+				}
+			}
+		}
+	}
+}
+
+void Kernel::adaptOperationDefinition(OperationResource *operation) const {
+	QString syntax = (*operation)["syntax"].toString();
+	auto iter = _alternateOperationDefs.find(syntax);
+	if (iter != _alternateOperationDefs.end()) {
+		AltOperation operDef = (*iter).second;
+		if (operDef._description != sUNDEF) {
+			operation->setDescription(operDef._description);
+		}
+		if (operDef._keywords != sUNDEF) {
+			operation->setKeywords(operDef._keywords);
+		}
+		for (auto iparm : operDef._inParms) {
+			if (iparm._index < 0)
+				return;
+			int idx = iparm._index;
+			QString prefix = "pin_" + QString::number(idx + 1) + "_";
+			if (iparm._description != sUNDEF) {
+				operation->addProperty(prefix + "desc", iparm._description);
+			}
+			if (iparm._name != sUNDEF) {
+				operation->addProperty(prefix + "name", iparm._name);
+			}
+		}
+		for (auto oparm : operDef._inParms) {
+			if (oparm._index < 0)
+				return;
+			int idx = oparm._index;
+			QString prefix = "pout_" + QString::number(idx + 1) + "_";
+			if (oparm._description != sUNDEF) {
+				operation->addProperty(prefix + "desc", oparm._description);
+			}
+			if (oparm._name != sUNDEF) {
+				operation->addProperty(prefix + "name", oparm._name);
+			}
+		}
+	}
 }
 
 

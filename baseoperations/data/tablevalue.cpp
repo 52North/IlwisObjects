@@ -100,6 +100,7 @@ quint64 TableValue::createMetadata()
     operation.addOutParameter(0,itDOUBLE , TR("value"),TR("value in the indicated cell"));
     operation.setKeywords("raster,pixel,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

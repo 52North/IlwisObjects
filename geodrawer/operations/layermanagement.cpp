@@ -110,6 +110,7 @@ quint64 LayerManagement::createMetadata()
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

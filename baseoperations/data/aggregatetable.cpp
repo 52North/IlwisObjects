@@ -236,6 +236,7 @@ quint64 AggregateTable::createMetadata()
     operation.addOutParameter(0,itTABLE , TR("aggregated table"),TR("new table where the columns have been aggregated"));
     operation.setKeywords("table,aggregate,column");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

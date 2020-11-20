@@ -1,0 +1,23 @@
+{
+	"definitions" : [
+		{
+			"syntax" : "examplefunc(parm1, parm2)",
+			"description" : "The new text that should describe the operation. Note that html is allowed",
+			"keywords" : "key1,key2,key3",
+			"inparameters" : [
+				{
+					"index" : 0,
+					"name" : "Text in the UI",
+					"description" : "The new text that should describe the parameter. Note that html is allowed"
+				}
+			],
+			"outparameters" : [
+				{
+					"index" : 0,
+					"name" : "Text in the UI",
+					"description" : "The new text that should describe the parameter. Note that html is allowed"
+				}
+			]			
+		}
+	]
+}

@@ -265,6 +265,7 @@ quint64 ColumnJoin::createMetadata()
     operation.addValidation(3,4,"columns");
     operation.addOutParameter(0,itTABLE|itCOVERAGE, TR("output table/ coverage"));
     operation.setKeywords("table,aggregate,column");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

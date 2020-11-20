@@ -107,6 +107,7 @@ quint64 LaplaceFilter::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("output raster with edges highlighted"));
     operation.setKeywords("image processing,raster,edge detection, filter");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

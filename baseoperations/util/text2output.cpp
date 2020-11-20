@@ -96,6 +96,7 @@ quint64 Text2Output::createMetadata()
     operation.setOutParameterCount({0});
     operation.setKeywords("text, output,internal");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

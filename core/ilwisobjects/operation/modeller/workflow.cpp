@@ -578,7 +578,8 @@ quint64 Workflow::createMetadata(int offset){
             operation.addOutParameter(count++,parm->type(), parm->name(),parm->description());
         }
         resourceRef() = operation;
-        mastercatalog()->addItems({operation});
+        operation.checkAlternateDefinition();
+    mastercatalog()->addItems({operation});
         Operation::registerOperation(operation.id(),WorkflowImplementation::create);
         return operation.id();
     }catch(const ErrorObject& ){

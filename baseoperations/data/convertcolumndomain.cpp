@@ -275,6 +275,7 @@ quint64 ConvertColumnDomain::createMetadata()
     operation.addValidation(0,1,"columns");
     operation.setKeywords("table, domain, transformation");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

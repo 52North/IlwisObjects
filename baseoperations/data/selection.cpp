@@ -267,6 +267,7 @@ quint64 SelectionRaster::createMetadata()
     operation.addOutParameter(0, itRASTER, TR("selection"));
     operation.setKeywords("raster,selection,submap,attribute");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -309,6 +310,7 @@ quint64 AttributeRaster::createMetadata()
     operation.addOutParameter(0, itRASTER, TR("attribute raster"));
     operation.setKeywords("raster,selection,attribute");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -351,6 +353,7 @@ quint64 RasterBand::createMetadata()
     operation.addOutParameter(0, itRASTER, TR("output band"));
     operation.setKeywords("raster,selection");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

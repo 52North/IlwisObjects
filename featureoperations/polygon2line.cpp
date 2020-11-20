@@ -152,6 +152,7 @@ quint64 Polygon2Line::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itLINE, TR("output line coverage"), TR("Collection of boundaries of the polygons"));
     operation.setKeywords("line,polygon,vector");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

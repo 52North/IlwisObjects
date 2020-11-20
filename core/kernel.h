@@ -49,6 +49,7 @@ class FactoryInterface;
 class IssueLogger;
 class Resource;
 class Tranquilizer;
+class OperationResource;
 
 typedef QScopedPointer<Version> SPVersion;
 typedef std::shared_ptr<Tranquilizer> SPTranquilizer;
@@ -212,7 +213,20 @@ public:
     QWaitCondition& waitcondition(quint32, bool& ok);
     QWaitCondition _dummyWait;
 
+	void adaptOperationDefinition(OperationResource *operation) const;
+
 private:
+	struct AltParm{
+		QString _name = sUNDEF;
+		QString _description = sUNDEF;
+		int _index = -1;
+	};
+	struct AltOperation{
+		QString _description = sUNDEF;
+		QString _keywords = sUNDEF;
+		std::vector<AltParm> _inParms;
+		std::vector<AltParm> _outParms;
+	};
     QThreadStorage<QCache<QString, QVariant> *> _caches;
     ModuleMap _modules;
     SPVersion _version;
@@ -224,6 +238,9 @@ private:
     static Kernel *_kernel;
     std::mutex _syncLocksGuard;
     std::map<quint32, QWaitCondition> _syncLocks;
+	std::map<QString, AltOperation> _alternateOperationDefs;
+
+	void loadAlternateOperationDefintions();
 
 
 signals:

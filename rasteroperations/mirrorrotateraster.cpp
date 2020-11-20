@@ -195,6 +195,7 @@ quint64 MirrorRotateRaster::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"), TR("output raster with a new georef"));
     operation.setKeywords("raster, geometry");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

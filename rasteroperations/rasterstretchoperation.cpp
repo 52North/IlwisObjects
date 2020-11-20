@@ -157,6 +157,7 @@ quint64 LinearStretchOperation::createMetadata()
     operation.addOutParameter(0, itRASTER, TR("output rastercoverage"), TR("output rastercoverage stretched"), itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,image processing,numeric,contrast");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

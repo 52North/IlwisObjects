@@ -174,6 +174,7 @@ quint64 Aggregation::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,column,aggregate,numeric");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

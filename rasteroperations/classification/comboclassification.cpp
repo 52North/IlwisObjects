@@ -185,6 +185,7 @@ quint64 ComboClassification::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("classified raster"), TR("output raster were all the pixels have been classified according to the combinations"));
     operation.setKeywords("raster, classification");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

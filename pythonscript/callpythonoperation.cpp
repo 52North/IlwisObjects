@@ -224,6 +224,7 @@ quint64 CallPythonOperation::createMetadata()
     operation.setDescription(TR("Wrapper for calls to python"));
     operation.setInParameterCount({0});
     operation.setOutParameterCount({0});
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

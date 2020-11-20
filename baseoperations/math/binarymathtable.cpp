@@ -189,6 +189,7 @@ quint64 BinaryMathTable::createMetadata()
     operation.addOutParameter(0,itCOLUMN, TR("output column"));
     operation.setKeywords("table,column,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

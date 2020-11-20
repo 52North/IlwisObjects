@@ -146,6 +146,7 @@ quint64 SetValueRange::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("raster coverage"));
     operation.setKeywords("numeric,valuerange");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

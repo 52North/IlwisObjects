@@ -95,6 +95,7 @@ quint64 FPixel::createMetadata()
     operation.addOutParameter(0,itPIXEL, TR("Pixel"));
     operation.setKeywords("pixel, geometry,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

@@ -131,6 +131,7 @@ quint64 SetRepresentation::createMetadata()
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization,representation");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

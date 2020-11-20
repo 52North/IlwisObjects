@@ -127,6 +127,7 @@ quint64 Compare::createMetadata()
     operation.addOutParameter(0,itBOOL, TR("result"), TR("Result of the comparison"));
     operation.setKeywords("tests, math,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

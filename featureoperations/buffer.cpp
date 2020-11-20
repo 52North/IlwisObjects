@@ -179,6 +179,7 @@ quint64 Buffer::createMetadata()
     operation.addOutParameter(0,itFEATURE, TR("output buffer coverage"),TR("coverage containing the buffer around the input coverage"));
     operation.setKeywords("features, buffer, vector");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

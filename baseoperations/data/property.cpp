@@ -172,6 +172,7 @@ quint64 Property::createMetadata()
     operation.addOutParameter(0,itDOUBLE|itSTRING , TR("value"),TR("value of the indicated property"));
     operation.setKeywords("tests,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

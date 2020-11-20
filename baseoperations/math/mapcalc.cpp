@@ -231,6 +231,7 @@ quint64 MapCalc1::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("raster coverage"), "", itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 
@@ -260,6 +261,7 @@ quint64 MapCalc2::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 
@@ -290,6 +292,7 @@ quint64 MapCalc3::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 
@@ -320,6 +323,7 @@ quint64 MapCalc4::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 
@@ -353,6 +357,7 @@ quint64 MapCalc5::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 
@@ -387,6 +392,7 @@ quint64 MapCalc6::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("raster coverage"), sUNDEF, itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 
@@ -421,6 +427,7 @@ MapCalc6::MapCalc6(quint64 metaid,const Ilwis::OperationExpression &expr) : MapC
 //    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
 //    operation.setKeywords("raster,numeric,math");
 
+//    operation.checkAlternateDefinition();
 //    mastercatalog()->addItems({operation});
 //    return operation.id();
 
@@ -456,6 +463,7 @@ MapCalc6::MapCalc6(quint64 metaid,const Ilwis::OperationExpression &expr) : MapC
 //    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
 //    operation.setKeywords("raster,numeric,math");
 
+//    operation.checkAlternateDefinition();
 //    mastercatalog()->addItems({operation});
 //    return operation.id();
 
@@ -493,6 +501,7 @@ MapCalc6::MapCalc6(quint64 metaid,const Ilwis::OperationExpression &expr) : MapC
 //    operation.addOutParameter(0,itRASTER, TR("raster coverage"));
 //    operation.setKeywords("raster,numeric,math");
 
+//    operation.checkAlternateDefinition();
 //    mastercatalog()->addItems({operation});
 //    return operation.id();
 

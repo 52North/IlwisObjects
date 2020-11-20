@@ -114,6 +114,7 @@ quint64 DilateFilter::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("a raster with morphology changed of affected structures in the raster"));
     operation.setKeywords("image processing,raster,morphology, filter");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

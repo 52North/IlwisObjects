@@ -123,6 +123,7 @@ quint64 LinearRasterFilter::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("output raster with a numeric domain"));
     operation.setKeywords("filter,raster,image processing, numeric");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

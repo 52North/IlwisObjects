@@ -90,6 +90,7 @@ quint64 RasValue::createMetadata()
     operation.addOutParameter(0,itDOUBLE , TR("value"),TR("value at the indicated location"));
     operation.setKeywords("raster,pixel,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

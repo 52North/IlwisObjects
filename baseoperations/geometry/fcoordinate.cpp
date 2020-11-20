@@ -95,6 +95,7 @@ quint64 FCoordinate::createMetadata()
     operation.addOutParameter(0,itCOORDINATE, TR("coordinate"));
     operation.setKeywords("coordinate,internal,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

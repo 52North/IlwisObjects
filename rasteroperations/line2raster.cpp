@@ -174,6 +174,7 @@ quint64 Line2Raster::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage"), TR("output rastercoverage with the domain of the input map"));
     operation.setKeywords("raster,line,vector");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
 
     return operation.id();

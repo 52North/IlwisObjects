@@ -99,6 +99,7 @@ quint64 TestOperation::createMetadata()
     operation.addOutParameter(1,itRASTER , TR("output2"));
     operation.setKeywords("test");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

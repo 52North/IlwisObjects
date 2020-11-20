@@ -159,6 +159,7 @@ quint64 AreaNumbering::createMetadata()
     operation.addOutParameter(1,itRASTER, TR("output raster"),TR("output rastercoverage with the identifier domain"));
     operation.setKeywords("raster,classification");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

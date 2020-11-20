@@ -45,6 +45,7 @@ public:
     void parameterNeedsQuotes(quint32 order);
     void setOutputIsInput(int outParm, int inParm);
 	void setCustomForm(const QString& form);
+	void checkAlternateDefinition();
 	
     bool compatibleOperationAlreadyExists(bool ignoreSelf=true);
 };
