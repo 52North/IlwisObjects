@@ -164,34 +164,31 @@ Section "ILWIS Objects (required)" IOSecID
     #File /r bin\extensions\gslconnector\*
     SetOutPath "$Instdir\extensions\ilwis3connector"
     File /r bin\extensions\ilwis3connector\*
+    SetOutPath "$Instdir\extensions\ilwis4connector"
+    File /r bin\extensions\ilwis4connector\*
     SetOutPath "$Instdir\extensions\ilwisscript"
     File /r bin\extensions\ilwisscript\*
     SetOutPath "$Instdir\extensions\internalconnector"
     File /r bin\extensions\internalconnector\*
-    #SetOutPath "$Instdir\extensions\opencvconnector"
-    #File /r bin\extensions\opencvconnector\*
+    #SetOutPath "$Instdir\extensions\opencv"
+    #File /r bin\extensions\opencv\*
     SetOutPath "$Instdir\extensions\postgresqlconnector"
     File /r bin\extensions\postgresqlconnector\*
     SetOutPath "$Instdir\extensions\proj4impl"
     File /r bin\extensions\proj4impl\*
     SetOutPath "$Instdir\extensions\rasteroperations"
     File /r bin\extensions\rasteroperations\*
-    SetOutPath "$Instdir\extensions\remotedataaccesshandler"
-    File /r bin\extensions\remotedataaccesshandler\*
-    #SetOutPath "$Instdir\extensions\spreadsheetconnectors"
-    #File /r bin\extensions\spreadsheetconnectors\*
+    SetOutPath "$Instdir\extensions\sentinelconnector"
+    File /r bin\extensions\sentinelconnector\*
+    #SetOutPath "$Instdir\extensions\spreadsheet"
+    #File /r bin\extensions\spreadsheet\*
     SetOutPath "$Instdir\extensions\streamconnector"
     File /r bin\extensions\streamconnector\*
-    SetOutPath "$Instdir\extensions\wfsconnector"
-    File /r bin\extensions\wfsconnector\*
-    SetOutPath "$Instdir\extensions\workflowconnector"
-    File /r bin\extensions\workflowconnector\*
     SetOutPath "$Instdir\plugins"
     File /r bin\plugins\*
     SetOutPath "$Instdir\resources"
     File /r bin\resources\*
     SetOutPath "$Instdir"
-    File bin\httpserver.dll
     File bin\icudt51.dll
     File bin\icuin51.dll
     File bin\icuuc51.dll
@@ -284,8 +281,6 @@ Section "un.ILWIS Objects"
     RmDir /r $Instdir\extensions
     RmDir /r $Instdir\plugins
     RmDir /r $Instdir\resources
-    Delete $Instdir\libgeos*.dll
-    Delete $Instdir\httpserver.dll
     Delete $Instdir\icudt51.dll
     Delete $Instdir\icuin51.dll
     Delete $Instdir\icuuc51.dll

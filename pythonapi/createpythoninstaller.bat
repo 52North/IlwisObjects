@@ -1,7 +1,7 @@
 @echo off
-copy/y ..\core\buildnumber.h ..\..\output\win32release
-copy/y installerPy.nsi ..\..\output\win32release
-cd ..\..\output\win32release
+copy/y ..\core\buildnumber.h ..\..\output\release
+copy/y installerPy.nsi ..\..\output\release
+cd ..\..\output\release
 echo @echo off > crpi.bat
 echo set str=%%3 >> crpi.bat
 echo if "%%2" == "ILWIS_BUILDNR" ( >> crpi.bat
