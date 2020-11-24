@@ -261,7 +261,8 @@ bool AssignmentNode::evaluate(SymbolTable& symbols, int scope, ExecutionContext 
                         if ( resultGC.isValid() && resultGC->size().zsize() > 1){
                             createCatalog(resultGC);
                         }
-						setResolution(resultGC, specifier);
+                        if ( !specifier.isNull())
+                            setResolution(resultGC, specifier);
 
                     }
                     else if (hasType(tp, itFEATURE))
