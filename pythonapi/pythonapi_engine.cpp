@@ -168,14 +168,23 @@ Object* Engine::_do(std::string output_name, std::string operation, std::string 
     }
     QString command;
     if (!c3.empty()){
+        c3 = addQuotesIfNeeded(c3);
         if(!c4.empty()){
+            c4 = addQuotesIfNeeded(c4);
             if(!c5.empty()){
+                c5 = addQuotesIfNeeded(c5);
                 if(!c6.empty()){
+                    c6 = addQuotesIfNeeded(c6);
                     if(!c7.empty()){
+                        c7 = addQuotesIfNeeded(c7);
                         if(!c8.empty()){
+                            c8 = addQuotesIfNeeded(c8);
                             if(!c9.empty()){
+                                c9 = addQuotesIfNeeded(c9);
                                 if (!c10.empty()){
+                                    c10 = addQuotesIfNeeded(c10);
                                     if (!c11.empty()){
+                                        c11 = addQuotesIfNeeded(c11);
                                         command = QString("script %1=%2(%3,%4,%5,%6,%7,%8,%9,").arg(output_name.c_str(),operation.c_str(),c3.c_str(),c4.c_str(),c5.c_str(),c6.c_str(),c7.c_str(),c8.c_str(),c9.c_str()) + QString("%1,%2)").arg(c10.c_str(),c11.c_str());
                                     }else{
                                         command = QString("script %1=%2(%3,%4,%5,%6,%7,%8,%9,").arg(output_name.c_str(),operation.c_str(),c3.c_str(),c4.c_str(),c5.c_str(),c6.c_str(),c7.c_str(),c8.c_str(),c9.c_str()) + QString("%1)").arg(c10.c_str());
@@ -344,4 +353,14 @@ PyObject* Engine::_catalogItems(){
         }
     }
     return tup;
+}
+
+std::string Engine::addQuotesIfNeeded(std::string parameter) {
+    if (parameter.front() != '\'' && parameter.back() != '\'') { // if it does not already have quotes
+        double d;
+        if (sscanf(parameter.c_str(), "%lf", &d) <= 0) { // if it is not a number (int,float). Do we also expect hex/oct numbers here?
+            parameter = "'" + parameter + "'";
+        }
+    }
+    return parameter;
 }
