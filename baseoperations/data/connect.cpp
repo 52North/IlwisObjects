@@ -102,6 +102,7 @@ quint64 Connect::createMetadata()
     operation.addOutParameter(0,itILWISOBJECT , TR("ilwisobject"),TR("a reference to the opened object"));
     operation.setKeywords("workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

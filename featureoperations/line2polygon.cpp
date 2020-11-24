@@ -126,6 +126,7 @@ quint64 Line2Polygon::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itPOLYGON, TR("output polygon coverage"), TR("Collection of polygons"));
     operation.setKeywords("line,polygon,vector");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

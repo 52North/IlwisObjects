@@ -75,6 +75,7 @@ quint64 TransformCoordinates::createMetadata()
     operation.addOutParameter(0,itFEATURE, TR("output feature coverage"), TR("output feature coverage where all vertices have new coordinates"));
     operation.setKeywords("features, vector, coordinatesystem,internal"); // internal for the moment as there is no implementation
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

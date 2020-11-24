@@ -127,6 +127,7 @@ quint64 CompareHistograms::createMetadata()
     operation.addOutParameter(0,itDOUBLE | itCOLLECTION, TR("statistical Marker"),TR("a raster with blurred features and reduced noise"));
     operation.setKeywords("image processing,raster,statistics");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

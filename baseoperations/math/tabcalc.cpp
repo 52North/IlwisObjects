@@ -189,6 +189,7 @@ quint64 TabCalc1::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -222,6 +223,7 @@ quint64 TabCalc2::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -256,6 +258,7 @@ quint64 TabCalc3::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -291,6 +294,7 @@ quint64 TabCalc4::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -326,6 +330,7 @@ quint64 TabCalc5::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
@@ -362,6 +367,7 @@ quint64 TabCalc6::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

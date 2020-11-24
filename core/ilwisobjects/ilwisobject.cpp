@@ -992,3 +992,7 @@ void IlwisObject::updateAdjustementsDatabase(const Resource& oldRes) {
 		arg(tpName);
 	db.exec(stmt);
 }
+
+void IlwisObject::dataIsLoaded(bool yesno) {
+	_connector->dataIsLoaded(yesno);
+}

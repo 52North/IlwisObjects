@@ -195,6 +195,7 @@ quint64 DensifyRaster::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("name for the output raster."));
     operation.setKeywords("raster,aggregate,interpolation");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

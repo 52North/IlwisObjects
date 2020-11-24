@@ -77,7 +77,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;ILWISCOREUI_LIBRARY;QT_NO_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;ILWISCOREUI_LIBRARY;QT_NO_DEBUG;QUICKQANAVA_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -115,7 +115,7 @@
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
       <InputFile>%(FullPath)</InputFile>
-      <Define>_WINDOWS;UNICODE;WIN32;WIN64;ILWISCOREUI_LIBRARY;QT_NO_DEBUG;NDEBUG;%(PreprocessorDefinitions)</Define>
+      <Define>_WINDOWS;UNICODE;WIN32;WIN64;ILWISCOREUI_LIBRARY;QT_NO_DEBUG;QUICKQANAVA_STATIC;NDEBUG;%(PreprocessorDefinitions)</Define>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <OutputFile>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\\moc_%(Filename).cpp</OutputFile>
       <DynamicSource>output</DynamicSource>

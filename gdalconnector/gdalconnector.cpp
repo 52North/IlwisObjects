@@ -165,7 +165,9 @@ bool GdalConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
             _gdalShortName = gdal()->getShortName(driverH);
         }
     }else if ( hasType( data->ilwisType(), itFEATURE)){
-        OGRSFDriverH driverH = gdal()->getDriverFromDS(_handle->handle());
+		auto proxy = gdal();
+		auto func = proxy->getDriverFromDS;
+        OGRSFDriverH driverH = func(_handle->handle());
         if ( driverH){
             _gdalShortName = gdal()->getDriverName(driverH);
         }

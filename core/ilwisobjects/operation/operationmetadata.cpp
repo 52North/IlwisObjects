@@ -566,5 +566,9 @@ void OperationResource::addValidation(quint32 parent, quint32 child, const QStri
     addProperty(prefix + "validationcondition", d);
 }
 
+void OperationResource::checkAlternateDefinition() {
+	kernel()->adaptOperationDefinition(this);
+
+}
 
 

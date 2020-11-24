@@ -337,6 +337,7 @@ quint64 Timesat::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage"), TR("output rastercoverage with the domain of the input map"));
     operation.setKeywords("raster, filter, Savitzky-Golay");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

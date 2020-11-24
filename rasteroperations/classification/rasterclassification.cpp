@@ -159,6 +159,7 @@ quint64 BoxClassification::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage with the domain of the sampleset"));
     operation.setKeywords("classification,raster");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

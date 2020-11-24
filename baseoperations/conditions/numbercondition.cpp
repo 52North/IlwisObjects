@@ -131,6 +131,7 @@ quint64 NumberCondition::createMetadata()
     operation.setKeywords("condition, numeric");
 	operation.parameterNeedsQuotes(1);
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

@@ -118,6 +118,7 @@ quint64 ServiceObject::createMetadata()
     operation.addOutParameter(0,itILWISOBJECT , TR("value"),TR("value of the indicated aspect"));
     operation.setKeywords("tests,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

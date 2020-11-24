@@ -111,6 +111,7 @@ quint64 TableValueByPrimaryKey::createMetadata()
     operation.addOutParameter(0,itANY , TR("value"),TR("value in the indicated cell"));
     operation.setKeywords("raster,pixel");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

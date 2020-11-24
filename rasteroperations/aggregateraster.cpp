@@ -245,6 +245,7 @@ quint64 AggregateRaster::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("Aggregated raster"), TR("output rastercoverage with the domain of the input map"));
     operation.setKeywords("aggregate,raster,geometry");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

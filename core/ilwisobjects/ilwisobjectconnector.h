@@ -45,6 +45,7 @@ public:
     QVariant getProperty(const QString& ) const;
     const Resource &sourceRef() const;
     bool dataIsLoaded() const;
+	void dataIsLoaded(bool yesno);
     void unload();
 
 protected:

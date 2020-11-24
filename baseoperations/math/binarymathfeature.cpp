@@ -140,6 +140,7 @@ quint64 BinaryMathFeature::createMetadata()
     operation.addOutParameter(0,itFEATURE, TR("output featurecoverage"));
     operation.setKeywords("features, merge");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

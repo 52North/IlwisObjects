@@ -95,6 +95,8 @@ quint64 AddRasterBand::createMetadata()
     operation.addOutParameter(0,itRASTER , TR("output raster"),TR("raster with extra band"));
     operation.setKeywords("raster,workflow");
 
+    operation.checkAlternateDefinition();
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

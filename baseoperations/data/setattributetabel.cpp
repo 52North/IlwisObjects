@@ -131,6 +131,7 @@ quint64 SetAttributeTable::createMetadata()
     operation.addOutParameter(0,itRASTER , TR("output raster"),TR("A new raster with an attribute table"));
     operation.setKeywords("coverage, selection");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

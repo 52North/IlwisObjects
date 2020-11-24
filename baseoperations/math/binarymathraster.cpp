@@ -277,6 +277,7 @@ quint64 BinaryMathRaster::createMetadata()
     operation.addOutParameter(0,itRASTER|itNUMBER, TR("raster coverage"));
     operation.setKeywords("raster,numeric,math");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

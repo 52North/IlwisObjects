@@ -95,6 +95,7 @@ quint64 GaussianBlurFilter::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("a raster with blurred features and reduced noise"));
     operation.setKeywords("image processing,raster,noise reduction, filter");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

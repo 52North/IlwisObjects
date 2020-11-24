@@ -143,6 +143,7 @@ quint64 SelectionTable::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itTABLE , TR("Selection"),TR("table were the selection has been applied"));
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

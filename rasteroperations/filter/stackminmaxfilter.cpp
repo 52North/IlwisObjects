@@ -135,6 +135,7 @@ quint64 StackMinMaxFilter::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("output raster with a numeric domain"), itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("filter,raster");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

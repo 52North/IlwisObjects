@@ -88,6 +88,11 @@ bool IlwisObjectConnector::dataIsLoaded() const
     return _binaryIsLoaded;
 }
 
+void IlwisObjectConnector::dataIsLoaded(bool yesno) 
+{
+	_binaryIsLoaded = yesno;
+}
+
 void IlwisObjectConnector::unload()
 {
 

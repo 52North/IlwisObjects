@@ -78,6 +78,7 @@ quint64 HistogramEqualization::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"));
     operation.setKeywords("image processing,raster, contrast");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

@@ -188,6 +188,7 @@ quint64 ColumnUnaryOperation::createMetadata()
     operation.addOutParameter(0,itTABLE, TR("output table"));
     operation.setKeywords("table,operation,statistics,numeric");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

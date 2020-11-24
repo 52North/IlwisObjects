@@ -75,6 +75,7 @@ quint64 MasterGeoreference::createMetadata()
     operation.addOutParameter(0,itUNKNOWN, TR(""));
     operation.setKeywords("georeference,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

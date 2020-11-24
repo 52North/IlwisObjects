@@ -69,6 +69,7 @@ quint64 SpatialRelationOperation::createMetadata()
     operation.addOutParameter(0,itFEATURE, TR("feature coverage"));
     operation.setKeywords("geometry, vector, spatial relation,features");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

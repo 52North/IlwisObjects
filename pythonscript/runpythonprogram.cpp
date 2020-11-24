@@ -66,6 +66,7 @@ quint64 RunPythonProgram::createMetadata()
     operation.addOutParameter(0,itSTRING, TR("output"),TR("optional output of the executed python lines") );
     operation.setKeywords("python, script");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

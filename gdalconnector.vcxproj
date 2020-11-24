@@ -166,7 +166,9 @@ xcopy ..\external\libraries\$(ProjectName)\*.dll ..\output\release\bin\extension
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;GDALCONNECTOR_LIBRARY;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(OutDir)*.dll" ..\output\debug\bin\extensions\gdalconnector\*
+      <Command>xcopy "$(OutDir)*.dll" ..\output\debug\bin\extensions\gdalconnector\* /Y/I 
+
+
 
 xcopy  gdalconnector\resources\* ..\output\debug\bin\extensions\gdalconnector\resources /S /Y /I
 xcopy ..\external\libraries\$(ProjectName)\*.dll ..\output\debug\bin\extensions\$(ProjectName)\* /y/i</Command>

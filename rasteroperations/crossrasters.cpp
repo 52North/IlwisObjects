@@ -323,6 +323,7 @@ quint64 CrossRastersBase::createMetadata(OperationResource& operation)
     operation.addInParameter(2,itSTRING , TR("undef handling"),TR("how undefs are handled can be defined per input raster"));
     operation.setKeywords("cross,raster,table");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

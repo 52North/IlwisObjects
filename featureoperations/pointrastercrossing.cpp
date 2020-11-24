@@ -104,6 +104,7 @@ quint64 PointRasterCrossing::createMetadata()
     operation.addOutParameter(0,itPOINT, TR("output point coverage"), TR("output point coverage with the extended attribute table"));
     operation.setKeywords("raster, point, cross");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

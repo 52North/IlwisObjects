@@ -84,6 +84,7 @@ quint64 WorkingCatalog::createMetadata()
     operation.setOutParameterCount({0});
     operation.setKeywords("data,workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

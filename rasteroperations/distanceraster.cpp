@@ -302,6 +302,7 @@ quint64 DistanceRaster::createMetadata()
     operation.addOutParameter(0,itRASTER, TR("output raster"),TR("output distance raster."));
     operation.setKeywords("raster,interpolation");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

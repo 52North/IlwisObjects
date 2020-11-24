@@ -249,7 +249,6 @@ DropArea {
 						var command = "setviewextent("+ layerManager().viewid + "," + envelope + ")"
                         layerManager().addCommand(command);
                         broadCastNewExtent(layerManager(), envelope)
-
                         if ( typeof viewmanager != 'undefined' && viewmanager){
                             viewmanager.newZoomExtent(envelope)
                         }

@@ -88,6 +88,7 @@ quint64 SetPolygonBoundaryWidth::createMetadata()
     operation.setOutParameterCount({0});
     operation.setKeywords("visualization");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

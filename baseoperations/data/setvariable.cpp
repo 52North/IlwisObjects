@@ -76,6 +76,7 @@ quint64 SetVariable::createMetadata()
     operation.addOutParameter(0,itANY , TR("value"),TR(""));
     operation.setKeywords("workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 

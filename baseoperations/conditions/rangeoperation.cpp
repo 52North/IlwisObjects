@@ -66,6 +66,7 @@ quint64 RangeOperation::createMetadata()
     operation.setOutParameterCount({0});
     operation.setKeywords("tests, workflow");
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

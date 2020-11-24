@@ -192,6 +192,7 @@ quint64 PolygonToRaster::createMetadata()
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage"), TR("output rastercoverage with the domain of the input map"));
     operation.setKeywords("raster,polygoncoverage");
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }

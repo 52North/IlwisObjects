@@ -107,6 +107,7 @@ quint64 ShowCoverage::createMetadata()
 	operation.parameterNeedsQuotes(2);
     operation.addProperty("runinmainthread",true); // this operation invokes a qml method so it must run in the main thread
 
+    operation.checkAlternateDefinition();
     mastercatalog()->addItems({operation});
     return operation.id();
 }
