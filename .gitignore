@@ -9,3 +9,5 @@
 /.vs/ilwisobjects_msvc1564/v14/.suo
 
 *.ipch
+/stxxl.log
+/stxxl.errlog
