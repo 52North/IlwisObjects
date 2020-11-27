@@ -220,7 +220,7 @@ bool DistanceRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         }
     }
 
-    BoxedAsyncFunc distanceFun = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc distanceFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         distanceCalculation();
         return true;
     };

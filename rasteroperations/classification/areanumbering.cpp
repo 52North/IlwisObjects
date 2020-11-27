@@ -58,7 +58,7 @@ bool AreaNumbering::execute(ExecutionContext *ctx, SymbolTable& symTable)
     AreaNumberer numberer(outputRaster->size().xsize(),_connectivity);
     quint64 currentCount = 0;
 
-    BoxedAsyncFunc aggregateFun = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc aggregateFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         //pass one
         PixelIterator iterOut(outputRaster, box);
         PixelIterator iterIn(_inputObj.as<RasterCoverage>());

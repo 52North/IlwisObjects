@@ -87,7 +87,7 @@ bool AggregateRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     IRasterCoverage outputRaster = _outputObj.as<RasterCoverage>();
 
 
-    BoxedAsyncFunc aggregateFun = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc aggregateFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         //Size sz = outputRaster->size();
         PixelIterator iterOut(outputRaster, box);
         BoundingBox inpBox(Pixel(box.min_corner().x,

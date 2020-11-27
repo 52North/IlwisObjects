@@ -51,45 +51,52 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    PixelIterator iterOut(_outputRaster);
+	 BoxedAsyncFunc calcFun = [&](const BoundingBox& box, int threadIdx) -> bool {
+		 PixelIterator iterOut(_outputRaster);
 
-    PixelIterator iterEnd = end(iterOut);
-    while(iterOut != iterEnd) {
-        PIXVALUETYPE v = calc();
-        *iterOut = v;
-        ++iterOut;
-        for(auto& item : _inputRasters){
-            ++(item.second);
-        }
-        updateTranquilizer(iterOut.linearPosition(), 1000);
-    }
+		 PixelIterator iterEnd = end(iterOut);
+		 while (iterOut != iterEnd) {
+			 PIXVALUETYPE v = calc();
+			 *iterOut = v;
+			 ++iterOut;
+			 for (auto& item : _inputRasters) {
+				 ++(item.second);
+			 }
+			 updateTranquilizer(iterOut.linearPosition(), 1000);
+		 }
+		 return true;
+	 };
 
-    if ( _outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN){
-        PIXVALUETYPE rmin = PIXVALUEUNDEF, rmax= PIXVALUEUNDEF;
-        bool isInt = true;
-        for(PIXVALUETYPE v : _outputRaster ){
-            rmin = Ilwis::min(rmin, v);
-            rmax = Ilwis::max(rmax, v);
-            if ( v != PIXVALUEUNDEF){
-                isInt &=  std::abs((qint64)v - v) <EPS8;
-            }
-        }
-        NumericRange *range = new NumericRange(rmin,rmax, isInt ? 1 : 0);
-        _outputRaster->datadefRef().range(range);
-    }else {
-        IFlatTable tbl;
-        tbl.prepare();
-        tbl->addColumn(_outputRaster->primaryKey(),_outputRaster->datadef().domain());
-        int rec = 0;
-        ItemRangeIterator iter(_outputRaster->datadef().range<>().data());
-        while (iter.isValid()) {
-            SPDomainItem item = (*iter);
-            tbl->setCell(0,rec++,item->raw());
-            ++iter;
-        }
-        _outputRaster->setAttributes(tbl);
+	 OperationHelperRaster::execute(ctx, calcFun, _outputRaster);
 
-    }
+	if (_outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+		PIXVALUETYPE rmin = PIXVALUEUNDEF, rmax = PIXVALUEUNDEF;
+		bool isInt = true;
+		for (PIXVALUETYPE v : _outputRaster) {
+			rmin = Ilwis::min(rmin, v);
+			rmax = Ilwis::max(rmax, v);
+			if (v != PIXVALUEUNDEF) {
+				isInt &= std::abs((qint64)v - v) < EPS8;
+			}
+		}
+		NumericRange *range = new NumericRange(rmin, rmax, isInt ? 1 : 0);
+		_outputRaster->datadefRef().range(range);
+	}
+	else {
+		IFlatTable tbl;
+		tbl.prepare();
+		tbl->addColumn(_outputRaster->primaryKey(), _outputRaster->datadef().domain());
+		int rec = 0;
+		ItemRangeIterator iter(_outputRaster->datadef().range<>().data());
+		while (iter.isValid()) {
+			SPDomainItem item = (*iter);
+			tbl->setCell(0, rec++, item->raw());
+			++iter;
+		}
+		_outputRaster->setAttributes(tbl);
+
+	}
+	 
 
     QVariant value;
     value.setValue<IRasterCoverage>(_outputRaster);

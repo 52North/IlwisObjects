@@ -66,7 +66,7 @@ bool DensifyRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
             return false;
 
     // todo: review this operation for item domain rasters
-    BoxedAsyncFunc densifyFun = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc densifyFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         PixelIterator iterOut(_outputRaster, box);
         RasterInterpolator interpolator(_inputRaster, _interpolationMethod);
         PixelIterator iterEnd = iterOut.end();

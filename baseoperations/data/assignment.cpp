@@ -64,7 +64,7 @@ bool Assignment::assignTable(ExecutionContext *ctx) {
 
 bool Assignment::assignRasterCoverage(ExecutionContext *ctx) {
     IRasterCoverage outputRaster = _outputObj.as<RasterCoverage>();
-    std::function<bool(const BoundingBox)> Assign = [&](const BoundingBox box ) -> bool {
+    std::function<bool(const BoundingBox, int threadIdx)> Assign = [&](const BoundingBox box, int threadIdx) -> bool {
         IRasterCoverage inputRaster = _inputObj.as<RasterCoverage>();
         PixelIterator iterIn(inputRaster, box);
         PixelIterator iterOut(outputRaster, box);

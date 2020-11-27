@@ -49,7 +49,7 @@ bool UnaryMathRasterAndNumber::execute(ExecutionContext *ctx, SymbolTable& symTa
             return false;
 
     if ( _case == otSPATIAL) {
-        BoxedAsyncFunc unaryFun = [&](const BoundingBox& box) -> bool {
+        BoxedAsyncFunc unaryFun = [&](const BoundingBox& box, int threadIdx) -> bool {
             PixelIterator iterIn(_inputGC, _box);
             PixelIterator iterOut(_outputGC, BoundingBox(_box.size()));
 

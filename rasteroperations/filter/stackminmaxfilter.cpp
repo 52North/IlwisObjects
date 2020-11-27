@@ -46,7 +46,7 @@ bool StackMinMaxFilter::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-   BoxedAsyncFunc filterFun = [&](const BoundingBox& box) -> bool {
+   BoxedAsyncFunc filterFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         PixelIterator iterOut(_outputRaster, box, PixelIterator::fZXY);
         PixelIterator iterIn(_inputRaster, box, PixelIterator::fZXY);
         PixelIterator iterEnd = iterIn.end();

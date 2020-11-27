@@ -52,7 +52,7 @@ bool BinaryLogical::setOutput(ExecutionContext *ctx, SymbolTable& symTable) {
 
 bool BinaryLogical::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& symTable) {
 
-    auto BinaryLogical = [&](const BoundingBox box ) -> bool {
+    auto BinaryLogical = [&](const BoundingBox box, int threadIdx ) -> bool {
         PixelIterator iterIn(_inputGC1, box);
         PixelIterator iterOut(_outputGC, BoundingBox(box.size()));
 
@@ -71,7 +71,7 @@ bool BinaryLogical::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& sy
 }
 
 bool BinaryLogical::executeCoverageCoverage(ExecutionContext *ctx, SymbolTable& symTable) {
-    std::function<bool(const BoundingBox&)> binaryLogical = [&](const BoundingBox& box ) -> bool {
+    std::function<bool(const BoundingBox&, int threadIdx)> binaryLogical = [&](const BoundingBox& box, int threadIdx) -> bool {
         PixelIterator iterIn1(_inputGC1, box);
         PixelIterator iterIn2(_inputGC2, box);
         PixelIterator iterOut(_outputGC, BoundingBox(box.size()));

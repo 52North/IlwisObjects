@@ -48,7 +48,7 @@ bool RasterSlicing::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-    BoxedAsyncFunc sliceFun = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc sliceFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         PixelIterator iterOut(_outputRaster, box);
         PixelIterator iterEnd = iterOut.end();
         PixelIterator iterIn(_inputRaster, box);

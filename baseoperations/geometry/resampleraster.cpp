@@ -49,7 +49,7 @@ bool ResampleRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-    BoxedAsyncFunc resampleFun = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc resampleFun = [&](const BoundingBox& box, int threadIdx) -> bool {
         PixelIterator iterOut(_outputRaster,box);
         RasterInterpolator interpolator(_inputRaster, _method);
         PixelIterator iterEnd = iterOut.end();

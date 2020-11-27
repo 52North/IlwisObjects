@@ -47,7 +47,7 @@ bool IffRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    BoxedAsyncFunc iffunc = [&](const BoundingBox& box) -> bool {
+    BoxedAsyncFunc iffunc = [&](const BoundingBox& box, int threadIdx) -> bool {
 
         PixelIterator iterOut(_outputGC,box);
         PixelIterator iterIn(_inputGC,box);

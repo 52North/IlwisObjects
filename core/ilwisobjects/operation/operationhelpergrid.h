@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 namespace Ilwis {
 
-typedef  std::function<bool(const BoundingBox&)> BoxedAsyncFunc;
+typedef  std::function<bool(const BoundingBox&, int threadIdx)> BoxedAsyncFunc;
 class Parameter;
 
 class KERNELSHARED_EXPORT OperationHelperRaster
@@ -45,7 +45,7 @@ public:
         bool res = true;
 
         for(int i =0; i < cores; ++i) {
-            futures[i] = std::async(std::launch::async, func, boxes[i]);
+            futures[i] = std::async(std::launch::async, func, boxes[i],i);
         }
 
         for(int i =0; i < cores; ++i) {
