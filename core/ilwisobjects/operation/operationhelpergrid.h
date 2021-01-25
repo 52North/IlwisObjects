@@ -27,30 +27,47 @@ class KERNELSHARED_EXPORT OperationHelperRaster
 public:
     OperationHelperRaster();
     static BoundingBox initialize(const IRasterCoverage &inputRaster, IRasterCoverage &outputRaster, quint64 what);
-    static int subdivideTasks(ExecutionContext *ctx,const IRasterCoverage& raster, const BoundingBox& bounds, std::vector<BoundingBox > &boxes);
+    static void subdivideTasks(int cores,const IRasterCoverage& raster, std::vector<BoundingBox > &boxes);
     static bool resample(IRasterCoverage& input1, IRasterCoverage& input2, ExecutionContext *ctx);
     static IRasterCoverage resample(const IRasterCoverage& sourceRaster, const IGeoReference& targetGrf);
 	static bool addCsyFromInput(const Coverage* cov, Resource& res);
 	static bool addGrfFromInput(const RasterCoverage* cov, Resource& resource);
 
-    template<typename T> static bool execute(ExecutionContext* ctx, T func, IRasterCoverage& outputRaster, const BoundingBox& bounds=BoundingBox()) {
+    template<typename T> static bool execute(ExecutionContext* ctx, T func, const std::vector<IRasterCoverage>& rasters) {
         std::vector<BoundingBox> boxes;
 
-        int cores = OperationHelperRaster::subdivideTasks(ctx,outputRaster,bounds, boxes);
+		auto outputRaster = rasters.back(); // last entry is always the output raster and determines the core use.
+		if (!outputRaster.isValid())
+			return false;
+		int cores = 1;
+		if (ctx->_threaded) {
+			cores = QThread::idealThreadCount();
+			int prefCount = outputRaster->grid()->blocks() / 2 + 1;
+			if (prefCount < cores) {
+				cores = prefCount;
+			}
 
-        if ( cores == iUNDEF)
-            return false;
+
+			for (auto raster : rasters) {
+				if (raster.isValid()) {
+					OperationHelperRaster::subdivideTasks(cores, raster, boxes);
+					raster->gridRef()->prepare4Operation(cores);
+				}
+			}
+		}
 
         std::vector<std::future<bool>> futures(cores);
         bool res = true;
 
         for(int i =0; i < cores; ++i) {
-            futures[i] = std::async(std::launch::async, func, boxes[i],i);
+            futures[i] = std::async(std::launch::async, func, boxes[i],cores > 1 ? i + 1 : 0); // threadindex starts at 1 as the 0 is the default ( no threads). In the grid administration, the cache at index 0 is the standard cache used in the non threading case.
         }
 
         for(int i =0; i < cores; ++i) {
             res &= futures[i].get();
         }
+		for (auto raster : rasters)
+			raster->gridRef()->unprepare4Operation();
 
         double minv=1e307,maxv = -1e307;
         double minBand = minv, maxBand = maxv;

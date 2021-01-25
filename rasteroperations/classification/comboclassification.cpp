@@ -103,7 +103,7 @@ bool ComboClassification::execute(ExecutionContext *ctx,SymbolTable& symTable){
   
 
 
-    if (OperationHelperRaster::execute(ctx, binaryMath, _outputRaster)){
+	if (OperationHelperRaster::execute(ctx, binaryMath, { _inputRasterX,_inputRasterY, _outputRaster })) {
 		IFlatTable tbl;
 		tbl.prepare();
 		tbl->addColumn(COVERAGEKEYCOLUMN, _outputRaster->datadef().domain());

@@ -40,6 +40,7 @@ private:
     DataDefinition datadef(int index);
     bool check(int index) const;
 	std::vector<IIlwisObject> rasters() const;
+	void prepareActions(std::vector<Action>& localActions, std::map<int, PixelIterator>& inputRasters, const BoundingBox& box, int threadIndex) const;
 };
 
 class MapCalc1 : public MapCalc{

@@ -265,7 +265,6 @@ DropArea {
 							command = "setviewextent("+ layerManager().viewid + "," + envelope + ")"
 						else
 							command = "setviewextent("+ layerManager().viewid + "," + envelope + ",false)"
-						console.debug(command)
                         layerManager().addCommand(command);
                         broadCastNewExtent(layerManager(), envelope)
 

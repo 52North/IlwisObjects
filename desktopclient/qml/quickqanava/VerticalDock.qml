@@ -29,7 +29,7 @@ import QtQuick.Layouts 1.1
 import QuickQanava 2.0 as Qan
 
 ColumnLayout {
-    id: root
+    id: root 
     spacing: 20
     z: 1.5   // Selection item z=1.0, dock must be on top of selection
     states: [

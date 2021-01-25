@@ -103,7 +103,7 @@ bool AggregateRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
                 executeNonGrouped( inpBox);
         return true;
     };
-    bool res = OperationHelperRaster::execute(ctx, aggregateFun, outputRaster);
+	bool res = OperationHelperRaster::execute(ctx, aggregateFun, { _inputObj.as<RasterCoverage>(), outputRaster });
 
     if ( res && ctx != 0) {
         QVariant value;

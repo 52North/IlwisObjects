@@ -202,7 +202,7 @@ public:
 
     //for debugging
     void startClock();
-    void endClock(const QString &label="");
+    QString endClock(const QString &label="");
     //QNetworkAccessManager& network();
     void newTranquilizer(quint64 id, const QString &title, const QString &description, qint64 start, qint64 end);
     const Module* module(const QString& name) const;

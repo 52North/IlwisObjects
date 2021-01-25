@@ -122,7 +122,7 @@ bool MirrorRotateRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     };
 
-    bool ok = OperationHelperRaster::execute(ctx, Transform, _outputRaster);
+	bool ok = OperationHelperRaster::execute(ctx, Transform, { _inputRaster, _outputRaster });
 
     if ( ok && ctx != 0) {
         QVariant value;

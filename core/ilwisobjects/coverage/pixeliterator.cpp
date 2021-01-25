@@ -105,6 +105,18 @@ PixelIterator::PixelIterator(const IRasterCoverage &raster, const BoundingBox& b
     init();
 }
 
+PixelIterator::PixelIterator(const IRasterCoverage& raster, int threadIdx, const BoundingBox& box, Flow flow)  :
+	_raster(raster),
+	_box(box),
+	_localOffset(0),
+	_currentBlock(0),
+	_flow(flow),
+	_isValid(false),
+	_threadIndex(threadIdx)
+{
+	init();
+}
+
 PixelIterator::PixelIterator(const IRasterCoverage &raster, PixelIterator::Flow flow) :
     _raster(raster),
     _box(BoundingBox()),
@@ -235,12 +247,6 @@ bool PixelIterator::moveXZ(qint64 delta)
     _localOffset = _x + ylocal * _grid->size().xsize();
     _linearposition = _x + _y * _grid->size().xsize() + _z * _grid->size().xsize() * _grid->size().ysize();
 
-//    quint32 localblock = _y /  _grid->maxLines();
-//    quint32 bandblocks = _grid->blocksPerBand() * _z;
-//    if ( bandblocks + localblock != _currentBlock) {
-//        _currentBlock = bandblocks + localblock;;
-//        _localOffset = _x;
-//    }
     move2NextBlock();
 
     if ( _x > _endx){
@@ -302,13 +308,6 @@ bool PixelIterator::moveYZ(qint64 delta){
     qint32 ylocal = _y % _grid->maxLines();
     _localOffset = _x + ylocal * _grid->size().xsize();
 
-//    quint32 localblock = _y /  _grid->maxLines();
-//    quint32 bandblocks = _grid->blocksPerBand() * _z;
-
-//    if ( bandblocks + localblock != _currentBlock) {
-//        _currentBlock = bandblocks + localblock;;
-//        _localOffset = _x;
-//    }
     move2NextBlock();
     if ( _y > _endy) {
         quint32 newz = _z + (_y - _box.min_corner().y) / _box.ylength();
@@ -345,6 +344,11 @@ Pixel PixelIterator::position() const
 const BoundingBox &PixelIterator::box() const
 {
     return _box;
+}
+
+void PixelIterator::box(const BoundingBox& box) {
+	_box = box;
+	init();
 }
 
 quint64 PixelIterator::linearPosition() const
@@ -424,7 +428,8 @@ bool PixelIterator::operator>=(const PixelIterator &iter) const
 
 PixelIterator PixelIterator::end() const {
     PixelIterator iter(*this);
-    iter += _endposition - _linearposition;
+   //iter += _endposition - _linearposition;
+	iter += _box.size().linearSize();
     return iter;
 }
 

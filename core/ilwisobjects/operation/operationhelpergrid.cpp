@@ -167,34 +167,30 @@ bool OperationHelperRaster::addGrfFromInput(const RasterCoverage* raster, Resour
 	return false;
 }
 
-int OperationHelperRaster::subdivideTasks(ExecutionContext *ctx,const IRasterCoverage& raster, const BoundingBox &bnds, std::vector<BoundingBox > &boxes)
+void OperationHelperRaster::subdivideTasks(int cores,const IRasterCoverage& raster, std::vector<BoundingBox > &boxes)
 {
     if ( !raster.isValid() || raster->size().isNull() || raster->size().ysize() == 0) {
-        return ERROR1(ERR_NO_INITIALIZED_1, "Grid size");
-        return iUNDEF;
+        ERROR1(ERR_NO_INITIALIZED_1, "Grid size");
+		return;
     }
 
-    int cores = std::min(QThread::idealThreadCount(),(int)raster->size().ysize());
-    if (raster->size().linearSize() < 10000 || ctx->_threaded == false)
-        cores = 1;
+	int nBlocks = raster->gridRef()->blocksPerBand();
+	int blockYSize = raster->gridRef()->maxLines();
+	double f = (double)nBlocks / cores;
+	int coreBlocks = std::ceil(f);
+	if (coreBlocks == 0)
+		cores = 1;
 
-    boxes.clear();
-    boxes.resize(cores);
-    BoundingBox bounds = bnds;
-    if ( bounds.isNull() || !bounds.isValid())
-        bounds = BoundingBox(raster->size());
-    int left = 0; //bounds.min_corner().x;
-    int right = bounds.size().xsize();
-    int top = bounds.size().ysize();
-    int step = bounds.size().ysize() / cores;
-    int currentY = 0;
+	boxes.clear();
+	boxes.resize(cores);
 
-    for(int i=0 ; i < cores; ++i){
-        BoundingBox smallBox(Pixel(left, currentY,0), Pixel(right - 1, std::min(top - 1,currentY + step),bounds.zlength()) );
-        boxes[i] = smallBox;
-        currentY = currentY + step  ;
-    }
-    return cores;
+	int lastY = 0;
+	for (int i = 0; i < cores - 1; ++i) {
+		boxes[i] = BoundingBox( Pixel( 0, lastY ), Pixel( raster->size().xsize()-1, lastY + blockYSize * coreBlocks -1 ) );
+		lastY += blockYSize * coreBlocks;
+	}
+	boxes[cores - 1] = BoundingBox(Pixel(0, lastY ), Pixel( raster->size().xsize()-1, raster->size().ysize() - 1 ) );
+
 }
 
 IRasterCoverage OperationHelperRaster::resample(const IRasterCoverage& sourceRaster, const IGeoReference& targetGrf) {

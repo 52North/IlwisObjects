@@ -83,7 +83,7 @@ bool IffRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
     };
 
-    bool resource = OperationHelperRaster::execute(ctx, iffunc, _outputGC);
+	bool resource = OperationHelperRaster::execute(ctx, iffunc, { _inputGC, _outputGC });
 
     if ( resource && ctx != 0) {
         QVariant value;

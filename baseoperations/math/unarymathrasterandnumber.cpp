@@ -63,7 +63,7 @@ bool UnaryMathRasterAndNumber::execute(ExecutionContext *ctx, SymbolTable& symTa
             return true;
         };
 
-        bool resource = OperationHelperRaster::execute(ctx, unaryFun, _outputGC);
+		bool resource = OperationHelperRaster::execute(ctx, unaryFun, { _outputGC });
 
         if ( resource && ctx != 0) {
             QVariant value;

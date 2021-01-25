@@ -82,7 +82,7 @@ bool AreaNumbering::execute(ExecutionContext *ctx, SymbolTable& symTable)
         return true;
     };
     ctx->_threaded = false; // operation can not be run in parallel
-    bool res = OperationHelperRaster::execute(ctx, aggregateFun, outputRaster);
+	bool res = OperationHelperRaster::execute(ctx, aggregateFun, { _inputObj.as<RasterCoverage>(), outputRaster });
 
     INamedIdDomain iddom = outputRaster->datadef().domain<>().as<NamedIdDomain>();
     NamedIdentifierRange range;

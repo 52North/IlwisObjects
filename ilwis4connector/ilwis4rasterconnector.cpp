@@ -108,10 +108,21 @@ bool Ilwis4RasterConnector::store(IlwisObject *obj, const IOOptions& options, QJ
 	jraster.insert("data", jdata);
 
 	QJsonObject jattributes;
-	if (raster->hasAttributes()) {
+	if (raster->hasAttributes() && raster->attributeTable()->recordCount() > 0) {
 		raster->attributeTable()->store();
 		jraster.insert("attributes", raster->attributeTable()->resourceRef().url(true).toString());
 		jraster.insert("primarykey", raster->primaryKey());
+	}
+	if (raster->histogramCalculated() && raster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
+		auto bins = raster->datadef().statistics().histogram();
+		if (raster->datadef().statistics().histogramMode() == ContainerStatistics<PIXVALUETYPE>::pHISTOGRAM){ // quick histograms arent saved
+			QString histogram;
+			for (auto& bin : bins) {
+				if (histogram != "") histogram += " ";
+				histogram += QString::number(bin._limit) + "|" + QString::number(bin._count);
+			}
+			jraster.insert("histogram", histogram);
+		}
 	}
 	Resource res = obj->resource(IlwisObject::cmOUTPUT);
 	QString path = res.url(true).toLocalFile();
@@ -222,7 +233,7 @@ bool Ilwis4RasterConnector::loadMetaData(IlwisObject *obj, const IOOptions &opti
 				if (v != QJsonValue::Undefined) {
 					QString url = v.toString();
 					ITable tbl;
-					if (tbl->prepare(url)) {
+					if (tbl.prepare(url)) {
 						raster->primaryKey(jraster["primarykey"].toString());
 						raster->setAttributes(tbl);
 					}

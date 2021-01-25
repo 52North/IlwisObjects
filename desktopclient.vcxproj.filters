@@ -1385,9 +1385,6 @@
     <None Include="desktopclient\qml\datapanel\modeller\workflow\DataFlowEdge.qml">
       <Filter>Resource Files\qml\datapanel\modeller\workflow</Filter>
     </None>
-    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml">
-      <Filter>Distribution Files\qml\datapanel\visualization\propertyeditors</Filter>
-    </None>
     <None Include="desktopclient\qml\quickqanava\CanvasNodeTemplate.qml">
       <Filter>Resource Files\qml\qanava</Filter>
     </None>
@@ -1469,6 +1466,7 @@
     <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml">
       <Filter>Resource Files\qml\datapanel\visualization\propertyeditors</Filter>
     </None>
+    <None Include="desktopclient\qml\datapanel\visualization\propertyeditors\Animation.qml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="desktopclient\qml\images\52nlogobig.png">

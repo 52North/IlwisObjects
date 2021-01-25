@@ -128,8 +128,9 @@ public:
      * \param box The bounding box which desides what part of the raster should be walked
      */
     PixelIterator(const IRasterCoverage& raster, const BoundingBox& box=BoundingBox(), Flow flow=fXYZ);
+	PixelIterator(const IRasterCoverage& raster, int threadIdx, const BoundingBox& box = BoundingBox(), Flow flow = fXYZ);
     PixelIterator(const IRasterCoverage& raster, Flow flow);
-
+	
     /*!
      * Copy's all the values from the existing PixelIterator onto this one
      *
@@ -350,7 +351,7 @@ public:
      * \return reference to the currentvalue
      */
     PIXVALUETYPE& operator*() {
-        return _grid->value(_currentBlock, _localOffset );
+        return _grid->value(_currentBlock, _localOffset, _threadIndex);
     }
 
     /*!
@@ -358,7 +359,7 @@ public:
      * \return reference to the currentvalue
      */
     const PIXVALUETYPE& operator*() const {
-        return  _grid->value(_currentBlock, _localOffset);
+        return  _grid->value(_currentBlock, _localOffset, _threadIndex);
     }
 
     /*!
@@ -366,7 +367,7 @@ public:
      * \return ->value(this(current))
      */
     PIXVALUETYPE* operator->() {
-        return &(_grid->value(_currentBlock, _localOffset ));
+        return &(_grid->value(_currentBlock, _localOffset, _threadIndex));
     }
 
     /*!
@@ -446,6 +447,7 @@ public:
      * \return the bounding box of this PixelIterator
      */
     const BoundingBox& box() const;
+	void box(const BoundingBox& box);
 
     /*!
      * \brief Query for the linearPosition of this PixelIterator
@@ -461,6 +463,9 @@ public:
      * \param raster the given raster
      */
     void setRaster(const IRasterCoverage &raster);
+	void threadIndex(int idx) {
+		_threadIndex = idx >= 0 ? idx : 0;
+	}
 
     /*!
      * \brief Substracts another pixeliterator fomr this PixelIterator
@@ -534,6 +539,7 @@ protected:
     qint32 _selectionIndex = -1;
     bool _insideSelection = false;
 	int _step = 1;
+	int _threadIndex = 0;
 
 
     bool move(qint64 n) {

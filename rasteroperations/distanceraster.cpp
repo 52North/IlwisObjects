@@ -225,7 +225,7 @@ bool DistanceRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         return true;
     };
 
-    bool resource = OperationHelperRaster::execute(ctx, distanceFun, _outputRaster);
+	bool resource = OperationHelperRaster::execute(ctx, distanceFun, { _inputRaster, _inputOptWeightRaster,_inputThiessenRaster, _outputRaster });
 
     if ( resource && ctx != 0) {
         QVariant value;

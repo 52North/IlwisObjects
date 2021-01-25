@@ -45,30 +45,67 @@ MapCalc::MapCalc(quint64 metaid,const Ilwis::OperationExpression &expr) : Calcul
 
 }
 
+void MapCalc::prepareActions(std::vector<Action>& localActions, std::map<int, PixelIterator>& inputRasters, const BoundingBox& box, int threadIndex)  const {
+	for (auto& piter : inputRasters) {
+		piter.second.threadIndex(threadIndex);
+		piter.second.box(box);
+	}
+	// as for multithreaded use the pixel iterators are different per thread we must create local copies of the actions and ensure that the "local" pixeliterator point to the correct values
+	for (auto& action : localActions) {
+		for (auto& value : action._values) {
+			if (value._source) {
+				for (auto& iraster : inputRasters) {
+					if (iraster.second.raster() == value._source->raster())
+						value._source = &iraster.second;
+				}
+			}
+		}
+
+	}
+}
+
 bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 {
      if (_prepState == sNOTPREPARED)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-	 BoxedAsyncFunc calcFun = [&](const BoundingBox& box, int threadIdx) -> bool {
-		 PixelIterator iterOut(_outputRaster);
+	 BoxedAsyncFunc calcFun = [&](const BoundingBox& box, int threadIndex) -> bool {
+		 PixelIterator iterOut(_outputRaster, threadIndex, box);
+
+		 std::vector<Action> localActions = _actions;
+		 std::map<int, PixelIterator> inputRasters = _inputRasters;
+
+		 // as for multithreaded use the pixel iterators are different per thread we must create local copies of the actions end ensure that the "local" pixeliterator point to the correct values
+		 prepareActions(localActions, inputRasters, box, threadIndex);
+
 
 		 PixelIterator iterEnd = end(iterOut);
 		 while (iterOut != iterEnd) {
-			 PIXVALUETYPE v = calc();
+			 PIXVALUETYPE v = calc(localActions);
 			 *iterOut = v;
 			 ++iterOut;
-			 for (auto& item : _inputRasters) {
+			 for (auto& item : inputRasters) {
 				 ++(item.second);
 			 }
 			 updateTranquilizer(iterOut.linearPosition(), 1000);
 		 }
 		 return true;
 	 };
+	 std::vector<IRasterCoverage> allRasters;
+	 
+	 for (auto iter_raster : _inputRasters) {
+		 IRasterCoverage raster = iter_raster.second.raster();
+		 allRasters.push_back(raster);
+	 }
+	 allRasters.push_back(_outputRaster);
 
-	 OperationHelperRaster::execute(ctx, calcFun, _outputRaster);
+	 ctx->_threaded =  true;
+	 kernel()->startClock();
 
+	 OperationHelperRaster::execute(ctx, calcFun, allRasters);
+
+	 kernel()->issues()->log(kernel()->endClock(), IssueObject::itMessage);
 	if (_outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
 		PIXVALUETYPE rmin = PIXVALUEUNDEF, rmax = PIXVALUEUNDEF;
 		bool isInt = true;
@@ -96,6 +133,8 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 		_outputRaster->setAttributes(tbl);
 
 	}
+
+
 	 
 
     QVariant value;

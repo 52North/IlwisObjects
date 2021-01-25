@@ -81,7 +81,7 @@ bool DensifyRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         return true;
     };
 
-    bool resource = OperationHelperRaster::execute(ctx, densifyFun, _outputRaster);
+	bool resource = OperationHelperRaster::execute(ctx, densifyFun, { _inputRaster, _outputRaster });
 
 	if (resource && ctx != 0) {
 		QVariant value;

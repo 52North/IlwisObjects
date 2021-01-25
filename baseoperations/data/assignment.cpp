@@ -84,7 +84,7 @@ bool Assignment::assignRasterCoverage(ExecutionContext *ctx) {
         return true;
     };
 
-    return  OperationHelperRaster::execute(ctx, Assign, outputRaster);
+	return  OperationHelperRaster::execute(ctx, Assign, { _inputObj.as<RasterCoverage>(), outputRaster });
 
 }
 

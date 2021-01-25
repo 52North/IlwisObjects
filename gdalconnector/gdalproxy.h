@@ -158,7 +158,8 @@ typedef OGRErr (*IOGR_G_AddGeometry)(OGRGeometryH,OGRGeometryH);
 typedef OGRErr (*IOGR_G_AddGeometryDirectly)(OGRGeometryH,OGRGeometryH);
 typedef int (*IOGR_G_GetCoordinateDimension)(OGRGeometryH);
 typedef void (*IOSRRelease)( OGRSpatialReferenceH );
-typedef OGRSFDriverH (*IOGR_DS_GetDriver)(OGRDataSourceH);
+//typedef OGRSFDriverH (*IOGR_DS_GetDriver)(OGRDataSourceH);
+typedef GDALDriverH (*IOGR_DS_GetDriver)(OGRDataSourceH);
 typedef const char * (*IOGR_Dr_GetName)(OGRSFDriverH);
 
 

@@ -556,7 +556,7 @@ IDomain CalculatorOperation::linearize(const QStringList &tokens)
     }
 }
 
-PIXVALUETYPE CalculatorOperation::calc() {
+PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) {
     auto GetValue = [&](const ParmValue& parm,const std::vector<PIXVALUETYPE>& result, bool *isNumeric=0)->PIXVALUETYPE{
         switch(parm._type){
         case ParmType::LINK:
@@ -602,9 +602,9 @@ PIXVALUETYPE CalculatorOperation::calc() {
     };
 
     PIXVALUETYPE calcResult;
-    std::vector<PIXVALUETYPE> result(_actions.size(),PIXVALUEUNDEF);
-    for(int i=0; i < _actions.size(); ++i){
-        Action& action = _actions[i];
+    std::vector<PIXVALUETYPE> result(localActions.size(),PIXVALUEUNDEF);
+    for(int i=0; i < localActions.size(); ++i){
+        const Action& action = localActions[i];
         switch(action._action){
         case maADD:
         case maMULT:
@@ -787,7 +787,7 @@ PIXVALUETYPE CalculatorOperation::calc() {
 		case mATTRIBUTE:
 		{
 			PIXVALUETYPE v1 = GetValue(action._values[0], result);
-			calcResult = action._values[0]._keyMapping[(quint32)v1];
+			calcResult = action._values[0]._keyMapping.at((quint32)v1);
 
 		}
 

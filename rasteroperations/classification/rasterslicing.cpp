@@ -90,7 +90,7 @@ bool RasterSlicing::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     };
 
-    bool res = OperationHelperRaster::execute(ctx, sliceFun, _outputRaster);
+	bool res = OperationHelperRaster::execute(ctx, sliceFun, { _inputRaster, _outputRaster });
 
     QVariant value;
     value.setValue<IRasterCoverage>(_outputRaster);

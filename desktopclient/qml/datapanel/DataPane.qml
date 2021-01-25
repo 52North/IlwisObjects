@@ -119,8 +119,9 @@ Rectangle {
             var newPanel = datapane.createPanel(filter,outputtype, url, side)
             if ( newPanel){
                 var component = Qt.createComponent(newPanel.componentUrl)
-                if (component.status === Component.Error)
-                    console.log("Error loading component:", component.errorString());
+                if (component.status === Component.Error){
+					uicontext.addMessage("Error loading component:" + component.errorString(),"warning")
+				}
                 var sidePanel = datapane.activeSide
                 var tabview = sidePanel.tabview
 

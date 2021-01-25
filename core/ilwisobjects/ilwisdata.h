@@ -315,7 +315,7 @@ public:
             }
             return true;
         } else {
-            ERROR1(ERR_COULDNT_CREATE_OBJECT_FOR_1,resource1.name());
+            ERROR2(ERR_COULDNT_CREATE_OBJECT_FOR_2,resource1.name(), resource1.url().toString());
         }
         return false;
 

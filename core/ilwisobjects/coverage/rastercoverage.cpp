@@ -1134,3 +1134,4 @@ void RasterCoverage::setRepresentation(const QString& atr, const IRepresentation
 
 
 
+

@@ -22,11 +22,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis;
 
-std::vector<GridBlockNrPair> Grid::_cache;
 
 GridBlockInternal::GridBlockInternal(quint32 blocknr, quint64 rasterid,quint32 lines , quint32 width) :  _undef(undef<PIXVALUETYPE>()), _size(Size<>(width, lines,1)), _id(blocknr), _rasterid(rasterid), _inMemory(false), _dataInMemory(false)
 {
     _blockSize = _size.xsize()* _size.ysize();
+	
 }
 
 GridBlockInternal::~GridBlockInternal()
@@ -204,6 +204,7 @@ Grid::Grid(int maxlines) : _maxCacheBlocks(1), _memUsed(0),_blocksPerBand(0), _m
             _maxLines = max(1, 1e7 / (size().xsize() * 8));
          }
     }
+	_cache.resize(1);
     //qDebug() << "grid created:" << this;
 }
 
@@ -260,9 +261,9 @@ void Grid::clear() {
     int next = true;
     while(next ){
         next = false; // next will become true again af a next iteration is needed
-        for(int i=0; i < _cache.size(); ++i){
-            if (_cache[i]._grid == this){
-                _cache.erase(_cache.begin() + i);
+        for(int i=0; i < _cache[0].size(); ++i){
+            if (_cache[0][i]._grid == this){
+                _cache[0].erase(_cache[0].begin() + i);
                 next = true;
                 break;
             }
@@ -276,7 +277,7 @@ void Grid::clear() {
     _size = Size<>();
 }
 
-PIXVALUETYPE Grid::value(const Pixel &pix) {
+PIXVALUETYPE Grid::value(const Pixel &pix, int threadIndex) {
     if (pix.x <0 || pix.y < 0 || pix.x >= _size.xsize() || pix.y >= _size.ysize() )
         return PIXVALUEUNDEF;
    if ( pix.is3D() && (pix.z < 0 || pix.z >= _size.zsize()))
@@ -285,16 +286,16 @@ PIXVALUETYPE Grid::value(const Pixel &pix) {
     quint32 block = pix.y / _maxLines;
     quint32 bandBlocks = _blocksPerBand * (pix.is3D() ? pix.z : 0);
 	quint32 offset = yoff * _size.xsize() + pix.x;; // _offsets[yoff][pix.x];
-    return value(bandBlocks + block, offset);
+    return value(bandBlocks + block, offset, threadIndex);
 }
 
-PIXVALUETYPE &Grid::value(quint32 block, int offset )  {
+PIXVALUETYPE &Grid::value(quint32 block, int offset, int threadIndex)  {
 	//Locker<> lock(_mutex);
     if ( _blocks[block]->dataInMemory() ) // no load needed
         return _blocks[block]->at(offset);
-    Locker<> lock(_mutex); // slower case. must prevent other threads to messup admin
+  //  Locker<> lock(_mutex); // slower case. must prevent other threads to messup admin
     if ( !_blocks[block]->dataInMemory())
-      if(!update(block, true))
+      if(!update(block, true, threadIndex))
           throw ErrorObject(TR("Grid block is out of bounds"));
     return _blocks[block]->at(offset); // block is now in memory
 }
@@ -385,8 +386,8 @@ bool Grid::prepare(quint64 rasterid, const Size<> &sz) {
     if ( _size.zsize() == 0)
         _size.zsize(1);
 
-    if ( _maxLines > 1 && (_maxLines * sz.xsize() * 8 > 1e7))
-       _maxLines = max(1, 1e7 / (sz.xsize() * 8));
+    //if ( _maxLines > 1 && (_maxLines * sz.xsize() * 8 > 1e7))
+    //   _maxLines = max(1, 1e7 / (sz.xsize() * 8));
 
     quint64 bytesNeeded = _size.linearSize() * sizeof(PIXVALUETYPE);
     quint64 mleft = context()->memoryLeft();
@@ -394,11 +395,10 @@ bool Grid::prepare(quint64 rasterid, const Size<> &sz) {
         context()->changeMemoryLeft(_memUsed);
     _memUsed = std::min(bytesNeeded, mleft/2);
     context()->changeMemoryLeft(-_memUsed);
-    int n = numberOfBlocks();
-    _maxCacheBlocks = _size.zsize() > 1 ? _size.zsize() * 2 : 10; // allow more blocks when using maplists
-    _blocksPerBand = n / sz.zsize();
-
     int nblocks = numberOfBlocks();
+    _maxCacheBlocks = std::min(_size.zsize() > 1 ? _size.zsize() * 2 : 10, (quint32)20); // allow more blocks when using maplists
+    _blocksPerBand = nblocks / sz.zsize();
+
     qint32 totalLines = _size.ysize();
     _blocks.resize(nblocks);
     _blockSizes.resize(nblocks);
@@ -426,29 +426,29 @@ int Grid::numberOfBlocks() {
     return nblocks * _size.zsize();
 }
 
-bool Grid::update(quint32 block, bool loadDiskData) {
+bool Grid::update(quint32 block, bool loadDiskData, int threadIndex) {
     if ( block >= _blocks.size() ) // illegal, blocknumber is outside the allowed range
         return false;
-    // update the _cache array to reflect the Most-Recently-Used blocks; the first position in the array is the MRU-block, the last position is the first candidate to be eliminated
-    auto iter = std::find(_cache.begin(), _cache.end(), GridBlockNrPair(this, block));
-    if ( iter != _cache.end()){
+    // update the _cache[_threadIndex] array to reflect the Most-Recently-Used blocks; the first position in the array is the MRU-block, the last position is the first candidate to be eliminated
+    auto iter = std::find(_cache[threadIndex].begin(), _cache[threadIndex].end(), GridBlockNrPair(this, block));
+    if ( iter != _cache[threadIndex].end()){
         auto gbnp = (*iter);
-        _cache.erase(iter);
-        _cache.insert(_cache.begin(), gbnp);
+        _cache[threadIndex].erase(iter);
+        _cache[threadIndex].insert(_cache[threadIndex].begin(), gbnp);
         if ( !_blocks[block]->dataInMemory()){
             _blocks[block]->init();
             _blocks[block]->loadDiskDataToMemory();
         }
     } else { // block is not in memory, bring it in
-        if (_cache.size() >= _maxCacheBlocks) { // keep list same size
-            _cache.back()._grid->_blocks[_cache.back()._blocknr]->save2Cache(); // least used element is saved to disk
-            _cache.pop_back(); // least used element is eliminated from the cache list
+        if (_cache[threadIndex].size() >= _maxCacheBlocks) { // keep list same size
+            _cache[threadIndex].back()._grid->_blocks[_cache[threadIndex].back()._blocknr]->save2Cache(); // least used element is saved to disk
+            _cache[threadIndex].pop_back(); // least used element is eliminated from the cache list
         }
         _blocks[block]->init(); // the data will be overwritten entirely by either loadFromCache or setBlockData
         if (loadDiskData)
             _blocks[block]->loadDiskDataToMemory();
 		if (_blocks[block]->dataInMemory())
-			_cache.insert(_cache.begin(), GridBlockNrPair(this, block));
+			_cache[threadIndex].insert(_cache[threadIndex].begin(), GridBlockNrPair(this, block));
     }
     return true;
 
@@ -464,11 +464,11 @@ void Grid::unloadInternal() {
 void Grid::setBlock(int index, GridBlockInternal *block)
 {
     Locker<> lock(_mutex);
-    if (_cache.size() >= _maxCacheBlocks) { // keep list same size
-        _cache.back()._grid->_blocks[_cache.back()._blocknr]->save2Cache(); // least used element is saved to disk
-        _cache.pop_back(); // least used element is eliminated from the cache list
+    if (_cache[0].size() >= _maxCacheBlocks) { // keep list same size
+        _cache[0].back()._grid->_blocks[_cache[0].back()._blocknr]->save2Cache(); // least used element is saved to disk
+        _cache[0].pop_back(); // least used element is eliminated from the cache list
     }
-    _cache.insert(_cache.begin(), GridBlockNrPair(this, block->blockNr()));
+    _cache[0].insert(_cache[0].begin(), GridBlockNrPair(this, block->blockNr()));
     if ( index >= _blocks.size())
         _blocks.resize(index + 1);
     _blocks[index] = block;
@@ -528,6 +528,23 @@ PIXVALUETYPE Grid::findBigger(PIXVALUETYPE v)
         }
     }
     return PIXVALUEUNDEF;
+}
+
+void Grid::prepare4Operation(int nThreads) {
+	//entry 0 remains untouched unless nthreads is 1 in which case nothing happens; the threads relevant cache will be loaded into 1...n threads
+	if (nThreads == 1)
+		return;
+	_cache.resize(nThreads + 1);
+	for (int idx = 0; idx < _cache[0].size(); ++idx) {
+		int threadIdx = _cache[0][idx]._blocknr / _blocksPerBand + 1;
+		_cache[threadIdx].push_back({ _cache[0][idx]._grid, _cache[0][idx]._blocknr });
+	}
+	_maxCacheBlocks = std::max(1, (int)_maxCacheBlocks / nThreads);
+}
+
+void Grid::unprepare4Operation() {
+	_cache.resize(1);
+	_maxCacheBlocks = std::min(_size.zsize() > 1 ? _size.zsize() * 2 : 10, (quint32)20);
 }
 
 

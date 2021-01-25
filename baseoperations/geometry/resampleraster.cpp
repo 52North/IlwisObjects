@@ -67,16 +67,17 @@ bool ResampleRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         return true;
     };
 
-    bool resource = OperationHelperRaster::execute(ctx, resampleFun, _outputRaster);
+	ctx->_threaded = true;
+	bool OK = OperationHelperRaster::execute(ctx, resampleFun, { _inputRaster, _outputRaster });
 
 
-    if ( resource && ctx != 0) {
+    if ( OK && ctx != 0) {
         QVariant value;
         value.setValue<IRasterCoverage>(_outputRaster);
 		
         ctx->setOutput(symTable,value,_outputRaster->name(), itRASTER, _outputRaster->resource() );
     }
-    return resource;
+    return OK;
 }
 
 Ilwis::OperationImplementation::State ResampleRaster::prepare(ExecutionContext *ctx, const SymbolTable &st )

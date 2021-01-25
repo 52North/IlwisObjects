@@ -323,14 +323,15 @@ void Kernel::startClock(){
      _start_clock = std::chrono::high_resolution_clock::now();
 }
 
-void Kernel::endClock(const QString& label){
+QString Kernel::endClock(const QString& label){
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end - _start_clock);
-    if ( label == "")
-        qDebug() << "calc in " << time_span.count() << " seconds";
-    else
-        qDebug() << label << time_span.count() << " seconds";
+	QString res = "calc in " + QString::number(time_span.count()) + " seconds";
+    if ( label != "")
+        res =  label+ "  " +  QString::number(time_span.count()) + " seconds";
+	qDebug() << res;
 
+	return res;
 }
 
 /*QNetworkAccessManager &Kernel::network()

@@ -65,7 +65,7 @@ bool BinaryLogical::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& sy
     };
 
     ctx->_threaded = false;
-    if (!OperationHelperRaster::execute(ctx, BinaryLogical, _outputGC))
+	if (!OperationHelperRaster::execute(ctx, BinaryLogical, { _inputGC1,_outputGC }))
         return false;
     return setOutput(ctx, symTable);
 }
@@ -95,7 +95,7 @@ bool BinaryLogical::executeCoverageCoverage(ExecutionContext *ctx, SymbolTable& 
     }
 
     ctx->_threaded = false;
-    bool resource = OperationHelperRaster::execute(ctx, binaryLogical, _outputGC);
+	bool resource = OperationHelperRaster::execute(ctx, binaryLogical, { _inputGC1, _inputGC2, _outputGC });
 
     if (resource && ctx)
         return setOutput(ctx, symTable);

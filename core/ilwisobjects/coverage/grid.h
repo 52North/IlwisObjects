@@ -100,8 +100,8 @@ public:
 
     void clear();
 
-    PIXVALUETYPE& value(quint32 block, int offset );
-    PIXVALUETYPE value(const Pixel& pix) ;
+    PIXVALUETYPE& value(quint32 block, int offset, int threadIndex = 0);
+    PIXVALUETYPE value(const Pixel& pix, int threadIndex = 0) ;
     void setValue(quint32 block, int offset, PIXVALUETYPE v );
 
     quint32 blocks() const;
@@ -123,17 +123,19 @@ public:
 
     //debug
     PIXVALUETYPE findBigger(PIXVALUETYPE v);
+	void prepare4Operation(int nThreads);
+	void unprepare4Operation();
 protected:
 
 private:
     int numberOfBlocks();
-    inline bool update(quint32 block, bool loadDiskData);
+    inline bool update(quint32 block, bool loadDiskData, int threadIndex = 0);
     void unloadInternal();
     void setBlock(int index,GridBlockInternal *block);
 
     std::recursive_mutex _mutex;
     std::vector< GridBlockInternal *> _blocks;
-    static std::vector<GridBlockNrPair> _cache;
+    std::vector<std::vector<GridBlockNrPair>> _cache;
     quint32 _maxCacheBlocks;
     qint64 _memUsed;
     quint32 _blocksPerBand;

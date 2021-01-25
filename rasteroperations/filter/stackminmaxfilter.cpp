@@ -72,7 +72,7 @@ bool StackMinMaxFilter::execute(ExecutionContext *ctx, SymbolTable &symTable)
         return true;
     };
 
-    bool res = OperationHelperRaster::execute(ctx, filterFun, _outputRaster);
+   bool res = OperationHelperRaster::execute(ctx, filterFun, { _inputRaster, _outputRaster });
 
     if ( res && ctx != 0) {
         QVariant value;

@@ -67,7 +67,7 @@ bool TabCalc::execute(ExecutionContext *ctx, SymbolTable &symTable)
    preFetchColumnValues();
    for(QVariant& v : values){
 
-       v = calc();
+       v = calc(_actions);
        updateTranquilizer(_record, 5);
        ++_record;
    }
