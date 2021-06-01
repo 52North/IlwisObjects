@@ -100,7 +100,7 @@ Texture * TextureHeap::GetTexture(int bandIndex, bool & optimal, const unsigned 
 				else
 					optimal = true; 
 				return textures[bandIndex][i];
-			} else if (textures[bandIndex][i]->contains(offsetX, offsetY, offsetX + sizeX, offsetY + sizeY)) {
+			} else if (textures[bandIndex][i]->contains(bandIndex,offsetX, offsetY, offsetX + sizeX, offsetY + sizeY)) {
 				if (tex != 0) {
 					if (tex->getZoomFactor() > textures[bandIndex][i]->getZoomFactor())
 						tex = textures[bandIndex][i];

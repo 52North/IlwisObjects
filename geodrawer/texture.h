@@ -32,7 +32,7 @@ namespace Ilwis {
             virtual void CreateTexture(bool fInThread, volatile bool * fDrawStop);
             virtual void ReCreateTexture(bool fInThread, volatile bool * fDrawStop);
             bool equals(int bandIndex, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2, unsigned int zoomFactor);
-            bool contains(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2);
+            bool contains(int bandIndex, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2);
             const unsigned int getZoomFactor() const;
             const bool fValid() const;
             void SetDirty();

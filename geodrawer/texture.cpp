@@ -71,9 +71,9 @@ bool Texture::equals(int bandIndex, const long offsetX1, const long offsetY1, co
         return false;
 }
 
-bool Texture::contains(const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2)
+bool Texture::contains(int bandIndex, const long offsetX1, const long offsetY1, const long offsetX2, const long offsetY2)
 {
-	return this->offsetX <= offsetX1 && this->offsetY <= offsetY1 && this->offsetX + sizeX >= offsetX2 && this->offsetY + sizeY >= offsetY2;
+	return this->_bandIndex == bandIndex && this->offsetX <= offsetX1 && this->offsetY <= offsetY1 && this->offsetX + sizeX >= offsetX2 && this->offsetY + sizeY >= offsetY2;
 }
 
 const unsigned int Texture::getZoomFactor() const
