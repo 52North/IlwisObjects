@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #ifndef BUILDNR_H
 #define BUILDNR_H
-#define ILWIS_BUILDNR 20200616900
+#define ILWIS_BUILDNR 20201105900
 #define ILWIS_VERSION_TYPE "Alpha"
-#define ILWIS_VERSION_NUMBER 30
+#define ILWIS_VERSION_NUMBER 31
 #endif
