@@ -24,6 +24,11 @@
     <ClCompile Include="ilwis4connector\ilwis4tableconnector.cpp" />
     <ClCompile Include="ilwis4connector\iwis4connectormodule.cpp" />
     <ClCompile Include="ilwis4connector\ilwis4workflowconnector.cpp" />
+    <ClCompile Include="ilwis4connector\qtcsv\sources\contentiterator.cpp" />
+    <ClCompile Include="ilwis4connector\qtcsv\sources\reader.cpp" />
+    <ClCompile Include="ilwis4connector\qtcsv\sources\stringdata.cpp" />
+    <ClCompile Include="ilwis4connector\qtcsv\sources\variantdata.cpp" />
+    <ClCompile Include="ilwis4connector\qtcsv\sources\writer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ilwis4connector\iwis4connectormodule.h" />
@@ -41,6 +46,15 @@
     <ClInclude Include="ilwis4connector\ilwis4scriptconnector.h" />
     <ClInclude Include="ilwis4connector\ilwis4tableconnector.h" />
     <ClInclude Include="ilwis4connector\ilwis4workflowconnector.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\include\abstractdata.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\include\qtcsv_global.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\include\reader.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\include\stringdata.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\include\variantdata.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\include\writer.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\sources\contentiterator.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\sources\filechecker.h" />
+    <ClInclude Include="ilwis4connector\qtcsv\sources\symbols.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ilwis4connector\resources\ilwis4formats.config" />
@@ -160,7 +174,7 @@ xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\bin\extension
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\;.\GeneratedFiles;.;..\external\zlib-1.2.11;..\external\quazip;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\;.\GeneratedFiles;.;..\external\zlib-1.2.11;ilwis4connector\qtcsv;..\external\quazip;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -Zc:throwingNew  -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -208,7 +222,7 @@ xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\debug\bin\extensions\
       <QTDIR>$(QTDIR)</QTDIR>
       <InputFile>%(FullPath)</InputFile>
       <OutputFile>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\\moc_%(Filename).cpp</OutputFile>
-      <IncludePath>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\;.\GeneratedFiles;.;..\external\zlib-1.2.11;..\external\quazip;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
+      <IncludePath>..\temp\GeneratedFiles\$(ConfigurationName)\$(ProjectName)\;.\GeneratedFiles;.;..\external\zlib-1.2.11;ilwis4connector\qtcsv;..\external\quazip;core;core\ilwisobjects;core\ilwisobjects\geometry;core\util;core/ilwisobjects/geometry/geodeticdatum;core/ilwisobjects/geometry/projection;core\ilwisobjects\geometry\coordinatesystem;core\ilwisobjects\geometry\georeference;core\ilwisobjects\coverage;core\ilwisobjects\table;core/ilwisobjects/operation/model;core\ilwisobjects\operation;core\ilwisobjects\operation\modeller;core/ilwisobjects/workflow;core\ilwisobjects\representation;core\catalog;core\ilwisobjects\domain;core\geos\include;..\external;$(QTDIR)\include;debug;$(QTDIR)\mkspecs\win32-msvc2015;%(AdditionalIncludeDirectories);$(QTDIR)\include\QtGui;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtCore</IncludePath>
       <Define>_WINDOWS;UNICODE;WIN32;WIN64;ilwis4connector_LIBRARY;QT_PLUGIN;%(PreprocessorDefinitions)</Define>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>

@@ -187,7 +187,7 @@ bool Ilwis4Connector::store(IlwisObject *obj, const IOOptions &options, QJsonObj
 	Resource res = obj->resource(IlwisObject::cmOUTPUT);
 	bool isSupport = options.contains("status") ? options["status"].toString() == "support" : false;
 
-	QJsonDocument doc;
+	//QJsonDocument doc;
 	QJsonObject jbase, jcontext;
 	if (!isSupport) {
 		jbase.insert("creationdate", Time(res.createTime()).toString());

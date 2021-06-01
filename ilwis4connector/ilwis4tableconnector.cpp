@@ -29,9 +29,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwis4connector.h"
 #include "ilwis4tableconnector.h"
 #include "ilwisobjectconnector.h"
+#include "operationhelper.h"
 #include "factory.h"
 #include "abstractfactory.h"
 #include "ilwisobjectfactory.h"
+#include "qtcsv/include/writer.h"
+#include "qtcsv/include/reader.h"
+#include "qtcsv/include/variantdata.h"
+#include "quazip/quazip.h"
+#include "quazip/quazipfile.h"
+#include "quazip//quazipdir.h"
 #include "connectorfactory.h"
 
 
@@ -84,36 +91,55 @@ bool Ilwis4TableConnector::store(IlwisObject *obj, const IOOptions& options, QJs
 		defs.append(jcolumnDef);
 	}
 	jtable.insert("columndefinitions", defs);
-	QString path = obj->resource().url(true).toLocalFile();
+	QString path = obj->resource(IlwisObject::cmOUTPUT).url(true).toLocalFile();
 	QFileInfo inf(path);
-	jtable.insert("binarydata", inf.baseName() + ".ods#");
+	jtable.insert("binarydata", inf.baseName() + ".izip");
 	return true;
 }
 
 bool Ilwis4TableConnector::storeData(IlwisObject *obj, const IOOptions &options ){
 	
-	const ConnectorFactory *factory = kernel()->factory<ConnectorFactory>("ilwis::ConnectorFactory");
-	if (!factory) {
-		kernel()->issues()->log("Couldn't find factory for gdal connector");
+	QFileInfo fi(_resource.url(true).toLocalFile());
+	QString basename = fi.baseName();
+	QString path = fi.absolutePath() + "/" + basename + ".csv_";
+	
+	QtCSV::Writer writer;
+	QtCSV::VariantData varData;
+	Table *tbl = static_cast<Table *>(obj);
+	for (int rec = 0; rec < tbl->recordCount(); ++rec) {
+		Record record = tbl->record(rec);
+		QVariantList data;
+		Ilwis::CRecordIter begin(record.cbegin()), end(record.cend());
+		while (begin != end) {
+			data << *begin;
+			++begin;
+		}
+		varData << data;
+
+	}
+	if (false == QtCSV::Writer::write(path, varData))
+	{
+		kernel()->issues()->log(TR("Couldn't write file:" + path));
 		return false;
 	}
+	QFile file(path);
+	if (file.open(QIODevice::ReadOnly)) {
+		QString zipPath = path;
+		zipPath.replace(".csv_", ".izip");
+		QuaZip zipfile(zipPath);
+		zipfile.open(QuaZip::mdCreate);
+		QuaZipFile filez(&zipfile);
+		filez.open(QIODevice::WriteOnly, QuaZipNewInfo(_resource.name()));
 
-	ConnectorInterface *connector = factory->createFromResource<>(obj->resource(), "spreadsheets", { "format","ods" });
-	if (connector) {
-		connector->format("ods");
-		connector->store(obj);
-		QString path = obj->resource().url(true).toLocalFile();
-		QString pathOds = path;
-		pathOds = pathOds.replace(".ilwis4", ".ods");
-		path = path.replace(".ilwis4", ".ods_");
+		QTextStream ts(&file);
+		filez.write(ts.readAll().toUtf8());
 
-		QFile::rename(pathOds, path);
-		delete connector;
-		return true;
+		filez.close();
+		zipfile.close();
+		file.remove();
+
 	}
-
-
-    return false;
+	return true;;
 }
 
 bool Ilwis4TableConnector::loadMetaData(IlwisObject *obj, const IOOptions &options)
@@ -151,28 +177,38 @@ bool Ilwis4TableConnector::loadMetaData(IlwisObject *obj, const IOOptions &optio
 
 bool Ilwis4TableConnector::loadData(IlwisObject* obj, const IOOptions& options){
 
-	if (!dataIsLoaded()) {
-		const ConnectorFactory *factory = kernel()->factory<ConnectorFactory>("ilwis::ConnectorFactory");
-		if (!factory) {
-			kernel()->issues()->log("Couldn't find factory for gdal connector");
-			return false;
+	_binaryIsLoaded = false;
+	Resource res = obj->resource();
+	QString path = res.url(true).toLocalFile();
+	QString zipPath = path.replace(".ilwis4", ".izip");
+
+	QuaZip zipfile(zipPath);
+	zipfile.open(QuaZip::mdUnzip);
+	QuaZipFile file(&zipfile);
+
+	Table *tbl = static_cast<Table *>(obj);
+	for (bool f = zipfile.goToFirstFile(); f; f = zipfile.goToNextFile()) {
+		file.open(QIODevice::ReadOnly);
+		QtCSV::Reader reader;
+		int recCount = 0;
+		QList<QStringList> data = reader.readToList(file);
+		for (auto rec : data) {
+			if (rec.size() == tbl->columnCount()) {
+				for (quint32 c = 0; c < tbl->columnCount(); ++c) {
+					const ColumnDefinition& def = tbl->columndefinitionRef(c);
+					if (hasType(def.datadef().domain()->ilwisType(), itNUMERICDOMAIN | itITEMDOMAIN)) {
+						tbl->setCell(c, recCount, OperationHelper::unquote(rec[c]).toDouble(),true);
+					}
+					else {
+						tbl->setCell(c, recCount, OperationHelper::unquote(rec[c]), true);
+					}
+				}
+			}
+			++recCount;
 		}
-		Resource res = obj->resource();
-		QString path = res.url(true).toString();
-		path = path.replace(".ilwis4", ".ods_");
-		res.setUrl(path, true, false);
-		res.setUrl(path, false, false);
 
-		ConnectorInterface *connector = factory->createFromResource<>(res, "spreadsheets", { "format" , "ods_" });
-		connector->format("ods");
-		auto opt = options;
-		opt.addOption({ "nometadata",true });
-		opt.addOption({ "headerline", 0 });
-		connector->loadData(obj, opt);
-
-		_binaryIsLoaded = connector->dataIsLoaded();
-		delete connector;
+		file.close();
+		_binaryIsLoaded = true;
 	}
-  
-    return true;
+	return _binaryIsLoaded;
 }

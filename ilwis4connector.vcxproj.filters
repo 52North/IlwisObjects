@@ -14,6 +14,12 @@
     <Filter Include="config">
       <UniqueIdentifier>{02599091-08df-44fa-b045-427e4f388657}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\qtcsv">
+      <UniqueIdentifier>{3c7309ff-f036-4109-ab13-90bae3f9f1ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\qtcsv">
+      <UniqueIdentifier>{a8d3494d-b9bb-4270-aac9-0fd3b00339ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ilwis4connector\iwis4connectormodule.cpp">
@@ -54,6 +60,21 @@
     </ClCompile>
     <ClCompile Include="ilwis4connector\ilwis4representationconnector.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\qtcsv\sources\reader.cpp">
+      <Filter>Source Files\qtcsv</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\qtcsv\sources\stringdata.cpp">
+      <Filter>Source Files\qtcsv</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\qtcsv\sources\variantdata.cpp">
+      <Filter>Source Files\qtcsv</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\qtcsv\sources\writer.cpp">
+      <Filter>Source Files\qtcsv</Filter>
+    </ClCompile>
+    <ClCompile Include="ilwis4connector\qtcsv\sources\contentiterator.cpp">
+      <Filter>Source Files\qtcsv</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +118,33 @@
     </ClInclude>
     <ClInclude Include="ilwis4connector\ilwis4representationconnector.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\include\abstractdata.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\include\qtcsv_global.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\include\reader.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\include\stringdata.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\include\variantdata.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\include\writer.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\sources\contentiterator.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\sources\filechecker.h">
+      <Filter>Header Files\qtcsv</Filter>
+    </ClInclude>
+    <ClInclude Include="ilwis4connector\qtcsv\sources\symbols.h">
+      <Filter>Header Files\qtcsv</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
