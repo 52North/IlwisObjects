@@ -121,6 +121,7 @@ bool GdalFeatureConnector::loadMetaData(Ilwis::IlwisObject *data,const IOOptions
     }
 
     gdal()->closeFile(sourceRef().toLocalFile(), data->id());
+	_handle = 0;
 
     return true;
 }
@@ -178,6 +179,7 @@ bool GdalFeatureConnector::loadData(IlwisObject* data, const IOOptions &){
         fcoverage->envelope(bbox);
     }
     gdal()->closeFile(sourceRef().toLocalFile(), data->id());
+	_handle = 0;
     _binaryIsLoaded = ok;
     return ok;
 }
