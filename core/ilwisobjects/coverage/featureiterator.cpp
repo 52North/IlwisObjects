@@ -104,17 +104,17 @@ FeatureIterator &FeatureIterator::operator -(int distance)
 
 bool FeatureIterator::operator ==(const FeatureIterator &iter)
 {
-    return _iterFeatures == iter._iterFeatures;
+    return iter.isValid() && isValid() &&  _iterFeatures == iter._iterFeatures;
 }
 
 bool FeatureIterator::operator !=(const FeatureIterator &iter)
 {
-       return _iterFeatures != iter._iterFeatures;
+	     return iter.isValid() && isValid() && _iterFeatures != iter._iterFeatures;
 }
 
 bool FeatureIterator::operator <(const FeatureIterator &iter)
 {
-    return _iterFeatures < iter._iterFeatures;
+    return iter.isValid() && isValid() && _iterFeatures < iter._iterFeatures;
 }
 
 SPFeatureI FeatureIterator::operator *()
@@ -275,5 +275,9 @@ FeatureIterator::Flow FeatureIterator::flow() const
 void FeatureIterator::flow(const Flow &flow)
 {
     _flow = flow;
+}
+
+bool FeatureIterator::isValid() const {
+	return  _fcoverage.isValid() && _fcoverage->_features.size() > 0 && _iterFeatures != _fcoverage->_features.end();
 }
 

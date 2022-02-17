@@ -175,6 +175,8 @@ public:
     Flow flow() const;
     void flow(const Flow &flow);
 
+	bool isValid() const;
+
 private:
     bool init();
     bool move(qint32 distance=1);
