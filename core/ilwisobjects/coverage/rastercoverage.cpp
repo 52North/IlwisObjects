@@ -205,10 +205,12 @@ NumericStatistics& RasterCoverage::statisticsRef(const QString& attribute)  {
 	throw ErrorObject("Invalid attribute for raster");
 }
 
-bool Ilwis::RasterCoverage::histogramCalculated(const QString& attribute, int mode) const
+bool Ilwis::RasterCoverage::histogramCalculated(const QString& attribute, int mode, int bins) const
 {
 
     NumericStatistics stats = statistics(attribute);
+	if (stats.binCount() != bins)
+		return false;
 	if (stats.histogramMode() == NumericStatistics::pQUICKHISTOGRAM && mode == NumericStatistics::pHISTOGRAM)
 		return false;
     std::vector<NumericStatistics::HistogramBin> hist = stats.histogram();
@@ -279,7 +281,7 @@ void string2statmap(std::map < QString, int>& mp) {
 	mp["kurtosis"] = NumericStatistics::index(NumericStatistics::pKURTOSIS);
 }
 
-bool RasterCoverage::loadBand(const QString& attribute, const std::map < QString, int>& mapping, QJsonObject& jband, int mode) {
+bool RasterCoverage::loadBand(const QString& attribute, const std::map < QString, int>& mapping, QJsonObject& jband, int mode, int reqBins) {
 	QJsonObject jattrs = jband.value("attributes").toObject();
 	QJsonObject jattr = jattrs.value(attribute).toObject();
 	QJsonObject jstats = jattr.value("statistics").toObject();
@@ -296,6 +298,9 @@ bool RasterCoverage::loadBand(const QString& attribute, const std::map < QString
 		if ( subParts.size() == 2)
 			bins.push_back(NumericStatistics::HistogramBin(subParts[0].toDouble(), subParts[1].toInt()));
 	}
+	if (bins.size() != reqBins)
+		return false;
+
 	QJsonArray jmark = jstats.value("markers").toArray();
 	int maxMarkers = NumericStatistics::index(NumericStatistics::pLAST);
 	std::vector<PIXVALUETYPE> markers(maxMarkers, rUNDEF);
@@ -310,7 +315,7 @@ bool RasterCoverage::loadBand(const QString& attribute, const std::map < QString
 	statisticsRef(attribute).setContent(bins, markers, (NumericStatistics::PropertySets)mode);
 	return true;
 }
-bool RasterCoverage::loadHistograms(const QString& attribute, int mode) {
+bool RasterCoverage::loadHistograms(const QString& attribute, int mode, int bins) {
 	QString path = resource().container(true).toLocalFile();
 	QFileInfo inf(path);
 	bool containerIsFile = inf.isFile();
@@ -346,7 +351,7 @@ bool RasterCoverage::loadHistograms(const QString& attribute, int mode) {
 					if (d1 == d2) {
 						QJsonObject jband;
 						jband = jbands.value(name).toObject();
-						if (loadBand(attribute, mp, jband, mode))
+						if (loadBand(attribute, mp, jband, mode, bins))
 							return true;
 					}
 				}
@@ -449,8 +454,8 @@ NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode
         return statisticsRef(attribute);
 
     if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM)) {
-        if (!histogramCalculated(attribute, mode)) {
-            if (!loadHistograms(attribute, mode)) {
+        if (!histogramCalculated(attribute, mode, bins)) {
+            if (!loadHistograms(attribute, mode, bins)) {
                 std::unique_ptr<Tranquilizer> trq;
                 bool inWorkerThread = QThread::currentThread() != QCoreApplication::instance()->thread();
                 if (inWorkerThread) {
@@ -485,8 +490,8 @@ NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode
         }
 	}
 	else {
-		if (!histogramCalculated(attribute, mode)) {
-			if (!loadHistograms(attribute,mode)) {
+		if (!histogramCalculated(attribute, mode, bins)) {
+			if (!loadHistograms(attribute,mode, bins)) {
 				calculateHistogram(attribute, begin(), end(), mode, bins);
 				storeHistograms(attribute, mode);
 			}
