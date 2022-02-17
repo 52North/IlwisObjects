@@ -153,6 +153,10 @@ public:
         _binCount = value;
     }
 
+	int binCount() const {
+		return _binCount;
+	}
+
 
 
     template<typename IterType> bool calculate(const IterType& begin, const IterType& end, std::unique_ptr<Tranquilizer>& tranquilizer, int mode = pBASIC, int bins = 0, double pseudoUndef = rILLEGAL) {
