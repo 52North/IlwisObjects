@@ -94,7 +94,7 @@ bool CoverageConnector::store(IlwisObject *obj, const IOOptions &options)
 }
 
 OGRSpatialReferenceH CoverageConnector::createSRS(const ICoordinateSystem& coordsystem) const{
-    if ( hasType(coordsystem->ilwisType(), itCONVENTIONALCOORDSYSTEM)){
+    if ( coordsystem.isValid() && hasType(coordsystem->ilwisType(), itCONVENTIONALCOORDSYSTEM)){
         IConventionalCoordinateSystem csy = coordsystem.as<ConventionalCoordinateSystem>();
         if ( csy->projection().isValid()){
             QString proj4def = csy->projection()->toProj4();
