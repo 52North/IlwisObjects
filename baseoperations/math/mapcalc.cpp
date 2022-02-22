@@ -210,7 +210,10 @@ OperationImplementation::State MapCalc::prepare(ExecutionContext *ctx,const Symb
     RasterStackDefinition stackdef;
     for(int parmIndex = 1 ; parmIndex < _expression.parameterCount(); ++parmIndex){
         Parameter parm = _expression.parm(parmIndex);
-        if ( hasType(parm.valuetype(), itRASTER)){
+		if (parm.value() == sUNDEF) {
+			_inputNumbers[parmIndex] = rUNDEF;
+		}
+        else if ( hasType(parm.valuetype(), itRASTER)){
             QString url = parm.value();
             IRasterCoverage raster;
             if(!raster.prepare(url)){
