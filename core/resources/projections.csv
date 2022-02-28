@@ -11,6 +11,7 @@ eck2,Eckert2,,,,false easting|false northing|central meridian
 eck3,Eckert3,,,,false easting|false northing|central meridian
 PRJEH,EOV Hungary,,,,
 eqdc,Equidistant Conic,Equidistant_Conic,,,false easting|false northing|central meridian|latitude of origin|standard parallel 1|standard parallel 2
+eqc,Equidistant Cylindrical,Equidistant_Cylindrical,,,false easting|false northing|atitude of true scale|central meridian|latitude of origin
 PRJGBI,Gauss-Boaga Italy,,,,zone=1
 PRJGC,Gauss Colombia,,,,zone=1
 PRJGKE,Gauss-Krueger Germany,,,,zone=2
