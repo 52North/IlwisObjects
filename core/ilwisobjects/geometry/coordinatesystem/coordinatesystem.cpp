@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisdata.h"
 //#include "domain.h"
 #include "coordinatesystem.h"
+#include "projection.h"
 #include "conventionalcoordinatesystem.h"
 
 using namespace Ilwis;
@@ -111,7 +112,15 @@ bool CoordinateSystem::isUnknown() const
 bool CoordinateSystem::addCsyProperty(const ICoordinateSystem& csy, Resource& resource) {
 	if (csy.isValid()) {
 		if (csy->ilwisType() == itCONVENTIONALCOORDSYSTEM) {
-			QString code("code=proj4:" + csy.as<ConventionalCoordinateSystem>()->toProj4());
+			auto ccs = csy.as<ConventionalCoordinateSystem>();
+			auto code = ccs->toProj4();
+			if (code != sUNDEF) {
+				code = QString("code=proj4:" + code);
+			}
+			else {
+				if (ccs->projection()->code() == "PRJPC") // special case as plate carree is not supported by proj4 and deprecated in epsg
+					code = "code=epsg:32662";
+			}
 			resource.addProperty("coordinatesystem", code, true);
 			resource.setExtendedType(resource.extendedType() | itCOORDSYSTEM);
 		}
