@@ -55,6 +55,9 @@ public:
 				}
 			}
 		}
+		else {
+			boxes.push_back(BoundingBox(rasters[0]->size()));
+		}
 
         std::vector<std::future<bool>> futures(cores);
         bool res = true;
