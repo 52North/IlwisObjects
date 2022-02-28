@@ -112,7 +112,7 @@ Ilwis::OperationImplementation::State LinearRasterFilter::prepare(ExecutionConte
 quint64 LinearRasterFilter::createMetadata()
 {
     OperationResource operation({"ilwis://operations/linearrasterfilter"});
-    operation.setSyntax("linearrasterfilter(raster1, linearfiltername");
+    operation.setSyntax("linearrasterfilter(raster1, linearfiltername)");
     operation.setDescription(TR("generates a new raster based on the conditions as specified in the linear filter definition"));
     operation.setInParameterCount({2});
     operation.addInParameter(0,itRASTER , TR("rastercoverage"),TR("input rastercoverage with numeric domain"));
