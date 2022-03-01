@@ -326,6 +326,8 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
             } else if ( conv.storeType() == itDOUBLE){
                 storeType = "Real";
             }
+			if ( _domainName == "image" && resolution != 1)
+				_domainName = "value.dom";
             _odf->setKeyValue("MapStore","Type",storeType);
             _odf->setKeyValue("BaseMap","Domain",_domainName);
             _odf->setKeyValue("BaseMap","MinMax",QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]));
