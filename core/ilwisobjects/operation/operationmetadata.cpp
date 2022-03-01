@@ -562,7 +562,7 @@ void OperationResource::addValidation(quint32 parent, quint32 child, const QStri
     QString prefix = "pin_" + QString::number(child + 1) + "_";
     addProperty(prefix + "validationsource", parent);
 	QString d = validationCondition;
-	d.replace("'", " ");
+	//d.replace("'", " ");
     addProperty(prefix + "validationcondition", d);
 }
 
