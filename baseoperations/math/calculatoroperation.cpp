@@ -43,7 +43,7 @@ CalculatorOperation::CalculatorOperation(quint64 metaid,const Ilwis::OperationEx
 {
     _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},
                  {"log10",1},{"ln",1},{"exp",1},{"abs",1},{"ceil",1},{"floor",1},{"sq",1},{"sqrt",1},{"max",2},
-                 {"min",2},{"pow",2}};
+				 {"min",2},{"pow",2}, {"not", 1}, {"xor", 2} };
     _operators["+"] = { 2, LEFT_ASSOC };
     _operators["-"] = { 2, LEFT_ASSOC };
     _operators["*"] = { 5, LEFT_ASSOC };
@@ -790,8 +790,20 @@ PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) 
 			calcResult = action._values[0]._keyMapping.at((quint32)v1);
 
 		}
+		case mNOT:
+		{
+			PIXVALUETYPE v = GetValue(action._values[0], result);
+			calcResult = isNumericalUndef(v) ? PIXVALUEUNDEF : ~(qint64)v;
+			break;
 
         }
+		case mXOR:
+			PIXVALUETYPE v1 = GetValue(action._values[0], result);
+			PIXVALUETYPE v2 = GetValue(action._values[1], result);
+			calcResult = (isNumericalUndef(v1) || isNumericalUndef(v2))? PIXVALUEUNDEF : ((qint64)v1) ^ ((qint64)v2);
+			break;
+
+		}
         result[i] = calcResult;
     }
     return result.back();
