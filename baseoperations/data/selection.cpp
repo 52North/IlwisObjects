@@ -198,6 +198,10 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
          Resource resource(url, itFLATTABLE);
          _attTable.prepare(resource);
      }
+	 if (useOldGrf == false && inputRaster->size().zsize() > 1 && (_box.min_corner().z == iUNDEF || _box.max_corner().z == iUNDEF)) {
+		 _box.min_corner().z = 0;
+		 _box.max_corner().z = inputRaster->size().zsize() - 1;
+	 }
 	 outputRaster->size(_box.size());
      if ( selectedAttributes == 1 && _inputAttributeTable.isValid()){
         QStringList names = attributeNames();
@@ -209,7 +213,7 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
 
 
      if ( (copylist & itGEOREF) == 0) {
-         Resource resource(QUrl(INTERNAL_CATALOG + "/" + outputRaster->name() + "_grf_" + QString::number(outputRaster->id())),itGEOREF);
+	         Resource resource(QUrl(INTERNAL_CATALOG + "/" + outputRaster->name() + "_grf_" + QString::number(outputRaster->id())),itGEOREF);
          resource.addProperty("size", _box.size().toString(), true);
          auto envelope = inputRaster->georeference()->pixel2Coord(_box);
          resource.addProperty("envelope", IVARIANT(envelope));
