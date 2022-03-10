@@ -117,15 +117,15 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" ..\output\release\ilwispy\* /y
-xcopy ..\projects\pythonapi\README ..\output\release\ilwispy\* /y
-xcopy ..\projects\pythonapi\UPDATE ..\output\release\ilwispy\* /y
-xcopy ..\projects\pythonapi\CHANGELOG ..\output\release\ilwispy\* /y
+      <Command>xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\* /y
+xcopy ..\projects\pythonapi\README ..\output\release\ilwispy\ilwis\* /y
+xcopy ..\projects\pythonapi\UPDATE ..\output\release\ilwispy\ilwis\* /y
+xcopy ..\projects\pythonapi\CHANGELOG ..\output\release\ilwispy\ilwis\* /y
 echo import os &gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
 echo path = os.path.dirname(__file__) + '\\ilwisobjects' + "/" &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
 echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"] &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
 type ..\projects\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
-copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\__init__.py /y</Command>
+copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\ilwis\__init__.py /y</Command>
       <Message>do it</Message>
     </PostBuildEvent>
     <CustomBuildStep>

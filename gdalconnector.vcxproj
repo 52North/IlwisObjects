@@ -112,9 +112,9 @@
       <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\gdalconnector\* /i /y
 xcopy  gdalconnector\resources\* ..\output\release\bin\extensions\gdalconnector\resources /S /Y /I
 xcopy ..\external\libraries\$(ProjectName)\*.dll ..\output\release\bin\extensions\$(ProjectName)\* /y/i
-xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
-xcopy  gdalconnector\resources\* ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\resources /S /Y /I
-xcopy ..\external\libraries\$(ProjectName)\*.dll ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /y/i</Command>
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
+xcopy  gdalconnector\resources\* ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\resources /S /Y /I
+xcopy ..\external\libraries\$(ProjectName)\*.dll ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\* /y/i</Command>
       <Message>xCopy gdalconnector.dll to ..\output\release\bin\extensions\gdalconnector   </Message>
     </PostBuildEvent>
     <QtMoc>

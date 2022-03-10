@@ -117,12 +117,12 @@ xcopy ..\external\libraries\$(Configuration)\spreadsheet\*.dll ..\output\debug\b
 
 xcopy  spreadsheet\resources\* ..\output\release\bin\extensions\spreadsheet\resources /S /Y /I
 xcopy ..\external\libraries\$(Configuration)\spreadsheet\*.dll ..\output\release\bin\extensions\spreadsheet\* /Y/I
-xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
 
 
-xcopy  spreadsheet\resources\* ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\resources /S /Y /I
-xcopy ..\external\libraries\$(Configuration)\spreadsheet\*.dll ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /Y/I</Command>
-      <Message>Copy spreadsheet.dll to ..\output\release\bin\extensions\spreadsheet</Message>
+xcopy  spreadsheet\resources\* ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\resources /S /Y /I
+xcopy ..\external\libraries\$(Configuration)\spreadsheet\*.dll ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\* /Y/I</Command>
+      <Message>Copy spreadsheet.dll to ..\output\release\bin\extensions\spreadsheet </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -110,8 +110,8 @@
     </ResourceCompile>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\featureoperations\* /s /y /i
-xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /s /y /i</Command>
-      <Message>Copy featureoperations.dll to ..\output\release\bin\extensions\featureoperations</Message>
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\* /s /y /i</Command>
+      <Message>Copy featureoperations.dll to ..\output\release\bin\extensions\featureoperations </Message>
     </PostBuildEvent>
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>

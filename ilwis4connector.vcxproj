@@ -160,9 +160,9 @@
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\ilwis4connector\* /s /y /i
 xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\bin\extensions\ilwis4connector\resources\* /s /y /i
-xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
-xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\resources\* /s /y /i</Command>
-      <Message>Copy ilwis4connector.dll to ..\output\release\bin\extensions\ilwis4connector</Message>
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
+xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(ProjectName)\resources\* /s /y /i</Command>
+      <Message>Copy ilwis4connector.dll to ..\output\release\bin\extensions\ilwis4connector </Message>
     </PostBuildEvent>
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
