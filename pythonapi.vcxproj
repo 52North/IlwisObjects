@@ -117,62 +117,16 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>if not exist ..\output\release\bin\extensions\pythonapi mkdir ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y ..\libraries\release\extensions\pythonapi\_ilwisobjects.pyd ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\test.py ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\README ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\UPDATE ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\CHANGELOG ..\output\release\bin\extensions\pythonapi
-if errorlevel 1 goto VCEnd
- copy /y /b ..\projects\pythonapi\paths.py + ..\output\release\bin\extensions\pythonapi\ilwisobjects.py ..\output\release\bin\extensions\pythonapi\temp.py
-if errorlevel 1 goto VCEnd
- move /y ..\output\release\bin\extensions\pythonapi\temp.py ..\output\release\bin\extensions\pythonapi\__init__.py
-if errorlevel 1 goto VCEnd
- del /f ..\output\release\bin\extensions\pythonapi\ilwisobjects.py
-if errorlevel 1 goto VCEnd
- if not exist ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\test.py ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\README ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\UPDATE ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- copy /y ..\projects\pythonapi\CHANGELOG ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- copy /y ..\output\release\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
-if errorlevel 1 goto VCEnd
- move /y ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
-if errorlevel 1 goto VCEnd
-</Command>
-      <Message>if not exist ..\output\release\bin\extensions\pythonapi mkdir ..\output\release\bin\extensions\pythonapi
- copy /y ..\libraries\release\extensions\pythonapi\_ilwisobjects.pyd ..\output\release\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\release\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\test.py ..\output\release\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\README ..\output\release\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\UPDATE ..\output\release\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\CHANGELOG ..\output\release\bin\extensions\pythonapi
- copy /y /b ..\projects\pythonapi\paths.py + ..\output\release\bin\extensions\pythonapi\ilwisobjects.py ..\output\release\bin\extensions\pythonapi\temp.py
- move /y ..\output\release\bin\extensions\pythonapi\temp.py ..\output\release\bin\extensions\pythonapi\__init__.py
- del /f ..\output\release\bin\extensions\pythonapi\ilwisobjects.py
- if not exist ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\test.py ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\README ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\UPDATE ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\CHANGELOG ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\output\release\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- move /y ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\release\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
-</Message>
+      <Command>xcopy "$(TargetPath)" ..\output\release\ilwispy\* /y
+xcopy ..\projects\pythonapi\README ..\output\release\ilwispy\* /y
+xcopy ..\projects\pythonapi\UPDATE ..\output\release\ilwispy\* /y
+xcopy ..\projects\pythonapi\CHANGELOG ..\output\release\ilwispy\* /y
+echo import os &gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
+echo path = os.path.dirname(__file__) + '\\ilwisobjects' + "/" &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
+echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"] &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
+type ..\projects\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
+copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\__init__.py /y</Command>
+      <Message>do it</Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>..\external\programs\swigwin\swig.exe -python -c++ pythonapi\ilwisobjects.i</Command>

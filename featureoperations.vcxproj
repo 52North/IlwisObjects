@@ -109,7 +109,8 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;FEATUREOPERATIONS_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\featureoperations\* /s /y /i</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\featureoperations\* /s /y /i
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /s /y /i</Command>
       <Message>Copy featureoperations.dll to ..\output\release\bin\extensions\featureoperations</Message>
     </PostBuildEvent>
     <QtMoc>

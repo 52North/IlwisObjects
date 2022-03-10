@@ -109,7 +109,9 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;BASEOPERATIONS_LIBRARY;QT_NO_DEBUG;QT_PLUGIN;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\baseoperations\* /s /y /i</Command>
+      <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\baseoperations\* /s /y /i
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\baseoperations\* /s /y /i
+</Command>
       <Message>Copy baseoperations.dll to ..\output\release\bin\extensions\baseoperations</Message>
     </PostBuildEvent>
     <QtMoc>

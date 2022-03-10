@@ -110,7 +110,9 @@
     </ResourceCompile>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" ..\output\release\bin\extensions\ilwis3connector\* /s /y /i
-xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\bin\extensions\ilwis3connector\resources\* /s /y /i</Command>
+xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\bin\extensions\ilwis3connector\resources\* /s /y /i
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\* /s /y /i
+xcopy "$(ProjectDir)\$(ProjectName)\resources\*" ..\output\release\ilwispy\ilwisobjects\extensions\$(ProjectName)\resources\* /s /y /i</Command>
       <Message>Copy ilwis3connector.dll to ..\output\release\bin\extensions\ilwis3connector</Message>
     </PostBuildEvent>
     <QtMoc>
