@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 
 ProjectionModule::ProjectionModule(QObject *parent) :
-    Module(parent, "ProjectionModuleProj4", "iv40","1.0")
+    Module(parent, "projectionimplproj4", "iv40","1.0")
 {
 }
 

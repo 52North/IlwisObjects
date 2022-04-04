@@ -26,16 +26,12 @@ ErrorObject::ErrorObject(const QString &message, bool log): _message(message)
         kernel()->issues()->log(message);
 }
 
-ErrorObject::~ErrorObject() throw()
-{
-}
-
 QString ErrorObject::message() const
 {
     return _message;
 }
 
-const char *ErrorObject::what() const throw()
+const char *ErrorObject::what() const noexcept
 {
     return "ErrorObject";
 }
@@ -44,7 +40,7 @@ InternalError::InternalError(const QString &message) : ErrorObject(message)
 {
 }
 
-const char *InternalError::what() const throw()
+const char *InternalError::what() const noexcept
 {
     return "InternalError";
 }
@@ -53,7 +49,7 @@ ScriptSyntaxError::ScriptSyntaxError(const QString &message) : ScriptError(messa
 {
 }
 
-const char *ScriptSyntaxError::what() const throw()
+const char *ScriptSyntaxError::what() const noexcept
 {
     return "ScriptSyntaxError";
 }
@@ -62,7 +58,7 @@ ScriptExecutionError::ScriptExecutionError(const QString &message) : ScriptError
 {
 }
 
-const char *ScriptExecutionError::what() const throw()
+const char *ScriptExecutionError::what() const noexcept
 {
     return "ScriptExecutionError";
 }
@@ -71,7 +67,7 @@ ScriptError::ScriptError(const QString &message) : ErrorObject(message)
 {
 }
 
-const char *ScriptError::what() const throw()
+const char *ScriptError::what() const noexcept
 {
     return "ScriptError";
 }
@@ -80,7 +76,7 @@ FeatureCreationError::FeatureCreationError(const QString &message) : ErrorObject
 {
 }
 
-const char *FeatureCreationError::what() const throw()
+const char *FeatureCreationError::what() const noexcept
 {
     return "FeatureCreationError";
 }
@@ -89,7 +85,7 @@ GeometryError::GeometryError(const QString &message) : ErrorObject(message)
 {
 }
 
-const char *GeometryError::what() const throw()
+const char *GeometryError::what() const noexcept
 {
     return "GeometryError";
 }
@@ -98,7 +94,7 @@ OutOfMemoryError::OutOfMemoryError(const QString &message, bool log) : ErrorObje
 {
 }
 
-const char *OutOfMemoryError::what() const throw()
+const char *OutOfMemoryError::what() const noexcept
 {
     return "OutOfMemoryError";
 }
@@ -107,7 +103,7 @@ CheckExpressionError::CheckExpressionError(const QString &message) : ErrorObject
 {
 }
 
-const char *CheckExpressionError::what() const throw()
+const char *CheckExpressionError::what() const noexcept
 {
     return "CheckExpressionError";
 }
@@ -118,7 +114,7 @@ AbortOperation::AbortOperation(const QString &message) : ErrorObject(message)
 
 }
 
-const char *AbortOperation::what() const throw()
+const char *AbortOperation::what() const noexcept
 {
     return "AbortOperation";
 }
@@ -128,7 +124,7 @@ VisualizationError::VisualizationError(const QString &message) : ErrorObject(mes
 {
 }
 
-const char *VisualizationError::what() const throw()
+const char *VisualizationError::what() const noexcept
 {
     return "VisualizationError";
 }

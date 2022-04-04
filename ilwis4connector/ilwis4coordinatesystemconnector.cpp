@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ellipsoid.h"
 #include "geodeticdatum.h"
 #include "ilwis4connector.h"
-#include "Ilwis4coordinatesystemconnector.h"
+#include "ilwis4coordinatesystemconnector.h"
 #include "ilwisobjectconnector.h"
 #include "factory.h"
 #include "abstractfactory.h"
@@ -127,7 +127,7 @@ bool Ilwis4CoordinateSystemConnector::loadMetaData(IlwisObject* object, const IO
 		if (jdatum != QJsonValue::Undefined) {
 			QJsonArray parms = jdatum["parameters"].toArray();
 			std::vector<double> dparms;
-			for (auto& parm : parms) {
+            for (auto parm : parms) {
 				dparms.push_back(parm.toDouble());
 			}
 			GeodeticDatum *gdatum = new GeodeticDatum(dparms, ccsy->ellipsoid());

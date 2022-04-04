@@ -203,7 +203,7 @@ IRasterCoverage OperationHelperRaster::resample(const IRasterCoverage& sourceRas
         ExecutionContext ctxLocal;
         SymbolTable symtabLocal;
         if (!commandhandler()->execute(expr, &ctxLocal, symtabLocal))
-            return false;
+            return IRasterCoverage();
         QVariant var = symtabLocal.getValue(res.name());
         return var.value<IRasterCoverage>();
 }

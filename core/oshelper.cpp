@@ -14,6 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
+#include <QLibrary>
 #include "kernel.h"
 #include "oshelper.h"
 
@@ -69,7 +70,22 @@ QString OSHelper::createFileUrlFromParts(const QString& left, const QString& rig
     #endif
 }
 
-
+bool OSHelper::loadExtraLibs(const QString& ilwisDir){
+    bool r = true;
+    #ifdef Q_OS_WIN
+    QLibrary lib;
+    QString ssl1 = ilwisDir + "/libeay32.dll";
+    lib.setFileName(ssl1);
+    r = lib.load();
+    if ( r){
+        QString ssl2 = ilwisDir + "/ssleay32.dll";
+        QLibrary lib2;
+        lib2.setFileName(ssl2);
+        r = lib2.load();
+    }
+   #endif
+    return r;
+}
 QString OSHelper::ensureUniqueFilename(QString fileFullPath)
 {
     quint16 idx = 1;

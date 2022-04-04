@@ -48,6 +48,7 @@ public:
     void setWorkingCatalog(const Ilwis::ICatalog &cat);
     QUrl cacheLocation() const;
     QUrl persistentInternalCatalog() const;
+    QString resourcesLocation(const QString&internalName="") const;
     quint64 memoryLeft() const;
     quint64 changeMemoryLeft(qint64 amount);
     IlwisConfiguration& configurationRef();
@@ -65,8 +66,6 @@ private:
     static IlwisContext *_context;
 
     std::vector<QUrl> _systemlocations;
-    //QThreadStorage<Catalog *> _workingCatalog;
-    ICatalog _workingCatalog;
     ICatalog _systemCatalog;
     //last used local folder, often equals to working catalog but not necessary. The location is there to have a dependable location for (file)outputs if the working catalog is not a folder
     ICatalog _lastUsedLocalFolder;

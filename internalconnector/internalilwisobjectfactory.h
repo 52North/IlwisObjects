@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #ifndef INTERNALOBJECTFACTORY_H
 #define INTERNALOBJECTFACTORY_H
 
+#include "size.h"
 namespace Ilwis {
 
 class Coverage;

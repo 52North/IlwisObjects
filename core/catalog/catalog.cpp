@@ -68,7 +68,7 @@ void Catalog::scan()
     Locker<> lock(_mutex);
 
     if (! connector().isNull()){
-        if( connector()->loadData(this)){
+        if( connector()->loadData(this, IOOptions())){
             setValid(true);
             changed(true);
         }

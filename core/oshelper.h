@@ -29,6 +29,7 @@ public:
     static QString operatingSystem();
     static QString createFileUrlFromParts(const QString &left, const QString &right);
     static QString ensureUniqueFilename(QString fileFullPath);
+    static bool loadExtraLibs(const QString &ilwisDir);
 };
 }
 

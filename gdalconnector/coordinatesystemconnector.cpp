@@ -153,10 +153,12 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
             //    csy->prepare("+proj=longlat +ellps=WGS84 +datum=WGS84");
            
             GeodeticDatum *datum = new GeodeticDatum(datumName);
-            std::vector<double> shifts = getShifts(QString("gcs.override.csv"), datumName);
-            if (shifts.size() == 0)
-                shifts = getShifts(QString("gcs.csv"), datumName);
-            if (shifts.size() >= 3) {
+auto overrides = QString("gcs.override.csv");
+            std::vector<double> shifts = getShifts(overrides, datumName);
+            if (shifts.size() == 0){
+                auto gcs = QString("gcs.csv");
+                shifts = getShifts(gcs, datumName);
+            }if (shifts.size() >= 3) {
                 if (shifts.size() >= 7)
                     datum->set7TransformationParameters(shifts[0], shifts[1], shifts[2], shifts[3], shifts[4], shifts[5], shifts[6]);
                 else

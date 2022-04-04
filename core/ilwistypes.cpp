@@ -353,7 +353,26 @@ QString TypeHelper::type2name(IlwisTypes t)
     return sUNDEF;
 
 }
+QString TypeHelper::type2names(IlwisTypes t, const QString &seperator){
 
+    QString type;
+    for(quint64 i =0; i < 64; ++i){
+       quint64 result = 1 << i;
+       if ( result > t)
+           break;
+
+        if ( hasType(t, result)) {
+            if ( type != "")
+                type += seperator;
+            type += TypeHelper::type2name(result);
+        }
+
+    }
+    if ( type != "")
+        return type;
+
+    return sUNDEF;
+}
 IlwisTypes TypeHelper::name2type(const QString &dname)
 {
 

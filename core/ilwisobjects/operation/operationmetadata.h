@@ -119,8 +119,8 @@ protected:
     void removeParameterProperties(const QString &base, quint16 size);
 
 private:
-    quint16 _minInputCountParameters;
-    quint16 _minOutputCountParameters;
+    quint16 _minInputCountParameters=0;
+    quint16 _minOutputCountParameters=0;
     std::vector<SPOperationParameter> _inputParameters;
     std::vector<SPOperationParameter> _outputParameters;
 

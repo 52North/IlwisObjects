@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #ifndef SELECTIONFEATURES_H
 #define SELECTIONFEATURES_H
 
-#include "geos/geom/geometry.h"
+#include "geos/geom/Geometry.h"
 #include "geometries.h"
 #include <memory>
 

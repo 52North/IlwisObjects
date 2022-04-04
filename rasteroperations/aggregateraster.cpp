@@ -43,9 +43,9 @@ AggregateRaster::AggregateRaster(quint64 metaid, const Ilwis::OperationExpressio
 }
 
 
-void AggregateRaster::executeGrouped(const BoundingBox& inpBoxInit){
-	Size<> sz(groupSize(0), groupSize(1), groupSize(2));
-	BlockIterator blockInputIter(_inputObj.as<RasterCoverage>(),sz, inpBoxInit);
+void AggregateRaster::executeGrouped(const BoundingBox& inpBox){
+    BlockIterator blockInputIter(_inputObj.as<RasterCoverage>(),Size<>(groupSize(0),groupSize(1), groupSize(2)), inpBox);
+
     PixelIterator iterOut(_outputObj.as<RasterCoverage>());
     PixelIterator iterEnd = iterOut.end();
     quint64 currentCount = 0;

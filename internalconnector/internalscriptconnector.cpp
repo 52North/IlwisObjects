@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "coordinatesystem.h"
 #include "connectorinterface.h"
 #include "ilwisobjectconnector.h"
-#include "internalscriptConnector.h"
+#include "internalscriptconnector.h"
 
 
 using namespace Ilwis;

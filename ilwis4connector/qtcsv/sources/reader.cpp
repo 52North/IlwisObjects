@@ -1,7 +1,7 @@
 #include "include/reader.h"
 #include "include/abstractdata.h"
-#include "sources/filechecker.h"
-#include "sources/symbols.h"
+#include "filechecker.h"
+#include "symbols.h"
 #include <QFile>
 #include <QStringList>
 #include <QStringRef>

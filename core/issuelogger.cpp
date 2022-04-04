@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QDataStream>
 #include <QDir>
 #include <QDataStream>
+#include <QStandardPaths>
 #include <QUrl>
 #include <fstream>
 #include <iomanip>
@@ -142,7 +143,7 @@ QString IssueObject::type2String() const{
 //---------------------------------------------------------------------------
 IssueLogger::IssueLogger(QObject *parent) : QObject(parent), _repeatCount(0)
 {
-    QString apploc= context()->ilwisFolder().absoluteFilePath();
+    QString apploc= QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     apploc += "/log";
     QDir dir(apploc);
     if ( !dir.exists())

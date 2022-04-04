@@ -32,7 +32,7 @@ public:
     Ilwis4Connector(const Ilwis::Resource &resource, bool load=true,const IOOptions& options=IOOptions());
     virtual ~Ilwis4Connector();
 
-    bool loadData(IlwisObject *data, const IOOptions &options);
+    bool loadData(IlwisObject *, const IOOptions &);
 
     QString provider() const;
      bool dataIsLoaded() const;
@@ -44,7 +44,7 @@ protected:
 	static int loadMetaData(IlwisObject* object, const IOOptions&, const QJsonValue& jvalue);
 	static bool loadMetaData(const QJsonObject& jvalue, IlwisTypes tp, QString& v);
 	static void storeDataDef(const DataDefinition& def, QJsonObject& obj) ;
-	static void loadDataDef(DataDefinition& def, QJsonObject& jdatadef);
+    static void loadDataDef(DataDefinition& def, const QJsonObject &jdatadef);
 	void flush(const IlwisObject *obj, const QJsonArray& jobjects);
 	static QString toString(const QJsonValue& value, const QString& key) {
 		QJsonValue v = value[key];

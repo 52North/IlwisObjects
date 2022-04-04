@@ -1,6 +1,6 @@
-#include "sources/contentiterator.h"
+#include "contentiterator.h"
 #include "include/abstractdata.h"
-#include "sources/symbols.h"
+#include "symbols.h"
 #include <QString>
 #include <QStringList>
 

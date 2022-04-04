@@ -101,7 +101,7 @@ template<class DomainType, class RangeType> bool translate2ItemColumn(ITable& in
         if ( item)
             v = item->raw();
         else{
-            v = iUNDEF;     // cannot use rUNDEF: this will map to zero when storing
+            v = (int)iUNDEF;     // cannot use rUNDEF: this will map to zero when storing
         }
     }
     return true;

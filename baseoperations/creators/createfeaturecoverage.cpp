@@ -73,7 +73,8 @@ bool Ilwis::BaseOperations::CreateFeatureCoverage::execute(ExecutionContext *ctx
 		int offset = _outputFeatures->featureCount();
 		for_each(iterIn1, iterIn1.end(), [&](SPFeatureI feature) {
 			_outputFeatures->newFeatureFrom(feature, fc->coordinateSystem());
-			merger.mergeTableData(fc->attributeTable(), _outputFeatures->attributeTable(), offset);
+            auto targetTable = _outputFeatures->attributeTable();
+            merger.mergeTableData(fc->attributeTable(), targetTable, offset);
 			updateTranquilizer(count++, 10);
 		});
 	}

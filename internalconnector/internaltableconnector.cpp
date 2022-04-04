@@ -87,7 +87,7 @@ bool InternalTableConnector::loadSpectralLibrary(Table *table, const QString& co
 	if (dataIsLoaded())
 		return true;
 
-	QString metadatafile = context()->ilwisFolder().absoluteFilePath() + "/resources/spectral_library_data.txt";
+    QString metadatafile = context()->resourcesLocation() + "/spectral_library_data.txt";
 	QFile file;
 	file.setFileName(metadatafile);
 	if (file.open(QIODevice::ReadOnly)) {

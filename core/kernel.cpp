@@ -393,7 +393,7 @@ QWaitCondition &Kernel::waitcondition(quint32 runid, bool &ok)
 }
 
 void Kernel::loadAlternateOperationDefintions() {
-	QString path = context()->ilwisFolder().absoluteFilePath() + "/resources/alternateoperationdefinitions.json";
+    QString path = context()->resourcesLocation() + "/alternateoperationdefinitions.json";
 	QFile file;
 	file.setFileName(path);
 	if (file.open(QIODevice::ReadOnly)) {

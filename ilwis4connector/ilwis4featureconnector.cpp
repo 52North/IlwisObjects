@@ -146,7 +146,7 @@ bool Ilwis4FeatureConnector::storeData(IlwisObject *obj, const IOOptions &option
 	res.setUrl(path, false, false);
 	ConnectorInterface *connector = factory->createFromResource<>(res, "gdal");
 	connector->format("GeoJSON");
-	connector->store(obj);
+    connector->store(obj, options);
 
 	delete connector;
 

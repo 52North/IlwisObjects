@@ -47,11 +47,11 @@ namespace pythonapi {
             return e.what();
     }
 
-    const type_info& ilwisErrorObject_type_info(){
+    const std::type_info& ilwisErrorObject_type_info(){
         return typeid(Ilwis::ErrorObject);
     }
 
-    const type_info& ilwisFeatureCreationError_type_info(){
+    const std::type_info& ilwisFeatureCreationError_type_info(){
         return typeid(Ilwis::FeatureCreationError);
     }
 

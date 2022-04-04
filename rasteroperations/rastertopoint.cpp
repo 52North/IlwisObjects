@@ -54,7 +54,7 @@ bool RasterToPoint::execute(ExecutionContext *ctx, SymbolTable &symTable)
 
     QVariant value;
     value.setValue<IFeatureCoverage>(_outputfeatures);
-    ctx->setOutput(symTable,value,_outputfeatures->name(), itFEATURE, _outputfeatures->source() );
+    ctx->setOutput(symTable,value,_outputfeatures->name(), itFEATURE, _outputfeatures->resource() );
     return true;
 }
 

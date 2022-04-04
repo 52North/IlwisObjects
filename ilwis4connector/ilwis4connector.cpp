@@ -107,13 +107,14 @@ IlwisObject *Ilwis4Connector::create() const
             return new ThematicDomain(_resource);
         if ( hasType(_resource.extendedType(), itPALETTECOLOR))
             return new ItemDomain<ColorItem>(_resource);
-
+        break;
     }
 	case itREPRESENTATION:
 		return new Representation(_resource);
     default:
         return 0;
     }
+    return 0;
 }
 
 
@@ -138,7 +139,7 @@ Ilwis4Connector::~Ilwis4Connector()
 
 }
 
-int Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options, const QJsonValue& jvalue)
+int Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &, const QJsonValue& jvalue)
 {
 
 	QJsonObject obj = jvalue.toObject();
@@ -161,7 +162,7 @@ int Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options,
 	QJsonValue context = obj.value("context");
 	if (!context.isUndefined()) {
 		QJsonArray metaobjects = obj.value("metadata").toArray();
-		for (auto&& metat : metaobjects) {
+        for (const auto metat : metaobjects) {
 			QJsonObject meta = metat.toObject();
 			QStringList keys = meta.keys();
 			for (auto key : keys) {
@@ -175,7 +176,7 @@ int Ilwis4Connector::loadMetaData(IlwisObject *object, const IOOptions &options,
 	return jvalue["version"].toInt();
 }
 
-bool Ilwis4Connector::loadData(IlwisObject *object, const IOOptions &options){
+bool Ilwis4Connector::loadData(IlwisObject *, const IOOptions &){
 	return true;
 }
 
@@ -256,7 +257,7 @@ void Ilwis4Connector::storeDataDef(const DataDefinition& def, QJsonObject& jdata
 	jdatadef.insert("actualrange", def.range<Range>()->toString());
 }
 
-void Ilwis4Connector::loadDataDef(DataDefinition& def, QJsonObject& jdatadef) {
+void Ilwis4Connector::loadDataDef(DataDefinition& def, const QJsonObject& jdatadef) {
 	IDomain ilobj = Ilwis4DomainConnector::createDomain(IOOptions(), jdatadef["domain"].toObject());
 	Ilwis4DomainConnector::loadMetaData(ilobj.ptr(), IOOptions(), jdatadef["domain"].toObject());
 	QString rangedef = jdatadef["actualrange"].toString();

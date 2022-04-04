@@ -112,8 +112,8 @@ void ModuleMap::addModules(const QString& path) {
             loadPlugin(lib);
         }
     }
-    QString file = context()->ilwisFolder().absoluteFilePath() + "/httpserver.dll";
-    loadPlugin(file);
+    //QString file = context()->ilwisFolder().absoluteFilePath() + "/httpserver.dll";
+    //loadPlugin(file);
     initModules();
 
 }

@@ -259,7 +259,7 @@ namespace pythonapi {
             typename Ilwis::ContainerStatistics<DataType>::PropertySets ilwMethod;
             ilwMethod = static_cast<typename Ilwis::ContainerStatistics<DataType>::PropertySets>(mode);
 
-            return this->data.calculate(begin, end, ilwMethod);
+            return this->data().calculate(begin, end, ilwMethod);
         }
 
 

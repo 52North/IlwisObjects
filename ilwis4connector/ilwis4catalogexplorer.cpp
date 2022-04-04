@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "workflow.h"
 #include "abstractfactory.h"
 #include "ilwiscontext.h"
-#include "ilwis4CatalogExplorer.h"
+#include "ilwis4catalogexplorer.h"
 #include "mastercatalogcache.h"
 
 

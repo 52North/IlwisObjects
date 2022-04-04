@@ -47,7 +47,7 @@ IlwisContext* Ilwis::context(const QString & ilwisDir, int runMode) {
 
 
 
-IlwisContext::IlwisContext(int runMode) : _workingCatalog(0), _memoryLimit(9e8), _memoryLeft(_memoryLimit), _runMode(runMode)
+IlwisContext::IlwisContext(int runMode) :  _memoryLimit(9e8), _memoryLeft(_memoryLimit), _runMode(runMode)
 {
     // _workingCatalog = new Catalog(); // empty catalog>
 
@@ -55,10 +55,12 @@ IlwisContext::IlwisContext(int runMode) : _workingCatalog(0), _memoryLimit(9e8),
 
 IlwisContext::~IlwisContext()
 {
-    if ( _workingCatalog.isValid()){
-        _configuration.putValue("users/" + currentUser() + "/workingcatalog",_workingCatalog->resource().url().toString());
+   ICatalog wcatalog = workingCatalog();
+    if ( wcatalog.isValid()){
+        _configuration.putValue("users/" + currentUser() + "/workingcatalog",wcatalog->resource().url().toString());
         _configuration.store();
     }
+  
 }
 
 void IlwisContext::addSystemLocation(const QUrl &resource)
@@ -96,28 +98,12 @@ void IlwisContext::init(const QString &ilwisDir)
     QFileInfo file;
     file.setFile(configfile);
     if ( !file.exists()){
-        if ( _ilwisDir.exists()){
-            configfile = _ilwisDir.absoluteFilePath() + "/resources/ilwis.config";
-            file.setFile(configfile);
-            if (!file.exists()){
-                configfile = _ilwisDir.absoluteFilePath() + "/ilwis.config";
-                file.setFile(configfile);
-            }
-        } else{
-
-            configfile = _ilwisDir.absoluteFilePath() + "/resources/ilwis.config";
-            file.setFile(configfile);
-        }
+       QFileInfo resourceInf(resourcesLocation());
+        configfile = resourcesLocation() + "/ilwis.config";
+        file.setFile(configfile);
     }
-	QLibrary lib;
-	QString ssl1 = _ilwisDir.absoluteFilePath() + "/libeay32.dll";
-	lib.setFileName(ssl1);
-	bool r = lib.load();
-	QString ssl2 = _ilwisDir.absoluteFilePath() + "/ssleay32.dll";
-	QLibrary lib2;
-	lib2.setFileName(ssl2);
-	r = lib2.load();
-
+    OSHelper::loadExtraLibs(_ilwisDir.absoluteFilePath());
+ 
     _configuration.prepare(file.absoluteFilePath());
 
     QString location = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/cache-location",QString(sUNDEF));
@@ -309,6 +295,14 @@ void IlwisContext::initializationFinished(bool yesno)
     _initializationFinished = yesno;
 }
 
+QString IlwisContext::resourcesLocation(const QString &internalName) const{
+    QString loc;
+    if ( internalName == "")
+        loc = _ilwisDir.absoluteFilePath() + "/resources";
+    else
+        loc = _ilwisDir.absoluteFilePath() + "/extensions/" + internalName + "/resources";
+    return loc;
+}
 
 
 

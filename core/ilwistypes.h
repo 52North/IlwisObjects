@@ -118,6 +118,7 @@ public:
     static QString type2HumanReadable(IlwisTypes type);
 
     static QString type2name(IlwisTypes t);
+    static QString type2names(IlwisTypes t, const QString& seperator="|");
     static IlwisTypes name2type(const QString& name);
     static IlwisTypes variant2type(const QVariant &v);
 

@@ -38,17 +38,17 @@ WorkflowExecutionEngine::WorkflowExecutionEngine(quint64 metaid, const Operation
 OperationImplementation *WorkflowExecutionEngine::create(quint64 metaid, const OperationExpression &expr)
 {
 
-    // TODO
+    return 0;
 
 }
 
 bool WorkflowExecutionEngine::execute(ExecutionContext *ctx, SymbolTable &symTable)
 {
-
+return false;
 }
 
 OperationImplementation::State WorkflowExecutionEngine::prepare(ExecutionContext *ctx, const SymbolTable &)
 {
-
+    return sNOTPREPARED;
 }
 

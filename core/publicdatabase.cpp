@@ -301,7 +301,7 @@ void PublicDatabase::addRegionallEnvelopes() {
 }
 
 void PublicDatabase::insertItemDomains(QSqlQuery& itemdomaintable) {
-    auto path = context()->ilwisFolder().absoluteFilePath() + "/resources/classifications";
+    auto path = context()->resourcesLocation() + "/classifications";
     QStringList exts;
     exts << "*.json" << "*.JSON";
     QDir classificationdir(path);

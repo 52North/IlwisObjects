@@ -132,7 +132,7 @@ bool IlwisObject::canUse(const IlwisObject *, bool ) const
     return false;
 }
 
-bool IlwisObject::isCompatibleWith(const IlwisObject*, bool strict) const
+bool IlwisObject::isCompatibleWith(const IlwisObject*, bool ) const
 {
     return false;
 }
@@ -261,7 +261,7 @@ Time IlwisObject::createTime() const
     return tUNDEF;
 }
 
-void IlwisObject::createTime(const Time &time)
+void IlwisObject::createTime(const Time &)
 {
     if ( isReadOnly())
         return;

@@ -65,7 +65,7 @@ using namespace Ilwis;
 using namespace Gdal;
 
 GdalModule::GdalModule(QObject *parent) :
-    Module(parent, "GdalModule", "iv40","1.0")
+    Module(parent, "gdalconnector", "iv40","1.0")
 {
 }
 

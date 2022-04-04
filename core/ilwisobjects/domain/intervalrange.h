@@ -132,7 +132,7 @@ private:
 	   * @param v the value
 	   * @return the index of this value
 	   */
-	virtual std::vector<int> IntervalRange::index(double v, int itemIndex=iUNDEF) const;
+    virtual std::vector<int> index(double v, int itemIndex=iUNDEF) const;
 };
 
 typedef QSharedPointer<IntervalRange> SPIntervalRange;

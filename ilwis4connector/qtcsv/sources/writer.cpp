@@ -1,7 +1,7 @@
 #include "include/writer.h"
 #include "include/abstractdata.h"
-#include "sources/filechecker.h"
-#include "sources/contentiterator.h"
+#include "filechecker.h"
+#include "contentiterator.h"
 #include <QFile>
 #include <QDir>
 #include <QTextStream>

@@ -61,9 +61,10 @@ void* GdalHandle::handle(){
 }
 
 GDALProxy::GDALProxy() {
-    QFileInfo ilw = context()->ilwisFolder();
-    QString path = ilw.canonicalFilePath() + "/extensions/gdalconnector" ;
-    SupportLibraryLoader loader(path + "/resources/libraries.config");
+	QFileInfo ilw = context()->ilwisFolder();
+	QFileInfo respath = context()->resourcesLocation("gdalconnector");
+    QString path = ilw.canonicalFilePath();
+    SupportLibraryLoader loader(respath.canonicalFilePath() + "/libraries.config");
     QString gdallibname = loader.order2name(100000);
     bool ok = false;
     if ( gdallibname != sUNDEF){
@@ -71,7 +72,7 @@ GDALProxy::GDALProxy() {
             _libgdal.setFileName(gdallibname);
         } else {
             // expect lib at ilwis folder
-            _libgdal.setFileName(path + "/" + gdallibname);
+            _libgdal.setFileName(path + "/extensions/gdalconnector/" + gdallibname);
         }
         ok = _libgdal.load();
     }

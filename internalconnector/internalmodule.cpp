@@ -65,7 +65,7 @@ using namespace Ilwis;
 using namespace Internal;
 
 InternalModule::InternalModule(QObject *parent) :
-    Module(parent, "InternalModule", "iv40","1.0")
+    Module(parent, "internalconnector", "iv40","1.0")
 {
 }
 
@@ -198,7 +198,7 @@ bool InternalModule::createSpecialDomains() {
 }
 
 bool InternalModule::loadSpectralLibrary() {
-	QString metadatafile = context()->ilwisFolder().absoluteFilePath() + "/resources/spectral_library_metadata.json";
+    QString metadatafile = context()->resourcesLocation()+ "/spectral_library_metadata.json";
 	QFile file;
 	file.setFileName(metadatafile);
 	if (file.open(QIODevice::ReadOnly)) {

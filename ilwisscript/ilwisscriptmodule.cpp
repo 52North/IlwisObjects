@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationmetadata.h"
 #include "commandhandler.h"
 #include "operation.h"
-#include "script.h"
+#include "ilwisscript.h"
 
 using namespace Ilwis;
 
@@ -44,7 +44,7 @@ QString IlwisScriptModule::getInterfaceVersion() const
 
 void IlwisScriptModule::prepare()
 {
-    commandhandler()->addOperation(Script::createMetadata(), Script::create);
+    commandhandler()->addOperation(IlwisScript::createMetadata(), IlwisScript::create);
 
     kernel()->issues()->log("Loaded module Internal Script module",IssueObject::itMessage);
 
