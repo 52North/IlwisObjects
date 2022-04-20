@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationmetadata.h"
 #include "commandhandler.h"
 #include "operation.h"
-#include "CreateTimeDomain.h"
+#include "createtimedomain.h"
 
 using namespace Ilwis;
 using namespace BaseOperations;

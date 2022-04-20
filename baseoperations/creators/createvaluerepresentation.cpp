@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationmetadata.h"
 #include "commandhandler.h"
 #include "operation.h"
-#include "CreateValueRepresentation.h"
+#include "createvaluerepresentation.h"
 #include "representation.h"
 #include "itemrange.h"
 #include "colorrange.h"
