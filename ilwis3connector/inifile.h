@@ -63,7 +63,7 @@ public:
     QString path() const;
     Time modified() const;
     QStringList childKeys(const QString& section) const;
-	std::vector<QString> IniFile::mapListRasters() const;
+    std::vector<QString> mapListRasters() const;
 
     void store(const QString &ext, const QFileInfo& url);
     const QFileInfo& fileInfo() const;
