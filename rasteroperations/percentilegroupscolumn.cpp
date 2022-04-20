@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "interval.h"
 #include "intervalrange.h"
 #include "table.h"
-#include "PercentileGroupsColumn.h"
+#include "percentilegroupscolumn.h"
 
 using namespace Ilwis;
 using namespace RasterOperations;
