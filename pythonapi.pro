@@ -124,6 +124,11 @@ linux {
     QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/extensions/pythonapi/libpythonapi.so.1.0.0 $${OUTPUTPATHPYTHON}/_ilwisobjects.so$$escape_expand(\n\t)
     QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/* $${OUTPUTPATHPYTHON}$$escape_expand(\n\t)
 
+    #CONFIG(release, debug|release){
+    #    instfiles.path = $$OUTPUTPATHPYTHON/ilwis
+    #    instfiles.files = $$clean_path($$OUTPUTPATH/*)
+    #    INSTALLS += instfiles
+    #}
 }
 win32 {
     PYTHONSCRIPT_DIR=$$OUTPUTPATH/extensions/pythonscript/python/Lib/site-packages/ilwis
@@ -142,7 +147,6 @@ win32 {
 }
 
 DISTFILES += \
-    pythonapi/intall-ilwispy-3.8.sh \
     pythonapi/paths.py
 
 
