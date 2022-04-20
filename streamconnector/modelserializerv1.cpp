@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "versionedserializer.h"
 #include "versioneddatastreamfactory.h"
 #include "modellerfactory.h"
-#include "modelserializerV1.h"
+#include "modelserializerv1.h"
 
 using namespace Ilwis;
 using namespace Stream;

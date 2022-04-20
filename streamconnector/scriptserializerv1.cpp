@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "factory.h"
 #include "connectorinterface.h"
 #include "versionedserializer.h"
-#include "scriptserializerV1.h"
+#include "scriptserializerv1.h"
 
 using namespace Ilwis;
 using namespace Stream;
