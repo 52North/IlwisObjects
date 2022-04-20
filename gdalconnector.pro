@@ -65,6 +65,9 @@ unix {
 
 DISTFILES += \
     gdalconnector.json \
+    gdalconnector/gdalconnector.json \
+    gdalconnector/resources/libraries.config \
+    gdalconnector/resources/ogr_formats.config \
     resources/GDALLogoBW.svg \
     resources/GDALLogoColor.svg \
     resources/GDALLogoGS.svg \
@@ -151,7 +154,7 @@ DISTFILES += \
     resources/s57objectclasses.csv \
     resources/s57objectclasses_aml.csv \
     resources/s57objectclasses_iw.csv \
-    resources/seed_2d.dgn \
+    resources/seedisNumericalUndef_2d.dgn \
     resources/seed_3d.dgn \
     resources/stateplane.csv \
     resources/trailer.dxf \

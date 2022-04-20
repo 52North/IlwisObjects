@@ -1,4 +1,6 @@
 import os
-path = os.path.dirname(__file__) + '\\ilwisobjects'
-os.environ["PATH"] = path + os.pathsep + os.environ["PATH"]
+import sys
 
+path = os.path.dirname(__file__)
+os.environ["PATH"] = path + os.pathsep + os.environ["PATH"]
+sys.path.append(path)

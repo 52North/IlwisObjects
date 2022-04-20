@@ -87,15 +87,16 @@ MOC_DIR=$$LIBPATH
 
 
 equals(TARGET, ilwiscore){
+    FOLDER=core
     OUTLIBPATH= $$OUTPUTPATH
 }else {
+    FOLDER=$$TARGET
     OUTLIBPATH= $$OUTPUTPATH/extensions/$$TARGET
 }
 
-
-exists($$PWD/$$TARGET/resources){
-    SOURCE_RESOURCE = $$clean_path($$PWD/$$TARGET/resources)
-    TARGET_RESOURCE_DIR=$$OUTLIBPATH/resources
+exists($$PWD/$$FOLDER/resources){
+    SOURCE_RESOURCE = $$clean_path($$PWD/$$FOLDER/resources)
+    TARGET_RESOURCE_DIR=$$OUTLIBPATH
     SOURCE_RESOURCE = $$replace(SOURCE_RESOURCE,/,$$DIR_SEPARATOR)
     TARGET_RESOURCE_DIR = $$replace(TARGET_RESOURCE_DIR,/,$$DIR_SEPARATOR)
     !exists($${TARGET_RESOURCE_DIR}) {

@@ -18,14 +18,10 @@ win32{
     PYTHON_INCLUDE_FILES=../../external/python3/python3$$PYMINORVERSION/include/
 }
 linux {
-    PYTHON_INCLUDE_FILES =/usr/pythonapi/python3.$$PYMINORVERSION
+    PYMINORVERSION=8
+    PYTHON_INCLUDE_FILES =/usr/include/python3.$$PYMINORVERSION
     LIBS += -L$$/usr/libs -lpython3.$$PYMINORVERSION
-    CONFIG(debug, debug|debug) {
-        OUTPUTPATHPYTHON = /home/$$(USER)/.local/lib/python3.$$PYMINORVERSION/site-packages/
-    }
-    CONFIG(release, debug|release) {
-        OUTPUTPATHPYTHON=/usr/local/lib/python3.8/dist-packages/
-    }
+    OUTPUTPATHPYTHON=$$clean_path($$PWD/../output/$$PREFIX_COMPILER/$$CONF/ilwispy/ilwis)
 }
 
 INCLUDEPATH += $$PYTHON_INCLUDE_FILES
@@ -113,26 +109,21 @@ LIBS += -L$$OUTPUTPATH/ -lilwiscore
 COPY_FILES = ilwisobjects.py paths.py
 
 linux {
-   swig.target = $$LIBPATH/ilwisobjects.py
-    swig.commands = swig -python -c++ $$PWD/pythonapi/ilwisobjects.i
+   swig.target = $$PWD/pythonapi/ilwisobjects.py
+    swig.commands = swig3.0 -python -c++ $$PWD/pythonapi/ilwisobjects.i
     swig.depends = $$PWD/pythonapi/ilwisobjects.i $$PWD/pythonapi/*.h $$PWD/pythonapi/*.cpp
     QMAKE_EXTRA_TARGETS += swig
-    PRE_TARGETDEPS += $$LIBPATH/ilwisobjects.py
+    PRE_TARGETDEPS += $$PWD/pythonapi/ilwisobjects.py
     DEST_DIR = $$clean_path($$DESTDIR)
-    QMAKE_RPATHDIR = $${OUTPUTPATHPYTHON}ilwis
+    #QMAKE_RPATHDIR = $${OUTPUTPATHPYTHON}ilwis
+    QMAKE_RPATHDIR += '.'
     QMAKE_POST_LINK += $$quote(test -d $$OUTPUTPATHPYTHON || mkdir -p $$OUTPUTPATHPYTHON$$escape_expand(\n\t))
     QMAKE_POST_LINK += $$quote(cat $$PWD/pythonapi/paths.py $$PWD/pythonapi/ilwisobjects.py > $$DEST_DIR/temp.py$$escape_expand(\n\t))
-    QMAKE_POST_LINK += $$QMAKE_MKDIR $${OUTPUTPATHPYTHON}ilwis $$escape_expand(\n\t)
-    QMAKE_POST_LINK += mv -f $$DEST_DIR/temp.py $${OUTPUTPATHPYTHON}ilwis/__init__.py$$escape_expand(\n\t)
-    QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/extensions/pythonapi/libpythonapi.so.1.0.0 $${OUTPUTPATHPYTHON}ilwis/_ilwisobjects.so$$escape_expand(\n\t)
-    CONFIG(debug, debug|release) {
-        QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/* $${OUTPUTPATHPYTHON}ilwis$$escape_expand(\n\t)
-    }
-    CONFIG(release, debug|release){
-        instfiles.path = $$OUTPUTPATHPYTHON/ilwis
-        instfiles.files = $$clean_path($$OUTPUTPATH/*)
-        INSTALLS += instfiles
-    }
+    QMAKE_POST_LINK += $$QMAKE_MKDIR $${OUTPUTPATHPYTHON} $$escape_expand(\n\t)
+    QMAKE_POST_LINK += mv -f $$DEST_DIR/temp.py $${OUTPUTPATHPYTHON}/__init__.py$$escape_expand(\n\t)
+    QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/extensions/pythonapi/libpythonapi.so.1.0.0 $${OUTPUTPATHPYTHON}/_ilwisobjects.so$$escape_expand(\n\t)
+    QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/* $${OUTPUTPATHPYTHON}$$escape_expand(\n\t)
+
 }
 win32 {
     PYTHONSCRIPT_DIR=$$OUTPUTPATH/extensions/pythonscript/python/Lib/site-packages/ilwis
@@ -151,6 +142,7 @@ win32 {
 }
 
 DISTFILES += \
+    pythonapi/intall-ilwispy-3.8.sh \
     pythonapi/paths.py
 
 
