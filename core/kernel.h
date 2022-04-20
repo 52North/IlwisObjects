@@ -30,12 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QWaitCondition>
 #include <fstream>
 #include <set>
-#ifdef Q_OS_WIN
-	#include "boost/current_function.hpp"
-#else
-	#include "current_function.hpp"
-#endif
-
+#include "boost/current_function.hpp"
 #include <time.h>
 #include <chrono>
 #include "kernel_global.h"

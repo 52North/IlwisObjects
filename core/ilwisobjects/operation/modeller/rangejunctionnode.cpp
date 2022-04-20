@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "operationhelper.h"
 #include "workflownode.h"
 #include "workflow.h"
-#include "rangeNode.h"
+#include "rangenode.h"
 #include "rangejunctionnode.h"
 
 using namespace Ilwis;
