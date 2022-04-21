@@ -177,7 +177,7 @@ void MapCalc::fillValues(int pindex,const QString& part, ParmValue& val, MathAct
         if ( part.size() > 2 ){
             if(part[2] == '[' && part.endsWith("]")){
                 val._string = part.mid(3,part.size() - 4) ;
-				_action = mATTRIBUTE;
+                _action = maATTRIBUTE;
 				val._keyMapping = val._source->raster()->keyMapping(val._string);
 				if (val._keyMapping.size() == 0)
 					throw ErrorObject("Invalid attribute used in operation:" + val._string);
