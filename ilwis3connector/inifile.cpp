@@ -326,7 +326,7 @@ std::vector<QString> IniFile::mapListRasters() const {
 	std::vector<QString> result;
 	QString v = value("MapList", "Maps");
 	int count = v.toInt();
-	QString path = "file:///" + _filename.absolutePath();
+    QString path = OSHelper::createFileUrlFromParts( _filename.absolutePath());
 	for (int i = 0; i < count; ++i) {
 		QString map = path + "/"+ value("MapList", "Map" + QString::number(i));
 		result.push_back(map);

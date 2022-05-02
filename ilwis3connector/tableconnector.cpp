@@ -346,7 +346,7 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
                 QString num = QString::number(dmColumn->id());
                 domName =def.name() + "_" + num;
             }
-            QString fileUrl = "file:///" + _odf->path()+ "/" + domName;
+            QString fileUrl = OSHelper::createFileUrlFromParts(_odf->path(), "/" + domName);
             if ( fileUrl.indexOf(".dom") == -1){
                 fileUrl += ".dom";
             }

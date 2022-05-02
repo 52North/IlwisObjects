@@ -55,7 +55,7 @@ ODFItem::ODFItem(const IniFile &file, std::unordered_map<QString, IniFile> *know
             QString internalPath = _ini.fileInfo().canonicalPath() + "/" + mpl;
             if ( QFile::exists(internalPath)) {
                 addContainer(QUrl::fromLocalFile(internalPath));
-                QUrl newUrl = "file:///"+ internalPath + "/" + _ini.fileInfo().fileName();
+                QUrl newUrl = OSHelper::createFileUrlFromParts(internalPath, "/" + _ini.fileInfo().fileName());
                 setUrl(newUrl,false, false); // normalized url
             }
         }

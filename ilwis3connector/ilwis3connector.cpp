@@ -387,7 +387,8 @@ QString Ilwis3Connector::filename2FullPath(const QString& name, const Resource& 
         }
         else {
             if ( owner.isValid())  {
-                QString loc = "file:///" + owner.container(true).toLocalFile() + "/" + localName;
+                QString loc = OSHelper::createFileUrlFromParts( owner.container(true).toLocalFile(), "/" + localName);
+                //QString loc = "file:///" + owner.container(true).toLocalFile() + "/" + localName;
                 return loc;
             }
             int index = _odf->url().lastIndexOf("/");
