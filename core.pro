@@ -574,7 +574,37 @@ HEADERS += \
    ./core/geos/include/geos/version.h.vc
 
 DISTFILES += \
-    ./core/geos/include/config.h.in
+    ./core/geos/include/config.h.in \
+    core/resources/alternateoperationdefinitions.json \
+    core/resources/classifications/ceres_igbp_type1.json \
+    core/resources/classifications/corine_lvl3.json \
+    core/resources/classifications/fao_ecological_zones.json \
+    core/resources/classifications/koeppen_climate_scheme.json \
+    core/resources/classifications/landcover_usgs.json \
+    core/resources/classifications/lithological_classes.json \
+    core/resources/classifications/nlcd92_landcover.json \
+    core/resources/classifications/taxnwrb.json \
+    core/resources/codes_with_latlon_order.csv \
+    core/resources/color_chart.csv \
+    core/resources/datums.csv \
+    core/resources/ellipsoids.csv \
+    core/resources/epsg.pcs \
+    core/resources/epsg_forced_xy.txt \
+    core/resources/extract_epsgCodes_with_forcedXY.py \
+    core/resources/featurefragmentshader_nvdia.glsl \
+    core/resources/featurevertexshader_nvdia.glsl \
+    core/resources/filters.csv \
+    core/resources/ilwis.config \
+    core/resources/numericdomains.csv \
+    core/resources/projections.csv \
+    core/resources/rasterfragmentshader_nvdia.glsl \
+    core/resources/rastervertexshader_nvdia.glsl \
+    core/resources/referencesystems.csv \
+    core/resources/representations.csv \
+    core/resources/spectral_library_data.txt \
+    core/resources/spectral_library_metadata.json \
+    core/resources/svgcolornames.txt \
+    core/resources/teritories.csv
 
 SOURCES += \
     ./core/catalog/catalog.cpp \
