@@ -87,25 +87,6 @@ extern "C"
 # endif
 #endif
 
-#if defined(HAVE_ISNAN)
-# define ISNAN(x) (isnan(x))
-#else
-# if defined(_MSC_VER)
-#  define ISNAN(x) _isnan(x)
-# elif defined(__MINGW32__) || defined(__CYGWIN__)
-// sandro furieri: sanitizing MinGW32
-#define ISNAN(x) (std::isnan(x))
-# elif defined(__OSX__) || defined(__APPLE__) || \
-       defined(__NetBSD__) || defined(__DragonFly__) ||	\
-       (defined(__sun) && defined(__GNUC__))
-   // Hack for OS/X <cmath> incorrectly re-defining isnan() into oblivion.
-   // It does leave a version in std.
-#  define ISNAN(x) (std::isnan(x))
-# elif (defined(__sun) || defined(__sun__)) && defined(__SUNPRO_CC)
-#  include <math.h>
-#  define ISNAN(x) (::isnan(x))
-# endif
-#endif
 #define ISNAN(x) (std::isnan(x))
 
 #ifndef FINITE
