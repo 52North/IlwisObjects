@@ -48,16 +48,14 @@ void AggregateRaster::executeGrouped(const BoundingBox& inpBox){
 
     PixelIterator iterOut(_outputObj.as<RasterCoverage>());
     PixelIterator iterEnd = iterOut.end();
-    quint64 currentCount = 0;
     while(iterOut != iterEnd) {
-        GridBlock& block = *blockInputIter;
         std::vector<double> values= (*blockInputIter).toVector();
         double v = OperationHelper::statisticalMarker(values, _method);
         *iterOut = v;
         ++iterOut;
         ++blockInputIter;
 
-        //updateTranquilizer(currentCount++, 1000);
+		updateTranquilizer(iterOut.linearPosition(), 1000);
     }
 }
 
@@ -66,7 +64,6 @@ void AggregateRaster::executeNonGrouped(const BoundingBox& inpBox){
     IRasterCoverage outRaster = _outputObj.as<RasterCoverage>();
     BlockIterator blockOutputIter(outRaster,Size<>(groupSize(0),groupSize(1), groupSize(2)), inpBox);
     BlockIterator iterEnd = blockOutputIter.end();
-    quint64 currentCount = 0;
     while(blockOutputIter != iterEnd) {
         std::vector<double> values= (*blockInputIter).toVector();
         double v = OperationHelper::statisticalMarker(values, _method);
@@ -75,7 +72,7 @@ void AggregateRaster::executeNonGrouped(const BoundingBox& inpBox){
         ++blockInputIter;
         ++blockOutputIter;
 
-        //updateTranquilizer(currentCount++, 1000);
+        updateTranquilizer(blockOutputIter.linearPosition(), 1000);
     }
 }
 
