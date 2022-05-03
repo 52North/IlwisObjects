@@ -202,33 +202,33 @@ copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\
 if errorlevel 1 goto VCEnd
  copy /y ..\libraries\debug\extensions\pythonapi\_ilwisobjects.pyd ..\output\debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\test.py ..\output\debug\bin\extensions\pythonapi
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\test.py ..\output\debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\README ..\output\debug\bin\extensions\pythonapi
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\README ..\output\debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\UPDATE ..\output\debug\bin\extensions\pythonapi
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\UPDATE ..\output\debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\CHANGELOG ..\output\debug\bin\extensions\pythonapi
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\CHANGELOG ..\output\debug\bin\extensions\pythonapi
 if errorlevel 1 goto VCEnd
- copy /y /b ..\IlwisObjects\pythonapi\paths.py + ..\output\debug\bin\extensions\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi\temp.py
+ copy /y /b $(MSBuildProjectDirectory)\$(MSBuildProjectName)\paths.py + ..\output\debug\bin\extensions\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi\temp.py
 if errorlevel 1 goto VCEnd
  move /y ..\output\debug\bin\extensions\pythonapi\temp.py ..\output\debug\bin\extensions\pythonapi\__init__.py
 if errorlevel 1 goto VCEnd
  del /f ..\output\debug\bin\extensions\pythonapi\ilwisobjects.py
 if errorlevel 1 goto VCEnd
- if not exist ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+if not exist ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\ilwisobjects.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\test.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\test.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\README ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\README ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\UPDATE ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\UPDATE ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
- copy /y ..\IlwisObjects\pythonapi\CHANGELOG ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
+ copy /y $(MSBuildProjectDirectory)\$(MSBuildProjectName)\CHANGELOG ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
  copy /y ..\output\debug\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
