@@ -14,11 +14,11 @@
     <ProjectGuid>{8676F964-09A2-3019-9D14-5CFA2C3BCDDB}</ProjectGuid>
     <RootNamespace>ilwiscore</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <PlatformToolSet>v141</PlatformToolSet>
+    <PlatformToolSet>v143</PlatformToolSet>
     <OutputDirectory>..\libraries\release\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -27,7 +27,7 @@
     <PrimaryOutput>ilwiscore</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <PlatformToolSet>v141</PlatformToolSet>
+    <PlatformToolSet>v143</PlatformToolSet>
     <OutputDirectory>..\libraries\debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -48,9 +48,11 @@
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="qt.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -126,7 +128,8 @@ xcopy $(QTDIR)\bin\Qt5Network.dll  ..\output\release\ilwispy\ilwis\ilwisobjects 
 xcopy $(QTDIR)\bin\Qt5Sql.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y/i
 xcopy $(QTDIR)\bin\Qt5XmlPatterns.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y /i 
 xcopy $(QTDIR)\plugins\sqldrivers\qsqlite.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\plugins\sqldrivers\* /y/i</Command>
-      <Message>  </Message>
+      <Message>
+      </Message>
     </PostBuildEvent>
     <QtMoc>
       <QTDIR>$(QTDIR)</QTDIR>
