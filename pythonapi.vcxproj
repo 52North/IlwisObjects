@@ -120,13 +120,15 @@
     </ResourceCompile>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\* /y
-xcopy ..\projects\pythonapi\README ..\output\release\ilwispy\ilwis\* /y
-xcopy ..\projects\pythonapi\UPDATE ..\output\release\ilwispy\ilwis\* /y
-xcopy ..\projects\pythonapi\CHANGELOG ..\output\release\ilwispy\ilwis\* /y
+xcopy ..\IlwisObjects\pythonapi\README ..\output\release\ilwispy\ilwis\* /y
+xcopy ..\IlwisObjects\pythonapi\UPDATE ..\output\release\ilwispy\ilwis\* /y
+xcopy ..\IlwisObjects\pythonapi\CHANGELOG ..\output\release\ilwispy\ilwis\* /y
 echo import os &gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
+echo import sys &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
 echo path = os.path.dirname(__file__) + '\\ilwisobjects' + "/" &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
 echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"] &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
-type ..\projects\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
+echo sys.path.append(path) &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
+type ..\IlwisObjects\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
 copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\ilwis\__init__.py /y</Command>
       <Message>do it</Message>
     </PostBuildEvent>
