@@ -14,7 +14,7 @@ namespace pythonapi {
 
     class Catalog : public Object{
         public:
-            Catalog(const std::string& url, const std::string& filter = "");
+            Catalog(const std::string& url, const std::string& = "");
             ~Catalog();
 
             bool __bool__() const;

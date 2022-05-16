@@ -28,6 +28,7 @@ namespace pythonapi {
         std::shared_ptr<Ilwis::IIlwisObject> _ilwisObject;
         std::shared_ptr<Ilwis::IIlwisObject> ptr() const;
         virtual const QString getStoreFormat() const;
+        static QString constructPath(std::string resource);
     public:
         virtual ~IlwisObject();
 

@@ -37,25 +37,8 @@
 
 namespace pythonapi {
 
-    Catalog::Catalog(const std::string& url, const std::string& filter){
-        QString input (QString::fromStdString(url));
-        input.replace('\\','/');
-        // if it is file:// (or http:// etc) leave it untouched; if not, append file:// and the working catalog path if it is missing
-        if (input.indexOf("://") < 0) {
-            int pos = input.indexOf('/');
-            if (pos > 0) {
-                if ((input.count('/') > 1) || QFileInfo(input).exists()) // full path starting with drive-letter (MS-DOS-style)
-                    input = "file:///" + input;
-                else // container object without path, e.g. myfile.hdf/subdataset: look for it in workingCatalog()
-                    input = "file:///" + Ilwis::context()->workingCatalog()->filesystemLocation().toLocalFile() + '/' + input;
-            }  else if (pos == 0) // full path starting with path-separator (UNIX-style)
-                input = "file://" + input;
-            else { // pos < 0: file without path, or new object
-                QString file = Ilwis::context()->workingCatalog()->filesystemLocation().toLocalFile() + '/' + input;
-                if (QFileInfo (file).exists()) // file without path
-                    input = "file:///" + file;
-            }
-        }
+    Catalog::Catalog(const std::string& url, const std::string& ){
+        auto input = pythonapi::IlwisObject::constructPath(url);
         QString loc = input; // see MasterCatalog::addContainer(); url must match the _container that gets into the mastercatalog
         if (loc.size() > 2 && loc[loc.size() - 1] == '/' && loc[loc.size() - 2] != '/')
             loc = loc.left(loc.size() - 1);

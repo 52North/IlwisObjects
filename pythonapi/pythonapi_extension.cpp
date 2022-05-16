@@ -27,7 +27,7 @@ namespace pythonapi {
 
         app = QCoreApplication::instance();
         if (!app){
-            cleanupIlwisContext = true;
+            cleanupIlwisContext = false; // hmm dunno if you have to cleaunup this ( on linux crashes). I think the app deletes itself after the process has ended
             app = new QCoreApplication(argc, argv);
             ret = Ilwis::initIlwis(Ilwis::rmCOMMANDLINE, ilwisDir);
         }
