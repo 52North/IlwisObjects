@@ -101,11 +101,9 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 	 allRasters.push_back(_outputRaster);
 
 	 ctx->_threaded =  true;
-	 kernel()->startClock();
 
 	 OperationHelperRaster::execute(ctx, calcFun, allRasters);
 
-	 kernel()->issues()->log(kernel()->endClock(), IssueObject::itMessage);
 	if (_outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
 		PIXVALUETYPE rmin = PIXVALUEUNDEF, rmax = PIXVALUEUNDEF;
 		bool isInt = true;
