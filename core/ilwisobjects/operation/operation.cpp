@@ -38,7 +38,8 @@ OperationImplementation::   OperationImplementation(quint64 metaid, const Ilwis:
 OperationImplementation::~OperationImplementation()
 {
     if ( _tranquilizer){
-        _tranquilizer->stop();
+        std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+        _tranquilizer->stop( _startClock, end);
     }
 }
 
@@ -114,6 +115,7 @@ void OperationImplementation::initialize(quint64 totalCount)
     if ( totalCount != i64UNDEF){
         if (!_tranquilizer){
             _tranquilizer.reset(Tranquilizer::create(context()->runMode()));
+            _startClock = std::chrono::high_resolution_clock::now();
         }
     }
     _tranquilizer->prepare(_metadata->name(), _metadata->description(), totalCount);

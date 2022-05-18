@@ -53,7 +53,7 @@ public:
 
     virtual bool update(double step) = 0;
     virtual bool inform(QString msg) { return true; }
-    virtual void stop() = 0;
+    virtual void stop( std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point &end) = 0;
 
     static Tranquilizer *create(int mode, const Ilwis::IOOptions &options = IOOptions());
 };
@@ -99,7 +99,7 @@ public:
     void prepare(const QString &title, const QString &description, double end, double start=0);
 
     bool update(double step);
-    void stop();
+    void stop(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point &end);
 
     static Tranquilizer *create(const IOOptions& opt);
 };

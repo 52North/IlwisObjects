@@ -51,6 +51,7 @@ protected:
     IOperationMetaData _metadata;
     OperationExpression _expression;
     State _prepState;
+    std::chrono::high_resolution_clock::time_point _startClock;
     std::unique_ptr<Tranquilizer> _tranquilizer;
     template<class T> void setOutput(const T& obj, ExecutionContext *ctx, SymbolTable& symTable){
         QVariant v;

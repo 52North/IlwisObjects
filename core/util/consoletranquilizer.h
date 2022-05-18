@@ -36,7 +36,7 @@ public:
 
     bool update(double howfar);
     bool inform(QString msg);
-    void stop();
+    void stop(std::chrono::high_resolution_clock::time_point& start , std::chrono::high_resolution_clock::time_point& end );
 
     static Tranquilizer *create(const IOOptions& opt);
 };

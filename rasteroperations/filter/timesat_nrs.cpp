@@ -309,7 +309,8 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
         iterOut += _nb;
     }
     trq()->inform("\nWriting...\n");
-    trq()->stop();
+    std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+    trq()->stop(_startClock, end);
 
     bool resource = true;
     if ( resource && ctx != 0) {

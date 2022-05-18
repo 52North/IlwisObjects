@@ -28,7 +28,8 @@ using namespace Ilwis;
 
 ConsoleTranquilizer::~ConsoleTranquilizer()
 {
-    stop();
+    std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+    stop(end,end);
 }
 
 // This tranquilizer will generate a progress indicator in a terminal window
@@ -61,7 +62,8 @@ void ConsoleTranquilizer::prepare(const QString &title, const QString &descripti
 bool ConsoleTranquilizer::update(double howfar)
 {
     if (howfar < 1) {
-        stop();
+        //std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+        //stop(end);
         return false;
     }
 
@@ -85,13 +87,18 @@ bool ConsoleTranquilizer::inform(QString msg)
     return true;
 }
 
-void ConsoleTranquilizer::stop()
+void ConsoleTranquilizer::stop(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point &end)
 {
     _inc = 0.0;
     _next = 0.0;
     _count = 0;
     _start = 0.0;
     _end = 0.0;
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+    if ( time_span.count() > 0){
+        QString res = " in" + QString::number(time_span.count()) + " seconds";
+        std::cout << res.toStdString();
+    }
     std::cerr << std::endl;
 }
 
