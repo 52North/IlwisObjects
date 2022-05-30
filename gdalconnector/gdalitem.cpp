@@ -205,7 +205,7 @@ quint64 GDALItems::findSize(const QFileInfo& inf){
     }
     return size;
 }
-quint64 GDALItems::caseWithSquareBrackets(const QStringList& parts, Size<>& sz, QString& shortname){
+quint64 GDALItems::caseWithSquareBrackets(const QStringList& parts, Size<>& sz){
     QString metadata = parts[0];
     QStringList metadataparts = metadata.split("]");
     QString sizestring = metadataparts[0].mid(1);
@@ -215,7 +215,7 @@ quint64 GDALItems::caseWithSquareBrackets(const QStringList& parts, Size<>& sz, 
     // in the brackets case, y comes before x
     sz = Size<>(sz.ysize(), sz.xsize(), sz.zsize());
 
-    return extractNameAndDomain(metadataparts[1], shortname);
+    return extractNameAndDomain(metadataparts[1]);
 }
 
 Size<> GDALItems::getSize(const QStringList& szMembers)
@@ -237,21 +237,17 @@ Size<> GDALItems::getSize(const QStringList& szMembers)
     return sz;
 }
 
-quint64 GDALItems::extractNameAndDomain(const QString& part, QString& shortname)
+quint64 GDALItems::extractNameAndDomain(const QString& part)
 {
     QStringList secondPart = part.split("(");
-    shortname = secondPart[0].trimmed();
     QString numbertype = secondPart[1].left(secondPart[1].size() - 1);
     return numbertype2domainid(numbertype);
 }
 
-quint64 GDALItems::caseWithurl(const QStringList& parts, Size<>& sz, QString& shortname)
+quint64 GDALItems::caseWithurl(const QStringList& parts)
 {
 
-    QString sizeString = parts[0].mid(1,parts[0].size() - 3);
-    QStringList szMembers = sizeString.split("x");
-    sz = getSize(szMembers);
-    quint64 domid = extractNameAndDomain(parts[1], shortname);
+    quint64 domid = extractNameAndDomain(parts[1]);
 
     return domid;
 }
@@ -269,39 +265,52 @@ void GDALItems::addOffsetScale(void *handle, const int count, Resource & gdalite
         gdalitem.addProperty("scale", scale);
 }
 
+std::map<QString, QString> kvp2Map2(char **kvplist)
+{
+    std::map<QString, QString> result;
+    if ( kvplist != 0){
+
+        quint32 nItems=0;
+
+        while(*(kvplist + nItems) != NULL)
+        {
+            nItems++;
+            //kvplist++;
+        }
+
+
+        for(int i =0; i < nItems; ++i){
+            QString item(kvplist[i]);
+            QStringList kvp = item.split("=");
+            if ( kvp.size() == 2)
+                result[kvp[0]] = kvp[1];
+
+        }
+    }
+    return result;
+}
+
 int GDALItems::handleComplexDataSet(void *handle){
     char **pdatasets = gdal()->getMetaData(handle, "SUBDATASETS");
     if ( pdatasets == 0)
         return iUNDEF;
 
-    auto datasetdesc = kvp2Map(pdatasets);
+    auto datasetdesc =   kvp2Map(pdatasets);
+
+
 
     auto iter = datasetdesc.begin();
     // we know there is altijd  pairs SUBDATASET_<n>_DESC,SUBDATASET_<n>_NAME in the map
     int count = 0;
     while(iter !=  datasetdesc.end()) {
-        Size<> sz;
-        QString shortname;
-        quint64 domid        ;
-        QStringList parts = iter->second.split("//");
-        if ( parts.size() == 2)
-            domid = caseWithurl(parts, sz, shortname);
-        else {
-            if ( iter->second[0] == '[' && iter->second.lastIndexOf(']') > 1){
-                domid = caseWithSquareBrackets(parts,sz, shortname);
-            }
-        }
-        ++iter;
-        QString encodedUrl = QUrl::toPercentEncoding(iter->second,"/","\"");
-        QString rawUrl = "gdal://"+ encodedUrl;
-        parts = iter->second.split("\"");
-		if (parts.size() < 2) // unknow structure of url
-			return iUNDEF;
-        QString normalizedUrl = OSHelper::createFileUrlFromParts(parts[1] , "/" + shortname);
+        auto info = iter->second;
+         QString encodedUrl = QUrl::toPercentEncoding(info._baseUrl,"/","\"");
+        QString rawUrl = "gdal://"+ encodedUrl + "/" + info._internalName;
+        QString normalizedUrl = OSHelper::createFileUrlFromParts( info._baseUrl, "/" + info._shortName);
         Resource gdalitem(normalizedUrl,rawUrl,itRASTER);
-        gdalitem.code(iter->second);
-        gdalitem.name(shortname, false);
-        gdalitem.dimensions(sz.toString());
+        gdalitem.code(info._internalName);
+        gdalitem.name(info._shortName, false);
+        gdalitem.dimensions(info._dimensions.toString());
         GDALDatasetH handle = gdal()->open(gdalitem.code().toLocal8Bit(), GA_ReadOnly);
         GdalHandle ihandle(handle,GdalHandle::etGDALDatasetH);
 		QString code;
@@ -311,7 +320,7 @@ int GDALItems::handleComplexDataSet(void *handle){
         }
         addOffsetScale(handle, count, gdalitem);
         gdal()->close(handle);
-        gdalitem.addProperty("domain",domid);
+        gdalitem.addProperty("domain",info._domainType);
         insert(gdalitem);
         ++iter;
         ++count;
@@ -489,24 +498,30 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
         gdal()->releaseSrsHandle(handle, srshandle, path);
 
     if(isNumericalUndef(ret)){
-		code = "code=csy:unknown";
-        Resource resource(code,itCOORDSYSTEM);
+        QString dim;
+        code = "code=csy:unknown";
         Envelope env = gdal()->envelope(handle,0);
         if ( env.isValid() && !env.isNull()){
-            QString dim = QString("%1 x %2 x %3 x %4").arg(env.min_corner().x).arg(env.min_corner().y).arg(env.max_corner().x).arg(env.max_corner().y);
-			code = "code=csy:" + env.toString();
-            resource.dimensions(dim);
-
+            dim = QString("%1 x %2 x %3 x %4").arg(env.min_corner().x).arg(env.min_corner().y).arg(env.max_corner().x).arg(env.max_corner().y);
         }
+        if ( path.indexOf("NETCDF") == 0){
+            code = "code=epsg:4326";
+        } else
+            code = "code=csy:"+  dim;
+
+        Resource resource(code,itCOORDSYSTEM);
+        resource.dimensions(dim);
+
         insert(resource);
         return resource.id();
     }else
         return ret;
 }
 
-std::map<QString, QString> GDALItems::kvp2Map(char **kvplist)
+
+std::map<QString, GDALItems::AttributeInfo> GDALItems::kvp2Map(char **kvplist)
 {
-    std::map<QString, QString> result;
+    std::map<QString, AttributeInfo> result;
     if ( kvplist != 0){
 
         quint32 nItems=0;
@@ -518,12 +533,34 @@ std::map<QString, QString> GDALItems::kvp2Map(char **kvplist)
         }
 
 
-        for(int i =0; i < nItems; ++i){
+        for(int i =0; i < nItems; i+=2){
             QString item(kvplist[i]);
-            QStringList kvp = item.split("=");
-            if ( kvp.size() == 2)
-                result[kvp[0]] = kvp[1];
-
+            QStringList kvpName = item.split("=");
+            item  = kvplist[i+1];
+            QStringList kvpDesc = item.split("=");
+            AttributeInfo info;
+            info._internalName = kvpName[1];
+            info._shortName = kvpName[1].mid(kvpName[1].lastIndexOf(":") + 1);
+            info._longName = kvpDesc[1].mid(kvpDesc[1].lastIndexOf("]") + 1).trimmed();
+            int idxStart = kvpName[1].indexOf(":") + 2;
+            int idxEnd = kvpName[1].lastIndexOf(":") - 1;
+            info._baseUrl = kvpName[1].mid(idxStart, idxEnd - idxStart);
+            idxStart = kvpDesc[1].indexOf("[") + 1;
+            idxEnd = kvpDesc[1].lastIndexOf("]");
+            QString sz = kvpDesc[1].mid(idxStart, idxEnd - idxStart);
+            QStringList szParts = sz.split("x");
+            if ( szParts.size() == 3){
+                 info._dimensions = Size<>(szParts[1].toInt(), szParts[2].toInt(), szParts[0].toInt());
+            }
+            idxStart = kvpDesc[1].indexOf("(") + 1;
+            if ( idxStart != -1){
+                idxEnd = kvpDesc[1].lastIndexOf(")");
+                if ( idxEnd != -1){
+                    QString datatypeString = kvpDesc[1].mid(idxStart, idxEnd - idxStart);
+                    info._domainType = numbertype2domainid(datatypeString);
+                }
+            }
+            result[info._shortName] = info;
         }
     }
     return result;
