@@ -409,15 +409,14 @@ GdalHandle* GDALProxy::openFile(const QString& name, quint64 asker, GDALAccess m
     if (_openedDatasets.contains(name)){
         return _openedDatasets[name];
     } else {
-		handle = gdal()->ogrOpen(name.toLocal8Bit(), mode, NULL);
-		if (handle) {
-			return _openedDatasets[name] = new GdalHandle(handle, GdalHandle::etOGRDataSourceH, asker);
-		}
-		else {
-			handle = gdal()->open(name.toLocal8Bit(), mode);
-			if (handle) {
-				return _openedDatasets[name] = new GdalHandle(handle, GdalHandle::etGDALDatasetH, asker);
-			}
+        handle = gdal()->open(name.toLocal8Bit(), mode);
+        if (handle) {
+            return _openedDatasets[name] = new GdalHandle(handle, GdalHandle::etGDALDatasetH, asker);
+        } else {
+            handle = gdal()->ogrOpen(name.toLocal8Bit(), mode, NULL);
+            if (handle) {
+                return _openedDatasets[name] = new GdalHandle(handle, GdalHandle::etOGRDataSourceH, asker);
+            }
 			else {
 				if (message)
 					ERROR1(ERR_COULD_NOT_OPEN_READING_1, name);

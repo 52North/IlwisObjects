@@ -25,21 +25,32 @@ public:
     GDALItems(const QUrl& path, const QFileInfo &localFile, IlwisTypes tp, IlwisTypes extTypes);
     GDALItems(const QFileInfo &localContainerFile, IlwisTypes tp, IlwisTypes extTypes);
 
-    quint64 extractNameAndDomain(const QString &parts, QString &shortname);
+    quint64 extractNameAndDomain(const QString &parts);
 
 private:
+    struct AttributeInfo{
+      QString _shortName;
+      QString _longName;
+      QString _internalName;
+      Size<> _dimensions;
+      QString _baseUrl;
+      quint64 _domainType = 0;
+    };
+
 	quint64 addItem(GdalHandle* handle, const QUrl &urll, const QString csyCode, quint64 grfId, IlwisTypes tp = itRASTER, IlwisTypes extTypes = itUNKNOWN, quint64 sz = i64UNDEF, int layerindex = iUNDEF, bool isExtendedType = true);
     quint64 addCsy(GdalHandle* handle, const QString &path, const QUrl &url, QString& code, bool message=true);
     QString dimensions(GdalHandle* handle, bool &is3d, int layerindex=iUNDEF) const;
-    std::map<QString, QString> kvp2Map(char **kvplist);
+    std::map<QString, AttributeInfo> kvp2Map(char **kvplist);
     int handleComplexDataSet(void *handle);
     quint64 numbertype2domainid(const QString &numbertype) const;
     quint64 findSize(const QFileInfo &inf);
     int layerCount(GdalHandle* handle, bool& isColorRaster);
-    quint64 caseWithurl(const QStringList &parts, Size<> &sz, QString &shortname);
-    quint64 caseWithSquareBrackets(const QStringList &parts, Size<> &sz, QString &shortnames);
+    quint64 caseWithurl(const QStringList &parts);
+    quint64 caseWithSquareBrackets(const QStringList &parts, Size<> &sz);
     Size<> getSize(const QStringList& szMembers);
     void addOffsetScale(void *handle, const int count, Ilwis::Resource &gdalitem);
+
+
 };
 }
 }
