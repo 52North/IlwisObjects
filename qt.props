@@ -2,7 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <QTDIR>C:\Qt\5.12.3\msvc2017_64</QTDIR>
+    <QTDIR>c:\Qt\Qt5.12.3\5.12.3\msvc2017_64</QTDIR>
+    <PYTHONROOT>d:\Python\Python39</PYTHONROOT>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
@@ -10,6 +11,9 @@
     <BuildMacro Include="QTDIR">
       <Value>$(QTDIR)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="PYTHONROOT">
+      <Value>$(PYTHONROOT)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
