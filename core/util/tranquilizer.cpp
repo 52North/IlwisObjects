@@ -132,7 +132,7 @@ bool EmptyTranquilizer::update(double )
     return true;
 }
 
-void EmptyTranquilizer::stop(std::chrono::system_clock::time_point &start, std::chrono::system_clock::time_point &end)
+void EmptyTranquilizer::stop(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end)
 {
 
 }
