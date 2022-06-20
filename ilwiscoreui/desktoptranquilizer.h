@@ -31,7 +31,7 @@ public:
 
     void prepare(const QString &title, const QString &description, double end, double start=0);
     bool update(double step);
-    void stop();
+    void stop(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end);
 
     static Tranquilizer *create(const IOOptions &opt);
 

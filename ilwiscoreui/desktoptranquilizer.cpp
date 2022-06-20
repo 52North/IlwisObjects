@@ -60,7 +60,7 @@ bool DesktopTranquilizer::update(double step) {
 
 }
 
-void DesktopTranquilizer::stop()
+void DesktopTranquilizer::stop(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end)
 {
     if ( _runsInMainThread) //  we do not update in main thread else everything is waiting
         return ;
