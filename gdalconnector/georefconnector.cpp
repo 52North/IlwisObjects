@@ -61,8 +61,12 @@ bool GeorefConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
     //TODO: tiepoints grf
 
     GeoReference * grf = static_cast<GeoReference *>(data);
-
-    ICoordinateSystem csy = setObject<ICoordinateSystem>("coordinatesystem", _fileUrl);
+    ICoordinateSystem csy;
+    QString csyDef = data->resource()["coordinatesystem"].toString();
+    if ( csyDef != sUNDEF)
+        csy.prepare(csyDef);
+    if ( !csy.isValid())
+        csy = setObject<ICoordinateSystem>("coordinatesystem", _fileUrl);
     if(!csy.isValid()) {
         QString resource = QString("code=csy:unknown");
         if (!csy.prepare(resource)) {

@@ -136,7 +136,7 @@ GDALItems::GDALItems(const QUrl &url, const QFileInfo &localFile, IlwisTypes tp,
 		quint64 sz = file.size();
 		bool isColor;
 		int count = layerCount(handle, isColor);
-		if (count == 0) {// could be a complex dataset
+        if (file.suffix() == "nc" || file.suffix() == "hf" || file.suffix() == "h5" || file.suffix() == "hdf5" || file.suffix() == "hdf") { // complex dataset
 			if (handle->type() == GdalHandle::etGDALDatasetH) { // doesnt work for ogr datassets
 				addItem(handle, QUrl::fromLocalFile(file.absoluteFilePath()), QString::number(handleComplexDataSet(handle->handle())), iUNDEF, itCATALOG, itFILE | itRASTER);
 			}
@@ -304,8 +304,7 @@ int GDALItems::handleComplexDataSet(void *handle){
     int count = 0;
     while(iter !=  datasetdesc.end()) {
         auto info = iter->second;
-         QString encodedUrl = QUrl::toPercentEncoding(info._baseUrl,"/","\"");
-        QString rawUrl = "gdal://"+ encodedUrl + "/" + info._internalName;
+        QString rawUrl = "gdal://" + info._internalName;
         QString normalizedUrl = OSHelper::createFileUrlFromParts( info._baseUrl, "/" + info._shortName);
         Resource gdalitem(normalizedUrl,rawUrl,itRASTER);
         gdalitem.code(info._internalName);
@@ -317,7 +316,15 @@ int GDALItems::handleComplexDataSet(void *handle){
         addCsy(&ihandle,gdalitem.code(),normalizedUrl,code, false);
         if ( code != sUNDEF){
             gdalitem.addProperty("coordinatesystem", code,true);
+            Resource grfItem(normalizedUrl, rawUrl, itGEOREF);
+            grfItem.code(info._internalName);
+            grfItem.dimensions(info._dimensions.twod().toString());
+            grfItem.setExtendedType(itCOORDSYSTEM);
+            grfItem.name(info._shortName, false);
+            grfItem.addProperty("coordinatesystem", code,true);
+            insert(grfItem);
         }
+
         addOffsetScale(handle, count, gdalitem);
         gdal()->close(handle);
         gdalitem.addProperty("domain",info._domainType);
@@ -455,7 +462,8 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
                     if ( def._epsg != sUNDEF){
                         return mastercatalog()->name2id("code=" + def._epsg);
                     }else {
-                        Resource res("code=proj4:" + sproj4, itCONVENTIONALCOORDSYSTEM);
+                        Resource res(url, itCONVENTIONALCOORDSYSTEM);
+                        res.code("proj4:" + sproj4);
                         QFileInfo inf(path);
                         res.name(inf.fileName());
                         if ( inf.exists()){
@@ -551,7 +559,8 @@ std::map<QString, GDALItems::AttributeInfo> GDALItems::kvp2Map(char **kvplist)
             QStringList szParts = sz.split("x");
             if ( szParts.size() == 3){
                  info._dimensions = Size<>(szParts[1].toInt(), szParts[2].toInt(), szParts[0].toInt());
-            }
+            }else // all bands must have a dimension in the form of A x B x C
+                continue;
             idxStart = kvpDesc[1].indexOf("(") + 1;
             if ( idxStart != -1){
                 idxEnd = kvpDesc[1].lastIndexOf(")");

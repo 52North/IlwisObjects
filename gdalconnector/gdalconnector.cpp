@@ -37,6 +37,8 @@ GdalConnector::GdalConnector(const Resource &resource, bool load, const IOOption
     _handle = NULL;
     if ( resource.url(true).hasFragment())
         _internalPath = resource.url(true).fragment();
+    if ( resource.code() != "") // if a code is set the code needs to be used to open the file (thatś the role of codes). This is only true (for the moment) for complex files, e.g. HDF like structures.
+        _code = resource.code();
     _fileUrl = resource.url(true);
 	if (options.contains("prefix")) {
 		_prefix = options["prefix"].toString();
@@ -92,17 +94,22 @@ bool GdalConnector::getHandle(IlwisObject *data) {
 		if (!gdal()->isValid()) {
 			return ERROR1(ERR_NO_INITIALIZED_1, "gdal library");
 		}
-		if (!_fileUrl.isValid()) {
-			return ERROR1(ERR_MISSING_DATA_FILE_1, "Gdal reading");
-		}
+        if ( _code != sUNDEF){
+            _handle = gdal()->openFile(_code, data->id(), GA_ReadOnly, false);
 
-		QFileInfo fileinf(_fileUrl.toLocalFile());
-		QString filen = fileinf.absoluteFilePath();
-		if (_prefix != "") {
+        }else {
+            if (!_fileUrl.isValid()) {
+                return ERROR1(ERR_MISSING_DATA_FILE_1, "Gdal reading");
+            }
 
-			filen = _prefix + fileinf.fileName();
-		}
-		_handle = gdal()->openFile(filen, data->id(), GA_ReadOnly, false); // no messages here
+            QFileInfo fileinf(_fileUrl.toLocalFile());
+            QString filen = fileinf.absoluteFilePath();
+            if (_prefix != "") {
+
+                filen = _prefix + fileinf.fileName();
+            }
+            _handle = gdal()->openFile(filen, data->id(), GA_ReadOnly, false); // no messages here
+        }
 	}
 	return true;
 }
@@ -159,7 +166,7 @@ bool GdalConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
         return ERROR2(ERR_COULD_NOT_OPEN_READING_2,_fileUrl.toString(),QString(gdal()->getLastErrorMsg()));
     }
 
-    if ( data->ilwisType() == itRASTER){
+    if ( hasType(data->ilwisType(), itRASTER|itGEOREF)){
         GDALDriverH driverH = gdal()->getDriverByDataSet(_handle->handle());
         if ( driverH){
             _gdalShortName = gdal()->getShortName(driverH);
