@@ -127,8 +127,17 @@ std::vector<Resource> MasterCatalogCache::find(const QUrl& url, Time modifiedtim
 
             for(const Resource& resource : (*iter).second){
 				double mt = resource.modifiedTime();
-                if ( modifiedtime <= mt || mt == rUNDEF)
+                if ( modifiedtime <= mt || mt == rUNDEF){
                     resources.push_back(resource);
+                    if ( hasType(resource.ilwisType(), itCATALOG)){
+                        for(auto entry : _hashes){
+                            for( auto containedResource : entry.second){
+                                if ( containedResource.container() == resource.url())
+                                    resources.push_back(containedResource);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
