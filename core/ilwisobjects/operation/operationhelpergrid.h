@@ -40,6 +40,7 @@ public:
 		if (!outputRaster.isValid())
 			return false;
 		int cores = 1;
+        ctx->_threaded = false;
 		if (ctx->_threaded) {
 			cores = QThread::idealThreadCount();
 			int prefCount = outputRaster->grid()->blocks() / 2 + 1;
@@ -59,16 +60,21 @@ public:
 			boxes.push_back(BoundingBox(rasters[0]->size()));
 		}
 
-        std::vector<std::future<bool>> futures(cores);
+       // std::vector<std::future<bool>> futures(cores);
         bool res = true;
+        res = func(boxes[0],0);
 
-        for(int i =0; i < cores; ++i) {
-            futures[i] = std::async(std::launch::async, func, boxes[i],cores > 1 ? i + 1 : 0); // threadindex starts at 1 as the 0 is the default ( no threads). In the grid administration, the cache at index 0 is the standard cache used in the non threading case.
-        }
+        //2022-02-06 : for the moment disabled. for unknown reasons the std::async(std::launch::async, func, boxes[i],cores > 1 ? i + 1 : 0) statement crashes for all operations without every arriving at the function call.
+        // At this moment I can not find any reason for this as nothing has changed in this respect. What the call std::async() is doing is quite complex with regards to moves and copies etc... so I suspect a compiler bug
+        // as I have seen those before with regard to temporary objects being copied/moved but why now? Will investigate later
 
-        for(int i =0; i < cores; ++i) {
-            res &= futures[i].get();
-        }
+       // for(int i =0; i < cores; ++i) {
+       //     futures[i] = std::async(std::launch::async, func, boxes[i],cores > 1 ? i + 1 : 0); // threadindex starts at 1 as the 0 is the default ( no threads). In the grid administration, the cache at index 0 is the standard cache used in the non threading case.
+       // }
+
+      //  for(int i =0; i < cores; ++i) {
+       //     res &= futures[i].get();
+      //  }
 		for (auto raster : rasters)
 			raster->gridRef()->unprepare4Operation();
 

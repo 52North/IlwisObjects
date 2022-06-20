@@ -43,18 +43,23 @@ inline bool operator==(const GridBlockNrPair& gbp1, const GridBlockNrPair& gbp2)
     return gbp1._blocknr == gbp2._blocknr && gbp1._grid == gbp2._grid;
 }
 
+struct CacheEntry{
+    std::vector<GridBlockNrPair> _cacheBlocks;
+    QFile *_cacheFile = 0;
+};
+
 class GridBlockInternal {
 public:
-    GridBlockInternal(quint32 blocknr, quint64 rasterid, quint32 lines , quint32 width);
+    GridBlockInternal(Grid *parentGrid, quint32 blocknr, quint32 lines , quint32 width);
     ~GridBlockInternal();
 
 
     Size<> size() const ;
-    GridBlockInternal *clone(quint64 newRasterId);
+    GridBlockInternal *clone(Grid *newParentGrid);
 
     PIXVALUETYPE& at(quint32 index) {
         if ( index < _blockSize){
-            if (!_dataInMemory) {
+            if (!_inMemory) {
                 init();
                 loadDiskDataToMemory();
             }
@@ -67,13 +72,11 @@ public:
     void fill(const std::vector<PIXVALUETYPE>& values);
     quint32 blockSize();
     bool inMemory() const { return _inMemory; }
-    bool dataInMemory() const { return _dataInMemory; }
     inline bool save2Cache() ;
     void dispose();
     void init();
     void loadDiskDataToMemory();
     quint64 blockNr();
-
 
 private:
     bool loadFromCache();
@@ -83,18 +86,19 @@ private:
     PIXVALUETYPE _undef;
     Size<> _size;
     quint64 _id;
-    quint64 _rasterid;
-    bool _inMemory;
-    bool _dataInMemory;
-    QString _gridblockFileName = sUNDEF;
-    QScopedPointer<QTemporaryFile> _gridblockFile;
+    bool _inMemory = false;
+    bool _dataLoadedFromSource = false;
     quint64 _blockSize;
+    Grid *_parentGrid;
+    quint64 _seekPosition = i64UNDEF;
 };
 
 class KERNELSHARED_EXPORT Grid
 
 {
 public:
+    friend class GridBlockInternal;
+
     Grid(int maxLines=iUNDEF);
     virtual ~Grid();
 
@@ -132,10 +136,13 @@ private:
     inline bool update(quint32 block, bool loadDiskData, int threadIndex = 0);
     void unloadInternal();
     void setBlock(int index,GridBlockInternal *block);
+    bool save2cache(int cacheNr, quint64 seekPosition, char *dataBlock, quint64 bytesNeeded);
+    bool loadFromCache(int cacheNr, quint64 seekPosition, char *dataBlock, quint64 bytesNeeded);
+    bool createCacheFile(int i);
 
     std::recursive_mutex _mutex;
     std::vector< GridBlockInternal *> _blocks;
-    std::vector<std::vector<GridBlockNrPair>> _cache;
+    std::vector<CacheEntry> _cache;
     quint32 _maxCacheBlocks;
     qint64 _memUsed;
     quint32 _blocksPerBand;
@@ -143,6 +150,8 @@ private:
     Size<> _size;
     quint32 _maxLines;
     std::vector<quint32> _blockOffsets;
+    quint64 _gridid = i64UNDEF;
+    quint64 _rasterid;
 };
 
 typedef std::unique_ptr<Grid> UPGrid;
