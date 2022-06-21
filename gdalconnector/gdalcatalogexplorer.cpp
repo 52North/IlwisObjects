@@ -115,12 +115,14 @@ std::vector<Resource> GdalCatalogExplorer::loadItems(const IOOptions &)
         }
 
 
-
+        std::set<Resource> uniqueResources;
         std::vector<Resource> items;
         for( const auto& resource : gdalitems){
-            items.push_back(resource);
+            uniqueResources.insert(resource);
         }
+
         kernel()->issues()->silent(false);
+        std::copy(uniqueResources.begin(), uniqueResources.end(), std::back_inserter(items));
 
 
         if (items.size() > 0)

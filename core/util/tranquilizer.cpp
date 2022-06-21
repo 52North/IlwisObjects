@@ -133,7 +133,6 @@ bool EmptyTranquilizer::update(double )
 }
 
 void EmptyTranquilizer::stop(std::chrono::high_resolution_clock::time_point& start, std::chrono::high_resolution_clock::time_point& end)
-
 {
 
 }

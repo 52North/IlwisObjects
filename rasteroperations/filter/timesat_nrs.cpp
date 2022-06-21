@@ -282,7 +282,7 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
 		auto sit = slice.begin();
 		while (pib != pie) {
 			*sit++ = *pib;
-			pib++;
+			++pib;
 		}
         std::vector<bool> valid(_nb);
         std::transform(slice.begin(), slice.end(), valid.begin(),

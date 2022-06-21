@@ -48,6 +48,7 @@ protected:
     bool _readOnly = true;
     GdalHandle* _handle = 0;
 	QString _prefix;
+    QString _code;
 };
 }
 }

@@ -63,8 +63,8 @@ bool UnaryMathRasterAndNumber::execute(ExecutionContext *ctx, SymbolTable& symTa
             return true;
         };
 
-		bool resource = OperationHelperRaster::execute(ctx, unaryFun, { _outputGC });
 
+        bool resource = OperationHelperRaster::execute(ctx, unaryFun, { _outputGC });
         if ( resource && ctx != 0) {
             QVariant value;
             value.setValue<IRasterCoverage>(_outputGC);
@@ -126,6 +126,7 @@ OperationImplementation::State UnaryMathRasterAndNumber::prepare(ExecutionContex
             return sPREPAREFAILED;
 
         NumericRange *newRange = constructRangeFrom(nrange);
+        newRange->resolution(0); // all unary operation are floating point
 
         IDomain dom;
          if(!dom.prepare(_outputDomain))

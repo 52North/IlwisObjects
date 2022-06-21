@@ -100,8 +100,6 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 	 }
 	 allRasters.push_back(_outputRaster);
 
-	 ctx->_threaded =  true;
-
 	 OperationHelperRaster::execute(ctx, calcFun, allRasters);
 
 	if (_outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {
