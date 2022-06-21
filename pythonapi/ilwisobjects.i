@@ -190,8 +190,8 @@ def object_cast(obj):
         return obj
 
     @staticmethod
-    def catalogItems():
-        return sorted(Engine__catalogItems(), key = str.lower)
+    def catalogItems(filter=it.ANY):
+        return sorted(Engine__catalogItems(filter), key = str.lower)
 %}
 }
 

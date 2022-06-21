@@ -16,7 +16,7 @@ namespace pythonapi {
         static std::string getLocation();
         static PyObject* operations();
         static std::string operationMetaData(const std::string& name, const std::string &element = "syntax");
-        static PyObject* _catalogItems();
+        static PyObject* _catalogItems(quint64 filter);
     private:
         static std::string addQuotesIfNeeded(std::string parameter);
     };

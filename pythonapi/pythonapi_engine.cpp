@@ -342,7 +342,7 @@ std::string Engine::operationMetaData(const std::string &name, const std::string
     return ret.toStdString();
 }
 
-PyObject* Engine::_catalogItems(){
+PyObject* Engine::_catalogItems(quint64 filter){
     Ilwis::ICatalog cat = Ilwis::context()->workingCatalog();
     std::vector<Ilwis::Resource> resVec = cat->items();
     PyObject* tup = newPyTuple(resVec.size());

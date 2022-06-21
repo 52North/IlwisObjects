@@ -32,6 +32,7 @@ namespace pythonapi{
         static const quint64 PALETTECOLOR = itPALETTECOLOR;
         static const quint64 VALUERANGE = itVALUERANGE;
         static const quint64 COLLECTION = itCOLLECTION;
+        static const quint64 ANY = itANY;
     };
 }
 #endif // PYTHONAPI_EXTENSION_H
