@@ -190,8 +190,8 @@ def object_cast(obj):
         return obj
 
     @staticmethod
-    def catalogItems():
-        return sorted(Engine__catalogItems(), key = str.lower)
+    def catalogItems(filter):
+        return sorted(Engine__catalogItems(filter), key = str.lower)
 %}
 }
 
@@ -312,6 +312,20 @@ def __getitem__(self, name):
 %include "pythonapi_georeference.h"
 
 %include "pythonapi_rastercoverage.h"
+
+%extend pythonapi::RasterCoverage{
+    %insert("python") %{
+        def array2raster(self, dataContainer, band=-1):
+            self._array2Raster(dataContainer, band)
+    %}
+}
+
+%extend pythonapi::RasterCoverage{
+  %insert("python") %{
+      def list2raster(self, dataContainer, band=-1):
+          self._list2Raster(dataContainer, band)
+  %}
+}
 
 %include "pythonapi_catalog.h"
 %extend pythonapi::Catalog {
