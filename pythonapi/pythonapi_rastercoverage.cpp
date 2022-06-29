@@ -1,3 +1,10 @@
+#undef HAVE_IEEEFP_H
+#define PY_SSIZE_T_CLEAN
+#include "Python.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
+//#include "numpy/arrayobject.h"
+
 #include "../../core/kernel.h"
 #include "../../core/ilwiscontext.h"
 #include "../../core/catalog/catalog.h"
@@ -18,6 +25,7 @@
 
 #include "../../core/ilwisobjects/operation/operationoverloads.h"
 
+
 #include "pythonapi_rastercoverage.h"
 #include "pythonapi_engine.h"
 #include "pythonapi_error.h"
@@ -26,6 +34,7 @@
 #include "pythonapi_pyobject.h"
 #include "pythonapi_geometry.h"
 #include "pythonapi_domain.h"
+
 
 using namespace pythonapi;
 
@@ -450,6 +459,87 @@ double RasterCoverage::coord2value(const Coordinate& c){
 
 PixelIterator RasterCoverage::__iter__(){
     return PixelIterator(this);
+}
+
+template<class V> void setValues(V *buffer, quint64 nItems, Ilwis::PixelIterator& iter){
+   for(int i=0; i < nItems; ++i) {
+       *iter = buffer[i];
+       ++iter;
+   }
+}
+void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
+{
+
+    if ( PyObject_CheckBuffer(container) == 0){
+        throw InvalidObject("The object is not a array object.");
+    }
+
+    Py_buffer pybuf;
+    PyObject_GetBuffer(container, &pybuf, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS);
+    if ( pybuf.buf == NULL){
+        throw InvalidObject("The data in the array is empty");
+    }
+    int nItems = pybuf.len / pybuf.itemsize;
+
+    auto sz = size();
+    if ( band == -1){
+        if ( sz.linearSize() != nItems){
+           throw InvalidObject("mismatch array size and raster size");
+        }
+    } else {
+        if ( sz.xsize() * sz.ysize() != nItems){
+            throw InvalidObject("mismatch array size and raster size");
+        }
+    }
+
+    IlwisTypes format=itINT8;
+    QString frmt(pybuf.format);
+    frmt = frmt.toLower();
+    if ( frmt == 'd' )
+        frmt = itDOUBLE;
+    if ( frmt == 'l'){
+        format = pybuf.itemsize == 4 ? itINT32 : itINT64;
+    }else if ( frmt == 'b')
+        format = itINT8;
+    Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
+    Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
+    if ( format == itDOUBLE)
+        setValues((double *)pybuf.buf, nItems, iter);
+    if ( format == itINT64){
+        setValues((qint64 *)pybuf.buf, nItems, iter);
+    }
+    if ( format == itINT32){
+        setValues((qint32 *)pybuf.buf, nItems, iter);
+    }
+    if ( format == itINT8){
+        setValues((char *)pybuf.buf, nItems, iter);
+    }
+}
+
+void RasterCoverage::_list2Raster(PyObject *container, int band)
+{
+    PyObject *iterator = PyObject_GetIter(container);
+    PyObject *item;
+
+    if (iterator == NULL) {
+       throw InvalidObject("the container is not iterable");
+    }
+
+    Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
+    Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
+    double value;
+    while ((item = PyIter_Next(iterator))) {
+        if (PyLong_Check(item)) {
+            value = PyLong_AsLong(item);
+        } else if PyFloat_Check(item) {
+            value = PyFloat_AsDouble(item);
+        }
+        *iter = value;
+        ++iter;
+        Py_DECREF(item);
+    }
+
+    Py_DECREF(iterator);
 }
 
 double RasterCoverage::pix2value(const PixelD &pix){

@@ -71,6 +71,8 @@ namespace pythonapi {
         static RasterCoverage* max(RasterCoverage &rc1, double value);
         static RasterCoverage* max(double value, RasterCoverage &rc2);
         PixelIterator __iter__();
+        void _array2Raster(PyObject* container, int band);
+        void _list2Raster(PyObject* container, int band);
         double coord2value(const Coordinate& c);
         double pix2value(const Pixel& pix);
         double pix2value(const PixelD& pix);
