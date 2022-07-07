@@ -35,7 +35,6 @@
 #include "pythonapi_geometry.h"
 #include "pythonapi_domain.h"
 
-
 using namespace pythonapi;
 
 RasterCoverage::RasterCoverage(const Ilwis::IRasterCoverage &coverage):Coverage(Ilwis::ICoverage(coverage)){
@@ -527,7 +526,7 @@ void RasterCoverage::_list2Raster(PyObject *container, int band)
 
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
     Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
-    double value;
+    double value = 0;
     while ((item = PyIter_Next(iterator))) {
         if (PyLong_Check(item)) {
             value = PyLong_AsLong(item);
