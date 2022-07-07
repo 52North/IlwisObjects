@@ -183,6 +183,7 @@ xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(
   <ItemGroup>
     <ClCompile Include="rasteroperations\aggregateraster.cpp" />
     <ClCompile Include="rasteroperations\aggregaterasterstatistics.cpp" />
+    <ClCompile Include="rasteroperations\aggregationtime.cpp" />
     <ClCompile Include="rasteroperations\classification\areanumbering.cpp" />
     <ClCompile Include="rasteroperations\classification\classifier.cpp" />
     <ClCompile Include="rasteroperations\classification\clusterraster.cpp" />
@@ -207,12 +208,14 @@ xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(
     <ClCompile Include="rasteroperations\rasterstretchoperation.cpp" />
     <ClCompile Include="rasteroperations\filter\stackminmaxfilter.cpp" />
     <ClCompile Include="rasteroperations\filter\timesat_nrs.cpp" />
+    <ClCompile Include="rasteroperations\seasonpercentageaggregate.cpp" />
     <ClCompile Include="rasteroperations\setrepresentation.cpp" />
     <ClCompile Include="rasteroperations\zonalstatistics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h" />
     <ClInclude Include="rasteroperations\aggregaterasterstatistics.h" />
+    <ClInclude Include="rasteroperations\aggregationtime.h" />
     <ClInclude Include="rasteroperations\classification\areanumbering.h" />
     <ClInclude Include="rasteroperations\classification\classifier.h" />
     <ClInclude Include="rasteroperations\classification\clusterraster.h" />
@@ -232,8 +235,10 @@ xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\extensions\$(
     <ClInclude Include="rasteroperations\polygontoraster.h" />
     <ClInclude Include="rasteroperations\filter\rankorderrasterfilter.h" />
     <ClInclude Include="rasteroperations\classification\rasterclassification.h" />
+    <ClInclude Include="rasteroperations\seasonpercentageaggregate.h" />
     <ClInclude Include="rasteroperations\setrepresentation.h" />
     <ClInclude Include="rasteroperations\zonalstatistics.h" />
+    <ClInclude Include="rasteroperations\zoneutil.h" />
     <QtMoc Include="rasteroperations\rasteroperationsmodule.h">
     </QtMoc>
     <ClInclude Include="rasteroperations\classification\rasterslicing.h" />

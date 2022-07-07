@@ -121,6 +121,12 @@
     <ClCompile Include="rasteroperations\percentilegroupscolumn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rasteroperations\seasonpercentageaggregate.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rasteroperations\aggregationtime.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rasteroperations\aggregateraster.h">
@@ -206,6 +212,15 @@
     </ClInclude>
     <ClInclude Include="rasteroperations\percentilegroupscolumn.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\seasonpercentageaggregate.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\zoneutil.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rasteroperations\aggregationtime.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
