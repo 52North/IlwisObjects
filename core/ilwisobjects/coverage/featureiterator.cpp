@@ -109,7 +109,7 @@ bool FeatureIterator::operator ==(const FeatureIterator &iter)
 
 bool FeatureIterator::operator !=(const FeatureIterator &iter)
 {
-	     return iter.isValid() && isValid() && _iterFeatures != iter._iterFeatures;
+         return iter.isValid() && isValid() && _iterFeatures != iter._iterFeatures;
 }
 
 bool FeatureIterator::operator <(const FeatureIterator &iter)
@@ -278,6 +278,9 @@ void FeatureIterator::flow(const Flow &flow)
 }
 
 bool FeatureIterator::isValid() const {
-	return  _fcoverage.isValid() && _fcoverage->_features.size() > 0 && _iterFeatures != _fcoverage->_features.end();
+//    bool f1 = _iterFeatures != _fcoverage->_features.end();
+    bool f2 = _fcoverage.isValid();
+    bool f3 = _fcoverage->_features.size() > 0;
+    return  f2 && f3 ; // && f1;
 }
 

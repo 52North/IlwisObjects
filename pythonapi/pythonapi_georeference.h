@@ -22,6 +22,7 @@ namespace pythonapi {
             virtual const QString getStoreFormat() const;
         public:
             GeoReference(const std::string &resource);
+            GeoReference(const std::string &csyCode,const Envelope &env,const Size &psize); // corners grf
             static GeoReference* toGeoReference(Object *obj);
 
             CoordinateSystem coordinateSystem() const;

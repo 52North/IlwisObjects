@@ -709,6 +709,8 @@ QString IlwisObject::type2Name(IlwisTypes t)
         return "ItemDomain";
     case  itCOLORDOMAIN:
         return "ColorDomain";
+    case  itTEXTDOMAIN:
+        return "TextDomain";
     case  itCOORDSYSTEM:
         return "CoordinateSystem";
     case  itCOMBINATIONMATRIX:
