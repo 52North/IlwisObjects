@@ -47,7 +47,7 @@ bool Ilwis::operator<(const ConnectorFilter& filter1, const ConnectorFilter& fil
 //---------------------------------------------------------------
 uint Ilwis::qHash(const ConnectorFormatSelector& filter ){
 
-    return ::qHash(filter._format);
+    return ::qHash(filter._format + filter._provider);
 }
 
 bool Ilwis::operator==(const ConnectorFormatSelector& filter1, const ConnectorFormatSelector& filter2 ){
@@ -59,7 +59,9 @@ bool Ilwis::operator==(const ConnectorFormatSelector& filter1, const ConnectorFo
 
 
 bool Ilwis::operator<(const ConnectorFormatSelector& filter1, const ConnectorFormatSelector& filter2 ){
-    return filter1._provider.toLower() < filter2._provider.toLower();
+    QString pf1 = filter1._provider + filter1._format;
+    QString pf2 = filter2._provider + filter2._format;
+    return pf1.toLower() < pf2.toLower();
 }
 
 ConnectorFactory::ConnectorFactory() : AbstractFactory("ConnectorFactory","ilwis","Creates all object connectors" )
@@ -84,9 +86,7 @@ void ConnectorFactory::addCreator(const QString& format,const QString &provider,
         return;
     }
     ConnectorFormatSelector filter(format, provider);
-    if (!_creatorsPerFormat.contains(filter)){
-        _creatorsPerFormat.insert(filter, func);
-    }
+    _creatorsPerFormat[filter] =  func;
 }
 
 std::nullptr_t ConnectorFactory::registerCatalogExplorer(createCatalogExplorer func)

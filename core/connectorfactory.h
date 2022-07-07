@@ -138,10 +138,13 @@ public:
      */
     template<class T=ConnectorInterface> T *createFromFormat(const Resource& resource, const QString &format, const QString& provider=sUNDEF,const IOOptions& options=IOOptions()) const{
         ConnectorFormatSelector filter(format, provider);
-        auto iter = _creatorsPerFormat.find(filter);
-        if ( iter == _creatorsPerFormat.end())
-            return 0;
-        ConnectorCreate createConnector = iter.value();
+        ConnectorCreate createConnector = 0;
+        for (auto item : _creatorsPerFormat) {
+            if (item.first._provider == filter._provider && item.first._format == filter._format) {
+                createConnector = item.second;
+                break;
+            }
+        }
         if ( createConnector ) {
             ConnectorInterface *cif =  createConnector(resource, false, options);
             if ( cif){
@@ -178,7 +181,7 @@ public:
 
 protected:
     QHash<ConnectorFilter, ConnectorCreate > _creatorsPerObject;
-    QHash<ConnectorFormatSelector, ConnectorCreate > _creatorsPerFormat;
+    std::map<ConnectorFormatSelector, ConnectorCreate > _creatorsPerFormat;
     static std::vector<createCatalogExplorer> _explorers;
 };
 }
