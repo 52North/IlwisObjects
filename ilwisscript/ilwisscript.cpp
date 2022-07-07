@@ -322,8 +322,8 @@ void IlwisScript::store2Format(const QString& specifiers, const Symbol& sym, con
     auto parts = specifiers.split(",");
     if ( parts.size() != 2)
         return;
-    QString provider = parts[0];
-    QString format = parts[1];
+    QString provider = parts[0].trimmed().toLower();
+    QString format = parts[1].trimmed().toLower();
     Ilwis::IIlwisObject object = getObject(sym);
     if ( object.isValid()){
         bool wasAnonymous = object->isAnonymous(); // if object is anonymous it will get a name due this method; this means it will now appear in the mastercatalog
