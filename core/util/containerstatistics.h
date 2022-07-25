@@ -344,25 +344,70 @@ public:
         }
 
 		std::pair<double, double> calcStretchRange(double perc) const {
-			double sum2 = 0;
-			double seen = 0;
 			double startV = rUNDEF, endV = rUNDEF;
 
-			if (_bins.size() > 0) {
-				for (int i = 0; i < _bins.size() - 1; ++i) {
-					sum2 += (_bins[i]._count);
-				}
-				for (int i = 0; i < _bins.size() - 1; ++i) {
-					auto& bin = _bins[i];
-					seen += bin._count;
-					if (seen >= sum2 * perc && startV == rUNDEF) {
-						startV = bin._limit;
-					}
-					if (seen >= sum2 * (1.0 - perc) && endV == rUNDEF) {
-						endV = bin._limit;
-					}
-				}
-			}
+            if (_bins.size() > 0) {
+                if (perc == 0) {
+                    for (long i = 0; i < _bins.size() - 1; ++i) { // < size() - 1, as the last element is the undef count.
+                        auto& bin = _bins[i];
+                        if (bin._count > 0) {
+                            startV = bin._limit;
+                            break;
+                        }
+                    }
+                    for (long i = _bins.size() - 2; i >= 0; --i) { // same here: start at size() - 2 (one before the undef count)
+                        auto& bin = _bins[i];
+                        if (bin._count > 0) {
+                            endV = bin._limit;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    double totalPix = 0;
+                    for (long i = 0; i < _bins.size() - 1; ++i) {
+                        totalPix += (_bins[i]._count);
+                    }
+                    double nPixCumulative = 0;
+                    long pixels = perc * totalPix / 100.0;
+                    long lo = 0;
+                    for (long i = 0; i < _bins.size() - 1; ++i) {
+                        auto& bin = _bins[i];
+                        nPixCumulative += bin._count;
+                        if (nPixCumulative > pixels) {
+                            lo = i;
+                            break;
+                        }
+                    }
+                    if (lo > 0) {
+                        long prevDif = nPixCumulative - _bins[lo - 1]._count - pixels;
+                        if (prevDif != 0)
+                            if (abs(prevDif) < abs(nPixCumulative - pixels))
+                                --lo;
+                    }
+
+                    nPixCumulative = totalPix;
+                    pixels = (100.0 - perc) * totalPix / 100.0;
+                    long hi = _bins.size() - 2;
+                    for (long i = _bins.size() - 2; i >= 0; --i) {
+                        if (nPixCumulative <= pixels) {
+                            hi = i;
+                            break;
+                        }
+                        auto& bin = _bins[i];
+                        nPixCumulative -= bin._count;
+                    }
+                    if (hi < _bins.size() - 2) {
+                        long prevDif = nPixCumulative + _bins[hi + 1]._count - pixels;
+                        if (prevDif != 0)
+                            if (abs(prevDif) < abs(nPixCumulative - pixels))
+                                ++hi;
+                    }
+
+                    startV = _bins[lo]._limit;
+                    endV = _bins[hi]._limit;
+                }
+            }
 			return std::pair<double, double>(startV, endV);
 		}
 
