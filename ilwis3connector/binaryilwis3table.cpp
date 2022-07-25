@@ -364,7 +364,8 @@ void BinaryIlwis3Table::addStoreDefinition(const DataDefinition& def) {
     ColumnInfo inf;
     if ( hasType(colType,itNUMERICDOMAIN) ) {
        auto nrange = def.range().dynamicCast<NumericRange>();
-       RawConverter conv(nrange->min(), nrange->max(), nrange->resolution());
+       bool hasUndef = nrange->min() < 0 || nrange->max() > 255 || nrange->resolution() != 1; // same condition as in TableConnector::storeNumericColumn() whereby the exception for image.dom is introduced
+       RawConverter conv(nrange->min(), nrange->max(), nrange->resolution(), hasUndef);
        inf._conv = conv;
        inf._type = colType;
     }

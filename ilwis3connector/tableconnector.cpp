@@ -411,13 +411,16 @@ QString TableConnector::storeNumericColumn(const ColumnDefinition& def, const QS
     if ( numrange.isNull()){
         numrange = def.datadef().domain()->range<NumericRange>();
     }
-    RawConverter conv(numrange->min(), numrange->max(), numrange->resolution());
     double resolution = numrange->resolution();
+    bool hasUndef = true;
     if ( domName == sUNDEF) {
         domName = "value.dom";
-        if ( numdmrange->min() >= 0 && numdmrange->max() <=255 && resolution == 1)
+        if (numdmrange->min() >= 0 && numdmrange->max() <= 255 && resolution == 1) {
             domName = "image.dom";
+            hasUndef = false;
+        }
     }
+    RawConverter conv(numrange->min(), numrange->max(), numrange->resolution(), hasUndef);
     _odf->setKeyValue(colName, "Domain", domName.indexOf(".dom") != -1 ? domName : domName + ".dom");
     QString range;
     if ( resolution != 1)

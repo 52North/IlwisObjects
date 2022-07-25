@@ -451,14 +451,15 @@ bool RasterCoverageConnector::storeBinaryData(IlwisObject *obj)
 		double precision = resolution;
         if (precision < 1e-06)
             precision = 0.0;
-        RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision);
+        bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
+        RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
 
         std::ofstream output_file(filename.toLatin1(),ios_base::out | ios_base::binary | ios_base::trunc);
         if ( !output_file.is_open())
             return ERROR1(ERR_COULD_NOT_OPEN_WRITING_1,filename);
 
         qint32 delta = stats[NumericStatistics::pDELTA];
-        if ( delta >= 0 && delta < 256 && resolution == 1 && stats[NumericStatistics::pMIN] >= 0){
+        if ( delta >= 0 && delta < (hasUndefs ? 255 : 256) && resolution == 1 && stats[NumericStatistics::pMIN] >= 0){ // if there is an undef, restrict to one less than 255, to make space for the undef
             ok = save<quint8>(output_file,(conv.scale() == 1 && conv.offset() == 0) ? RawConverter() : conv, raster,sz);
         } else if ( conv.storeType() == itUINT8) {
             ok = save<quint8>(output_file,(conv.scale() == 1 && conv.offset() == 0) ? RawConverter() : conv, raster,sz);
@@ -644,14 +645,15 @@ bool RasterCoverageConnector::storeMetaData( IlwisObject *obj, const IOOptions& 
 		double precision = resolution;
         if (precision < 1e-06)
             precision = 0.0;
-        RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision);
+        bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
+        RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
         qint32 delta = stats[NumericStatistics::pDELTA];
         QString minmax = QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]);
         _odf->setKeyValue("BaseMap","MinMax",minmax);
 
         // Add the BaseMap:Range section to match the default valuerange with the Type
         QString range;
-        if ( delta >= 0 && delta < 256 &&  resolution == 1 && stats[NumericStatistics::pMIN] >= 0){
+        if ( delta >= 0 && delta < (hasUndefs ? 255 : 256) &&  resolution == 1 && stats[NumericStatistics::pMIN] >= 0){ // if there is an undef, restrict to one less than 255, to make space for the undef
            _odf->setKeyValue("MapStore","Type","Byte");
            range = "0:255:offset=0";
         } else if ( conv.storeType() == itUINT8){

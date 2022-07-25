@@ -313,9 +313,10 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
 			double precision = resolution;
             if (precision < 1e-06)
                 precision = 0.0;
-            RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision);           
+            bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
+            RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
             QString storeType;
-            if ( delta >= 0 && delta < 256 &&  resolution == 1){
+            if ( delta >= 0 && delta < (hasUndefs ? 255 : 256) && resolution == 1){ // if there is an undef, restrict to one less than 255, to make space for the undef
                 storeType = "Byte";
             } else if ( conv.storeType() == itUINT8){
                 storeType = "Byte";
