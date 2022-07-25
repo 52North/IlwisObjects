@@ -52,19 +52,27 @@ Ilwis::OperationImplementation *LinearStretchOperation::create(quint64 metaid,co
  */
 bool LinearStretchOperation::stretch(IRasterCoverage toStretch)
 {
-    NumericStatistics& statistics = _inputRaster->statisticsRef(PIXELVALUE);
-
     // TODO: separate histogram into own class (and move
     // certain operations to it
 
-    SPNumericRange rng = _inputRaster->datadef().range<NumericRange>();
-    double valueRange = rng->distance();
+    double fact;
+    if (_limitsFrom.second - _limitsFrom.first <= 0)
+        fact = 0;
+    else
+        fact = (_limitsTo.second - _limitsTo.first) / (_limitsFrom.second - _limitsFrom.first);
+    double off = _limitsTo.first;
+
     PixelIterator iterInput(_inputRaster);
 
     std::for_each(begin(_outputRaster), end(_outputRaster), [&](double& v) {
         double vin = *iterInput;
-        if(vin >= _limits.first && vin <= _limits.second) {
-            v = statistics.stretchLinear(vin, valueRange);
+        if (vin != rUNDEF) {
+            if (vin <= _limitsFrom.first)
+                v = _limitsTo.first;
+            else if (vin >= _limitsFrom.second)
+                v = _limitsTo.second;
+            else
+                v = fact * (vin - _limitsFrom.first) + off;
         }
         ++iterInput;
     });
@@ -95,28 +103,13 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
     QString intputName = _expression.parm(0).value();
     QString outputName = _expression.parm(0,false).value();
 
-    int parameterCount = _expression.parameterCount();
-    double lower=rUNDEF, upper=rUNDEF;
-    lower = _expression.parm(1).value().toDouble();
-    if (parameterCount==2 && lower < 0){
-        ERROR2(ERR_ILLEGAL_VALUE_2,TR("parameter"),  _expression.parm(0).value());
-        return sPREPAREFAILED;
-    }
-    if (parameterCount == 3) {
-        upper = _expression.parm(2).value().toDouble();
-        if ( upper < lower) {
-            ERROR2(ERR_ILLEGAL_VALUE_2,TR("parameter"),  _expression.parm(0).value());
-            return sPREPAREFAILED ;
-        }
-    }
-
     if (!_inputRaster.prepare(intputName, itRASTER)) {
-        ERROR2(ERR_COULD_NOT_LOAD_2,intputName,"");
+        ERROR2(ERR_COULD_NOT_LOAD_2, intputName, "");
         return sPREPAREFAILED;
     }
 
     _outputRaster = OperationHelperRaster::initialize(_inputRaster, itRASTER, itDOMAIN);
-    if ( !_outputRaster.isValid()) {
+    if (!_outputRaster.isValid()) {
         ERROR1(ERR_NO_INITIALIZED_1, outputName);
         return sPREPAREFAILED;
     }
@@ -124,15 +117,65 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
     _outputRaster->coordinateSystem(_inputRaster->coordinateSystem());
     _outputRaster->name(outputName);
 
-    NumericStatistics& statistics = _inputRaster->statisticsRef(PIXELVALUE);
-    //statistics.binCount(10);
-    statistics.calculate(begin(_inputRaster), end(_inputRaster), NumericStatistics::pHISTOGRAM);
+    int parameterCount = _expression.parameterCount();
+    if (parameterCount == 2) {
+        double percent = _expression.parm(1).value().toDouble();
+        if (percent < 0 || percent > 100) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(1).value());
+            return sPREPAREFAILED;
+        }
 
-    if (upper == rUNDEF) {
-        double percent = lower;
-        _limits = statistics.stretchLimits(percent);
-    } else
-        _limits = std::pair<double, double>(lower, upper);
+        NumericStatistics& statistics = _inputRaster->statisticsRef(PIXELVALUE);
+        statistics.calculate(begin(_inputRaster), end(_inputRaster), NumericStatistics::pHISTOGRAM);
+        _limitsFrom = statistics.calcStretchRange(percent);
+        _limitsTo = std::pair<double, double>(0, 255);
+    }
+    else if (parameterCount == 3) {
+        double lowerin = _expression.parm(1).value().toDouble();
+        double upperin = _expression.parm(2).value().toDouble();
+        if (upperin < lowerin) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(1).value());
+            return sPREPAREFAILED;
+        }
+        _limitsFrom = std::pair<double, double>(lowerin, upperin);
+        _limitsTo = std::pair<double, double>(0, 255);
+    }
+    else if (parameterCount == 4) {
+        double percent = _expression.parm(1).value().toDouble();
+        double lowerout = _expression.parm(2).value().toDouble();
+        double upperout = _expression.parm(3).value().toDouble();
+        if (percent < 0 || percent > 100) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(1).value());
+            return sPREPAREFAILED;
+        }
+        if (upperout < lowerout) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(2).value());
+            return sPREPAREFAILED;
+        }
+
+        NumericStatistics& statistics = _inputRaster->statisticsRef(PIXELVALUE);
+        statistics.calculate(begin(_inputRaster), end(_inputRaster), NumericStatistics::pHISTOGRAM);
+        _limitsFrom = statistics.calcStretchRange(percent);
+        _limitsTo = std::pair<double, double>(lowerout, upperout);
+    }
+    else if (parameterCount == 5) {
+        double lowerin = _expression.parm(1).value().toDouble();
+        double upperin = _expression.parm(2).value().toDouble();
+        double lowerout = _expression.parm(3).value().toDouble();
+        double upperout = _expression.parm(4).value().toDouble();
+
+        if (upperin < lowerin) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(1).value());
+            return sPREPAREFAILED;
+        }
+        if (upperout < lowerout) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(3).value());
+            return sPREPAREFAILED;
+        }
+
+        _limitsFrom = std::pair<double, double>(lowerin, upperin);
+        _limitsTo = std::pair<double, double>(lowerout, upperout);
+    }
 
     _prepState = sPREPARED;
     return _prepState;
@@ -147,12 +190,14 @@ quint64 LinearStretchOperation::createMetadata()
 {
     OperationResource operation({"ilwis://operations/linearstretch"});
     operation.setLongName("Linear stretch");
-    operation.setSyntax("linearstretch(raster,percentage,number)");
+    operation.setSyntax("linearstretch(raster,percentage) | linearstretch(raster,percentage,minout,maxout) | linearstretch(raster,minin,maxin) | linearstretch(raster,minin,maxin,minout,maxout)");
     operation.setDescription(TR("re-distributes values of an input map over a wider or narrower range of values in an output map. Stretching can for instance be used to enhance the contrast in your map when it is displayed."));
-    operation.setInParameterCount({2,3});
+    operation.setInParameterCount({2,3,4,5});
     operation.addInParameter(0, itRASTER, TR("rastercoverage to stretch"), TR("input rastercoverage with domain item or numeric"));
-    operation.addInParameter(1, itNUMERIC, TR("percentage|number"));
-    operation.addInParameter(2, itNUMERIC, TR("number"));
+    operation.addInParameter(1, itNUMERIC, TR("percentage|number"), TR("Depending on the nr. of parameters used: the percentage of pixels not to be taken into account during stretching, or the minimum cutoff pixel value"));
+    operation.addInParameter(2, itNUMERIC, TR("number"), TR("The maximum cutoff pixel value or the minimum value of the output range"));
+    operation.addInParameter(3, itNUMERIC, TR("number"), TR("The minimum value of the output range or the maximum value of the output range"));
+    operation.addInParameter(4, itNUMERIC, TR("number"), TR("The maximum value of the output range"));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0, itRASTER, TR("output rastercoverage"), TR("output rastercoverage stretched"), itINTEGER | itFLOAT | itDOUBLE);
     operation.setKeywords("raster,image processing,numeric,contrast");
