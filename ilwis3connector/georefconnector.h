@@ -25,6 +25,7 @@ public:
     GeorefConnector(const Ilwis::Resource &resource, bool load=true,const IOOptions& options=IOOptions());
     bool loadMetaData(IlwisObject *data, const IOOptions &options);
     bool storeMetaData(IlwisObject *obj, const IOOptions &options);
+    bool storeBinaryData(IlwisObject*);
     IlwisObject *create() const;
 
     static ConnectorInterface *create(const Ilwis::Resource &resource, bool load=true,const IOOptions& options=IOOptions());
