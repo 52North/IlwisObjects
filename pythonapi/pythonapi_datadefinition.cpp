@@ -1,9 +1,16 @@
+#include <QColor>
 #include "../../core/kernel.h"
 #include "../../core/ilwisobjects/ilwisobject.h"
 #include "../../core/ilwisobjects/ilwisdata.h"
 #include "../../core/ilwisobjects/domain/domainitem.h"
 #include "../../core/ilwisobjects/domain/domain.h"
 #include "../../core/util/range.h"
+#include "../../core/ilwisobjects/domain/identifieritem.h"
+#include "../../core/ilwisobjects/domain/identifierrange.h"
+#include "../../core/ilwisobjects/domain/coloritem.h"
+#include "../../core/ilwisobjects/domain/colorrange.h"
+#include "../../core/ilwisobjects/domain/interval.h"
+#include "../../core/ilwisobjects/domain/intervalrange.h".h"
 #include "../../core/ilwisobjects/domain/datadefinition.h"
 
 #include "pythonapi_datadefinition.h"
@@ -81,6 +88,27 @@ DataDefinition* DataDefinition::__set__(const DataDefinition& def){
 
 Range* DataDefinition::range() const{
     if(this->ptr().range()){
+        if ( hasType(this->ptr().range()->valueType(),itNUMBER)){
+            Ilwis::NumericRange *irn = this->ptr().range()->clone()->as<Ilwis::NumericRange>();
+            auto *pp = new pythonapi::NumericRange(irn);
+            return static_cast<pythonapi::Range *>(pp);
+        }
+        if ( hasType(this->ptr().range()->valueType(),itNAMEDITEM)){
+            Ilwis::NamedIdentifierRange *irn = this->ptr().range()->clone()->as<Ilwis::NamedIdentifierRange>();
+            auto *pp = new pythonapi::NamedItemRange(irn);
+            return static_cast<pythonapi::Range *>(pp);
+        }
+        if ( hasType(this->ptr().range()->valueType(),itTHEMATICITEM)){
+            Ilwis::ThematicRange *irn = this->ptr().range()->clone()->as<Ilwis::ThematicRange>();
+            auto *pp = new pythonapi::ThematicRange(irn);
+            return static_cast<pythonapi::Range *>(pp);
+        }
+        if ( hasType(this->ptr().range()->valueType(),itNUMERICITEM)){
+            Ilwis::IntervalRange *irn = this->ptr().range()->clone()->as<Ilwis::IntervalRange>();
+            auto *pp = new pythonapi::NumericItemRange(irn);
+            return static_cast<pythonapi::Range *>(pp);
+        }
+        //TODO others
         return new Range(this->ptr().range()->clone());
     }else
         return NULL;
