@@ -31,3 +31,4 @@
 /pythonapi/ilwisobjects.py
 *.vsidx
 /.vs/ilwisobjects_msvc1564/FileContentIndex/read.lock
+qt.props

@@ -158,10 +158,5 @@ QString IlwisObject::constructPath(std::string resource){
                 input = Ilwis::context()->workingCatalog()->filesystemLocation().toString() + '/' + input;
          }
     }
-    else { // pos < 0: file without path, or new object
-        QUrl workingCatalogUrl = Ilwis::context()->workingCatalog()->filesystemLocation();
-        if (QFileInfo (workingCatalogUrl.toLocalFile()+ + '/' + input).exists()) // file without path
-            input = workingCatalogUrl.toString() + '/' + input;
-    }
     return input;
 }

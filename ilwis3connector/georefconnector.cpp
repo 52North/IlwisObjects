@@ -336,6 +336,11 @@ IlwisObject *GeorefConnector::create() const
     return grf;
 }
 
+bool GeorefConnector::storeBinaryData(IlwisObject*)
+{
+    return true;
+}
+
 QString GeorefConnector::format() const
 {
     return "georef";

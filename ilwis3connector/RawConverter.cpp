@@ -35,9 +35,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 using namespace Ilwis;
 using namespace Ilwis3;
 
-RawConverter::RawConverter(double low, double high, double step)  {
-    _storeType =  minNeededStoreType(low, high, step);
-    _offset = determineOffset(low, high, step, _storeType);
+RawConverter::RawConverter(double low, double high, double step, bool hasUndefs)  {
+    _storeType =  minNeededStoreType(low, high, step, hasUndefs);
+    _offset = determineOffset(low, high, step, _storeType, hasUndefs);
     _scale = MathHelper::roundTo3DecimalDigits ((step == 0.0) ? 1.0 : step);
 
     // Note: determineScale() is not called here,
@@ -47,19 +47,18 @@ RawConverter::RawConverter(double low, double high, double step)  {
     _undefined = guessUndef(step);
 }
 
-IlwisTypes RawConverter::minNeededStoreType(double low, double high, double step) const{
+IlwisTypes RawConverter::minNeededStoreType(double low, double high, double step, bool hasUndefs) const{
     double minDivStep;
     double maxDivStep;
     intRange(low, high, step, minDivStep, maxDivStep );
-    bool containsNegatives = low < 0;
 
     quint64 delta = rounding(abs(maxDivStep - minDivStep));//TODO change from quint32 to quint64 might change behaviour??
     if ( step != 0) {
-        if ( delta <= 255 && !containsNegatives)
+        if ( delta <= (hasUndefs ? 254 : 255)) // if there is an undef, restrict to one less than 255, to make space for the undef
             return itUINT8;
-        else if ( delta <= 65535)
+        else if ( delta <= (hasUndefs ? 65534 : 65535)) // like above: one less ..
             return itINT16;
-        else if ( delta <= 4294967295){
+        else if ( delta <= (hasUndefs ? 4294967294 : 4294967295)){ // like above: one less ..
             return itINT32;
         }
     }
@@ -92,7 +91,7 @@ double RawConverter::determineScale(double low, double high, double step) const 
     return pow(10,-r);
 }
 
-double RawConverter::determineOffset(double low, double high, double step, IlwisTypes st)
+double RawConverter::determineOffset(double low, double high, double step, IlwisTypes st, bool hasUndefs)
 {
   if (st == itDOUBLE)
     return 0;
@@ -118,9 +117,11 @@ double RawConverter::determineOffset(double low, double high, double step, Ilwis
        break;
      case itUINT8:
        if (minDivStep < 0 || maxDivStep > 255)
-         r0 = minDivStep-1;
+         r0 = minDivStep;
        else
-         r0 = -1;
+         r0 = 0;
+       if (hasUndefs)
+           r0 -= 1;
        break;
   }
   return r0;
