@@ -56,7 +56,8 @@ void ConsoleTranquilizer::prepare(const QString &title, const QString &descripti
     _next = 0.0;
     _count = 0;
 
-    std::cout << title.toStdString() << ": ";
+    if ( _title != "")
+        std::cout << title.toStdString() << ": ";
 }
 
 bool ConsoleTranquilizer::update(double howfar)
@@ -83,7 +84,8 @@ bool ConsoleTranquilizer::update(double howfar)
 
 bool ConsoleTranquilizer::inform(QString msg)
 {
-    std::cout << msg.toStdString();
+    if ( _title != "")
+        std::cout << msg.toStdString();
     return true;
 }
 
