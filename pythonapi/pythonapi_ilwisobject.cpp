@@ -144,13 +144,19 @@ const QString IlwisObject::getStoreFormat() const {
 
 QString IlwisObject::constructPath(std::string resource){
     QString input (QString::fromStdString(resource));
+    if ( input.indexOf("code=") == 0) // ths is not a path but a code
+        return input;
+
     input.replace('\\','/');
     // if it is file:// (or http:// etc) leave it untouched; if not, append file:// and the working catalog path if it is missing
     if (input.indexOf("://") < 0) {
          if ((input.count('/') > 1) || QFileInfo(input).exists()) // full path starting with drive-letter (MS-DOS-style)
             input = QUrl::fromLocalFile(input).toString();
-         else // container object without path, e.g. myfile.hdf/subdataset: look for it in workingCatalog()
-            input = Ilwis::context()->workingCatalog()->filesystemLocation().toString() + '/' + input;
+         else {// container object without path, e.g. myfile.hdf/subdataset: look for it in workingCatalog()
+            QUrl workingCatalogUrl = Ilwis::context()->workingCatalog()->filesystemLocation();
+            if (QFileInfo (workingCatalogUrl.toLocalFile()+ + '/' + input).exists())
+                input = Ilwis::context()->workingCatalog()->filesystemLocation().toString() + '/' + input;
+         }
     }
     else { // pos < 0: file without path, or new object
         QUrl workingCatalogUrl = Ilwis::context()->workingCatalog()->filesystemLocation();
