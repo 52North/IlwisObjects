@@ -434,7 +434,7 @@ IlwisTypes ColorDomain::ilwisType() const
 }
 
 std::string ColorDomain::containsColor(const Color &value) const{
-    ColorRange helper = ColorRange();
+    ColorRangeBase helper = ColorRangeBase();
     QColor ilwCol = helper.colorToQColor(value);
     Domain::Containement dc = (Domain::Containement)this->ptr()->as<Ilwis::ColorDomain>()->contains(ilwCol);
     switch(dc){
