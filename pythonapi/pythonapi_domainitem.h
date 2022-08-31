@@ -18,6 +18,8 @@ namespace pythonapi{
         template<typename OutputType, typename RangeType, typename IlwOutput, typename IlwRange>
         friend class RangeIterator;
         friend class NumericItemRange;
+        friend class NamedItemRange;
+        friend class ThematicRange;
 
     public:
         DomainItem();
