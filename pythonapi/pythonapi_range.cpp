@@ -94,7 +94,7 @@ NamedItemRange *Range::toNamedItemRange()
    return dynamic_cast<pythonapi::NamedItemRange *>(this);
 }
 
-ThematicRange *Range::toThematicRangee()
+ThematicRange *Range::toThematicRange()
 {
    return dynamic_cast<pythonapi::ThematicRange *>(this);
 }
@@ -306,10 +306,17 @@ PyObject* NumericItemRange::listAll(){
     return list;
 }
 
-DomainItem* NumericItemRange::item(quint32 index)
+pythonapi::Interval* NumericItemRange::item(quint32 index)
 {
-    DomainItem * newItem = new DomainItem();
+    pythonapi::Interval * newItem = new pythonapi::Interval();
     newItem->_ilwisItem.reset(static_cast<Ilwis::IntervalRange*>(_range.get())->item(index).get());
+    return newItem;
+}
+
+pythonapi::Interval* NumericItemRange::item(std::string name)
+{
+    pythonapi::Interval * newItem = new pythonapi::Interval();
+    newItem->_ilwisItem.reset(static_cast<Ilwis::IntervalRange*>(_range.get())->item(QString::fromStdString(name)).get());
     return newItem;
 }
 
@@ -408,6 +415,20 @@ NamedItemRange *NamedItemRange::clone()
     return newRange;
 }
 
+pythonapi::NamedIdentifier* NamedItemRange::item(quint32 index)
+{
+    pythonapi::NamedIdentifier * newItem = new pythonapi::NamedIdentifier();
+    newItem->_ilwisItem.reset(static_cast<Ilwis::NamedIdentifierRange*>(_range.get())->item(index).get());
+    return newItem;
+}
+
+pythonapi::NamedIdentifier* NamedItemRange::item(std::string name)
+{
+    pythonapi::NamedIdentifier * newItem = new pythonapi::NamedIdentifier();
+    newItem->_ilwisItem.reset(static_cast<Ilwis::NamedIdentifierRange*>(_range.get())->item(QString::fromStdString(name)).get());
+    return newItem;
+}
+
 //-----------------------------------------------------------
 
 ThematicRange::ThematicRange()
@@ -475,6 +496,20 @@ ThematicRange *ThematicRange::clone()
     ThematicRange* newRange = new ThematicRange();
     newRange->_range.reset(static_cast<Ilwis::ThematicRange*>(this->_range.get()->clone()));
     return newRange;
+}
+
+pythonapi::ThematicItem* ThematicRange::item(quint32 index)
+{
+    pythonapi:ThematicItem * newItem = new pythonapi::ThematicItem();
+    newItem->_ilwisItem.reset(static_cast<Ilwis::ThematicRange*>(_range.get())->item(index).get());
+    return newItem;
+}
+
+pythonapi::ThematicItem* ThematicRange::item(std::string name)
+{
+    pythonapi::ThematicItem * newItem = new pythonapi::ThematicItem();
+    newItem->_ilwisItem.reset(static_cast<Ilwis::ThematicRange*>(_range.get())->item(QString::fromStdString(name)).get());
+    return newItem;
 }
 
 

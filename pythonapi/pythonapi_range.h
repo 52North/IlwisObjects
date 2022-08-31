@@ -7,6 +7,7 @@
 #include "pythonapi_rangeiterator.h"
 #include <QSharedPointer>
 #include "pythonapi_util.h"
+#include "pythonapi_domainitem.h"
 
 typedef std::shared_ptr<Ilwis::Range> SPPRange;
 
@@ -30,6 +31,7 @@ namespace pythonapi {
     class ThematicRange;
     class IndexedItemRange;
     class NumericItemRange;
+    class Interval;
 
 class Range: public Object{
     friend class Domain;
@@ -57,7 +59,7 @@ public:
     TimeInterval *toTimeInterval();
     ColorPalette *toColorPalette();
     ContinuousColorRange *toContinuousColorRange();
-    ThematicRange *toThematicRangee();
+    ThematicRange *toThematicRange();
     NamedItemRange *toNamedItemRange();
     IndexedItemRange *toIndexedItemRange();
 
@@ -116,7 +118,8 @@ public:
     void add(std::string name, double min, double max, double resolution=0);
     void add(PyObject *item);
     PyObject* listAll();
-    pythonapi::DomainItem* item(quint32 index);
+    pythonapi::Interval *item(quint32 index);
+    pythonapi::Interval* item(std::string name);
     qint32 gotoIndex(qint32 index, qint32 step) const;
     NumericItemRange* clone();
 };
@@ -137,6 +140,8 @@ public:
     PyObject* listAll();
     qint32 gotoIndex(qint32 index, qint32 step) const;
     NamedItemRange* clone();
+    pythonapi::NamedIdentifier* item(std::string name);
+    pythonapi::NamedIdentifier* item(quint32 index);
 };
 
 class ThematicRange : public ItemRange {
@@ -147,6 +152,8 @@ public:
     void add(PyObject *item);
     PyObject* listAll();
     ThematicRange* clone();
+    pythonapi::ThematicItem* item(quint32 index);
+     pythonapi::ThematicItem* item(std::string name);
 };
 
 
@@ -175,7 +182,7 @@ private:
     ColorModel _defaultModel = ColorModel::cmRGBA;
 };
 
-class ContinuousColorRange : public ColorRangeBase, Range{
+class ContinuousColorRange : public ColorRangeBase, public Range{
 public:
     ContinuousColorRange();
     ContinuousColorRange(Ilwis::Range *rng);
