@@ -3,6 +3,7 @@
 #include "../../core/util/tranquilizer.h"
 #include "../../core/ilwisobjects/table/columndefinition.h"
 #include "../../core/ilwisobjects/table/table.h"
+#include "../../core/util/geometries.h"
 #include "../../core/ilwisobjects/coverage/pixeliterator.h"
 #include "geos/geom/Geometry.h"
 
@@ -94,6 +95,10 @@ Box PixelIterator::box(){
 
 Pixel PixelIterator::position(){
     return Pixel(this->ptr().position());
+}
+
+void PixelIterator::setPosition(const Pixel& px){
+    this->ptr() = Ilwis::Pixel(px.x(), px.y(), px.z());
 }
 
 void PixelIterator::setFlow(Flow flw){

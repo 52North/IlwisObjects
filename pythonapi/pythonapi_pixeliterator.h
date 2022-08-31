@@ -59,6 +59,7 @@ class PixelIterator{
         bool __contains__(const Pixel& vox);
         Box box();
         Pixel position();
+        void setPosition(const Pixel& px);
         void setFlow(Flow flw);
         bool xChanged();
         bool yChanged();
