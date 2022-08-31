@@ -65,6 +65,32 @@ void Domain::setParent(const Domain &dom){
 }
 
 Range& Domain::getRange(){
+    auto rr = this->ptr()->as<Ilwis::Domain>()->range();
+    if ( hasType(rr->valueType(),itNUMBER)){
+        Ilwis::NumericRange *irn = rr->clone()->as<Ilwis::NumericRange>();
+        auto *pp = new pythonapi::NumericRange(irn);
+        return *(static_cast<pythonapi::Range *>(pp));
+    }
+    if ( hasType(rr->valueType(),itNAMEDITEM)){
+        Ilwis::NamedIdentifierRange *irn = rr->clone()->as<Ilwis::NamedIdentifierRange>();
+        auto *pp = new pythonapi::NamedItemRange(irn);
+        return *(static_cast<pythonapi::Range *>(pp));
+    }
+    if ( hasType(rr->valueType(),itTHEMATICITEM)){
+        Ilwis::ThematicRange *irn = rr->clone()->as<Ilwis::ThematicRange>();
+        auto *pp = new pythonapi::ThematicRange(irn);
+        return *(static_cast<pythonapi::Range *>(pp));
+    }
+    if ( hasType(rr->valueType(),itNUMERICITEM)){
+        Ilwis::IntervalRange *irn = rr->clone()->as<Ilwis::IntervalRange>();
+        auto *pp = new pythonapi::NumericItemRange(irn);
+        return *(static_cast<pythonapi::Range *>(pp));
+    }
+    if ( hasType(rr->valueType(),itCOLOR)){
+        Ilwis::ContinuousColorRange *irn = rr->clone()->as<Ilwis::ContinuousColorRange>();
+        auto *pp = new pythonapi::ContinuousColorRange(irn);
+        return *(static_cast<pythonapi::Range *>(pp));
+    }
     Range* retRan = new Range(this->ptr()->as<Ilwis::Domain>()->range().data());
     return *retRan;
 }
