@@ -108,6 +108,11 @@ Range* DataDefinition::range() const{
             auto *pp = new pythonapi::NumericItemRange(irn);
             return static_cast<pythonapi::Range *>(pp);
         }
+        if ( hasType(this->ptr().range()->valueType(),itCOLOR)){
+            Ilwis::ContinuousColorRange *irn = this->ptr().range()->clone()->as<Ilwis::ContinuousColorRange>();
+            auto *pp = new pythonapi::ContinuousColorRange(irn);
+            return static_cast<pythonapi::Range *>(pp);
+        }
         //TODO others
         return new Range(this->ptr().range()->clone());
     }else
