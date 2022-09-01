@@ -1,0 +1,3 @@
+fails = []
+
+testCount = 0
