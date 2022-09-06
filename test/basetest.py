@@ -2,6 +2,7 @@ import unittest
 import ilwis
 import config
 import numpy as np
+import math
 from os.path import abspath
 
 
@@ -120,35 +121,53 @@ class BaseTest(unittest.TestCase):
         rc = self.createEmptySmallNumericRaster()
         rc.setSize(ilwis.Size(15,12))
         baseSize = 15 * 12
-        array1 = np.empty(baseSize, dtype = int)
+        array1 = np.empty(baseSize, dtype = np.int64)
 
         for i in range(len(array1)):
             array1[i] = i * 10
 
+        array1[9] = ilwis.Const.iUNDEF # pos 8,0 is undefined
         rc.array2raster(array1)
      
         return rc
 
-    def createSmallNumericRaster3Layers(self):
+    def createSmallNumericRaster3Layers(self, alternate=0):
         rc = self.createEmptySmallNumericRaster()
         rc.setSize(ilwis.Size(15,12,3))
         baseSize = 15 * 12
 
-        array1 = np.empty(baseSize, dtype = int)
-        array2 = np.empty(baseSize, dtype = int)
-        array3 = np.empty(baseSize, dtype = int)
+        array1 = np.empty(baseSize, dtype = np.int64)
+        array2 = np.empty(baseSize, dtype = np.int64)
+        array3 = np.empty(baseSize, dtype = np.int64)
 
-        for i in range(len(array1)):
-            array1[i] = i * 10
-            array2[i] = (i + baseSize) * 10
-            array3[i] = (i + 2*baseSize) * 10 
+        
 
+        if ( alternate == 0):
+            for i in range(len(array1)):
+                array1[i] = i * 10
+                array2[i] = (i + baseSize) * 10
+                array3[i] = (i + 2*baseSize) * 10 
+        if ( alternate == 1):                
+            for i in range(len(array1)):
+                array1[i] = i * 10 + 10 * math.sin(math.radians(i*10))
+                array2[i] = (i + baseSize + 2 * math.sin(math.radians(i*10))) * 10
+                array3[i] = (i + 2*baseSize + 3 * + 2 * math.sin(math.radians(i*10))) * 10
+            #print( array1)
+        array1[5 * 6] = ilwis.Const.iUNDEF # pos 0,2 is undefined            
         rc.array2raster(array1, 0)            
         rc.array2raster(array2, 1)
         rc.array2raster(array3, 2)                                
 
-        return rc            
-           
+        return rc  
+
+    def arrayValues15_12(self, rc):
+        print('\n')
+        arr = np.fromiter(ilwis.PixelIterator(rc), dtype=np.float64)
+        for y in range(12):
+            print('\n')
+            for x in range(15):
+                print(arr[y * 15 + x], end=' ')
+        print('\n')           
 
         
 
