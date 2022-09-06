@@ -207,7 +207,7 @@ void PixelIterator::init() {
     }
 
     initPosition();
-    bool inside = contains(Pixel(_x,_y));
+    bool inside = contains(Pixel(_x,_y, _z));
     _isValid = inside;
     _xChanged = _yChanged = _zChanged = false;
 }
@@ -447,10 +447,22 @@ void PixelIterator::setFlow(Flow flw) {
 }
 
 bool PixelIterator::contains(const Pixel& pix) {
-    return pix.x >= _box.min_corner().x &&
+    bool ok =  pix.x >= _box.min_corner().x &&
             pix.x < _box.max_corner().x  &&
             pix.y >= _box.min_corner().y &&
             pix.y < _box.max_corner().y;
+    if (isNumericalUndef(pix.z)){
+        if( _box.min_corner().z == 0 && _box.max_corner().z == 0)
+            return ok;
+        if ( isNumericalUndef(_box.min_corner().z) && isNumericalUndef(_box.max_corner().z))
+             return ok;
+        return false;
+    }
+    if ( _box.is3D())
+        ok = ok && pix.z  >= _box.min_corner().z &&  pix.z <= _box.max_corner().z;
+    else
+        ok = ok && ( pix.z == 0 || isNumericalUndef(pix.z));
+    return ok;
 }
 
 bool PixelIterator::xchanged() const {
