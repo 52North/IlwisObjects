@@ -97,6 +97,7 @@ void exitPython()
     }
 }
 
+
 %include "pythonapi_extension.h"
 
 %pythoncode %{
@@ -376,4 +377,58 @@ def __getitem__(self, name):
 
 
         class Const(metaclass=ReadOnly):pass
+%}
+
+%pythoncode %{
+    def do(operation,arg1="",arg2="",arg3="",arg4="",arg5="",arg6="",arg7="",arg8="",arg9="",out=""):
+        if str(operation) != "":
+            if (type(arg1)==str and len(arg1) > 0):
+                arg1 = "'" + arg1 + "'"
+            if (type(arg2)==str and len(arg2) > 0):
+                arg2 = "'" + arg2 + "'"
+            if (type(arg3)==str and len(arg3) > 0):
+                arg3 = "'" + arg3 + "'"
+            if (type(arg4)==str and len(arg4) > 0):
+                arg4 = "'" + arg4 + "'"
+            if (type(arg5)==str and len(arg5) > 0):
+                arg5 = "'" + arg5 + "'"
+            if (type(arg6)==str and len(arg6) > 0):
+                arg6 = "'" + arg6 + "'"
+            if (type(arg7)==str and len(arg7) > 0):
+                arg7 = "'" + arg7 + "'"
+            if (type(arg8)==str and len(arg8) > 0):
+                arg8 = "'" + arg8 + "'"
+            if (type(arg9)==str and len(arg9) > 0):
+                arg9 = "'" + arg9 + "'"
+            obj = Engine__do(str(out),str(operation),str(arg1),str(arg2),str(arg3),str(arg4),str(arg5),str(arg6),str(arg7),str(arg8),str(arg9))
+        else:
+            raise IlwisException("no operation given!")
+        return object_cast(obj)
+%}
+
+%pythoncode %{
+     def do2(operation,arg1="",arg2="",arg3="",arg4="",arg5="",arg6="",arg7="",arg8="",arg9="",out=""):
+          if str(operation) != "":
+              if (type(arg1)==str and len(arg1) > 0):
+                  arg1 = "'" + arg1 + "'"
+              if (type(arg2)==str and len(arg2) > 0):
+                  arg2 = "'" + arg2 + "'"
+              if (type(arg3)==str and len(arg3) > 0):
+                  arg3 = "'" + arg3 + "'"
+              if (type(arg4)==str and len(arg4) > 0):
+                  arg4 = "'" + arg4 + "'"
+              if (type(arg5)==str and len(arg5) > 0):
+                  arg5 = "'" + arg5 + "'"
+              if (type(arg6)==str and len(arg6) > 0):
+                  arg6 = "'" + arg6 + "'"
+              if (type(arg7)==str and len(arg7) > 0):
+                  arg7 = "'" + arg7 + "'"
+              if (type(arg8)==str and len(arg8) > 0):
+                  arg8 = "'" + arg8 + "'"
+              if (type(arg9)==str and len(arg9) > 0):
+                  arg9 = "'" + arg9 + "'"
+              obj = Engine__do2(str(out),str(operation),str(arg1),str(arg2),str(arg3),str(arg4),str(arg5),str(arg6),str(arg7),str(arg8),str(arg9))
+          else:
+              raise IlwisException("no operation given!")
+          return obj
 %}
