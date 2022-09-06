@@ -97,7 +97,7 @@ QStringList CalculatorOperation::tokenizer(const QString &expr)
         } else {
             QString sep2 = QString(c) + QString(lookAhead1).trimmed();
             auto iter2 = std::find(separators2.begin(), separators2.end(), sep2);
-            if (iter2 != separators2.end()){
+            if (iter2 != separators2.end() && token != "flo"){ // floor operation, ends on or which is a seperate token.
                 if (token != ""){
                     tokens.push_back(token);
                     token = "";
@@ -662,13 +662,13 @@ PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) 
             case maLOG10:
             {
                 PIXVALUETYPE v = GetValue(action._values[0],result);
-                calcResult =  ( v <= 0 && isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log10(v);
+                calcResult =  ( v <= 0 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log10(v);
                 break;
             }
             case maLN:
             {
                 PIXVALUETYPE v = GetValue(action._values[0],result);
-                calcResult =  ( v <= 0 && isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log(v);
+                calcResult =  ( v <=0 ||  isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log(v);
                 break;
             }
             case maEXP:
