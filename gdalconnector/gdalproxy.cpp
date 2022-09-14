@@ -263,7 +263,7 @@ bool GDALProxy::prepare() {
         }
 
         QFileInfo ilw = context()->ilwisFolder();
-        QString path = ilw.canonicalFilePath() + "/Extensions/gdalconnector/resources";
+        QString path = ilw.canonicalFilePath() + "/extensions/gdalconnector/resources";
         pushFinderLocation(path.toLocal8Bit());
         //feature extensions
         ogrRegisterAll();
