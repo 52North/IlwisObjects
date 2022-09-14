@@ -140,7 +140,9 @@ public:
         ConnectorFormatSelector filter(format, provider);
         ConnectorCreate createConnector = 0;
         for (auto item : _creatorsPerFormat) {
-            if (item.first._provider == filter._provider && item.first._format == filter._format) {
+            QString prov = item.first._provider;
+            QString form = item.first._format;
+            if (prov == filter._provider && form == filter._format) {
                 createConnector = item.second;
                 break;
             }
