@@ -86,15 +86,21 @@ class BaseTest(unittest.TestCase):
 
         return rc
 
-    def createEmptySmallThematicRaster(self):
-
+    def createThematicDomain(self):
         tr = ilwis.ThematicRange()
         tr.add("grass", "1", "mostely green")
         tr.add("stone", "2", "greyish")
         tr.add("houses", "3", "mixed colors")
+        tr.add("water", "4", "blueish")
 
-        td = ilwis.ItemDomain(tr)
+        td = ilwis.ItemDomain(tr) 
 
+        return td       
+
+    def createEmptySmallThematicRaster(self):
+        
+        td = self.createThematicDomain()
+     
         self.dfThematic = ilwis.DataDefinition(td)
         grf = ilwis.GeoReference("epsg:4326", ilwis.Envelope("0 25 30 60") , ilwis.Size(15,12))
        
@@ -160,7 +166,19 @@ class BaseTest(unittest.TestCase):
 
         return rc  
 
-    def arrayValues15_12(self, rc):
+    def createTestTable(self):
+        tbl = ilwis.Table()
+        tbl.addColumn("ints", "integer")
+        tbl.addColumn("floats", "value")
+        cdef = ilwis.ColumnDefinition("items", self.createThematicDomain(), 2)
+        tbl.addColumn(cdef)
+
+        
+
+
+        return tbl
+
+    def arrayValues15_12(self, rc): # this is purely voor viewing the content of a test small map
         print('\n')
         arr = np.fromiter(ilwis.PixelIterator(rc), dtype=np.float64)
         for y in range(12):
