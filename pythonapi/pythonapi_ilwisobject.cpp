@@ -3,6 +3,7 @@
 #include "../../core/catalog/catalog.h"
 #include "../../core/ilwisobjects/ilwisdata.h"
 #include "../../core/ilwisobjects/ilwisobject.h"
+#include "../../core/oshelper.h"
 #include "pythonapi_ilwisobject.h"
 #include "pythonapi_error.h"
 
@@ -48,19 +49,18 @@ void IlwisObject::store(const std::string& url, const std::string& format, const
         else if (pos == 0) // full path starting with path-separator (UNIX-style)
             output = "file://" + output;
         else // file without path
-            output = "file:///" + Ilwis::context()->workingCatalog()->filesystemLocation().toLocalFile() + '/' + output;
+            output = Ilwis::OSHelper::createFileUrlFromParts(Ilwis::context()->workingCatalog()->filesystemLocation().toLocalFile(),'/' + output);
     }
     const std::vector<std::string> ilwis3formats = {"vectormap", "map", "georef", "georeference", "domain", "coordsystem", "table", "representation"};
     if (format.length() == 0) // ilwis3
         (*this->ptr())->connectTo(QUrl(output), getStoreFormat(), "ilwis3", Ilwis::IlwisObject::ConnectorMode::cmOUTPUT, options.ptr());
     else if ((std::find(ilwis3formats.begin(), ilwis3formats.end(), format) != ilwis3formats.end()) && (fnamespace.length() == 0 || fnamespace == "ilwis3")) // ilwis3
         (*this->ptr())->connectTo(QUrl(output), QString::fromStdString(format), "ilwis3", Ilwis::IlwisObject::ConnectorMode::cmOUTPUT, options.ptr());
-    else if (fnamespace.length() == 0) // gdal
-        (*this->ptr())->connectTo(QUrl(output), QString::fromStdString(format), "gdal", Ilwis::IlwisObject::ConnectorMode::cmOUTPUT, options.ptr());
-    else
+    else {
         (*this->ptr())->connectTo(QUrl(output), QString::fromStdString(format), QString::fromStdString(fnamespace), Ilwis::IlwisObject::ConnectorMode::cmOUTPUT, options.ptr());
-    if (!(*this->ptr())->store(options.ptr()))
-        throw OSError(std::string("IOError on attempt to store ")+this->name());
+
+    }
+    (*this->ptr())->store(options.ptr());
 }
 
 bool IlwisObject::__bool__() const{
