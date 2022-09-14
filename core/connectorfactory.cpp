@@ -86,7 +86,8 @@ void ConnectorFactory::addCreator(const QString& format,const QString &provider,
         return;
     }
     ConnectorFormatSelector filter(format, provider);
-    _creatorsPerFormat[filter] =  func;
+    if ( _creatorsPerFormat.find(filter) == _creatorsPerFormat.end())
+        _creatorsPerFormat[filter] =  func;
 }
 
 std::nullptr_t ConnectorFactory::registerCatalogExplorer(createCatalogExplorer func)
