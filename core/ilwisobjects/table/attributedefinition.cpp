@@ -234,8 +234,11 @@ QVariant AttributeDefinition::checkInput(const QVariant& inputVar, quint32 colum
             actualval =  dm->impliedValue(inputVar);
         if ( hasType(valueType,itDATETIME) && actualval.value<Ilwis::Time>() == tUNDEF)
             return actualval;
-        else if (isNumericalUndef(actualval.toDouble()))
+        else if (isNumericalUndef(actualval.toDouble())){
+            if ( hasType(coldef.datadef().domain()->valueType(), itINTEGER | itPOSITIVEINTEGER ))
+                 return QVariant((int)iUNDEF);
             return rUNDEF;
+        }
         if (! dm->contains(actualval))
             actualval = rUNDEF;
         else {
