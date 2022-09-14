@@ -26,6 +26,8 @@ NumericRange::NumericRange() : _min(1e300), _max(-1), _resolution(0) {
 
 NumericRange::NumericRange(double mi, double ma, double step) : _min(mi), _max(ma), _resolution(step), _undefined(rUNDEF) {
     _valuetype = determineType(true);
+    if ( hasType(_valuetype, itINTEGER | itPOSITIVEINTEGER))
+        _undefined = iUNDEF;
 }
 
 NumericRange::NumericRange(const NumericRange &vr): _undefined(rUNDEF)
@@ -250,6 +252,8 @@ void NumericRange::set(const NumericRange& vr)
     min(vr._min);
     max(vr._max);
     _valuetype = determineType(true);
+    if ( hasType(_valuetype, itINTEGER | itPOSITIVEINTEGER))
+        _undefined = iUNDEF;
 }
 
 bool NumericRange::contains(const QVariant &value, bool inclusive) const
