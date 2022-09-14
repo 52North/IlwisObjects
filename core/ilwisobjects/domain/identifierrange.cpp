@@ -395,9 +395,11 @@ QVariant NamedIdentifierRange::impliedValue(const QVariant& v) const
         return QVariant();
     }
     SPNamedIdentifier it = item(index).staticCast<NamedIdentifier>();
-    if (!it)
+    if (!it){
+        if ( index == iUNDEF)
+            return sUNDEF;
         return QVariant();
-
+    }
     return it->name();
 }
 
