@@ -12,6 +12,7 @@ namespace pythonapi{
 
 class DataDefinition;
 class Domain;
+class Range;
 
 class ColumnDefinition{
     friend class Feature;
@@ -31,6 +32,8 @@ public:
     quint64 columnindex() const;
     bool isChanged() const;
     void changed(bool yesno);
+    Range* range();
+    IlwisTypes valueType() const;
 
     std::string __str__();
     bool __bool__() const;

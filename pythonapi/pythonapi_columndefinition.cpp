@@ -78,6 +78,20 @@ void ColumnDefinition::changed(bool yesno){
     this->ptr()->changed(yesno);
 }
 
+Range *ColumnDefinition::range()
+{
+    if (this->ptr()->datadef().isValid())
+        return datadef().range();
+    return NULL;
+}
+
+IlwisTypes ColumnDefinition::valueType() const
+{
+    if (this->ptr()->datadef().isValid())
+        return this->ptr()->datadef().domain()->valueType();
+    return itUNKNOWN;
+}
+
 bool ColumnDefinition::__bool__() const{
     return (bool)this->_ilwisColDef && this->_ilwisColDef->isValid();
 }
