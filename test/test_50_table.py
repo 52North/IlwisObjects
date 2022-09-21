@@ -1,4 +1,4 @@
-from pickle import FALSE
+from pickle import FALSE, TRUE
 import unittest as ut
 import basetest as bt
 import ilwis
@@ -12,7 +12,7 @@ class TestTable(bt.BaseTest):
     def test_01_table_creation(self):
         self.decorateFunction(__name__, inspect.stack()[0][3]) 
 
-        tbl = self.createTestTable()
+        tbl = self.createEmptyTestTable()
 
         tbl.setCell("ints", 0 , 22)
         tbl.setCell("floats", 0, 34.987)
@@ -27,7 +27,14 @@ class TestTable(bt.BaseTest):
         self.isEqual(tbl.cell("ints", 1), ilwis.Const.iUNDEF, "Cell 1,1 by name  is undef")
         self.isEqual(tbl.cell("floats", 1), ilwis.Const.rUNDEF, "Cell 1,1 by name  is undef")
         self.isEqual(tbl.cell("items", 1), ilwis.Const.sUNDEF, "Cell 2,1 by name  is undef")
-        print(tbl.cell("ints", 1))
+
+        
+        try:
+           tbl.cell("ints", 4) # will generate an IndexError
+           self.isTrue(False, "trying to access aa recordnumber") # shouldnt' come here
+        except IndexError as ex:
+           self.isTrue(True, "trying to access illegal recordnumber")
+   
 
 
      
