@@ -5,6 +5,26 @@ import numpy as np
 import math
 from os.path import abspath
 
+def testExceptionCondition3(p, func, parm1, parm2, parm3, message):
+      try:
+           rc3 = func(parm1, parm2, parm3)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
+def testExceptionCondition2(p, func, parm1, parm2, message):
+      try:
+           rc3 = func(parm1, parm2)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
+def testExceptionCondition1(p, func, parm1, message):
+      try:
+           rc3 = func(parm1)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)           
 
 class BaseTest(unittest.TestCase):
     def prepare(self, testdir):
@@ -123,14 +143,14 @@ class BaseTest(unittest.TestCase):
      
         return rc    
 
-    def createSmallNumericRaster1Layer(self):
+    def createSmallNumericRaster1Layer(self,offset=0):
         rc = self.createEmptySmallNumericRaster()
         rc.setSize(ilwis.Size(15,12))
         baseSize = 15 * 12
         array1 = np.empty(baseSize, dtype = np.int64)
 
         for i in range(len(array1)):
-            array1[i] = i * 10
+            array1[i] = i * 10 + offset
 
         array1[9] = ilwis.Const.iUNDEF # pos 8,0 is undefined
         rc.array2raster(array1)
@@ -166,15 +186,55 @@ class BaseTest(unittest.TestCase):
 
         return rc  
 
-    def createTestTable(self):
+    def createEmptyTestTable(self):
         tbl = ilwis.Table()
         tbl.addColumn("ints", "integer")
         tbl.addColumn("floats", "value")
         cdef = ilwis.ColumnDefinition("items", self.createThematicDomain(), 2)
         tbl.addColumn(cdef)
+        tbl.addColumn("strings1","text")
+        tbl.addColumn("strings2","text")
 
-        
+        return tbl
 
+    def createTestTable(self):
+        tbl = self.createEmptyTestTable()
+
+        tbl.setCell("ints", 0 , 22)
+        tbl.setCell("floats", 0, 34.987)
+        tbl.setCell("items", 0, "stone")
+        tbl.setCell("strings1", 0, "aap")
+        tbl.setCell("strings2", 0, "100")
+
+        tbl.setCell("ints", 1 , 72)
+        tbl.setCell("floats", 1, 114.6)
+        tbl.setCell("items", 1, "water")
+        tbl.setCell("strings1", 1, "noot")
+        tbl.setCell("strings2", 1, "200")
+
+        tbl.setCell("ints", 2 , 190)
+        tbl.setCell("floats", 2, 13.6)
+        tbl.setCell("items", 2, "houses")
+        tbl.setCell("strings1", 2, "mies")
+        tbl.setCell("strings2", 2, "300")
+
+        tbl.setCell("ints", 3 , 77)
+        tbl.setCell("floats", 3, 10.12)
+        tbl.setCell("items", 3, "houses") 
+        tbl.setCell("strings1", 3, "wim")  
+        tbl.setCell("strings2", 3, "400") 
+
+        tbl.setCell("ints", 4 , 309)
+        tbl.setCell("floats", 4, 40.12)
+        tbl.setCell("items", 4, "houses")  
+        tbl.setCell("strings1", 4, "zus")  
+        tbl.setCell("strings2", 4, "500")  
+
+        tbl.setCell("ints", 5 , 309)
+        tbl.setCell("floats", 5, 477.23)
+        tbl.setCell("items", 5, "water")                
+        tbl.setCell("strings1", 5, "jet")  
+        tbl.setCell("strings2", 5, "600")  
 
         return tbl
 
@@ -187,7 +247,8 @@ class BaseTest(unittest.TestCase):
                 print(arr[y * 15 + x], end=' ')
         print('\n')           
 
-        
+
+    
 
 
            
