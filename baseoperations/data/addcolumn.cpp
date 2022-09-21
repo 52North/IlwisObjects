@@ -57,7 +57,7 @@ bool AddColumn::execute(ExecutionContext *ctx, SymbolTable &symTable)
     if(!_inputTable->addColumn(_columnName, _columnDomain))
         return false;
 
-    ctx->_additionalInfo[INPUTISOUTPUTFLAG] = true;
+    ctx->_additionalInfo[INPUTISOUTPUTFLAG] = _inputTable->id();
 	logOperation(_inputTable, _expression, { _inputTable, _columnDomain });
     setOutput(_inputTable,ctx, symTable);
 
