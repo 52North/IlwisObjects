@@ -53,6 +53,21 @@ NumericRange::NumericRange(const QString& defintion){
             }
 			_valuetype = determineType(true);
         }
+    }else {
+        if ( defintion == "integer" || defintion == "count" || defintion == "positiveInteger"){
+            _resolution = 1;
+            _undefined = iUNDEF;
+        } else if ( defintion == "value" || defintion == "nilto1" || defintion == "min1to1" || defintion == "distance" || defintion == "NDVI" || defintion == "percentage"  || defintion == "time"){
+            _resolution = 0;
+            _undefined = rUNDEF;
+        } else if ( defintion == "image16" || defintion == "image"){
+            _resolution = 1;
+            _undefined = shUNDEF;
+        }else if ( defintion == "boolean" ){
+            _resolution = 1;
+            _undefined = bUNDEF;
+        }
+
     }
 }
 
