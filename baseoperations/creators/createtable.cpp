@@ -61,7 +61,7 @@ bool CreateTable::execute(ExecutionContext *ctx, SymbolTable &symTable)
     tbl.prepare(res); //, options);
     for (auto item : _columns)
         tbl->addColumn(ColumnDefinition(item.first, item.second));
-    ctx->_additionalInfo[INPUTISOUTPUTFLAG] = true;
+    ctx->_additionalInfo[INPUTISOUTPUTFLAG] = tbl->id();
     if ( tbl.isValid()){
 		std::map<quint64, IIlwisObject> doms;
 		std::vector<IIlwisObject> objs;
