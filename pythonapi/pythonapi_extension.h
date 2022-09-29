@@ -11,6 +11,7 @@ namespace pythonapi{
     void _exitIlwisObjects();
     void disconnectIssueLogger();
     void connectIssueLogger();
+    std::string ilwistype2string(const quint64& type);
 
     //ilwisTypes
     struct it{
