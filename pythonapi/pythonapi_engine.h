@@ -13,10 +13,12 @@ namespace pythonapi {
         static qint64 _do2(std::string output_name, std::string operation,std::string c3 = "",std::string c4 = "",std::string c5 = "",std::string c6 = "",std::string c7="", std::string c8="", std::string c9="", std::string c10="", std::string c11="");
         static Object* _do(std::string output_name, std::string operation,std::string c3 = "",std::string c4 = "",std::string c5 = "",std::string c6 = "",std::string c7="", std::string c8="", std::string c9="", std::string c10="", std::string c11="");
         static void setWorkingCatalog(const std::string& location);
+        static void _setWorkingCatalog(const std::string& location);
         static std::string getLocation();
         static PyObject* operations();
         static std::string operationMetaData(const std::string& name, const std::string &element = "syntax");
         static PyObject* _catalogItems(quint64 filter);
+        static std::string _version();
     private:
         static std::string addQuotesIfNeeded(std::string parameter);
     };
