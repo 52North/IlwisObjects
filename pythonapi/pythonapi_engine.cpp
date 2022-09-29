@@ -1,6 +1,7 @@
 #include "../../core/kernel.h"
 #include "../../core/ilwiscontext.h"
 #include "../../core/catalog/catalog.h"
+#include "../../core/version.h"
 
 #include "../../core/ilwisobjects/ilwisdata.h"
 #include "../../core/ilwisobjects/operation/operationmetadata.h"
@@ -280,6 +281,10 @@ Object* Engine::_do(std::string output_name, std::string operation, std::string 
     }
 }
 
+void Engine::_setWorkingCatalog(const std::string& location) {
+    setWorkingCatalog(location);
+}
+
 void Engine::setWorkingCatalog(const std::string& location) {
     QString loc (QString::fromStdString(location));
     loc.replace('\\','/');
@@ -345,14 +350,28 @@ std::string Engine::operationMetaData(const std::string &name, const std::string
 PyObject* Engine::_catalogItems(quint64 filter){
     Ilwis::ICatalog cat = Ilwis::context()->workingCatalog();
     std::vector<Ilwis::Resource> resVec = cat->items();
-    PyObject* tup = newPyTuple(resVec.size());
+    std::vector<Ilwis::Resource> result;
+    if ( filter != itUNKNOWN){
+        for(Ilwis::Resource& res : resVec){
+            if ( hasType(res.ilwisType(), filter)){
+                result.push_back(res);
+            }
+        }
+    }else
+        result = resVec;
+    PyObject* tup = newPyTuple(result.size());
     int i = 0;
-    for(auto it = resVec.begin();it != resVec.end(); it++){
+    for(auto it = result.begin();it != result.end(); it++){
         if (!setTupleItem(tup, i++, PyUnicodeFromString(it->name().toStdString().data()))){
             throw Ilwis::ErrorObject(QString("internal conversion error while trying to add '%1' to list of files").arg( it->name()));
         }
     }
     return tup;
+}
+
+std::string Engine::_version()
+{
+    return Ilwis::kernel()->version()->verionNumber().toStdString();
 }
 
 std::string Engine::addQuotesIfNeeded(std::string parameter) {
