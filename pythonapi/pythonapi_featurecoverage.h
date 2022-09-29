@@ -5,6 +5,7 @@
 #include "pythonapi_feature.h"
 #include "pythonapi_geometry.h"
 #include "pythonapi_featureiterator.h"
+#include "pythonapi_extension.h"
 
 namespace Ilwis {
     class FeatureCoverage;
@@ -29,7 +30,7 @@ namespace pythonapi {
         FeatureIterator __iter__();
         IlwisTypes featureTypes() const;
         void featureTypes(IlwisTypes type);
-        unsigned int featureCount() const;
+        unsigned int featureCount(IlwisTypes type=it::FEATURE) const;
         void setFeatureCount(IlwisTypes type, quint32 geomCnt);
 
         Feature newFeature(const std::string& wkt, const CoordinateSystem& csy, bool load = true);

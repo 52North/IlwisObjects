@@ -65,8 +65,8 @@ void FeatureCoverage::featureTypes(IlwisTypes type)
     return this->ptr()->as<Ilwis::FeatureCoverage>()->featureTypes(type);
 }
 
-unsigned int FeatureCoverage::featureCount() const{
-    return this->ptr()->as<Ilwis::FeatureCoverage>()->featureCount();
+unsigned int FeatureCoverage::featureCount(IlwisTypes type) const{
+    return this->ptr()->as<Ilwis::FeatureCoverage>()->featureCount(type);
 }
 
 void FeatureCoverage::setFeatureCount(IlwisTypes type, quint32 geomCnt){
