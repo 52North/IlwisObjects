@@ -432,3 +432,18 @@ def __getitem__(self, name):
               raise IlwisException("no operation given!")
           return obj
 %}
+
+%pythoncode %{
+     def version():
+         return Engine__version()
+%}
+
+%pythoncode %{
+    def catalogItems(filter=0):
+        return Engine__catalogItems(filter)
+%}
+
+%pythoncode %{
+   def setWorkingCatalog(path):
+       return Engine__setWorkingCatalog(path)
+%}
