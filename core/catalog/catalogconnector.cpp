@@ -199,7 +199,7 @@ bool CatalogConnector::loadDataSingleThread(IlwisObject *obj, const IOOptions &o
     }
     updateWorkflowResources(items);
     auto addedItems = mastercatalog()->addContainerContent(source().url().toString(), items); // addContainerContent first clears the container (deletes it and all its items from the mastercatalog) before adding the new items
-    cat->addItemsPrivate(addedItems);
+    cat->addItemsPrivate(items);
     mastercatalog()->addItems(addedItems);
     return true;
 }
