@@ -48,4 +48,12 @@ namespace pythonapi {
     void connectIssueLogger(){
         pythonapi::connection = QObject::connect(Ilwis::kernel()->issues().data(),&Ilwis::IssueLogger::updateIssues,pythonapi::logger,&QIssueLogger::ilwiserrormessage);
     }
+
+    std::string ilwistype2string(const quint64 &type)
+    {
+        return Ilwis::TypeHelper::type2name(type).toStdString();
+    }
+
+
+
 }
