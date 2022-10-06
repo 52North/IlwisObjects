@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include "record.h"
 #include "kernel_global.h"
+#include "containerstatistics.h"
 
 namespace Ilwis {
 
@@ -294,6 +295,7 @@ public:
     virtual IlwisData<Table> copyTable(const QString& name=sUNDEF)  = 0;
 	virtual void clearTable(bool includeDefintion) = 0;
 	virtual void recalcRanges() = 0;
+    virtual NumericStatistics statistics(const QString& columnName, int mode= NumericStatistics::pBASIC, int bins = 0) = 0;
 
 protected:
     Table(const Resource& resource) :
