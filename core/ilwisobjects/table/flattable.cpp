@@ -475,5 +475,18 @@ void FlatTable::recalcRanges() {
 			IlwisTypes vt = columndefinitionRef(c).datadef().domain()->valueType();
 			columndefinitionRef(c).datadef().range(new NumericRange(rmin, rmax, hasType(vt, itINTEGER) ? 1 : 0));
 		}
-	}
+    }
+}
+
+NumericStatistics FlatTable::statistics(const QString &columnName, int mode, int bins)
+{
+    if ( hasType(columndefinition(columnName).datadef().domain()->valueType(),itNUMBER|itDOMAINITEM)){
+        std::vector<QVariant> qdata = column(columnName);
+
+        std::vector<double> data;
+        std::transform(qdata.begin(), qdata.end(), std::back_inserter(data), [](const QVariant& inp){ return inp.toDouble();});
+
+        columndefinitionRef(columnName).datadef().statisticsRef().calculate(data.begin(), data.end(), mode, bins);
+    }
+    return columndefinitionRef(columnName).datadef().statistics();
 }

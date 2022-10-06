@@ -23,6 +23,7 @@ namespace pythonapi {
         public:
             GeoReference(const std::string &resource);
             GeoReference(const std::string &csyCode,const Envelope &env,const Size &psize); // corners grf
+            GeoReference(const CoordinateSystem& csy,const Envelope &env,const Size &psize);
             static GeoReference* toGeoReference(Object *obj);
 
             CoordinateSystem coordinateSystem() const;

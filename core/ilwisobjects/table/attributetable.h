@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define ATTRIBUTETABLE_H
 
 #include "selectabletable.h"
+#include "containerstatistics.h"
 
 namespace Ilwis {
 
@@ -74,6 +75,7 @@ public:
     virtual void initValuesColumn(const QString& ) {}
 	void clearTable(bool includeDefintion) {}
 	void recalcRanges() {};
+    NumericStatistics statistics(const QString& columnName, int mode= NumericStatistics::pBASIC, int bins = 0);
 
     bool canUse(const IlwisObject *obj, bool strict=false) const ;
 private:

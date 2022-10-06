@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QString>
+#include <bitset>
+#include <cmath>
 #include "kernel.h"
 #include "ilwisdata.h"
 #include "ilwisobject.h"
@@ -356,18 +358,17 @@ QString TypeHelper::type2name(IlwisTypes t)
 QString TypeHelper::type2names(IlwisTypes t, const QString &seperator){
 
     QString type;
+    std::bitset<64> bits(t);
+    int sz = bits.size();
+    auto str = bits.to_string();
     for(quint64 i =0; i < 64; ++i){
-       quint64 result = 1 << i;
-       if ( result > t)
-           break;
-
-        if ( hasType(t, result)) {
+        if ( bits.test(i)){
             if ( type != "")
                 type += seperator;
-            type += TypeHelper::type2name(result);
+            type += TypeHelper::type2name(std::pow(2,i));
         }
-
     }
+
     if ( type != "")
         return type;
 

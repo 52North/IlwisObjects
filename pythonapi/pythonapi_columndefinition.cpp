@@ -92,6 +92,11 @@ IlwisTypes ColumnDefinition::valueType() const
     return itUNKNOWN;
 }
 
+std::string ColumnDefinition::name() const
+{
+    return this->ptr()->name().toStdString();
+}
+
 bool ColumnDefinition::__bool__() const{
     return (bool)this->_ilwisColDef && this->_ilwisColDef->isValid();
 }

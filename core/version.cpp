@@ -23,6 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis;
 
+#define ILWIS_VERSION_NUMBER 1.0
+
 const QString Ilwis::Version::interfaceVersion40 = QString("iv40");
 const QString Ilwis::Version::interfaceVersion41 = QString("iv41");
 const QString Ilwis::Version::interfaceVersion42 = QString("iv42");

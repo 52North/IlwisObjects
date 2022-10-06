@@ -29,6 +29,19 @@ namespace pythonapi {
 
     }
 
+    GeoReference::GeoReference(const CoordinateSystem &csy, const Envelope &env, const Size &psize)
+    {
+        Ilwis::Resource res(itGEOREF);
+        res.addProperty("coordinatesystem", csy.ilwisID());
+        res.addProperty("envelope", IVARIANT(env.data()));
+        res.addProperty("size", IVARIANT(psize.data()));
+        Ilwis::IGeoReference gr(res);
+        if (gr.isValid()){
+            gr->compute();
+            this->_ilwisObject = std::shared_ptr<Ilwis::IIlwisObject>(new Ilwis::IIlwisObject(gr));
+        }
+    }
+
     GeoReference::GeoReference(const std::string& resource){
         auto input = constructPath(resource);
         Ilwis::IGeoReference gr(input, itGEOREF);

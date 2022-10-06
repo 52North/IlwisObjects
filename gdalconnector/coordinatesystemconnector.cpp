@@ -198,14 +198,34 @@ auto overrides = QString("gcs.override.csv");
                 if ( proj4){
                     gdal()->free(proj4);
                     csy->prepare(sproj4);
+                    if ( ellipsoid.isValid() && csyp){
+                        csyp->setEllipsoid(ellipsoid); // else we might get an unnamed ellipsoid, which is okay but if already have a named correct one
+                    }
                 }
             }
            
-        Envelope env = gdal()->envelope(_handle, 0);
-        if ( env.isValid() && !env.isNull()){
-            csy->envelope(env);
-        }
+            Envelope env = gdal()->envelope(_handle, 0);
+            if ( env.isValid() && !env.isNull()){
+                csy->envelope(env);
+            }
 
+        }else {
+            ConventionalCoordinateSystem *csyp =dynamic_cast<ConventionalCoordinateSystem *>(csy);
+            if ( csyp){
+                QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
+                char *wkt = new char[10000];
+                gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
+                IEllipsoid ellipsoid;
+                if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
+                    ellipsoid.prepare("code=wkt:" + ellipsoidName);
+                    if ( ellipsoid.isValid())
+                        csyp->setEllipsoid(ellipsoid);
+                    else
+                     extractUserDefinedEllipsoid(csyp, srshandle);
+                }else {
+                    extractUserDefinedEllipsoid(csyp, srshandle);
+                }
+            }
         }
     }else{
 		CoordinateSystem *csy = dynamic_cast<CoordinateSystem *>(data);

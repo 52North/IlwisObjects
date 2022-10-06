@@ -65,8 +65,8 @@ void FeatureCoverage::featureTypes(IlwisTypes type)
     return this->ptr()->as<Ilwis::FeatureCoverage>()->featureTypes(type);
 }
 
-unsigned int FeatureCoverage::featureCount() const{
-    return this->ptr()->as<Ilwis::FeatureCoverage>()->featureCount();
+unsigned int FeatureCoverage::featureCount(IlwisTypes type) const{
+    return this->ptr()->as<Ilwis::FeatureCoverage>()->featureCount(type);
 }
 
 void FeatureCoverage::setFeatureCount(IlwisTypes type, quint32 geomCnt){
@@ -75,6 +75,12 @@ void FeatureCoverage::setFeatureCount(IlwisTypes type, quint32 geomCnt){
 
 Feature FeatureCoverage::newFeature(const std::string& wkt, const CoordinateSystem& csy, bool load){
     Ilwis::SPFeatureI ilwFeatureI = this->ptr()->as<Ilwis::FeatureCoverage>()->newFeature(QString::fromStdString(wkt), csy.ptr()->as<Ilwis::CoordinateSystem>(), load);
+    return Feature(ilwFeatureI, this);
+}
+
+Feature FeatureCoverage::newFeature(const std::string &wkt)
+{
+    Ilwis::SPFeatureI ilwFeatureI = this->ptr()->as<Ilwis::FeatureCoverage>()->newFeature(QString::fromStdString(wkt));
     return Feature(ilwFeatureI, this);
 }
 
@@ -98,33 +104,33 @@ void FeatureCoverage::attributesFromTable(const Table &otherTable){
     this->ptr()->as<Ilwis::FeatureCoverage>()->setAttributes(otherTable.ptr()->as<Ilwis::Table>());
 }
 
-void FeatureCoverage::addColumn(const ColumnDefinition &coldef){
+void FeatureCoverage::addAttribute(const ColumnDefinition &coldef){
     Ilwis::ColumnDefinition ilwDef = *(coldef.ptr());
     if (!this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().addColumn(ilwDef))
         throw Ilwis::ErrorObject(QString("Could not add column '%1' of domain '%2' to the list of columns").arg(ilwDef.name()).arg(ilwDef.datadef().domain()->name()));
 }
 
-void FeatureCoverage::addColumn(const std::string &name, const std::string &domainname){
+void FeatureCoverage::addAttribute(const std::string &name, const std::string &domainname){
     if (!this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().addColumn(QString::fromStdString(name), QString::fromStdString(domainname)))
         throw Ilwis::ErrorObject(QString("Could not add column '%1' of domain '%2' to the list of columns").arg(QString::fromStdString(name)).arg(QString::fromStdString(domainname)));
 }
 
-ColumnDefinition FeatureCoverage::columndefinition(const std::string &nme) const{
+ColumnDefinition FeatureCoverage::attributeDefinition(const std::string &nme) const{
     Ilwis::ColumnDefinition ilwDef = this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().columndefinition(QString::fromStdString(nme));
     return ColumnDefinition(new Ilwis::ColumnDefinition(ilwDef));
 }
 
-ColumnDefinition FeatureCoverage::columndefinition(quint32 index) const{
+ColumnDefinition FeatureCoverage::attributeDefinition(quint32 index) const{
     Ilwis::ColumnDefinition ilwDef = this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().columndefinition(index);
     return ColumnDefinition(new Ilwis::ColumnDefinition(ilwDef));
 }
 
-void FeatureCoverage::setColumndefinition(const ColumnDefinition &coldef){
+void FeatureCoverage::setAttributeDefinition(const ColumnDefinition &coldef){
     Ilwis::ColumnDefinition ilwDef = *(coldef.ptr());
     this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().columndefinition(ilwDef);
 }
 
-quint32 FeatureCoverage::columnIndex(const std::string &nme) const{
+quint32 FeatureCoverage::attributeIndex(const std::string &nme) const{
     return this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().columnIndex(QString::fromStdString(nme));
 }
 
@@ -140,7 +146,7 @@ PyObject* FeatureCoverage::checkInput(PyObject* inputVar, quint32 columnIndex) c
     return QVariant2PyObject(qVar);
 }
 
-quint32 FeatureCoverage::definitionCount() const{
+quint32 FeatureCoverage::attributeCount() const{
     return this->ptr()->as<Ilwis::FeatureCoverage>()->attributeDefinitionsRef().definitionCount();
 }
 
@@ -278,6 +284,11 @@ IlwisTypes FeatureCoverage::geometryType(const Geometry& geom){
 
 void FeatureCoverage::setCoordinateSystem(const CoordinateSystem &cs){
     this->ptr()->as<Ilwis::FeatureCoverage>()->coordinateSystem(cs.ptr()->as<Ilwis::CoordinateSystem>());
+}
+
+NumericStatistics *FeatureCoverage::statistics(const std::string &attr, int mode, int bins)
+{
+    return attributeTable().statistics(attr, mode, bins);
 }
 
 const QString FeatureCoverage::getStoreFormat() const {
