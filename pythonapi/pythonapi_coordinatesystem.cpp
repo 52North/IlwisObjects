@@ -82,3 +82,4 @@ CoordinateSystem *CoordinateSystem::toCoordinateSystem(Object *obj){
 const QString CoordinateSystem::getStoreFormat() const {
     return "coordsystem";
 }
+
