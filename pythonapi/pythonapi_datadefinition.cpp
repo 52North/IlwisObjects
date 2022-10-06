@@ -10,7 +10,7 @@
 #include "../../core/ilwisobjects/domain/coloritem.h"
 #include "../../core/ilwisobjects/domain/colorrange.h"
 #include "../../core/ilwisobjects/domain/interval.h"
-#include "../../core/ilwisobjects/domain/intervalrange.h".h"
+#include "../../core/ilwisobjects/domain/intervalrange.h"
 #include "../../core/ilwisobjects/domain/datadefinition.h"
 
 #include "pythonapi_datadefinition.h"
