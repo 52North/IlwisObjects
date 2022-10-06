@@ -52,7 +52,6 @@ bool SetValueRange::execute(ExecutionContext *ctx, SymbolTable &symTable)
     double lstep = _step == rUNDEF ? numrange->resolution() : std::max(_step, rngDomain->resolution());
     NumericRange *rng = new NumericRange(lmin, lmax,lstep);
     datadef.range(rng);
-    datadef.domain()->range(rng);
 
 
     std::function<bool(const BoundingBox&, int)> SetValrange = [&](const BoundingBox& box, int threadIdx) -> bool {
