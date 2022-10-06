@@ -34,6 +34,7 @@ namespace pythonapi {
         void setFeatureCount(IlwisTypes type, quint32 geomCnt);
 
         Feature newFeature(const std::string& wkt, const CoordinateSystem& csy, bool load = true);
+        Feature newFeature(const std::string& wkt);
         Feature newFeature(const Geometry& geometry);
         Feature newFeatureFrom(const Feature& feat, const CoordinateSystem& csy);
         void reprojectFeatures(const CoordinateSystem& csy);
@@ -41,16 +42,16 @@ namespace pythonapi {
         Table attributeTable() ;
         void attributesFromTable(const Table &otherTable);
 
-        void addColumn(const ColumnDefinition &coldef);
-        void addColumn(const std::string &name, const std::string &domainname);
-        ColumnDefinition columndefinition(const std::string &nme) const;
-        ColumnDefinition columndefinition(quint32 index) const;
-        void setColumndefinition(const ColumnDefinition &coldef);
-        quint32 columnIndex(const std::string &nme) const;
+        void addAttribute(const ColumnDefinition &coldef);
+        void addAttribute(const std::string &name, const std::string &domainname);
+        ColumnDefinition attributeDefinition(const std::string &nme) const;
+        ColumnDefinition attributeDefinition(quint32 index) const;
+        void setAttributeDefinition(const ColumnDefinition &coldef);
+        quint32 attributeIndex(const std::string &nme) const;
         ColumnDefinition __getitem__(quint32 index);
 
         PyObject* checkInput(PyObject* inputVar, quint32 columnIndex) const;
-        quint32 definitionCount() const;
+        quint32 attributeCount() const;
 
         void setStackDefinition(const Domain& dom, PyObject* items);
         quint32 indexOf(const std::string& variantId) const;
@@ -68,6 +69,7 @@ namespace pythonapi {
         FeatureCoverage *clone();
         IlwisTypes geometryType(const Geometry& geom);
         void setCoordinateSystem(const CoordinateSystem &cs);
+        NumericStatistics* statistics(const std::string &attr, int mode=1, int bins=0);
     };
 }
 
