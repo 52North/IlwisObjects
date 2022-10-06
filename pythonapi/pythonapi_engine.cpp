@@ -347,6 +347,32 @@ std::string Engine::operationMetaData(const std::string &name, const std::string
     return ret.toStdString();
 }
 
+std::string Engine::_operationMetaData(const std::string &name, const std::string &element1, int ordinal, const std::string &element2)
+{
+    std::string element;
+    if ( element1 == "input"){
+        element = "pin_" + std::to_string(ordinal);
+    }else if ( element1 == "output"){
+        element = "pout_" + std::to_string(ordinal);
+
+    }
+    if ( element != "" ){
+        if ( element2 == "description"){
+           element += "_desc";
+        }else
+            element += "_" + element2;
+    }else
+        element = element1;
+
+
+    auto retValue =  operationMetaData(name, element);
+    if (element1 == "type" || element2 == "type"){
+         QString typeNames = QString::fromStdString(retValue);
+         QString tpNames = Ilwis::TypeHelper::type2names(typeNames.toULongLong()," or ");
+         retValue = tpNames.toStdString();
+     }
+     return retValue;}
+
 PyObject* Engine::_catalogItems(quint64 filter){
     Ilwis::ICatalog cat = Ilwis::context()->workingCatalog();
     std::vector<Ilwis::Resource> resVec = cat->items();
@@ -372,6 +398,11 @@ PyObject* Engine::_catalogItems(quint64 filter){
 std::string Engine::_version()
 {
     return Ilwis::kernel()->version()->verionNumber().toStdString();
+}
+
+PyObject *Engine::_operations(const std::string &)
+{
+    return operations();
 }
 
 std::string Engine::addQuotesIfNeeded(std::string parameter) {
