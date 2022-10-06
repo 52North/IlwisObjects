@@ -74,6 +74,18 @@ void exitPython()
 }
 %}
 
+%{
+std::string ilwistype2string(quint64 stype)
+{
+    return pythonapi::_ilwistype2string(stype);
+}
+%}
+
+%pythoncode %{
+   def type2string(stype):
+        return _ilwistype2string(stype);
+%}
+
 //adds the export flag to pyd library for the IlwisException
 %pythoncode %{
     IlwisException = _ilwisobjects.IlwisException
@@ -446,4 +458,14 @@ def __getitem__(self, name):
 %pythoncode %{
    def setWorkingCatalog(path):
        return Engine__setWorkingCatalog(path)
+%}
+
+%pythoncode %{
+def operations(query=""):
+    return Engine__operations(query)
+%}
+
+%pythoncode %{
+def operationMetaData(name, element1 = "syntax", ordinal=-1, element2=""):
+  return Engine__operationMetaData(name, element1, ordinal, element2)
 %}
