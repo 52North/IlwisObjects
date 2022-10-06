@@ -52,6 +52,8 @@ namespace pythonapi {
             void setColumnDefinition(ColumnDefinition& coldef);
             void setColumnDefinition(const std::string& name, ColumnDefinition* coldef);
             void setColumnDefinition(quint32 index, ColumnDefinition* coldef);
+            NumericStatistics* statistics(const std::string &attr, int mode=1, int bins=0);
+            ColumnDefinition __getitem__(quint32 index);
 
         protected:
             virtual const QString getStoreFormat() const;
