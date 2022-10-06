@@ -29,7 +29,7 @@ namespace pythonapi {
         if (!app){
             cleanupIlwisContext = false; // hmm dunno if you have to cleaunup this ( on linux crashes). I think the app deletes itself after the process has ended
             app = new QCoreApplication(argc, argv);
-            ret = Ilwis::initIlwis(Ilwis::rmCOMMANDLINE, ilwisDir);
+            ret = Ilwis::initIlwis(Ilwis::rmCOMMANDLINE|Ilwis::rmNOUI, ilwisDir);
         }
         pythonapi::logger = new pythonapi::QIssueLogger();
         pythonapi::connection = QObject::connect(Ilwis::kernel()->issues().data(),&Ilwis::IssueLogger::updateIssues,pythonapi::logger,&QIssueLogger::ilwiserrormessage);
@@ -49,7 +49,7 @@ namespace pythonapi {
         pythonapi::connection = QObject::connect(Ilwis::kernel()->issues().data(),&Ilwis::IssueLogger::updateIssues,pythonapi::logger,&QIssueLogger::ilwiserrormessage);
     }
 
-    std::string ilwistype2string(const quint64 &type)
+    std::string _ilwistype2string(const quint64 &type)
     {
         return Ilwis::TypeHelper::type2name(type).toStdString();
     }
