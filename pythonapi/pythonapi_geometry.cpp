@@ -220,7 +220,7 @@ Geometry* Geometry::intersection(const Geometry &geometry) const{
     return new Geometry(this->ptr()->clone()->intersection(geometry.ptr().get()), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
 }
 
-Geometry* Geometry::Union(const Geometry &geometry) const{
+Geometry* Geometry::join(const Geometry &geometry) const{
     return new Geometry(this->ptr()->clone()->Union(geometry.ptr().get()), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
 }
 
