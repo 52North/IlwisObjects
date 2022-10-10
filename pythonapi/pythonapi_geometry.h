@@ -64,7 +64,7 @@ namespace pythonapi {
         Geometry* buffer(double distance) const;
         Geometry* convexHull() const;
         Geometry* intersection(const Geometry& geometry) const;
-        Geometry* Union(const Geometry& geometry) const;
+        Geometry* join(const Geometry& geometry) const;
         Geometry* difference(const Geometry& geometry) const;
         Geometry* symDifference(const Geometry& geometry) const;
 

@@ -335,22 +335,10 @@ QString TypeHelper::type2name(IlwisTypes t)
         return "combinationmatrix";
 	case itCHART:
 		return "chart";
+    default:
+        return type2names(t);
     }
-//    QString type;
-//    for(quint64 i =0; i < 64; ++i){
-//       quint64 result = 1 << i;
-//       if ( result > t)
-//           break;
 
-//        if ( hasType(t, result)) {
-//            if ( type != "")
-//                type += "|";
-//            type += TypeHelper::type2name(result);
-//        }
-
-//    }
-//    if ( type != "")
-//        return type;
 
     return sUNDEF;
 
