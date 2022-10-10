@@ -57,7 +57,7 @@ public:
 			}
 		}
 		else {
-			boxes.push_back(BoundingBox(rasters[0]->size()));
+			boxes.push_back(BoundingBox(outputRaster->size()));
 		}
 
        // std::vector<std::future<bool>> futures(cores);
