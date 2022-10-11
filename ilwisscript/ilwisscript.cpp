@@ -201,6 +201,8 @@ bool IlwisScript::evaluate(SymbolTable& symbols, ExecutionContext *ctx, const QS
                 Symbol sym = symbols.getSymbol(results[i],SymbolTable::gaREMOVEIFANON);
                 IlwisTypes tp = sym.isValid() ? sym._type : itUNKNOWN;
                 if (  hasType(tp, itILWISOBJECT)){
+                    if (results.size() > 1)
+                        resultName += "_" + QString::number(i);
                     resultName = addPossibleExtension(specifier["format"], resultName, tp);
                 }
                 if (  hasType(tp, itILWISOBJECT | itCOLUMN)) {
