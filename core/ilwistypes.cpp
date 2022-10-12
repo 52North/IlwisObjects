@@ -336,7 +336,7 @@ QString TypeHelper::type2name(IlwisTypes t)
 	case itCHART:
 		return "chart";
     default:
-        return type2names(t);
+        return sUNDEF;
     }
 
 
