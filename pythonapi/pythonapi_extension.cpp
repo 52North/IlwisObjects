@@ -51,7 +51,11 @@ namespace pythonapi {
 
     std::string _ilwistype2string(const quint64 &type)
     {
-        return Ilwis::TypeHelper::type2name(type).toStdString();
+        QString tps =  Ilwis::TypeHelper::type2name(type);
+        if ( tps == sUNDEF){
+            tps = Ilwis::TypeHelper::type2names(type);
+        }
+        return tps.toStdString();
     }
 
 
