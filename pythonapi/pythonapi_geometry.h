@@ -72,6 +72,7 @@ namespace pythonapi {
         Geometry(geos::geom::Geometry* geometry, const Ilwis::ICoordinateSystem& csy);
         const std::unique_ptr<geos::geom::Geometry>& ptr() const;
         bool _standalone;
+        Ilwis::ICoordinateSystem getCsy() const;
 
         //_standalone == false
         std::unique_ptr<Feature> _feature;
