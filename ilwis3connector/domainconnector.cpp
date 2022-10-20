@@ -107,16 +107,31 @@ bool DomainConnector::handleItemDomains(IlwisObject* data) {
     if ( domtype == "DomainGroup"){
         ItemDomain<Interval> *intervaldomain = static_cast<ItemDomain<Interval> *>(data);
         QString itemName, itemCode = sUNDEF;
-        double bound = 0, oldBound = 0;
-        quint32 indexBounds = tbl.index("Bounds"); // not mandatory
-        for(quint32 i = 0; i < tbl.rows(); ++i) {
-            tbl.get(i,indexName,itemName);
-            if ( indexCode != iUNDEF)
-                tbl.get(i,indexCode,itemCode);
-            tbl.get(i,indexBounds,bound);
-            Interval *item = new Interval({itemName,NumericRange(oldBound, bound)});
-            intervaldomain->addItem(item);
+        double bound = 0, oldBound = -1e307; // -1e307 to represent minus-infinity; with rUNDEF/-1e308 the validity-check of the NumericRange fails.
+        quint32 indexBounds = tbl.index("Bounds");
+        std::vector<std::pair<double, std::pair<QString, QString>>> domainItems; // first: load the data from the domain-table
+        for (quint32 i = 0; i < tbl.rows(); ++i) {
+            tbl.get(i, indexName, itemName);
+            if (indexCode != iUNDEF)
+                tbl.get(i, indexCode, itemCode);
+            tbl.get(i, indexBounds, bound);
+            std::pair<double, std::pair<QString, QString>> domainItem = std::pair<double, std::pair<QString, QString>>(bound, std::pair<QString, QString>(itemName, itemCode));
+            domainItems.push_back(domainItem);
+        }
+        std::sort(domainItems.begin(), domainItems.end()); // second: sort the table data on "Bounds", and generate ilwis4-style min/max bounds
+        std::map<QString, Interval*> itemIntervalMap;
+        for (std::vector<std::pair<double, std::pair<QString, QString>>>::iterator it = domainItems.begin(); it != domainItems.end(); ++it) {
+            bound = it->first;
+            itemName = it->second.first;
+            itemCode = it->second.second;
+            Interval* item = new Interval({ itemName,NumericRange(oldBound, bound) });
+            itemIntervalMap[itemName] = item;
             oldBound = bound;
+        }
+        for (quint32 i = 0; i < tbl.rows(); ++i) { // third: add the Interval items to the intervaldomain in the original order
+            tbl.get(i, indexName, itemName);
+            Interval* item = itemIntervalMap[itemName];
+            intervaldomain->addItem(item);
         }
     }else if  (domtype == "DomainIdentifier"){
         ItemDomain<NamedIdentifier> *tdomain = static_cast<ItemDomain<NamedIdentifier> *>(data);
