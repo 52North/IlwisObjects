@@ -241,6 +241,14 @@ quint32 Feature::subFeatureCount() const{
     return this->ptr()->subFeatureCount();
 }
 
+Ilwis::ICoordinateSystem Feature::coordinateSystem() const
+{
+    if ( _coverage){
+        return  ptr()->coordinateSystem();
+    }
+    return Ilwis::ICoordinateSystem();
+}
+
 void Feature::setRecord(PyObject *pyValues, quint32 offset){
     std::vector<QVariant> values;
     for(int i = 0; i < PyTupleSize(pyValues); ++i){

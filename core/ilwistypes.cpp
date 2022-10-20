@@ -336,7 +336,7 @@ QString TypeHelper::type2name(IlwisTypes t)
 	case itCHART:
 		return "chart";
     default:
-        return type2names(t);
+        return sUNDEF;
     }
 
 
@@ -347,8 +347,6 @@ QString TypeHelper::type2names(IlwisTypes t, const QString &seperator){
 
     QString type;
     std::bitset<64> bits(t);
-    int sz = bits.size();
-    auto str = bits.to_string();
     for(quint64 i =0; i < 64; ++i){
         if ( bits.test(i)){
             if ( type != "")
