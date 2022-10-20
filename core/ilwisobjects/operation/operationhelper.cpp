@@ -65,9 +65,12 @@ void OperationHelper::initialize(const IIlwisObject &inputObject, Ilwis::IIlwisO
             IRasterCoverage rasCoverageIn = inputObject.as<RasterCoverage>();
             IRasterCoverage rasCoverageOut = outputObject.as<RasterCoverage>();
             rasCoverageOut->datadefRef() = rasCoverageIn->datadef();
-            rasCoverageOut->datadefRef(0) = rasCoverageIn->datadef();
+            for (int i = 0; i < rasCoverageIn->size().zsize(); ++i)
+                rasCoverageOut->datadefRef(i) = rasCoverageIn->datadef();
             IDomain dom("integer");
-            std::vector<double> stack{0.0};
+            std::vector<double> stack;
+            for (int i = 0; i < rasCoverageIn->size().zsize(); ++i)
+                stack.push_back(i);
             rasCoverageOut->stackDefinitionRef().setSubDefinition(dom, stack);
 
         }
