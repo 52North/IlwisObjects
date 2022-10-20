@@ -53,8 +53,20 @@ struct Combo {
 };
 
 QString CrossRastersBase::determineCrossId(double v1, double v2) const{
-    QString elem1 = _inputRaster1->datadef().domain<>()->impliedValue(v1).toString();
-    QString elem2 = _inputRaster2->datadef().domain<>()->impliedValue(v2).toString();
+    IDomain d1 = _inputRaster1->datadef().domain<>();
+    IDomain d2 = _inputRaster2->datadef().domain<>();
+    QString elem1;
+    QString elem2;
+    if (v1 != rUNDEF && hasType(d1->valueType(), itFLOAT | itDOUBLE)) {
+        double e1 = d1->impliedValue(v1).toDouble();
+        elem1 = QString("%1").arg(e1, 0, 'f', 1);
+    } else
+        elem1 = d1->impliedValue(v1).toString();
+    if (v2 != rUNDEF && hasType(d2->valueType(), itFLOAT | itDOUBLE)) {
+        double e2 = d2->impliedValue(v2).toDouble();
+        elem2 = QString("%1").arg(e2, 0, 'f', 1);
+    } else
+        elem2 = d2->impliedValue(v2).toString();
     QString id = QString("%1 * %2").arg(elem1 == "" ? "?" : elem1).arg(elem2 == "" ? "?" :elem2);
     switch (_undefhandling){
     case uhIgnoreUndef:
@@ -123,6 +135,8 @@ bool CrossRastersBase::crossWithRaster(const  BoundingBox& box){
     NamedIdentifierRange *idrange = new NamedIdentifierRange();
     count = 0;
     trq()->prepare(_metadata->name(),TR("Updating table"), combos.size());
+    _crossDomain->range(idrange);
+    long iChangName = 0;
     for(quint64 orderedCombo : inCreationOrder) {
         auto element = combos[orderedCombo];
         quint32 v2 = orderedCombo / SHIFTER;
@@ -130,6 +144,10 @@ bool CrossRastersBase::crossWithRaster(const  BoundingBox& box){
 
         QString id = determineCrossId(v1,v2);
         if (id != ""){
+            if (idrange->contains(id)) {
+                ++iChangName;
+                id = QString("%1 #%2").arg(id).arg(iChangName);
+            }
             *idrange << id;
             _outputTable->setCell(0,record,QVariant(record));
             _outputTable->setCell(1,record,QVariant(v1));
@@ -141,7 +159,6 @@ bool CrossRastersBase::crossWithRaster(const  BoundingBox& box){
         }
         updateTranquilizer(count++,10);
     }
-    _crossDomain->range(idrange);
 
     return true;
 }
@@ -201,12 +218,18 @@ bool CrossRastersBase::crossNoRaster( const BoundingBox& box){
     NamedIdentifierRange *idrange = new NamedIdentifierRange();
     count = 0;
     trq()->prepare(_metadata->name(),TR("Updating table"), combos.size());
+    _crossDomain->range(idrange);
+    long iChangName = 0;
     for(auto element : combos) {
         ComboValues combo = element.first;
         double v2 = combo._v2;
         double v1 = combo._v1;
         QString id = determineCrossId(v1,v2);
         if ( id != "") {
+            if (idrange->contains(id)) {
+                ++iChangName;
+                id = QString("%1 #%2").arg(id).arg(iChangName);
+            }
             *idrange << id;
             _outputTable->setCell(0,record,QVariant(record));
             _outputTable->setCell(1,record,QVariant(v1));
@@ -218,7 +241,6 @@ bool CrossRastersBase::crossNoRaster( const BoundingBox& box){
         }
         updateTranquilizer(count++,10);
     }
-    _crossDomain->range(idrange);
 
     return true;
 }
