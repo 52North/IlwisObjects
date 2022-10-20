@@ -34,6 +34,7 @@ public:
     void changed(bool yesno);
     Range* range();
     IlwisTypes valueType() const;
+    std::string name() const;
 
     std::string __str__();
     bool __bool__() const;

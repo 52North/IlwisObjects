@@ -37,7 +37,9 @@ typedef std::unique_ptr<geos::geom::GeometryFactory> UPGeomFactory;
 class VertexIterator;
 class Feature;
 class FeatureCoverage;
+class  CoordinateSystem;
 typedef IlwisData<FeatureCoverage> IFeatureCoverage;
+typedef IlwisData<CoordinateSystem> ICoordinateSystem;
 
 
 class KERNELSHARED_EXPORT SPFeatureI : public std::shared_ptr<FeatureInterface> {
@@ -54,6 +56,7 @@ public:
     //SPFeatureI& operator = (const SPFeatureI& otherFeature);
     VertexIterator begin();
     VertexIterator end();
+    ICoordinateSystem coordinateSystem() const;
 };
 
 
@@ -100,6 +103,7 @@ public:
     const UPGeometry& geometry() const;
     //UPGeometry& geometryRef();
     void geometry(geos::geom::Geometry *geom);
+    ICoordinateSystem coordinateSystem() const;
 
     SPFeatureI subFeatureRef(double subFeatureIndex);
     SPFeatureI subFeatureRef(const QString &subFeatureIndex);
@@ -113,6 +117,7 @@ public:
 
     void load(const Ilwis::FeatureAttributeDefinition &columns, QDataStream& stream, const IOOptions &options);
     void store(const FeatureAttributeDefinition &columns, QDataStream &stream, const IOOptions &options);
+
 private:
     Feature(const Feature& f) ; // nocopy constructor, _featureid is unique
     Feature& operator=(const Feature& f) ; // no assignment , _featureid is unique

@@ -64,12 +64,8 @@ namespace pythonapi {
         RasterCoverage* __ne__(double value); // !=
         RasterCoverage* __eq__(RasterCoverage &rc); // ==
         RasterCoverage* __ne__(RasterCoverage &rc); // !=
-        static RasterCoverage* min(RasterCoverage &rc1, RasterCoverage &rc2);
-        static RasterCoverage* min(RasterCoverage &rc1, double value);
-        static RasterCoverage* min(double value, RasterCoverage &rc2);
-        static RasterCoverage* max(RasterCoverage &rc1, RasterCoverage &rc2);
-        static RasterCoverage* max(RasterCoverage &rc1, double value);
-        static RasterCoverage* max(double value, RasterCoverage &rc2);
+        double min();
+        double max();
         PixelIterator __iter__();
         void _array2Raster(PyObject* container, int band);
         void _list2Raster(PyObject* container, int band);

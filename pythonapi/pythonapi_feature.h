@@ -73,7 +73,8 @@ namespace pythonapi{
         Feature(Ilwis::SPFeatureI* ilwFeat, FeatureCoverage* fc);
         std::shared_ptr<Ilwis::FeatureInterface> ptr() const;
         std::shared_ptr<Ilwis::FeatureInterface> _ilwisSPFeatureI;
-        FeatureCoverage* _coverage;
+        FeatureCoverage* _coverage = 0;
+        Ilwis::ICoordinateSystem coordinateSystem() const;
     };
 
 }

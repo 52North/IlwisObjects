@@ -64,7 +64,7 @@ namespace pythonapi {
         Geometry* buffer(double distance) const;
         Geometry* convexHull() const;
         Geometry* intersection(const Geometry& geometry) const;
-        Geometry* Union(const Geometry& geometry) const;
+        Geometry* join(const Geometry& geometry) const;
         Geometry* difference(const Geometry& geometry) const;
         Geometry* symDifference(const Geometry& geometry) const;
 
@@ -72,6 +72,7 @@ namespace pythonapi {
         Geometry(geos::geom::Geometry* geometry, const Ilwis::ICoordinateSystem& csy);
         const std::unique_ptr<geos::geom::Geometry>& ptr() const;
         bool _standalone;
+        Ilwis::ICoordinateSystem getCsy() const;
 
         //_standalone == false
         std::unique_ptr<Feature> _feature;

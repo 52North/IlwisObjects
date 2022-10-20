@@ -99,6 +99,9 @@ namespace pythonapi {
     }
 
     PyObject* Table::cell(quint32 colIndex, quint32 rec){
+         if(!this->ptr()->as<Ilwis::Table>()->isDataLoaded()){
+             this->ptr()->as<Ilwis::Table>()->loadData();
+        }
         if(this->ptr()->as<Ilwis::Table>()->isDataLoaded()){
             QVariant ret = this->ptr()->as<Ilwis::Table>()->cell(colIndex, rec,false);
             if (!ret.isValid())
@@ -269,6 +272,27 @@ namespace pythonapi {
         Ilwis::ColumnDefinition& ilwdef = this->ptr()->as<Ilwis::Table>()->columndefinitionRef(index);
         Ilwis::ColumnDefinition* newDef = coldef->ptr().get();
         ilwdef = Ilwis::ColumnDefinition(*newDef, ilwdef.columnindex());
+    }
+
+    NumericStatistics *Table::statistics(const std::string& attr, int mode, int bins)
+    {
+        auto *stats =  new NumericStatistics(this->ptr()->as<Ilwis::Table>()->statistics(QString::fromStdString(attr), mode, bins));
+        Ilwis::ColumnDefinition& ilwdef = this->ptr()->as<Ilwis::Table>()->columndefinitionRef(QString::fromStdString(attr));
+        if ( hasType(ilwdef.datadef().domain()->valueType(), itNUMBER)){
+
+            double rMin = stats->prop(pythonapi::PropertySets::pMIN);
+            double rMax = stats->prop(pythonapi::PropertySets::pMIN);
+            ilwdef.datadef().range()->as<Ilwis::NumericRange>()->min(rMin);
+            ilwdef.datadef().range()->as<Ilwis::NumericRange>()->min(rMax);
+
+         }
+        return stats;
+    }
+
+    ColumnDefinition Table::__getitem__(quint32 index)
+    {
+        Ilwis::ColumnDefinition ilwDef = this->ptr()->as<Ilwis::Table>()->columndefinition(index);
+        return ColumnDefinition(new Ilwis::ColumnDefinition(ilwDef));
     }
 
     const QString Table::getStoreFormat() const {

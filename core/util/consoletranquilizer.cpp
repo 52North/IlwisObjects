@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QCoreApplication>
 #include <iostream>
 #include "kernel.h"
+#include "ilwiscontext.h"
 #include "errorobject.h"
 #include "factory.h"
 #include "abstractfactory.h"
@@ -70,14 +71,16 @@ bool ConsoleTranquilizer::update(double howfar)
 
     _current += howfar;
 
-    if (_current >= _next) {
-         if (_count % 3 == 0)
-             std::cout << _count * 10 / 3;   // round to integer between 0 and 100 in steps of 10
-         else
-             std::cout << ".";
-         _count++;
-         _next += _inc;
-     }
+    if (! hasType(context()->runMode(), Ilwis::rmNOUI)) {
+        if (_current >= _next) {
+             if (_count % 3 == 0)
+                 std::cout << _count * 10 / 3;   // round to integer between 0 and 100 in steps of 10
+             else
+                 std::cout << ".";
+             _count++;
+             _next += _inc;
+         }
+    }
 
     return true;
 }
@@ -98,7 +101,7 @@ void ConsoleTranquilizer::stop(std::chrono::high_resolution_clock::time_point& s
     _end = 0.0;
     std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
     if ( time_span.count() > 0){
-        QString res = " in" + QString::number(time_span.count()) + " seconds";
+        QString res = " in " + QString::number(time_span.count()) + " seconds";
         std::cout << res.toStdString();
     }
     std::cerr << std::endl;

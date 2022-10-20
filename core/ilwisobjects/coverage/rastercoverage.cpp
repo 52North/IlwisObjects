@@ -192,11 +192,19 @@ NumericStatistics RasterCoverage::statistics(const QString& attribute) const {
 }
 
 NumericStatistics& RasterCoverage::statisticsRef(const QString& attribute)  {
-	if (attribute == PIXELVALUE)
-		return datadefRef().statisticsRef();
-	else {
+    if (attribute == PIXELVALUE){
+        if ( !_datadefCoverage.range()->isValid()){
+            _datadefCoverage.statisticsRef().calculate( begin(), end(),NumericStatistics::pBASIC);
+
+            if ( hasType(_datadefCoverage.domain()->valueType(), itNUMBER )){
+                auto &stats = _datadefCoverage.statisticsRef();
+                _datadefCoverage.range<NumericRange>()->add(stats[NumericStatistics::pMIN]);
+                _datadefCoverage.range<NumericRange>()->add(stats[NumericStatistics::pMAX]);
+            }
+        }
+        return datadefRef().statisticsRef();
+    }else {
 		if (hasAttributes()) {
-			int idx;
 			ColumnDefinition& coldef = attributeTable()->columndefinitionRef(attribute);
 			if (coldef.isValid())
 				return coldef.datadef().statisticsRef();
@@ -450,9 +458,9 @@ void RasterCoverage::storeDataDef(const NumericStatistics& stats, QJsonObject& j
 }
 NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode, int bins)
 {
-    if ( mode == ContainerStatistics<PIXVALUETYPE>::pNONE)
-        return statisticsRef(attribute);
-
+    if ( mode == ContainerStatistics<PIXVALUETYPE>::pNONE){
+          return statisticsRef(attribute);
+    }
     if (hasType(mode, ContainerStatistics<PIXVALUETYPE>::pQUICKHISTOGRAM)) {
         if (!histogramCalculated(attribute, mode, bins)) {
             if (!loadHistograms(attribute, mode, bins)) {

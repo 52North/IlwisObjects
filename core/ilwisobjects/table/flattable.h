@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QVariant>
 #include "record.h"
+#include "containerstatistics.h"
 
 namespace Ilwis {
 class KERNELSHARED_EXPORT FlatTable : public BaseTable
@@ -108,6 +109,7 @@ public:
     ITable copyTable(const QString &nm) ;
     bool merge(const IlwisObject *obj);
 	void recalcRanges();
+    NumericStatistics statistics(const QString& columnName, int mode= NumericStatistics::pBASIC, int bins = 0);
 protected:
     bool isColumnIndexValid(quint32 index) const{
         bool ok =  index != iUNDEF ;

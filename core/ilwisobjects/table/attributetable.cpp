@@ -137,6 +137,19 @@ bool AttributeTable::isDataLoaded() const
     return true;
 }
 
+NumericStatistics AttributeTable::statistics(const QString &columnName, int mode, int bins)
+{
+    int idx = columnIndex(columnName);
+    if ( hasType(columndefinition(idx).datadef().domain()->valueType(),itNUMBER|itDOMAINITEM)){
+        std::vector<QVariant> qdata = column(idx);
+        std::vector<double> data;
+        std::transform(qdata.begin(), qdata.end(), std::back_inserter(data), [](const QVariant& inp){ return inp.toDouble();});
+
+        columndefinitionRef(idx).datadef().statisticsRef().calculate(data.begin(), data.end(), mode, bins);
+    }
+    return columndefinitionRef(idx).datadef().statistics();
+}
+
 bool AttributeTable::canUse(const IlwisObject *obj, bool strict) const
 {
     return true;

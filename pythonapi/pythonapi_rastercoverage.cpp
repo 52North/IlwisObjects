@@ -35,6 +35,8 @@
 #include "pythonapi_geometry.h"
 #include "pythonapi_domain.h"
 
+#include <QFloat16>
+
 using namespace pythonapi;
 
 RasterCoverage::RasterCoverage(const Ilwis::IRasterCoverage &coverage):Coverage(Ilwis::ICoverage(coverage)){
@@ -392,64 +394,23 @@ RasterCoverage* RasterCoverage::__ne__(RasterCoverage &rc){
             );
 }
 
-RasterCoverage* RasterCoverage::min(RasterCoverage &rc1, RasterCoverage &rc2){
-    return (RasterCoverage*)Engine::_do(
-        QString("min_%1_%2").arg((*rc1.ptr())->id()).arg((*rc2.ptr())->id()).toStdString(),
-        "binarymathraster",
-        rc1.__str__(),
-        rc2.__str__(),
-        "min"
-    );
+double RasterCoverage::min(){
+    auto raster= this->ptr()->as<Ilwis::RasterCoverage>();
+    if ( hasType(raster->datadef().domain()->valueType(), itNUMBER) ){
+        raster->statisticsRef(PIXELVALUE);
+        return raster->datadefRef().range<Ilwis::NumericRange>()->min();
+    }
+    return rUNDEF;
 }
 
-RasterCoverage* RasterCoverage::min(RasterCoverage &rc1, double value){
-    return (RasterCoverage*)Engine::_do(
-        toId(QString("min_%1_%2").arg((*rc1.ptr())->id()).arg(value)).toStdString(),
-        "binarymathraster",
-        rc1.__str__(),
-        QString("%1").arg(value).toStdString(),
-        "min"
-    );
-}
 
-RasterCoverage* RasterCoverage::min(double value, RasterCoverage &rc2){
-    return (RasterCoverage*)Engine::_do(
-        toId(QString("min_%1_%2").arg(value).arg((*rc2.ptr())->id())).toStdString(),
-        "binarymathraster",
-        QString("%1").arg(value).toStdString(),
-        rc2.__str__(),
-        "min"
-    );
-}
-
-RasterCoverage* RasterCoverage::max(RasterCoverage &rc1, RasterCoverage &rc2){
-    return (RasterCoverage*)Engine::_do(
-        QString("max_%1_%2").arg((*rc1.ptr())->id()).arg((*rc2.ptr())->id()).toStdString(),
-        "binarymathraster",
-        rc1.__str__(),
-        rc2.__str__(),
-        "max"
-    );
-}
-
-RasterCoverage* RasterCoverage::max(RasterCoverage &rc1, double value){
-    return (RasterCoverage*)Engine::_do(
-        toId(QString("max_%1_%2").arg((*rc1.ptr())->id()).arg(value)).toStdString(),
-        "binarymathraster",
-        rc1.__str__(),
-        QString("%1").arg(value).toStdString(),
-        "max"
-    );
-}
-
-RasterCoverage* RasterCoverage::max(double value, RasterCoverage &rc2){
-    return (RasterCoverage*)Engine::_do(
-        toId(QString("max_%1_%2").arg(value).arg((*rc2.ptr())->id())).toStdString(),
-        "binarymathraster",
-        QString("%1").arg(value).toStdString(),
-        rc2.__str__(),
-        "max"
-    );
+double RasterCoverage::max(){
+    auto raster= this->ptr()->as<Ilwis::RasterCoverage>();
+    if ( hasType(raster->datadef().domain()->valueType(), itNUMBER) ){
+        raster->statisticsRef(PIXELVALUE);
+        return raster->datadefRef().range<Ilwis::NumericRange>()->max();
+    }
+    return rUNDEF;
 }
 
 double RasterCoverage::coord2value(const Coordinate& c){
@@ -468,14 +429,21 @@ template<class V> void setValues(V *buffer, quint64 nItems, Ilwis::PixelIterator
 }
 void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
 {
-
-    if ( PyObject_CheckBuffer(container) == 0){
+#if (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION == 6) /* In 3.6 the PyObject_CheckBuffer() call crashes */
+    Py_buffer pybuf;
+    int res = PyObject_GetBuffer(container, &pybuf, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS);
+    if (res < 0) {
         throw InvalidObject("The object is not a array object.");
     }
-
+#else /* 3.7, 3.8, 3.9 etc */
+    if (PyObject_CheckBuffer(container) == 0) {
+        throw InvalidObject("The object is not a array object.");
+    }
     Py_buffer pybuf;
     PyObject_GetBuffer(container, &pybuf, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS);
-    if ( pybuf.buf == NULL){
+#endif
+
+    if (pybuf.buf == NULL){
         throw InvalidObject("The data in the array is empty");
     }
     int nItems = pybuf.len / pybuf.itemsize;
@@ -491,28 +459,55 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
         }
     }
 
-    IlwisTypes format=itINT8;
-    QString frmt(pybuf.format);
-    frmt = frmt.toLower();
-    if ( frmt == 'd' )
-        frmt = itDOUBLE;
-    if ( frmt == 'l'){
-        format = pybuf.itemsize == 4 ? itINT32 : itINT64;
-    }else if ( frmt == 'b')
-        format = itINT8;
+    /*
+    np.int8 -> b
+    np.byte -> b
+    np.uint8 -> B
+    np.int16 -> h
+    np.uint16 -> H
+    np.int32 -> l
+    np.uint32 -> L
+    np.int64 -> q
+    np.uint64 -> Q
+    np.float16 -> e
+    np.float32 -> f
+    np.float64 -> d
+    np.float -> d
+    np.bool8 -> ?
+    np.bool -> ?
+    */
+
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
     Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
-    if ( format == itDOUBLE)
-        setValues((double *)pybuf.buf, nItems, iter);
-    if ( format == itINT64){
-        setValues((qint64 *)pybuf.buf, nItems, iter);
+    QString frmt(pybuf.format);
+    if (frmt == 'b')
+        setValues((qint8*)pybuf.buf, nItems, iter);
+    else if (frmt == 'B')
+        setValues((quint8*)pybuf.buf, nItems, iter);
+    else if (frmt == 'h')
+        setValues((qint16*)pybuf.buf, nItems, iter);
+    else if (frmt == 'H')
+        setValues((quint16*)pybuf.buf, nItems, iter);
+    else if (frmt == 'l')
+        setValues((qint32*)pybuf.buf, nItems, iter);
+    else if (frmt == 'L')
+        setValues((quint32*)pybuf.buf, nItems, iter);
+    else if (frmt == 'q')
+        setValues((qint64*)pybuf.buf, nItems, iter);
+    else if (frmt == 'Q')
+        setValues((quint64*)pybuf.buf, nItems, iter);
+    else if (frmt == 'e') {
+        float* buf = new float[nItems];
+        qFloatFromFloat16(buf, (qfloat16*)pybuf.buf, nItems);
+        setValues(buf, nItems, iter); // more work may be needed here
+        delete[] buf;
     }
-    if ( format == itINT32){
-        setValues((qint32 *)pybuf.buf, nItems, iter);
-    }
-    if ( format == itINT8){
-        setValues((char *)pybuf.buf, nItems, iter);
-    }
+    else if (frmt == 'f')
+        setValues((float*)pybuf.buf, nItems, iter);
+    else if (frmt == 'd')
+        setValues((double*)pybuf.buf, nItems, iter);
+    else if (frmt == '?')
+        setValues((bool*)pybuf.buf, nItems, iter);
 }
 
 void RasterCoverage::_list2Raster(PyObject *container, int band)

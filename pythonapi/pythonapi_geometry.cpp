@@ -95,7 +95,7 @@ void Geometry::fromWKT(const std::string& wkt){
             this->_ilwisGeometry.reset(fromWKTReader(wkt));
         }else{
             if (this->_feature != nullptr && (bool)this->_feature && this->_feature->__bool__()){
-                this->_feature->ptr()->geometry(Ilwis::GeometryHelper::fromWKT(QString::fromStdString(wkt), Ilwis::ICoordinateSystem()));
+                this->_feature->ptr()->geometry(Ilwis::GeometryHelper::fromWKT(QString::fromStdString(wkt), getCsy()));
             }else
                 throw InvalidObject("invalid referenc to hosting feature of non-standalone geometry!");
         }
@@ -103,7 +103,7 @@ void Geometry::fromWKT(const std::string& wkt){
         if (_standalone){
             this->_ilwisGeometry.reset(fromWKTReader(wkt));
         }else{
-            this->_feature->ptr()->geometry(Ilwis::GeometryHelper::fromWKT(QString::fromStdString(wkt), Ilwis::ICoordinateSystem()));
+            this->_feature->ptr()->geometry(Ilwis::GeometryHelper::fromWKT(QString::fromStdString(wkt), getCsy()));
         }
     }
 }
@@ -118,7 +118,9 @@ std::string Geometry::toWKT(){
 }
 
 CoordinateSystem Geometry::coordinateSystem(){
-    return CoordinateSystem(Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    if ( _standalone)
+        return CoordinateSystem(Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    return CoordinateSystem(getCsy());
 }
 
 void Geometry::setCoordinateSystem(const CoordinateSystem &cs){
@@ -127,7 +129,7 @@ void Geometry::setCoordinateSystem(const CoordinateSystem &cs){
 
 Geometry* Geometry::transform(const CoordinateSystem &cs){
     geos::geom::Geometry* copy = this->ptr()->clone();
-    Ilwis::GeometryHelper::transform(copy,coordinateSystem().ptr()->as<Ilwis::CoordinateSystem>(), cs.ptr()->as<Ilwis::CoordinateSystem>());
+    Ilwis::GeometryHelper::transform(copy,getCsy(), cs.ptr()->as<Ilwis::CoordinateSystem>());
     copy->geometryChangedAction();
     return new Geometry(copy, cs.ptr()->as<Ilwis::CoordinateSystem>());
 }
@@ -209,27 +211,28 @@ bool Geometry::isWithinDistance(const Geometry &geometry, double cDistance) cons
 }
 
 Geometry* Geometry::buffer(double distance) const{
-    return new Geometry(this->ptr()->clone()->buffer(distance), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    auto csy = getCsy();
+    return new Geometry(this->ptr()->clone()->buffer(distance), csy);
 }
 
 Geometry* Geometry::convexHull() const{
-    return new Geometry(this->ptr()->clone()->convexHull(), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    return new Geometry(this->ptr()->clone()->convexHull(), getCsy());
 }
 
 Geometry* Geometry::intersection(const Geometry &geometry) const{
-    return new Geometry(this->ptr()->clone()->intersection(geometry.ptr().get()), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    return new Geometry(this->ptr()->clone()->intersection(geometry.ptr().get()), getCsy());
 }
 
-Geometry* Geometry::Union(const Geometry &geometry) const{
-    return new Geometry(this->ptr()->clone()->Union(geometry.ptr().get()), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+Geometry* Geometry::join(const Geometry &geometry) const{
+    return new Geometry(this->ptr()->clone()->Union(geometry.ptr().get()), getCsy());
 }
 
 Geometry* Geometry::difference(const Geometry &geometry) const{
-    return new Geometry(this->ptr()->clone()->difference(geometry.ptr().get()), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    return new Geometry(this->ptr()->clone()->difference(geometry.ptr().get()), getCsy());
 }
 
 Geometry* Geometry::symDifference(const Geometry &geometry) const{
-    return new Geometry(this->ptr()->clone()->symDifference(geometry.ptr().get()), Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get())));
+    return new Geometry(this->ptr()->clone()->symDifference(geometry.ptr().get()), getCsy());
 }
 
 const std::unique_ptr<geos::geom::Geometry>& Geometry::ptr() const{
@@ -242,6 +245,17 @@ const std::unique_ptr<geos::geom::Geometry>& Geometry::ptr() const{
             throw InvalidObject("invalid Geometry!");
         return this->_feature->ptr()->geometry();
     }
+}
+
+Ilwis::ICoordinateSystem Geometry::getCsy() const
+{
+    if ( _standalone)
+        return Ilwis::ICoordinateSystem(Ilwis::GeometryHelper::getCoordinateSystem(this->ptr().get()));
+    else
+        if ( _feature){
+            return _feature->coordinateSystem();
+        }
+    return Ilwis::ICoordinateSystem();
 }
 
 }//namespace pythonapi

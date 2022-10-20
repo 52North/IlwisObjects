@@ -150,7 +150,7 @@ QString IlwisObject::constructPath(std::string resource){
     input.replace('\\','/');
     // if it is file:// (or http:// etc) leave it untouched; if not, append file:// and the working catalog path if it is missing
     if (input.indexOf("://") < 0) {
-         if ((input.count('/') > 1) || QFileInfo(input).exists()) // full path starting with drive-letter (MS-DOS-style)
+         if (input.count('/') > 1)  // full (non url) path
             input = QUrl::fromLocalFile(input).toString();
          else {// container object without path, e.g. myfile.hdf/subdataset: look for it in workingCatalog()
             QUrl workingCatalogUrl = Ilwis::context()->workingCatalog()->filesystemLocation();

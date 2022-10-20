@@ -107,6 +107,11 @@ VertexIterator SPFeatureI::end()
     return ::end((*this)->geometry());
 }
 
+ICoordinateSystem SPFeatureI::coordinateSystem() const
+{
+     return (*this)->coordinateSystem();
+}
+
 //--------------------------------------------
 Feature::Feature() : _featureid(i64UNDEF), _parentFCoverage(0){
 }
@@ -421,6 +426,13 @@ void Feature::geometry(geos::geom::Geometry *geom){
     _geometry.reset(geom);
     geomType = geometryType();
     _parentFCoverage->setFeatureCount(geomType,1, _level);
+}
+
+ICoordinateSystem Feature::coordinateSystem() const
+{
+   if ( _parentFCoverage)
+       return _parentFCoverage->coordinateSystem();
+   return ICoordinateSystem();
 }
 
 void Feature::removeSubFeature(const QString &subFeatureIndex)

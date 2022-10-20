@@ -46,9 +46,18 @@ bool Feature::__bool__() const{
 }
 
 std::string Feature::__str__(){
-    if (this->__bool__())
-        return QString("Feature(%1)").arg(this->_ilwisSPFeatureI->featureid()).toStdString();
-    else
+    if (this->__bool__()){
+        QString result;
+        int count = _coverage->attributeCount();
+        for(int i = 0; i < count; ++i){
+            if ( result != "")
+                result +="|";
+            QString attr = QString::fromStdString(_coverage->attributeDefinition(i).name());
+            result += attr + " : " + _ilwisSPFeatureI->record().cell(i).toString();
+        }
+        result = "featureid : " + QString::number(featureId()) + "->" + result;
+        return result.toStdString();
+    }else
         return QString("invalid Feature!").toStdString();
 }
 
@@ -230,6 +239,14 @@ void Feature::setSubFeature(double subFeatureIndex, Feature feature){
 
 quint32 Feature::subFeatureCount() const{
     return this->ptr()->subFeatureCount();
+}
+
+Ilwis::ICoordinateSystem Feature::coordinateSystem() const
+{
+    if ( _coverage){
+        return  ptr()->coordinateSystem();
+    }
+    return Ilwis::ICoordinateSystem();
 }
 
 void Feature::setRecord(PyObject *pyValues, quint32 offset){

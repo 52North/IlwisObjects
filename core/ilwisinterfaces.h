@@ -31,6 +31,8 @@ class Record;
 class FeatureCoverage;
 class ColumnDefinition;
 class FeatureAttributeDefinition;
+class  CoordinateSystem;
+typedef IlwisData<CoordinateSystem> ICoordinateSystem;
 
 typedef IlwisData<FeatureCoverage> IFeatureCoverage;
 typedef std::unique_ptr<geos::geom::Geometry> UPGeometry;
@@ -81,6 +83,7 @@ public:
     virtual ColumnDefinition attributedefinition(const QString& name) const  = 0;
     virtual ColumnDefinition attributedefinition(quint32 columnIndex) const  = 0;
     virtual quint32 attributeColumnCount() const  = 0;
+    virtual ICoordinateSystem coordinateSystem() const = 0;
 
     virtual void store(const FeatureAttributeDefinition &columns, QDataStream &stream, const IOOptions &options) = 0;
     virtual void load(const FeatureAttributeDefinition& columns, QDataStream& stream, const IOOptions &options) = 0;
