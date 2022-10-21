@@ -72,7 +72,31 @@ void MirrorRotateRaster::translatepixels(PixelIterator iterIn, PixelIterator ite
                 std::reverse(line.begin(), line.end());
             std::copy(line.begin(), line.end(),iterOut);
             iterLine = line.begin();
-            iterOut = Pixel(iterOut.x() + xstep, iterOut.y() + ystep, iterOut.z());
+            if (iterIn.zchanged()) {
+                if (_method == tmMirrorVertical) {
+                    iterOut = Pixel(iterOut.x(), iterOut.box().min_corner().y, iterOut.z() + 1); // rewind y, increase z
+                }
+                else if (_method == tmMirrorHorizontal) {
+                    iterOut = Pixel(iterOut.box().min_corner().x, iterOut.y(), iterOut.z() + 1); // rewind x, increase z
+                }
+                else if (_method == tmRotate90) {
+                    iterOut = Pixel(iterOut.x(), iterOut.box().min_corner().y, iterOut.z() + 1); // rewind y, increase z
+                }
+                else if (_method == tmRotate180) {
+                    iterOut = Pixel(iterOut.x(), iterOut.box().max_corner().y, iterOut.z() + 1); // reverse rewind y, increase z
+                }
+                else if (_method == tmRotate270) {
+                    iterOut = Pixel(iterOut.box().min_corner().x, iterOut.y(), iterOut.z() + 1); // rewind x, increase z
+                }
+                else if (_method == tmMirrorDiagonal) {
+                    iterOut = Pixel(iterOut.box().max_corner().x, iterOut.y(), iterOut.z() + 1); // reverse rewind x, increase z
+                }
+                else if (_method == tmTranspose) {
+                    iterOut = Pixel(iterOut.box().min_corner().x, iterOut.y(), iterOut.z() + 1); // rewind x, increase z
+                }
+            }
+            else
+                iterOut = Pixel(iterOut.x() + xstep, iterOut.y() + ystep, iterOut.z());
         }
         (*iterLine) = *iterIn;
     }
@@ -103,8 +127,7 @@ bool MirrorRotateRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
         }
         else if ( _method == tmRotate180){
             PixelIterator iterOut(_outputRaster);
-            iterOut.toEnd();
-            iterOut -= box.xlength() - 1; // beginning of the lastline; iterator moves one line back each time
+            iterOut = Pixel(iterOut.box().min_corner().x, iterOut.box().max_corner().y, iterOut.box().min_corner().z); // beginning of the lastline; iterator moves one line back each time
             translatepixels(PixelIterator(_inputRaster),iterOut, _outputRaster->size().xsize(),0,-1);
         }
         else if ( _method == tmRotate270){
@@ -112,7 +135,7 @@ bool MirrorRotateRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
         }
         else if ( _method == tmMirrorDiagonal){
             PixelIterator iterOut(_outputRaster,PixelIterator::fYXZ);
-            iterOut = Pixel(box.xlength() - 1,0,0);
+            iterOut = Pixel(iterOut.box().max_corner().x, iterOut.box().min_corner().y, iterOut.box().min_corner().z);
             translatepixels(PixelIterator(_inputRaster),iterOut, _outputRaster->size().ysize(),-1,0);
         }
         else if ( _method == tmTranspose){
@@ -171,7 +194,7 @@ Ilwis::OperationImplementation::State MirrorRotateRaster::prepare(ExecutionConte
     _outputRaster = OperationHelperRaster::initialize(_inputRaster,itRASTER,itCOORDSYSTEM | itDOMAIN);
     _outputRaster->gridRef()->prepare(0,sz);
 
-    QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3")
+    QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3,cornerofcorners=yes")
             .arg(_outputRaster->coordinateSystem()->id())
             .arg(outputenv.toString())
             .arg(sz.toString());
