@@ -394,6 +394,10 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
             int count = dmColumn->range<ItemRange>()->count();
             domainInfo = QString("%1;Long;id;%2;;").arg(domName).arg(count) ;
             _odf->setKeyValue(colName, "StoreType", "Long");
+        } else if (dmColumn->valueType() & itNUMERICITEM) {
+            int count = dmColumn->range<ItemRange>()->count();
+            domainInfo = QString("%1;Byte;group;%2;;").arg(domName).arg(count);
+            _odf->setKeyValue(colName, "StoreType", "Long");
         }
         _odf->setKeyValue(colName, "DomainInfo", domainInfo);
     }

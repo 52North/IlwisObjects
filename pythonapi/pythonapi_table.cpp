@@ -1,3 +1,8 @@
+#undef HAVE_IEEEFP_H
+#define PY_SSIZE_T_CLEAN
+#include "Python.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 #include "../../core/kernel.h"
 #include "../../core/ilwiscontext.h"
 #include "../../core/catalog/catalog.h"
@@ -149,7 +154,83 @@ namespace pythonapi {
 
     PyObject* Table::column(quint32 columnIndex) const{
         return StdVectorOfQVariant2PyTuple(this->ptr()->as<Ilwis::Table>()->column(columnIndex));
-   }
+    }
+
+    void Table::setCells(const std::string &name, PyObject *container)
+    {
+        if ( PyObject_CheckBuffer(container) == 0){
+            PyObject *iterator = PyObject_GetIter(container);
+            PyObject *item;
+
+            if (iterator == NULL) {
+               throw InvalidObject("the container is not iterable");
+            }
+
+            int colIndex = this->ptr()->as<Ilwis::Table>()->columnIndex(QString::fromStdString(name));
+            if ( colIndex == iUNDEF){
+                throw InvalidObject("The column is uknonwn.");
+            }
+            std::vector<QVariant> values;
+
+            while ((item = PyIter_Next(iterator))) {
+                QVariant value;
+                if (PyLong_Check(item)) {
+                    value = (qint64) PyLong_AsLong(item);
+                } else if PyFloat_Check(item) {
+                    value = PyFloat_AsDouble(item);
+                } else {
+                    if ( item){
+                        if( PyUnicode_Check(item) ){
+                            auto s = PyUnicode_AsUTF8String(item);
+                            std::string result = PyBytes_AsString(s) ;
+                            value = QString::fromStdString(result);
+                            Py_XDECREF(s);
+                        }
+                    }
+                }
+                values.push_back(value);
+                Py_DECREF(item);
+            }
+
+            Py_DECREF(iterator);
+            this->ptr()->as<Ilwis::Table>()->column(colIndex, values);
+            return;
+        }
+        Py_buffer pybuf;
+        PyObject_GetBuffer(container, &pybuf, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS);
+        if ( pybuf.buf == NULL){
+            throw InvalidObject("the container is not a buffer object");
+        }
+        int len = pybuf.len;
+        int colIndex = this->ptr()->as<Ilwis::Table>()->columnIndex(QString::fromStdString(name));
+        if ( colIndex == iUNDEF){
+            throw InvalidObject("The column is uknonwn.");
+        }
+        Ilwis::ColumnDefinition def = this->ptr()->as<Ilwis::Table>()->columndefinition(colIndex);
+        IlwisTypes valueType = def.datadef().domain()->valueType();
+
+        for(int i=0; i < len; ++i){
+            if ( hasType(valueType, itNUMBER)){
+                double v;
+                if ( valueType == itDOUBLE)
+                    v = ((double *)pybuf.buf)[i];
+                if ( valueType == itINT64){
+                    v = ((qint64 *)pybuf.buf)[i];
+                }
+                if ( valueType == itINT32){
+                    v = ((qint32 *)pybuf.buf)[i];
+                }
+                if ( valueType == itINT8){
+                    v = ((char *)pybuf.buf)[i];
+                }
+                this->ptr()->as<Ilwis::Table>()->setCell(colIndex, i, v);
+            }else if ( hasType(valueType, itDOMAINITEM)){
+                QString s;
+                s = ((char *)pybuf.buf)[i];
+                this->ptr()->as<Ilwis::Table>()->setCell(colIndex, i, s);
+            }
+        }
+    }
 
     PyObject* Table::record(quint32 rec) const{
         return StdVectorOfQVariant2PyTuple(this->ptr()->as<Ilwis::Table>()->record(rec));

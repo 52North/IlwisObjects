@@ -459,54 +459,71 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
         }
     }
 
-    /*
-    np.int8 -> b
-    np.byte -> b
-    np.uint8 -> B
-    np.int16 -> h
-    np.uint16 -> H
-    np.int32 -> l
-    np.uint32 -> L
-    np.int64 -> q
-    np.uint64 -> Q
-    np.float16 -> e
-    np.float32 -> f
-    np.float64 -> d
-    np.float -> d
-    np.bool8 -> ?
-    np.bool -> ?
-    */
+    IlwisTypes format=itUNKNOWN;
+    QString frmt(pybuf.format);
+    int sz2 = pybuf.itemsize;
+    QChar firstChar = frmt[0];
+    if ( frmt.size() > 1) {// there is a size modifier
+        sz2 = frmt.mid(1).toInt();
+    }
+    typedef std::tuple<QChar, int, IlwisTypes> KeysizeCombos;
+    std::vector<KeysizeCombos> combos;
+    combos.push_back(std::make_tuple('d', 8, itDOUBLE));
+    combos.push_back(std::make_tuple('d', 4, itFLOAT));
+    combos.push_back(std::make_tuple('f', 4, itFLOAT));
+    combos.push_back(std::make_tuple('f', 8, itDOUBLE));
+    combos.push_back(std::make_tuple('l', 8, itINT64));
+    combos.push_back(std::make_tuple('l', 4, itINT32));
+    combos.push_back(std::make_tuple('L', 8, itUINT64));
+    combos.push_back(std::make_tuple('L', 4, itUINT32));
+    combos.push_back(std::make_tuple('i', 4, itINT32));
+    combos.push_back(std::make_tuple('i', 8, itINT64));
+    combos.push_back(std::make_tuple('I', 4, itUINT32));
+    combos.push_back(std::make_tuple('I', 8, itUINT64));
+    combos.push_back(std::make_tuple('b', 1, itINT8));
+    combos.push_back(std::make_tuple('B', 1, itUINT8));
+    combos.push_back(std::make_tuple('h', 2, itINT16));
+    combos.push_back(std::make_tuple('H', 2, itUINT16));
+    combos.push_back(std::make_tuple('q', 4, itINT64));
+    combos.push_back(std::make_tuple('Q', 4, itUINT64));
+    combos.push_back(std::make_tuple('?', 1, itBOOL));
+
+    for(auto combo : combos){
+        if(std::get<0>(combo)== firstChar &&
+           std::get<1>(combo)== sz2){
+           format = std::get<2>(combo);
+           break;
+        }
+    }
+
+    if (format == itUNKNOWN)
+        throw InvalidObject("array datatype not supported");
 
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
     Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
-    QString frmt(pybuf.format);
-    if (frmt == 'b')
+
+
+    if (format == itINT8)
         setValues((qint8*)pybuf.buf, nItems, iter);
-    else if (frmt == 'B')
+    else if (format == itUINT8)
         setValues((quint8*)pybuf.buf, nItems, iter);
-    else if (frmt == 'h')
+    else if (format == itINT16)
         setValues((qint16*)pybuf.buf, nItems, iter);
-    else if (frmt == 'H')
+    else if (format == itUINT16)
         setValues((quint16*)pybuf.buf, nItems, iter);
-    else if (frmt == 'l')
+    else if (format == itINT32)
         setValues((qint32*)pybuf.buf, nItems, iter);
-    else if (frmt == 'L')
+    else if (format == itUINT32)
         setValues((quint32*)pybuf.buf, nItems, iter);
-    else if (frmt == 'q')
+    else if (format == itINT64)
         setValues((qint64*)pybuf.buf, nItems, iter);
-    else if (frmt == 'Q')
+    else if (format == itUINT64)
         setValues((quint64*)pybuf.buf, nItems, iter);
-    else if (frmt == 'e') {
-        float* buf = new float[nItems];
-        qFloatFromFloat16(buf, (qfloat16*)pybuf.buf, nItems);
-        setValues(buf, nItems, iter); // more work may be needed here
-        delete[] buf;
-    }
-    else if (frmt == 'f')
+    else if (format == itFLOAT)
         setValues((float*)pybuf.buf, nItems, iter);
-    else if (frmt == 'd')
+    else if (format == itDOUBLE)
         setValues((double*)pybuf.buf, nItems, iter);
-    else if (frmt == '?')
+    else if (format == itBOOL)
         setValues((bool*)pybuf.buf, nItems, iter);
 }
 

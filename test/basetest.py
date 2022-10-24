@@ -194,6 +194,8 @@ class BaseTest(unittest.TestCase):
         tbl.addColumn(cdef)
         tbl.addColumn("strings1","text")
         tbl.addColumn("strings2","text")
+        tbl.addColumn("strings3","text")
+        tbl.addColumn("intt", "integer")
 
         return tbl
 
@@ -205,36 +207,45 @@ class BaseTest(unittest.TestCase):
         tbl.setCell("items", 0, "stone")
         tbl.setCell("strings1", 0, "aap")
         tbl.setCell("strings2", 0, "100")
+        tbl.setCell("strings3", 0, "houses")
 
         tbl.setCell("ints", 1 , 72)
         tbl.setCell("floats", 1, 114.6)
         tbl.setCell("items", 1, "water")
         tbl.setCell("strings1", 1, "noot")
         tbl.setCell("strings2", 1, "200")
+        tbl.setCell("strings3", 1, "water")
 
         tbl.setCell("ints", 2 , 190)
         tbl.setCell("floats", 2, 13.6)
         tbl.setCell("items", 2, "houses")
         tbl.setCell("strings1", 2, "mies")
         tbl.setCell("strings2", 2, "300")
+        tbl.setCell("strings3", 2, "houses")
 
         tbl.setCell("ints", 3 , 77)
         tbl.setCell("floats", 3, 10.12)
         tbl.setCell("items", 3, "houses") 
         tbl.setCell("strings1", 3, "wim")  
         tbl.setCell("strings2", 3, "400") 
+        tbl.setCell("strings3", 3, "stone")
 
         tbl.setCell("ints", 4 , 309)
         tbl.setCell("floats", 4, 40.12)
         tbl.setCell("items", 4, "houses")  
         tbl.setCell("strings1", 4, "zus")  
-        tbl.setCell("strings2", 4, "500")  
+        tbl.setCell("strings2", 4, "500") 
+        tbl.setCell("strings3", 4, "notvalid") 
 
         tbl.setCell("ints", 5 , 309)
         tbl.setCell("floats", 5, 477.23)
         tbl.setCell("items", 5, "water")                
         tbl.setCell("strings1", 5, "jet")  
         tbl.setCell("strings2", 5, "600")  
+        tbl.setCell("strings3", 5, "grass") 
+
+        vs = [2,30,4,5]
+        tbl.setCells("intt", vs)
 
         return tbl
 

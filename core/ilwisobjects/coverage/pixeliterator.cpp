@@ -286,14 +286,14 @@ bool PixelIterator::moveYZ(qint64 delta){
     if ( _x < _box.min_corner().x){
 
         int xdelta = _box.min_corner().x - _x;
-        _x = _box.max_corner().x;
+        _x += _box.xlength() * ceil((_box.min_corner().x - _x) / _box.xlength());
         if ( _endposition == _linearposition - delta) { // special case, we were at one beyond the end;
             tempy = _box.max_corner().y;
             --_z;
             --_currentBlock;
             _linearposition = _z * _box.size().linearSize() + _box.max_corner().y * _grid->size().xsize() + _box.max_corner().x + delta + 1; // +1 because we were at 1 beyound the end.
         } else
-            tempy = _y  - 1 - xdelta /  _box.xlength() + (_x - _box.min_corner().x) / _box.xlength();
+            tempy = _y - ceil(xdelta / _box.xlength()) + (_x - _box.min_corner().x) / _box.xlength();
 
         _xChanged = delta %  (int)_box.xlength() != 0;
     }

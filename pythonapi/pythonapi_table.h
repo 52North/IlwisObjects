@@ -29,6 +29,7 @@ namespace pythonapi {
             qint32 columnIndex(const std::string& name) const;
             PyObject* column(const std::string& name) const;
             PyObject* column(quint32 columnIndex) const;
+            void setCells(const std::string& name, PyObject* container);
 
             quint32 recordCount() const;
             PyObject* select(const std::string& conditions) const;
