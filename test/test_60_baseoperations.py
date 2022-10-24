@@ -40,8 +40,9 @@ class TestBaseOperations(bt.BaseTest):
 
         dom = ilwis.NumericDomain()
         newTbl = ilwis.do("addcolumn", tbl, "newcol1", dom)
-        self.isEqual(newTbl.columnCount(), 6, "Column count is now 6(was 5)")
-        self.isEqual(newTbl.columnDefinition(5).datadef().domain().valueType() , ilwis.it.DOUBLE, "Column domain is 64 bit float")
+        print(newTbl.columnCount())
+        self.isEqual(newTbl.columnCount(), 8, "Column count is now 6(was 5)")
+        self.isEqual(newTbl.columnDefinition(7).datadef().domain().valueType() , ilwis.it.DOUBLE, "Column domain is 64 bit float")
         bt.testExceptionCondition3(self, lambda p1, p2, p3 : ilwis.do("addcolumn", p1, p2, p3), tbl, "newcol1", dom,"aborted adding same name column")
 
     def test_03_groupbycolumn(self):
