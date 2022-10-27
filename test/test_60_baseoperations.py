@@ -103,7 +103,7 @@ class TestBaseOperations(bt.BaseTest):
         self.isEqual(newTbl.cell("strings1", 1),'noot',"second element of strings1 is now the named item 'noot'(rc case)")
         self.isEqual(newTbl.columnDefinition('strings1').valueType(), ilwis.it.NAMEDITEM, "column is now filled with named items(id domain)")
 
-    def test_04_copyColumn(self):
+    def test_05_copyColumn(self):
         self.decorateFunction(__name__, inspect.stack()[0][3])
 
         tbl1 = self.createTestTable()
