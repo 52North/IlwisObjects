@@ -304,6 +304,42 @@ class BaseTest(unittest.TestCase):
 
         return tbl   
 
+    def createFeatureCoverage(self):
+        fcNew = ilwis.FeatureCoverage()
+        csy = ilwis.CoordinateSystem("code=epsg:4326") # create coordinate system
+        fcNew.setCoordinateSystem(csy)
+        fcNew.setEnvelope(ilwis.Envelope('10 30 40 70')) 
+
+        fcNew.addAttribute("ints", "integer")
+        fcNew.addAttribute("floats", "value")
+        cdef = ilwis.ColumnDefinition("items", self.createThematicDomain(), 2)
+        fcNew.addAttribute(cdef)
+        fcNew.addAttribute("strings1","text")
+        fcNew.addAttribute("strings2","text")
+
+        feature = fcNew.newFeature('Polygon((35.9 36.5, 35.9 38.6, 40.5 38.6, 40.5 36.5, 35.9 36.5))')
+        feature.setAttribute('items', 'grass')
+        feature.setAttribute('ints', 120)
+        feature.setAttribute('floats', 23.89)
+        feature.setAttribute('strings1', 'Aap')
+        feature.setAttribute('strings2', '300')
+
+        feature = fcNew.newFeature('Polygon((34.7 36.0, 34.7 38.0, 40.0 38.0, 40.0 36.0, 34.7 36.0))')
+        feature.setAttribute('items', 'houses')
+        feature.setAttribute('ints', 20)
+        feature.setAttribute('floats', 1020.67)
+        feature.setAttribute('strings1', 'Noot')
+        feature.setAttribute('strings2', '150')
+
+        feature = fcNew.newFeature('Polygon((24.7 56.0, 27.7 38.0, 31.0 38.0, 27.0 46.0, 24.7 56.0))')
+        feature.setAttribute('items', 'water')
+        feature.setAttribute('ints', 1120)
+        feature.setAttribute('floats', 0.58)
+        feature.setAttribute('strings1', '?')
+        feature.setAttribute('strings2', '450')
+
+        return fcNew
+
     def arrayValues15_12(self, rc): # this is purely voor viewing the content of a test small map
         print('\n')
         arr = np.fromiter(ilwis.PixelIterator(rc), dtype=np.float64)
