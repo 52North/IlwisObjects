@@ -907,11 +907,15 @@ void RasterCoverage::setAttributes(const ITable& tbl, const QString& joinColumn)
     _attributeTable = tbl;
     _recordLookup.clear();
     if ( _attributeTable.isValid()){
-        QString primkey = tbl->primaryKey();
-		if (primkey != sUNDEF)
-            _primaryKey = primkey;
+        if ( tbl->columnIndex(joinColumn) != iUNDEF){
+            _primaryKey = joinColumn ;
+        }else {
+            QString primkey = tbl->primaryKey();
+            if (primkey != sUNDEF)
+                _primaryKey = primkey;
+       }
 
-		primaryKey(_primaryKey);
+        primaryKey(_primaryKey);
     }
 }
 
