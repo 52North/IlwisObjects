@@ -1,6 +1,17 @@
 #include "../../core/kernel.h"
 #include "../../core/ilwisobjects/ilwisdata.h"
 #include "../../core/ilwisobjects/ilwisobject.h"
+#undef HAVE_IEEEFP_H
+#define PY_SSIZE_T_CLEAN
+
+#pragma push_macro("slots")
+#undef slots
+#include "Python.h"
+#pragma pop_macro("slots")
+
+#include "Python.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 #include "../../core/ilwisobjects/coverage/coverage.h"
 #include "../../core/ilwisobjects/domain/domain.h"
 

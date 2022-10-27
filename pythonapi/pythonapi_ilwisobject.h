@@ -1,6 +1,18 @@
 #ifndef PYTHONAPI_ILWISOBJECT_H
 #define PYTHONAPI_ILWISOBJECT_H
 
+#undef HAVE_IEEEFP_H
+#define PY_SSIZE_T_CLEAN
+
+#pragma push_macro("slots")
+#undef slots
+#include "Python.h"
+#pragma pop_macro("slots")
+
+#include "Python.h"
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
+
 #include <memory>
 #include "pythonapi_object.h"
 #include "pythonapi_util.h"
@@ -29,6 +41,7 @@ namespace pythonapi {
         std::shared_ptr<Ilwis::IIlwisObject> ptr() const;
         virtual const QString getStoreFormat() const;
         static QString constructPath(std::string resource);
+        static IlwisTypes determineBufferFormat(const Py_buffer &pybuf);
     public:
         virtual ~IlwisObject();
 

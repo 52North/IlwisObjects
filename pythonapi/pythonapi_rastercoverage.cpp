@@ -1,8 +1,3 @@
-#undef HAVE_IEEEFP_H
-#define PY_SSIZE_T_CLEAN
-#include "Python.h"
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-
 //#include "numpy/arrayobject.h"
 
 #include "../../core/kernel.h"
@@ -459,42 +454,7 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
         }
     }
 
-    IlwisTypes format=itUNKNOWN;
-    QString frmt(pybuf.format);
-    int sz2 = pybuf.itemsize;
-    QChar firstChar = frmt[0];
-    if ( frmt.size() > 1) {// there is a size modifier
-        sz2 = frmt.mid(1).toInt();
-    }
-    typedef std::tuple<QChar, int, IlwisTypes> KeysizeCombos;
-    std::vector<KeysizeCombos> combos;
-    combos.push_back(std::make_tuple('d', 8, itDOUBLE));
-    combos.push_back(std::make_tuple('d', 4, itFLOAT));
-    combos.push_back(std::make_tuple('f', 4, itFLOAT));
-    combos.push_back(std::make_tuple('f', 8, itDOUBLE));
-    combos.push_back(std::make_tuple('l', 8, itINT64));
-    combos.push_back(std::make_tuple('l', 4, itINT32));
-    combos.push_back(std::make_tuple('L', 8, itUINT64));
-    combos.push_back(std::make_tuple('L', 4, itUINT32));
-    combos.push_back(std::make_tuple('i', 4, itINT32));
-    combos.push_back(std::make_tuple('i', 8, itINT64));
-    combos.push_back(std::make_tuple('I', 4, itUINT32));
-    combos.push_back(std::make_tuple('I', 8, itUINT64));
-    combos.push_back(std::make_tuple('b', 1, itINT8));
-    combos.push_back(std::make_tuple('B', 1, itUINT8));
-    combos.push_back(std::make_tuple('h', 2, itINT16));
-    combos.push_back(std::make_tuple('H', 2, itUINT16));
-    combos.push_back(std::make_tuple('q', 4, itINT64));
-    combos.push_back(std::make_tuple('Q', 4, itUINT64));
-    combos.push_back(std::make_tuple('?', 1, itBOOL));
-
-    for(auto combo : combos){
-        if(std::get<0>(combo)== firstChar &&
-           std::get<1>(combo)== sz2){
-           format = std::get<2>(combo);
-           break;
-        }
-    }
+    IlwisTypes format = IlwisObject::determineBufferFormat(pybuf);
 
     if (format == itUNKNOWN)
         throw InvalidObject("array datatype not supported");
@@ -866,4 +826,13 @@ Envelope RasterCoverage::envelope(){
 
 const QString RasterCoverage::getStoreFormat() const {
     return "map";
+}
+
+Table RasterCoverage::attributeTable(){
+    Ilwis::ITable ilwTab = this->ptr()->as<Ilwis::RasterCoverage>()->attributeTable();
+    return Table(Ilwis::ITable(ilwTab));
+}
+
+void RasterCoverage::setAttributes(const Table &otherTable, const std::string& joinColumn){
+    this->ptr()->as<Ilwis::RasterCoverage>()->setAttributes(otherTable.ptr()->as<Ilwis::Table>(), QString::fromStdString(joinColumn));
 }
