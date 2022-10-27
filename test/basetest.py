@@ -5,6 +5,28 @@ import numpy as np
 import math
 from os.path import abspath
 
+
+def testExceptionCondition6(p, func, parm1, parm2, parm3, parm4, parm5, parm6, message):
+      try:
+           rc3 = func(parm1, parm2, parm3, parm4, parm5, parm6)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
+def testExceptionCondition5(p, func, parm1, parm2, parm3, parm4, parm5, message):
+      try:
+           rc3 = func(parm1, parm2, parm3, parm4, parm5)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
+def testExceptionCondition4(p, func, parm1, parm2, parm3, parm4, message):
+      try:
+           rc3 = func(parm1, parm2, parm3, parm4)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
 def testExceptionCondition3(p, func, parm1, parm2, parm3, message):
       try:
            rc3 = func(parm1, parm2, parm3)
@@ -120,13 +142,15 @@ class BaseTest(unittest.TestCase):
     def createEmptySmallThematicRaster(self):
         
         td = self.createThematicDomain()
+      
      
         self.dfThematic = ilwis.DataDefinition(td)
         grf = ilwis.GeoReference("epsg:4326", ilwis.Envelope("0 25 30 60") , ilwis.Size(15,12))
-       
+        tbl = self.createKeyedTestTable()
         rc = ilwis.RasterCoverage()
         rc.setDataDef(td)
         rc.setGeoReference(grf)
+        rc.setAttributes(tbl, "items")
    
         return rc        
 
@@ -244,10 +268,41 @@ class BaseTest(unittest.TestCase):
         tbl.setCell("strings2", 5, "600")  
         tbl.setCell("strings3", 5, "grass") 
 
-        vs = [2,30,4,5]
-        tbl.setCells("intt", vs)
-
         return tbl
+
+    def createKeyedTestTable(self):
+        tbl = self.createEmptyTestTable()
+
+        #create attribute table; items column must be the key so no duplicates allowed
+        tbl.setCell("ints", 0 , 22)
+        tbl.setCell("floats", 0, 34.987)
+        tbl.setCell("items", 0, "stone")
+        tbl.setCell("strings1", 0, "aap")
+        tbl.setCell("strings2", 0, "100")
+        tbl.setCell("strings3", 0, "houses")
+
+        tbl.setCell("ints", 1 , 72)
+        tbl.setCell("floats", 1, 114.6)
+        tbl.setCell("items", 1, "water")
+        tbl.setCell("strings1", 1, "noot")
+        tbl.setCell("strings2", 1, "200")
+        tbl.setCell("strings3", 1, "water")
+
+        tbl.setCell("ints", 2 , 190)
+        tbl.setCell("floats", 2, 13.6)
+        tbl.setCell("items", 2, "houses")
+        tbl.setCell("strings1", 2, "mies")
+        tbl.setCell("strings2", 2, "300")
+        tbl.setCell("strings3", 2, "houses")        
+
+        tbl.setCell("ints", 3 , 190)
+        tbl.setCell("floats", 3, 13.6)
+        tbl.setCell("items", 3, "grass")
+        tbl.setCell("strings1", 3, "mies")
+        tbl.setCell("strings2", 3, "300")
+        tbl.setCell("strings3", 3, "houses")
+
+        return tbl   
 
     def arrayValues15_12(self, rc): # this is purely voor viewing the content of a test small map
         print('\n')

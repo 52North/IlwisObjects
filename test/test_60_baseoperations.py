@@ -84,9 +84,50 @@ class TestBaseOperations(bt.BaseTest):
 
         newTbl = ilwis.do("convertcolumndomain", tbl, "strings2", "integer","?")
 
+        self.isEqual(newTbl.cell("strings2", 1),200,"second element of strings2 is now the number 200")
 
+        newTbl = ilwis.do("convertcolumndomain", tbl, "strings1", "integer","?")
 
+        self.isEqual(newTbl.cell("strings1", 1),ilwis.constants.rUNDEF,"No conversion possible as string1 is pure strings")
+        emptyTbl = ilwis.Table()
+        bt.testExceptionCondition4(self, lambda p1, p2, p3, p4 : ilwis.do("convertcolumndomain", p1, p2, p3, p4),tbl, "illegalcolumn", "value", "?", "aborted using not existing column")
+        bt.testExceptionCondition4(self, lambda p1, p2, p3, p4 : ilwis.do("convertcolumndomain", p1, p2, p3, p4),emptyTbl, "illegalcolumn", "value", "?", "aborted using empty table")
 
+        rc = self.createSmallThematicRaster1Layer()
+
+        newTbl = ilwis.do("convertcolumndomain", tbl, "strings2", "integer","?")
+        self.isEqual(newTbl.cell("strings2", 1),200,"second element of strings2 is now the number 200(rc case)")
+
+        newTbl = ilwis.do("convertcolumndomain", tbl, "strings1", "identifier", '?')
+       
+        self.isEqual(newTbl.cell("strings1", 1),'noot',"second element of strings1 is now the named item 'noot'(rc case)")
+        self.isEqual(newTbl.columnDefinition('strings1').valueType(), ilwis.it.NAMEDITEM, "column is now filled with named items(id domain)")
+
+    def test_04_copyColumn(self):
+        self.decorateFunction(__name__, inspect.stack()[0][3])
+
+        tbl1 = self.createTestTable()
+        tbl2 = ilwis.Table()
+
+        tbl3 = ilwis.do('copycolumn',tbl1, 'strings1', tbl2, 'morestrings', '?', '?')
+
+        self.isEqual(tbl1.recordCount(), tbl2.recordCount(), 'The number of records should be the same')
+        self.isEqual(tbl3.recordCount(), tbl2.recordCount(), 'same records, same table')
+        self.isEqual(tbl3.columnCount(), 1, 'The number of columns should be 1')
+        self.isEqual(tbl3.cell(0,2), 'mies', 'The number of columns should be 1')
+
+        tbl1 = self.createKeyedTestTable() #key = items
+        tbl2 = ilwis.Table()
+        cdef = ilwis.ColumnDefinition("otheritems", self.createThematicDomain(), 0)
+        tbl2.addColumn(cdef)
+        tbl2.setCells("otheritems",['water','houses', 'stone', 'grass']) 
+        tbl3 = ilwis.do('copycolumn',tbl1, 'items', tbl2, 'morestrings', 'items', 'otheritems')
+        self.isEqual(tbl3.cell(1,1), 'houses', 'straight copy would have been water')
+
+        emptyTbl = ilwis.Table()
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), emptyTbl, "illegalcolumn",tbl2,  'morestrings', 'items', 'otheritems','aborted using empty input table')
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "illegalcolumn",tbl2,  'morestrings', 'items', 'otheritems','aborted using illegal column 1')
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "items",tbl2,  '', 'items', 'otheritems','aborted using empty column 2')        
 
       
 
