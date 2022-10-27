@@ -54,6 +54,7 @@ bool CopyColumn::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
+
     int colIndex = _outputTable->columnIndex(_outputColumnName);
     std::map<QVariant, QVariant> inputOrder;
     if ( _inputKey != "" && _outputKey != ""){
@@ -61,7 +62,7 @@ bool CopyColumn::execute(ExecutionContext *ctx, SymbolTable &symTable)
         auto colvaluesIn  = _inputTable->column(_inputColumnName);
         for (int i=0; i < keyvaluesIn.size(); ++i)
             inputOrder[keyvaluesIn[i]] = colvaluesIn[i];
-        auto keyvaluesOut = _inputTable->column(_outputKey);
+        auto keyvaluesOut = _outputTable->column(_outputKey);
         std::map<QVariant, int> outputOrder;
         for(int i=0; i < keyvaluesOut.size(); ++i){
             outputOrder[keyvaluesOut[i]]  = i;
@@ -129,30 +130,42 @@ Ilwis::OperationImplementation::State CopyColumn::prepare(ExecutionContext *ctx,
             return sPREPAREFAILED;
         }
     }else {
-            _outputTable->columndefinition(_inputTable->columndefinition(_inputColumnName))    ;
+            _outputTable->addColumn(_inputTable->columndefinition(_inputColumnName));
+            if ( _outputColumnName != _inputColumnName){
+                int idx = _outputTable->columnIndex(_inputColumnName);
+                _outputTable->renameColumn(idx,_outputColumnName);
+            }
     }
 
     _inputKey = _expression.input<QString>(4);
-    if ( _inputTable->columnIndex(_inputKey) != iUNDEF){
-        kernel()->issues()->log(TR("Column doesnt exist : ") + _inputKey);
-        return sPREPAREFAILED;
-    }
-    if ( _inputKey != ""){
+    if ( _inputKey != "" && _inputKey != sUNDEF){
+        if ( _inputTable->columnIndex(_inputKey) == iUNDEF){
+            kernel()->issues()->log(TR("Column doesnt exist : ") + _inputKey);
+            return sPREPAREFAILED;
+        }
         if (!checkUnique(_inputTable, _inputKey)){
             return sPREPAREFAILED;
         }
-    }
+    }else
+        _inputKey = "";
 
     _outputKey = _expression.input<QString>(5);
-    if ( _outputTable->columnIndex(_outputKey) != iUNDEF){
-        kernel()->issues()->log(TR("Column doesnt exist : ") + _outputKey);
+
+    if ( _inputKey != "" && (_outputKey == "" || _outputKey == sUNDEF)){
+        kernel()->issues()->log(TR("Both keys must be defined if one key is defined"));
         return sPREPAREFAILED;
     }
-    if ( _outputKey != ""){
-        if (!checkUnique(_outputTable, _outputKey)){
+    if ( _outputKey != "" && _outputKey != sUNDEF){
+        if ( _outputTable->columnIndex(_outputKey) == iUNDEF){
+            kernel()->issues()->log(TR("Column doesnt exist : ") + _outputKey);
             return sPREPAREFAILED;
         }
-    }
+        if (!checkUnique(_outputTable, _outputKey)){
+                return sPREPAREFAILED;
+        }
+    }else
+        _outputKey = "";
+
 
     return sPREPARED;
 }
