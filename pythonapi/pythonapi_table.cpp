@@ -1,8 +1,3 @@
-#undef HAVE_IEEEFP_H
-#define PY_SSIZE_T_CLEAN
-#include "Python.h"
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-
 #include "../../core/kernel.h"
 #include "../../core/ilwiscontext.h"
 #include "../../core/catalog/catalog.h"
@@ -158,7 +153,7 @@ namespace pythonapi {
 
     void Table::setCells(const std::string &name, PyObject *container)
     {
-        if ( PyObject_CheckBuffer(container) == 0){
+        if ( PyList_Check(container)){
             PyObject *iterator = PyObject_GetIter(container);
             PyObject *item;
 
@@ -195,39 +190,39 @@ namespace pythonapi {
             Py_DECREF(iterator);
             this->ptr()->as<Ilwis::Table>()->column(colIndex, values);
             return;
-        }
-        Py_buffer pybuf;
-        PyObject_GetBuffer(container, &pybuf, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS);
-        if ( pybuf.buf == NULL){
-            throw InvalidObject("the container is not a buffer object");
-        }
-        int len = pybuf.len;
-        int colIndex = this->ptr()->as<Ilwis::Table>()->columnIndex(QString::fromStdString(name));
-        if ( colIndex == iUNDEF){
-            throw InvalidObject("The column is uknonwn.");
-        }
-        Ilwis::ColumnDefinition def = this->ptr()->as<Ilwis::Table>()->columndefinition(colIndex);
-        IlwisTypes valueType = def.datadef().domain()->valueType();
+        }else {
+            Py_buffer pybuf;
+            PyObject_GetBuffer(container, &pybuf, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS);
+            if ( pybuf.buf == NULL){
+                throw InvalidObject("the container is not a buffer object");
+            }
+            int len = pybuf.len;
+            int colIndex = this->ptr()->as<Ilwis::Table>()->columnIndex(QString::fromStdString(name));
+            if ( colIndex == iUNDEF){
+                throw InvalidObject("The column is uknonwn.");
+            }
+            IlwisTypes valueType = IlwisObject::determineBufferFormat(pybuf);
 
-        for(int i=0; i < len; ++i){
-            if ( hasType(valueType, itNUMBER)){
-                double v;
-                if ( valueType == itDOUBLE)
-                    v = ((double *)pybuf.buf)[i];
-                if ( valueType == itINT64){
-                    v = ((qint64 *)pybuf.buf)[i];
+            for(int i=0; i < len; ++i){
+                if ( hasType(valueType, itNUMBER)){
+                    double v;
+                    if ( valueType == itDOUBLE)
+                        v = ((double *)pybuf.buf)[i];
+                    if ( valueType == itINT64){
+                        v = ((qint64 *)pybuf.buf)[i];
+                    }
+                    if ( valueType == itINT32){
+                        v = ((qint32 *)pybuf.buf)[i];
+                    }
+                    if ( valueType == itINT8){
+                        v = ((char *)pybuf.buf)[i];
+                    }
+                    this->ptr()->as<Ilwis::Table>()->setCell(colIndex, i, v);
+                }else if ( hasType(valueType, itDOMAINITEM)){
+                    QString s;
+                    s = ((char *)pybuf.buf)[i];
+                    this->ptr()->as<Ilwis::Table>()->setCell(colIndex, i, s);
                 }
-                if ( valueType == itINT32){
-                    v = ((qint32 *)pybuf.buf)[i];
-                }
-                if ( valueType == itINT8){
-                    v = ((char *)pybuf.buf)[i];
-                }
-                this->ptr()->as<Ilwis::Table>()->setCell(colIndex, i, v);
-            }else if ( hasType(valueType, itDOMAINITEM)){
-                QString s;
-                s = ((char *)pybuf.buf)[i];
-                this->ptr()->as<Ilwis::Table>()->setCell(colIndex, i, s);
             }
         }
     }

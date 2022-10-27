@@ -18,6 +18,8 @@ namespace pythonapi {
         friend class Coverage;
         friend class Catalog;
         friend class FeatureCoverage;
+        friend class RasterCoverage;
+
         public:
             Table();
             Table(std::string resource, const IOOptions& opt = IOOptions());
