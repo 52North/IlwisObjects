@@ -1,3 +1,4 @@
+from asyncio import constants
 from pickle import FALSE, TRUE
 import unittest as ut
 import basetest as bt
@@ -127,7 +128,38 @@ class TestBaseOperations(bt.BaseTest):
         emptyTbl = ilwis.Table()
         bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), emptyTbl, "illegalcolumn",tbl2,  'morestrings', 'items', 'otheritems','aborted using empty input table')
         bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "illegalcolumn",tbl2,  'morestrings', 'items', 'otheritems','aborted using illegal column 1')
-        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "items",tbl2,  '', 'items', 'otheritems','aborted using empty column 2')        
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "items",tbl2,  '', 'items', 'otheritems','aborted using empty column 2')   
+
+    def test_06_selection(self):
+        self.decorateFunction(__name__, inspect.stack()[0][3])
+
+        rc = self.createSmallNumericRaster1Layer()
+        rc2 = ilwis.do("selection", rc, 'boundingbox(3 4, 8 10)')
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(3,4)), "min corner out Pix 0,0 equals in pix 3,4")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(5,6)),rc.pix2value(ilwis.Pixel(8,10)), "max corner out Pix 5,6 equals in pix 8,10")
+
+        rc2 = ilwis.do("selection", rc, 'boundingbox(3 4, 18 110)')
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "illegal bounding box, so no output")
+
+        rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000 with: boundingbox(3 4, 8 10)')
+
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "with condition, min corner out undefined")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(5,6)),rc.pix2value(ilwis.Pixel(8,10)), "with condition, max corner still okay")
+
+        rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000 or pixelvalue < 800 with: boundingbox(3 4, 8 10)')
+
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(3,4)), "with or condition, min corner is the same")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(1,2)),ilwis.constants.rUNDEF, "with or condition, middle is undefined")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(5,6)),rc.pix2value(ilwis.Pixel(8,10)), "with or condition, max corner still okay")
+
+        rc2 = ilwis.do("selection", rc, 'envelope(10 30, 25 50)')
+
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(5,3)), "min corner out Pix 0,0 equals in pix 5,3 envelope case")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(7,6)),rc.pix2value(ilwis.Pixel(12,9)), "max corner out Pix 7,6 equals in pix 12,9 envelope case")
+
+        print(rc2.size())
+        print(rc.pix2value(ilwis.Pixel(12,9)))
+        print(rc2.pix2value(ilwis.Pixel(7,6)))
 
       
 
