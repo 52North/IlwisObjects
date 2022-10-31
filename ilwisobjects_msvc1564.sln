@@ -82,7 +82,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ilwis4connector", "ilwis4co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sentinelconnector", "sentinelconnector.vcxproj", "{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cl2", "cl2.vcxproj", "{611B9EB8-2A2B-4932-B3F8-A9CA9B1139E5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cl3", "cl3.vcxproj", "{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,16 +154,16 @@ Global
 		{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}.Debug|x64.Build.0 = Debug|x64
 		{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}.Release|x64.ActiveCfg = Release|x64
 		{E02E73C5-68C9-4968-BD90-E3A7F0BDC29F}.Release|x64.Build.0 = Release|x64
-		{611B9EB8-2A2B-4932-B3F8-A9CA9B1139E5}.Debug|x64.ActiveCfg = Debug|x64
-		{611B9EB8-2A2B-4932-B3F8-A9CA9B1139E5}.Debug|x64.Build.0 = Debug|x64
-		{611B9EB8-2A2B-4932-B3F8-A9CA9B1139E5}.Release|x64.ActiveCfg = Release|x64
-		{611B9EB8-2A2B-4932-B3F8-A9CA9B1139E5}.Release|x64.Build.0 = Release|x64
+		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Debug|x64.ActiveCfg = Debug|x64
+		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Debug|x64.Build.0 = Debug|x64
+		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Release|x64.ActiveCfg = Release|x64
+		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		Qt5Version = QT5MSVC_64
 		SolutionGuid = {C38EC393-1AE2-41F5-922B-154E0612E72F}
+		Qt5Version = QT5MSVC_64
 	EndGlobalSection
 EndGlobal
