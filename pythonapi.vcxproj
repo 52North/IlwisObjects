@@ -354,6 +354,7 @@ if errorlevel 1 goto VCEnd</Command>
     <None Include="pythonapi\installerPy.nsi" />
     <None Include="pythonapi\paths.py" />
     <None Include="pythonapi\README" />
+    <None Include="pythonapi\setup.py" />
     <None Include="pythonapi\test.py" />
     <None Include="pythonapi\UPDATE" />
   </ItemGroup>
