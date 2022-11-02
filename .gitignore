@@ -32,3 +32,4 @@
 *.vsidx
 /.vs/ilwisobjects_msvc1564/FileContentIndex/read.lock
 qt.props
+/cl3/x64/Release/qmake/temp
