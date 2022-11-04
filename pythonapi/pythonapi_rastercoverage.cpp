@@ -746,7 +746,7 @@ RasterCoverage RasterCoverage::select(std::string geomWkt){
         return RasterCoverage();
 }
 
-RasterCoverage RasterCoverage::select(Geometry& geom){
+RasterCoverage RasterCoverage::select(Geometry& geom){ 
     const geos::geom::Envelope *env = geom.ptr()->getEnvelopeInternal();
     Ilwis::Envelope envelope(Ilwis::Coordinate(env->getMinX(), env->getMinY()),Ilwis::Coordinate(env->getMaxX(), env->getMaxY()));
     Ilwis::BoundingBox box = this->ptr()->as<Ilwis::RasterCoverage>()->georeference()->coord2Pixel(envelope);
