@@ -141,6 +141,10 @@ class TestBaseOperations(bt.BaseTest):
         rc2 = ilwis.do("selection", rc, 'boundingbox(3 4, 18 110)')
         self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "illegal bounding box, so no output")
 
+        rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000')
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "undefined as original was below 1000")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(12,9)),1470, "1470 is above 1000")
+   
         rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000 with: boundingbox(3 4, 8 10)')
 
         self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "with condition, min corner out undefined")
@@ -157,9 +161,17 @@ class TestBaseOperations(bt.BaseTest):
         self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(5,3)), "min corner out Pix 0,0 equals in pix 5,3 envelope case")
         self.isEqual(rc2.pix2value(ilwis.Pixel(7,6)),rc.pix2value(ilwis.Pixel(12,9)), "max corner out Pix 7,6 equals in pix 12,9 envelope case")
 
-        print(rc2.size())
-        print(rc.pix2value(ilwis.Pixel(12,9)))
-        print(rc2.pix2value(ilwis.Pixel(7,6)))
+        rcEmpty = self.createEmptySmallNumericRaster()
+
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rcEmpty, 'boundingbox(3 4, 8 10)', 'aborted, empty input raster') 
+
+        rc = self.createSmallNumericRaster1Layer()
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'boundingbox(3 4, 10)', 'aborted, illegal bounding box') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'envelope(10 30, 50)', 'aborted, illegal envelope') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'pxvalue > 1000', 'aborted, illegal attribute name pxvalue') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'pixelvalue > 1000 blup pixelvalue < 2000', 'aborted, illegal keyword blup') 
+
+
 
       
 
