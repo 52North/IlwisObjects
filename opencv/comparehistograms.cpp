@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "opencvhelper.h"
 #include "opencvoperation.h"
 #include "comparehistograms.h"
+#include <opencv2/imgproc.hpp>
 
 using namespace Ilwis;
 using namespace OpenCV;
@@ -95,7 +96,7 @@ Ilwis::OperationImplementation::State CompareHistograms::prepare(ExecutionContex
         {ERR_ILLEGAL_VALUE_2, TR("band numbers"),  QString("%1 != %2").arg(_inputRaster2->size().zsize()).arg(_inputRaster1->size().zsize())} );
 
         QString method = _expression.input<QString>(2);
-        std::map<QString, int> options = { {"correlation",CV_COMP_CORREL},{"chi-square",CV_COMP_CHISQR},{"intersection",CV_COMP_INTERSECT },{"bhattacharyya-distance",CV_COMP_BHATTACHARYYA },{"hellinger-distance",CV_COMP_HELLINGER}};
+        std::map<QString, int> options = { {"correlation",cv::HISTCMP_CORREL},{"chi-square",cv::HISTCMP_CHISQR},{"intersection",cv::HISTCMP_INTERSECT },{"bhattacharyya-distance",cv::HISTCMP_BHATTACHARYYA },{"hellinger-distance",cv::HISTCMP_HELLINGER}};
         auto iter = options.find(method);
         OperationHelper::check([&] ()->bool { return iter != options.end(); },
         {ERR_ILLEGAL_VALUE_2,TR("parameter in comparehistograms"), method } );

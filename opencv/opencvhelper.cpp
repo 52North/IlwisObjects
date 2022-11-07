@@ -157,7 +157,7 @@ void OpenCVHelper::createHistogram(Ilwis::PixelIterator rasterIter, cv::SparseMa
     if ( hasType(valueType,itNUMBER) ){
         int channels[] = {0};
         int bins = 300;
-        NumericStatistics& stats = rasterIter.raster()->statistics(PIXELVALUE);
+        NumericStatistics& stats = rasterIter.raster()->statisticsRef(PIXELVALUE);
         if ( !stats.isValid()){
             stats.calculate(rasterIter,rasterIter.end());
         }

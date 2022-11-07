@@ -38,7 +38,7 @@ public:
     void getOperations(QVector<ICommandInfo *>& ) const{}
     void prepare();
 
-    Q_PLUGIN_METADATA(IID "n52.ilwis.opencvconnector" FILE  "opencvconnector.json")
+    Q_PLUGIN_METADATA(IID "n52.ilwis.opencvoperations" FILE  "opencvoperations.json")
 private:
 
 
