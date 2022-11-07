@@ -121,6 +121,7 @@ public:
         if ( index1 != -1) {
             int index2 = envelope.indexOf(")")    ;
             if ( index2 == -1){
+                invalidate();
                 return;
             }
 
@@ -128,21 +129,22 @@ public:
             coords = coords.trimmed();
             QStringList parts = coords.split(",");
             if ( parts.size() != 2){
+                invalidate();
                 return;
             }
             QStringList p1 = parts[0].trimmed().split(' ');
-            if ( p1.size() < 2)
+            if ( p1.size() < 2){
+                invalidate();
                 return;
+            }
             this->min_corner().x = p1[0].trimmed().toDouble();
             this->min_corner().y = p1[1].trimmed().toDouble();
             if ( p1.size() == 3)
                 this->min_corner().z = p1[2].trimmed().toDouble();
 
             QStringList p2 = parts[1].trimmed().split(' ');
-            if ( p1.size() < 2) {
-                this->min_corner().x = 0;
-                this->min_corner().y = 0;
-                this->min_corner().z = 0;
+            if ( p2.size() < 2) {
+                invalidate();
                 return;
             }
             this->max_corner().x = p2[0].trimmed().toDouble();
@@ -211,6 +213,15 @@ public:
 
     bool is3D() const {
         return this->min_corner().is3D() && this->max_corner().is3D();
+    }
+
+    void invalidate() {
+        this->min_corner().x = this->min_corner().undefined();
+        this->min_corner().y = this->min_corner().undefined();
+        this->min_corner().z = this->min_corner().undefined();
+        this->max_corner().x = this->max_corner().undefined();
+        this->max_corner().y = this->max_corner().undefined();
+        this->max_corner().z = this->max_corner().undefined();
     }
 
     Box<PointType> twoD() const { // convenience method

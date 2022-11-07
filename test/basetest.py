@@ -340,13 +340,15 @@ class BaseTest(unittest.TestCase):
 
         return fcNew
 
-    def arrayValues15_12(self, rc): # this is purely voor viewing the content of a test small map
+    def arrayValues(self, rc): # this is purely voor viewing the content of a test small map
         print('\n')
+        xs = rc.size().xsize
+        ys = rc.size().ysize
         arr = np.fromiter(ilwis.PixelIterator(rc), dtype=np.float64)
-        for y in range(12):
+        for y in range(ys):
             print('\n')
-            for x in range(15):
-                print(arr[y * 15 + x], end=' ')
+            for x in range(xs):
+                print(arr[y * xs + x], end=' ')
         print('\n')           
 
 

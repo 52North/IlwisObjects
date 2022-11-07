@@ -67,7 +67,7 @@ protected:
     static std::unique_ptr<geos::geom::GeometryFactory> _geomfactory;
 
     SelectionBase(quint64 metaid, const Ilwis::OperationExpression &expr);
-    void parseSelector(QString select, const Ilwis::ICoverage &coverage);
+    bool parseSelector(QString select, const Ilwis::ICoverage &coverage);
     BoundingBox boundingBox(const Ilwis::IRasterCoverage &raster) const;
     std::vector<QString> bands(const Ilwis::IRasterCoverage &raster) const;
     QStringList attributeNames() const;

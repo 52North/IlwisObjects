@@ -292,7 +292,7 @@ QVariant SelectionBase::attribute(double pixelValue,int columnIndex){
     return false;
 }
 
-void SelectionBase::parseSelector(QString selector, const ICoverage& coverage){
+bool SelectionBase::parseSelector(QString selector, const ICoverage& coverage){
     selector.remove('"');
 
     selector.replace(" with:", " and ");
@@ -303,6 +303,8 @@ void SelectionBase::parseSelector(QString selector, const ICoverage& coverage){
     for(QString& part : parts){
         int index = selector.indexOf(part, lastIndex);
         ExpressionPart epart(coverage, part);
+        if (!epart._isValid)
+            return false;
         if ( index != lastIndex){
             QString logical = selector.mid(lastIndex,index - lastIndex);
             logical = logical.trimmed().toLower();
@@ -315,6 +317,7 @@ void SelectionBase::parseSelector(QString selector, const ICoverage& coverage){
 
         _expressionparts.push_back(epart);
     }
+    return true;
 }
 
 std::vector<QString> SelectionBase::bands(const IRasterCoverage& raster) const
