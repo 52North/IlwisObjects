@@ -120,7 +120,11 @@ Ilwis::OperationImplementation::State SelectionFeatures::prepare(ExecutionContex
 
 
     QString selector = _expression.parm(1).value();
-    parseSelector(selector, inputFC);
+
+    if(!parseSelector(selector, inputFC)){
+        kernel()->issues()->log("Invalid selection expression");
+        return sPREPAREFAILED;
+    }
 
      _outputObj = OperationHelperFeatures::initialize(_inputObj,inputType, copylist);
      if ( !_outputObj.isValid()) {
