@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "opencvhelper.h"
 #include "opencvoperation.h"
 #include "laplacefilter.h"
+#include <opencv2/imgproc.hpp>
 
 using namespace Ilwis;
 using namespace OpenCV;
@@ -44,7 +45,7 @@ bool LaplaceFilter::doOperation(cv::Mat& cvRaster, cv::Mat& cvOutputRaster) cons
     cv::Mat cvGrey;
 
     if ( _inputRaster->datadef().domain()->ilwisType() == itCOLORDOMAIN)
-        cv::cvtColor( cvRaster, cvGrey, CV_RGB2GRAY );
+        cv::cvtColor( cvRaster, cvGrey, cv::COLOR_RGB2GRAY );
     else
         cvGrey = cvRaster;
 

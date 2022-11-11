@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "opencvhelper.h"
 #include "opencvoperation.h"
 #include "sobelfilter.h"
+#include <opencv2/imgproc.hpp>
 
 using namespace Ilwis;
 using namespace OpenCV;
@@ -43,7 +44,7 @@ bool SobelFilter::doOperation(cv::Mat& cvRaster, cv::Mat& cvOutputRaster) const{
     cv::Mat cvGrey;
 
     if ( _inputRaster->datadef().domain()->ilwisType() == itCOLORDOMAIN)
-        cv::cvtColor( cvRaster, cvGrey, CV_RGB2GRAY );
+        cv::cvtColor( cvRaster, cvGrey, cv::COLOR_RGB2GRAY );
     else
         cvGrey = cvRaster;
 

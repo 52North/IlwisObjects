@@ -13,4 +13,5 @@ SUBDIRS += \
     projectionimplproj4.pro \
     pythonapi.pro \
     rasteroperations.pro \
-    streamconnector.pro
+    streamconnector.pro \
+    opencv.pro
