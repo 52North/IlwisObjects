@@ -338,6 +338,13 @@ class BaseTest(unittest.TestCase):
         feature.setAttribute('strings1', '?')
         feature.setAttribute('strings2', '450')
 
+        feature = fcNew.newFeature('Point(25 60)')
+        feature.setAttribute('items', 'grass')
+        feature.setAttribute('ints', 7120)
+        feature.setAttribute('floats', 2.58)
+        feature.setAttribute('strings1', 'no idead')
+        feature.setAttribute('strings2', '1020')
+
         return fcNew
 
     def arrayValues(self, rc): # this is purely voor viewing the content of a test small map
