@@ -171,8 +171,26 @@ class TestBaseOperations(bt.BaseTest):
         bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'pxvalue > 1000', 'aborted, illegal attribute name pxvalue') 
         bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'pixelvalue > 1000 blup pixelvalue < 2000', 'aborted, illegal keyword blup') 
 
+    def test_07_selectionFeature(self):
+        self.decorateFunction(__name__, inspect.stack()[0][3])
 
+        fc = self.createFeatureCoverage()
 
+        fcOut= ilwis.do("selection", fc, 'envelope(20 35, 33 65)')
+        self.isEqual(fcOut.featureCount(), 2, "One point & one polygon fit for envelope" )
+        fcOut= ilwis.do("selection", fc, 'polygon((20 35, 20 62, 28 61, 33 28, 20 35))')
+        self.isEqual(fcOut.featureCount(), 2, "One point & one polygon fit for polygon" )
+
+        fcOut= ilwis.do("selection", fc, 'ints == 7120 with: polygon((20 35, 20 62, 28 61, 33 28, 20 35))')
+        self.isEqual(fcOut.featureCount(), 1, "One point fits for polygon and attribute" )
+
+        fcOut= ilwis.do("selection", fc, 'ints == 7120 or strings2 == \'450\' with: polygon((20 35, 20 62, 28 61, 33 28, 20 35))')
+        self.isEqual(fcOut.featureCount(), 2, "One point & one polygon fit for polygon with attributes condition" )
+
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), fc, 'envelope(10 30, 50)', 'aborted, illegal envelope 2') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), fc, 'inty > 1000', 'aborted, illegal attribute name inty') 
+
+       
       
 
 

@@ -188,6 +188,7 @@ SelectionBase::ExpressionPart::ExpressionPart(const ICoverage& coverage, const Q
                             ColumnDefinition coldef = coverage->attributeTable()->columndefinition(_leftSide);
                             QVariant val = coldef.datadef().domain()->impliedValue(_rightSide);
                             _rightSide = val;
+                            _isValid = true;
                         }
                     }
 
