@@ -7,7 +7,11 @@ if (-Not (Test-Path -Path $args[0])){
     Return
 }
 
-$msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\amd64\msbuild"
+$msbuild = "c:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\amd64\msbuild.exe"
+if (-Not (Test-Path -Path $msbuild)){
+    Write-Host "msbuild.exe can not be found, please change the path in the script to location msbuild.exe"
+    Return
+}
 $pythonroot = $args[0]
 $project = "..\pythonapi.vcxproj"
 $config1 = "/p:Configuration=Release"
