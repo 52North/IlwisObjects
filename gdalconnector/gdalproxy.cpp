@@ -254,6 +254,8 @@ bool GDALProxy::prepare() {
                     continue;
 				if (cext == "xml") // xml is too widely used for non spatial data. 
 					continue;
+                if (cext == "nc") // nc has its own handling
+                    continue;
                 QString create1 = getMetaDataItem(driverH,GDAL_DCAP_CREATE,NULL);//raster extensions only
                 QString create2 = getMetaDataItem(driverH,GDAL_DCAP_CREATECOPY,NULL);//raster extensions only
                 QString access = create1.size() == 0 && create2.size() == 0 ? "r" : "rc";
@@ -380,7 +382,7 @@ bool GDALProxy::supports(const Resource &resource) const{
 	int idx = container.indexOf(re);
 	if (idx > 0) // sentinel has its own connector
 		return false;
-    QString sNotUsedExtensions = ".mpr.mpa.mps.mpp.tbt.mpl.ioc.mpv.ilo.atx.grh.dom.rpr.grf.csy.his.hsa.hss.hsp.sms.stp.smc.ta2.mat.fil.fun.isl";
+    QString sNotUsedExtensions = ".mpr.mpa.mps.mpp.tbt.mpl.ioc.mpv.ilo.atx.grh.dom.rpr.grf.csy.his.hsa.hss.hsp.sms.stp.smc.ta2.mat.fil.fun.isl.nc";
     if (! testFunc(resource.toLocalFile()))   {
         QFileInfo info(resource.container(true).toLocalFile()); // possible case that the container is a gdal catalog
         if (info.isFile() && testFunc(info)) // for the moment a gdal catalog has to be another file
