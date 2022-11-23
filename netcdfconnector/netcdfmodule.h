@@ -14,21 +14,38 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-#ifndef StreamOBJECTFACTORY_H
-#define StreamOBJECTFACTORY_H
+#ifndef StreamMODULE_H
+#define StreamMODULE_H
+
+#include <QObject>
+#include <QLibrary>
+#include "kernel.h"
 
 namespace Ilwis {
 namespace NetCdf {
-
-class NetCdfObjectFactory : public IlwisObjectFactory
+class NetCdfModule : public Module
 {
 public:
-    NetCdfObjectFactory();
+    Q_OBJECT
+    Q_INTERFACES(Ilwis::Module)
+public:
+    explicit NetCdfModule(QObject *parent = 0);
+    virtual ~NetCdfModule();
 
-    bool canUse(const Resource &resource) const;
-    IlwisObject *create(const Resource &resource,const IOOptions& options=IOOptions()) const;
+    QString getInterfaceVersion() const;
+    QString getName() const;
+    QString getVersion() const;
+    void getOperations(QVector<ICommandInfo *>& ) const{}
+    void prepare();
+
+    Q_PLUGIN_METADATA(IID "n52.ilwis.netcdfconnector" FILE  "netcdfconnector.json")
+
+private:
+    static IlwisTypes ilwisType(const QString &name);
+
+signals:
 };
 }
 }
 
-#endif // StreamOBJECTFACTORY_H
+#endif // StreamMODULE_H
