@@ -118,5 +118,17 @@ bool CornersGeoReference::isCompatible(const IGeoReference &georefOther) const {
     return box.equals(boxOther, delta);
 }
 
+QString CornersGeoReference::toCode() const
+{
+    // newGeoRefStr = ("code=georef:type=corners,csy=epsg:2050,envelope=" +
+     //                       str(targetEnv) + ",gridsize=" + str(sz.xsize) + " " + str(sz.ysize) +
+     //                       ",name=grf1")
+     QString csyCode = coordinateSystem()->code();
+     QString sizeS = size().toString();
+     QString envS = coordinateSystem()->envelope().toString();
+     QString outCode = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(csyCode).arg(envS).arg(sizeS);
+    return outCode;
+}
+
 
 

@@ -107,5 +107,10 @@ void GeoRefImplementation::copyTo(GeoRefImplementation *impl)
 
 bool GeoRefImplementation::isLinear() const
 {
-  return false;
+    return false;
+}
+
+QString GeoRefImplementation::toCode() const
+{
+    return sUNDEF;
 }

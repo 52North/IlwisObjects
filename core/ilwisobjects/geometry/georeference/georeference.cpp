@@ -199,6 +199,15 @@ void GeoReference::impl(GeoRefImplementation *impl)
     _georefImpl.reset(impl);
 }
 
+QString GeoReference::toString() const
+{
+    if ( isValid())
+        return _georefImpl->toCode() ;
+
+    return sUNDEF;
+
+}
+
 IlwisObject *GeoReference::clone()
 {
     if ( !_georefImpl.isNull()) {

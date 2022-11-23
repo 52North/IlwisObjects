@@ -35,6 +35,7 @@ public:
     virtual GeoRefImplementation *clone() = 0;
 	virtual QString grfType() const = 0;
 	virtual bool isValid() const = 0;
+    virtual QString toCode() const;
 
     virtual bool isCompatible(const IGeoReference &georefOther) const;
 protected:
