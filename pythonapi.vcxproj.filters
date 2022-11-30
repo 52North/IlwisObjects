@@ -251,5 +251,8 @@
     <None Include="pythonapi\build_pythons.ps1">
       <Filter>Other Files</Filter>
     </None>
+    <None Include="pythonapi\setup.py">
+      <Filter>Other Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
