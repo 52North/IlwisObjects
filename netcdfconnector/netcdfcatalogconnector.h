@@ -60,10 +60,11 @@ namespace Ilwis {
             std::vector<Resource> createResources(const QUrl &url) const;
             std::map<QString, QVariant> getGlobals(const std::multimap<std::string, netCDF::NcGroupAtt> &attributes) const;
             void setMetaData(const std::map<QString, QVariant> &globals, Resource &res) const;
-            std::map<QString, std::pair<unsigned int, QString> > getDimensions(const QStringList &parts, const std::multimap<std::string, netCDF::NcVar> &vars) const;
+            std::map<QString, std::pair<unsigned int, QString> > getDimensions(const std::multimap<std::string, netCDF::NcVar> &vars, const netCDF::NcVar &var) const;
             ICoordinateSystem getCoordSystem(const std::multimap<std::string, netCDF::NcVar> &vars, const std::pair<std::string, netCDF::NcVar> &var) const;
             Ilwis::IGeoReference getGrfs(const QString &path, const Size<> sz, const ICoordinateSystem &csy, std::vector<Ilwis::IGeoReference> &grfs) const;
             void setRasterGeometryinResource(const Ilwis::ICoordinateSystem &csy, const Ilwis::IGeoReference &grf, const Size<> &sz, Ilwis::Resource &res) const;
+            QString getProjection(const std::string &gridMapName) const;
         };
     }
 }

@@ -169,7 +169,7 @@ bool NetCdfRasterConnector::loadData(IlwisObject* obj, const IOOptions& options)
         Size<> sz = raster->size();
 
 
-         //std::map<quint32, std::vector<quint32> > blocklimits = raster->grid()->calcBlockLimits(options);
+        std::map<quint32, std::vector<quint32> > blocklimits = raster->grid()->calcBlockLimits(options);
 
         int n = var.getDimCount();
         std::vector< netCDF::NcDim > dims = var.getDims();
