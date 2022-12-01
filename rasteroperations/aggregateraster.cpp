@@ -86,15 +86,12 @@ bool AggregateRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
 
 
     BoxedAsyncFunc aggregateFun = [&](const BoundingBox& box, int threadIdx) -> bool {
-        //Size sz = outputRaster->size();
-		BoundingBox outBox(Size<>(box.xlength() / groupSize(0), box.ylength() / groupSize(1), box.zlength() / groupSize(2)));
-        PixelIterator iterOut(outputRaster, outBox);
-        BoundingBox inpBox(Pixel(outBox.min_corner().x * groupSize(0),
-						outBox.min_corner().y * groupSize(1),
-						outBox.min_corner().z * groupSize(2)),
-                Pixel((outBox.max_corner().x+1) * groupSize(0) - 1,
-                      (outBox.max_corner().y + 1) * groupSize(1) - 1,
-                      (outBox.max_corner().z + 1) * groupSize(2) - 1) );
+        BoundingBox inpBox(Pixel(box.min_corner().x * groupSize(0),
+						box.min_corner().y * groupSize(1),
+						box.min_corner().z * groupSize(2)),
+                Pixel((box.max_corner().x + 1) * groupSize(0) - 1,
+                      (box.max_corner().y + 1) * groupSize(1) - 1,
+                      (box.max_corner().z + 1) * groupSize(2) - 1) );
 
             if ( _grouped)
                 executeGrouped( inpBox);
