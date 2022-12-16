@@ -205,6 +205,10 @@ Ilwis::OperationImplementation::State AggregateRaster::prepare(ExecutionContext 
     }
     if ( _grouped) {
         Envelope envlope = inputRaster->envelope();
+        if (inputRaster->size().xsize() % groupSize(0) != 0) // not exactly divisible by groupSize; recompute envelope; account for "offset" when offset is added as a parameter
+            envlope.max_corner().x = envlope.min_corner().x + box.size().xsize() * groupSize(0) * (envlope.max_corner().x - envlope.min_corner().x) / inputRaster->size().xsize();
+        if (inputRaster->size().ysize() % groupSize(1) != 0)
+            envlope.min_corner().y = envlope.max_corner().y - box.size().ysize() * groupSize(1) * (envlope.max_corner().y - envlope.min_corner().y) / inputRaster->size().ysize();
         Resource resource(QUrl("ilwis://internalcatalog/georeference" + _outputObj->name()),itGEOREF);
         resource.addProperty("size", IVARIANT(box.size()));
         resource.addProperty("envelope", IVARIANT(envlope));
