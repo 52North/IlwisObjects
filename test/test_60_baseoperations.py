@@ -1,3 +1,4 @@
+from asyncio import constants
 from pickle import FALSE, TRUE
 import unittest as ut
 import basetest as bt
@@ -40,8 +41,9 @@ class TestBaseOperations(bt.BaseTest):
 
         dom = ilwis.NumericDomain()
         newTbl = ilwis.do("addcolumn", tbl, "newcol1", dom)
-        self.isEqual(newTbl.columnCount(), 6, "Column count is now 6(was 5)")
-        self.isEqual(newTbl.columnDefinition(5).datadef().domain().valueType() , ilwis.it.DOUBLE, "Column domain is 64 bit float")
+        print(newTbl.columnCount())
+        self.isEqual(newTbl.columnCount(), 8, "Column count is now 6(was 5)")
+        self.isEqual(newTbl.columnDefinition(7).datadef().domain().valueType() , ilwis.it.DOUBLE, "Column domain is 64 bit float")
         bt.testExceptionCondition3(self, lambda p1, p2, p3 : ilwis.do("addcolumn", p1, p2, p3), tbl, "newcol1", dom,"aborted adding same name column")
 
     def test_03_groupbycolumn(self):
@@ -83,10 +85,112 @@ class TestBaseOperations(bt.BaseTest):
 
         newTbl = ilwis.do("convertcolumndomain", tbl, "strings2", "integer","?")
 
+        self.isEqual(newTbl.cell("strings2", 1),200,"second element of strings2 is now the number 200")
 
+        newTbl = ilwis.do("convertcolumndomain", tbl, "strings1", "integer","?")
 
+        self.isEqual(newTbl.cell("strings1", 1),ilwis.constants.rUNDEF,"No conversion possible as string1 is pure strings")
+        emptyTbl = ilwis.Table()
+        bt.testExceptionCondition4(self, lambda p1, p2, p3, p4 : ilwis.do("convertcolumndomain", p1, p2, p3, p4),tbl, "illegalcolumn", "value", "?", "aborted using not existing column")
+        bt.testExceptionCondition4(self, lambda p1, p2, p3, p4 : ilwis.do("convertcolumndomain", p1, p2, p3, p4),emptyTbl, "illegalcolumn", "value", "?", "aborted using empty table")
 
+        rc = self.createSmallThematicRaster1Layer()
 
+        newTbl = ilwis.do("convertcolumndomain", tbl, "strings2", "integer","?")
+        self.isEqual(newTbl.cell("strings2", 1),200,"second element of strings2 is now the number 200(rc case)")
+
+        newTbl = ilwis.do("convertcolumndomain", tbl, "strings1", "identifier", '?')
+       
+        self.isEqual(newTbl.cell("strings1", 1),'noot',"second element of strings1 is now the named item 'noot'(rc case)")
+        self.isEqual(newTbl.columnDefinition('strings1').valueType(), ilwis.it.NAMEDITEM, "column is now filled with named items(id domain)")
+
+    def test_05_copyColumn(self):
+        self.decorateFunction(__name__, inspect.stack()[0][3])
+
+        tbl1 = self.createTestTable()
+        tbl2 = ilwis.Table()
+
+        tbl3 = ilwis.do('copycolumn',tbl1, 'strings1', tbl2, 'morestrings', '?', '?')
+
+        self.isEqual(tbl1.recordCount(), tbl2.recordCount(), 'The number of records should be the same')
+        self.isEqual(tbl3.recordCount(), tbl2.recordCount(), 'same records, same table')
+        self.isEqual(tbl3.columnCount(), 1, 'The number of columns should be 1')
+        self.isEqual(tbl3.cell(0,2), 'mies', 'The number of columns should be 1')
+
+        tbl1 = self.createKeyedTestTable() #key = items
+        tbl2 = ilwis.Table()
+        cdef = ilwis.ColumnDefinition("otheritems", self.createThematicDomain(), 0)
+        tbl2.addColumn(cdef)
+        tbl2.setCells("otheritems",['water','houses', 'stone', 'grass']) 
+        tbl3 = ilwis.do('copycolumn',tbl1, 'items', tbl2, 'morestrings', 'items', 'otheritems')
+        self.isEqual(tbl3.cell(1,1), 'houses', 'straight copy would have been water')
+
+        emptyTbl = ilwis.Table()
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), emptyTbl, "illegalcolumn",tbl2,  'morestrings', 'items', 'otheritems','aborted using empty input table')
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "illegalcolumn",tbl2,  'morestrings', 'items', 'otheritems','aborted using illegal column 1')
+        bt.testExceptionCondition6(self,lambda p1, p2, p3, p4, p5, p6 : ilwis.do('copycolumn',p1, p2, p3, p4, p5, p6), tbl1, "items",tbl2,  '', 'items', 'otheritems','aborted using empty column 2')   
+
+    def test_06_selection(self):
+        self.decorateFunction(__name__, inspect.stack()[0][3])
+
+        rc = self.createSmallNumericRaster1Layer()
+        rc2 = ilwis.do("selection", rc, 'boundingbox(3 4, 8 10)')
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(3,4)), "min corner out Pix 0,0 equals in pix 3,4")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(5,6)),rc.pix2value(ilwis.Pixel(8,10)), "max corner out Pix 5,6 equals in pix 8,10")
+
+        rc2 = ilwis.do("selection", rc, 'boundingbox(3 4, 18 110)')
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "illegal bounding box, so no output")
+
+        rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000')
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "undefined as original was below 1000")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(12,9)),1470, "1470 is above 1000")
+   
+        rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000 with: boundingbox(3 4, 8 10)')
+
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),ilwis.constants.rUNDEF, "with condition, min corner out undefined")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(5,6)),rc.pix2value(ilwis.Pixel(8,10)), "with condition, max corner still okay")
+
+        rc2 = ilwis.do("selection", rc, 'pixelvalue > 1000 or pixelvalue < 800 with: boundingbox(3 4, 8 10)')
+
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(3,4)), "with or condition, min corner is the same")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(1,2)),ilwis.constants.rUNDEF, "with or condition, middle is undefined")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(5,6)),rc.pix2value(ilwis.Pixel(8,10)), "with or condition, max corner still okay")
+
+        rc2 = ilwis.do("selection", rc, 'envelope(10 30, 25 50)')
+
+        self.isEqual(rc2.pix2value(ilwis.Pixel(0,0)),rc.pix2value(ilwis.Pixel(5,3)), "min corner out Pix 0,0 equals in pix 5,3 envelope case")
+        self.isEqual(rc2.pix2value(ilwis.Pixel(7,6)),rc.pix2value(ilwis.Pixel(12,9)), "max corner out Pix 7,6 equals in pix 12,9 envelope case")
+
+        rcEmpty = self.createEmptySmallNumericRaster()
+
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rcEmpty, 'boundingbox(3 4, 8 10)', 'aborted, empty input raster') 
+
+        rc = self.createSmallNumericRaster1Layer()
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'boundingbox(3 4, 10)', 'aborted, illegal bounding box') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'envelope(10 30, 50)', 'aborted, illegal envelope') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'pxvalue > 1000', 'aborted, illegal attribute name pxvalue') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), rc, 'pixelvalue > 1000 blup pixelvalue < 2000', 'aborted, illegal keyword blup') 
+
+    def test_07_selectionFeature(self):
+        self.decorateFunction(__name__, inspect.stack()[0][3])
+
+        fc = self.createFeatureCoverage()
+
+        fcOut= ilwis.do("selection", fc, 'envelope(20 35, 33 65)')
+        self.isEqual(fcOut.featureCount(), 2, "One point & one polygon fit for envelope" )
+        fcOut= ilwis.do("selection", fc, 'polygon((20 35, 20 62, 28 61, 33 28, 20 35))')
+        self.isEqual(fcOut.featureCount(), 2, "One point & one polygon fit for polygon" )
+
+        fcOut= ilwis.do("selection", fc, 'ints == 7120 with: polygon((20 35, 20 62, 28 61, 33 28, 20 35))')
+        self.isEqual(fcOut.featureCount(), 1, "One point fits for polygon and attribute" )
+
+        fcOut= ilwis.do("selection", fc, 'ints == 7120 or strings2 == \'450\' with: polygon((20 35, 20 62, 28 61, 33 28, 20 35))')
+        self.isEqual(fcOut.featureCount(), 2, "One point & one polygon fit for polygon with attributes condition" )
+
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), fc, 'envelope(10 30, 50)', 'aborted, illegal envelope 2') 
+        bt.testExceptionCondition2(self,lambda p1, p2 : ilwis.do('selection',p1, p2), fc, 'inty > 1000', 'aborted, illegal attribute name inty') 
+
+       
       
 
 

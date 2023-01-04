@@ -162,7 +162,11 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
 
 
     QString selector = _expression.parm(1).value();
-    parseSelector(selector, inputRaster);
+    if(!parseSelector(selector, inputRaster)){
+        kernel()->issues()->log("Invalid selection expression");
+        return sPREPAREFAILED;
+    }
+
 
     std::vector<QString> selectionBands = bands(inputRaster);
      _box = boundingBox(_inputObj.as<RasterCoverage>());

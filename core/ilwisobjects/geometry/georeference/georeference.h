@@ -69,6 +69,7 @@ public:
 	bool impValid() const;
     virtual bool isLinear() const;
     void impl(GeoRefImplementation *impl);
+    QString toString() const;
     template<typename GrfT> QSharedPointer<GrfT> as(){
         QSharedPointer<GrfT> sptr = _georefImpl.dynamicCast<GrfT>();
         if ( sptr.isNull())

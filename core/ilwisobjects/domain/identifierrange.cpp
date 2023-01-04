@@ -365,9 +365,11 @@ void NamedIdentifierRange::remove(const QString &name)
     if ( iter == _byName.end())
         return;
     quint32 iraw = (*iter).second->raw();
+    int cnt = count();
     _byName.erase(name);
     _byRaw.erase(_byRaw.begin() + iraw);
-    for(int i=0; i < count(); ++i) {
+
+    for(int i=0; i < cnt; ++i) {
         if ( _byOrder[i]->name() == name){
             _byOrder.erase(_byOrder.begin() + i);
             break;

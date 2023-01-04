@@ -1,8 +1,3 @@
-#undef HAVE_IEEEFP_H
-#define PY_SSIZE_T_CLEAN
-#include "Python.h"
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-
 //#include "numpy/arrayobject.h"
 
 #include "../../core/kernel.h"
@@ -459,54 +454,36 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
         }
     }
 
-    /*
-    np.int8 -> b
-    np.byte -> b
-    np.uint8 -> B
-    np.int16 -> h
-    np.uint16 -> H
-    np.int32 -> l
-    np.uint32 -> L
-    np.int64 -> q
-    np.uint64 -> Q
-    np.float16 -> e
-    np.float32 -> f
-    np.float64 -> d
-    np.float -> d
-    np.bool8 -> ?
-    np.bool -> ?
-    */
+    IlwisTypes format = IlwisObject::determineBufferFormat(pybuf);
+
+    if (format == itUNKNOWN)
+        throw InvalidObject("array datatype not supported");
 
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
     Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
-    QString frmt(pybuf.format);
-    if (frmt == 'b')
+
+
+    if (format == itINT8)
         setValues((qint8*)pybuf.buf, nItems, iter);
-    else if (frmt == 'B')
+    else if (format == itUINT8)
         setValues((quint8*)pybuf.buf, nItems, iter);
-    else if (frmt == 'h')
+    else if (format == itINT16)
         setValues((qint16*)pybuf.buf, nItems, iter);
-    else if (frmt == 'H')
+    else if (format == itUINT16)
         setValues((quint16*)pybuf.buf, nItems, iter);
-    else if (frmt == 'l')
+    else if (format == itINT32)
         setValues((qint32*)pybuf.buf, nItems, iter);
-    else if (frmt == 'L')
+    else if (format == itUINT32)
         setValues((quint32*)pybuf.buf, nItems, iter);
-    else if (frmt == 'q')
+    else if (format == itINT64)
         setValues((qint64*)pybuf.buf, nItems, iter);
-    else if (frmt == 'Q')
+    else if (format == itUINT64)
         setValues((quint64*)pybuf.buf, nItems, iter);
-    else if (frmt == 'e') {
-        float* buf = new float[nItems];
-        qFloatFromFloat16(buf, (qfloat16*)pybuf.buf, nItems);
-        setValues(buf, nItems, iter); // more work may be needed here
-        delete[] buf;
-    }
-    else if (frmt == 'f')
+    else if (format == itFLOAT)
         setValues((float*)pybuf.buf, nItems, iter);
-    else if (frmt == 'd')
+    else if (format == itDOUBLE)
         setValues((double*)pybuf.buf, nItems, iter);
-    else if (frmt == '?')
+    else if (format == itBOOL)
         setValues((bool*)pybuf.buf, nItems, iter);
 }
 
@@ -769,7 +746,7 @@ RasterCoverage RasterCoverage::select(std::string geomWkt){
         return RasterCoverage();
 }
 
-RasterCoverage RasterCoverage::select(Geometry& geom){
+RasterCoverage RasterCoverage::select(Geometry& geom){ 
     const geos::geom::Envelope *env = geom.ptr()->getEnvelopeInternal();
     Ilwis::Envelope envelope(Ilwis::Coordinate(env->getMinX(), env->getMinY()),Ilwis::Coordinate(env->getMaxX(), env->getMaxY()));
     Ilwis::BoundingBox box = this->ptr()->as<Ilwis::RasterCoverage>()->georeference()->coord2Pixel(envelope);
@@ -849,4 +826,13 @@ Envelope RasterCoverage::envelope(){
 
 const QString RasterCoverage::getStoreFormat() const {
     return "map";
+}
+
+Table RasterCoverage::attributeTable(){
+    Ilwis::ITable ilwTab = this->ptr()->as<Ilwis::RasterCoverage>()->attributeTable();
+    return Table(Ilwis::ITable(ilwTab));
+}
+
+void RasterCoverage::setAttributes(const Table &otherTable, const std::string& joinColumn){
+    this->ptr()->as<Ilwis::RasterCoverage>()->setAttributes(otherTable.ptr()->as<Ilwis::Table>(), QString::fromStdString(joinColumn));
 }

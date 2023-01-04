@@ -7,7 +7,7 @@ import time
 
 config.errorCount = 0
 
-time.sleep(10)
+#time.sleep(10)
 
 loader = unittest.TestLoader()
 tests = loader.discover('.','test_*.py')

@@ -160,3 +160,44 @@ QString IlwisObject::constructPath(std::string resource){
     }
     return input;
 }
+
+IlwisTypes IlwisObject::determineBufferFormat(const Py_buffer &pybuf)
+{
+    IlwisTypes format=itUNKNOWN;
+        QString frmt(pybuf.format);
+        int sz2 = pybuf.itemsize;
+        QChar firstChar = frmt[0];
+        if ( frmt.size() > 1) {// there is a size modifier
+            sz2 = frmt.mid(1).toInt();
+        }
+        typedef std::tuple<QChar, int, IlwisTypes> KeysizeCombos;
+        std::vector<KeysizeCombos> combos;
+        combos.push_back(std::make_tuple('d', 8, itDOUBLE));
+        combos.push_back(std::make_tuple('d', 4, itFLOAT));
+        combos.push_back(std::make_tuple('f', 4, itFLOAT));
+        combos.push_back(std::make_tuple('f', 8, itDOUBLE));
+        combos.push_back(std::make_tuple('l', 8, itINT64));
+        combos.push_back(std::make_tuple('l', 4, itINT32));
+        combos.push_back(std::make_tuple('L', 8, itUINT64));
+        combos.push_back(std::make_tuple('L', 4, itUINT32));
+        combos.push_back(std::make_tuple('i', 4, itINT32));
+        combos.push_back(std::make_tuple('i', 8, itINT64));
+        combos.push_back(std::make_tuple('I', 4, itUINT32));
+        combos.push_back(std::make_tuple('I', 8, itUINT64));
+        combos.push_back(std::make_tuple('b', 1, itINT8));
+        combos.push_back(std::make_tuple('B', 1, itUINT8));
+        combos.push_back(std::make_tuple('h', 2, itINT16));
+        combos.push_back(std::make_tuple('H', 2, itUINT16));
+        combos.push_back(std::make_tuple('q', 4, itINT64));
+        combos.push_back(std::make_tuple('Q', 4, itUINT64));
+        combos.push_back(std::make_tuple('?', 1, itBOOL));
+
+        for(auto combo : combos){
+            if(std::get<0>(combo)== firstChar &&
+               std::get<1>(combo)== sz2){
+               format = std::get<2>(combo);
+               break;
+            }
+        }
+        return format;
+}

@@ -4,6 +4,7 @@
 #include "pythonapi_qtGNUTypedefs.h"
 
 #include "../../core/ilwistypes.h"
+#include "../../core/ilwis.h"
 
 namespace pythonapi{
     //init modul
@@ -14,30 +15,20 @@ namespace pythonapi{
     std::string _ilwistype2string(const quint64& type);
 
     //ilwisTypes
-    struct it{
-        /*static const quint64 POINT = itPOINT;
-        static const quint64 LINE = itLINE;
-        static const quint64 POLYGON = itPOLYGON;
-        static const quint64 FEATURE = itFEATURE;
-        static const quint64 RASTER = itRASTER;
-        static const quint64 COVERAGE = itCOVERAGE;
-        static const quint64 TABLE = itTABLE;
-        static const quint64 GEOREF = itGEOREF;
-        static const quint64 COORDSYSTEM = itCOORDSYSTEM;
-        static const quint64 ILWDOMAIN = itDOMAIN;
-        static const quint64 NUMERICDOMAIN = itNUMERICDOMAIN;
-        static const quint64 ITEMDOMAIN = itITEMDOMAIN;
-        static const quint64 SINGLEOPERATION = itSINGLEOPERATION;
-        static const quint64 WORKFLOW = itWORKFLOW;
-        static const quint64 PROJECTION = itPROJECTION;
-        static const quint64 ELLIPSOID = itELLIPSOID;
-        static const quint64 CATALOG = itCATALOG;
-        static const quint64 CONTINUOUSCOLOR = itCONTINUOUSCOLOR;
-        static const quint64 PALETTECOLOR = itPALETTECOLOR;
-        static const quint64 VALUERANGE = itVALUERANGE;
-        static const quint64 COLLECTION = itCOLLECTION;
-        static const quint64 ANY = itANY;*/
+    struct constants{
+        static const qint32 iUNDEF  = Ilwis::iUNDEF;
+        static const quint8  bUNDEF = Ilwis::bUNDEF;
+        static const short  shUNDEF = Ilwis::shUNDEF;
+        static const short  shILLEGAL = Ilwis::shILLEGAL;
+        static const long   iILLEGAL = Ilwis::iILLEGAL;
+        static constexpr double rUNDEF = -1e308;
+        static constexpr double rILLEGAL =rUNDEF + 1;
+        static constexpr float flUNDEF = ((float)std::numeric_limits < float >::max() - 2);
+        static const qint64 i64UNDEF = Ilwis::i64UNDEF;
+        static constexpr double clrUNDEF2 = (std::numeric_limits < quint32 >::max() - 1);
+    };
 
+    struct it{
         static const quint64 UNKNOWN  = itUNKNOWN;
         static const quint64 POINT  = itPOINT;
         static const quint64 LINE  = itLINE;

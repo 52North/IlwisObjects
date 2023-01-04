@@ -85,6 +85,8 @@ namespace pythonapi {
         DataDefinition& datadef() const;
         void setDataDef(DataDefinition* datdef);
         void setDataDef(Domain& dm);
+        Table attributeTable() ;
+        void setAttributes(const Table &otherTable, const std::string& joinColumn=sUNDEF);
 
         NumericStatistics* statistics(int mode=0, int bins=0);
 

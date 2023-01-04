@@ -346,6 +346,7 @@ if errorlevel 1 goto VCEnd</Command>
     <ClInclude Include="pythonapi\pythonapi_vertexiterator.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="pythonapi\build_pythons.ps1" />
     <None Include="pythonapi\CHANGELOG" />
     <None Include="pythonapi\createpythoninstaller.bat" />
     <None Include="pythonapi\ilwisobjects.i" />
@@ -353,6 +354,7 @@ if errorlevel 1 goto VCEnd</Command>
     <None Include="pythonapi\installerPy.nsi" />
     <None Include="pythonapi\paths.py" />
     <None Include="pythonapi\README" />
+    <None Include="pythonapi\setup.py" />
     <None Include="pythonapi\test.py" />
     <None Include="pythonapi\UPDATE" />
   </ItemGroup>

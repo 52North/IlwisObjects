@@ -39,7 +39,7 @@
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>QT5MSVC_64</QtInstall>
+    <QtInstall>QTDIR</QtInstall>
     <QtModules>core</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -69,6 +69,7 @@
     <Link>
       <AdditionalDependencies>..\libraries\debug\ilwiscore.lib;$(QTDIR)\lib\Qt5Sqld.lib;$(QTDIR)\lib\Qt5Networkd.lib;$(QTDIR)\lib\Qt5Concurrentd.lib;$(QTDIR)\lib\Qt5Cored.lib;..\external\libraries\Debug\quazip.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;..\libraries\debug;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>$(OutDir)\cl3.exe</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" ..\output\debug\bin\*.exe /s /y /i</Command>

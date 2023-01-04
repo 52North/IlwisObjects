@@ -40,6 +40,7 @@ public:
 
 
     static GeoRefImplementation *create();
+    QString toCode() const;
 private:
     void copyTo(GeoRefImplementation *impl);
     Envelope _internalEnvelope;

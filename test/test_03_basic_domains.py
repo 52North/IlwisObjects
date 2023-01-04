@@ -27,7 +27,8 @@ class TestDomains(bt.BaseTest):
         self.isEqual(childdom.contains(161.0), "cNONE", "number is not contained in child but in parent(strict=true)")
 
         childdom.setStrict(False)
-        self.isEqual(childdom.contains(161.0), "cPARENT", "number is not contained in child but in parent(strict=false)")
+        self.isEqual(childdom.contains(161.0), "cNONE", "number is not contained in child but in parent but resolution is wrong")
+        self.isEqual(childdom.contains(165.0), "cPARENT", "number is not contained in child but in parent(strict=false)")
 
 
     def test_01_numericDomain(self):

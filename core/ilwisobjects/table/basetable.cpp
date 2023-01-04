@@ -151,6 +151,7 @@ void BaseTable::renameColumn(quint32 index, const QString&newName) {
 void BaseTable::columndefinition(const ColumnDefinition &coldef)
 {
     _attributeDefinition.columndefinition(coldef);
+    _columns = _attributeDefinition.columnCount();
 }
 
 bool BaseTable::prepare(const IOOptions &options)

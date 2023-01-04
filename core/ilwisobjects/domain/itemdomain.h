@@ -229,7 +229,7 @@ public:
         if ( _range.isNull()) {
             _range.reset(D::createRange());
         }
-        if (parent().isValid()) {
+        if (parent().isValid() && isStrict()) {
             IDomain dm = parent();
             IlwisData<ItemDomain<D>> parentdom = dm.as<ItemDomain<D>>();
             if(!parentdom.isValid()){

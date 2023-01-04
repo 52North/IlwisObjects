@@ -5,6 +5,28 @@ import numpy as np
 import math
 from os.path import abspath
 
+
+def testExceptionCondition6(p, func, parm1, parm2, parm3, parm4, parm5, parm6, message):
+      try:
+           rc3 = func(parm1, parm2, parm3, parm4, parm5, parm6)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
+def testExceptionCondition5(p, func, parm1, parm2, parm3, parm4, parm5, message):
+      try:
+           rc3 = func(parm1, parm2, parm3, parm4, parm5)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
+def testExceptionCondition4(p, func, parm1, parm2, parm3, parm4, message):
+      try:
+           rc3 = func(parm1, parm2, parm3, parm4)
+           p.isTrue(False, message)
+      except ilwis.IlwisException as ex:
+           p.isTrue(True, message)
+
 def testExceptionCondition3(p, func, parm1, parm2, parm3, message):
       try:
            rc3 = func(parm1, parm2, parm3)
@@ -120,13 +142,15 @@ class BaseTest(unittest.TestCase):
     def createEmptySmallThematicRaster(self):
         
         td = self.createThematicDomain()
+      
      
         self.dfThematic = ilwis.DataDefinition(td)
         grf = ilwis.GeoReference("epsg:4326", ilwis.Envelope("0 25 30 60") , ilwis.Size(15,12))
-       
+        tbl = self.createKeyedTestTable()
         rc = ilwis.RasterCoverage()
         rc.setDataDef(td)
         rc.setGeoReference(grf)
+        rc.setAttributes(tbl, "items")
    
         return rc        
 
@@ -194,6 +218,8 @@ class BaseTest(unittest.TestCase):
         tbl.addColumn(cdef)
         tbl.addColumn("strings1","text")
         tbl.addColumn("strings2","text")
+        tbl.addColumn("strings3","text")
+        tbl.addColumn("intt", "integer")
 
         return tbl
 
@@ -205,46 +231,131 @@ class BaseTest(unittest.TestCase):
         tbl.setCell("items", 0, "stone")
         tbl.setCell("strings1", 0, "aap")
         tbl.setCell("strings2", 0, "100")
+        tbl.setCell("strings3", 0, "houses")
 
         tbl.setCell("ints", 1 , 72)
         tbl.setCell("floats", 1, 114.6)
         tbl.setCell("items", 1, "water")
         tbl.setCell("strings1", 1, "noot")
         tbl.setCell("strings2", 1, "200")
+        tbl.setCell("strings3", 1, "water")
 
         tbl.setCell("ints", 2 , 190)
         tbl.setCell("floats", 2, 13.6)
         tbl.setCell("items", 2, "houses")
         tbl.setCell("strings1", 2, "mies")
         tbl.setCell("strings2", 2, "300")
+        tbl.setCell("strings3", 2, "houses")
 
         tbl.setCell("ints", 3 , 77)
         tbl.setCell("floats", 3, 10.12)
         tbl.setCell("items", 3, "houses") 
         tbl.setCell("strings1", 3, "wim")  
         tbl.setCell("strings2", 3, "400") 
+        tbl.setCell("strings3", 3, "stone")
 
         tbl.setCell("ints", 4 , 309)
         tbl.setCell("floats", 4, 40.12)
         tbl.setCell("items", 4, "houses")  
         tbl.setCell("strings1", 4, "zus")  
-        tbl.setCell("strings2", 4, "500")  
+        tbl.setCell("strings2", 4, "500") 
+        tbl.setCell("strings3", 4, "notvalid") 
 
         tbl.setCell("ints", 5 , 309)
         tbl.setCell("floats", 5, 477.23)
         tbl.setCell("items", 5, "water")                
         tbl.setCell("strings1", 5, "jet")  
         tbl.setCell("strings2", 5, "600")  
+        tbl.setCell("strings3", 5, "grass") 
 
         return tbl
 
-    def arrayValues15_12(self, rc): # this is purely voor viewing the content of a test small map
+    def createKeyedTestTable(self):
+        tbl = self.createEmptyTestTable()
+
+        #create attribute table; items column must be the key so no duplicates allowed
+        tbl.setCell("ints", 0 , 22)
+        tbl.setCell("floats", 0, 34.987)
+        tbl.setCell("items", 0, "stone")
+        tbl.setCell("strings1", 0, "aap")
+        tbl.setCell("strings2", 0, "100")
+        tbl.setCell("strings3", 0, "houses")
+
+        tbl.setCell("ints", 1 , 72)
+        tbl.setCell("floats", 1, 114.6)
+        tbl.setCell("items", 1, "water")
+        tbl.setCell("strings1", 1, "noot")
+        tbl.setCell("strings2", 1, "200")
+        tbl.setCell("strings3", 1, "water")
+
+        tbl.setCell("ints", 2 , 190)
+        tbl.setCell("floats", 2, 13.6)
+        tbl.setCell("items", 2, "houses")
+        tbl.setCell("strings1", 2, "mies")
+        tbl.setCell("strings2", 2, "300")
+        tbl.setCell("strings3", 2, "houses")        
+
+        tbl.setCell("ints", 3 , 190)
+        tbl.setCell("floats", 3, 13.6)
+        tbl.setCell("items", 3, "grass")
+        tbl.setCell("strings1", 3, "mies")
+        tbl.setCell("strings2", 3, "300")
+        tbl.setCell("strings3", 3, "houses")
+
+        return tbl   
+
+    def createFeatureCoverage(self):
+        fcNew = ilwis.FeatureCoverage()
+        csy = ilwis.CoordinateSystem("code=epsg:4326") # create coordinate system
+        fcNew.setCoordinateSystem(csy)
+        fcNew.setEnvelope(ilwis.Envelope('10 30 40 70')) 
+
+        fcNew.addAttribute("ints", "integer")
+        fcNew.addAttribute("floats", "value")
+        cdef = ilwis.ColumnDefinition("items", self.createThematicDomain(), 2)
+        fcNew.addAttribute(cdef)
+        fcNew.addAttribute("strings1","text")
+        fcNew.addAttribute("strings2","text")
+
+        feature = fcNew.newFeature('Polygon((35.9 36.5, 35.9 38.6, 40.5 38.6, 40.5 36.5, 35.9 36.5))')
+        feature.setAttribute('items', 'grass')
+        feature.setAttribute('ints', 120)
+        feature.setAttribute('floats', 23.89)
+        feature.setAttribute('strings1', 'Aap')
+        feature.setAttribute('strings2', '300')
+
+        feature = fcNew.newFeature('Polygon((34.7 36.0, 34.7 38.0, 40.0 38.0, 40.0 36.0, 34.7 36.0))')
+        feature.setAttribute('items', 'houses')
+        feature.setAttribute('ints', 20)
+        feature.setAttribute('floats', 1020.67)
+        feature.setAttribute('strings1', 'Noot')
+        feature.setAttribute('strings2', '150')
+
+        feature = fcNew.newFeature('Polygon((24.7 56.0, 27.7 38.0, 31.0 38.0, 27.0 46.0, 24.7 56.0))')
+        feature.setAttribute('items', 'water')
+        feature.setAttribute('ints', 1120)
+        feature.setAttribute('floats', 0.58)
+        feature.setAttribute('strings1', '?')
+        feature.setAttribute('strings2', '450')
+
+        feature = fcNew.newFeature('Point(25 60)')
+        feature.setAttribute('items', 'grass')
+        feature.setAttribute('ints', 7120)
+        feature.setAttribute('floats', 2.58)
+        feature.setAttribute('strings1', 'no idead')
+        feature.setAttribute('strings2', '1020')
+
+        return fcNew
+
+    def arrayValues(self, rc): # this is purely voor viewing the content of a test small map
         print('\n')
+        xs = rc.size().xsize
+        ys = rc.size().ysize
         arr = np.fromiter(ilwis.PixelIterator(rc), dtype=np.float64)
-        for y in range(12):
+        for y in range(ys):
             print('\n')
-            for x in range(15):
-                print(arr[y * 15 + x], end=' ')
+            for x in range(xs):
+                print(arr[y * xs + x], end=' ')
         print('\n')           
 
 
