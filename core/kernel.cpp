@@ -101,15 +101,15 @@ Ilwis::Kernel* Ilwis::kernel() {
     return Kernel::_kernel;
 }
 
-bool Ilwis::initIlwis(int mode, const QString & ilwisDir){
+std::string Ilwis::initIlwis(int mode, const QString & ilwisDir){
     try {
         context(ilwisDir, mode);
 //        context()->runMode(mode);
-        return kernel() != 0;
+        return (kernel() != 0) ? "" : "Error initializing ILWIS kernel!";
     } catch (const ErrorObject& err) {
-        std::cout << err.message().toStdString();
+        return err.message().toStdString();
     }
-    return false;
+    return "Error initializing ILWIS kernel!";
 }
 
 void Ilwis::exitIlwis(){

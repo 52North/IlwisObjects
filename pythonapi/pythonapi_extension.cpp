@@ -20,10 +20,10 @@ namespace pythonapi {
     static QCoreApplication* app = 0;
     static bool cleanupIlwisContext = false;
 
-    bool _initIlwisObjects(const char * ilwisDir){
+    std::string _initIlwisObjects(const char * ilwisDir){
         int argc = 0;
         char * argv[1] = {};
-        bool ret = true;
+        std::string ret = "";
 
         app = QCoreApplication::instance();
         if (!app){

@@ -29,7 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "version.h"
 
 
-
 using namespace Ilwis;
 
 
@@ -109,7 +108,18 @@ void ModuleMap::addModules(const QString& path) {
         QDir plugindir(entry.absoluteFilePath());
         QFileInfoList libs = plugindir.entryInfoList(exts, QDir::Files);
         for( auto lib : libs){
-            loadPlugin(lib);
+            QString filename = lib.absoluteFilePath();
+            try {
+                loadPlugin(lib);
+            }
+            catch (const ErrorObject& e) {
+                kernel()->issues()->log(TR("Could not load module:") + filename + TR(" Reason:") + e.message());
+                throw ErrorObject(TR("Could not load module:") + filename + TR(" Reason:") + e.message());
+            }
+            catch (std::exception& e) {
+                kernel()->issues()->log(TR("Could not load module:") + filename + TR(" Reason:") + e.what());
+                throw ErrorObject(TR("Could not load module:") + filename + TR(" Reason:") + e.what());
+            }
         }
     }
     //QString file = context()->ilwisFolder().absoluteFilePath() + "/httpserver.dll";

@@ -83,6 +83,7 @@ QString GdalModule::getInterfaceVersion() const
 
 void GdalModule::prepare()
 {
+    int driverCount = gdal()->getDriverCount(); // calls GdalProxy::prepare() to initialize gdal(); do this as first in order to see if gdal.dll loads (otherwise this triggers a "throw")
     GdalObjectFactory *factory = new GdalObjectFactory();
     factory->prepare();
     kernel()->addFactory(factory );
@@ -100,7 +101,6 @@ void GdalModule::prepare()
     cfactory->addCreator(itTABLE,"gdal", GdalFeatureTableConnector::create);
     cfactory->addCreator(itCATALOG,"gdal", CatalogConnector::create);
 
-    int driverCount = gdal()->getDriverCount(); // calls GdalProxy::prepare() to initialize gdal()
     // add all vector creators
     QVariantList names = DataFormat::getFormatProperties(DataFormat::fpCODE,itFEATURE,"gdal");
     for(const QVariant& name : names)

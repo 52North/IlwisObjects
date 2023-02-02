@@ -257,7 +257,7 @@ public slots:
     void acceptMessage(const QString& type, const QString& subtype, const QVariantMap& parameters);
 };
 KERNELSHARED_EXPORT Ilwis::Kernel* kernel();
-KERNELSHARED_EXPORT bool initIlwis(int mode, const QString & ilwisDir = "");
+KERNELSHARED_EXPORT std::string initIlwis(int mode, const QString & ilwisDir = "");
 KERNELSHARED_EXPORT void exitIlwis();
 #define TR(s) (kernel()->translate(s))
 

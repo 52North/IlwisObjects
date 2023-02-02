@@ -90,11 +90,12 @@ void SupportLibraryLoader::loadLibraries() const{
         QString path = file.canonicalFilePath();
         lib.setFileName(path);
         ok = lib.load();
-        if ( !ok){
-			QString path = _configLocation.absoluteFilePath();
-			QStringList parts = path.split(QRegExp("\\\\|/"));
-			QString modulen = parts.size() > 4 ? parts[parts.size() - 3] : "";
+        if (!ok) {
+            QString path = _configLocation.absoluteFilePath();
+            QStringList parts = path.split(QRegExp("\\\\|/"));
+            QString modulen = parts.size() > 4 ? parts[parts.size() - 3] : "";
             kernel()->issues()->log(TR("Could not load library in module:") + modulen + ", name: " + name.second + ",error :" + lib.errorString());
+            throw ErrorObject(TR("Could not load library in module:") + modulen + ", name: " + name.second + ",error :" + lib.errorString());
         }
     }
 }

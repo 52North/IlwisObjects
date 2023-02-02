@@ -93,11 +93,13 @@ std::string ilwistype2string(quint64 stype)
     FeatureCreationError = _ilwisobjects.FeatureCreationError
     try:
         if not path is None:
-            if not _ilwisobjects._initIlwisObjects(path):
-                raise ImportError("ILWIS couldn't be initialized!")
+            err = _ilwisobjects._initIlwisObjects(path)
+            if len(err) > 0:
+                raise ImportError("ILWIS couldn't be initialized!\n" + err)
     except NameError:
-        if not _ilwisobjects._initIlwisObjects(""):
-            raise ImportError("ILWIS couldn't be initialized!")
+        err = _ilwisobjects._initIlwisObjects("")
+        if len(err) > 0:
+            raise ImportError("ILWIS couldn't be initialized!\n" + err)
 %}
 //catch std::exception's on all C API function calls
 %exception{
