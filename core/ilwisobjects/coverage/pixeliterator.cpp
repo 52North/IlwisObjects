@@ -311,10 +311,10 @@ bool PixelIterator::moveYZ(qint64 delta){
     move2NextBlock();
     if ( _y > _endy) {
         quint32 newz = _z + (_y - _box.min_corner().y) / _box.ylength();
-        _currentBlock = newz * _grid->blocksPerBand() + _y / _grid->maxLines();
         _zChanged = newz != _z;
         _z = newz;
         _y = _box.min_corner().y + (_y - _box.min_corner().y) % (int)_box.ylength();
+        _currentBlock = newz * _grid->blocksPerBand() + _y / _grid->maxLines();
         _yChanged = _y != tempy;
         quint32 localblock = _y /  _grid->maxLines();
         _localOffset = _y * _grid->size().xsize() + _x - localblock * _grid->maxLines() * _grid->size().xsize();
