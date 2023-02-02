@@ -323,21 +323,21 @@ bool SelectionBase::parseSelector(QString selector, const ICoverage& coverage){
 
 std::vector<QString> SelectionBase::bands(const IRasterCoverage& raster) const
 {
-    std::set<QString> bands;
+    std::vector<QString> bands;
     for(const auto& epart : _expressionparts){
         for(QString bandIndex : epart._bands)
-            bands.insert(bandIndex);
+            bands.push_back(bandIndex);
         if ( epart._box.isValid()){
             for(quint32 z=epart._box.min_corner().z; z <= epart._box.max_corner().z; ++z){
 				if ( z != iUNDEF)
-					bands.insert(raster->stackDefinition().index(z));
+					bands.push_back(raster->stackDefinition().index(z));
             }
         }
     }
     if ( bands.size() == 0){ // no bands selection, so all bands do count
         const RasterStackDefinition& stackdef = raster->stackDefinition();
         for(quint32 z=0; z < stackdef.count(); ++z)
-            bands.insert(raster->stackDefinition().index(z));
+            bands.push_back(raster->stackDefinition().index(z));
     }
     std::vector<QString> result(bands.size());
     std::copy(bands.begin(), bands.end(), result.begin());
@@ -356,12 +356,12 @@ QStringList SelectionBase::attributeNames() const
 BoundingBox SelectionBase::boundingBox(const IRasterCoverage& raster) const
 {
     BoundingBox box;
-    std::set<QString> bands;
+    std::vector<QString> bands;
     for(const auto& epart : _expressionparts){
         box += epart._box;
         if ( epart._bands.size() != 0){
             for(QString b : epart._bands)
-                bands.insert(b) ;
+                bands.push_back(b) ;
         }
     }
     if ( bands.size() != 0){
