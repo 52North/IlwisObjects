@@ -77,18 +77,23 @@ bool SupportLibraryLoader::isValid() const
 
 void SupportLibraryLoader::loadLibraries() const{
     std::map<quint32, QString> order;
+    QString operatingSystem = OSHelper::operatingSystem();
     QLibrary lib;
     bool ok = order.size() > 0;
     for(auto name : _order){
-        QFileInfo file;
-        if (QFileInfo(name.second).exists()) {
-            file = QFileInfo(name.second);
+        if (operatingSystem == "windows") {
+            QFileInfo file;
+            if (QFileInfo(name.second).exists()) {
+                file = QFileInfo(name.second);
+            } else {
+                QString p = _configLocation.absolutePath() + "/../" + name.second;
+                file = QFileInfo(p);
+            }
+            QString path = file.canonicalFilePath();
+            lib.setFileName(path);
         } else {
-			QString p = _configLocation.absolutePath() + "/../" + name.second;
-            file = QFileInfo(p);
+            lib.setFileName(name.second);
         }
-        QString path = file.canonicalFilePath();
-        lib.setFileName(path);
         ok = lib.load();
         if (!ok) {
             QString path = _configLocation.absoluteFilePath();
