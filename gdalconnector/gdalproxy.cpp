@@ -68,11 +68,16 @@ GDALProxy::GDALProxy() {
     QString gdallibname = loader.order2name(100000);
     bool ok = false;
     if ( gdallibname != sUNDEF){
-        if (QFileInfo(gdallibname).exists()) {
-            _libgdal.setFileName(gdallibname);
+        QString operatingSystem = OSHelper::operatingSystem();
+        if (operatingSystem == "windows") {
+            if (QFileInfo(gdallibname).exists()) {
+                _libgdal.setFileName(gdallibname);
+            } else {
+                // expect lib at ilwis folder
+                _libgdal.setFileName(path + "/extensions/gdalconnector/" + gdallibname);
+            }
         } else {
-            // expect lib at ilwis folder
-            _libgdal.setFileName(path + "/extensions/gdalconnector/" + gdallibname);
+            _libgdal.setFileName(gdallibname);
         }
         ok = _libgdal.load();
     }
