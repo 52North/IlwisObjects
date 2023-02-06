@@ -349,6 +349,7 @@ if errorlevel 1 goto VCEnd</Command>
     <None Include="pythonapi\build_pythons.ps1" />
     <None Include="pythonapi\CHANGELOG" />
     <None Include="pythonapi\createpythoninstaller.bat" />
+    <None Include="pythonapi\create_whl.bat" />
     <None Include="pythonapi\ilwisobjects.i" />
     <None Include="pythonapi\ilwisobjects.py" />
     <None Include="pythonapi\installerPy.nsi" />

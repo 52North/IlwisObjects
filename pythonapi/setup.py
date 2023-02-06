@@ -1,5 +1,6 @@
 import os
 import setuptools
+from setuptools.dist import Distribution
 import shutil 
 
 
@@ -10,7 +11,7 @@ def package_files(directory):
             paths.append(os.path.join('..', path, filename))
 	
     return paths
-basepath = '.\\ilwis'
+basepath = './ilwis'
 extra_files = package_files(basepath)
 
 def wheel_name(**kwargs):
@@ -24,6 +25,10 @@ def wheel_name(**kwargs):
     tag = '-'.join(bdist_wheel_cmd.get_tag())
     return f'{distname}-{tag}.whl'
 
+class BinaryDistribution(Distribution):
+    """Distribution which always forces a binary package with platform name"""
+    def has_ext_modules(foo):
+        return True
 
 setup = setuptools.setup(
 	name='ilwispy',
@@ -41,6 +46,7 @@ setup = setuptools.setup(
         'Programming Language :: Python :: 3 :: Only',
         'Operating System :: Windows',
     ],
-    python_requires='>=3.5',
-	package_data={'': extra_files}
+    python_requires='>=3.6',
+	package_data={'': extra_files},
+    distclass=BinaryDistribution
 )
