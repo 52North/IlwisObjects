@@ -17,7 +17,6 @@
 #include <limits>
 
 typedef struct _object PyObject;
-typedef struct bufferinfo Py_buffer;
 
 #include "pythonapi_qtGNUTypedefs.h"
 

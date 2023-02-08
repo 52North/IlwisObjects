@@ -171,7 +171,7 @@ namespace pythonapi {
                 QVariant value;
                 if (PyLong_Check(item)) {
                     value = (qint64) PyLong_AsLong(item);
-                } else if PyFloat_Check(item) {
+                } else if (PyFloat_Check(item)) {
                     value = PyFloat_AsDouble(item);
                 } else {
                     if ( item){

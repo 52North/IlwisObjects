@@ -1,8 +1,6 @@
 #ifndef PYTHONAPI_PIXELITERATOR_H
 #define PYTHONAPI_PIXELITERATOR_H
 
-typedef struct bufferinfo Py_buffer;
-
 namespace Ilwis {
     class PixelIterator;
 }

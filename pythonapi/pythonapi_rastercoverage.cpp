@@ -502,7 +502,7 @@ void RasterCoverage::_list2Raster(PyObject *container, int band)
     while ((item = PyIter_Next(iterator))) {
         if (PyLong_Check(item)) {
             value = PyLong_AsLong(item);
-        } else if PyFloat_Check(item) {
+        } else if (PyFloat_Check(item)) {
             value = PyFloat_AsDouble(item);
         }
         *iter = value;
