@@ -147,6 +147,8 @@ win32 {
 }
 
 DISTFILES += \
-    pythonapi/paths.py
+    pythonapi/create_whl.sh \
+    pythonapi/paths.py \
+    pythonapi/setup.py
 
 

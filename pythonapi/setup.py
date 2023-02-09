@@ -30,7 +30,7 @@ def versionNr():
     if platform.system() == 'Windows':
         versionfile = '../../../projects/core/version.cpp'
     elif platform.system() == 'Linux':
-        versionfile = './../../../IlwisObjects/core/version.cpp'
+        versionfile = '../../../../IlwisObjects/core/version.cpp'
     if versionfile != '':
         lines = open(versionfile, 'r').readlines()
         for line in lines:
