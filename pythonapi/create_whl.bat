@@ -1,15 +1,18 @@
 @echo off
-rd /q/s ..\..\output\release\python_whl
-mkdir ..\..\output\release\python_whl
-copy setup.py ..\..\output\release\python_whl
-cd ..\..\output\release\python_whl
-xcopy/s ..\ilwispy\ .
+set PYTHONROOT=%1
+set EXTENSIONFOLDER=%2
+set WHEELFOLDER=%3
+rd /q/s ..\..\output\release\%WHEELFOLDER%
+mkdir ..\..\output\release\%WHEELFOLDER%
+copy setup.py ..\..\output\release\%WHEELFOLDER%
+cd ..\..\output\release\%WHEELFOLDER%
+xcopy/s ..\%EXTENSIONFOLDER%\ .
 rem for now remove opencv; needs more testing
 rd /q/s ilwis\ilwisobjects\extensions\opencv
-C:\Python36\python.exe ./setup.py bdist_wheel -universal
+%PYTHONROOT%\python.exe ./setup.py bdist_wheel
 rd /q/s build
 rd /q/s ilwis
-rd /q/s ilwispy.egg-info
+rd /q/s ilwis.egg-info
 move dist\*.whl .
 rd dist
 del setup.py
