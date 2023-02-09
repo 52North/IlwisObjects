@@ -129,7 +129,10 @@ echo path = os.path.dirname(__file__) + '\\ilwisobjects' + "/" &gt;&gt; ..\temp\
 echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"] &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
 echo sys.path.append(path) &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi\temp.py
 type $(MSBuildProjectDirectory)\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi\temp.py
-copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\ilwis\__init__.py /y</Command>
+copy ..\temp\GeneratedFiles\Release\pythonapi\temp.py ..\output\release\ilwispy\ilwis\__init__.py /y
+cd pythonapi
+call create_whl.bat $(PYTHONROOT) ilwispy python_whl
+cd ..</Command>
       <Message>do it</Message>
     </PostBuildEvent>
     <CustomBuildStep>
