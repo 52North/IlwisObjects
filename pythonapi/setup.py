@@ -31,8 +31,8 @@ class BinaryDistribution(Distribution):
         return True
 
 setup = setuptools.setup(
-	name='ilwispy',
-    version='1.0', 
+	name='ilwis',
+    version='1.0.20230202',
   
     # Use one of the below approach to define package and/or module names:
 
