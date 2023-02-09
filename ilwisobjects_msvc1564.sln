@@ -84,6 +84,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sentinelconnector", "sentin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cl3", "cl3.vcxproj", "{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi37", "pythonapi37.vcxproj", "{7719D885-E2F8-4333-968F-7ED8EE384989}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi38", "pythonapi38.vcxproj", "{2519B086-7490-4A36-8695-11B3E875D321}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi39", "pythonapi39.vcxproj", "{E2E24955-E849-45F2-944A-55159DE4F46D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi310", "pythonapi310.vcxproj", "{F96AA0C5-A904-471E-B4BC-B46FBEA6A1D2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi311", "pythonapi311.vcxproj", "{7AB33EBC-0992-400B-A8CD-B3F60F80648E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -158,6 +168,26 @@ Global
 		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Debug|x64.Build.0 = Debug|x64
 		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Release|x64.ActiveCfg = Release|x64
 		{75AE6DAB-1B39-49A0-B59C-8BC06642DAB0}.Release|x64.Build.0 = Release|x64
+		{7719D885-E2F8-4333-968F-7ED8EE384989}.Debug|x64.ActiveCfg = Debug|x64
+		{7719D885-E2F8-4333-968F-7ED8EE384989}.Debug|x64.Build.0 = Debug|x64
+		{7719D885-E2F8-4333-968F-7ED8EE384989}.Release|x64.ActiveCfg = Release|x64
+		{7719D885-E2F8-4333-968F-7ED8EE384989}.Release|x64.Build.0 = Release|x64
+		{2519B086-7490-4A36-8695-11B3E875D321}.Debug|x64.ActiveCfg = Debug|x64
+		{2519B086-7490-4A36-8695-11B3E875D321}.Debug|x64.Build.0 = Debug|x64
+		{2519B086-7490-4A36-8695-11B3E875D321}.Release|x64.ActiveCfg = Release|x64
+		{2519B086-7490-4A36-8695-11B3E875D321}.Release|x64.Build.0 = Release|x64
+		{E2E24955-E849-45F2-944A-55159DE4F46D}.Debug|x64.ActiveCfg = Debug|x64
+		{E2E24955-E849-45F2-944A-55159DE4F46D}.Debug|x64.Build.0 = Debug|x64
+		{E2E24955-E849-45F2-944A-55159DE4F46D}.Release|x64.ActiveCfg = Release|x64
+		{E2E24955-E849-45F2-944A-55159DE4F46D}.Release|x64.Build.0 = Release|x64
+		{F96AA0C5-A904-471E-B4BC-B46FBEA6A1D2}.Debug|x64.ActiveCfg = Debug|x64
+		{F96AA0C5-A904-471E-B4BC-B46FBEA6A1D2}.Debug|x64.Build.0 = Debug|x64
+		{F96AA0C5-A904-471E-B4BC-B46FBEA6A1D2}.Release|x64.ActiveCfg = Release|x64
+		{F96AA0C5-A904-471E-B4BC-B46FBEA6A1D2}.Release|x64.Build.0 = Release|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648E}.Debug|x64.ActiveCfg = Debug|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648E}.Debug|x64.Build.0 = Debug|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648E}.Release|x64.ActiveCfg = Release|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

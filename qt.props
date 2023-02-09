@@ -4,6 +4,11 @@
   <PropertyGroup Label="UserMacros">
     <QTDIR>c:\Qt\5.12.3\msvc2017_64\</QTDIR>
     <PYTHONROOT>C:\Python36</PYTHONROOT>
+    <PYTHONROOT37>C:\Python37</PYTHONROOT37>
+    <PYTHONROOT38>C:\Python382</PYTHONROOT38>
+    <PYTHONROOT39>C:\Python39</PYTHONROOT39>
+    <PYTHONROOT310>C:\Python310</PYTHONROOT310>
+    <PYTHONROOT311>C:\Python311</PYTHONROOT311>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
@@ -14,6 +19,21 @@
     </BuildMacro>
     <BuildMacro Include="PYTHONROOT">
       <Value>$(PYTHONROOT)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PYTHONROOT37">
+      <Value>$(PYTHONROOT37)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PYTHONROOT38">
+      <Value>$(PYTHONROOT38)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PYTHONROOT39">
+      <Value>$(PYTHONROOT39)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PYTHONROOT310">
+      <Value>$(PYTHONROOT310)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PYTHONROOT311">
+      <Value>$(PYTHONROOT311)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
