@@ -1,8 +1,8 @@
 import os
 import setuptools
 from setuptools.dist import Distribution
-import shutil 
-
+import shutil
+import platform
 
 def package_files(directory):
     paths = []
@@ -25,6 +25,21 @@ def wheel_name(**kwargs):
     tag = '-'.join(bdist_wheel_cmd.get_tag())
     return f'{distname}-{tag}.whl'
 
+def versionNr():
+    versionfile = ''
+    if platform.system() == 'Windows':
+        versionfile = '../../../projects/core/version.cpp'
+    elif platform.system() == 'Linux':
+        versionfile = './../../../IlwisObjects/core/version.cpp'
+    if versionfile != '':
+        lines = open(versionfile, 'r').readlines()
+        for line in lines:
+            if 'ILWIS_VERSION_NUMBER' in line:
+                ver = line.split()[-1].strip('"')
+                return ver
+    else:
+        return '0'
+
 class BinaryDistribution(Distribution):
     """Distribution which always forces a binary package with platform name"""
     def has_ext_modules(foo):
@@ -32,7 +47,7 @@ class BinaryDistribution(Distribution):
 
 setup = setuptools.setup(
 	name='ilwis',
-    version='1.0.20230202',
+    version='1.0.' + versionNr(),
   
     # Use one of the below approach to define package and/or module names:
 
