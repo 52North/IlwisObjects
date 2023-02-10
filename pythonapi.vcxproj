@@ -238,7 +238,23 @@ if errorlevel 1 goto VCEnd
  copy /y ..\output\debug\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
 if errorlevel 1 goto VCEnd
  move /y ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
-if errorlevel 1 goto VCEnd</Command>
+if errorlevel 1 goto VCEnd
+
+xcopy "$(TargetPath)" ..\output\debug\ilwispy\ilwis\* /y
+echo import os&gt; ..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo import sys&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo path = r'$(PYTHONROOT)'&gt;&gt; ..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"]&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo sys.path.append(path)&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo path = os.path.dirname(__file__)&gt;&gt; ..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"]&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo sys.path.append(path)&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo path = os.path.normpath(r'$(LocalDebuggerWorkingDirectory)../output/debug/bin/')&gt;&gt; ..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"]&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo sys.path.append(path)&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+echo path = path.replace('\\','/') + '/'&gt;&gt;..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+type $(MSBuildProjectDirectory)\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Debug\pythonapi\temp.py
+copy ..\temp\GeneratedFiles\Debug\pythonapi\temp.py ..\output\debug\ilwispy\ilwis\__init__.py /y</Command>
       <Message>if not exist ..\output\debug\bin\extensions\pythonapi mkdir ..\output\debug\bin\extensions\pythonapi
  copy /y ..\libraries\debug\extensions\pythonapi\_ilwisobjects.pyd ..\output\debug\bin\extensions\pythonapi
  copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi
