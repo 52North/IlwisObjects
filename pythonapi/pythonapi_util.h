@@ -181,9 +181,13 @@ namespace pythonapi {
     %rename(PropertySets) Properties;
     #endif
 
+    // Note that this is a copy of the PropertySets in containerstatistics.h
     struct Properties{
-        enum Values{pNONE = 0, pBASIC=1, pMIN=2, pMAX=4, pDISTANCE=8, pDELTA=16,pNETTOCOUNT=32, pCOUNT=64, pSUM=128,
-                          pMEAN=256, pMEDIAN=512, pPREDOMINANT=1024, pSTDEV=2048, pHISTOGRAM=4096, pLAST=8192, pALL=4294967295};
+        enum Values{
+            pNONE = 0, pBASIC = 1, pMIN = 2, pMAX = 4, pDISTANCE = 8, pDELTA = 16, pNETTOCOUNT = 32, pCOUNT = 64, pSUM = 128,
+            pMEAN = 256, pMEDIAN = 512, pPREDOMINANT = 1024, pSTDEV = 2048, pHISTOGRAM = 4096, pVARIANCE = 8192, pSKEW = 16384, pKURTOSIS = 32768,
+            pQUICKHISTOGRAM = 65536, pLAST = 131072, pALL = 2147483647
+        };
 
     };
 
