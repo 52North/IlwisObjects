@@ -30,6 +30,13 @@ DEFINES += CORE_LIBRARY
 linux {
     target.path = /usr/lib
     INSTALLS += target
+    CONFIG(release, debug|release){
+        versionTarget.target = version.cpp.dummy # non existent file; force "build"; the pythonscript ensures the file is not overwritten when not needed
+        versionTarget.depends = FORCE
+        versionTarget.commands = cd core ; python3 update_version.py
+        QMAKE_EXTRA_TARGETS += versionTarget
+        PRE_TARGETDEPS      += version.cpp.dummy
+    }
 }
 
 HEADERS += \
