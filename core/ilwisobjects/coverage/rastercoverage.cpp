@@ -493,7 +493,9 @@ NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode
 				}
 				calculateHistogram(attribute, start, done, mode, bins);
                 storeHistograms(attribute,mode);
-                QApplication::restoreOverrideCursor();
+                if (hasType(context()->runMode(), rmDESKTOP)) {
+                    QApplication::restoreOverrideCursor();
+                }
             }
         }
 	}
@@ -1046,7 +1048,9 @@ NumericRange RasterCoverage::calcMinMax(bool force) const
                 return NumericRange();
         }
     }
-    QApplication::restoreOverrideCursor();
+    if (hasType(context()->runMode(), rmDESKTOP)) {
+        QApplication::restoreOverrideCursor();
+    }
 
     return NumericRange(vmin, vmax, datadef().range<NumericRange>()->resolution());
 
