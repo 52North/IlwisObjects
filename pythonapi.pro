@@ -123,6 +123,9 @@ linux {
     QMAKE_POST_LINK += mv -f $$DEST_DIR/temp.py $${OUTPUTPATHPYTHON}/__init__.py$$escape_expand(\n\t)
     QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/extensions/pythonapi/libpythonapi.so.1.0.0 $${OUTPUTPATHPYTHON}/_ilwisobjects.so$$escape_expand(\n\t)
     QMAKE_POST_LINK += cp -R -f  $$OUTPUTPATH/* $${OUTPUTPATHPYTHON}$$escape_expand(\n\t)
+    CONFIG(release, debug|release){
+        QMAKE_POST_LINK += sh $$PWD/pythonapi/create_whl.sh$$escape_expand(\n\t)
+    }
 
     #CONFIG(release, debug|release){
     #    instfiles.path = $$OUTPUTPATHPYTHON/ilwis
