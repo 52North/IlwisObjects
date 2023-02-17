@@ -822,7 +822,8 @@ void FeatureConnector::writeCoords(std::ofstream& output_file, const std::vector
 }
 
 void FeatureConnector::storeColumn(const QString& colName, const QString& domName, const QString& domInfo, const QString& storeType) {
-    _odf->setKeyValue(colName, "Time", Time::now().toString());
+    auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+    _odf->setKeyValue(colName, "Time", tm);
     _odf->setKeyValue(colName, "Version", "3.1");
     _odf->setKeyValue(colName, "Class", "Column");
     _odf->setKeyValue(colName, "Domain", domName);

@@ -322,7 +322,8 @@ bool TableConnector::storeMetaData(IlwisObject *obj, const IOOptions &options)
     QFileInfo tblOdf(_resource.toLocalFile(true));
     QString dataFile = tblOdf.baseName() + ".tb#";
     _odf->setKeyValue("TableStore", "Data", dataFile);
-    _odf->setKeyValue("TableStore", "StoreTime", Time::now().toString());
+    auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+    _odf->setKeyValue("TableStore", "StoreTime", tm);
     if (storeColumns(tbl, options)){
         _odf->store("tbt", sourceRef().toLocalFile());
         return true;
@@ -368,7 +369,8 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
             colpostfix = "'" + colpostfix + "'";
         _odf->setKeyValue("TableStore", QString("Col%1").arg(i), colpostfix);
         QString colName = QString("Col:%1").arg(colpostfix);
-        _odf->setKeyValue(colName, "Time", Time::now().toString());
+        auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+        _odf->setKeyValue(colName, "Time", tm);
         _odf->setKeyValue(colName, "Version", "3.1");
         _odf->setKeyValue(colName, "Class", "Column");
         if (!( domName.indexOf(".mpa") != -1 || domName.indexOf(".mps")!= -1 || domName.indexOf(".mpp")!= -1 || domName.indexOf(".mpr")!= -1)){
@@ -376,7 +378,8 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
         }
 
         _odf->setKeyValue(colName, "Domain",domName);
-        //_odf->setKeyValue(colName, "Time", Time::now().toString());
+        //auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+        //_odf->setKeyValue(colName, "Time", tm);
         _odf->setKeyValue(colName, "DomainChangeable", "Yes");
         _odf->setKeyValue(colName, "ValueRangeChangeable", "Yes");
         _odf->setKeyValue(colName, "ExpressionChangeable", "Yes");

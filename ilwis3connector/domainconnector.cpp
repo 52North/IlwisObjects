@@ -235,7 +235,8 @@ bool DomainConnector::storeMetaDataSortDomain(Domain *dom, IlwisTypes valueType)
     iddomain.set(piddomain);
 
     auto writeColumnFunc = [&] (const QString& name, const QString& domName, const QString& domInfo, const QString& rng, const QString& storeType) -> void {
-        _odf->setKeyValue(name, "Time", Time::now().toString());
+        auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+        _odf->setKeyValue(name, "Time", tm);
         _odf->setKeyValue(name, "Version", "3.1");
         _odf->setKeyValue(name, "Class", "Column");
         _odf->setKeyValue(name, "Domain", domName);
@@ -249,7 +250,8 @@ bool DomainConnector::storeMetaDataSortDomain(Domain *dom, IlwisTypes valueType)
 
     };
 
-    _odf->setKeyValue("Table", "Time", Time::now().toString());
+    auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+    _odf->setKeyValue("Table", "Time", tm);
     _odf->setKeyValue("Table","Version","3.1");
     _odf->setKeyValue("Table","Class","Table");
     _odf->setKeyValue("Table","Domain","String.dom");
