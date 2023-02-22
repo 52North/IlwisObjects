@@ -108,7 +108,7 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
         return sPREPAREFAILED;
     }
 
-    _outputRaster = OperationHelperRaster::initialize(_inputRaster, itRASTER, itDOMAIN);
+    _outputRaster = OperationHelperRaster::initialize(_inputRaster, itRASTER, itDOMAIN | itRASTERSIZE);
     if (!_outputRaster.isValid()) {
         ERROR1(ERR_NO_INITIALIZED_1, outputName);
         return sPREPAREFAILED;
