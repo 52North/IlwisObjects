@@ -287,15 +287,22 @@ bool ConventionalCoordinateSystem::prepare(const QString &parms)
         _ellipsoid.prepare();
         QString laxis = proj4["a"];
         if ( laxis != sUNDEF) {
-            QString saxis = proj4["b"];
             bool ok;
             double a = laxis.toDouble(&ok);
             if (!ok) return ERROR2(ERR_INVALID_PROPERTY_FOR_2, "ellipsoid", name());
+            double invf;
+            QString saxis = proj4["b"];
             double b = saxis.toDouble(&ok);
-            if (!ok) return ERROR2(ERR_INVALID_PROPERTY_FOR_2, "ellipsoid", name());
-
-            double f = (a - b) / a;
-            _ellipsoid->setEllipsoid(a, f);
+            if (!ok) {
+                QString sinvf = proj4["rf"];
+                invf = sinvf.toDouble(&ok);
+                if (!ok)
+                    return ERROR2(ERR_INVALID_PROPERTY_FOR_2, "ellipsoid", name());
+            } else {
+                double f = (a - b) / a;
+                invf = 1.0 / f;
+            }
+            _ellipsoid->setEllipsoid(a, invf);
         } else
             _ellipsoid->setEllipsoid(6378137.0, 298.257223563);
     }

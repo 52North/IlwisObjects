@@ -202,6 +202,10 @@ bool ProjectionImplementationProj4::prepare(const QString &parms)
         if ( b != sUNDEF) {
             _targetDef += " +b=" + b;
         }
+        QString rf = proj4["rf"];
+        if (rf != sUNDEF) {
+            _targetDef += " +rf=" + rf;
+        }
         QString shifts = proj4["towgs84"];
         if ( shifts != sUNDEF) {
             _targetDef += " +towgs84=" + shifts;
@@ -270,6 +274,11 @@ QString ProjectionImplementationProj4::getEllips(const QString & proj4def) const
         QString value2 = getParam(proj4def, "b");
         if (value2 != "")
             return "+a=" + value + " +b=" + value2;
+        else {
+            value2 = getParam(proj4def, "rf");
+            if (value2 != "")
+                return "+a=" + value + " +rf=" + value2;
+        }
     }
     value = getParam(proj4def, "datum");
     if (value != "")
