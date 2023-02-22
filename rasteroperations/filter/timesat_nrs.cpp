@@ -127,9 +127,22 @@ bool Timesat::calcFitWindow(const int i, const int ienvi,
     return !(leftFail || rightFail);
 }
 
+// The input vector y contains the actual data extended with additional data
+// at the beginning and the end to handle the window the filter is using.
 std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector<bool> valid) {
+    // Size of the window used
+    int winmax = *std::max_element(_win.begin(), _win.end());
+
+    // calculate stdev from actual data values only (skip the extended range if needed)
     std::vector<double> y_c;
-    copy_if(y.begin(), y.end(), back_inserter(y_c),
+    auto it_beg = y.begin();
+    auto it_end = y.end();
+    int nb = y.size() - 2 * winmax;
+    if (_extendWindow) {
+        it_beg += winmax;
+        it_end = it_beg + _nb + winmax;
+    }
+    copy_if(it_beg, it_end, back_inserter(y_c),
             [] (const double d) { return d > 2.0; });
 
     double N = y_c.size();
@@ -138,28 +151,16 @@ std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector
     double ystd = stats[NumericStatistics::pSTDEV] * std::sqrt((N - 1) / N); // biased stdev
     double distance = _spikecutoff * ystd;
 
-    int swinmax = 0;
-    std::vector<double> yext(_nb);
-    if (_extendWindow) {
-        // Add values around series to handle window effects
-        swinmax = std::floor(_nptperyear / 7); // unsure which value to use: maybe 5 or 7 or 10
-        yext.resize(_nb + swinmax * 2);
-        copy(y.begin() + _nb - swinmax, y.end(), yext.begin()); // copy end of series to begin of extension
-        copy(y.begin(), y.end(), yext.begin() + swinmax);      // copy series to middle of extension
-        copy(y.begin(), y.begin() + swinmax, yext.begin() + _nb + swinmax); // copy begin of series to end of extension
-    }
-    else
-        copy(y.begin(), y.end(), yext.begin());
-
     // find single spikes and set weights to zero
     std::vector<double> dut;
     double med, dev, avg_y, max_y;
-    for (int i = swinmax; i < _nb + swinmax; ++i) {
-        int m1 = i - swinmax;
-        int m2 = i + swinmax + 1;
+    for (int i = winmax; i < nb + winmax; ++i) {
+        int m1 = i - winmax;
+        int m2 = i + winmax + 1;
 
         dut.clear();
-        copy_if(yext.begin() + m1, yext.begin() + m2, back_inserter(dut),
+        std::vector<double> yext(y.size());
+        copy_if(y.begin() + m1, y.begin() + m2, back_inserter(dut),
                 [] (const double d) { return d > 0.0; });
         if (dut.size() == 0) {
             valid[m1] = false;
@@ -168,50 +169,36 @@ std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector
         std::sort(dut.begin(), dut.end());
         med = dut[dut.size() / 2];
 
-        dev = std::abs(y[m1] - med);
-        avg_y = (yext[i - 1] + yext[i + 1]) / 2;
-        max_y = std::max(yext[i - 1], yext[i + 1]);
+        dev = std::abs(y[m1 + winmax] - med);
+        avg_y = (y[i - 1] + y[i + 1]) / 2;
+        max_y = std::max(y[i - 1], y[i + 1]);
         if (dev >= distance &&
-                ( y[m1] < (avg_y - distance) ||
-                  y[m1] > (max_y + distance) ) ) valid[m1] = false;
+                ( y[m1 + winmax] < (avg_y - distance) ||
+                  y[m1 + winmax] > (max_y + distance) ) ) valid[m1 + winmax] = false;
     }
     return valid;
 }
 
+// The function savgol accepts extended data, then applies the filter
+// and returns the fitted data including the extended (and useless) begin and end.
 std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
 {
     // Adapted code from TIMESAT
     int winmax = *std::max_element(_win.begin(), _win.end());
 
-    int nb = _nb;
-    std::vector<double> yfit(_nb);
-    std::vector<bool> wfit(_nb);
-    std::vector<int> t(_nb);
-    int org_offset = 0;
-    if (_extendWindow) {
-        // Extend data circularity to improve fitting near the boundary of original data
-        org_offset = winmax;
-        yfit.resize(_nb + winmax * 2);
-        std::copy(y.begin() + _nb - winmax, y.end(), yfit.begin()); // copy end of series to begin of extension
-        std::copy(y.begin(), y.end(), yfit.begin() + winmax);      // copy series to middle of extension
-        std::copy(y.begin(), y.begin() + winmax, yfit.begin() + _nb + winmax); // copy begin of series to end of extension
-        wfit.resize(_nb + winmax * 2);
-        std::copy(w.begin() + _nb - winmax, w.end(), wfit.begin()); // copy end of series to begin of extension
-        std::copy(w.begin(), w.end(), wfit.begin() + winmax);      // copy series to middle of extension
-        std::copy(w.begin(), w.begin() + winmax, wfit.begin() + _nb + winmax); // copy begin of series to end of extension
-        t.resize(_nb + 2 * winmax);
-    }
-    else {
-        nb -= winmax * 2;
-        std::copy(y.begin(), y.end(), yfit.begin());
-        std::copy(w.begin(), w.end(), wfit.begin());
-    }
+    int nb = y.size() - 2 * winmax;
+    double N = y.size();
+    std::vector<double> yfit(N);
+    std::vector<bool> wfit(N);
+    std::vector<int> t(N);
+    std::copy(y.begin(), y.end(), yfit.begin());
+    std::copy(w.begin(), w.end(), wfit.begin());
+
     int n(-winmax + 1);
     std::generate(t.begin(), t.end(), [&]{ return n++; });
 
     int nenvi = _win.size();    // number of fitting windows
 
-    double N = yfit.size();
     int m1, m2;
     std::vector<double> dut;
     NumericStatistics stats;
@@ -221,7 +208,7 @@ std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
         double win_thresh = 1.2 * 2 * ystd; // threshold to adjust the window
         int last = _lastIterationLikeTIMESATfit ? nenvi - 1 : nenvi;
         for (int i = winmax; i < nb + winmax; ++i) {
-            if (calcFitWindow(i, ienvi, yfit, wfit, win_thresh, org_offset, m1, m2)) {
+            if (calcFitWindow(i, ienvi, yfit, wfit, win_thresh, winmax, m1, m2)) {
                 Eigen::MatrixXd A(3, m2 - m1);
                 Eigen::VectorXd b(m2 - m1);
                 // preparing data slices as to construct the design matrix
@@ -243,17 +230,16 @@ std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
                 dut.clear();
                 copy(yfit.begin() + m1, yfit.begin() + m2, back_inserter(dut));
                 std::sort(dut.begin(), dut.end());
-                yfit[i] = dut[dut.size() / 2];
+                yfit[i] = dut[dut.size() / 2];  // median
             }
             yfit[i] = floor(yfit[i]);   // increase compatibility with IDL version
             if (_forceUpperEnvelope) {
-                if ( (yfit[i] < y[i - org_offset]) && wfit[i] && (ienvi < last))
-                    yfit[i] = y[i - org_offset];
+                if ( (yfit[i] < y[i]) && wfit[i] && (ienvi < last))
+                    yfit[i] = y[i];
             }
         }
     }
-    std::copy(yfit.begin() + org_offset, yfit.begin() + _nb + org_offset, y.begin());
-    return y;
+    return yfit;
 }
 
 
@@ -277,6 +263,7 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
     while (iterIn != inEnd) {
         trq()->update(1);
 
+        // Get timeseries data
 		PixelIterator pib(iterIn);
 		PixelIterator pie(iterIn + _nb);
 		auto sit = slice.begin();
@@ -284,17 +271,35 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
 			*sit++ = *pib;
 			++pib;
 		}
-        std::vector<bool> valid(_nb);
-        std::transform(slice.begin(), slice.end(), valid.begin(),
+
+        // optionally extend the timeseries to cope with the filter window
+        std::vector<double> yext(_nb);
+        int winmax = *std::max_element(_win.begin(), _win.end());
+        if (_extendWindow) {
+            // Add values around series to handle window effects
+            yext.resize(_nb + winmax * 2);
+            copy(slice.begin() + _nb - winmax, slice.end(), yext.begin()); // copy end of series to begin of extension
+            copy(slice.begin(), slice.end(), yext.begin() + winmax);      // copy series to middle of extension
+            copy(slice.begin(), slice.begin() + winmax, yext.begin() + _nb + winmax); // copy begin of series to end of extension
+        }
+        else
+            copy(slice.begin(), slice.end(), yext.begin());
+
+        std::vector<bool> valid(yext.size());
+        std::transform(yext.begin(), yext.end(), valid.begin(),
                        [] (const double d) { return d >= 2.0; });
         int count = std::count(valid.begin(), valid.end(), false);
         if (count < 0.75 * _nb) {
             // determine if the longest period of missing data is greater than 120 days
             auto found = std::search_n(valid.begin(), valid.end(), 12, false);
             if (found == valid.end()) {
-                // all missing data period are less than 120 days
-                valid = detectSpikes(slice, valid);
-                fitted = savgol(slice, valid);
+                // -> less than 120 days
+                valid = detectSpikes(yext, valid);
+                auto winfit = savgol(yext, valid);
+                if (_extendWindow)
+                    copy(winfit.begin() + winmax, winfit.begin() + _nb + winmax, fitted.begin());
+                else
+                    copy(winfit.begin(), winfit.end(), fitted.begin());
             }
             else
                 std::fill(fitted.begin(), fitted.end(), 0.0);
