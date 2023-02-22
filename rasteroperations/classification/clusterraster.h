@@ -35,7 +35,8 @@ public:
 
     static quint64 createMetadata();
 
-    static const quint8 MAXBANDS = 255;
+    static const quint8 MAXBANDS = 4;
+    static const quint8 MAXCLASSES = 255;
 
     NEW_OPERATION(ClusterRaster);
 
@@ -60,7 +61,7 @@ private:
             _bandsMax.resize(ClusterRaster::MAXBANDS, 0);
         }
 
-        quint32 clusterSize(quint32 index){
+        double clusterSize(quint32 index){
             return _bandsMax[index] - _bandsMin[index];
         }
 

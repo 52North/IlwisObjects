@@ -77,7 +77,7 @@ bool ClusterRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
          }
      }
 
-    std::vector<ClusterRecord> newClusterSet(ClusterRaster::MAXBANDS);
+    std::vector<ClusterRecord> newClusterSet(ClusterRaster::MAXCLASSES);
 
     int newClusters = clusterCalculation(clusterCombinations, _outputRaster->size().linearSize(),newClusterSet);
 
@@ -87,8 +87,8 @@ bool ClusterRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
     std::vector<quint8> classTabel(65536L,0);
 
     for (quint32 i = 0; i < newClusters; i++)
-         for (long k = newClusterSet[i]._firstRecord; k < newClusterSet[i]._firstRecord + newClusterSet[i]._numRecInCube; k++)
-             classTabel[_histbands[k]._combinations._comb] = i + 1;
+        for (long k = newClusterSet[i]._firstRecord; k < newClusterSet[i]._firstRecord + newClusterSet[i]._numRecInCube; k++)
+            classTabel[_histbands[k]._combinations._comb] = i;
 
     PixelIterator indexIter(indexLookup);
     for( auto& value : _outputRaster){
@@ -107,6 +107,9 @@ bool ClusterRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
 void ClusterRaster::initClusterSet(long total, long clusterCombinations, std::vector<ClusterRecord>& newClusterSet)
 {
     for (auto& cluster : newClusterSet) {
+        newClusterSet[0]._firstRecord = -1;
+        newClusterSet[0]._numRecInCube = 0;
+        newClusterSet[0]._numPixelsInCube = 0;
         for (quint32 j = 0; j < _inputRaster->size().zsize(); j++) {
             cluster._bandsMin[j] = _aarIndex2Value[j][0];
             cluster._bandsMax[j] = _aarIndex2Value[j][_reducedValueSpread];
@@ -131,7 +134,7 @@ int ClusterRaster::clusterCalculation(long clusterCombinations, long total,std::
 
         long maxSize = -1;
         /*  Selection by largest nr. of pxels in cube */
-        for (quint32 i=0; i<_numberOfThematicItems; i++) {
+        for (quint32 i=0; i< newClusters; i++) {
             if ((newClusterSet[i]._numPixelsInCube> maxSize) && (newClusterSet[i]._numRecInCube > 1)) {
                 maxSize = newClusterSet[i]._numPixelsInCube;
                 cubeIndex = i;
@@ -155,10 +158,9 @@ int ClusterRaster::clusterCalculation(long clusterCombinations, long total,std::
         // sort histogram records contained in cube iCubeIndex
         CompareHistRec compare(this);
         auto startSort = _histbands.begin() + newClusterSet[cubeIndex]._firstRecord;
-        auto endSort = _histbands.begin() + newClusterSet[cubeIndex]._firstRecord + newClusterSet[cubeIndex]._numRecInCube - 1;
+        auto endSort = _histbands.begin() + newClusterSet[cubeIndex]._firstRecord + newClusterSet[cubeIndex]._numRecInCube; // -1 (in the original code the QuickSort sorted all elements up-to-and-including the last one)
         std::sort(startSort, endSort,[&sortBands,&compare](const HistBandsRec& firstRec, const HistBandsRec& nextRec)
             { return compare.compareHistRec(firstRec, nextRec, sortBands);});
-
 
         // and split
         // find pos, so that in both new cubes are approx. same nr. of pixels
@@ -217,9 +219,6 @@ long ClusterRaster::getFSIndex(PixelIterator& iterIn) {
         index += (subindex) << (_indexShift * iterIn.position().z);
         ++iterIn;
     } while(!iterIn.xchanged());
-    if ( index != 0){
-        qDebug() << "stop";
-    }
     return index;
 }
 
@@ -313,8 +312,10 @@ Ilwis::OperationImplementation::State ClusterRaster::prepare(ExecutionContext *c
 
         quint32 noOfClusters = _expression.input<quint32>(1);
 
-        OperationHelper::check([&] ()->bool { return   noOfClusters >= 2 && noOfClusters < 255; },
+        OperationHelper::check([&] ()->bool { return   noOfClusters >= 2 && noOfClusters <= MAXCLASSES; },
         {ERR_ILLEGAL_VALUE_2, TR("number of clusters"),QString::number(noOfClusters) } );
+
+        _numberOfThematicItems = noOfClusters;
 
         if ( _expression.parameterCount() == 3){
             QString choice = _expression.input<QString>(2);
@@ -329,6 +330,9 @@ Ilwis::OperationImplementation::State ClusterRaster::prepare(ExecutionContext *c
             return sPREPAREFAILED;
         }
         _thematicDomain.prepare();
+        for (int i = 1; i <= noOfClusters; ++i) {
+            _thematicDomain->addItem(new ThematicItem(QString("Cluster %1").arg(i), "", ""));
+        }
         _outputRaster->datadefRef().domain(_thematicDomain);
         _outputRaster->size(_inputRaster->size().twod());
         if ( outputName!= sUNDEF)
