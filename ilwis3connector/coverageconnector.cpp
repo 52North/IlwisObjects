@@ -345,7 +345,7 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
                 if ( baseName != sUNDEF)
                     _domainName = QFileInfo(baseName).baseName() + ".dom";
                 else{
-                    _domainName = dom->name();
+                    _domainName = !dom->isAnonymous() ? dom->name() : (QFileInfo(QUrl(_odf->url()).toLocalFile()).baseName() + ".dom"); // _resource.url(true).toLocalFile();
                     if ( _domainName.indexOf(".dom") == -1)
                         _domainName += ".dom";
                 }
