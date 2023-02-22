@@ -211,8 +211,8 @@ namespace pythonapi {
             //this->data().findSignificantDigits(distance);
         }
 
-        void binCount(quint32 value){
-            this->data().binCount(value);
+        int binCount(){
+            return this->data().binCount();
         }
 
         bool __bool__() const{

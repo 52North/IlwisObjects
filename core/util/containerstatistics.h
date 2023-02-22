@@ -119,7 +119,6 @@ public:
 	void setContent(const std::vector<HistogramBin>& bins, const std::vector<double> markers, PropertySets hmode) {
 		_bins = bins;
 		_markers = markers;
-		_binCount = bins.size();
 		_histogramMode = hmode;
 
 	}
@@ -150,15 +149,12 @@ public:
         return numSigDecimalDigits;
     }
 
-    void binCount(quint32 value) {
-        _binCount = value;
-    }
-
 	int binCount() const {
-		return _binCount;
+        if (_bins.size() > 0)
+            return _bins.size() - 1; // last is undef
+        else
+            return 0;
 	}
-
-
 
     template<typename IterType> bool calculate(const IterType& begin, const IterType& end, std::unique_ptr<Tranquilizer>& tranquilizer, int mode = pBASIC, int bins = 0, double pseudoUndef = rILLEGAL) {
         //Basic basicMarkers;
@@ -239,7 +235,7 @@ public:
 
                 double ncount = prop(pNETTOCOUNT);
                 if (ncount > 1) {
-                    if (bins == 0 && _binCount == iUNDEF) {
+                    if (bins <= 0) {
                      /*   if (prop(pSTDEV) == rUNDEF) {
                             _markers[index(pSTDEV)] = calcStdDev(begin, end, undefined);
                         }
@@ -247,32 +243,29 @@ public:
                             double h = 3.5 * _markers[index(pSTDEV)] / pow(ncount, 0.3333);
                             _binCount = prop(pDISTANCE) / h;
                         }*/
-						_binCount = 5 * std::sqrt(std::sqrt(pnetcount)) + 1;
+						bins = 5 * std::sqrt(std::sqrt(pnetcount)) + 1;
 						if (std::ceil(psum) == psum) {// integer
 							double delta = prop(pDELTA);
 							if (delta == 255) // special case for images
-								_binCount = 255;
+								bins = 256;
 							else {
-								double f = delta / _binCount;
+                                double f = delta / (bins - 1);
 								double cf = std::ceil(f);
-								if (pcount < psum &&  cf != f && cf > 1.0) {
-									_binCount =  delta / (int)(cf);
+								if (pcount < psum && cf != f && cf > 1.0) {
+									bins = 1 + delta / (int)(cf);
 								}
 							}
 						}
                     }
-                    else if (bins != 0) {
-                        _binCount = bins - 1;
-                    }
                 }
 
-                _bins.resize(_binCount + 2); // last cell is for undefineds
+                _bins.resize(bins + 1); // last cell is for undefineds
                 double delta = prop(pDELTA);
-                for (int i = 0; i < _binCount; ++i) {
-                    _bins[i] = HistogramBin(prop(pMIN) + i * (delta / _binCount));
+                for (int i = 0; i < bins - 1; ++i) {
+                    _bins[i] = HistogramBin(prop(pMIN) + i * (delta / (bins - 1)));
                 }
-                _bins[_binCount] = HistogramBin(prop(pMAX));
-                _bins[_binCount + 1] = HistogramBin(rUNDEF);
+                _bins[bins - 1] = HistogramBin(prop(pMAX)); // Compute separately, for extra precision
+                _bins[bins] = HistogramBin(rUNDEF);
                 double rmin = prop(pMIN);
                 double rdelta = prop(pDELTA);
 				int binsize = _bins.size();
@@ -426,10 +419,6 @@ public:
         quint32 _sigDigits;
         std::vector<HistogramBin> _bins;
 		PropertySets _histogramMode = pNONE;
-
-        quint32 _binCount=iUNDEF;
-
-
 
         template<typename IterType> double calcStdDev(const IterType& begin,  const IterType& end, DataType undefined) {
             double ncount = prop(pNETTOCOUNT);
