@@ -11,7 +11,7 @@ eck2,Eckert2,,,,false easting|false northing|central meridian
 eck3,Eckert3,,,,false easting|false northing|central meridian
 PRJEH,EOV Hungary,,,,
 eqdc,Equidistant Conic,Equidistant_Conic,,,false easting|false northing|central meridian|latitude of origin|standard parallel 1|standard parallel 2
-eqc,Equidistant Cylindrical,Equidistant_Cylindrical,,,false easting|false northing|atitude of true scale|central meridian|latitude of origin
+eqc,Equidistant Cylindrical,Equidistant_Cylindrical,,,false easting|false northing|latitude of true scale|central meridian|latitude of origin
 PRJGBI,Gauss-Boaga Italy,,,,zone=1
 PRJGC,Gauss Colombia,,,,zone=1
 PRJGKE,Gauss-Krueger Germany,,,,zone=2
@@ -22,7 +22,7 @@ goode,Goode,,,,false easting|false northing|central meridian
 PRJGI,Goode Interrupted,,,,false easting|false northing
 hammer,Hammer Aitoff,,,,false easting|false northing|central meridian|latitude of origin|scale factor=1
 laea  ,Lambert Azimuthal EqualArea,Lambert_Azimuthal_Equal_Area,EPSG:9820,,false easting|false northing|central meridian|latitude of origin|scale factor=1
-lcc,Lambert Conformal Conic,Lambert_Conformal_Conic_1SP,EPSG:9801,,false easting|false northing|central meridian|latitude of origin|standard parallel 1=30|standard parallel 2=60|scale factor=1
+lcc,Lambert Conformal Conic,Lambert_Conformal_Conic_2SP,EPSG:9801,,false easting|false northing|central meridian|latitude of origin|standard parallel 1=30|standard parallel 2=60|scale factor=1
 PRJLCCB72,Lambert Conform Conic Belgium 1972,Lambert_Conformal_Conic_2SP_Belgium,EPSG:9803,,
 PRJLCCB08,Lambert Conform Conic Belgium 2008,,,,
 PRJLCCF,Lambert Conform Conic France,,,,
