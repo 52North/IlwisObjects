@@ -250,7 +250,7 @@ quint64 SelectionRaster::createMetadata()
             Where \
             Logical - attribute - comparison : attribute(< | >|<=|>= |= = ) appropriate - value, pecial attribute for rasters is pixelvalue.For rasters without attribute tables \
             Data - selection: envelope - definition | boundingbox - defintion | polygon - defintion | attribute - definition, defines a spatial area \
-            Envelope - definition: envelope(minx miny, maxx maxxy), in coordinates \
+            Envelope - definition: envelope(minx miny, maxx maxy), in coordinates \
             Boundingbox - defintion: boundingbox(minx miny, maxx maxy), in pixels \
             Polygon - definitions, >wkt polygon definition \
             Attribute - definition, attributes(<attribute - name>(, attribute - name > )*) , in case of rasters and only one attribute is selected, no attribute table will be attached \
