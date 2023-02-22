@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "numericrange.h"
 #include "rawconverter.h"
 #include "binaryilwis3table.h"
+#include <QColor>
 
 
 using namespace Ilwis ;
@@ -374,7 +375,8 @@ void BinaryIlwis3Table::addStoreDefinition(const DataDefinition& def) {
         inf._conv = conv;
         inf._type = itITEMDOMAIN;
     } else if ( hasType(colType, itTEXTDOMAIN) ||
-                hasType(colType, itCOORDDOMAIN))  {
+                hasType(colType, itCOORDDOMAIN) ||
+                hasType(colType, itCOLORDOMAIN)) {
        inf._type = colType;
     }
     _columnInfo.push_back(inf);
@@ -445,6 +447,12 @@ void BinaryIlwis3Table::storeRecord(std::ofstream& output_file, const std::vecto
                     v = 0;
                     output_file.write((char *)&v, 8);
                 }
+            } else if (tp == itCOLORDOMAIN) {
+                QColor val = rec[x].value<QColor>();
+                val.setAlpha(255 - val.alpha());
+                QRgb rgba = val.rgba();
+                quint32 clr = (rgba & 0xff00ff00) | (rgba & 0x00ff0000) >> 16 | (rgba & 0x000000ff) << 16; // QRgb is ARGB, ilwis3 Color on disk .rp# files is TBGR where T is transparency
+                output_file.write((char*)&clr, 4);
             }
         }
     }

@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "inifile.h"
 #include "numericrange.h"
 #include "numericdomain.h"
+#include "representation.h"
 #include "catalog.h"
 #include "ilwiscontext.h"
 #include "pixeliterator.h"
@@ -696,6 +697,20 @@ bool RasterCoverageConnector::storeMetaData( IlwisObject *obj, const IOOptions& 
             }
             dom->connectTo(filename,"domain","ilwis3", Ilwis::IlwisObject::cmOUTPUT);
             dom->store();
+
+            if (hasType(dom->valueType(), itTHEMATICITEM | itNUMERICITEM)) {
+                const IRepresentation rpr = raster->datadef().representation();
+                if (rpr.isValid()) {
+                    QString rprName = !rpr->isAnonymous() ? rpr->name() : (QFileInfo(_domainName).baseName() + ".rpr");
+                    QString rprFilename = context()->workingCatalog()->resolve(rprName);
+                    if (rprFilename == sUNDEF) {
+                        int index = _odf->url().lastIndexOf("/");
+                        rprFilename = _odf->url().left(index) + "/" + rprName;
+                    }
+                    rpr->connectTo(rprFilename, "representation", "ilwis3", Ilwis::IlwisObject::cmOUTPUT);
+                    rpr->store();
+                }
+            }
         }
     }
 

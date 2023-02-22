@@ -23,6 +23,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwis3connector.h"
 #include "representation.h"
 #include "ilwis3representationconnector.h"
+#include "domain.h"
+#include "itemdomain.h"
+#include "interval.h"
+#include "identifierrange.h"
+#include "geos/geom/Coordinate.h"
+#include "rawconverter.h"
+#include "binaryilwis3table.h"
+#include "datadefinition.h"
+#include "colordomain.h"
+
 
 using namespace Ilwis;
 using namespace Ilwis3;
@@ -54,7 +64,98 @@ bool Ilwis3RepresentationConnector::loadMetaData(IlwisObject *data, const IOOpti
 
 bool Ilwis3RepresentationConnector::storeMetaData(IlwisObject *obj, const IOOptions &options)
 {
-    return false;
+    Representation* rpr = static_cast<Representation*>(obj);
+    QString rprName = rpr->name();
+    QString alias = kernel()->database()->findAlias(rprName, "representation", "ilwis3");
+    if (alias != sUNDEF)
+        return true; // nothing to be done, already exists as a system domain
+    if (!Ilwis3Connector::storeMetaData(obj, itREPRESENTATION))
+        return false;
+
+    _odf->setKeyValue("Ilwis", "Type", "Representation");
+    IDomain dom = rpr->domain();
+    QString domainName = !dom->isAnonymous() ? dom->name() : (QFileInfo(QUrl(_odf->url()).toLocalFile()).baseName() + ".dom"); // actual domain name set in CoverageConnector::storeMetaData() is unavailable here
+    if (dom->ilwisType() == itNUMERICDOMAIN) {
+    }
+    else if (dom->valueType() == itTHEMATICITEM || dom->valueType() == itNUMERICITEM) {
+        ItemDomain<NamedIdentifier>* piddomain = static_cast<ItemDomain<NamedIdentifier> *>(dom.ptr());
+        INamedIdDomain iddomain;
+        iddomain.set(piddomain);
+
+        auto writeColumnFunc = [&](const QString& name, const QString& domName, const QString& domInfo, const QString& rng, const QString& storeType) -> void {
+            auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+            _odf->setKeyValue(name, "Time", tm);
+            _odf->setKeyValue(name, "Version", "3.1");
+            _odf->setKeyValue(name, "Class", "Column");
+            _odf->setKeyValue(name, "Domain", domName);
+            _odf->setKeyValue(name, "DomainInfo", domInfo);
+            if (rng != sUNDEF)
+                _odf->setKeyValue(name, "Range", rng);
+            _odf->setKeyValue(name, "ReadOnly", "No");
+            _odf->setKeyValue(name, "OwnedByTable", "Yes");
+            _odf->setKeyValue(name, "Type", "ColumnStore");
+            _odf->setKeyValue(name, "StoreType", storeType);
+        };
+
+        _odf->setKeyValue("Ilwis", "Class", "Representation Class");
+        _odf->setKeyValue("Representation", "Domain", domainName);
+        _odf->setKeyValue("Representation", "DomainInfo", QString("%1;Byte;%2;%3;;").arg(domainName).arg(dom->valueType() == itNUMERICITEM ? "group" : "class").arg(IniFile::FormatElement(iddomain->count())));
+        _odf->setKeyValue("Representation", "BoundaryColor", 0);
+        _odf->setKeyValue("Representation", "BoundaryWidth", 1);
+        _odf->setKeyValue("Representation", "Type", "RepresentationClass");
+
+        auto tm = IniFile::FormatElement((quint32)Time::now().toTime_t());
+        _odf->setKeyValue("Table", "Time", tm);
+        _odf->setKeyValue("Table", "Version", "3.1");
+        _odf->setKeyValue("Table", "Class", "Table");
+        _odf->setKeyValue("Table", "Domain", domainName);
+        _odf->setKeyValue("Table", "Type", "TableStore");
+        _odf->setKeyValue("Table", "DomainInfo", QString("%1;Byte;%2;%3;;").arg(domainName).arg(dom->valueType() == itNUMERICITEM ? "group" : "class").arg(IniFile::FormatElement(iddomain->count())));
+        _odf->setKeyValue("Table", "Columns", 1);
+        _odf->setKeyValue("Table", "Records", IniFile::FormatElement(iddomain->count()));
+
+        QFileInfo inf(QUrl(_odf->url()).toLocalFile());
+        QString dataName = inf.baseName() + ".rp#";
+        _odf->setKeyValue("TableStore", "Data", dataName);
+        _odf->setKeyValue("TableStore", "Col0", "Color");
+        _odf->setKeyValue("TableStore", "Type", "TableBinary");
+        writeColumnFunc("Col:Color", "Color.dom", "color.dom;Long;color;0;;", sUNDEF, "Long");
+
+        BinaryIlwis3Table ilw3tbl;
+        std::ofstream output_file;
+        if (!ilw3tbl.openOutput(inf.absolutePath() + "/" + dataName, output_file))
+            return false;
+        IColorDomain colordom;
+        colordom.prepare();
+        DataDefinition defcolor(colordom);
+
+        ilw3tbl.addStoreDefinition(defcolor);
+
+        std::map<quint32, std::vector<QVariant>> orderedRecords;
+        for (DomainItem* item : iddomain) {
+            int columnCount = 1;
+            std::vector<QVariant> record(columnCount);
+            QColor color = rpr->colors()->value2color(item->raw());
+            record[0] = color;
+            orderedRecords[item->raw()] = record;
+        }
+        for (const auto& rec : orderedRecords) {
+            ilw3tbl.storeRecord(output_file, rec.second);
+        }
+
+        output_file.close();
+    }
+    else if (dom->valueType() & itIDENTIFIERITEM) {
+    }
+    else if (dom->ilwisType() == itTEXTDOMAIN) {
+    }
+    else if (dom->ilwisType() == itCOLORDOMAIN) {
+    }
+    else if (dom->ilwisType() == itCOORDDOMAIN) {
+    }
+
+    _odf->store("rpr", sourceRef().toLocalFile());
+    return true;
 }
 
 IlwisObject *Ilwis3RepresentationConnector::create() const

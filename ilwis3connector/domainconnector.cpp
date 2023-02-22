@@ -272,10 +272,12 @@ bool DomainConnector::storeMetaDataSortDomain(Domain *dom, IlwisTypes valueType)
     if ( valueType == itNUMERICITEM)
         typeName = "DomainGroup";
 
+    QFileInfo inf(QUrl(_odf->url()).toLocalFile());
     _odf->setKeyValue("Domain", "Type", typeName);
+    if (hasType(valueType, itTHEMATICITEM | itNUMERICITEM))
+        _odf->setKeyValue("Domain", "Representation", inf.baseName() + ".rpr"); // a gamble that the rpr will have the same name as the domain; at this stage we don't have access to tbe representation (we would have to find the datadefinition object)
     _odf->setKeyValue( hasType(valueType,itTHEMATICITEM | itNUMERICITEM) ? "DomainClass" : "DomainIdentifier", "Nr", IniFile::FormatElement(iddomain->count()));
 
-    QFileInfo inf(QUrl(_odf->url()).toLocalFile());
     QString dataName  = inf.baseName() + ".dm#";
     _odf->setKeyValue("TableStore", "Data", dataName);
     _odf->setKeyValue("TableStore", "Col0", "Name");
