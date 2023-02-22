@@ -381,7 +381,7 @@ bool Grid::prepare(quint64 rasterid, const Size<> &sz) {
     _memUsed = std::min(bytesNeeded, mleft/2);
     context()->changeMemoryLeft(-_memUsed);
     int nblocks = numberOfBlocks();
-    _maxCacheBlocks = std::min(_size.zsize() > 1 ? _size.zsize() * 2 : 10, (quint32)20); // allow more blocks when using maplists
+    _maxCacheBlocks = std::max(_size.zsize(), (quint32)20); // allow more blocks when using maplists
     _blocksPerBand = nblocks / sz.zsize();
 
     qint32 totalLines = _size.ysize();
@@ -547,12 +547,12 @@ void Grid::prepare4Operation(int nThreads) {
         int threadIdx = _cache[0]._cacheBlocks[idx]._blocknr / _blocksPerBand + 1;
         _cache[threadIdx]._cacheBlocks.push_back({ _cache[0]._cacheBlocks[idx]._grid, _cache[0]._cacheBlocks[idx]._blocknr });
 	}
-	_maxCacheBlocks = std::max(1, (int)_maxCacheBlocks / nThreads);
+	_maxCacheBlocks = std::max(1, 1 + (int)_maxCacheBlocks / nThreads);
 }
 
 void Grid::unprepare4Operation() {
 	_cache.resize(1);
-	_maxCacheBlocks = std::min(_size.zsize() > 1 ? _size.zsize() * 2 : 10, (quint32)20);
+	_maxCacheBlocks = std::max(_size.zsize(), (quint32)20);
 }
 
 bool Grid::save2cache(int cacheNr, quint64 seekPosition, char *dataBlock, quint64 bytesNeeded){
