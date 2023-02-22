@@ -92,19 +92,19 @@ public:
         limit = _markers[index(pNETTOCOUNT)] * (limit / 100.0);
         double sum = 0;
         if ( method == pMIN){
-            for(int i = 0 ; i < _bins.size(); ++i){
+            for(int i = 0 ; i < _bins.size() - 1; ++i){
                 sum += _bins[i]._count;
                 if ( sum > limit){
-                    return ((double)i / _bins.size()) * ( _markers[index(pMAX)] - _markers[index(pMIN)]) + _markers[index(pMIN)];
+                    return ((double)i / (_bins.size() - 2)) * ( _markers[index(pMAX)] - _markers[index(pMIN)]) + _markers[index(pMIN)];
                 }
             }
         } else if ( method == pMAX){
             double totalSum = _markers[index(pNETTOCOUNT)];
             sum = _markers[index(pNETTOCOUNT)];
-            for(int i = _bins.size() - 2 ; i > 0; --i){
+            for(int i = _bins.size() - 2 ; i >= 0; --i){
                 sum -= _bins[i]._count;
                 if ( sum < totalSum - limit){
-                    return ((double)i / _bins.size()) * ( _markers[index(pMAX)] - _markers[index(pMIN)]) + _markers[index(pMIN)];
+                    return ((double)i / (_bins.size() - 2)) * ( _markers[index(pMAX)] - _markers[index(pMIN)]) + _markers[index(pMIN)];
                 }
             }
         }
@@ -266,12 +266,13 @@ public:
                     }
                 }
 
-                _bins.resize(_binCount + 2); // last cell is for undefines
+                _bins.resize(_binCount + 2); // last cell is for undefineds
                 double delta = prop(pDELTA);
                 for (int i = 0; i < _binCount; ++i) {
                     _bins[i] = HistogramBin(prop(pMIN) + i * (delta / _binCount));
                 }
                 _bins[_binCount] = HistogramBin(prop(pMAX));
+                _bins[_binCount + 1] = HistogramBin(rUNDEF);
                 double rmin = prop(pMIN);
                 double rdelta = prop(pDELTA);
 				int binsize = _bins.size();
@@ -283,9 +284,9 @@ public:
                     quint16 index = (quint16)binsize - 1;
                     if (!isNumericalUndef(sample)) {
 						double d = (double)(sample - rmin);
-						double idx = (double)(binsize-1) * d / rdelta;
-						index = idx;
-                        index =  index >= binsize-2 ? index - 2 : index; // -2 is the last 'real' number, -1 is the place for undefs; through rounding the index may endup at index -1 which is not what we want;
+						double idx = (double)(binsize-2) * d / rdelta;
+						index = idx; // floor
+                        index =  index > binsize-2 ? index - 2 : index; // -2 is the last 'real' number, -1 is the place for undefs; through rounding the index may endup at index -1 which is not what we want;
                     }
                     _bins.at(index)._count++;
                 }
@@ -445,8 +446,8 @@ public:
         }
 
         quint16 getOffsetFactorFor(const DataType& sample, double rmin, double rdelta) const {
-            quint16 index = _bins.size() * (double)(sample - rmin) / rdelta;
-            return index == _bins.size() ? index - 1 : index;
+            quint16 index = (_bins.size() - 2) * (double)(sample - rmin) / rdelta;
+            return index >= _bins.size() ? (index - 1) : index;
         }
 
         double getBinWidth() const {
