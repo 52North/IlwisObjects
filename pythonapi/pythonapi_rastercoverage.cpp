@@ -796,9 +796,12 @@ RasterCoverage* RasterCoverage::reprojectRaster(std::string newName, quint32 eps
         return this;
     }
     Ilwis::Envelope env  = this->ptr()->as<Ilwis::RasterCoverage>()->envelope();
-    env = sourceCsy->convertEnvelope(targetIlwCsy, env);
-    Ilwis::BoundingBox bo = georef->coord2Pixel(env);
-    Ilwis::Size<> sz = bo.size();
+    env = targetIlwCsy->convertEnvelope(sourceCsy, env);
+    Ilwis::Size<> sz = georef->size();
+    if (sz.xsize() > sz.ysize())
+        sz.ysize(std::abs(env.max_corner().y - env.min_corner().y) * sz.xsize() / std::abs(env.max_corner().x - env.min_corner().x));
+    else
+        sz.xsize(std::abs(env.max_corner().x - env.min_corner().x) * sz.ysize() / std::abs(env.max_corner().y - env.min_corner().y));
     std::string refStr = "code=georef:type=corners,csy=epsg:" + std::to_string(epsg) + ",envelope=" +
             env.toString().toStdString() + ",gridsize=" + std::to_string(sz.xsize()) + " " + std::to_string(sz.ysize()) +
             ",name=grf1";
