@@ -226,25 +226,7 @@ if errorlevel 1 goto VCEnd
  del /f ..\output\debug\bin\extensions\pythonapi39\ilwisobjects.py
 if errorlevel 1 goto VCEnd
 </Command>
-      <Message>if not exist ..\output\debug\bin\extensions\pythonapi mkdir ..\output\debug\bin\extensions\pythonapi
- copy /y ..\libraries\debug\extensions\pythonapi\_ilwisobjects.pyd ..\output\debug\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\test.py ..\output\debug\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\README ..\output\debug\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\UPDATE ..\output\debug\bin\extensions\pythonapi
- copy /y ..\projects\pythonapi\CHANGELOG ..\output\debug\bin\extensions\pythonapi
- copy /y /b ..\projects\pythonapi\paths.py + ..\output\debug\bin\extensions\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonapi\temp.py
- move /y ..\output\debug\bin\extensions\pythonapi\temp.py ..\output\debug\bin\extensions\pythonapi\__init__.py
- del /f ..\output\debug\bin\extensions\pythonapi\ilwisobjects.py
- if not exist ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis mkdir ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\ilwisobjects.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\test.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\README ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\UPDATE ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\projects\pythonapi\CHANGELOG ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- copy /y ..\output\debug\bin\extensions\pythonapi\_ilwisobjects.pyd ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis
- move /y ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\ilwisobjects.py ..\output\debug\bin\extensions\pythonscript\python\Lib\site-packages\ilwis\__init__.py
-</Message>
+      <Message>Copy ilwis python library</Message>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>..\external\programs\swigwin\swig.exe -python -c++ pythonapi\ilwisobjects.i</Command>
