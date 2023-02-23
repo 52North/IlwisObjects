@@ -90,16 +90,16 @@ namespace pythonapi{
                 switch(time.valueType()){
                     case itTIME: {
                         double sec = time.get(Ilwis::Time::tpSECOND);
-                        int second = (int)sec;
                         int micro = (int)round(((sec-(int)sec)*100));
                         if (micro == 100){
-                            second++;
+                            time.setSecond(int(sec));
                             micro = 0;
+                            time = time + Ilwis::Duration(1.01 / (24.0 * 60.0 * 60)); // add 1.01 second to ensure we jump to the next second
                         }
                         return PyTimeFromTime(
                                 time.get(Ilwis::Time::tpHOUR),
                                 time.get(Ilwis::Time::tpMINUTE),
-                                second,
+                                time.get(Ilwis::Time::tpSECOND),
                                 micro*10000
                         );
                     }
@@ -110,11 +110,11 @@ namespace pythonapi{
                             );
                     case itDATETIME:{
                         double sec = time.get(Ilwis::Time::tpSECOND);
-                        int second = (int)sec;
                         int micro = (int)round(((sec-(int)sec)*100));
                         if (micro == 100){
-                            second++;
                             micro = 0;
+                            time.setSecond(int(sec));
+                            time = time + Ilwis::Duration(1.01 / (24.0 * 60.0 * 60)); // add 1.01 second to ensure we jump to the next second
                         }
                         return PyDateTimeFromDateAndTime(
                                     time.get(Ilwis::Time::tpYEAR),
@@ -122,7 +122,7 @@ namespace pythonapi{
                                     time.get(Ilwis::Time::tpDAYOFMONTH),
                                     time.get(Ilwis::Time::tpHOUR),
                                     time.get(Ilwis::Time::tpMINUTE),
-                                    second,
+                                    time.get(Ilwis::Time::tpSECOND),
                                     micro*10000
                                 );
                     }
