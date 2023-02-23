@@ -31,15 +31,23 @@ int main(int argc, char *argv[])
 
         bool scriptStatementAtBegin = false;
 
-        QString expr = "aaas{format(ilwis3,map)}=mapcalc(\"@1 + 1\", \"file:///d:/data/ilwis4/testdata/n000302.mpr\")";
+        //QString expr = "filt{format(GTiff,map)}=timesat(\"file:///E:/Projects/EO-Africa/timesat discrepancy/unfilter_20x20_pix.tif\",4,true,false,false)";
+        QString expr = "filt{format(GTiff,map)}=timesat(\"file:///E:/Projects/EO-Africa/timesat discrepancy/wn_2020.mpl\",4,true,false,true)";
 
         if (!scriptStatementAtBegin)
             expr = "script " + expr;
 
-        Ilwis::initIlwis(Ilwis::rmCOMMANDLINE | Ilwis::rmNOUI);
-        Ilwis::ExecutionContext ctx;
-        Ilwis::SymbolTable syms;
-        Ilwis::commandhandler()->execute(expr,&ctx,syms);
+        std::string err = Ilwis::initIlwis(Ilwis::rmCOMMANDLINE | Ilwis::rmNOUI);
+        Ilwis::ICatalog catalog("file:///E:/Projects/EO-Africa/timesat discrepancy");
+        Ilwis::context()->setWorkingCatalog(catalog);
+        if (err.length() == 0) {
+            Ilwis::ExecutionContext ctx;
+            Ilwis::SymbolTable syms;
+            Ilwis::commandhandler()->execute(expr, &ctx, syms);
+        }
+        else {
+            std::cerr << err;
+        }
 
         Ilwis::exitIlwis();
         return 0;
