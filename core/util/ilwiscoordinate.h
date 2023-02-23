@@ -81,7 +81,7 @@ struct KERNELSHARED_EXPORT PhiLam  // Phi and Lam in radians; philam is always i
 class KERNELSHARED_EXPORT LatLon : public Ilwis::Coordinate { // lat == y, lon == x; latlon is always in degrees
 public:
     LatLon();
-    LatLon(const double latd, const double lond, const double height = 0);
+    LatLon(const double latd, const double lond, const double height = rUNDEF);
     LatLon(const QString& lat, const QString& lon);
     double Phi() const    { return M_PI / 180 * y; }
     double Lambda() const { return M_PI / 180 * x; }

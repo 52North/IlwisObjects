@@ -74,7 +74,7 @@ Coordinate Ellipsoid::latlon2Coord(const LatLon& sourceLatLon) const{
     double cosLambda = cos(lambda);
     double e2 = 2 * _flattening - _flattening * _flattening;
     double N = _majorAxis / sqrt(1 - e2 * sinPhi * sinPhi);
-    double h = sourceLatLon.Height();
+    double h = sourceLatLon.Height() != rUNDEF ? sourceLatLon.Height() : 0;
     result.x = (N + h) * cosPhi * cosLambda;
     result.y  = (N + h) * cosPhi * sinLambda;
     result.z = (N * (1 - e2) + h) * sinPhi;
@@ -110,7 +110,7 @@ LatLon Ellipsoid::latlon2Coord(const IEllipsoid &sourceEllipsoid, const LatLon& 
 
     double phi = sourceLatLon.Phi();
     double lam = sourceLatLon.Lambda();
-    double h = sourceLatLon.Height();
+    double h = sourceLatLon.Height() != rUNDEF ? sourceLatLon.Height() : 0;
     double sinPhi = sin(phi);
     double cosPhi = cos(phi);
     double sin2Phi = sinPhi * sinPhi;

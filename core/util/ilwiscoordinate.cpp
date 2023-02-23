@@ -368,7 +368,7 @@ void PhiLam::AdjustLon()
 LatLon::LatLon(){
     x = rUNDEF;
     y = rUNDEF;
-    z = 0;
+    z = rUNDEF;
 }
 
 LatLon::LatLon(const double latd, const double lond, const double height){
