@@ -154,7 +154,7 @@ QString IlwisObject::constructPath(std::string resource){
             input = QUrl::fromLocalFile(input).toString();
          else {// container object without path, e.g. myfile.hdf/subdataset: look for it in workingCatalog()
             QUrl workingCatalogUrl = Ilwis::context()->workingCatalog()->filesystemLocation();
-            if (QFileInfo (workingCatalogUrl.toLocalFile()+ + '/' + input).exists())
+            if (QFileInfo (workingCatalogUrl.toLocalFile() + '/' + input).exists())
                 input = Ilwis::context()->workingCatalog()->filesystemLocation().toString() + '/' + input;
          }
     }
