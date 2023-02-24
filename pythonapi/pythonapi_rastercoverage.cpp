@@ -804,7 +804,7 @@ RasterCoverage* RasterCoverage::reprojectRaster(std::string newName, quint32 eps
         sz.xsize(std::abs(env.max_corner().x - env.min_corner().x) * sz.ysize() / std::abs(env.max_corner().y - env.min_corner().y));
     std::string refStr = "code=georef:type=corners,csy=epsg:" + std::to_string(epsg) + ",envelope=" +
             env.toString().toStdString() + ",gridsize=" + std::to_string(sz.xsize()) + " " + std::to_string(sz.ysize()) +
-            ",name=grf1";
+            ",name=grf1,cornerofcorners=" + (georef->centerOfPixel() ? "no" : "yes");
 
     GeoReference grf(refStr);
     QString expr = QString::fromStdString(newName + "=resample(" + this->name() + ",grf1," + interpol  + ")");
