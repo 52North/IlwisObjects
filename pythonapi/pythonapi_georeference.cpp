@@ -16,11 +16,12 @@ namespace pythonapi {
     GeoReference::GeoReference(const Ilwis::IGeoReference& gr): IlwisObject(new Ilwis::IIlwisObject(gr)){
     }
 
-    GeoReference::GeoReference(const std::string &csyCode,const Envelope &env,const Size &psize) {
+    GeoReference::GeoReference(const std::string &csyCode,const Envelope &env,const Size &psize, const std::string cornerstype) {
         Ilwis::Resource res(itGEOREF);
         res.addProperty("coordinatesystem", IVARIANT(QString::fromStdString(csyCode)));
         res.addProperty("envelope", IVARIANT(env.data()));
         res.addProperty("size", IVARIANT(psize.data()));
+        res.addProperty("centerofpixel", IVARIANT(cornerstype != "cornerofcorners"));
         Ilwis::IGeoReference gr(res);
         if (gr.isValid()){
             gr->compute();
@@ -29,12 +30,13 @@ namespace pythonapi {
 
     }
 
-    GeoReference::GeoReference(const CoordinateSystem &csy, const Envelope &env, const Size &psize)
+    GeoReference::GeoReference(const CoordinateSystem &csy, const Envelope &env, const Size &psize, const std::string cornerstype)
     {
         Ilwis::Resource res(itGEOREF);
         res.addProperty("coordinatesystem", csy.ilwisID());
         res.addProperty("envelope", IVARIANT(env.data()));
         res.addProperty("size", IVARIANT(psize.data()));
+        res.addProperty("centerofpixel", IVARIANT(cornerstype != "cornerofcorners"));
         Ilwis::IGeoReference gr(res);
         if (gr.isValid()){
             gr->compute();
