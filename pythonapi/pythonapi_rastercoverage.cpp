@@ -786,7 +786,7 @@ RasterCoverage RasterCoverage::select(Geometry& geom){
     return RasterCoverage(map2);
 }
 
-RasterCoverage* RasterCoverage::reprojectRaster(std::string newName, quint32 epsg, std::string interpol){
+RasterCoverage* RasterCoverage::reprojectRaster(quint32 epsg, std::string interpol){
     CoordinateSystem targetPyCsy ("code=epsg:" + std::to_string(epsg));
     Ilwis::ICoordinateSystem targetIlwCsy = targetPyCsy.ptr()->as<Ilwis::CoordinateSystem>();
     Ilwis::IGeoReference georef = this->geoReference().ptr()->as<Ilwis::GeoReference>();
@@ -804,18 +804,24 @@ RasterCoverage* RasterCoverage::reprojectRaster(std::string newName, quint32 eps
         sz.xsize(std::abs(env.max_corner().x - env.min_corner().x) * sz.ysize() / std::abs(env.max_corner().y - env.min_corner().y));
     std::string refStr = "code=georef:type=corners,csy=epsg:" + std::to_string(epsg) + ",envelope=" +
             env.toString().toStdString() + ",gridsize=" + std::to_string(sz.xsize()) + " " + std::to_string(sz.ysize()) +
-            ",name=grf1,cornerofcorners=" + (georef->centerOfPixel() ? "no" : "yes");
+            ",cornerofcorners=" + (georef->centerOfPixel() ? "no" : "yes");
 
     GeoReference grf(refStr);
-    QString expr = QString::fromStdString(newName + "=resample(" + this->name() + ",grf1," + interpol  + ")");
+    std::string output_name = "resample_object_" + QString::number(Ilwis::Identity::newAnonymousId()).toStdString();
+    QString expr = QString::fromStdString(output_name + "=resample(" + this->name() + "," + grf.name() + "," + interpol  + ")");
     //expr = expr.fromStdString(newName + "=resample(" + this->name() + ",grf1," + interpol  + ")");
     Ilwis::ExecutionContext ctx;
     Ilwis::SymbolTable syms;
     Ilwis::commandhandler()->execute(expr,&ctx,syms);
-    QString path;
-    path = path.fromStdString("ilwis://internalcatalog/" + newName);
-    Ilwis::IRasterCoverage raster (path);
-    return new RasterCoverage(raster);
+
+    Ilwis::Symbol result = syms.getSymbol(ctx._results[0]);
+    if (result._type == itRASTER && result._var.canConvert<Ilwis::IRasterCoverage>()) {
+        Ilwis::IRasterCoverage obj(result._var.value<Ilwis::IRasterCoverage>());
+        obj->name(QString("resample_%1").arg(obj->id()));
+        return new RasterCoverage(obj);
+    }
+    else
+        return new RasterCoverage();
 }
 
 RasterCoverage* RasterCoverage::clone(){
