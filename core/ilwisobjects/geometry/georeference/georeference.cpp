@@ -55,6 +55,11 @@ void GeoReference::create(const QString& type) {
     impl(implementation);
 }
 
+Coordinate GeoReference::pixel2Coord(const Pixel& pixel) const
+{
+    return _georefImpl->pixel2Coord(Pixeld(pixel.x + 0.5, pixel.y + 0.5));
+}
+
 Coordinate GeoReference::pixel2Coord(const Pixeld &pixel) const
 {
     return _georefImpl->pixel2Coord(pixel);

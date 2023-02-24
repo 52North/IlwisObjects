@@ -56,7 +56,7 @@ bool ResampleRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         bool equalCsy = _inputRaster->coordinateSystem()->isEqual(_outputRaster->coordinateSystem().ptr());
         while(iterOut != iterEnd) {
             Pixel position = iterOut.position();
-            Coordinate coord = _outputRaster->georeference()->pixel2Coord(Pixeld(position.x,(position.y)));
+            Coordinate coord = _outputRaster->georeference()->pixel2Coord(position);
             if ( !equalCsy)
                 coord = _inputRaster->coordinateSystem()->coord2coord(_outputRaster->coordinateSystem(),coord);
             double vnew = interpolator.coord2value(coord, iterOut.position().z);

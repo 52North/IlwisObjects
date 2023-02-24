@@ -48,6 +48,7 @@ public:
     GeoReference(const Resource& resource);
     ~GeoReference();
 
+    Coordinate pixel2Coord(const Pixel& pixel) const;
     Coordinate pixel2Coord(const Pixeld& pixel) const;
     Pixeld coord2Pixel(const Coordinate& crd) const;
     double pixelSize() const;

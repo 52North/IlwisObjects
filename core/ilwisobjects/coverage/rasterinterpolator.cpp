@@ -29,8 +29,10 @@ RasterInterpolator::RasterInterpolator(const IRasterCoverage& raster, int method
 double RasterInterpolator::pix2value(const Pixeld& pix) {
     double v = rUNDEF;
     switch( _method) {
-    case 0: //nearestneighbour
-        return _grid->value(pix);
+    case 0: {//nearestneighbour
+        Pixel rc = Pixel((int)floor(pix.x), (int)floor(pix.y), pix.z);
+        return _grid->value(rc);
+    }
     case 1: //bilinear
         return bilinear(pix);
     case 2: //bicubic
