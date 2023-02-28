@@ -252,36 +252,39 @@ bool CommandHandler::parmIsValid(int index, Parameter parm, std::map<QString, QS
         return false;
     }
     IlwisTypes tpMeta = (*iter).second.toULongLong();
-    if ( tpMeta != itSTRING ) { // string matches with all
-        if (!( hasType(tpMeta, itDOUBLE) && hasType(tpExpr, itNUMBER))) {
-            if (!( hasType(tpMeta, itINTEGER) && hasType(tpExpr, itINTEGER))) {
-                if ((tpMeta & tpExpr) == 0 && tpExpr != i64UNDEF) {
-                    if (tpExpr == itSTRING) {
-                        if (parm.value() == "") { // empty parameters are seen as strings and are acceptable. at operation level it should be decided what to do with it
-                            return true;
-                        }
-                        else {
-                            Parameter::PathType pathType = parm.pathType();
-                            if (pathType == Parameter::ptREMOTE || pathType == Parameter::ptLOCALOBJECT || Parameter::ptUNDEFINED) {
-                                // we can't know what this parameter type realy is, so we accept it as valid
-                                // if it is incorrect the prepare of the operation will fail so no harm done
-                                return true;
-                            }
-                        }
-                    }
-                    QString parmValue = parm.value();
-                    if (OperationHelper::isUrl(parmValue)) {
-                        Resource resource = mastercatalog()->name2Resource(parmValue, tpExpr);
-                        if (resource.isValid()) {
-                            quint64 extType = resource.extendedType();
-                            bool ok = hasType(extType, tpMeta);
-                            return ok;
-                        }
-                    }
-                    return false;
-                }
+    if (tpMeta == itSTRING)
+        return true; // string matches with all
+    
+    if (hasType(tpMeta, itDOUBLE) && hasType(tpExpr, itNUMBER))
+        return true;
+
+    if (hasType(tpMeta, itINTEGER) && hasType(tpExpr, itINTEGER))
+        return true;
+
+    if (!((tpMeta & tpExpr) == 0 && tpExpr != i64UNDEF))
+        return true;
+    
+    if (tpExpr == itSTRING) {
+        if (parm.value() == "") { // empty parameters are seen as strings and are acceptable. at operation level it should be decided what to do with it
+            return true;
+        }
+        else {
+            Parameter::PathType pathType = parm.pathType();
+            if (pathType == Parameter::ptREMOTE || pathType == Parameter::ptLOCALOBJECT || Parameter::ptUNDEFINED) {
+                // we can't know what this parameter type realy is, so we accept it as valid
+                // if it is incorrect the prepare of the operation will fail so no harm done
+                return true;
             }
         }
     }
-    return true;
+    QString parmValue = parm.value();
+    if (OperationHelper::isUrl(parmValue)) {
+        Resource resource = mastercatalog()->name2Resource(parmValue, tpExpr);
+        if (resource.isValid()) {
+            quint64 extType = resource.extendedType();
+            bool ok = hasType(extType, tpMeta);
+            return ok;
+        }
+    }
+    return false;
 }
