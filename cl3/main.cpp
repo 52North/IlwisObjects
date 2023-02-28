@@ -31,8 +31,7 @@ int main(int argc, char *argv[])
 
         bool scriptStatementAtBegin = false;
 
-        //QString expr = "filt{format(GTiff,map)}=timesat(\"file:///E:/Projects/EO-Africa/timesat discrepancy/unfilter_20x20_pix.tif\",4,true,false,false)";
-        QString expr = "filt{format(GTiff,map)}=timesat(\"file:///E:/Projects/EO-Africa/timesat discrepancy/wn_2020.mpl\",4,true,false,true)";
+        QString expr = "filt{format(gdal, GTiff)}=timesat(\"file:///E:/Projects/EO-Africa/timesat discrepancy/wn_2020.mpl\",4,true,false,true)";
 
         if (!scriptStatementAtBegin)
             expr = "script " + expr;
