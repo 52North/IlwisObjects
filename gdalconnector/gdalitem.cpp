@@ -510,7 +510,7 @@ quint64 GDALItems::addCsy(GdalHandle* handle, const QString &path, const QUrl& u
         code = "code=csy:unknown";
         Envelope env = gdal()->envelope(handle,0);
         if ( env.isValid() && !env.isNull()){
-            dim = QString("%1 x %2 x %3 x %4").arg(env.min_corner().x).arg(env.min_corner().y).arg(env.max_corner().x).arg(env.max_corner().y);
+            dim = QString("%1 x %2 x %3 x %4").arg(env.min_corner().x, 0, 'f').arg(env.min_corner().y, 0, 'f').arg(env.max_corner().x, 0, 'f').arg(env.max_corner().y, 0, 'f');
         }
         if ( path.indexOf("NETCDF") == 0){
             code = "code=epsg:4326";
