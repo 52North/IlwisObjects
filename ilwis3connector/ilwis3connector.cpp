@@ -423,9 +423,11 @@ QString Ilwis3Connector::writeCsy(IlwisObject *obj, const ICoordinateSystem & cs
                 }
             }
             else if ( csyName == sUNDEF || csyName == "") {
-                csyName = csy->name();
-                if ( !csy->isAnonymous()) {
-                    csyName = csyName.replace(QRegExp("[/ .'\"]"),"_");
+                if (csy->isAnonymous() || csy->name() == csy->description())
+                    csyName = QFileInfo(QUrl(_odf->url()).toLocalFile()).baseName() + ".csy";
+                else {
+                    csyName = csy->name();
+                    csyName = csyName.replace(QRegExp("[/ .'\"]"), "_");
                 }
                 if ( !csyName.endsWith(".csy"))
                     csyName += ".csy";
