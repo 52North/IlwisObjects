@@ -463,7 +463,7 @@ bool CoordinateSystemConnector::storeMetaData(IlwisObject *data, const IOOptions
             }
         } else if ( cCsy->ellipsoid().isValid()) { // no datum known: write out ellipsoid
             QString ellipsoidName = cCsy->ellipsoid()->code();
-            if ( ellipsoidName != sUNDEF) {
+            if ( ellipsoidName != sUNDEF && ellipsoidName != "User Defined") {
                 ellipsoidName = Ilwis3Connector::code2name(ellipsoidName, "ellipsoid");
                 if (ellipsoidName.length() == 0 || ellipsoidName == sUNDEF)
                     ellipsoidName = "WGS 84";
