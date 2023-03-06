@@ -122,4 +122,8 @@ namespace pythonapi {
         return "georef";
     }
 
+    const std::string GeoReference::toString() const {
+        return this->ptr()->as<Ilwis::GeoReference>()->toString().toStdString();
+
+    }
 } // namespace pythonapi

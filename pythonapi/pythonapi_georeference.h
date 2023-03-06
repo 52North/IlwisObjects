@@ -43,7 +43,7 @@ namespace pythonapi {
             bool isCompatible(const GeoReference& other) const;
             bool compute();
             IlwisTypes ilwisType() const;
-
+            const std::string toString() const;
     };
 
 } // namespace pythonapi
