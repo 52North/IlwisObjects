@@ -107,16 +107,24 @@ bool NormalizeRelativeDEM::execute(ExecutionContext *ctx, SymbolTable& symTable)
             PixelIterator iterOut(outputRaster, feature->geometry());
             Pixel begin = iterSel.position();
             PixelIterator iterMax = std::max_element(iterSel, iterSel.end());
-            iterSel[begin];
+            //iterSel[begin];
             double maxHeight = *iterMax;
-            std::transform(iterSel, iterSel.end(), iterOut, [maxHeight] (const double d) { if (d == rUNDEF) return d; else return d / maxHeight; });
-
+            //std::transform(iterSel, iterSel.end(), iterOut, [maxHeight](const double d) { if (d == rUNDEF) return d; else return d / maxHeight; });
+            // I could not get std::transform() to work; therefore temporarily replaced by for-loop below:
+            for (auto iter = iterSel; iter != iterSel.end(); ++iter, ++iterOut) {
+                const double d = *iter;
+                if (d == rUNDEF)
+                    *iterOut = d; // avoid dividing rUNDEF with a number
+                else
+                    *iterOut = d / maxHeight;
+            }
         }
         updateTranquilizer(++count, 1); // count per feature, not by pixel
     }
 
     trq()->inform("\nWriting...\n");
-    trq()->stop();
+    std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+    trq()->stop(_startClock, end);
 
     bool resource = true;
     if ( resource && ctx != 0) {
