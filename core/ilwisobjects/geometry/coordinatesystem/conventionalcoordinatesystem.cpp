@@ -55,6 +55,8 @@ Coordinate ConventionalCoordinateSystem::coord2coord(const ICoordinateSystem &so
             if (srcCs->datum().get() && datum().get() && !srcCs->datum()->equal(*datum().get())) { // different datums given, datum shift needed
                 ll = srcCs->datum()->llToWGS84(ll, *srcCs->ellipsoid().ptr());
                 ll = datum()->llFromWGS84(ll, *ellipsoid().ptr());
+            } else if (srcCs->ellipsoid().isValid() && ellipsoid().isValid() && !ellipsoid()->isEqual(srcCs->ellipsoid())) {
+                ll = ellipsoid()->latlon2Coord(srcCs->ellipsoid(), ll);
             }
         }
         return isLatLon() ? ll : latlon2coord(ll);
@@ -330,7 +332,7 @@ bool ConventionalCoordinateSystem::prepare(const QString &parms)
     QString code = extractProjection(proj4);
 
     if ( code == sUNDEF) {
-        kernel()->issues()->log(TR(ERR_INVALID_PROPERTY_FOR_2).arg("projection name", name()));
+        kernel()->issues()->log(TR(ERR_INVALID_PROPERTY_FOR_2).arg("projection name: '" + parms + "'", name()));
         return false;
     }
     code = "code=proj4: " + code;
