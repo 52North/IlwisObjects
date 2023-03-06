@@ -453,6 +453,8 @@ bool RasterCoverageConnector::storeBinaryData(IlwisObject *obj)
         if (precision < 1e-06)
             precision = 0.0;
         bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
+        if (_domainName == "image") // image does not support undef
+            hasUndefs = false; // nothing else needed, as long as conv.real2raw() converts rUNDEF to 0
         RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
 
         std::ofstream output_file(filename.toLatin1(),ios_base::out | ios_base::binary | ios_base::trunc);
@@ -647,9 +649,15 @@ bool RasterCoverageConnector::storeMetaData( IlwisObject *obj, const IOOptions& 
         if (precision < 1e-06)
             precision = 0.0;
         bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
+        if (_domainName == "image") // image does not support undef
+            hasUndefs = false;
         RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
         qint32 delta = stats[NumericStatistics::pDELTA];
-        QString minmax = QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]);
+        QString minmax;
+        if (_domainName == "image")
+            minmax = QString("%1:%2").arg(dom->range<NumericRange>()->min()).arg(stats[NumericStatistics::pMAX]);
+        else
+            minmax = QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]);
         _odf->setKeyValue("BaseMap","MinMax",minmax);
 
         // Add the BaseMap:Range section to match the default valuerange with the Type

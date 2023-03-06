@@ -314,6 +314,8 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
             if (precision < 1e-06)
                 precision = 0.0;
             bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
+            if (_domainName == "image") // image does not support undef
+                hasUndefs = false;
             RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
             QString storeType;
             if ( delta >= 0 && delta < (hasUndefs ? 255 : 256) && resolution == 1){ // if there is an undef, restrict to one less than 255, to make space for the undef
@@ -331,7 +333,10 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
 				_domainName = "value.dom";
             _odf->setKeyValue("MapStore","Type",storeType);
             _odf->setKeyValue("BaseMap","Domain",_domainName);
-            _odf->setKeyValue("BaseMap","MinMax",QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]));
+            if (_domainName == "image")
+                _odf->setKeyValue("BaseMap","MinMax",QString("%1:%2").arg(dom->range<NumericRange>()->min()).arg(stats[NumericStatistics::pMAX]));
+            else
+                _odf->setKeyValue("BaseMap","MinMax",QString("%1:%2").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]));
             _domainInfo = QString("%1;%2;value;0;%3;%4;%5:offset=%6").arg(_domainName).arg(storeType).arg(dom->range<NumericRange>()->min()).arg(dom->range<NumericRange>()->max()).arg(dom->range<NumericRange>()->resolution()).arg(conv.offset());
             _odf->setKeyValue("BaseMap","DomainInfo",_domainInfo);
             QString rng = QString("%1:%2:%3:offset=%4").arg(stats[NumericStatistics::pMIN]).arg(stats[NumericStatistics::pMAX]).arg(precision).arg(conv.offset());
