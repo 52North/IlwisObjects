@@ -87,7 +87,10 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 			 ++iterOut;
 			 for (auto& item : inputRasters) {
 				 ++(item.second);
-			 }
+                 if (item.second.isAtEnd()) {
+                     item.second = item.second.raster();
+                 }
+             }
 			 updateTranquilizer(iterOut.linearPosition(), 1000);
 		 }
 		 return true;
@@ -233,11 +236,27 @@ OperationImplementation::State MapCalc::prepare(ExecutionContext *ctx,const Symb
         }
     }
 	if (_inputRasters.size() == 0) {
-		kernel()->issues()->log(TR("Missing input raster coverages"));
-		return sPREPAREFAILED;
+        throw ErrorObject(QString("Missing input raster coverages"));
 	}
     OperationHelperRaster helper;
-    helper.initialize((*_inputRasters.begin()).second.raster(), _outputRaster, itRASTERSIZE | itENVELOPE | itCOORDSYSTEM | itGEOREF);
+    int rasterTemplateIndex = -1;
+    quint32 maxSize;
+    for (std::map<int, PixelIterator>::iterator it = _inputRasters.begin(); it != _inputRasters.end(); ++it) {
+        quint32 zsize = (*it).second.raster()->size().zsize();
+        if (rasterTemplateIndex < 0) {
+            maxSize = zsize;
+            rasterTemplateIndex = (*it).first;
+        } else if (zsize > 1) {
+            if (maxSize != 1) {
+                if (maxSize != zsize)
+                    throw ErrorObject(QString("Can't combine maplists of different lengths: %1 and %2").arg(maxSize).arg(zsize));
+            } else {
+                maxSize = zsize;
+                rasterTemplateIndex = (*it).first;
+            }
+        }
+    }
+    helper.initialize(_inputRasters[rasterTemplateIndex].raster(), _outputRaster, itRASTERSIZE | itENVELOPE | itCOORDSYSTEM | itGEOREF);
     if ( stackdef.isValid()){
         _outputRaster->stackDefinitionRef() = stackdef;
     }
