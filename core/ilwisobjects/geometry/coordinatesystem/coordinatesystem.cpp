@@ -44,6 +44,7 @@ Envelope CoordinateSystem::convertEnvelope(const ICoordinateSystem &sourceCs, co
     for ( cXY.x = envelope.min_corner().x,iX = 0; iX <= 10; cXY += {rDX, 0}, ++iX) {
         for (cXY.y = envelope.min_corner().y,iY = 0; iY <= 10; cXY += {0,rDY} , ++iY ) {
             Coordinate crdNew = coord2coord(sourceCs, cXY);
+			crdNew.z = rUNDEF; // prevent env unintentionally expanding to 3D, as this has side-effects; many applications assume a 2D envelope will be returned; For now this function only handles 2D envelopes
             env += crdNew;
         }
     }
@@ -118,7 +119,7 @@ bool CoordinateSystem::addCsyProperty(const ICoordinateSystem& csy, Resource& re
 				code = QString("code=proj4:" + code);
 			}
 			else {
-				if (ccs->projection()->code() == "PRJPC") // special case as plate carree is not supported by proj4 and deprecated in epsg
+				if (ccs->projection().isValid() && ccs->projection()->code() == "PRJPC") // special case as plate carree is not supported by proj4 and deprecated in epsg
 					code = "code=epsg:32662";
 			}
 			resource.addProperty("coordinatesystem", code, true);
