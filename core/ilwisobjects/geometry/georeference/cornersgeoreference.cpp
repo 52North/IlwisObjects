@@ -125,8 +125,8 @@ QString CornersGeoReference::toCode() const
      //                       ",name=grf1")
      QString csyCode = coordinateSystem()->code();
      QString sizeS = size().toString();
-     QString envS = coordinateSystem()->envelope().toString();
-     QString outCode = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(csyCode).arg(envS).arg(sizeS);
+     QString envS = _internalEnvelope.toString();
+     QString outCode = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3,cornerofcorners=%4").arg(csyCode).arg(envS).arg(sizeS).arg(_centerOfPixel?"no":"yes");
     return outCode;
 }
 
