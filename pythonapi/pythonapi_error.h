@@ -6,6 +6,8 @@
 
 #include "pythonapi_qtGNUTypedefs.h"
 
+#include <QByteArray>
+
 //predeclaration of PyObject from object.h
 typedef struct _object PyObject;
 
@@ -55,7 +57,7 @@ namespace pythonapi{
     };
 
     //can retrieve Ilwis::ErrorObject::message() or std::exception::what()
-    const char *get_err_message(std::exception& e);
+    const QByteArray get_err_message(std::exception& e);
     //returns typeid(Ilwis::ErrorObject) to compare in translate_Exception_type
     const std::type_info& ilwisErrorObject_type_info();
     const std::type_info& ilwisFeatureCreationError_type_info();

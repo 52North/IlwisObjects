@@ -39,10 +39,10 @@ namespace pythonapi {
         return this->_what.c_str();
     }
 
-    const char* get_err_message(std::exception &e){
+    const QByteArray get_err_message(std::exception &e){
         Ilwis::ErrorObject* err = dynamic_cast<Ilwis::ErrorObject*>(&e);
         if (err)
-            return QString("ILWIS %1: %2").arg(err->what(),err->message()).toLocal8Bit();
+            return QString("ILWIS %1: %2").arg(err->what(), err->message()).toLocal8Bit();
         else
             return e.what();
     }
