@@ -326,7 +326,7 @@ QString Ellipsoid::toWKT(quint32 spaces) const
     }else{
         ell += name();
     }
-    ell += "\"," + QString::number(_majorAxis) + "," + QString::number(_flattening);
+    ell += "\"," + QString("%1,%2").arg(_majorAxis, 0, 'f', 12).arg((_flattening != 0) ? 1.0/_flattening : 0, 0, 'f', 12);
     ell += "]";
     return ell;
 }
