@@ -70,7 +70,7 @@ bool RasterToPoint::execute(ExecutionContext *ctx, SymbolTable &symTable)
          if(res != rUNDEF && res != 0){
              std::cout<<res<<std::endl;
              Pixel p = iter.position();
-             Coordinate coord = _inputraster->georeference()->pixel2Coord(Pixeld(p.x,p.y));
+             Coordinate coord = _inputraster->georeference()->pixel2Coord(p);
              geos::geom::Point *point = _outputfeatures->geomfactory()->createPoint(coord);
              if(point->isValid()){
                  _outputfeatures->newFeature(point);
