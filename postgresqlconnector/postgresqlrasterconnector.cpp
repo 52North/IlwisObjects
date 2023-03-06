@@ -219,8 +219,8 @@ bool PostgresqlRasterConnector::loadData(IlwisObject *data, const IOOptions &opt
                 qDebug()<<sqlBuilder;
             } else { // tiled-raster: each record is a tile of a raster; the entire table represents the raster
                 const IGeoReference & gr = coverage->georeference();
-                Coordinate crd1 = gr->pixel2Coord(Pixel(gridblock_x_start + 0.5, gridblock_y_start + 0.5));
-                Coordinate crd2 = gr->pixel2Coord(Pixel(gridblock_x_start + gridblock_x_size - 1.5, gridblock_y_start + gridblock_y_size - 1.5));
+                Coordinate crd1 = gr->pixel2Coord(Pixeld(gridblock_x_start + 0.5, gridblock_y_start + 0.5));
+                Coordinate crd2 = gr->pixel2Coord(Pixeld(gridblock_x_start + gridblock_x_size - 1.5, gridblock_y_start + gridblock_y_size - 1.5));
                 sqlBuilder = "SELECT ST_AsBinary(" + (_outDb ? (_newStyleST_AsBinary ? (params.column() + ",TRUE") : ("ST_MapAlgebraExpr(" + params.column() + ",1,NULL,'[rast]')")) : params.column()) + ") FROM " + params.schema() + "." + params.table() + " WHERE ST_Intersects(" + params.column() + ", ST_GeomFromEWKT('SRID=" + _srid + ";LINESTRING(" + crd1.x + " " + crd1.y + "," + crd2.x + " " + crd2.y +")')) ORDER BY ST_UpperLeftY(" + params.column() + "), ST_UpperLeftX(" + params.column() + ")";
                 qDebug()<<sqlBuilder;
             }

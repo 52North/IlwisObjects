@@ -105,7 +105,7 @@ bool PolygonToRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
         for (int i = 1; i < borders.size(); ++i) {
              long middle = (borders[i-1] + borders[i] )/ 2;
              double value;
-             Pixel position (middle + 0.5, y + 0.5); // take the polygon-value from the middle between two borders
+             Pixel position (middle, y); // take the polygon-value from the middle between two borders
              Coordinate crd = _inputgrf->pixel2Coord(position);
 
              QVariant d = _inputfeatures->coord2value(crd);
