@@ -174,8 +174,8 @@ Envelope GeoReference::pixel2Coord(const BoundingBox &box) const
         ERROR2(ERR_INVALID_PROPERTY_FOR_2,"size", "box");
         return Envelope();
     }
-    Coordinate c1 = pixel2Coord(box.min_corner());
-    Coordinate c2 = pixel2Coord(box.max_corner() + Pixel(1,1));
+    Coordinate c1 = pixel2Coord(Pixeld(box.min_corner()));
+    Coordinate c2 = pixel2Coord(Pixeld(box.max_corner() + Pixel(1,1)));
     return Envelope(c1,c2);
 }
 
