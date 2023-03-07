@@ -682,7 +682,7 @@ bool RasterCoverageConnector::storeMetaData( IlwisObject *obj, const IOOptions& 
         if (!stats.isValid())
             _odf->setKeyValue("BaseMap", "Range", range);
 
-        if(!dom->isSystemObject()){
+        if(!dom->isSystemObject() && _domainName != "value.dom") { // check!!
             QString filename = context()->workingCatalog()->resolve(_domainName);
             if ( filename == sUNDEF){
                 int index = _odf->url().lastIndexOf("/");

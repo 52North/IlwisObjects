@@ -285,11 +285,11 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
 		RasterCoverage *raster = static_cast<RasterCoverage *>(coverage);
         quint16 digits = raster->statistics(PIXELVALUE).significantDigits();
         qint32 delta = raster->statistics(PIXELVALUE)[NumericStatistics::pDELTA];
-        _domainName = dom->name();
+        _domainName = !dom->isAnonymous() ? dom->name() : "value.dom"; // check !!
 
         double resolution = datadef.range()->as<NumericRange>()->resolution();
 
-        if ((resolution != 0) &&  delta >= 0 && delta < 256 && digits == 0){
+        if ((resolution == 1) &&  delta >= 0 && delta < 256 && digits == 0){
             if ( dom->code() == "boolean"){
                 _domainName = "bool";
                 _domainInfo = QString("bool.dom;Byte;bool;0;;");
@@ -314,8 +314,12 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
             if (precision < 1e-06)
                 precision = 0.0;
             bool hasUndefs = stats[NumericStatistics::pCOUNT] != stats[NumericStatistics::pNETTOCOUNT];
-            if (_domainName == "image") // image does not support undef
-                hasUndefs = false;
+            if (_domainName == "image") {
+                if (resolution != 1)
+                    _domainName = "value.dom";
+                else
+                    hasUndefs = false; // Domain image.dom does not support undef
+            }
             RawConverter conv(stats[NumericStatistics::pMIN], stats[NumericStatistics::pMAX], precision, hasUndefs);
             QString storeType;
             if ( delta >= 0 && delta < (hasUndefs ? 255 : 256) && resolution == 1){ // if there is an undef, restrict to one less than 255, to make space for the undef
@@ -329,8 +333,6 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
             } else if ( conv.storeType() == itDOUBLE){
                 storeType = "Real";
             }
-			if ( _domainName == "image" && resolution != 1)
-				_domainName = "value.dom";
             _odf->setKeyValue("MapStore","Type",storeType);
             _odf->setKeyValue("BaseMap","Domain",_domainName);
             if (_domainName == "image")
