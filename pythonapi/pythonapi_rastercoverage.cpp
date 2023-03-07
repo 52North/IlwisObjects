@@ -462,7 +462,6 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
     Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
 
-
     if (format == itINT8)
         setValues((qint8*)pybuf.buf, nItems, iter);
     else if (format == itUINT8)
@@ -485,6 +484,8 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
         setValues((double*)pybuf.buf, nItems, iter);
     else if (format == itBOOL)
         setValues((bool*)pybuf.buf, nItems, iter);
+
+    PyBuffer_Release(&pybuf);
 }
 
 void RasterCoverage::_list2Raster(PyObject *container, int band)
