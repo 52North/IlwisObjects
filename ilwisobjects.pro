@@ -6,6 +6,7 @@ SUBDIRS += \
     core.pro \
     featureoperations.pro \
     gdalconnector.pro \
+    hydroflow.pro \
     ilwis3connector.pro \
     ilwis4connector.pro \
     ilwisscript.pro \
