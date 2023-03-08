@@ -28,15 +28,20 @@ def wheel_name(**kwargs):
 def versionNr():
     versionfile = ''
     if platform.system() == 'Windows':
-        versionfile = '../../../projects/core/version.cpp'
+        versionfile = 'version.cpp'
     elif platform.system() == 'Linux':
         versionfile = '../../../../IlwisObjects/core/version.cpp'
     if versionfile != '':
-        lines = open(versionfile, 'r').readlines()
-        for line in lines:
-            if 'ILWIS_VERSION_NUMBER' in line:
-                ver = line.split()[-1].strip('"')
-                return ver
+        try:
+            lines = open(versionfile, 'r').readlines()
+            for line in lines:
+                if 'ILWIS_VERSION_NUMBER' in line:
+                    ver = line.split()[-1].strip('"')
+                    return ver
+        except OSError as e:
+            print(f'{__file__}')
+            print(f'setup.py: could not open {versionfile}')
+            return '0'
     else:
         return '0'
 
