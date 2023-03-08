@@ -500,7 +500,7 @@ ThematicRange *ThematicRange::clone()
 
 pythonapi::ThematicItem* ThematicRange::item(quint32 index)
 {
-    pythonapi:ThematicItem * newItem = new pythonapi::ThematicItem();
+    pythonapi::ThematicItem * newItem = new pythonapi::ThematicItem();
     newItem->_ilwisItem.reset(static_cast<Ilwis::ThematicRange*>(_range.get())->item(index).get());
     return newItem;
 }
