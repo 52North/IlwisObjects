@@ -51,6 +51,8 @@
 
 %include "pythonapi_qtGNUTypedefs.h"
 
+%newobject pythonapi::Engine::_do; // hint to swig that ilwis.do() returns objects that should be garbage-collected
+
 %init %{
     //init FeatureCreationError for Python
     pythonapi::featureCreationError = PyErr_NewException("_ilwisobjects.FeatureCreationError",NULL,NULL);
@@ -117,39 +119,42 @@ std::string ilwistype2string(quint64 stype)
 %pythoncode %{
 def object_cast(obj):
     type = obj.ilwisType()
+    prevThisown = obj.thisown
+    obj.thisown = False # temporarily disable garbage collection on this object; the "cast" functions below return the same C++ pointer, but swig seems to garbage-collect the original if we don't do so
     if it.RASTER & type != 0:
-        return RasterCoverage.toRasterCoverage(obj)
+        obj = RasterCoverage.toRasterCoverage(obj)
     elif it.FEATURE & type != 0:
-        return FeatureCoverage.toFeatureCoverage(obj)
+        obj = FeatureCoverage.toFeatureCoverage(obj)
     elif it.GEOREF & type != 0:
-        return GeoReference.toGeoReference(obj)
+        obj = GeoReference.toGeoReference(obj)
     elif it.TABLE & type != 0:
-        return Table.toTable(obj)
+        obj = Table.toTable(obj)
     elif it.NUMERICDOMAIN & type != 0:
-      return NumericDomain.toNumericDomain(obj)
+      obj = NumericDomain.toNumericDomain(obj)
     elif it.ILWDOMAIN & type != 0:
-      return Domain.toDomain(obj)
+      obj = Domain.toDomain(obj)
     elif it.COORDSYSTEM & type != 0:
-        return CoordinateSystem.toCoordinateSystem(obj)
+        obj = CoordinateSystem.toCoordinateSystem(obj)
 #    elif it.OPERATIONMETADATA & type != 0:
-#        return OperationMetaData.toOperationMetaData(obj)
+#        obj = OperationMetaData.toOperationMetaData(obj)
 #    elif it.PROJECTION & type != 0:
-#        return Projection.toProjection(obj)
+#        obj = Projection.toProjection(obj)
 #    elif it.ELLIPSOID & type != 0:
-#        return Ellipsoid.toEllipsoid(obj)
+#        obj = Ellipsoid.toEllipsoid(obj)
     elif it.CATALOG & type != 0:
-        return Catalog.toCatalog(obj)
+        obj = Catalog.toCatalog(obj)
     elif it.COLLECTION & type != 0:
-        return Collection.toCollection(obj)
+        obj = Collection.toCollection(obj)
     elif type == 0:
         raise TypeError("unknown IlwisType")
-    else:
-        return obj
+    obj.thisown = prevThisown # re-enable garbage collection if it was available (needs investigation if it wasn't)
+    return obj
 %}
 
 %include "pythonapi_object.h"
 
 %include "pythonapi_engine.h"
+
 %extend pythonapi::Engine {
 %insert("python") %{
     @staticmethod
