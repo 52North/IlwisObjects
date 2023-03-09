@@ -1,9 +1,11 @@
 TEMPLATE = subdirs
 
+CONFIG += ordered
+
 SUBDIRS += \
+    core.pro \
     baseoperations.pro \
     commandlineclient.pro \
-    core.pro \
     featureoperations.pro \
     gdalconnector.pro \
     hydroflow.pro \
@@ -13,7 +15,7 @@ SUBDIRS += \
     internalconnector.pro \
     netcdfconnector.pro \
     projectionimplproj4.pro \
-    pythonapi.pro \
     rasteroperations.pro \
     streamconnector.pro \
-    opencv.pro
+    #opencv.pro \
+    pythonapi.pro
