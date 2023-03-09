@@ -254,9 +254,10 @@ void Grid::clear() {
     _blockOffsets = std::vector<quint32>();
     _size = Size<>();
     for(quint32 i=0; i < _cache.size(); ++i){
-        if (  _cache[0]._cacheFile){
-            _cache[0]._cacheFile->remove();
-            delete _cache[0]._cacheFile;
+        if (  _cache[i]._cacheFile){
+            _cache[i]._cacheFile->remove();
+            delete _cache[i]._cacheFile;
+            _cache[i]._cacheFile = 0;
         }
     }
     _cache = std::vector<CacheEntry >();
@@ -414,7 +415,7 @@ bool Grid::createCacheFile(int i){
     _cache[i]._cacheFile = new QFile(filepath);
     quint64 blocks = _blocks.size() / std::max(1, (int)_cache.size() - 1); // -1 because cache[0] is the unchanged original cache, cache[1...] are the caches used for the trheads
     if (_cache[i]._cacheFile->open(QIODevice::ReadWrite)) {
-        if (!QFile::resize(filepath, blocks * _blockSizes[0] * sizeof(PIXELVALUE))){
+        if (!_cache[i]._cacheFile->resize(blocks * _blockSizes[0] * sizeof(PIXELVALUE))){
             return false;
         }
     }else
@@ -551,6 +552,13 @@ void Grid::prepare4Operation(int nThreads) {
 }
 
 void Grid::unprepare4Operation() {
+    for (quint32 i = 1; i < _cache.size(); ++i) {
+        if (_cache[i]._cacheFile) {
+            _cache[i]._cacheFile->remove();
+            delete _cache[i]._cacheFile;
+            _cache[i]._cacheFile = 0;
+        }
+    }
 	_cache.resize(1);
 	_maxCacheBlocks = std::max(_size.zsize(), (quint32)20);
 }
