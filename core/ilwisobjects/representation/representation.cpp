@@ -192,7 +192,6 @@ IlwisData<Representation> Representation::defaultRepresentation(const IDomain &d
     } else if ( hasType(dom->ilwisType(), itTEXTDOMAIN) ){
         code = "code=rpr:primarycolors";
     }
-	IRepresentation rpr;
 	auto temp = IRepresentation(code);
 	Resource res = temp->resource();
 	quint64 newId = Identity::newAnonymousId();
