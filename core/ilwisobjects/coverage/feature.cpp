@@ -233,6 +233,10 @@ quint32 Feature::attributeColumnCount() const
     return _parentFCoverage->attributeDefinitions(_level).definitionCount();
 }
 
+FeatureAttributeDefinition& Feature::attributeDefinitionsRef() {
+    return _parentFCoverage->attributeDefinitionsRef(_level);
+}
+
 SPFeatureI Feature::subFeatureRef(double subFeatureIndex)
 {
     if ( isValid()) {

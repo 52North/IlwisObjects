@@ -98,6 +98,7 @@ public:
     ColumnDefinition attributedefinition(const QString& attributeName) const;
     ColumnDefinition attributedefinition(quint32 columnIndex) const;
     quint32 attributeColumnCount() const;
+    FeatureAttributeDefinition& attributeDefinitionsRef();
 
     IlwisTypes geometryType() const;
     const UPGeometry& geometry() const;

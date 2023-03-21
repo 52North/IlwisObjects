@@ -49,13 +49,17 @@ std::string Feature::__str__(){
     if (this->__bool__()){
         QString result;
         int count = _coverage->attributeCount();
+        Ilwis::FeatureAttributeDefinition& attDef = ((Ilwis::Feature*)(_ilwisSPFeatureI.get()))->attributeDefinitionsRef();
         for(int i = 0; i < count; ++i){
             if ( result != "")
                 result +="|";
-            QString attr = QString::fromStdString(_coverage->attributeDefinition(i).name());
-            result += attr + " : " + _ilwisSPFeatureI->record().cell(i).toString();
+            Ilwis::ColumnDefinition & ilwDef = attDef.columndefinitionRef(i);
+            QString attr (ilwDef.name());
+            QVariant cellValue (_ilwisSPFeatureI->record().cell(i));
+            cellValue = ilwDef.datadef().range<>() ? ilwDef.datadef().range<>()->impliedValue(cellValue) : ilwDef.datadef().domain<>()->impliedValue(cellValue);
+            result += attr + " : " + cellValue.toString();
         }
-        result = "featureid : " + QString::number(featureId()) + "->" + result;
+        result = "featureid : " + QString::number(featureId()) + " -> " + result;
         return result.toStdString();
     }else
         return QString("invalid Feature!").toStdString();
