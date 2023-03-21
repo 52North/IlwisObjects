@@ -84,29 +84,65 @@ public:
         return rUNDEF;
     }
 
-    double operator()(PropertySets method, double limit){
+    double operator()(PropertySets method, double perc){
         if (_bins.size() == 0)    {
             return rUNDEF;
         }
 
-        limit = _markers[index(pNETTOCOUNT)] * (limit / 100.0);
-        double sum = 0;
+        if (perc == 0) { // find the first non-zero _count
+            if (method == pMIN) {
+                for (long i = 0; i < _bins.size() - 1; ++i) { // < size() - 1, as the last element is the undef count.
+                    if (_bins[i]._count > 0) {
+                        return _bins[i]._limit;
+                    }
+                }
+                return _bins[0]._limit;
+            } else if (method == pMAX) {
+                for (long i = _bins.size() - 2; i >= 0; --i) { // same here: start at size() - 2 (one before the undef count)
+                    if (_bins[i]._count > 0) {
+                        return _bins[i]._limit;
+                    }
+                }
+                return _bins[_bins.size() - 2]._limit;
+            }
+        }
+
         if ( method == pMIN){
+            long nPixCumulative = 0;
+            long pixels = perc * _markers[index(pNETTOCOUNT)] / 100.0;
+            int lo = 0;
             for(int i = 0 ; i < _bins.size() - 1; ++i){
-                sum += _bins[i]._count;
-                if ( sum > limit){
-                    return ((double)i / (_bins.size() - 2)) * ( _markers[index(pMAX)] - _markers[index(pMIN)]) + _markers[index(pMIN)];
+                nPixCumulative += _bins[i]._count;
+                if (nPixCumulative > pixels){
+                    lo = i;
+                    break;
                 }
             }
+            if (lo > 0) {
+                long prevDif = nPixCumulative - _bins[lo]._count - pixels;
+                if (prevDif != 0) // why must prevDif != 0?
+                    if (abs(prevDif) < abs(nPixCumulative - pixels))
+                        --lo;
+            }
+            return _bins[lo]._limit;
         } else if ( method == pMAX){
-            double totalSum = _markers[index(pNETTOCOUNT)];
-            sum = _markers[index(pNETTOCOUNT)];
-            for(int i = _bins.size() - 2 ; i >= 0; --i){
-                sum -= _bins[i]._count;
-                if ( sum < totalSum - limit){
-                    return ((double)i / (_bins.size() - 2)) * ( _markers[index(pMAX)] - _markers[index(pMIN)]) + _markers[index(pMIN)];
+            long nPixCumulative = _markers[index(pNETTOCOUNT)];
+            long pixels = (100.0 - perc) * _markers[index(pNETTOCOUNT)] / 100.0;
+            int hi = _bins.size() - 2;
+            for (int i = _bins.size() - 2; i >= 0; --i) {
+                if (nPixCumulative <= pixels) {
+                    hi = i;
+                    break;
                 }
+                nPixCumulative -= _bins[i]._count;
             }
+            if (hi < _bins.size() - 2) {
+                long prevDif = nPixCumulative + _bins[hi + 1]._count - pixels;
+                if (prevDif != 0) // same: why must prevDif != 0?
+                    if (abs(prevDif) < abs(nPixCumulative - pixels))
+                        ++hi;
+            }
+            return _bins[hi]._limit;
         }
         return rUNDEF;
 
@@ -246,8 +282,8 @@ public:
 						bins = 5 * std::sqrt(std::sqrt(pnetcount)) + 1;
 						if (std::ceil(psum) == psum) {// integer
 							double delta = prop(pDELTA);
-							if (delta == 255) // special case for images
-								bins = 256;
+							if (delta <= 255) // special case for images
+								bins = delta + 1;
 							else {
                                 double f = delta / (bins - 1);
 								double cf = std::ceil(f);
@@ -375,7 +411,7 @@ public:
                         }
                     }
                     if (lo > 0) {
-                        long prevDif = nPixCumulative - _bins[lo - 1]._count - pixels;
+                        long prevDif = nPixCumulative - _bins[lo]._count - pixels;
                         if (prevDif != 0)
                             if (abs(prevDif) < abs(nPixCumulative - pixels))
                                 --lo;
