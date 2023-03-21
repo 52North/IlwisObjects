@@ -282,9 +282,9 @@ void ClusterRaster::initStretchLookup() {
     for (quint32 j = 0; j < _inputRaster->size().zsize(); j++) {
         PixelIterator iter = _inputRaster->band(j);
         NumericStatistics stats;
-        stats.calculate(iter, iter.end(),NumericStatistics::pHISTOGRAM,262);
-        double minValue = stats(NumericStatistics::pMIN,1);
-        double maxValue = stats(NumericStatistics::pMAX,1);
+        stats.calculate(iter, iter.end(), NumericStatistics::pBASIC);
+        double minValue = stats[NumericStatistics::pMIN];
+        double maxValue = stats[NumericStatistics::pMAX];
         _abrLookup[j].bottom = minValue;
         _abrLookup[j].top = maxValue;
 
