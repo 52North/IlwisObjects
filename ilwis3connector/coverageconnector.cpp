@@ -480,7 +480,8 @@ DataDefinition CoverageConnector::determineDataDefinition(const ODF& odf,  const
         ERROR2(ERR_NO_INITIALIZED_2,"domain",odf->url());
         return DataDefinition();
     }
-    DataDefinition def(dom);
+    DataDefinition def;
+    def.domain(dom);    // prevent double execution of range setting code.
     double vmax,vmin,scale,offset;
     QString range = odf->value("BaseMap","Range");
     if ( range != sUNDEF ) {
