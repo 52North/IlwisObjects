@@ -58,7 +58,7 @@ private:
         const char *ptr = reinterpret_cast<const char*>(&c);
         //std::ofstream dum("d:/dummyout.txt",ios_base::out | ios_base::trunc);
         for_each(pixiter, pixiter.end(), [&](double& v){
-            c = conv.real2raw(v);
+            c = (qint64)floor(conv.real2raw(v) + 0.5);
              ++i;
             output_file.write(ptr, sizeof(T));
             //dum << v << " ";

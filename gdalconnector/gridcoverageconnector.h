@@ -75,10 +75,17 @@ private:
             return ERROR1(ERR_NO_INITIALIZED_1,"raster band");
         }
         while(iter != iter.end()) {
-            for_each(data.begin(), data.end(), [&](DT& v){
-                v = *iter;
-                ++iter;
-            });            
+            if (gdaltype == GDT_Float32 || gdaltype == GDT_Float64) {
+                for_each(data.begin(), data.end(), [&](DT& v){
+                    v = *iter;
+                    ++iter;
+                });
+            } else {
+                for_each(data.begin(), data.end(), [&](DT& v){
+                    v = (qint64)floor(0.5 + *iter);
+                    ++iter;
+                });
+            }
 
             double y = iter.zchanged() ? iter.box().ylength()  : iter.position().y;
 
