@@ -128,6 +128,7 @@ xcopy $(MSBuildProjectDirectory)\pythonapi\CHANGELOG ..\output\release\ilwispy38
 echo import os &gt; ..\temp\GeneratedFiles\Release\pythonapi38\temp.py
 echo import sys &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi38\temp.py
 echo path = os.path.dirname(__file__) + '\\ilwisobjects' + "/" &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi38\temp.py
+echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"] &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi38\temp.py
 echo os.add_dll_directory(path) &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi38\temp.py
 echo sys.path.append(path) &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi38\temp.py
 type $(MSBuildProjectDirectory)\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi38\temp.py
