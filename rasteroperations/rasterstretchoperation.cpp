@@ -55,11 +55,12 @@ bool LinearStretchOperation::stretch(IRasterCoverage toStretch)
     // TODO: separate histogram into own class (and move
     // certain operations to it
 
+    int bandIx = 0;
     double fact;
-    if (_limitsFrom.second - _limitsFrom.first <= 0)
+    if (_limitsFrom[bandIx].second - _limitsFrom[bandIx].first <= 0)
         fact = 0;
     else
-        fact = (_limitsTo.second - _limitsTo.first) / (_limitsFrom.second - _limitsFrom.first);
+        fact = (_limitsTo.second - _limitsTo.first) / (_limitsFrom[bandIx].second - _limitsFrom[bandIx].first);
     double off = _limitsTo.first;
 
     PixelIterator iterInput(_inputRaster);
@@ -67,14 +68,21 @@ bool LinearStretchOperation::stretch(IRasterCoverage toStretch)
     std::for_each(begin(_outputRaster), end(_outputRaster), [&](double& v) {
         double vin = *iterInput;
         if (vin != rUNDEF) {
-            if (vin <= _limitsFrom.first)
+            if (vin <= _limitsFrom[bandIx].first)
                 v = _limitsTo.first;
-            else if (vin >= _limitsFrom.second)
+            else if (vin >= _limitsFrom[bandIx].second)
                 v = _limitsTo.second;
             else
-                v = fact * (vin - _limitsFrom.first) + off;
+                v = fact * (vin - _limitsFrom[bandIx].first) + off;
         }
         ++iterInput;
+        if (iterInput.zchanged()) {
+            bandIx = iterInput.z();
+            if (_limitsFrom[bandIx].second - _limitsFrom[bandIx].first <= 0)
+                fact = 0;
+            else
+                fact = (_limitsTo.second - _limitsTo.first) / (_limitsFrom[bandIx].second - _limitsFrom[bandIx].first);
+        }
     });
 
     return true;
@@ -117,6 +125,8 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
     _outputRaster->coordinateSystem(_inputRaster->coordinateSystem());
     _outputRaster->name(outputName);
 
+    _limitsFrom.clear();
+
     int parameterCount = _expression.parameterCount();
     if (parameterCount == 2) {
         double percent = _expression.parm(1).value().toDouble();
@@ -125,9 +135,15 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
             return sPREPAREFAILED;
         }
 
-        NumericStatistics& statistics = _inputRaster->statisticsRef(PIXELVALUE);
-        statistics.calculate(begin(_inputRaster), end(_inputRaster), NumericStatistics::pHISTOGRAM);
-        _limitsFrom = statistics.calcStretchRange(percent);
+        for (int i = 0; i < _inputRaster->size().zsize(); ++i) {
+            PixelIterator iter = _inputRaster->band(i);
+            NumericStatistics stats;
+            stats.calculate(iter, iter.end(), NumericStatistics::pHISTOGRAM);
+            double minValue = stats(NumericStatistics::pMIN, percent);
+            double maxValue = stats(NumericStatistics::pMAX, percent);
+            _limitsFrom.push_back(std::pair<double, double>(minValue, maxValue));
+        }
+
         _limitsTo = std::pair<double, double>(0, 255);
     }
     else if (parameterCount == 3) {
@@ -137,7 +153,8 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
             ERROR2(ERR_ILLEGAL_VALUE_2, TR("parameter"), _expression.parm(1).value());
             return sPREPAREFAILED;
         }
-        _limitsFrom = std::pair<double, double>(lowerin, upperin);
+        for (int i = 0; i < _outputRaster->size().zsize(); ++i)
+            _limitsFrom.push_back(std::pair<double, double>(lowerin, upperin));
         _limitsTo = std::pair<double, double>(0, 255);
     }
     else if (parameterCount == 4) {
@@ -153,9 +170,14 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
             return sPREPAREFAILED;
         }
 
-        NumericStatistics& statistics = _inputRaster->statisticsRef(PIXELVALUE);
-        statistics.calculate(begin(_inputRaster), end(_inputRaster), NumericStatistics::pHISTOGRAM);
-        _limitsFrom = statistics.calcStretchRange(percent);
+        for (int i = 0; i < _inputRaster->size().zsize(); ++i) {
+            PixelIterator iter = _inputRaster->band(i);
+            NumericStatistics stats;
+            stats.calculate(iter, iter.end(), NumericStatistics::pHISTOGRAM);
+            double minValue = stats(NumericStatistics::pMIN, percent);
+            double maxValue = stats(NumericStatistics::pMAX, percent);
+            _limitsFrom.push_back(std::pair<double, double>(minValue, maxValue));
+        }
         _limitsTo = std::pair<double, double>(lowerout, upperout);
     }
     else if (parameterCount == 5) {
@@ -173,7 +195,8 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
             return sPREPAREFAILED;
         }
 
-        _limitsFrom = std::pair<double, double>(lowerin, upperin);
+        for (int i = 0; i < _outputRaster->size().zsize(); ++i)
+            _limitsFrom.push_back(std::pair<double, double>(lowerin, upperin));
         _limitsTo = std::pair<double, double>(lowerout, upperout);
     }
 

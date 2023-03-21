@@ -36,7 +36,7 @@ public:
 protected:
     IRasterCoverage _inputRaster;
     IRasterCoverage _outputRaster;
-    std::pair<double, double> _limitsFrom = std::pair<double,double>(rUNDEF,rUNDEF);
+    std::vector<std::pair<double, double>> _limitsFrom;
     std::pair<double, double> _limitsTo = std::pair<double, double>(rUNDEF,rUNDEF);
 
     bool stretch(IRasterCoverage toStretch);
