@@ -150,7 +150,7 @@ Ilwis::OperationImplementation::State BoxClassification::prepare(ExecutionContex
 quint64 BoxClassification::createMetadata()
 {
     OperationResource operation({"ilwis://operations/boxclassification"});
-    operation.setSyntax("boxclassifcation(samplesetname,widen-factor)");
+    operation.setSyntax("boxclassifcation(multibandraster,domain,sampleset,widen-factor)");
     operation.setDescription(TR("performs a multi-spectral image classification according to training pixels in a sample set"));
     unsigned int n = RasterClassification::fillOperationMetadata(operation);
     operation.setInParameterCount({1 + n});
