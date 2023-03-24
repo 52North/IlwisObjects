@@ -166,7 +166,7 @@ void SampleSum::mergeClass(Raw key1, Raw key2)
     if ( key1 == key2)
         return;
     for(int band=0 ; band < _sums[key1].size(); ++band){
-        quint32& other = at(key2, band);
+        double& other = at(key2, band);
         at(key1, band) += other;
         other = 0;
     }
@@ -188,7 +188,7 @@ SampleStats *SampleSum::clone() const
 
 }
 
-quint32 &SampleSum::at(Raw raw, quint32 band)
+double &SampleSum::at(Raw raw, quint32 band)
 {
     if ( raw >= _sums.size() || band >= _sums[raw].size())
         throw ErrorObject(TR("SampleSum index(es) out of range"));
@@ -256,7 +256,7 @@ void SampleSumXY::mergeClass(Raw key1, Raw key2)
     _sums[key2].resize(0);
 }
 
-quint32 &SampleSumXY::at(Raw key, quint32 band1, quint32 band2)
+double &SampleSumXY::at(Raw key, quint32 band1, quint32 band2)
 {
     if ( key >= _sums.size())
         throw ErrorObject(TR("Sample set index(es) out of bounds"));

@@ -82,9 +82,9 @@ public:
 
     SampleStats *clone() const;
 
-    quint32& at(Raw raw, quint32 band1);
+    double& at(Raw raw, quint32 band1);
 private:
-    std::vector<std::vector<quint32>> _sums;
+    std::vector<std::vector<double>> _sums;
 };
 
 class SampleSumXY : public SampleStats
@@ -96,10 +96,10 @@ public:
     void delClass(Raw key);
     void resetClass(Raw key);
     void mergeClass(Raw key1, Raw key2);
-    quint32& at(Raw key, quint32 band1, quint32 band2);
+    double& at(Raw key, quint32 band1, quint32 band2);
 
 private:
-    std::vector<std::vector<std::vector<quint32>>> _sums;
+    std::vector<std::vector<std::vector<double>>> _sums;
 
 };
 
