@@ -167,11 +167,10 @@ bool SampleSet::prepare()
             }else {
                 sum = _sampleSum->at(item->raw(),band);
                 mean = sum / num;
-                if ( num < 1) {
+                if ( num <= 1) {
                     std = 0;
                 } else {
-                    double v = _sampleSumXY->at(item->raw(), band, band) - num * mean * mean;
-                    std = v * v / ( num - 1);
+                    std = sqrt((_sampleSumXY->at(item->raw(), band, band) - num * mean * mean) / (num - 1));
                 }
             }
             _sampleStats->at(item->raw(), band, SampleCell::mMEAN)= mean;
@@ -289,7 +288,12 @@ void SampleSet::incrementSampels(Raw newClass){
         else{
             sum =  _sampleSum->at(newClass, band);
         }
-        std = num == 1 ? 0 : std::sqrt(_sampleSumXY->at(newClass, band, band) - num * mean * mean) / (num - 1);
+        if (num <= 1) {
+            std = 0;
+        }
+        else {
+            std = sqrt((_sampleSumXY->at(newClass, band, band) - num * mean * mean) / (num - 1));
+        }
         _sampleStats->at(newClass, band, SampleCell::mMEAN) = mean;
         _sampleStats->at(newClass, band, SampleCell::mSTANDARDDEV) = std;
     }
