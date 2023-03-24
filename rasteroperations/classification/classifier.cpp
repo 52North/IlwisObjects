@@ -44,15 +44,14 @@ bool BoxClassifier::classify(PixelIterator &iterIn, PixelIterator &iterOut) cons
     PixelIterator iterEnd = iterOut.end();
     std::vector<double> zcolumn(sampleset().sampleRasterSet()->size().zsize(), rUNDEF);
     while( iterOut != iterEnd)    {
+        for (double& v : zcolumn) {
+            v = *iterIn;
+            ++iterIn;
+        }
         for(auto item : sampleset().thematicDomain() ){
-            raw = iUNDEF;
+            raw = rUNDEF;
             currentClass = _classSequence.at(item->raw());
             bool classFound = true;
-
-            for(double& v : zcolumn){
-                v = *iterIn;
-                ++iterIn;
-            }
             for(int band = 0; band < zcolumn.size(); ++band){
                 classFound = classFound &&
                         (zcolumn[band] < _boxMax.at((quint32)currentClass).at(band) &&
@@ -108,11 +107,13 @@ bool BoxClassifier::prepare()
         stdProducts[smallestClass] = std::numeric_limits<double>::max();
     }
     for(auto item : sampleset().thematicDomain()) {
+        _boxMax[(quint32)item->raw()].clear();
+        _boxMin[(quint32)item->raw()].clear();
         for(int band = 0; band < sampleset().sampleRasterSet()->size().zsize(); ++band){
             double std = sampleset().statistics()->at(item->raw(),band, SampleCell::mSTANDARDDEV);
             double mean = sampleset().statistics()->at(item->raw(),band, SampleCell::mMEAN);
 
-            _boxMax[(quint32)item->raw()].push_back( mean + _widenFactor * std);
+            _boxMax[(quint32)item->raw()].push_back(mean + _widenFactor * std);
             _boxMin[(quint32)item->raw()].push_back(mean - _widenFactor * std);
         }
     }
