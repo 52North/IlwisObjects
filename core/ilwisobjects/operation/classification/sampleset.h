@@ -61,6 +61,7 @@ public:
     void registerFeatureSpace(FeatureSpace *fs);
     void unregisterFeatureSpace(quint64 id);
     SampleSum& smplSum() const { return *_sampleSum.get(); }
+    SampleSumXY& smplSumXY() const { return *_sampleSumXY.get(); }
 
 private:
     IRasterCoverage _sampleMap;
@@ -74,8 +75,6 @@ private:
     quint32 _nrOfClasses = 0;
 
     std::map<quint64, UPFeatureSpace> _featureSpaces;
-
-
 
     void changeSums(const Pixel &pixel, Raw targetClass, int change);
 };

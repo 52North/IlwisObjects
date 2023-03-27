@@ -57,6 +57,18 @@ public:
 private:
     double _threshold;
 };
+
+class MinMahaDistClassifier : public Classifier {
+public:
+    MinMahaDistClassifier(double threshold, const SampleSet& sampleset);
+    bool classify(PixelIterator& iter, Ilwis::PixelIterator& iterOut) const;
+    bool prepare();
+protected:
+    virtual double rAdd(int iClass) const;
+private:
+    std::map<quint32, Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> varcovinv;
+    double _threshold;
+};
 }
 }
 

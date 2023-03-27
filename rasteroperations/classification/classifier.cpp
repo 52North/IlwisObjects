@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "pixeliterator.h"
 #include "classification/samplestatistics.h"
 #include "classification/sampleset.h"
+#include "eigen3/Eigen/LU"
 #include "classifier.h"
 
 using namespace Ilwis;
@@ -148,9 +149,8 @@ bool MinDistClassifier::classify(PixelIterator& iterIn, PixelIterator& iterOut) 
             if (sampleset().smplSum().pixelInClass(item->raw()) <= 0)
                 continue;
             double rDist = 0;
-            double d;
             for (int band = 0; band < sampleset().sampleRasterSet()->size().zsize(); ++band) {
-                d = zcolumn[band] - (rounding ? (qint64)floor(0.5 + sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN)) : sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN));
+                double d = zcolumn[band] - (rounding ? (qint64)floor(0.5 + sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN)) : sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN));
                 d *= d;
                 rDist += d;
             }
@@ -170,6 +170,105 @@ bool MinDistClassifier::prepare()
 {
     if ((_threshold <= 0) && (_threshold != rUNDEF)) {
         return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
+    }
+
+    return true;
+}
+
+MinMahaDistClassifier::MinMahaDistClassifier(double threshold, const SampleSet& sampleset) : Classifier(sampleset), _threshold(threshold) {
+
+}
+
+double MinMahaDistClassifier::rAdd(int /*iClass*/) const
+{
+    return 0;
+}
+
+bool MinMahaDistClassifier::classify(PixelIterator& iterIn, PixelIterator& iterOut) const
+{
+    double threshold2;
+    if (_threshold != rUNDEF)
+        threshold2 = _threshold * _threshold;
+    else
+        threshold2 = DBL_MAX;
+
+    bool rounding = false;
+    Ilwis::IDomain dom = sampleset().sampleRasterSet()->datadefRef().domain<>();
+    if (dom.isValid() && dom->name() == "image")
+        rounding = true;
+
+    quint32 iBands = sampleset().sampleRasterSet()->size().zsize();
+
+    PixelIterator iterEnd = iterOut.end();
+    std::vector<double> zcolumn(iBands, rUNDEF);
+    while (iterOut != iterEnd) {
+        for (double& v : zcolumn) {
+            v = *iterIn;
+            ++iterIn;
+        }
+        double rMinDist = DBL_MAX;
+        Raw raw = rUNDEF;
+        for (auto item : sampleset().thematicDomain()) {
+            quint32 cl = item->raw();
+            if (sampleset().smplSum().pixelInClass(cl) <= 0)
+                continue;
+            double rDist = 0;
+            // calc x-transposed * varcovinv * x :
+            for (int b = 0; b < iBands; ++b) {
+                double d = zcolumn[b] - (rounding ? (qint64)floor(0.5 + sampleset().statistics()->at(cl, b, SampleCell::mMEAN)) : sampleset().statistics()->at(cl, b, SampleCell::mMEAN));
+                for (int b1 = 0; b1 < iBands; b1++) {
+                    double d1 = zcolumn[b1] - (rounding ? (qint64)floor(0.5 + sampleset().statistics()->at(cl, b1, SampleCell::mMEAN)) : sampleset().statistics()->at(cl, b1, SampleCell::mMEAN));
+                    rDist += d * d1 * varcovinv.at(cl)(b, b1);
+                }
+            }
+            double rDistX = rDist + rAdd(cl);
+            if ((rDistX < rMinDist) && (rDistX < threshold2)) {
+                raw = cl;
+                rMinDist = rDistX;
+            }
+        }
+        *iterOut = raw;
+        ++iterOut;
+    }
+
+    return true;
+}
+
+bool MinMahaDistClassifier::prepare()
+{
+    if ((_threshold <= 0) && (_threshold != rUNDEF)) {
+        return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
+    }
+
+    varcovinv.clear();
+    quint32 iBands = sampleset().sampleRasterSet()->size().zsize();
+    for (auto item : sampleset().thematicDomain()) {
+        quint32 cl = item->raw();
+        if (sampleset().smplSum().pixelInClass(cl) <= 0)
+            continue;
+
+        varcovinv[cl] = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>(iBands, iBands);
+        for (int i = 0; i < iBands; ++i) {
+            for (int j = 0; j < iBands; ++j) {
+                if (j >= i) {
+                    double rTot = sampleset().smplSum().pixelInClass(cl);
+                    if (rTot != 0)
+                        varcovinv[cl](i, j) = sampleset().smplSumXY().at(cl, i, j) / rTot - (sampleset().smplSum().at(cl, i) / rTot) * (sampleset().smplSum().at(cl, j) / rTot);
+                    else
+                        varcovinv[cl](i, j) = 0;
+                }
+                else
+                    varcovinv[cl](i, j) = varcovinv[cl](j, i);
+            }
+        }
+        if (abs(varcovinv[cl].determinant()) < EPS10) { // Singularity test; determinant equal (or close) to 0.
+            Ilwis::DataDefinition datadef = sampleset().sampleRasterSet()->datadefRef();
+            QVariant cellValue = QVariant(cl);
+            cellValue = datadef.range<>() ? datadef.range<>()->impliedValue(cellValue) : datadef.domain<>()->impliedValue(cellValue);
+            return ERROR2(ERR_ILLEGAL_VALUE_2, "Matrix", QString(TR("Singular Covariance Matrix found. Definite positive variances needed. Class %1 needs more samples. Or bands are linearly dependent.")).arg(cellValue.toString()));
+        }
+        else
+            varcovinv[cl] = varcovinv[cl].inverse(); // eval() ?
     }
 
     return true;

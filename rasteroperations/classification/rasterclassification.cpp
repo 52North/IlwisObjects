@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "symboltable.h"
 #include "ilwisoperation.h"
 #include "classification/sampleset.h"
+#include "eigen3/Eigen/LU"
 #include "classifier.h"
 #include "rasterclassification.h"
 
@@ -83,21 +84,21 @@ Ilwis::OperationImplementation::State RasterClassification::prepare(ExecutionCon
     QString outputName = _expression.parm(0,false).value();
 
     OperationHelperRaster::initialize(_sampleSet.sampleRasterSet(), _outputRaster, itCOORDSYSTEM | itGEODETICDATUM | itGEOREF | itRASTERSIZE);
-   if ( !_outputRaster.isValid()) {
-       ERROR1(ERR_NO_INITIALIZED_1, "output rastercoverage");
-       return sPREPAREFAILED;
-   }
-   _outputRaster->datadefRef().domain(_sampleSet.thematicDomain());
-   _outputRaster->size(_sampleSet.sampleRasterSet()->size().twod());
-   if ( outputName!= sUNDEF)
-       _outputRaster->name(outputName);
+    if ( !_outputRaster.isValid()) {
+        ERROR1(ERR_NO_INITIALIZED_1, "output rastercoverage");
+        return sPREPAREFAILED;
+    }
+    _outputRaster->datadefRef().domain(_sampleSet.thematicDomain());
+    _outputRaster->size(_sampleSet.sampleRasterSet()->size().twod());
+    if ( outputName!= sUNDEF)
+        _outputRaster->name(outputName);
 
-   return sPREPARED;
+    return sPREPARED;
 }
 
 int RasterClassification::fillOperationMetadata(OperationResource &operation)
 {
-    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist"));
+    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist|minmahadist"));
     operation.addInParameter(1,itRASTER , TR("Multiband raster"),TR("Multi band raster to be classified"));
     operation.addInParameter(2,itRASTER , TR("Training set"),TR("Raster containing trainingset(s) of pixels"));
     return 3;
@@ -139,6 +140,14 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
             ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
         }
         _classifier.reset(new MinDistClassifier(threshold, _sampleSet));
+    }
+    else if (_type == "minmahadist") {
+        bool ok;
+        double threshold = _expression.parm(3).value().toDouble(&ok);
+        if (!ok || threshold <= 0) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        }
+        _classifier.reset(new MinMahaDistClassifier(threshold, _sampleSet));
     }
 
     if(!_classifier->prepare())

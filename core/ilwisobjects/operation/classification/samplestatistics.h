@@ -87,7 +87,7 @@ private:
     std::vector<std::vector<double>> _sums;
 };
 
-class SampleSumXY : public SampleStats
+class KERNELSHARED_EXPORT SampleSumXY : public SampleStats
 {
 public:
     SampleStats *clone() const;
