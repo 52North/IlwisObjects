@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Hydroflow\hydroflow_module.cpp" />
     <ClCompile Include="Hydroflow\MapFillSinks.cpp" />
+    <ClCompile Include="Hydroflow\MapFlowDirection.cpp" />
     <ClCompile Include="Hydroflow\normalizerelativedem.cpp" />
     <ClCompile Include="Hydroflow\relativedem.cpp" />
   </ItemGroup>
@@ -22,6 +23,7 @@
   <ItemGroup>
     <ClInclude Include="Hydroflow\hydroflow_global.h" />
     <ClInclude Include="Hydroflow\MapFillSinks.h" />
+    <ClInclude Include="Hydroflow\MapFlowDirection.h" />
     <ClInclude Include="Hydroflow\normalizerelativedem.h" />
     <ClInclude Include="Hydroflow\relativedem.h" />
   </ItemGroup>

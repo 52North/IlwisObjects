@@ -21,6 +21,9 @@
     <ClCompile Include="Hydroflow\MapFillSinks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hydroflow\MapFlowDirection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Hydroflow\hydroflow_module.h">
@@ -38,6 +41,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hydroflow\MapFillSinks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hydroflow\MapFlowDirection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
