@@ -61,17 +61,12 @@ bool RasterClassification::execute(ExecutionContext *ctx, SymbolTable &symTable)
 }
 
 Ilwis::OperationImplementation::State RasterClassification::prepare(ExecutionContext *, const SymbolTable &sym){
-    QString rasterSetName = _expression.parm(0).value();
+    _type = _expression.parm(0).value();
+
+    QString rasterSetName = _expression.parm(1).value();
     IRasterCoverage rcSet;
     if (!rcSet.prepare(rasterSetName)) {
         ERROR2(ERR_COULD_NOT_LOAD_2,rasterSetName,"");
-        return sPREPAREFAILED;
-    }
-
-    QString domain = _expression.parm(1).value();
-    IThematicDomain themes;
-    if ( !themes.prepare(domain)){
-        ERROR2(ERR_COULD_NOT_LOAD_2,domain,"");
         return sPREPAREFAILED;
     }
 
@@ -82,9 +77,7 @@ Ilwis::OperationImplementation::State RasterClassification::prepare(ExecutionCon
         return sPREPAREFAILED;
     }
 
-
-
-    _sampleSet = SampleSet(rcSet, themes, rcTraining);
+    _sampleSet = SampleSet(rcSet, rcTraining);
     _sampleSet.prepare();
 
     QString outputName = _expression.parm(0,false).value();
@@ -99,33 +92,31 @@ Ilwis::OperationImplementation::State RasterClassification::prepare(ExecutionCon
    if ( outputName!= sUNDEF)
        _outputRaster->name(outputName);
 
-
    return sPREPARED;
 }
 
 int RasterClassification::fillOperationMetadata(OperationResource &operation)
 {
-    operation.addInParameter(0,itRASTER , TR("Multiband raster"),TR("Multi band raster to be classified"));
-    operation.addInParameter(1,itITEMDOMAIN , TR("Thematic domain"),TR("Domain of the classified map"));
+    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist"));
+    operation.addInParameter(1,itRASTER , TR("Multiband raster"),TR("Multi band raster to be classified"));
     operation.addInParameter(2,itRASTER , TR("Training set"),TR("Raster containing trainingset(s) of pixels"));
-
     return 3;
 }
 //-------------------------------------------------------
 
-REGISTER_OPERATION(BoxClassification)
+REGISTER_OPERATION(RasterClassificationImpl)
 
-BoxClassification::BoxClassification(quint64 metaid, const Ilwis::OperationExpression &expr) : RasterClassification(metaid, expr)
+RasterClassificationImpl::RasterClassificationImpl(quint64 metaid, const Ilwis::OperationExpression &expr) : RasterClassification(metaid, expr)
 {
 
 }
 
-Ilwis::OperationImplementation *BoxClassification::create(quint64 metaid, const Ilwis::OperationExpression &expr)
+Ilwis::OperationImplementation * RasterClassificationImpl::create(quint64 metaid, const Ilwis::OperationExpression &expr)
 {
-    return new BoxClassification(metaid, expr);
+    return new RasterClassificationImpl(metaid, expr);
 }
 
-Ilwis::OperationImplementation::State BoxClassification::prepare(ExecutionContext *ctx, const SymbolTable &sym)
+Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(ExecutionContext *ctx, const SymbolTable &sym)
 {
     OperationImplementation::State prepareState = sNOTPREPARED;
 
@@ -133,28 +124,37 @@ Ilwis::OperationImplementation::State BoxClassification::prepare(ExecutionContex
         return prepareState;
     }
 
-    bool ok;
-    _widenFactor = _expression.parm(3).value().toDouble(&ok);
-    if (!ok || _widenFactor <= 0){
-        ERROR2(ERR_ILLEGAL_VALUE_2, "widen factor", _expression.parm(1).value());
+    if (_type == "box") {
+        bool ok;
+        double widenFactor = _expression.parm(3).value().toDouble(&ok);
+        if (!ok || widenFactor <= 0) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "widen factor", _expression.parm(3).value());
+        }
+        _classifier.reset(new BoxClassifier(widenFactor, _sampleSet));
+    }
+    else if (_type == "mindist") {
+        bool ok;
+        double threshold = _expression.parm(3).value().toDouble(&ok);
+        if (!ok || threshold <= 0) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        }
+        _classifier.reset(new MinDistClassifier(threshold, _sampleSet));
     }
 
-    _classifier.reset( new BoxClassifier(_widenFactor,_sampleSet));
     if(!_classifier->prepare())
         return sPREPAREFAILED;
-
 
     return sPREPARED;
 }
 
-quint64 BoxClassification::createMetadata()
+quint64 RasterClassificationImpl::createMetadata()
 {
-    OperationResource operation({"ilwis://operations/boxclassification"});
-    operation.setSyntax("boxclassifcation(multibandraster,domain,sampleset,widen-factor)");
+    OperationResource operation({"ilwis://operations/classification"});
+    operation.setSyntax("classifcation(type,multibandraster,sampleraster,widen-factor|threshold-distance)");
     operation.setDescription(TR("performs a multi-spectral image classification according to training pixels in a sample set"));
     unsigned int n = RasterClassification::fillOperationMetadata(operation);
     operation.setInParameterCount({1 + n});
-    operation.addInParameter(n,itNUMBER , TR("widen-factor"),TR("allows you to widen (factor > 1) the boxes that are 'drawn' around class means"));
+    operation.addInParameter(n,itNUMBER , TR("widen-factor|threshold-distance"),TR("For box: allows you to widen (factor > 1) the boxes that are 'drawn' around class means; for all others: threshold distance when pixels with a spectral signature that is not similar to any of the training classes, should not be classified."));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage with the domain of the sampleset"));
     operation.setKeywords("classification,raster");

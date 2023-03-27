@@ -33,15 +33,16 @@ protected:
     SampleSet _sampleSet;
     IRasterCoverage _outputRaster;
     std::unique_ptr<Classifier> _classifier;
+    QString _type;
     Ilwis::OperationImplementation::State prepare(ExecutionContext *, const SymbolTable &sym);
 
     static int fillOperationMetadata(OperationResource& operation);
 };
 
-class BoxClassification : public RasterClassification {
+class RasterClassificationImpl : public RasterClassification {
 public:
-    BoxClassification();
-    BoxClassification(quint64 metaid, const Ilwis::OperationExpression &expr);
+    RasterClassificationImpl();
+    RasterClassificationImpl(quint64 metaid, const Ilwis::OperationExpression &expr);
 
     //bool execute(ExecutionContext *ctx,SymbolTable& symTable);
     static Ilwis::OperationImplementation *create(quint64 metaid,const Ilwis::OperationExpression& expr);
@@ -49,10 +50,9 @@ public:
 
     static quint64 createMetadata();
 
-    NEW_OPERATION(BoxClassification);
+    NEW_OPERATION(RasterClassificationImpl);
 
 private:
-    double _widenFactor;
 };
 }
 }
