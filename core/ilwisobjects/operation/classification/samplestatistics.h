@@ -71,7 +71,7 @@ private:
     std::vector<double> _minValuesperBand;
 };
 
-class SampleSum : public SampleStats{
+class KERNELSHARED_EXPORT SampleSum : public SampleStats{
 public:
     void prepare(IThematicDomain thematicDomain, quint32 nrOfBands);
     void addClass(Raw key);

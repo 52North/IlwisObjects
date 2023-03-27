@@ -34,7 +34,7 @@ public:
     SampleSet();
     SampleSet(const Resource& res);
     SampleSet(const SampleSet& sampleset);
-    SampleSet(const IRasterCoverage& samplemaps, const IThematicDomain& dom, const IRasterCoverage& samplemap=IRasterCoverage());
+    SampleSet(const IRasterCoverage& samplemaps, const IRasterCoverage& samplemap=IRasterCoverage());
     virtual ~SampleSet();
     bool prepare();
     SampleSet& operator=(const SampleSet& sms);
@@ -45,9 +45,9 @@ public:
 
     UPSampleStatistics& statistics() ;
     const UPSampleStatistics &statistics() const;
-    IRasterCoverage sampleRaster() const;
-    IRasterCoverage sampleRasterSet() const;
-    IThematicDomain thematicDomain() const;
+    const IRasterCoverage & sampleRaster() const;
+    const IRasterCoverage & sampleRasterSet() const;
+    const IThematicDomain & thematicDomain() const;
 
     bool isValid() const;
 
@@ -60,7 +60,7 @@ public:
 
     void registerFeatureSpace(FeatureSpace *fs);
     void unregisterFeatureSpace(quint64 id);
-
+    SampleSum& smplSum() const { return *_sampleSum.get(); }
 
 private:
     IRasterCoverage _sampleMap;

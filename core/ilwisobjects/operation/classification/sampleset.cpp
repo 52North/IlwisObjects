@@ -50,10 +50,10 @@ SampleSet::SampleSet(const SampleSet &sampleset) : Identity(name(),id(), code(),
     _sampleSumXY.reset(sampleset._sampleSumXY->copy<SampleSumXY>());
 }
 
-SampleSet::SampleSet(const IRasterCoverage &samplemaps, const IThematicDomain &dom, const IRasterCoverage &samplemap) :
+SampleSet::SampleSet(const IRasterCoverage &samplemaps, const IRasterCoverage &samplemap) :
     _sampleMap(samplemap),
     _sampleMaps(samplemaps),
-    _sampleDomain(dom)
+    _sampleDomain(samplemap->datadefRef().domain())
 {
     _sampleHistogram.reset(new SampleHistogram());
     _sampleSum.reset(new SampleSum());
@@ -336,17 +336,17 @@ const UPSampleStatistics &SampleSet::statistics() const
     return _sampleStats;
 }
 
-IRasterCoverage SampleSet::sampleRaster() const
+const IRasterCoverage & SampleSet::sampleRaster() const
 {
     return _sampleMap;
 }
 
-IRasterCoverage SampleSet::sampleRasterSet() const
+const IRasterCoverage & SampleSet::sampleRasterSet() const
 {
     return _sampleMaps;
 }
 
-IThematicDomain SampleSet::thematicDomain() const
+const IThematicDomain & SampleSet::thematicDomain() const
 {
     return _sampleDomain;
 }
