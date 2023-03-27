@@ -48,8 +48,8 @@ bool BoxClassifier::classify(PixelIterator &iterIn, PixelIterator &iterOut) cons
             v = *iterIn;
             ++iterIn;
         }
+        raw = rUNDEF;
         for(auto item : sampleset().thematicDomain() ){
-            raw = rUNDEF;
             currentClass = _classSequence.at(item->raw());
             bool classFound = true;
             for(int band = 0; band < zcolumn.size(); ++band){
@@ -76,8 +76,6 @@ bool BoxClassifier::prepare()
     for(auto item : sampleset().thematicDomain())
         stdProducts[item->raw()] = 1; //std::numeric_limits<double>::max();
     stdProducts[iUNDEF] = 1; //std::numeric_limits<double>::max();;
-
-
     Raw maxRaw = rUNDEF;
     for(auto item : sampleset().thematicDomain()){
         Raw raw = item->raw();
@@ -117,5 +115,62 @@ bool BoxClassifier::prepare()
             _boxMin[(quint32)item->raw()].push_back(mean - _widenFactor * std);
         }
     }
+    return true;
+}
+
+MinDistClassifier::MinDistClassifier(double threshold, const SampleSet& sampleset) : Classifier(sampleset), _threshold(threshold) {
+
+}
+
+bool MinDistClassifier::classify(PixelIterator& iterIn, PixelIterator& iterOut) const
+{
+    double threshold2;
+    if (_threshold != rUNDEF)
+        threshold2 = _threshold * _threshold;
+    else
+        threshold2 = DBL_MAX;
+
+    bool rounding = false;
+    Ilwis::IDomain dom = sampleset().sampleRasterSet()->datadefRef().domain<>();
+    if (dom.isValid() && dom->name() == "image")
+        rounding = true;
+
+    PixelIterator iterEnd = iterOut.end();
+    std::vector<double> zcolumn(sampleset().sampleRasterSet()->size().zsize(), rUNDEF);
+    while (iterOut != iterEnd) {
+        for (double& v : zcolumn) {
+            v = *iterIn;
+            ++iterIn;
+        }
+        double rMinDist = DBL_MAX;
+        Raw raw = rUNDEF;
+        for (auto item : sampleset().thematicDomain()) {
+            if (sampleset().smplSum().pixelInClass(item->raw()) <= 0)
+                continue;
+            double rDist = 0;
+            double d;
+            for (int band = 0; band < sampleset().sampleRasterSet()->size().zsize(); ++band) {
+                d = zcolumn[band] - (rounding ? (qint64)floor(0.5 + sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN)) : sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN));
+                d *= d;
+                rDist += d;
+            }
+            if ((rDist < rMinDist) && (rDist < threshold2)) {
+                raw = item->raw();
+                rMinDist = rDist;
+            }
+        }
+        *iterOut = raw;
+        ++iterOut;
+    }
+
+    return true;
+}
+
+bool MinDistClassifier::prepare()
+{
+    if ((_threshold <= 0) && (_threshold != rUNDEF)) {
+        return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
+    }
+
     return true;
 }

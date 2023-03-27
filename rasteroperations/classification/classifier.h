@@ -39,17 +39,23 @@ private:
 class BoxClassifier : public Classifier{
 public:
     BoxClassifier(double factor, const SampleSet& sampleset);
-
     bool classify(PixelIterator& iter, Ilwis::PixelIterator &iterOut) const;
     bool prepare();
 private:
-
-
     std::vector<std::vector<double>> _boxMax;
     std::vector<std::vector<double>> _boxMin;
     std::vector<Raw> _classSequence;
     double _widenFactor;
 
+};
+
+class MinDistClassifier : public Classifier {
+public:
+    MinDistClassifier(double threshold, const SampleSet& sampleset);
+    bool classify(PixelIterator& iter, Ilwis::PixelIterator& iterOut) const;
+    bool prepare();
+private:
+    double _threshold;
 };
 }
 }
