@@ -301,7 +301,7 @@ void SampleHistogram::addClass(Raw key)
 
     _hist[key].resize(_nrOfBands);
     for(int band = 0; band < _nrOfBands; ++band){
-        int noOfValues = _raster->datadef(band).range<NumericRange>()->distance();
+        int noOfValues = 1 + _raster->datadef(band).range<NumericRange>()->distance();
         _hist[key][band].resize(noOfValues);
         std::fill(_hist[key][band].begin(),_hist[key][band].end(),0);
     }
@@ -329,7 +329,7 @@ void SampleHistogram::resetClass(Raw key)
 void SampleHistogram::mergeClass(Raw key1, Raw key2)
 {
     for(int band = 0; band < _nrOfBands; ++band){
-        int noOfValues = _raster->datadef(band).range<NumericRange>()->distance();
+        int noOfValues = 1 + _raster->datadef(band).range<NumericRange>()->distance();
         for( int value=0; value < noOfValues; ++value)
             at(key1,band,value) += at(key2,band, value);
         std::fill(_hist[key2][band].begin(),_hist[key2][band].end(),0);
@@ -361,7 +361,7 @@ quint32 &SampleHistogram::at(Raw key, quint32 band, quint32 value)
         throw ErrorObject(TR("Sample set index(es) out of bounds"));
     if ( _hist[key].size() < band)
         throw ErrorObject(TR("Sample set index(es) out of bounds"));
-    if ( _hist[key][band].size() < value)
+    if ( _hist[key][band].size() < (value - _minValuesperBand[band]))
         throw ErrorObject(TR("Sample set index(es) out of bounds"));
 
     return _hist[key][band][value - _minValuesperBand[band]];
