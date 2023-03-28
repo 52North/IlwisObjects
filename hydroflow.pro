@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Hydroflow/hydroflow_module.cpp \
     Hydroflow/MapFillSinks.cpp \
+    Hydroflow/MapFlowDirection.cpp \
     Hydroflow/normalizerelativedem.cpp \
     Hydroflow/relativedem.cpp
 
@@ -36,6 +37,7 @@ HEADERS += \
     Hydroflow/hydroflow_global.h \
     Hydroflow/hydroflow_module.h \
     Hydroflow/MapFillSinks.h \
+    Hydroflow/MapFlowDirection.h \
     Hydroflow/normalizerelativedem.h \
     Hydroflow/relativedem.h
 
