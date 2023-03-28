@@ -787,7 +787,7 @@ bool RasterCoverage::bandPrivate(quint32 bandIndex,  PixelIterator inputIter)
     }
 	if (datadefRef().domain()->ilwisType() == itNUMERICDOMAIN) {
 		double resolution = 1e30;
-		std::min(inputIter.raster()->datadefRef().range<NumericRange>()->resolution(), resolution);
+		resolution = std::min(inputIter.raster()->datadefRef().range<NumericRange>()->resolution(), resolution);
 		if (resolution == 1e30) resolution = 0;
 		if (minv != 1e307 && maxv != -1e307) {
 			NumericRange *rng = new NumericRange(minv, maxv, resolution);
@@ -848,11 +848,13 @@ void RasterCoverage::size(const Size<> &sz)
         if (_georef.isValid())
             _georef->size(sz);
          stackDefinitionRef().setSubDefinition(sz.zsize()); // default filling, can be overruled
-        for(int i = 0; i < sz.zsize(); ++i){
-            if ( datadef().isValid()){
-                datadefRef(i) = datadef();
-            }
-        }
+         if (datadef().isValid()) {
+             for (int i = 0; i < sz.zsize(); ++i) {
+                 if (!datadefRef(i).isValid()) {
+                     datadefRef(i) = datadef();
+                 }
+             }
+         }
         resourceRef().dimensions(_size.toString());
     }
 }
