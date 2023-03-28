@@ -87,6 +87,7 @@ bool RasterCoverageConnector::loadMapList(IlwisObject *data,const IOOptions& opt
     for(int i =0; i < sz.zsize(); ++i)
         bands[i] = i;
     gcoverage->stackDefinitionRef().setSubDefinition(IDomain("count"),bands);
+    double vmin = rUNDEF, vmax = rUNDEF, scale = rUNDEF, offset;
     for(int i = 0; i < z; ++i) {
         QString file = _odf->value("MapList",QString("Map%1").arg(i));
         //file = filename2FullPath(file);
@@ -102,6 +103,12 @@ bool RasterCoverageConnector::loadMapList(IlwisObject *data,const IOOptions& opt
                 return false;
             }
             gcoverage->setBandDefinition(i, def);
+            NumericRange* defnr = def.range()->as<NumericRange>();
+            if (defnr) {
+                vmin = (vmin != rUNDEF) ? std::min(vmin, defnr->min()) : defnr->min();
+                vmax = (vmax != rUNDEF) ? std::max(vmax, defnr->max()) : defnr->max();
+                scale = (scale != rUNDEF) ? std::min(scale, defnr->resolution()) : defnr->resolution();
+            }
 
         } else {
             ERROR2(ERR_COULD_NOT_LOAD_2,"files","maplist");
@@ -115,17 +122,23 @@ bool RasterCoverageConnector::loadMapList(IlwisObject *data,const IOOptions& opt
 
     gcoverage->datadefRef().domain(mp->datadef().domain<>());
 
-    double vmax,vmin,scale,offset;
-    //QString range = _odf->value("MapList", "Range");
-    //if ( range == sUNDEF)
-       QString range = ini.value("BaseMap","Range");
-    if ( range != sUNDEF ) {
-        if( getRawInfo(range, vmin,vmax,scale,offset)) {
-            if ( scale == 1.0) {
-                gcoverage->datadefRef().range(new NumericRange(vmin, vmax,1));
-            }
-            else {
-                gcoverage->datadefRef().range(new NumericRange(vmin, vmax));
+    QString range = _odf->value("MapList", "Range"); // first preference: values from ODF
+    if (range == sUNDEF && vmin != rUNDEF && vmax != rUNDEF) { // second preference: values computed above
+        if (scale != rUNDEF)
+            gcoverage->datadefRef().range(new NumericRange(vmin, vmax, scale));
+        else
+            gcoverage->datadefRef().range(new NumericRange(vmin, vmax, 0));
+    } else {
+        if (range == sUNDEF)
+            range = ini.value("BaseMap", "Range"); // last-resort: values from first map (usually wrong, as this is not the total min/max).
+        if (range != sUNDEF) {
+            if (getRawInfo(range, vmin, vmax, scale, offset)) {
+                if (scale == 1.0) {
+                    gcoverage->datadefRef().range(new NumericRange(vmin, vmax, 1));
+                }
+                else {
+                    gcoverage->datadefRef().range(new NumericRange(vmin, vmax));
+                }
             }
         }
     }
