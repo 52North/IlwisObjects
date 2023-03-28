@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "featurespace.h"
 #include "thematicitem.h"
 #include "itemdomain.h"
+#include "numericdomain.h"
 #include "samplestatistics.h"
 #include "sampleset.h"
 #include "ilwisoperation.h"
@@ -52,9 +53,9 @@ SampleSet::SampleSet(const SampleSet &sampleset) : Identity(name(),id(), code(),
 
 SampleSet::SampleSet(const IRasterCoverage &samplemaps, const IRasterCoverage &samplemap) :
     _sampleMap(samplemap),
-    _sampleMaps(samplemaps),
-    _sampleDomain(samplemap->datadefRef().domain())
+    _sampleMaps(samplemaps)
 {
+    thematicDomain(samplemap);
     _sampleHistogram.reset(new SampleHistogram());
     _sampleSum.reset(new SampleSum());
     _sampleSumXY.reset(new SampleSumXY());
@@ -95,9 +96,34 @@ void SampleSet::sampleRaster(const IRasterCoverage& raster) {
     _sampleMap = raster;
 }
 
-void SampleSet::thematicDomain(const IThematicDomain &dom)
+void SampleSet::thematicDomain(const IRasterCoverage &samplemap)
 {
-    _sampleDomain = dom;
+    IDomain dom = samplemap->datadefRef().domain();
+    if (dom.isValid()) {
+        if (dynamic_cast<ThematicDomain*>(dom.ptr()))
+            _sampleDomain = dom;
+        else if (hasType(dom->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM | itNAMEDITEM)) {
+            IItemDomain itemdom = dom.as<ItemDomain<DomainItem>>();
+            _sampleDomain.prepare();
+            for (auto item : itemdom) {
+                ThematicItem* thematicItem = new ThematicItem(QString("Cluster %1").arg(item->raw()), "", "");
+                thematicItem->raw(item->raw());
+                _sampleDomain->addItem(thematicItem);
+            }
+        } else if (dynamic_cast<NumericDomain*>(dom.ptr())) {
+            NumericStatistics& stats = samplemap->statisticsRef(PIXELVALUE);
+            if (!stats.isValid()) {
+                PixelIterator iter(samplemap, BoundingBox(samplemap->size()));
+                stats.calculate(iter, iter.end(), NumericStatistics::PropertySets::pBASIC);
+            }
+            _sampleDomain.prepare();
+            for (int i = stats[NumericStatistics::pMIN]; i <= stats[NumericStatistics::pMAX]; ++i) {
+                ThematicItem* thematicItem = new ThematicItem(QString("Cluster %1").arg(i), "", "");
+                thematicItem->raw(i);
+                _sampleDomain->addItem(thematicItem);
+            }
+        }
+    }
 }
 
 bool SampleSet::prepare()
@@ -110,7 +136,6 @@ bool SampleSet::prepare()
     }
 
     Identity::prepare();
-
 
     BoundingBox box = _sampleMaps->size();
     PixelIterator iterSampleMap(_sampleMap);

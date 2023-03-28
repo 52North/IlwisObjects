@@ -41,7 +41,7 @@ public:
 
     void sampleRasterSet(const IRasterCoverage& raster);
     void sampleRaster(const IRasterCoverage &raster);
-    void thematicDomain(const IThematicDomain& dom);
+    void thematicDomain(const IRasterCoverage& samplemap);
 
     UPSampleStatistics& statistics() ;
     const UPSampleStatistics &statistics() const;
