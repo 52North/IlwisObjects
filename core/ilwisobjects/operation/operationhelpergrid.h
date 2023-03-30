@@ -80,6 +80,7 @@ public:
 
         double minv=1e307,maxv = -1e307;
         double minBand = minv, maxBand = maxv;
+        quint32 bandIx = 0;
         if ( res && outputRaster.isValid()) {
             if ( outputRaster->datadef().domain<>()->valueType() & itNUMBER) {
                 PixelIterator iter(outputRaster);
@@ -88,14 +89,15 @@ public:
                     double v = *iter;
                     minv = Ilwis::min(v,minv);
                     maxv = Ilwis::max(v,maxv);
-                    minBand = Ilwis::min(v,minv);
-                    maxBand = Ilwis::max(v,maxv);
+                    minBand = Ilwis::min(v,minBand);
+                    maxBand = Ilwis::max(v,maxBand);
                     ++iter;
                     if ( iter.zchanged()){
-                        outputRaster->datadefRef(iter.z()).range<NumericRange>()->max(maxBand);
-                        outputRaster->datadefRef(iter.z()).range<NumericRange>()->min(minBand);
-                        minBand=1e307;
+                        outputRaster->datadefRef(bandIx).range<NumericRange>()->max(maxBand);
+                        outputRaster->datadefRef(bandIx).range<NumericRange>()->min(minBand);
+                        minBand = 1e307;
                         maxBand = -1e307;
+                        ++bandIx;
                     }
                 }
                 double resolution = outputRaster->datadefRef().range<NumericRange>()->resolution();

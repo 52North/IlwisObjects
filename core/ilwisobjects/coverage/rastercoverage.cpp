@@ -993,6 +993,7 @@ void RasterCoverage::setPseudoUndef(PIXVALUETYPE v){
     IRasterCoverage raster(this);
     PixelIterator iter(raster,BoundingBox(size()));
     PIXVALUETYPE vmin=1e300, vmax = -1e300, vminlayer=1e300, vmaxlayer=-1e300;
+    quint32 bandIx = 0;
     auto end = iter.end();
     while(iter != end){
         PIXVALUETYPE& oldvalue = *iter;
@@ -1007,8 +1008,9 @@ void RasterCoverage::setPseudoUndef(PIXVALUETYPE v){
         ++iter;
         if ( iter.zchanged()){
             NumericRange *rng = new NumericRange(vminlayer, vmaxlayer, datadef().range<NumericRange>()->resolution());
-            datadefRef(iter.z()).range(rng);
+            datadefRef(bandIx).range(rng);
             vminlayer=1e300, vmaxlayer=-1e300;
+            ++bandIx;
         }
     }
     NumericRange *rng = new NumericRange(vmin, vmax, datadef().range<NumericRange>()->resolution());

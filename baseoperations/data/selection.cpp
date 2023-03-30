@@ -69,9 +69,11 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     PixelIterator iterOut(outputRaster);
     int count = 0;
     bool numeric = outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
+    double minv = 1e307, maxv = -1e307;
+    quint32 bandIx = 0;
     for(QString band : selectionBands){
+        double minBand = 1e307, maxBand = -1e307;
         PixelIterator iterIn = inputRaster->band(band, _box);
-
         PixelIterator iterEnd = iterIn.end();
         while(iterIn != iterEnd) {
             bool ok = true;
@@ -107,6 +109,12 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
             }
             if (ok) {
                 *iterOut = pixValue;
+                if (pixValue != rUNDEF) {
+                    minv = Ilwis::min(pixValue, minv);
+                    maxv = Ilwis::max(pixValue, maxv);
+                    minBand = Ilwis::min(pixValue, minBand);
+                    maxBand = Ilwis::max(pixValue, maxBand);
+                }
             } else
                 *iterOut = rUNDEF;
 
@@ -123,9 +131,22 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
                 }
             }
         }
+        if (numeric) {
+            outputRaster->datadefRef(bandIx).range<NumericRange>()->max(maxBand);
+            outputRaster->datadefRef(bandIx).range<NumericRange>()->min(minBand);
+            minBand = 1e307;
+            maxBand = -1e307;
+        }
+        ++bandIx;
     }
-    if ( numeric)
-        outputRaster->statistics(PIXELVALUE, ContainerStatistics<double>::pBASIC);
+    if (numeric) {
+        double resolution = outputRaster->datadefRef().range<NumericRange>()->resolution();
+        NumericRange* rng = new NumericRange(minv, maxv, resolution);
+        for (int i = 0; i < outputRaster->size().zsize(); ++i) {
+            outputRaster->datadefRef(i).range<NumericRange>()->resolution(resolution);
+        }
+        outputRaster->datadefRef().range(rng);
+    }
 
     outputRaster->setAttributes(_attTable);
     QVariant value;
