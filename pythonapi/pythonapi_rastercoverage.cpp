@@ -460,7 +460,7 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
         throw InvalidObject("array datatype not supported");
 
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
-    Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
+    Ilwis::PixelIterator iter = band != -1 ? raster->band(raster->stackDefinition().index((quint32)band)) : Ilwis::PixelIterator(raster);
 
     if (format == itINT8)
         setValues((qint8*)pybuf.buf, nItems, iter);
@@ -498,7 +498,7 @@ void RasterCoverage::_list2Raster(PyObject *container, int band)
     }
 
     Ilwis::IRasterCoverage raster(this->ptr()->as<Ilwis::RasterCoverage>());
-    Ilwis::PixelIterator iter = band != -1 ? raster->band(band) : Ilwis::PixelIterator(raster);
+    Ilwis::PixelIterator iter = band != -1 ? raster->band(raster->stackDefinition().index((quint32)band)) : Ilwis::PixelIterator(raster);
     double value = 0;
     while ((item = PyIter_Next(iterator))) {
         if (PyLong_Check(item)) {

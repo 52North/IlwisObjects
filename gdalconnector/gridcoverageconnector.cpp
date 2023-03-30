@@ -782,7 +782,8 @@ bool RasterCoverageConnector::storeColorRaster(RasterCoverage *raster, GDALDatas
 
 bool RasterCoverageConnector::saveByteBand(RasterCoverage *raster, GDALDatasetH dataset,int gdallayerindex, int band, GDALColorInterp colorType){
     quint32 columns = raster->size().xsize();
-    PixelIterator iter = raster->band(band);
+    QString bandindex = raster->stackDefinition().index((quint32)band);
+    PixelIterator iter = raster->band(bandindex);
     std::vector<unsigned char> data(columns);
     GDALRasterBandH hband = gdal()->getRasterBand(dataset,gdallayerindex);
     if (!hband) {

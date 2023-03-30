@@ -136,7 +136,8 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
         }
 
         for (int i = 0; i < _inputRaster->size().zsize(); ++i) {
-            PixelIterator iter = _inputRaster->band(i);
+            QString bandindex = _inputRaster->stackDefinition().index((quint32)i);
+            PixelIterator iter = _inputRaster->band(bandindex);
             NumericStatistics stats;
             stats.calculate(iter, iter.end(), NumericStatistics::pHISTOGRAM);
             double minValue = stats(NumericStatistics::pMIN, percent);
@@ -171,7 +172,8 @@ Ilwis::OperationImplementation::State LinearStretchOperation::prepare(ExecutionC
         }
 
         for (int i = 0; i < _inputRaster->size().zsize(); ++i) {
-            PixelIterator iter = _inputRaster->band(i);
+            QString bandindex = _inputRaster->stackDefinition().index((quint32)i);
+            PixelIterator iter = _inputRaster->band(bandindex);
             NumericStatistics stats;
             stats.calculate(iter, iter.end(), NumericStatistics::pHISTOGRAM);
             double minValue = stats(NumericStatistics::pMIN, percent);

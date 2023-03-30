@@ -280,7 +280,8 @@ void ClusterRaster::initStretchLookup() {
     _aarIndex2Value.resize(_inputRaster->size().zsize());
 
     for (quint32 j = 0; j < _inputRaster->size().zsize(); j++) {
-        PixelIterator iter = _inputRaster->band(j);
+        QString bandindex = _inputRaster->stackDefinition().index(j);
+        PixelIterator iter = _inputRaster->band(bandindex);
         NumericStatistics stats;
         stats.calculate(iter, iter.end(), NumericStatistics::pBASIC);
         double minValue = stats[NumericStatistics::pMIN];
