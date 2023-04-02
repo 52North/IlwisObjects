@@ -49,6 +49,12 @@ namespace Ilwis {
 			Q_INVOKABLE QModelIndex pathIndex(const QString& pathIndex);
 			Q_INVOKABLE QString icon(const QModelIndex& index);
 			QString currentUrl() const;
+			//new method declarations
+		        Q_INVOKABLE QString fileSize(const QModelIndex& index) const;
+		        Q_INVOKABLE QString lastModified(const QModelIndex& index) const;
+		        Q_INVOKABLE QString permission(const QModelIndex& index) const;
+		        Q_INVOKABLE bool isDir(const QModelIndex& index) const;
+		        Q_INVOKABLE bool isFile(const QModelIndex& index) const;
 
 		signals:
 			void filterChanged();
