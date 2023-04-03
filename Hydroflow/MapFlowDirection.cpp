@@ -24,6 +24,9 @@ along with this program.If not, see < http://www.gnu.org/licenses/>.*/
 #include "blockiterator.h"
 #include "pixeliterator.h"
 #include "MapFlowDirection.h"
+#include "itemdomain.h"
+#include "thematicitem.h"
+
 
 
 using namespace Ilwis;
@@ -100,10 +103,22 @@ Ilwis::OperationImplementation::State MapFlowDirection::prepare(ExecutionContext
         return sPREPAREFAILED;
     }
 
-   /* IDomain dom("code=domain:FlowDirection");
+    /*IDomain dom("code=domain:FlowDirection");
     _outRaster->datadefRef() = DataDefinition(dom);*/
 
-	//IThematicDomain tdom;
+	/*IThematicDomain flowdirectionDom;
+	flowdirectionDom.prepare("FlowDirection");
+
+	flowdirectionDom->addItem(new ThematicItem({ QString("E"),QString("domain:FlowDirection"), QString("FlowDirection"), },  1));
+	flowdirectionDom->addItem(new ThematicItem({ QString("SE"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 2));
+	flowdirectionDom->addItem(new ThematicItem({ QString("S"),QString("domain:FlowDirection"), QString("FlowDirection"), },  3));
+	flowdirectionDom->addItem(new ThematicItem({ QString("SW"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 4));
+	flowdirectionDom->addItem(new ThematicItem({ QString("W"),QString("domain:FlowDirection"), QString("FlowDirection"), },  5));
+	flowdirectionDom->addItem(new ThematicItem({ QString("NW"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 6));
+	flowdirectionDom->addItem(new ThematicItem({ QString("N"),QString("domain:FlowDirection"), QString("FlowDirection"), },  7));
+	flowdirectionDom->addItem(new ThematicItem({ QString("NE"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 8));*/
+
+	//_outRaster->datadefRef() = DataDefinition(flowdirectionDom);
 
 	IDomain dom;
 	dom.prepare("value");
@@ -124,14 +139,9 @@ Ilwis::OperationImplementation::State MapFlowDirection::prepare(ExecutionContext
     PixelIterator iterFlow = PixelIterator(_outRaster, BoundingBox(), PixelIterator::fXYZ);
     PixelIterator inEnd = iterDEM.end();
 
-    std::vector<double> vals;
-    while (iterDEM != inEnd)
-    {
-        *iterFlow = *iterDEM;
-        *iterFlow++;
-        *iterDEM++;
-    }
     
+	std::fill(iterFlow, iterFlow.end(), 0);
+
     _xsize = _outRaster->size().xsize();
     _ysize = _outRaster->size().ysize();
 
@@ -143,21 +153,22 @@ Ilwis::OperationImplementation::State MapFlowDirection::prepare(ExecutionContext
 
 quint64 MapFlowDirection::createMetadata()
 {
-    OperationResource operation({ "ilwis://operations/MapFlowDirection" });
-    operation.setSyntax("MapFlowDirection(inputraster,method=slope|height,useparalleldrainagecorrection=yes|no)");
-    operation.setDescription(TR("generates a new raster containing flow directions"));
-    operation.setInParameterCount({ 3 });
-    operation.addInParameter(0, itRASTER, TR("rastercoverage"), TR("input a sink-free DEM with numeric domain"));
-    operation.addInParameter(1, itSTRING, TR("method definition"), TR("Flow direction should be calculated according to the steepst slope or the smallest height"), OperationResource::ueCOMBO);
-    operation.addInParameter(2, itSTRING, TR("Parallel drainage correction algorithm"), TR("Option of flow direction algorithm."), OperationResource::ueNONE);
-    operation.parameterNeedsQuotes(1);
-    operation.setOutParameterCount({ 1 });
-    operation.addOutParameter(0, itRASTER, TR("output raster"), TR("output raster with a numeric domain"));
-    operation.setKeywords("flow direction,raster,image processing, numeric");
+	OperationResource operation({ "ilwis://operations/MapFlowDirection" });
+	operation.setSyntax("MapFlowDirection(inputraster,method=slope|height,useparalleldrainagecorrection=yes|no)");
+	operation.setDescription(TR("generates a new raster containing flow directions"));
+	operation.setInParameterCount({ 3 });
+	operation.addInParameter(0, itRASTER, TR("rastercoverage"), TR("input a sink-free DEM with numeric domain"));
+	operation.addInParameter(1, itSTRING, TR("method definition"), TR("Flow direction should be calculated according to the steepst slope or the smallest height"), OperationResource::ueCOMBO);
+	operation.addInParameter(2, itSTRING, TR("Parallel drainage correction algorithm"), TR("Option of flow direction algorithm."), OperationResource::ueNONE);
+	operation.parameterNeedsQuotes(1);
+	operation.setOutParameterCount({ 1 });
+	operation.addOutParameter(0, itRASTER, TR("output raster"), TR("output raster with a numeric domain"));
+	operation.setKeywords("flow direction,raster,image processing, numeric");
 
 	operation.checkAlternateDefinition();
-    mastercatalog()->addItems({ operation });
-    return operation.id();
+	mastercatalog()->addItems({ operation });
+	return operation.id();
+
 }
 
 
@@ -778,7 +789,6 @@ void FlowDirectionAlgorithm::calculate(QString methodInput)
 
 	iterPos = PixelIterator(_iterEmptyRaster, BoundingBox(), PixelIterator::fXYZ);
 
-
 	while (iterPos != inEnd)
 	{
 		Pixel pxl = iterPos.position();
@@ -790,7 +800,7 @@ void FlowDirectionAlgorithm::calculate(QString methodInput)
 			double listVal[8];
 			//vector<double> listVal;// = new vector<double>(8);
 			max = maxAdj(pxl, listVal);
-			if (max > 0) 
+			if (max > 0)
 			{
 				//Finds thw elements with maximum value in the list
 				std::vector<FlowDirection> listPos;
@@ -829,7 +839,7 @@ void FlowDirectionAlgorithm::calculate(QString methodInput)
 	//Flat surface treatment
 	std::fill(gradient1, gradient1.end(), 0);
 	std::fill(gradient2, gradient2.end(), 0);
-
+	
 	iterPos = PixelIterator(_iterEmptyRaster, BoundingBox(), PixelIterator::fXYZ);
 
 	while (iterPos != grdEnd)
@@ -1031,7 +1041,7 @@ void FlowDirectionAlgorithm::locateOutlet(Pixel pxl, std::vector<Cell>& flatList
 						{
 							cell.setRC(pospxl);
 							cell.val = *(iterFlow(pospxl));
-							*(iterDEM(pospxl)) = flag;
+							*(iterFlow(pospxl)) = flag;
 							outList.push_back(cell);
 							desList.push_back(cell);
 						}
@@ -1100,7 +1110,7 @@ void FlowDirectionAlgorithm::imposeGradient2LowerElevation(std::vector<Cell>& ou
 			{
 				pospxl.y = pxl.y + i;
 				for (int j = -1; j <= 1; ++j) {
-					pospxl.x = pxl.x + i;
+					pospxl.x = pxl.x + j;
 					if (*(iterFlow(pospxl)) == flag) {
 						cell.setRC(pospxl);
 						desList.push_back(cell);
@@ -1151,7 +1161,7 @@ void FlowDirectionAlgorithm::imposeGradientFromElevation(std::vector<Cell>& flat
 					pospxl.y = pxl.y + i;
 					for (int j = -1; j <= 1; ++j)
 					{
-						pospxl.x = pxl.x + i;
+						pospxl.x = pxl.x + j;
 						if (*(iterFlow(pospxl)) != flatcell || *(iterFlow(pospxl)) == flag ) 
 						{
 							flagList.push_back(cell);
@@ -1180,7 +1190,7 @@ void FlowDirectionAlgorithm::imposeGradientFromElevation(std::vector<Cell>& flat
 				cell = (*pos);
 				if (*(iterFlow(cell.pxl)) == flag)
 				{
-					gradient(cell.pxl) += increment;
+					*(gradient(cell.pxl)) += increment;
 				}
 			}
 		}
