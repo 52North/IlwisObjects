@@ -95,7 +95,7 @@ void IlwisObject::connectTo(const QUrl& outurl, const QString& format, const QSt
         QString currenturl = res.url().toString();
         // we dont replace the normalized urls for internal objects if the url is pointing to the (disk based) cache
         if ( !(currenturl.indexOf(INTERNAL_CATALOG) == 0 && !outurl.isValid())){
-            res.setUrl(url);
+            res.setUrl(url, false, updatedb);
 
         }
         if ( url.scheme() != "ilwis") // raw urls can never go to an ilwis scheme
