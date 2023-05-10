@@ -212,7 +212,7 @@ bool ProjectionImplementationProj4::prepare(const QString &parms)
         }
         QString h = proj4["h"];
         if ( h != sUNDEF){
-            _targetDef += " +h=" + b;
+            _targetDef += " +h=" + h;
         }
         QString name = proj4["datum"];
         if ( name != sUNDEF) {
