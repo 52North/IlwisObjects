@@ -78,6 +78,17 @@ protected:
     virtual double rAdd(quint32 iClass) const;
     std::map<quint32, double> lnDet;
 };
+
+class SpectralAngleClassifier : public Classifier {
+public:
+    SpectralAngleClassifier(double threshold, const SampleSet& sampleset);
+    bool classify(PixelIterator& iter, Ilwis::PixelIterator& iterOut) const;
+    bool prepare();
+protected:
+    double aacos(double v) const;
+private:
+    double _threshold;
+};
 }
 }
 

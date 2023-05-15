@@ -298,3 +298,66 @@ bool MaxLikelihoodClassifier::prepare() {
         return false;
 
 }
+
+#define ONE_TOL	 1.00000000000001
+
+SpectralAngleClassifier::SpectralAngleClassifier(double threshold, const SampleSet& sampleset) : Classifier(sampleset), _threshold(threshold) {
+
+}
+
+double SpectralAngleClassifier::aacos(double v) const
+{
+    double av;
+    if ((av = abs(v)) >= 1.) {
+        if (av > ONE_TOL)
+            return rUNDEF;
+        return (v < 0. ? M_PI : 0.);
+    }
+    return acos(v);
+}
+
+bool SpectralAngleClassifier::classify(PixelIterator& iterIn, PixelIterator& iterOut) const
+{
+    PixelIterator iterEnd = iterOut.end();
+    std::vector<double> zcolumn(sampleset().sampleRasterSet()->size().zsize(), rUNDEF);
+    while (iterOut != iterEnd) {
+        for (double& v : zcolumn) {
+            v = *iterIn;
+            ++iterIn;
+        }
+        double rMinAngle = DBL_MAX;
+        Raw raw = rUNDEF;
+        for (auto item : sampleset().thematicDomain()) {
+            if (sampleset().smplSum().pixelInClass(item->raw()) <= 0)
+                continue;
+            double rSumT2 = 0; // norm terms for vector T
+            double rSumM2 = 0; // norm terms for M
+            double rSumTM = 0; // inproduct terms
+            for (int band = 0; band < sampleset().sampleRasterSet()->size().zsize(); ++band) {
+                double rT = zcolumn[band];
+                double rM = sampleset().statistics()->at(item->raw(), band, SampleCell::mMEAN);
+                rSumT2 += rT * rT;
+                rSumM2 += rM * rM;
+                rSumTM += rT * rM;
+            }
+            double rAngle = aacos(rSumTM / sqrt(rSumT2 * rSumM2)); //angle between vectors T and class mean M in iBands()-dimensional space
+            if ((rAngle < rMinAngle) && (rAngle < _threshold)) {
+                raw = item->raw();
+                rMinAngle = rAngle;
+            }
+        }
+        *iterOut = raw;
+        ++iterOut;
+    }
+
+    return true;
+}
+
+bool SpectralAngleClassifier::prepare()
+{
+    if ((_threshold <= 0) && (_threshold != rUNDEF)) {
+        return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
+    }
+
+    return true;
+}

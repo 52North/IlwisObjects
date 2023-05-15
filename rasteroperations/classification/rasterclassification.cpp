@@ -98,7 +98,7 @@ Ilwis::OperationImplementation::State RasterClassification::prepare(ExecutionCon
 
 int RasterClassification::fillOperationMetadata(OperationResource &operation)
 {
-    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist|minmahadist|maxlikelihood"));
+    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist|minmahadist|maxlikelihood|spectralangle"));
     operation.addInParameter(1,itRASTER , TR("Multiband raster"),TR("Multi band raster to be classified"));
     operation.addInParameter(2,itRASTER , TR("Training set"),TR("Raster containing trainingset(s) of pixels"));
     return 3;
@@ -156,6 +156,14 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
             ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
         }
         _classifier.reset(new MaxLikelihoodClassifier(threshold, _sampleSet));
+    }
+    else if (_type == "spectralangle") {
+        bool ok;
+        double threshold = _expression.parm(3).value().toDouble(&ok);
+        if (!ok || threshold <= 0) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        }
+        _classifier.reset(new SpectralAngleClassifier(threshold, _sampleSet));
     }
 
     if(!_classifier->prepare())
