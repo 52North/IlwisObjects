@@ -179,7 +179,7 @@ MinMahaDistClassifier::MinMahaDistClassifier(double threshold, const SampleSet& 
 
 }
 
-double MinMahaDistClassifier::rAdd(int /*iClass*/) const
+double MinMahaDistClassifier::rAdd(quint32 /*iClass*/) const
 {
     return 0;
 }
@@ -272,4 +272,29 @@ bool MinMahaDistClassifier::prepare()
     }
 
     return true;
+}
+
+MaxLikelihoodClassifier::MaxLikelihoodClassifier(double threshold, const SampleSet& sampleset) : MinMahaDistClassifier(threshold, sampleset) {
+
+}
+
+double MaxLikelihoodClassifier::rAdd(quint32 iClass) const
+{
+    return lnDet.at(iClass);
+}
+
+bool MaxLikelihoodClassifier::prepare() {
+    if (MinMahaDistClassifier::prepare()) {
+        for (auto item : sampleset().thematicDomain()) {
+            quint32 cl = item->raw();
+            double vcvInvDet = abs(varcovinv[cl].determinant());
+            // because the determinant of the inverse matrix equals
+            // the inverse of the determinant of the original matrix:
+            lnDet[cl] = log(1 / vcvInvDet);
+        }
+        return true;
+    }
+    else
+        return false;
+
 }

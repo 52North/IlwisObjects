@@ -64,10 +64,19 @@ public:
     bool classify(PixelIterator& iter, Ilwis::PixelIterator& iterOut) const;
     bool prepare();
 protected:
-    virtual double rAdd(int iClass) const;
-private:
+    virtual double rAdd(quint32 iClass) const;
     std::map<quint32, Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> varcovinv;
+private:
     double _threshold;
+};
+
+class MaxLikelihoodClassifier : public MinMahaDistClassifier {
+public:
+    MaxLikelihoodClassifier(double threshold, const SampleSet& sampleset);
+    bool prepare();
+protected:
+    virtual double rAdd(quint32 iClass) const;
+    std::map<quint32, double> lnDet;
 };
 }
 }
