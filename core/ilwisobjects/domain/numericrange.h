@@ -122,6 +122,16 @@ public:
 
         return value;
     }
+    QVariant ensureExt(const QVariant& v, bool inclusive = true) const
+    {
+        double value = v.toDouble();
+        if (_resolution != 0.0)
+            value = (double)((qint64)floor(0.5 + value / _resolution)) * _resolution;
+        if (!contains(value, inclusive))
+            return rUNDEF;
+
+        return value;
+    }
 
     void clear();
     quint32 count() const;

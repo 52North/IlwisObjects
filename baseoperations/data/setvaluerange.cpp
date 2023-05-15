@@ -61,9 +61,7 @@ bool SetValueRange::execute(ExecutionContext *ctx, SymbolTable &symTable)
         while(iter != end){
             double val = *iter;
             if ( val != rUNDEF){
-                double v = rng->ensure(val).value<double>();
-                if (v == iUNDEF)
-                    v = rUNDEF;
+                double v = rng->ensureExt(val).value<double>();
                 val = v;
             }
             *iterOut = val;
