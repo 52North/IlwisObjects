@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "thematicitem.h"
 #include "location.h"
 #include "raster.h"
+#include "table.h"
 #include "pixeliterator.h"
 #include "classification/samplestatistics.h"
 #include "classification/sampleset.h"
@@ -296,7 +297,6 @@ bool MaxLikelihoodClassifier::prepare() {
     }
     else
         return false;
-
 }
 
 #define ONE_TOL	 1.00000000000001
@@ -360,4 +360,26 @@ bool SpectralAngleClassifier::prepare()
     }
 
     return true;
+}
+
+PriorProbClassifier::PriorProbClassifier(double threshold, const SampleSet& sampleset, const ITable& tblPrior, const QString& colPrior) : MaxLikelihoodClassifier(threshold, sampleset), _tblPrior(tblPrior), _colPrior(colPrior) {
+
+}
+
+double PriorProbClassifier::rAdd(quint32 iClass) const
+{
+    return MaxLikelihoodClassifier::rAdd(iClass) + rPriorProb.at(iClass);
+}
+
+bool PriorProbClassifier::prepare() {
+    if (MaxLikelihoodClassifier::prepare()) {
+        std::vector<QVariant> columnValues = _tblPrior->column(_colPrior);
+        for (auto item : sampleset().thematicDomain()) {
+            quint32 cl = item->raw();
+            rPriorProb[cl] = -2 * log(columnValues[cl].toDouble());
+        }
+        return true;
+    }
+    else
+        return false;
 }

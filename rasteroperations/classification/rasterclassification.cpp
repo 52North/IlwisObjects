@@ -19,8 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <unordered_map>
 #include "kernel.h"
 #include "raster.h"
+#include "table.h"
 #include "itemdomain.h"
 #include "thematicitem.h"
+#include "numericdomain.h"
 #include "symboltable.h"
 #include "ilwisoperation.h"
 #include "classification/sampleset.h"
@@ -98,7 +100,7 @@ Ilwis::OperationImplementation::State RasterClassification::prepare(ExecutionCon
 
 int RasterClassification::fillOperationMetadata(OperationResource &operation)
 {
-    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist|minmahadist|maxlikelihood|spectralangle"));
+    operation.addInParameter(0,itSTRING , TR("Type"),TR("The type of the classifier. Choice: box|mindist|minmahadist|maxlikelihood|spectralangle|priorprob"));
     operation.addInParameter(1,itRASTER , TR("Multiband raster"),TR("Multi band raster to be classified"));
     operation.addInParameter(2,itRASTER , TR("Training set"),TR("Raster containing trainingset(s) of pixels"));
     return 3;
@@ -165,6 +167,37 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
         }
         _classifier.reset(new SpectralAngleClassifier(threshold, _sampleSet));
     }
+    else if (_type == "priorprob") {
+        QString tableName = _expression.parm(3).value();
+        ITable tblPrior;
+        if (!tblPrior.prepare(tableName)) {
+            ERROR2(ERR_COULD_NOT_LOAD_2, tableName, "");
+            return sPREPAREFAILED;
+        }
+        DataDefinition& tblDef = tblPrior->columndefinitionRef(tblPrior->primaryKey() != sUNDEF ? tblPrior->primaryKey() : COVERAGEKEYCOLUMN).datadef();
+        DataDefinition& rasDef = _sampleSet.sampleRaster()->datadefRef();
+        if (!tblDef.isCompatibleWith(rasDef)) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "domain", tableName);
+            return sPREPAREFAILED;
+        }
+        QString colPrior = _expression.parm(4).value();
+        if (colPrior.size() <= 0) {
+            ERROR2(ERR_COULD_NOT_LOAD_2, colPrior, "");
+            return sPREPAREFAILED;
+        }
+        IDomain& colDom = tblPrior->columndefinitionRef(colPrior).datadef().domain();
+        if (!dynamic_cast<NumericDomain*>(colDom.ptr())) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "domain", colPrior);
+            return sPREPAREFAILED;
+        }
+        bool ok;
+        double threshold = _expression.parm(5).value().toDouble(&ok);
+        if (!ok || threshold <= 0) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+            return sPREPAREFAILED;
+        }
+        _classifier.reset(new PriorProbClassifier(threshold, _sampleSet, tblPrior, colPrior));
+    }
 
     if(!_classifier->prepare())
         return sPREPAREFAILED;
@@ -178,8 +211,10 @@ quint64 RasterClassificationImpl::createMetadata()
     operation.setSyntax("classifcation(type,multibandraster,sampleraster,widen-factor|threshold-distance)");
     operation.setDescription(TR("performs a multi-spectral image classification according to training pixels in a sample set"));
     unsigned int n = RasterClassification::fillOperationMetadata(operation);
-    operation.setInParameterCount({1 + n});
-    operation.addInParameter(n,itNUMBER , TR("widen-factor|threshold-distance"),TR("For box: allows you to widen (factor > 1) the boxes that are 'drawn' around class means; for all others: threshold distance when pixels with a spectral signature that is not similar to any of the training classes, should not be classified."));
+    operation.setInParameterCount({ n, 1 + n, 2 + n, 3 + n});
+    operation.addOptionalInParameter(n, itNUMBER | itTABLE, TR("widen-factor|threshold-distance|prior-probability table"),TR("For box: allows you to widen (factor > 1) the boxes that are 'drawn' around class means; for all others: threshold distance when pixels with a spectral signature that is not similar to any of the training classes, should not be classified. For priorprob: the table with the prior probability values"));
+    operation.addOptionalInParameter(n + 1, itSTRING, TR("prior-probability column"), TR("For priorprob only. The column in the prior-probability table with the prior probability values. Ideally, the sum of probabilities equals 1. When this is not the case, the program will internally normalize the probability values."));
+    operation.addOptionalInParameter(n + 2, itNUMBER, TR("threshold-distance"), TR("For priorprob only. Threshold distance when pixels with a spectral signature that is not similar to any of the training classes, should not be classified."));
     operation.setOutParameterCount({1});
     operation.addOutParameter(0,itRASTER, TR("output rastercoverage with the domain of the sampleset"));
     operation.setKeywords("classification,raster");

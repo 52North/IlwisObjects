@@ -89,6 +89,17 @@ protected:
 private:
     double _threshold;
 };
+
+class PriorProbClassifier : public MaxLikelihoodClassifier {
+public:
+    PriorProbClassifier(double threshold, const SampleSet& sampleset, const ITable & tblPrior, const QString & colPrior);
+    bool prepare();
+protected:
+    virtual double rAdd(quint32 iClass) const;
+    ITable _tblPrior;
+    QString _colPrior;
+    std::map<quint32, double> rPriorProb;
+};
 }
 }
 
