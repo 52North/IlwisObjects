@@ -323,5 +323,7 @@ void IssueLogger::clear() {
     _issues.clear();
 }
 
-
+QString IssueLogger::lastIssue() {
+    return _lastmessage;
+}
 

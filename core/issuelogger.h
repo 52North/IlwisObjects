@@ -104,6 +104,7 @@ public:
     void clear();
     bool silent() const;
     void silent(bool yesno);
+    QString lastIssue();
 
 signals:
     void updateIssues(const IssueObject& issue);

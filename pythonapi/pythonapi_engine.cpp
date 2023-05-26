@@ -27,7 +27,7 @@
 
 #include "../../core/ilwisobjects/coverage/featurecoverage.h"
 #include "../../core/ilwisobjects/coverage/feature.h"
-
+#include "../../core/kernel.h"
 
 #include "pythonapi_object.h"
 #include "pythonapi_engine.h"
@@ -274,9 +274,12 @@ Object* Engine::_do(std::string output_name, std::string operation, std::string 
                 break;
             }
         }
-        if (found)
-            throw Ilwis::ErrorObject(QString("Failed to execute command \"%1\"; Please check the parameters provided.").arg(command.mid(8 + output_name.size())));
-        else
+        if (found) {
+            QString lastIssue = Ilwis::kernel()->issues()->lastIssue();
+            if (lastIssue.length() > 0)
+                lastIssue = "\nAdditional info: " + lastIssue;
+            throw Ilwis::ErrorObject(QString("Failed to execute command \"%1\"; Please check the parameters provided.%2").arg(command.mid(8 + output_name.size())).arg(lastIssue));
+        } else
             throw Ilwis::ErrorObject(QString("Command \"%1\" does not exist; See ilwis.Engine.operations() for the full list.").arg(operation.c_str()));
     }
 }
