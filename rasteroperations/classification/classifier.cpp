@@ -86,7 +86,8 @@ bool BoxClassifier::prepare()
             stdProducts[raw] *= sampleset().statistics()->at(raw,band, SampleCell::mSTANDARDDEV);
             double mean = sampleset().statistics()->at(raw,band, SampleCell::mMEAN);
             if ( mean > 0 && stdProducts[raw] < EPS10){
-                return ERROR3(ERR_NO_INITIALIZED_3, "item",sampleset().name(), TR("needs more samples"));
+                ERROR3(ERR_NO_INITIALIZED_3, "item", sampleset().name(), TR("needs more samples"));
+                return false;
             }
         }
     }
@@ -169,10 +170,6 @@ bool MinDistClassifier::classify(PixelIterator& iterIn, PixelIterator& iterOut) 
 
 bool MinDistClassifier::prepare()
 {
-    if ((_threshold <= 0) && (_threshold != rUNDEF)) {
-        return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
-    }
-
     return true;
 }
 
@@ -237,10 +234,6 @@ bool MinMahaDistClassifier::classify(PixelIterator& iterIn, PixelIterator& iterO
 
 bool MinMahaDistClassifier::prepare()
 {
-    if ((_threshold <= 0) && (_threshold != rUNDEF)) {
-        return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
-    }
-
     varcovinv.clear();
     quint32 iBands = sampleset().sampleRasterSet()->size().zsize();
     for (auto item : sampleset().thematicDomain()) {
@@ -266,7 +259,8 @@ bool MinMahaDistClassifier::prepare()
             Ilwis::DataDefinition datadef = sampleset().sampleRasterSet()->datadefRef();
             QVariant cellValue = QVariant(cl);
             cellValue = datadef.range<>() ? datadef.range<>()->impliedValue(cellValue) : datadef.domain<>()->impliedValue(cellValue);
-            return ERROR2(ERR_ILLEGAL_VALUE_2, "Matrix", QString(TR("Singular Covariance Matrix found. Definite positive variances needed. Class %1 needs more samples. Or bands are linearly dependent.")).arg(cellValue.toString()));
+            ERROR2(ERR_ILLEGAL_VALUE_2, "Matrix", QString(TR("Singular Covariance Matrix found. Definite positive variances needed. Class %1 needs more samples. Or bands are linearly dependent.")).arg(cellValue.toString()));
+            return false;
         }
         else
             varcovinv[cl] = varcovinv[cl].inverse(); // eval() ?
@@ -355,10 +349,8 @@ bool SpectralAngleClassifier::classify(PixelIterator& iterIn, PixelIterator& ite
 
 bool SpectralAngleClassifier::prepare()
 {
-    if ((_threshold <= 0) && (_threshold != rUNDEF)) {
-        return ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_threshold));
-    }
-
+    if (_threshold == rUNDEF)
+        _threshold = DBL_MAX;
     return true;
 }
 

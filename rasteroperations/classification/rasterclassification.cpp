@@ -128,46 +128,73 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
     }
 
     if (_type == "box") {
+        double widenFactor = rUNDEF;
         bool ok;
-        double widenFactor = _expression.parm(3).value().toDouble(&ok);
-        if (!ok || widenFactor <= 0) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "widen factor", _expression.parm(3).value());
+        if (_expression.parameterCount() > 3) {
+            widenFactor = _expression.parm(3).value().toDouble(&ok);
+            if (!ok || widenFactor <= 0) {
+                ERROR2(ERR_ILLEGAL_VALUE_2, "widen factor", QString(TR("%1; Positive factor needed")).arg(_expression.parm(3).value()));
+                return sPREPAREFAILED;
+            }
+        } else {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "widen factor", QString(TR("Missing required parameter \"widen factor\"")));
+            return sPREPAREFAILED;
         }
         _classifier.reset(new BoxClassifier(widenFactor, _sampleSet));
     }
     else if (_type == "mindist") {
+        double threshold = rUNDEF;
         bool ok;
-        double threshold = _expression.parm(3).value().toDouble(&ok);
-        if (!ok || threshold <= 0) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        if (_expression.parameterCount() > 3) {
+            threshold = _expression.parm(3).value().toDouble(&ok);
+            if (!ok || threshold <= 0) {
+                ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_expression.parm(3).value()));
+                return sPREPAREFAILED;
+            }
         }
         _classifier.reset(new MinDistClassifier(threshold, _sampleSet));
     }
     else if (_type == "minmahadist") {
+        double threshold = rUNDEF;
         bool ok;
-        double threshold = _expression.parm(3).value().toDouble(&ok);
-        if (!ok || threshold <= 0) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        if (_expression.parameterCount() > 3) {
+            threshold = _expression.parm(3).value().toDouble(&ok);
+            if (!ok || threshold <= 0) {
+                ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_expression.parm(3).value()));
+                return sPREPAREFAILED;
+            }
         }
         _classifier.reset(new MinMahaDistClassifier(threshold, _sampleSet));
     }
     else if (_type == "maxlikelihood") {
+        double threshold = rUNDEF;
         bool ok;
-        double threshold = _expression.parm(3).value().toDouble(&ok);
-        if (!ok || threshold <= 0) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        if (_expression.parameterCount() > 3) {
+            threshold = _expression.parm(3).value().toDouble(&ok);
+            if (!ok || threshold <= 0) {
+                ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_expression.parm(3).value()));
+                return sPREPAREFAILED;
+            }
         }
         _classifier.reset(new MaxLikelihoodClassifier(threshold, _sampleSet));
     }
     else if (_type == "spectralangle") {
+        double threshold = rUNDEF;
         bool ok;
-        double threshold = _expression.parm(3).value().toDouble(&ok);
-        if (!ok || threshold <= 0) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
+        if (_expression.parameterCount() > 3) {
+            threshold = _expression.parm(3).value().toDouble(&ok);
+            if (!ok || threshold <= 0) {
+                ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_expression.parm(3).value()));
+                return sPREPAREFAILED;
+            }
         }
         _classifier.reset(new SpectralAngleClassifier(threshold, _sampleSet));
     }
     else if (_type == "priorprob") {
+        if (_expression.parameterCount() < 5) {
+            ERROR2(ERR_ILLEGAL_VALUE_2, "table/column", QString(TR("Missing required parameters; \"table\" and \"column\" are required.")));
+            return sPREPAREFAILED;
+        }
         QString tableName = _expression.parm(3).value();
         ITable tblPrior;
         if (!tblPrior.prepare(tableName)) {
@@ -177,7 +204,7 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
         DataDefinition& tblDef = tblPrior->columndefinitionRef(tblPrior->primaryKey() != sUNDEF ? tblPrior->primaryKey() : COVERAGEKEYCOLUMN).datadef();
         DataDefinition& rasDef = _sampleSet.sampleRaster()->datadefRef();
         if (!tblDef.isCompatibleWith(rasDef)) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "domain", tableName);
+            ERROR2(ERR_ILLEGAL_VALUE_2, "domain", QString(TR("Table with prior probability values must have the same domain as the training raster.")));
             return sPREPAREFAILED;
         }
         QString colPrior = _expression.parm(4).value();
@@ -190,11 +217,14 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
             ERROR2(ERR_ILLEGAL_VALUE_2, "domain", colPrior);
             return sPREPAREFAILED;
         }
+        double threshold = rUNDEF;
         bool ok;
-        double threshold = _expression.parm(5).value().toDouble(&ok);
-        if (!ok || threshold <= 0) {
-            ERROR2(ERR_ILLEGAL_VALUE_2, "threshold", _expression.parm(3).value());
-            return sPREPAREFAILED;
+        if (_expression.parameterCount() > 5) {
+            threshold = _expression.parm(5).value().toDouble(&ok);
+            if (!ok || threshold <= 0) {
+                ERROR2(ERR_ILLEGAL_VALUE_2, "Threshold", QString(TR("%1; Positive threshold needed")).arg(_expression.parm(3).value()));
+                return sPREPAREFAILED;
+            }
         }
         _classifier.reset(new PriorProbClassifier(threshold, _sampleSet, tblPrior, colPrior));
     }
