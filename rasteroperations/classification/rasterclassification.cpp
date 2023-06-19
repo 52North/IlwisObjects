@@ -212,7 +212,7 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
             ERROR2(ERR_COULD_NOT_LOAD_2, colPrior, "");
             return sPREPAREFAILED;
         }
-        IDomain& colDom = tblPrior->columndefinitionRef(colPrior).datadef().domain();
+        IDomain colDom = tblPrior->columndefinitionRef(colPrior).datadef().domain();
         if (!dynamic_cast<NumericDomain*>(colDom.ptr())) {
             ERROR2(ERR_ILLEGAL_VALUE_2, "domain", colPrior);
             return sPREPAREFAILED;
