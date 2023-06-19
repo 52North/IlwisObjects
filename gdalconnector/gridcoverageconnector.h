@@ -62,6 +62,30 @@ private:
 
     bool saveByteBand(RasterCoverage *prasterCoverage, GDALDatasetH dataset, int gdalindex, int band, GDALColorInterp colorType);
 
+    double setNoDataValue(GDALRasterBandH band, GDALDataType gdalType) {
+        double noDataValue;
+        switch (gdalType) {
+        case GDT_Byte:
+            noDataValue = 255; break;
+        case GDT_UInt16:
+            noDataValue = 65535; break;
+        case GDT_Int16:
+            noDataValue = -32768; break;
+        case GDT_Int32:
+            noDataValue = std::numeric_limits < qint32 >::min(); break;
+        case GDT_UInt32:
+            noDataValue = std::numeric_limits < quint32 >::min(); break;
+        case GDT_Float32:
+            noDataValue = (float)std::numeric_limits < float >::min(); break;
+        case GDT_Float64:
+            noDataValue = rUNDEF; break;
+        default:
+            noDataValue = -1;
+        }
+        gdal()->setUndefinedValue(band, noDataValue);
+        return noDataValue;
+    }
+
 
     template<typename DT> bool save(RasterCoverage *prasterCoverage, GDALDatasetH dataset,GDALDataType gdaltype){
         quint32 columns = prasterCoverage->size().xsize();
@@ -74,15 +98,18 @@ private:
         if (!hband) {
             return ERROR1(ERR_NO_INITIALIZED_1,"raster band");
         }
+        double noDataValue = setNoDataValue(hband, gdaltype);
         while(iter != iter.end()) {
             if (gdaltype == GDT_Float32 || gdaltype == GDT_Float64) {
-                for_each(data.begin(), data.end(), [&](DT& v){
-                    v = *iter;
+                for_each(data.begin(), data.end(), [&](DT& v) {
+                    double val = *iter;
+                    v = (val != rUNDEF) ? val : noDataValue;
                     ++iter;
                 });
             } else {
-                for_each(data.begin(), data.end(), [&](DT& v){
-                    v = (qint64)floor(0.5 + *iter);
+                for_each(data.begin(), data.end(), [&](DT& v) {
+                    double val = *iter;
+                    v = (val != rUNDEF) ? (qint64)floor(0.5 + val) : noDataValue;
                     ++iter;
                 });
             }
@@ -101,6 +128,7 @@ private:
                 hband = gdal()->getRasterBand(dataset,++bandcount);
                 if (hband == 0)
                     break;
+                setNoDataValue(hband, gdaltype);
             }
         }
         return true;
