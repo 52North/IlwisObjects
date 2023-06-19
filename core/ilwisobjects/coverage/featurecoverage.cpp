@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "geos/geom/PrecisionModel.h"
 #include "geos/algorithm/locate/SimplePointInAreaLocator.h"
 #include "geos/geom/Point.h"
+#include "geos/geom/Polygon.h"
 #include "representation.h"
 #ifdef Q_OS_WIN
 #include "geos/geom/PrecisionModel.h"
@@ -98,10 +99,12 @@ QVariant FeatureCoverage::coord2value(const Coordinate &crd, const QString &attr
     QVariant var;
     geos::geom::Point *pnt = geomfactory()->createPoint(crd);
     quint32 index = 0;
+    FeatureAttributeDefinition& attDef = fc->attributeDefinitionsRef();
+    quint32 definitionCount = attDef.definitionCount();
     for(auto feature : fc){
         bool ok = false;
         if ( feature->geometryType() == itPOLYGON ){
-            ok = feature->geometry()->contains(pnt);
+            ok = geos::algorithm::locate::SimplePointInAreaLocator::containsPointInPolygon(crd, dynamic_cast<geos::geom::Polygon*>(feature->geometry().get()));
         } else if ( hasType(feature->geometryType(),itPOINT | itLINE)){
             double d = feature->geometry()->distance(pnt);
             ok = d <= boundsDelta;
@@ -112,8 +115,8 @@ QVariant FeatureCoverage::coord2value(const Coordinate &crd, const QString &attr
                 var = feature(attrname);
             else {
                 QVariantMap vmap;
-                for(int i=0; i <feature->attributeColumnCount(); ++i){
-                    QString attr = feature->attributedefinition(i).name();
+                for(int i=0; i < definitionCount; ++i){
+                    QString attr = attDef.columndefinitionRef(i).name();
                     vmap[attr] = feature(attr);
                 }
                 vmap[FEATUREIDDCOLUMN] = feature->featureid();
