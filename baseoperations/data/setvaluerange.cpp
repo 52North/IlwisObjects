@@ -72,9 +72,9 @@ bool SetValueRange::execute(ExecutionContext *ctx, SymbolTable &symTable)
         return true;
     };
 	bool ok = OperationHelperRaster::execute(ctx, SetValrange, { _raster, _outputRaster });
-    _outputRaster->datadefRef().range<NumericRange>()->resolution(_step);
+    _outputRaster->datadefRef().range<NumericRange>()->resolution(lstep);
     for(int i=0; i < _outputRaster->size().zsize(); ++i){
-        _outputRaster->datadefRef(i).range<NumericRange>()->resolution(_step)    ;
+        _outputRaster->datadefRef(i).range<NumericRange>()->resolution(lstep);
     }
 
     QVariant value;
