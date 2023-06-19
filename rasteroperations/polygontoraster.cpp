@@ -58,7 +58,7 @@ bool PolygonToRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
     if (_prepState == sNOTPREPARED)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
-    Ilwis::Bresenham algo(_outputraster->georeference());
+    Ilwis::Bresenham algo(_outputraster->georeference(), _inputfeatures->coordinateSystem());
     PixelIterator pixiter(_outputraster);
     initialize(_inputfeatures->featureCount(itPOLYGON));
     std::map<quint64, quint64> recordMapping;
@@ -88,6 +88,9 @@ bool PolygonToRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
     long ysize =_inputgrf->size().ysize();
     initialize(ysize);
     double mmax = -1e308, mmin = 1e308;
+    const ICoordinateSystem & sourceCsy = _inputfeatures->coordinateSystem();
+    const ICoordinateSystem & targetCsy = _outputraster->georeference()->coordinateSystem();
+    bool convertNeeded = sourceCsy.isValid() && targetCsy.isValid() && sourceCsy != targetCsy;
 
     for (long y = 0; y < ysize; ++y) {
          pix.y = y;
@@ -107,7 +110,8 @@ bool PolygonToRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
              double value;
              Pixel position (middle, y); // take the polygon-value from the middle between two borders
              Coordinate crd = _inputgrf->pixel2Coord(position);
-
+             if (convertNeeded)
+                 crd = sourceCsy->coord2coord(targetCsy, crd); // back to source-coordinates
              QVariant d = _inputfeatures->coord2value(crd);
              if (d.isValid()){
                 QVariantMap vmap = d.value<QVariantMap>();
