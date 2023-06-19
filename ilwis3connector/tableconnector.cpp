@@ -289,7 +289,7 @@ QString TableConnector::getDomainName(const IDomain& dom, bool& isSystem) {
     QString name = dom->code() != sUNDEF ? code2name(dom->code(), "domain") : sUNDEF;
     if ( name != sUNDEF)
         return name;
-    isSystem = dom->isSystemObject();
+    isSystem = isSystemObject(dom->name());
 
     Resource res = dom->resource();
     QString url = res.url().toString();
