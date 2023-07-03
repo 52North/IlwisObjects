@@ -310,7 +310,7 @@ public:
 					if (vmap.size() > 0) {
 						sample = vmap[(quint32)sample];
 					}
-                    quint16 index = (quint16)binsize - 1;
+                    qint32 index = (qint32)binsize - 1;
                     if (!isNumericalUndef(sample)) {
 						double d = (double)(sample - rmin);
 						double idx = (double)(binsize-2) * d / rdelta;
@@ -343,36 +343,6 @@ public:
 		PropertySets histogramMode() const {
 			return _histogramMode;
 		}
-
-        double stretchLinear(double input, int stretchRange) const {
-            if ( input == rUNDEF)
-            return rUNDEF;
-
-            double stretchFactor = stretchRange / prop(pDELTA);
-            double rmin = prop(pMIN);
-            double rdelta = prop(pDELTA);
-            quint16 index = getOffsetFactorFor(input, rmin, rdelta);
-            return _bins[index]._limit * stretchFactor;
-        }
-
-        /**
-     * Stretches the value range by percent. Lower and upper limits are stretched equally.
-     * If stretch value is undefined, the limits of the current value range are returned.
-     *
-     * @brief stretches lower and upper limits by percent.
-     * @param percent how much the limits shall be stretched.
-     * @return stretched limits of the value range.
-     */
-        std::pair<double,double> stretchLimits(double percent) const {
-            if (percent == rUNDEF) {
-                return std::pair<double,double>(prop(pMIN),prop(pMAX));
-            }
-            double delta = prop(pDELTA);
-            double downsizeBy = percent * delta / 100;
-            double newLower = prop(pMIN) + downsizeBy;
-            double newUpper = prop(pMAX) - downsizeBy;
-            return std::pair<double,double>(newLower,newUpper);
-        }
 
 		std::pair<double, double> calcStretchRange(double perc) const {
 			double startV = rUNDEF, endV = rUNDEF;
@@ -470,8 +440,8 @@ public:
 
         }
 
-        quint16 getOffsetFactorFor(const DataType& sample, double rmin, double rdelta) const {
-            quint16 index = (_bins.size() - 2) * (double)(sample - rmin) / rdelta;
+        qint32 getOffsetFactorFor(const DataType& sample, double rmin, double rdelta) const {
+            qint32 index = (_bins.size() - 2) * (double)(sample - rmin) / rdelta;
             return index >= _bins.size() ? (index - 1) : index;
         }
 

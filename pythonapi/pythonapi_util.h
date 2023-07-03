@@ -219,13 +219,9 @@ namespace pythonapi {
             return this->data().isValid();
         }
 
-        double stretchLinear(double input, int stretchRange) const{
-            return this->data().stretchLinear(input, stretchRange);
-        }
-
-        PyObject* stretchLimits(double percent) const{
+        PyObject* calcStretchRange(double percent) const {
             PyObject* pyTup = newPyTuple(2);
-            std::pair<double, double> cpair = this->data().stretchLimits(percent);
+            std::pair<double, double> cpair = this->data().calcStretchRange(percent);
             setTupleItem(pyTup, 0, PyFloatFromDouble(std::get<0>(cpair)));
             setTupleItem(pyTup, 1, PyFloatFromDouble(std::get<1>(cpair)));
             return pyTup;
