@@ -417,7 +417,7 @@ PixelIterator RasterCoverage::__iter__(){
 }
 
 template<class V> void setValues(V *buffer, quint64 nItems, Ilwis::PixelIterator& iter){
-   for(int i=0; i < nItems; ++i) {
+   for(quint64 i=0; i < nItems; ++i) {
        *iter = buffer[i];
        ++iter;
    }
@@ -441,7 +441,7 @@ void pythonapi::RasterCoverage::_array2Raster(PyObject* container, int band)
     if (pybuf.buf == NULL){
         throw InvalidObject("The data in the array is empty");
     }
-    int nItems = pybuf.len / pybuf.itemsize;
+    quint64 nItems = pybuf.len / pybuf.itemsize;
 
     auto sz = size();
     if ( band == -1){
