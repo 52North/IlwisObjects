@@ -47,7 +47,6 @@ private:
     bool calcFitWindow(const int i, const int ienvi,
                        const std::vector<double> yfit, const std::vector<bool> wfit,
                        double win_thresh,
-                       int org_offset,
                        int& m1, int& m2);
     std::vector<bool> detectSpikes(const std::vector<double> y, std::vector<bool> valid);
     std::vector<double> savgol(std::vector<double> y, std::vector<bool> w);
