@@ -87,6 +87,7 @@ Timesat::Timesat(quint64 metaid, const Ilwis::OperationExpression &expr) :
 bool Timesat::calcFitWindow(const int i, const int ienvi,
                                 const std::vector<double> yfit, const std::vector<bool> wfit,
                                 double win_thresh,
+                                int org_offset,
                                 int& m1, int& m2)
 {
     m1 = i - _win[ienvi];
@@ -121,7 +122,7 @@ bool Timesat::calcFitWindow(const int i, const int ienvi,
     int tmp2 = it - wfit.begin();
     m2 = std::max(m2, tmp2);
     bool rightFail = cnt < 3;
-    if (rightFail) m2 = _nb;
+    if (rightFail) m2 = _extendWindow ? (_nb + 2 * org_offset) : _nb;
 
     return !(leftFail || rightFail);
 }
@@ -207,7 +208,7 @@ std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
         double win_thresh = 1.2 * 2 * ystd; // threshold to adjust the window
         int last = _lastIterationLikeTIMESATfit ? nenvi - 1 : nenvi;
         for (int i = winmax; i < nb + winmax; ++i) {
-            if (calcFitWindow(i, ienvi, yfit, wfit, win_thresh, m1, m2)) {
+            if (calcFitWindow(i, ienvi, yfit, wfit, win_thresh, winmax, m1, m2)) {
                 Eigen::MatrixXd A(3, m2 - m1);
                 Eigen::VectorXd b(m2 - m1);
                 // preparing data slices as to construct the design matrix
