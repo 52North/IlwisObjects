@@ -21,6 +21,7 @@ namespace pythonapi {
         static PyObject* _catalogItems(quint64 filter);
         static std::string _version();
         static PyObject* _operations(const std::string& q="");
+        static void _showProgress(bool show);
     private:
         static std::string addQuotesIfNeeded(std::string parameter);
     };

@@ -417,3 +417,10 @@ std::string Engine::addQuotesIfNeeded(std::string parameter) {
     }
     return parameter;
 }
+
+void Engine::_showProgress(bool show) {
+    if (show)
+        Ilwis::context()->runMode(Ilwis::rmCOMMANDLINE);
+    else
+        Ilwis::context()->runMode(Ilwis::rmCOMMANDLINE | Ilwis::rmNOUI);
+}

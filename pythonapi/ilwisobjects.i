@@ -476,3 +476,8 @@ def operations(query=""):
 def operationMetaData(name, element1 = "syntax", ordinal=-1, element2=""):
   return Engine__operationMetaData(name, element1, ordinal, element2)
 %}
+
+%pythoncode %{
+   def showProgress(yesno):
+       return Engine__showProgress(yesno)
+%}
