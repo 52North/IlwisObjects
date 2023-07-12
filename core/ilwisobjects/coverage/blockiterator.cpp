@@ -59,7 +59,7 @@ CellIterator CellIterator::operator--(int)
     return iter;
 }
 
-void CellIterator::move(int n){
+void CellIterator::move(qint64 n){
     const Size<>& sz = _block->size();
     if ( _positionx < sz.xsize() - 1)
         ++_positionx;
@@ -167,17 +167,17 @@ double GridBlock::operator ()(qint32 x, qint32 y, qint32 z) const
 
 bool GridBlock::actualPosition(qint32& x, qint32& y, qint32& z) const
 {
-	int px = _iterator->_x + x;
-	int py = _iterator->_y + y;
-	int pz = _iterator->_z + z;
+	qint64 px = _iterator->_x + x;
+	qint64 py = _iterator->_y + y;
+	qint64 pz = _iterator->_z + z;
 	if (_iterator->_acceptOutside) {
 		if (px < 0 || py < 0 || pz < 0 ||
 			px > _iterator->_endx || py > _iterator->_endy || pz > _iterator->_endz)
 			return false;
 	}
-    x = std::max(0, std::min(px,_iterator->_endx));
-    y = std::max(0, std::min(py,_iterator->_endy));
-    z = std::max(0, std::min(pz,_iterator->_endz));
+    x = std::max((qint64)0, std::min(px,_iterator->_endx));
+    y = std::max((qint64)0, std::min(py,_iterator->_endy));
+    z = std::max((qint64)0, std::min(pz,_iterator->_endz));
 
 	return true;
 }

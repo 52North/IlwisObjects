@@ -221,7 +221,7 @@ public:
      * \param n amount to add to this PixelIterator
      * \return this iterator moved n
      */
-    PixelIterator& operator+=(int n) {
+    PixelIterator& operator+=(qint64 n) {
         move(n);
         return *this;
     }
@@ -232,7 +232,7 @@ public:
      * \param n amount to substract
      * \return this iterator moved -n
      */
-    PixelIterator& operator-=(int n) {
+    PixelIterator& operator-=(qint64 n) {
         move(-n);
         return *this;
     }
@@ -398,8 +398,8 @@ public:
      * \return true when the pixel is in this PixelIterator
      */
     bool contains(const Pixel& pix) ;
-	int step() const { return _step; }
-	void step(int n) { if (n != isNumericalUndef(n)) _step = n; }
+	qint64 step() const { return _step; }
+	void step(qint64 n) { if (n != isNumericalUndef(n)) _step = n; }
 
     /*!
      * \brief Checks if the x coordinate has changed in the last step taken
@@ -421,9 +421,9 @@ public:
      * \return true if the z has changed
      */
     bool zchanged() const;
-    quint32 x() const { return _x;}
-    quint32 y() const { return _y;}
-    quint32 z() const { return _z;}
+    quint64 x() const { return _x;}
+    quint64 y() const { return _y;}
+    quint64 z() const { return _z;}
 
     /*!
      * \brief Checks if this PixelIterator is at its endpoint
@@ -474,7 +474,7 @@ public:
      * \param iter2 another PixelIterator
      * \return this iterator moved -iter2.linearPosition()
      */
-    int operator -(const PixelIterator &iter2);
+    qint64 operator -(const PixelIterator &iter2);
 
     /*!
      * \brief Adds n to this PixelIterator and returns it
@@ -520,25 +520,25 @@ protected:
     IRasterCoverage _raster;
     Grid *_grid = 0;
     BoundingBox _box;
-    qint32 _x = 0;
-    qint32 _y = 0;
-    qint32 _z = 0;
-    qint32 _localOffset = 0;
-    qint32 _currentBlock = 0;
+    qint64 _x = 0;
+    qint64 _y = 0;
+    qint64 _z = 0;
+    qint64 _localOffset = 0;
+    qint64 _currentBlock = 0;
     Flow _flow;
     bool _isValid;
-    qint32 _endx;
-    qint32 _endy;
-    qint32 _endz;
+    qint64 _endx;
+    qint64 _endy;
+    qint64 _endz;
     qint64 _linearposition;
     qint64 _endposition;
     bool _xChanged =false;
     bool _yChanged = false;
     bool _zChanged = false;
-    std::vector<std::vector<qint32>> _selectionPixels;
-    qint32 _selectionIndex = -1;
+    std::vector<std::vector<qint64>> _selectionPixels;
+    qint64 _selectionIndex = -1;
     bool _insideSelection = false;
-	int _step = 1;
+    qint64 _step = 1;
 	int _threadIndex = 0;
 
 
@@ -612,7 +612,7 @@ private:
                 return moveYZ(delta);
             }
         } else {
-            int selectionPix = (int)_selectionPixels[_y].size();
+            qint64 selectionPix = (qint64)_selectionPixels[_y].size();
             if (  selectionPix  == 0 ){
                  _x = _endx + 1;
                  if(!moveYZ(delta))
@@ -636,7 +636,7 @@ private:
     bool moveYZ(qint64 delta);
     bool moveXY(qint64 delta);
     bool moveXZ(qint64 delta);
-    bool move2NextSelection(int delta);
+    bool move2NextSelection(qint64 delta);
     void cleanUp4PolyBoundaries(const std::vector<Ilwis::Pixel> &selectionPix, geos::geom::Geometry *selection);
     bool move2NextBlock();
 };

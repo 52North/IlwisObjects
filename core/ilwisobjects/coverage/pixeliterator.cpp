@@ -83,7 +83,7 @@ PixelIterator::PixelIterator(const IRasterCoverage& raster, geos::geom::Geometry
     if ( selection->getGeometryTypeId() == geos::geom::GEOS_POLYGON || selection->getGeometryTypeId() == geos::geom::GEOS_MULTIPOLYGON)
         cleanUp4PolyBoundaries(selectionPix, selection);
     else{
-        for(int i = 0; i < selectionPix.size(); ++i){
+        for(qint64 i = 0; i < selectionPix.size(); ++i){
             _selectionPixels[selectionPix[i].y].push_back(selectionPix[i].x) ;
         }
         _x = selectionPix[0].x;
@@ -213,23 +213,23 @@ void PixelIterator::init() {
 }
 
 bool PixelIterator::moveXY(qint64 delta){
-    _zChanged = (_z - delta) %  (int)_box.zlength() != 0;
-    qint32 tempx = _x + (_z - _box.min_corner().z) / _box.zlength();
-    _z = _box.min_corner().z + (_z - _box.min_corner().z) % (int)_box.zlength();
+    _zChanged = (_z - delta) %  (qint64)_box.zlength() != 0;
+    qint64 tempx = _x + (_z - _box.min_corner().z) / _box.zlength();
+    _z = _box.min_corner().z + (_z - _box.min_corner().z) % (qint64)_box.zlength();
     _xChanged = tempx != _x;
     std::swap(_x,tempx);
     if ( _x > _endx) {
-        quint32 newy = _y + (_x - _box.min_corner().x) / _box.xlength();
+        quint64 newy = _y + (_x - _box.min_corner().x) / _box.xlength();
         _yChanged = newy != _y;
         _y = newy;
-        _x = _box.min_corner().x + (_x - _box.min_corner().x) % (int)_box.xlength();
+        _x = _box.min_corner().x + (_x - _box.min_corner().x) % (qint64)_box.xlength();
         _xChanged = _x != tempx;
         if ( _y > _endy) { // done with this iteration block
             _linearposition = _endposition;
             return false;
         }
     }
-    qint32 ylocal = _y % _grid->maxLines();
+    qint64 ylocal = _y % _grid->maxLines();
     _localOffset = _x + ylocal * _grid->size().xsize();
     _currentBlock = _z * _grid->blocksPerBand() + _y / _grid->maxLines();
     _linearposition = _x + _y * _grid->size().xsize() + _z * _grid->size().xsize() * _grid->size().ysize();
@@ -238,26 +238,26 @@ bool PixelIterator::moveXY(qint64 delta){
 
 bool PixelIterator::moveXZ(qint64 delta)
 {
-    qint32 tempy = _y;
-    qint32 tempx = _x;
-    _y = _box.min_corner().y + ( _y - _box.min_corner().y) % (int)_box.ylength();
+    qint64 tempy = _y;
+    qint64 tempx = _x;
+    _y = _box.min_corner().y + ( _y - _box.min_corner().y) % (qint64)_box.ylength();
     _x += (tempy - _y) / _box.ylength();
     _xChanged = tempx != _x;
-    qint32 ylocal = _y % _grid->maxLines();
+    qint64 ylocal = _y % _grid->maxLines();
     _localOffset = _x + ylocal * _grid->size().xsize();
     _linearposition = _x + _y * _grid->size().xsize() + _z * _grid->size().xsize() * _grid->size().ysize();
 
     move2NextBlock();
 
     if ( _x > _endx){
-        quint32 newz = _z + (_x - _box.min_corner().x) / _box.xlength();
+        quint64 newz = _z + (_x - _box.min_corner().x) / _box.xlength();
         _currentBlock = newz * _grid->blocksPerBand() + _y / _grid->maxLines();
         _zChanged = newz != _z;
         _z = newz;
         tempx = _x;
-        _x = _box.min_corner().x + (_x - _box.min_corner().x) % (int)_box.xlength();
+        _x = _box.min_corner().x + (_x - _box.min_corner().x) % (qint64)_box.xlength();
         _xChanged = _x != tempx;
-        quint32 localblock = _y /  _grid->maxLines();
+        quint64 localblock = _y /  _grid->maxLines();
         _localOffset = _y * _grid->size().xsize() + _x - localblock * _grid->maxLines() * _grid->size().xsize();
         if ( _z > _endz) { // done with this iteration block
             _linearposition = _endposition;
@@ -268,8 +268,8 @@ bool PixelIterator::moveXZ(qint64 delta)
 }
 
 bool PixelIterator::move2NextBlock() {
-    quint32 localblock = _y /  _grid->maxLines();
-    quint32 bandblocks = _grid->blocksPerBand() * _z;
+    quint64 localblock = _y /  _grid->maxLines();
+    quint64 bandblocks = _grid->blocksPerBand() * _z;
     if ( bandblocks + localblock != _currentBlock) {
         _currentBlock = bandblocks + localblock;
         _localOffset = _x + (_y % _grid->maxLines()) * _grid->size().xsize() ; // needs to be revised for z-dimension change (formula is wrong when moving with -- from topleft of band2 to bottomright of band1)
@@ -282,7 +282,7 @@ bool PixelIterator::move2NextBlock() {
 }
 
 bool PixelIterator::moveYZ(qint64 delta){
-    qint32 tempy;
+    qint64 tempy;
     if ( _x < _box.min_corner().x){
 
         int xdelta = _box.min_corner().x - _x;
@@ -295,28 +295,28 @@ bool PixelIterator::moveYZ(qint64 delta){
         } else
             tempy = _y - ceil(xdelta / _box.xlength()) + (_x - _box.min_corner().x) / _box.xlength();
 
-        _xChanged = delta %  (int)_box.xlength() != 0;
+        _xChanged = delta %  (qint64)_box.xlength() != 0;
     }
     else{
         tempy = _y + (_x - _box.min_corner().x) / _box.xlength(); // with a big delta, y might jump more number of lines == xdistance / box xsize
-        _xChanged = (_x - delta) %  (int)_box.xlength() != 0;
-        _x = _box.min_corner().x + (_x - _box.min_corner().x) % (int)_box.xlength(); //  the modulo xlength gives the jump in one line
+        _xChanged = (_x - delta) %  (qint64)_box.xlength() != 0;
+        _x = _box.min_corner().x + (_x - _box.min_corner().x) % (qint64)_box.xlength(); //  the modulo xlength gives the jump in one line
     }
 
     _yChanged = tempy != _y;
     std::swap(_y,tempy);
-    qint32 ylocal = _y % _grid->maxLines();
+    qint64 ylocal = _y % _grid->maxLines();
     _localOffset = _x + ylocal * _grid->size().xsize();
 
     move2NextBlock();
     if ( _y > _endy) {
-        quint32 newz = _z + (_y - _box.min_corner().y) / _box.ylength();
+        quint64 newz = _z + (_y - _box.min_corner().y) / _box.ylength();
         _zChanged = newz != _z;
         _z = newz;
-        _y = _box.min_corner().y + (_y - _box.min_corner().y) % (int)_box.ylength();
+        _y = _box.min_corner().y + (_y - _box.min_corner().y) % (qint64)_box.ylength();
         _currentBlock = newz * _grid->blocksPerBand() + _y / _grid->maxLines();
         _yChanged = _y != tempy;
-        quint32 localblock = _y /  _grid->maxLines();
+        quint64 localblock = _y /  _grid->maxLines();
         _localOffset = _y * _grid->size().xsize() + _x - localblock * _grid->maxLines() * _grid->size().xsize();
         if ( _z > _endz) { // done with this iteration block
             _linearposition = _endposition;
@@ -326,7 +326,7 @@ bool PixelIterator::moveYZ(qint64 delta){
         _y = _box.max_corner().y;
         --_z;
         _zChanged = true;
-         quint32 localblock = _y /  _grid->maxLines();
+         quint64 localblock = _y /  _grid->maxLines();
         _localOffset = _y * _grid->size().xsize() + _x - localblock * _grid->maxLines() * _grid->size().xsize();
         if ( _z < 0) {
             return false;
@@ -488,7 +488,7 @@ void PixelIterator::initPosition() {
     _endposition = sz.xsize() * sz.ysize() * _endz + endpos + 1; // one past the last valid position
 }
 
-int PixelIterator:: operator-(const PixelIterator& iter) {
+qint64 PixelIterator:: operator-(const PixelIterator& iter) {
     return linearPosition() - iter.linearPosition();
 }
 
@@ -498,7 +498,7 @@ const IRasterCoverage& PixelIterator::raster() const
 }
 
 
-bool PixelIterator::move2NextSelection(int delta)
+bool PixelIterator::move2NextSelection(qint64 delta)
 {
     if ( _selectionIndex  >= _selectionPixels[_y].size() - 1){ // this was the last boundary on this row
         _x = _endx + 1; // put x beyond the edge of the box so moveXY will trigger a y shift
@@ -511,7 +511,7 @@ bool PixelIterator::move2NextSelection(int delta)
         }
         if ( _y >= _selectionPixels.size())
             return false;
-        int xnew = _selectionPixels[_y][0];
+        qint64 xnew = _selectionPixels[_y][0];
         _linearposition += xnew - _box.min_corner().x;
         _localOffset += xnew - _box.min_corner().x;
         _selectionIndex = 0;
@@ -521,7 +521,7 @@ bool PixelIterator::move2NextSelection(int delta)
 
         }
     }else{
-        int xnew = _selectionPixels[_y][++_selectionIndex];
+        qint64 xnew = _selectionPixels[_y][++_selectionIndex];
         _linearposition += xnew - _box.min_corner().x;
         _localOffset += xnew - _box.min_corner().x;
         _x = xnew;

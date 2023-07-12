@@ -54,7 +54,7 @@ public:
     Ilwis::Size<> blocksize() const;
 
 private:
-    void move(int n);
+    void move(qint64 n);
     GridBlock  *_block;
     qint32 _positionx;
     qint32 _positiony;
