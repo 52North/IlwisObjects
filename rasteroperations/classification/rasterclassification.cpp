@@ -201,7 +201,7 @@ Ilwis::OperationImplementation::State RasterClassificationImpl::prepare(Executio
             ERROR2(ERR_COULD_NOT_LOAD_2, tableName, "");
             return sPREPAREFAILED;
         }
-        DataDefinition& tblDef = tblPrior->columndefinitionRef(tblPrior->primaryKey() != sUNDEF ? tblPrior->primaryKey() : COVERAGEKEYCOLUMN).datadef();
+        DataDefinition& tblDef = tblPrior->columndefinitionRef(tblPrior->primaryKey() != sUNDEF ? tblPrior->primaryKey() : (_sampleSet.sampleRaster()->primaryKey() != sUNDEF ? _sampleSet.sampleRaster()->primaryKey() : COVERAGEKEYCOLUMN)).datadef();
         DataDefinition& rasDef = _sampleSet.sampleRaster()->datadefRef();
         if (!tblDef.isCompatibleWith(rasDef)) {
             ERROR2(ERR_ILLEGAL_VALUE_2, "domain", QString(TR("Table with prior probability values must have the same domain as the training raster.")));
