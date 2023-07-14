@@ -368,7 +368,8 @@ bool PriorProbClassifier::prepare() {
         std::vector<QVariant> columnValues = _tblPrior->column(_colPrior);
         for (auto item : sampleset().thematicDomain()) {
             quint32 cl = item->raw();
-            rPriorProb[cl] = -2 * log(columnValues[cl].toDouble());
+            int rec = sampleset().sampleRaster()->raw2record(cl);
+            rPriorProb[cl] = -2 * log(columnValues[rec].toDouble());
         }
         return true;
     }
