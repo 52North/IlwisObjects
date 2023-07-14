@@ -570,6 +570,7 @@ void RasterCoverage::copyTo(IlwisObject *obj)
     raster->_attributeTable = _attributeTable;
     raster->_size = _size;
     raster->_primaryKey = _primaryKey;
+    raster->_recordLookup = _recordLookup;
 
 }
 
