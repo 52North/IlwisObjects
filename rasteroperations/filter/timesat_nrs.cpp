@@ -24,7 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "abstractfactory.h"
 #include "tranquilizerfactory.h"
 #include "raster.h"
-//#include "symboltable.h"
 #include "ilwisoperation.h"
 #include "ilwiscontext.h"
 #include "rasterinterpolator.h"
@@ -40,10 +39,6 @@ REGISTER_OPERATION(Timesat)
 Ilwis::OperationImplementation *Timesat::create(quint64 metaid, const Ilwis::OperationExpression &expr)
 {
     return new Timesat(metaid, expr);
-}
-
-Timesat::Timesat()
-{
 }
 
 Ilwis::OperationImplementation::State Timesat::prepare(ExecutionContext *ctx, const SymbolTable &st )
@@ -87,7 +82,6 @@ Timesat::Timesat(quint64 metaid, const Ilwis::OperationExpression &expr) :
 bool Timesat::calcFitWindow(const int i, const int ienvi,
                                 const std::vector<double> yfit, const std::vector<bool> wfit,
                                 double win_thresh,
-                                int org_offset,
                                 int& m1, int& m2)
 {
     m1 = i - _win[ienvi];
@@ -122,26 +116,21 @@ bool Timesat::calcFitWindow(const int i, const int ienvi,
     int tmp2 = it - wfit.begin();
     m2 = std::max(m2, tmp2);
     bool rightFail = cnt < 3;
-    if (rightFail) m2 = _extendWindow ? (_nb + 2 * org_offset) : _nb;
+    if (rightFail) m2 = _nb;
 
     return !(leftFail || rightFail);
 }
 
-// The input vector y contains the actual data extended with additional data
-// at the beginning and the end to handle the window the filter is using.
+// The input vector y contains the actual data potentially extended with additional data
+// at the beginning and the end depending on the _extendwindow option
 std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector<bool> valid) {
     // Size of the window used
     int winmax = *std::max_element(_win.begin(), _win.end());
 
-    // calculate stdev from actual data values only (skip the extended range if needed)
+    // calculate stdev from data values larger than threshold of 2
     std::vector<double> y_c;
     auto it_beg = y.begin();
     auto it_end = y.end();
-    int nb = y.size() - 2 * winmax;
-    if (_extendWindow) {
-        it_beg += winmax;
-        it_end = it_beg + _nb + winmax;
-    }
     copy_if(it_beg, it_end, back_inserter(y_c),
             [] (const double d) { return d > 2.0; });
 
@@ -152,6 +141,7 @@ std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector
     double distance = _spikecutoff * ystd;
 
     // find single spikes and set weights to zero
+    int nb = y.size() - 2 * winmax;
     std::vector<double> dut;
     double med, dev, avg_y, max_y;
     for (int i = winmax; i < nb + winmax; ++i) {
@@ -163,7 +153,7 @@ std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector
         copy_if(y.begin() + m1, y.begin() + m2, back_inserter(dut),
                 [] (const double d) { return d > 0.0; });
         if (dut.size() == 0) {
-            valid[m1] = false;
+            //valid[m1] = false;
             continue;
         }
         std::sort(dut.begin(), dut.end());
@@ -181,7 +171,7 @@ std::vector<bool> Timesat::detectSpikes(const std::vector<double> y, std::vector
 
 // The function savgol accepts extended data, then applies the filter
 // and returns the fitted data including the extended (and useless) begin and end.
-std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
+std::vector<double> Timesat::savgol(const std::vector<double> y, const std::vector<bool> w)
 {
     // Adapted code from TIMESAT
     int winmax = *std::max_element(_win.begin(), _win.end());
@@ -208,7 +198,7 @@ std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
         double win_thresh = 1.2 * 2 * ystd; // threshold to adjust the window
         int last = _lastIterationLikeTIMESATfit ? nenvi - 1 : nenvi;
         for (int i = winmax; i < nb + winmax; ++i) {
-            if (calcFitWindow(i, ienvi, yfit, wfit, win_thresh, winmax, m1, m2)) {
+            if (calcFitWindow(i, ienvi, yfit, wfit, win_thresh, m1, m2)) {
                 Eigen::MatrixXd A(3, m2 - m1);
                 Eigen::VectorXd b(m2 - m1);
                 // preparing data slices as to construct the design matrix
@@ -242,6 +232,49 @@ std::vector<double> Timesat::savgol(std::vector<double> y, std::vector<bool> w)
     return yfit;
 }
 
+std::vector<double> Timesat::pixelTimeseries(PixelIterator iterIn)
+{
+    // Get timeseries data
+    PixelIterator pib(iterIn);
+    PixelIterator pie(iterIn + _nb);
+    std::vector<double> slice(_nb);
+    auto sit = slice.begin();
+    while (pib != pie) {
+        *sit++ = *pib;
+        ++pib;
+    }
+
+    return slice;
+}
+
+// optionally extend the timeseries to cope with the filter window
+std::vector<double> Timesat::extendTimeseries(const std::vector<double> slice)
+{
+    if (!_extendWindow)
+        return slice;
+
+    // Add values around series to handle window effects
+    std::vector<double> yext(_nb);
+    int winmax = *std::max_element(_win.begin(), _win.end());
+    yext.resize(_nb + winmax * 2);
+    copy(slice.begin() + _nb - winmax, slice.end(), yext.begin()); // copy end of series to begin of extension
+    copy(slice.begin(), slice.end(), yext.begin() + winmax);      // copy series to middle of extension
+    copy(slice.begin(), slice.begin() + winmax, yext.begin() + _nb + winmax); // copy begin of series to end of extension
+
+    return yext;
+}
+
+std::vector<double> Timesat::compressTimeseries(const std::vector<double> winfit, std::vector<double> fitted)
+{
+    if (!_extendWindow)
+        return winfit;
+
+    int winmax = *std::max_element(_win.begin(), _win.end());
+    copy(winfit.begin() + winmax, winfit.begin() + _nb + winmax, fitted.begin());
+
+    return fitted;
+
+}
 
 bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
 {
@@ -263,49 +296,26 @@ bool Timesat::execute(ExecutionContext *ctx, SymbolTable& symTable)
     while (iterIn != inEnd) {
         trq()->update(1);
 
-        // Get timeseries data
-		PixelIterator pib(iterIn);
-		PixelIterator pie(iterIn + _nb);
-		auto sit = slice.begin();
-		while (pib != pie) {
-			*sit++ = *pib;
-			++pib;
-		}
+        auto slice = pixelTimeseries(iterIn);
+        auto series = extendTimeseries(slice);
 
-        // optionally extend the timeseries to cope with the filter window
-        std::vector<double> yext(_nb);
-        int winmax = *std::max_element(_win.begin(), _win.end());
-        if (_extendWindow) {
-            // Add values around series to handle window effects
-            yext.resize(_nb + winmax * 2);
-            copy(slice.begin() + _nb - winmax, slice.end(), yext.begin()); // copy end of series to begin of extension
-            copy(slice.begin(), slice.end(), yext.begin() + winmax);      // copy series to middle of extension
-            copy(slice.begin(), slice.begin() + winmax, yext.begin() + _nb + winmax); // copy begin of series to end of extension
-        }
-        else
-            copy(slice.begin(), slice.end(), yext.begin());
-
-        std::vector<bool> valid(yext.size());
-        std::transform(yext.begin(), yext.end(), valid.begin(),
+        // determine if the longest period of missing data is greater than 120 days
+        // and the number of missing data is low enough (25% data is enough)
+        std::vector<bool> valid(series.size());
+        std::transform(series.begin(), series.end(), valid.begin(),
                        [] (const double d) { return d >= 2.0; });
-        int count = std::count(valid.begin(), valid.end(), false);
-        if (count < 0.75 * _nb) {
-            // determine if the longest period of missing data is greater than 120 days
-            auto found = std::search_n(valid.begin(), valid.end(), 12, false);
-            if (found == valid.end()) {
-                // -> less than 120 days
-                valid = detectSpikes(yext, valid);
-                auto winfit = savgol(yext, valid);
-                if (_extendWindow)
-                    copy(winfit.begin() + winmax, winfit.begin() + _nb + winmax, fitted.begin());
-                else
-                    copy(winfit.begin(), winfit.end(), fitted.begin());
-            }
-            else
-                std::fill(fitted.begin(), fitted.end(), 0.0);
-        }
-        else
+        bool missing = std::count(valid.begin(), valid.end(), false) >= (0.75 * _nb);
+        bool find12dekads = std::search_n(valid.begin(), valid.end(), 12, false) != valid.end();
+
+        if (missing || find12dekads) {
             std::fill(fitted.begin(), fitted.end(), 0.0);
+        }
+        else {
+            valid = detectSpikes(series, valid);
+            auto winfit = savgol(series, valid);
+
+            fitted = compressTimeseries(winfit, fitted);
+        }
 
         // make sure output stays in byte range (needed?)
         std::transform(fitted.begin(), fitted.end(), iterOut, [] (const double d) { return std::min(255.0, d); });

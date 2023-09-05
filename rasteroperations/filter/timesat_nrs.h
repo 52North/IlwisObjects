@@ -19,41 +19,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 namespace Ilwis {
 namespace BaseOperations {
-class Timesat : public OperationImplementation
-{
-public:
-    Timesat();
-    Timesat(quint64 metaid, const Ilwis::OperationExpression &expr);
 
-    bool execute(ExecutionContext *ctx,SymbolTable& symTable);
-    static Ilwis::OperationImplementation *create(quint64 metaid,const Ilwis::OperationExpression& expr);
-    Ilwis::OperationImplementation::State prepare(ExecutionContext *ctx, const SymbolTable &);
 
-    static quint64 createMetadata();
+    class Timesat : public OperationImplementation
+    {
+    public:
+        Timesat(quint64 metaid, const Ilwis::OperationExpression& expr);
 
-private:
-    IIlwisObject _inputObj;
-    IIlwisObject _outputObj;
+        bool execute(ExecutionContext* ctx, SymbolTable& symTable);
+        static Ilwis::OperationImplementation* create(quint64 metaid, const Ilwis::OperationExpression& expr);
+        Ilwis::OperationImplementation::State prepare(ExecutionContext* ctx, const SymbolTable&);
 
-    // parameters
-    int _nb;                    // number of maps in maplist
-    std::vector<int> _win;      // array of window sizes for fitting
-    int _nptperyear = 36;       // number of maps per year
-    double _spikecutoff = 0.5;  // cutoff for spike detection
-    bool _forceUpperEnvelope;
-    bool _lastIterationLikeTIMESATfit;
-    bool _extendWindow;
+        static quint64 createMetadata();
 
-    bool calcFitWindow(const int i, const int ienvi,
-                       const std::vector<double> yfit, const std::vector<bool> wfit,
-                       double win_thresh,
-                       int org_offset,
-                       int& m1, int& m2);
-    std::vector<bool> detectSpikes(const std::vector<double> y, std::vector<bool> valid);
-    std::vector<double> savgol(std::vector<double> y, std::vector<bool> w);
+    private:
+        IIlwisObject _inputObj;
+        IIlwisObject _outputObj;
 
-    NEW_OPERATION(Timesat);
-};
+        // parameters
+        int _nb {};                 // number of maps in maplist
+        std::vector<int> _win;      // array of window sizes for fitting
+        double _spikecutoff = 0.5;  // cutoff for spike detection
+        bool _forceUpperEnvelope {};
+        bool _lastIterationLikeTIMESATfit {};
+        bool _extendWindow {};         // extend the time series by wrapping data onto start and end
+
+        std::vector<double> extendTimeseries(const std::vector<double> slice);
+        std::vector<double> compressTimeseries(const std::vector<double> winfit, std::vector<double> fitted);
+        std::vector<double> pixelTimeseries(PixelIterator iterIn);
+
+        bool calcFitWindow(const int i, const int ienvi,
+            const std::vector<double> yfit, const std::vector<bool> wfit,
+            double win_thresh,
+            int& m1, int& m2);
+        std::vector<bool> detectSpikes(const std::vector<double> y, std::vector<bool> valid);
+        std::vector<double> savgol(const std::vector<double> y, const std::vector<bool> w);
+
+        NEW_OPERATION(Timesat);
+    };
 }
 }
 
