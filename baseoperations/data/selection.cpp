@@ -248,6 +248,7 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
 		 }
          resource.addProperty("name", _outputObj->name());
          resource.addProperty("centerofpixel",inputRaster->georeference()->centerOfPixel());
+         resource.addProperty("coordinatesystem",inputRaster->coordinateSystem()->resource().url().toString());
          IGeoReference  grf;
          grf.prepare(resource);
          outputRaster->georeference(grf);
