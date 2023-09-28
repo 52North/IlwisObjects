@@ -107,6 +107,7 @@ bool GeorefConnector::loadGeoref(const IniFile &odf, IlwisObject *data ) {
             Envelope env(crd1, crd2);
 			QSharedPointer< CornersGeoReference> spGrf = grf->as< CornersGeoReference>();
 			spGrf->internalEnvelope(env);
+            grf->centerOfPixel(false); // we create a georef based on bounds and size, therefore this is corners of corners
         } else if (grf->grfType<CTPGeoReference>()) { // relationship rc/crd is non-linear: "translate" the raster-location of the controlpoints, instead of translating the coordinates
             QSharedPointer<PlanarCTPGeoReference> ctpgrf = grf->as<PlanarCTPGeoReference>();
             quint32 nrOfControlPoints = ctpgrf->nrControlPoints();
