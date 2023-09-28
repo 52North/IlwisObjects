@@ -103,33 +103,22 @@ Ilwis::OperationImplementation::State MapFlowDirection::prepare(ExecutionContext
         return sPREPAREFAILED;
     }
 
-    /*IDomain dom("code=domain:FlowDirection");
-    _outRaster->datadefRef() = DataDefinition(dom);*/
-
-	/*IThematicDomain flowdirectionDom;
-	flowdirectionDom.prepare("FlowDirection");
-
-	flowdirectionDom->addItem(new ThematicItem({ QString("E"),QString("domain:FlowDirection"), QString("FlowDirection"), },  1));
-	flowdirectionDom->addItem(new ThematicItem({ QString("SE"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 2));
-	flowdirectionDom->addItem(new ThematicItem({ QString("S"),QString("domain:FlowDirection"), QString("FlowDirection"), },  3));
-	flowdirectionDom->addItem(new ThematicItem({ QString("SW"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 4));
-	flowdirectionDom->addItem(new ThematicItem({ QString("W"),QString("domain:FlowDirection"), QString("FlowDirection"), },  5));
-	flowdirectionDom->addItem(new ThematicItem({ QString("NW"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 6));
-	flowdirectionDom->addItem(new ThematicItem({ QString("N"),QString("domain:FlowDirection"), QString("FlowDirection"), },  7));
-	flowdirectionDom->addItem(new ThematicItem({ QString("NE"),QString("domain:FlowDirection"), QString("FlowDirection"), }, 8));*/
-
-	//_outRaster->datadefRef() = DataDefinition(flowdirectionDom);
-
-	IDomain dom;
-	dom.prepare("value");
-	DataDefinition def(dom);
-	def.range(new NumericRange(0,9,1)); // directions
-	_outRaster->datadefRef() = def;
-
+	IThematicDomain flowdirectionDom;
+	flowdirectionDom.prepare();
+	flowdirectionDom->addItem(new ThematicItem({ "E", "", "To the east", }, 1));
+	flowdirectionDom->addItem(new ThematicItem({ "SE", "", "To the south east", }, 2));
+	flowdirectionDom->addItem(new ThematicItem({ "S", "", "To the south", }, 3));
+	flowdirectionDom->addItem(new ThematicItem({ "SW", "", "To the south west", }, 4));
+	flowdirectionDom->addItem(new ThematicItem({ "W", "", "To the west", }, 5));
+	flowdirectionDom->addItem(new ThematicItem({ "NW", "", "To the north west", }, 6));
+	flowdirectionDom->addItem(new ThematicItem({ "N", "", "To the north", }, 7));
+	flowdirectionDom->addItem(new ThematicItem({ "NE", "", "To the north east", }, 8));
+	flowdirectionDom->name("FlowDirection");
+	_outRaster->datadefRef() = DataDefinition(flowdirectionDom);
 
     for (quint32 i = 0; i < _outRaster->size().zsize(); ++i) {
         QString index = _outRaster->stackDefinition().index(i);
-        _outRaster->setBandDefinition(index, DataDefinition(dom));
+        _outRaster->setBandDefinition(index, DataDefinition(flowdirectionDom));
     }
 
     if (outputName != sUNDEF)
@@ -209,23 +198,22 @@ void MapFlowDirection::executeFlowDirection()
 		while (iterPos != inEnd)
 		{
 			Pixel pxl = iterPos.position();
-			if (*(iterDEM(pxl)) == rUNDEF || onEdge(pxl))
-				*(iterFlow(pxl)) = 0;
-			else
-			{	//if (rbDem[iCol] != rUNDEF) {
-				//Calculate slope/height diff. dh from 8-neighbors for the specified cell
-				//vValue - a vector containing slope/dh values for its 8 neighbors
-				std::vector<double> vValue;
-				FillArray(pxl, vValue);
+			//*(iterFlow(pxl)) = 0; // initial value
 
-				//finds positions for elements with max value
-				std::vector<int> vPos;
-				rMax = rFindMaxLocation(vValue, vPos, iCout);
+			//if (rbDem[iCol] != rUNDEF) {
+			//Calculate slope/height diff. dh from 8-neighbors for the specified cell
+			//vValue - a vector containing slope/dh values for its 8 neighbors
+			std::vector<double> vValue;
+			FillArray(pxl, vValue);
 
-				//examine the positions with max. value
-				//perform assigning flow direction algorithm.
-				*(iterFlow(pxl)) = iLookUp(rMax, iCout, vPos);
-			}
+			//finds positions for elements with max value
+			std::vector<int> vPos;
+			rMax = rFindMaxLocation(vValue, vPos, iCout);
+
+			//examine the positions with max. value
+			//perform assigning flow direction algorithm.
+			*(iterFlow(pxl)) = iLookUp(rMax, iCout, vPos);
+
 			iterPos++;
 		}
 		//Ste flows to the flat areas
@@ -238,12 +226,20 @@ void MapFlowDirection::executeFlowDirection()
 	while (iterPos != inEnd)
 	{
 		Pixel pxl = iterPos.position();
-		if (*(iterFlow(pxl)) == 9)
+		if (onEdge(pxl) || *(iterFlow(pxl)) > 8)
 			*(iterFlow(pxl)) = 0;
 		
 		iterPos++;
 	}
 
+	// Convert from ilwis3 compatible matrix to ilwis4 compatible (0 becomes undef, and 1..8 become 0..7)
+
+	iterPos = PixelIterator(_iterEmptyRaster, BoundingBox(), PixelIterator::fXYZ);
+	while (iterPos != inEnd) {
+		Pixel pxl = iterPos.position();
+		*iterFlow(pxl) = (*iterFlow(pxl) == 0) ? rUNDEF : (*iterFlow(pxl) - 1);
+		iterPos++;
+	}
 }
 
 bool MapFlowDirection::onEdge(Pixel pix) 
@@ -792,27 +788,23 @@ void FlowDirectionAlgorithm::calculate(QString methodInput)
 	while (iterPos != inEnd)
 	{
 		Pixel pxl = iterPos.position();
-		if (*(iterDEM(pxl)) == rUNDEF || onEdge(pxl) )
+		*(iterFlow(pxl)) = noflow;  // ini value
+		//Get maximum slope for the specified cell with it's eight neighboring cells
+		double listVal[8];
+		//vector<double> listVal;// = new vector<double>(8);
+		max = maxAdj(pxl, listVal);
+		if (max > 0)
+		{
+			//Finds thw elements with maximum value in the list
+			std::vector<FlowDirection> listPos;
+			findDirection(listVal, max, listPos);
+			fd = getFlowDirection(listPos);
+			*(iterFlow(pxl)) = Location[(byte)fd];
+		}
+		else if (max == rUNDEF)
 			*(iterFlow(pxl)) = noflow;
 		else
-		{
-			//Get maximum slope for the specified cell with it's eight neighboring cells
-			double listVal[8];
-			//vector<double> listVal;// = new vector<double>(8);
-			max = maxAdj(pxl, listVal);
-			if (max > 0)
-			{
-				//Finds thw elements with maximum value in the list
-				std::vector<FlowDirection> listPos;
-				findDirection(listVal, max, listPos);
-				fd = getFlowDirection(listPos);
-				*(iterFlow(pxl)) = Location[(byte)fd];
-			}
-			else if (max == rUNDEF)
-				*(iterFlow(pxl)) = noflow;
-			else 
-				*(iterFlow(pxl)) = flatcell;
-		}
+			*(iterFlow(pxl)) = flatcell;
 		iterPos++;
 	}
 	//-------------------------------------------------------------------------
@@ -876,7 +868,7 @@ void FlowDirectionAlgorithm::calculate(QString methodInput)
 	while (iterPos != grdEnd)
 	{
 		Pixel pxl = iterPos.position();
-		if (*(iterFlow(pxl)) > 8)
+		if (onEdge(pxl)  || *(iterFlow(pxl)) > 8)
 			*(iterFlow(pxl)) = 0;
 		iterPos++;
 	}
