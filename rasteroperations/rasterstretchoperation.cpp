@@ -97,6 +97,13 @@ bool LinearStretchOperation::execute(ExecutionContext *ctx,SymbolTable& symTable
     bool ok = stretch(_inputRaster);
 
     if ( ok && ctx != 0) {
+        _outputRaster->datadefRef().range<NumericRange>()->min(_limitsTo.first);
+        _outputRaster->datadefRef().range<NumericRange>()->max(_limitsTo.second);
+        for (int i = 0; i < _outputRaster->size().zsize(); ++i) {
+            _outputRaster->datadefRef(i).range<NumericRange>()->min(_limitsTo.first);
+            _outputRaster->datadefRef(i).range<NumericRange>()->max(_limitsTo.second);
+        }
+
         QVariant value;
         value.setValue<IRasterCoverage>(_outputRaster);
 		logOperation(_outputRaster, _expression, { _inputRaster });
