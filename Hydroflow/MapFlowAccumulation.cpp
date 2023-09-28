@@ -95,7 +95,14 @@ Ilwis::OperationImplementation::State MapFlowAccumulation::prepare(ExecutionCont
     if (outputName != sUNDEF)
         _outRaster->name(outputName);
 
+	_inRaster.set(_inRaster->clone());
   
+	// Check if we are dealing with FlowDirection.dom; if yes, then recalc raw vals of flow direction map. We also allow Value maps with values 0 til 8 (0 = flat / undef, 1 til 8 are the directions).
+	bool itemdomain = false;
+	IDomain itemdom = _inRaster->datadefRef().domain();
+	if (itemdom.isValid() && hasType(itemdom->valueType(), itTHEMATICITEM | itNUMERICITEM | itTIMEITEM | itNAMEDITEM))
+		itemdomain = true;
+
     _xsize = _inRaster->size().xsize();
     _ysize = _inRaster->size().ysize();
 
@@ -105,9 +112,11 @@ Ilwis::OperationImplementation::State MapFlowAccumulation::prepare(ExecutionCont
     
     while (iterDEM != inEnd)
     {
+		if (itemdomain) // if the domain of the input is FlowDirection.dom
+			*iterDEM = (*iterDEM != rUNDEF) ? (*iterDEM + 1) : 0; // shift the values, to make them the same as ilwis3 (0 is undef, 1..8 are the direction)
         *iterOut = *iterDEM;
-        *iterOut++;
-        *iterDEM++;
+        iterOut++;
+        iterDEM++;
     }
 
     return sPREPARED;
