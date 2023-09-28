@@ -1004,16 +1004,14 @@ void DrainageNetworkOrdering::CreateTable(long maxStrahler)
 
 	//newTable->addColumn("StreamID", _orderDomain);
 	newTable->addColumn("UpstreamLinkID", IlwisObject::create<IDomain>("text"),true);
-	//newTable->addColumn("UpstreamCoord", IlwisObject::create<IDomain>("text"));
-	newTable->addColumn("UpstreamCoord", IlwisObject::create<IDomain>("coordinate"));
+	newTable->addColumn("UpstreamCoord", IlwisObject::create<IDomain>("text"));
 	newTable->addColumn("UpstreamElevation", IlwisObject::create<IDomain>("value"));
 	newTable->addColumn("DownstreamLinkID", IlwisObject::create<IDomain>("value"));
 
 	ColumnDefinition& coldef0 = newTable->columndefinitionRef("DownstreamLinkID");
 	coldef0.datadef().range(new NumericRange(1, 32767, 1));
 
-	//newTable->addColumn("DownstreamCoord", IlwisObject::create<IDomain>("text"), true);
-	newTable->addColumn("DownstreamCoord", IlwisObject::create<IDomain>("coordinate"));
+	newTable->addColumn("DownstreamCoord", IlwisObject::create<IDomain>("text"), true);
 	newTable->addColumn("DownstreamElevation", IlwisObject::create<IDomain>("value"));
 	newTable->addColumn("ElevationDifference", IlwisObject::create<IDomain>("value"));
 	newTable->addColumn("Strahler", IlwisObject::create<IDomain>("value"), true);
@@ -1050,8 +1048,7 @@ void DrainageNetworkOrdering::CreateTable(long maxStrahler)
 
 	newTable->addColumn("TotalUpstreamAlongDrainageLength", IlwisObject::create<IDomain>("value"));
 
-	//newTable->addColumn("TostreamCoord", IlwisObject::create<IDomain>("text"), true);
-	newTable->addColumn("TostreamCoord", IlwisObject::create<IDomain>("coordinate"));
+	newTable->addColumn("TostreamCoord", IlwisObject::create<IDomain>("text"), true);
 
 	if (maxStrahler > 0) {
 		IThematicDomain strahlerDomain;
