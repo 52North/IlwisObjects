@@ -13,6 +13,7 @@ namespace pythonapi {
         static Collection* toCollection(Object *obj);
     protected:
         Collection(std::vector<Object*> items);
+        virtual ~Collection();
     private:
         std::vector<Object*> _items;
     };

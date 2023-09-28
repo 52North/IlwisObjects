@@ -52,6 +52,7 @@
 %include "pythonapi_qtGNUTypedefs.h"
 
 %newobject pythonapi::Engine::_do; // hint to swig that ilwis.do() returns objects that should be garbage-collected
+%newobject pythonapi::Collection::_getitem;
 
 %init %{
     //init FeatureCreationError for Python
@@ -145,6 +146,7 @@ def object_cast(obj):
         obj = Catalog.toCatalog(obj)
     elif it.COLLECTION & type != 0:
         obj = Collection.toCollection(obj)
+        obj._fetchItems()
     elif type == 0:
         raise TypeError("unknown IlwisType")
     obj.thisown = prevThisown # re-enable garbage collection if it was available (needs investigation if it wasn't)
@@ -218,8 +220,12 @@ def object_cast(obj):
 %include "pythonapi_collection.h"
 %extend pythonapi::Collection {
 %insert("python") %{
+def _fetchItems(self):
+    self._it = []
+    for i in range(0, self.__len__()):
+        self._it.append(object_cast(self._getitem(i)))
 def __getitem__(self, name):
-    return object_cast(self._getitem(name))
+    return self._it[name]
 %}
 }
 
