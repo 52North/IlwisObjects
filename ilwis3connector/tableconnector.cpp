@@ -38,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "domain.h"
 #include "datadefinition.h"
 #include "columndefinition.h"
+#include "representation.h"
 #include "basetable.h"
 #include "flattable.h"
 #include "numericdomain.h"
@@ -363,6 +364,19 @@ bool TableConnector::storeColumns(const Table *tbl, const IOOptions &options) {
             res.setUrl(fileUrl,true);
             DomainConnector conn(res, false);
             conn.storeMetaData(dmColumn.ptr(), options);
+            if (hasType(dmColumn->valueType(), itTHEMATICITEM | itNUMERICITEM)) {
+                const IRepresentation rpr = def.datadef().representation();
+                if (rpr.isValid()) {
+                    QString rprName = !rpr->isAnonymous() ? rpr->name() : (QFileInfo(domName).baseName() + ".rpr");
+                    QString rprFilename = context()->workingCatalog()->resolve(rprName);
+                    if (rprFilename == sUNDEF) {
+                        int index = _odf->url().lastIndexOf("/");
+                        rprFilename = _odf->url().left(index) + "/" + rprName;
+                    }
+                    rpr->connectTo(rprFilename, "representation", "ilwis3", Ilwis::IlwisObject::cmOUTPUT);
+                    rpr->store();
+                }
+            }
         }
         QString colpostfix = def.name();
         if ( colpostfix.indexOf(QRegExp("[.]")) != -1)
