@@ -471,11 +471,6 @@ NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode
                     trq->prepare("Raster values", "calculating statistics of layers", size().linearSize());
 
                 }
-                else {
-                    if (hasType(context()->runMode(), rmDESKTOP)) {
-                        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-                    }
-                }
 				auto start = begin();
 				auto done = end();
 
@@ -493,9 +488,6 @@ NumericStatistics &RasterCoverage::statistics(const QString& attribute, int mode
 				}
 				calculateHistogram(attribute, start, done, mode, bins);
                 storeHistograms(attribute,mode);
-                if (hasType(context()->runMode(), rmDESKTOP)) {
-                    QApplication::restoreOverrideCursor();
-                }
             }
         }
 	}
@@ -1033,11 +1025,6 @@ NumericRange RasterCoverage::calcMinMax(bool force) const
         trq->prepare("Raster values", "calculating statistics of layers", size().zsize());
 
     }
-    else {
-        if (hasType(context()->runMode(), rmDESKTOP)) {
-            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        }
-    }
 
     if ( trq.get() != 0)
         trq->prepare("Raster values", "calculating numeric ranges of layers", size().zsize());
@@ -1052,9 +1039,6 @@ NumericRange RasterCoverage::calcMinMax(bool force) const
             if (!trq->update(1))
                 return NumericRange();
         }
-    }
-    if (hasType(context()->runMode(), rmDESKTOP)) {
-        QApplication::restoreOverrideCursor();
     }
 
     return NumericRange(vmin, vmax, datadef().range<NumericRange>()->resolution());
