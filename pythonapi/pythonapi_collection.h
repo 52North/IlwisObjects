@@ -5,6 +5,7 @@ namespace pythonapi {
     class Collection : public Object {
     friend class Engine;
     public:
+        virtual ~Collection();
         virtual bool __bool__() const;
         virtual std::string __str__();
         virtual IlwisTypes ilwisType();
@@ -13,7 +14,6 @@ namespace pythonapi {
         static Collection* toCollection(Object *obj);
     protected:
         Collection(std::vector<Object*> items);
-        virtual ~Collection();
     private:
         std::vector<Object*> _items;
     };
