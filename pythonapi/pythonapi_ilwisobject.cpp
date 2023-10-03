@@ -142,6 +142,20 @@ const QString IlwisObject::getStoreFormat() const {
     return "";
 }
 
+std::string IlwisObject::code(){
+    if (this->__bool__())
+        return ((*this->ptr())->code()).toStdString();
+    else
+        return std::string("invalid IlwisObject!");
+}
+
+std::string IlwisObject::url(){
+    if (this->__bool__())
+        return ((*this->ptr())->resource().url(true).toString()).toStdString();
+    else
+        return std::string("invalid IlwisObject!");
+}
+
 QString IlwisObject::constructPath(std::string resource){
     QString input (QString::fromStdString(resource));
     if ( input.indexOf("code=") == 0) // ths is not a path but a code
