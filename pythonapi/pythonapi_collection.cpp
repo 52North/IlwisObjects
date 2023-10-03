@@ -10,6 +10,10 @@ Collection::Collection(std::vector<Object *> items)
 {
 }
 
+Collection::~Collection() {
+    _items.clear();
+}
+
 bool Collection::__bool__() const
 {
     return _items.size() > 0;

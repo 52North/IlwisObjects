@@ -27,6 +27,18 @@
     <ClCompile Include="Hydroflow\MapFlowAccumulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hydroflow\MapDrainageNetworkOrdering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hydroflow\MapCatchmentExtraction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hydroflow\MapDrainageNetworkExtraction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hydroflow\MapVariableThresholdComputation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Hydroflow\hydroflow_module.h">
@@ -50,6 +62,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hydroflow\MapFlowAccumulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hydroflow\MapDrainageNetworkOrdering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hydroflow\MapCatchmentExtraction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hydroflow\MapDrainageNetworkExtraction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hydroflow\MapVariableThresholdComputation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -147,7 +147,7 @@ IssueLogger::IssueLogger(QObject *parent) : QObject(parent), _repeatCount(0)
     apploc += "/log";
     QDir dir(apploc);
     if ( !dir.exists())
-        dir.mkdir(apploc);
+        dir.mkpath(apploc);
     QString rlogFilePath = apploc + "/logfile.txt";
     QString clogFilePath = apploc + "/logfile_ext.txt";
     _logFileRegular.open(rlogFilePath.toLatin1());

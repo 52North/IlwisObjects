@@ -347,7 +347,7 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
     }
     if ( dom->ilwisType() == itITEMDOMAIN) {
          if ( hasType(dom->valueType(),itTHEMATICITEM | itNUMERICITEM) && coverage->ilwisType() == itRASTER) {
-            _domainName =  Resource::toLocalFile(dom->resource().url(true), true);
+            _domainName =  Resource::toLocalFile(dom->resource().url(true), true, "dom");
             if ( _domainName == sUNDEF){
                 if ( baseName != sUNDEF)
                     _domainName = QFileInfo(baseName).baseName() + ".dom";
@@ -386,7 +386,7 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
              if ( baseName != sUNDEF)
                  _domainName = baseName + ".dom"; // Resource::toLocalFile(dom->source().url(), true);
              else{
-                 _domainName = !iddom->isAnonymous() ? dom->name() : coverage->name();
+                 _domainName = !iddom->isAnonymous() ? dom->name() : (QFileInfo(QUrl(_odf->url()).toLocalFile()).baseName() + ".dom");
                  if (_domainName.indexOf(".dom") == -1)
                      _domainName += ".dom";
              }
@@ -459,12 +459,25 @@ DataDefinition CoverageConnector::determineDataDefinition(const ODF& odf,  const
     QString filename;
     QString domname = odf->value("BaseMap","Domain");
     if (domname != sUNDEF) { // probe if domain is an external file
-        if ( domname == "Color.dom"){ // special case
-                QColor clrMin = QColor(0,0,0);
-                QColor clrMax = QColor(255,255,255);
-                Range *colorRange = new ContinuousColorRange( clrMin, clrMax, ColorRangeBase::cmRGBA);
-                return DataDefinition(IDomain("color"), colorRange);
-        }else {
+        if (domname == "Color.dom") { // special case
+            QColor clrMin = QColor(0, 0, 0);
+            QColor clrMax = QColor(255, 255, 255);
+            Range* colorRange = new ContinuousColorRange(clrMin, clrMax, ColorRangeBase::cmRGBA);
+            return DataDefinition(IDomain("color"), colorRange);
+        } else if (domname == "FlowDirection.dom") {
+            IThematicDomain flowdirectionDom;
+            flowdirectionDom.prepare();
+            flowdirectionDom->addItem(new ThematicItem({ "E", "", "To the east",}, 1));
+            flowdirectionDom->addItem(new ThematicItem({ "SE", "", "To the south east",}, 2));
+            flowdirectionDom->addItem(new ThematicItem({ "S", "", "To the south",}, 3));
+            flowdirectionDom->addItem(new ThematicItem({ "SW", "", "To the south west",}, 4));
+            flowdirectionDom->addItem(new ThematicItem({ "W", "", "To the west",}, 5));
+            flowdirectionDom->addItem(new ThematicItem({ "NW", "", "To the north west",}, 6));
+            flowdirectionDom->addItem(new ThematicItem({ "N", "", "To the north",}, 7));
+            flowdirectionDom->addItem(new ThematicItem({ "NE", "", "To the north east",}, 8));
+            flowdirectionDom->name("FlowDirection");
+            return DataDefinition(flowdirectionDom);
+        } else {
             filename = filename2FullPath(domname, this->_resource); // use an eventual absolute-path supplied in domname, otherwise look for it in the same folder as the BaseMap
             if (!QFileInfo(QUrl(filename).toLocalFile()).exists()) {
                 filename = context()->workingCatalog()->resolve(domname, itDOMAIN); // if it is also not there, look for it in the working catalog (it might be different than the location of the BaseMap)
