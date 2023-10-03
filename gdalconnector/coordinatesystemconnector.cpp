@@ -121,6 +121,29 @@ std::vector<double> CoordinateSystemConnector::getShifts(QString & filename, QSt
     return result;
 }
 
+void CoordinateSystemConnector::setDatum(ConventionalCoordinateSystem *csyp, OGRSpatialReferenceH srshandle)
+{
+    QString datumName(gdal()->getAttributeValue(srshandle,"Datum",0));
+   // if ( datumName == "WGS_1984")
+    //    csy->prepare("+proj=longlat +ellps=WGS84 +datum=WGS84");
+
+    GeodeticDatum *datum = new GeodeticDatum(datumName);
+    auto overrides = QString("gcs.override.csv");
+    std::vector<double> shifts = getShifts(overrides, datumName);
+    if (shifts.size() == 0){
+        auto gcs = QString("gcs.csv");
+        shifts = getShifts(gcs, datumName);
+    }if (shifts.size() >= 3) {
+        if (shifts.size() >= 7)
+            datum->set7TransformationParameters(shifts[0], shifts[1], shifts[2], shifts[3], shifts[4], shifts[5], shifts[6]);
+        else
+            datum->set3TransformationParameters(shifts[0], shifts[1], shifts[2], csyp->ellipsoid());
+    }
+    //datum.prepare("wkt=" + datumName);
+    if ( datum->isValid())
+        csyp->setDatum(datum);
+}
+
 bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions &options){
 
 	if (data->code() == "csy:unknown") {
@@ -134,72 +157,53 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
         CoordinateSystem *csy = static_cast<CoordinateSystem *>(data);
 
         if ( type() == itCONVENTIONALCOORDSYSTEM) {
+
             ConventionalCoordinateSystem *csyp = static_cast<ConventionalCoordinateSystem *>(csy);
-            QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
-            char *wkt = new char[10000];
-            gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
-            IEllipsoid ellipsoid;
-            if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
-                ellipsoid.prepare("code=wkt:" + ellipsoidName);
-                if ( ellipsoid.isValid())
-                    csyp->setEllipsoid(ellipsoid);
-                else
-                 extractUserDefinedEllipsoid(csyp, srshandle);
+            char *proj4;
+            gdal()->export2Proj4(srshandle, &proj4);
+            QString sproj4 = proj4;
+            if ( proj4){
+                gdal()->free(proj4);
+                csy->prepare(sproj4);
+                setDatum(csyp, srshandle);
+
             }else {
-                extractUserDefinedEllipsoid(csyp, srshandle);
-            }
-            QString datumName(gdal()->getAttributeValue(srshandle,"Datum",0));
-           // if ( datumName == "WGS_1984")
-            //    csy->prepare("+proj=longlat +ellps=WGS84 +datum=WGS84");
-           
-            GeodeticDatum *datum = new GeodeticDatum(datumName);
-auto overrides = QString("gcs.override.csv");
-            std::vector<double> shifts = getShifts(overrides, datumName);
-            if (shifts.size() == 0){
-                auto gcs = QString("gcs.csv");
-                shifts = getShifts(gcs, datumName);
-            }if (shifts.size() >= 3) {
-                if (shifts.size() >= 7)
-                    datum->set7TransformationParameters(shifts[0], shifts[1], shifts[2], shifts[3], shifts[4], shifts[5], shifts[6]);
-                else
-                    datum->set3TransformationParameters(shifts[0], shifts[1], shifts[2], ellipsoid);
-            }
-            //datum.prepare("wkt=" + datumName);
-            if ( datum->isValid())
-                csyp->setDatum(datum);
-
-            QString projectionName(gdal()->getAttributeValue(srshandle,"Projection",0));
-            if ( projectionName != "") {
-                IProjection projection;
-                IOOptions opt = options;
-                if (_resource.code().indexOf("code=") == 0){
-                    opt << IOOptions::Option("proj4", _resource.code().mid(6));
-                }else
-                    opt << IOOptions::Option("proj4", _resource.code());
-
-                projection.prepare("code=wkt:" + projectionName, opt);
-                if ( projection.isValid()) {
-                    setProjectionParameter(srshandle, "false_easting", Projection::pvFALSEEASTING, projection);
-                    setProjectionParameter(srshandle, "false_northing", Projection::pvFALSENORTHING, projection);
-                    setProjectionParameter(srshandle, "scale_factor", Projection::pvSCALE, projection);
-                    setProjectionParameter(srshandle, "central_meridian", Projection::pvCENTRALMERIDIAN, projection);
-                    setProjectionParameter(srshandle, "latitude_of_origin", Projection::pvCENTRALPARALLEL, projection);
-                    setProjectionParameter(srshandle, "standard_parallel_1", Projection::pvSTANDARDPARALLEL1, projection);
-                    setProjectionParameter(srshandle, "standard_parallel_2", Projection::pvSTANDARDPARALLEL2, projection);
-                    setProjectionParameter(srshandle, "zone", Projection::pvZONE, projection);
-                    csyp->setProjection(projection);
-                    projection->setCoordinateSystem(csyp);
+                QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
+                char *wkt = new char[10000];
+                gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
+                IEllipsoid ellipsoid;
+                if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
+                    ellipsoid.prepare("code=wkt:" + ellipsoidName);
+                    if ( ellipsoid.isValid())
+                        csyp->setEllipsoid(ellipsoid);
+                    else
+                     extractUserDefinedEllipsoid(csyp, srshandle);
+                }else {
+                    extractUserDefinedEllipsoid(csyp, srshandle);
                 }
-            }else // fallback, not all gdal wkt are correct
-            {
-                char *proj4;
-                gdal()->export2Proj4(srshandle, &proj4);
-                QString sproj4 = proj4;
-                if ( proj4){
-                    gdal()->free(proj4);
-                    csy->prepare(sproj4);
-                    if ( ellipsoid.isValid() && csyp){
-                        csyp->setEllipsoid(ellipsoid); // else we might get an unnamed ellipsoid, which is okay but if already have a named correct one
+                setDatum(csyp, srshandle);
+
+                QString projectionName(gdal()->getAttributeValue(srshandle,"Projection",0));
+                if ( projectionName != "") {
+                    IProjection projection;
+                    IOOptions opt = options;
+                    if (_resource.code().indexOf("code=") == 0){
+                        opt << IOOptions::Option("proj4", _resource.code().mid(6));
+                    }else
+                        opt << IOOptions::Option("proj4", _resource.code());
+
+                    projection.prepare("code=wkt:" + projectionName, opt);
+                    if ( projection.isValid()) {
+                        setProjectionParameter(srshandle, "false_easting", Projection::pvFALSEEASTING, projection);
+                        setProjectionParameter(srshandle, "false_northing", Projection::pvFALSENORTHING, projection);
+                        setProjectionParameter(srshandle, "scale_factor", Projection::pvSCALE, projection);
+                        setProjectionParameter(srshandle, "central_meridian", Projection::pvCENTRALMERIDIAN, projection);
+                        setProjectionParameter(srshandle, "latitude_of_origin", Projection::pvCENTRALPARALLEL, projection);
+                        setProjectionParameter(srshandle, "standard_parallel_1", Projection::pvSTANDARDPARALLEL1, projection);
+                        setProjectionParameter(srshandle, "standard_parallel_2", Projection::pvSTANDARDPARALLEL2, projection);
+                        setProjectionParameter(srshandle, "zone", Projection::pvZONE, projection);
+                        csyp->setProjection(projection);
+                        projection->setCoordinateSystem(csyp);
                     }
                 }
             }
