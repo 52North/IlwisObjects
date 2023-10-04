@@ -88,4 +88,5 @@ test/__pycache__/test_50_table.cpython-38.pyc
 test/__pycache__/test_60_baseoperations.cpython-38.pyc
 
 test/.vscode/launch.json
->>>>>>> Stashed changes
+
+charts/addChartSeries.h
