@@ -142,7 +142,8 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     if (numeric) {
         double resolution = outputRaster->datadefRef().range<NumericRange>()->resolution();
         NumericRange* rng = new NumericRange(minv, maxv, resolution);
-        for (int i = 0; i < outputRaster->size().zsize(); ++i) {
+        int z = outputRaster->size().zsize();
+        for (int i = 0; i < z; ++i) {
             outputRaster->datadefRef(i).range<NumericRange>()->resolution(resolution);
         }
         outputRaster->datadefRef().range(rng);
@@ -225,7 +226,10 @@ Ilwis::OperationImplementation::State SelectionRaster::prepare(ExecutionContext 
      }
 	 if (useOldGrf == false && inputRaster->size().zsize() > 1 && (_box.min_corner().z == iUNDEF || _box.max_corner().z == iUNDEF)) {
 		 _box.min_corner().z = 0;
-		 _box.max_corner().z = inputRaster->size().zsize() - 1;
+         if ( selectionBands.size() == 0)
+            _box.max_corner().z = inputRaster->size().zsize() - 1;
+         else
+             _box.max_corner().z = selectionBands.size() - 1;
 	 }
 	 outputRaster->size(_box.size());
      if ( selectedAttributes == 1 && _inputAttributeTable.isValid()){
