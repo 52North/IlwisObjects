@@ -2,11 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <QTDIR>D:\Qt\5.12.1\msvc2017_64\</QTDIR>
-    <PYTHONROOT>C:\Python36</PYTHONROOT>
+    <QTDIR>C:\Qt\5.12.12\msvc2017_64\</QTDIR>
+    <PYTHONROOT>E:\Python\python39</PYTHONROOT>
     <PYTHONROOT37>C:\Python37</PYTHONROOT37>
     <PYTHONROOT38>C:\Python382</PYTHONROOT38>
-    <PYTHONROOT39>C:\Python39</PYTHONROOT39>
+    <PYTHONROOT39>E:\Python\python39</PYTHONROOT39>
     <PYTHONROOT310>C:\Python310</PYTHONROOT310>
     <PYTHONROOT311>C:\Python311</PYTHONROOT311>
   </PropertyGroup>
