@@ -57,8 +57,10 @@ void ConsoleTranquilizer::prepare(const QString &title, const QString &descripti
     _next = 0.0;
     _count = 0;
 
-    if ( _title != "")
-        std::cout << title.toStdString() << ": ";
+    if (! hasType(context()->runMode(), Ilwis::rmNOUI)) {
+        if ( _title != "")
+            std::cout << title.toStdString() << ": ";
+    }
 }
 
 bool ConsoleTranquilizer::update(double howfar)
@@ -99,12 +101,14 @@ void ConsoleTranquilizer::stop(std::chrono::high_resolution_clock::time_point& s
     _count = 0;
     _start = 0.0;
     _end = 0.0;
-    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
-    if ( time_span.count() > 0){
-        QString res = " in " + QString::number(time_span.count()) + " seconds";
-        std::cout << res.toStdString();
+    if (! hasType(context()->runMode(), Ilwis::rmNOUI)) {
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+        if ( time_span.count() > 0){
+            QString res = " in " + QString::number(time_span.count()) + " seconds";
+            std::cout << res.toStdString();
+        }
+        std::cerr << std::endl;
     }
-    std::cerr << std::endl;
 }
 
 Tranquilizer *ConsoleTranquilizer::create(const IOOptions &opt)
