@@ -28,7 +28,7 @@ public:
     enum MathAction{maIFF, maSIN, maCOS, maTAN, maASIN,maSINH, maCOSH, maACOS, maATAN,maTANH, maATANH,
                     maLOG10, maLN, maEXP,maINT,maROUND,maACOSH,maASINH,
                     maABS,maCEIL, maFLOOR,maSQ,maSQRT,maMAX,maMIN,maPOW,maADD,maMINUS,maDIVIDE,maMULT,
-                    maEQ, maNEQ,maLESSEQ,maGREATEREQ,maLESS,maGREATER,maOR, maAND, maATTRIBUTE,maXOR,maLOGN,
+                    maEQ, maNEQ,maLESSEQ,maGREATEREQ,maLESS,maGREATER,maOR, maAND, maATTRIBUTE,maXOR,maLOG,
                     maNOT,maIFUNDEF, maIFNOTUNDEF, maUNKNOWN};
     const int LEFT_ASSOC = 0;
     const int RIGHT_ASSOC = 1;

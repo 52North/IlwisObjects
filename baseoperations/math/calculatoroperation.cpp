@@ -43,7 +43,7 @@ CalculatorOperation::CalculatorOperation(quint64 metaid,const Ilwis::OperationEx
 {
     _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},{"tanh",1},{"sinh",1},{"tanh",1},{"cosh",1},{"asinh",1},{"acosh",1},{"atahn",1},
                  {"log10",1},{"ln",1},{"exp",1},{"abs",1},{"ceil",1},{"int",1},{"round",1}, {"floor",1},{"sq",1},{"sqrt",1},{"max",2},
-                 {"logn",2}, {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3} };
+                 {"log",2}, {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3} };
     _operators["+"] = { 2, LEFT_ASSOC };
     _operators["-"] = { 2, LEFT_ASSOC };
     _operators["*"] = { 5, LEFT_ASSOC };
@@ -206,7 +206,7 @@ CalculatorOperation::MathAction CalculatorOperation::string2action(const QString
     if ( action == "atanh") return maATANH;
     if ( action == "pow") return maPOW;
     if ( action == "ln") return maLN;
-    if ( action == "logn") return maLOGN;
+    if ( action == "log") return maLOG;
     if ( action == "exp") return maEXP;
     if ( action == "int") return maINT;
     if ( action == "round") return maINT;
@@ -710,7 +710,7 @@ PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) 
                 calcResult =  ( v <= 0 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log10(v);
                 break;
             }
-            case maLOGN:
+            case maLOG:
             {
                 PIXVALUETYPE v1 = GetValue(action._values[0],result);
                 PIXVALUETYPE v2 = GetValue(action._values[1],result);
