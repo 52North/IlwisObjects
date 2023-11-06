@@ -25,9 +25,10 @@ class CalculatorOperation : public NumericOperation
 {
 public:
     enum ParmType {NUMERIC, ITERATOR,LINK, STRING, DOMAINITEM,COLUMN};
-    enum MathAction{maIFF, maSIN, maCOS, maTAN, maASIN, maACOS,maATAN, maLOG10, maLN, maEXP,
+    enum MathAction{maIFF, maSIN, maCOS, maTAN, maASIN,maSINH, maCOSH, maACOS, maATAN,maTANH, maATANH,
+                    maLOG10, maLN, maEXP,maINT,maROUND,maACOSH,maASINH,
                     maABS,maCEIL, maFLOOR,maSQ,maSQRT,maMAX,maMIN,maPOW,maADD,maMINUS,maDIVIDE,maMULT,
-                    maEQ, maNEQ,maLESSEQ,maGREATEREQ,maLESS,maGREATER,maOR, maAND, maATTRIBUTE,maXOR,
+                    maEQ, maNEQ,maLESSEQ,maGREATEREQ,maLESS,maGREATER,maOR, maAND, maATTRIBUTE,maXOR,maLOGN,
                     maNOT,maIFUNDEF, maIFNOTUNDEF, maUNKNOWN};
     const int LEFT_ASSOC = 0;
     const int RIGHT_ASSOC = 1;
