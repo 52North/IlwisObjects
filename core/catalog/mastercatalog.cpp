@@ -547,7 +547,7 @@ Resource MasterCatalog::name2Resource(const QString &nm, IlwisTypes tp) const
 }
 
 QUrl MasterCatalog::name2url(const QString &name, IlwisTypes tp) const{
-    if ( name.contains(QRegExp("\\\\|/"))) { // is there already path info; then assume it is already a unique resource
+    if ( name.contains(QRegExp("\\\\|:/"))) { // is there already path info; then assume it is already a unique resource
         bool ok = OSHelper::isAbsolute(name); // name might be a partial path
         if ( ok && !OSHelper::isFileName(name))
             // translate name to url; we have the following cases
