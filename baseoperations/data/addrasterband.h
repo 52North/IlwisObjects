@@ -32,10 +32,23 @@ public:
     State prepare(ExecutionContext *ctx,const SymbolTable&);
 
 private:
+    struct BandMergeInfo{
+        BandMergeInfo(const IRasterCoverage& bnd) : _band(bnd){}
+        IRasterCoverage _band;
+        std::vector<std::pair<int,QString>> _clashes;
+    };
     IRasterCoverage _inputRaster;
-    IRasterCoverage _band;
+    IRasterCoverage _outputRaster;
+    std::vector<BandMergeInfo> _bands;
+    RasterCoverage::MergeOptions _mergeOptions = RasterCoverage::moNONE;
+    int _insertionPoint=-1;
+
+    void insertBand(const Ilwis::IRasterCoverage &mergeRaster, const QString& index);
 
     NEW_OPERATION(AddRasterBand)    ;
+    void addBands();
+    void makeValid();
+    quint32 mapIndexes(const IRasterCoverage &inRC, quint32 in, const IRasterCoverage &outRC);
 };
 }
 }
