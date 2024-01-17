@@ -64,6 +64,7 @@ public:
     quint32 index(const QString& variantId) const;
     quint32 index(double domainItem) const;
     QString index(quint32 idx) const;
+    QString index2value(quint32 idx) const;
     std::vector<QString> indexes() const;
     quint32 count() const;
     IDomain domain() const;
@@ -73,6 +74,8 @@ public:
     void store(QDataStream& stream);
     bool isValid() const;
     bool checkStackDefintion(const SubFeatureDefinition& def);
+    int contains(const QString& value) const;
+    int contains(double value) const;
 protected:
     IDomain _subFeatureDomain;
     std::vector<QString> _index2subFeature;

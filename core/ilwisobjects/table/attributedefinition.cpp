@@ -323,6 +323,15 @@ void SubFeatureDefinition::setSubDefinition(quint32 number)
     }
 }
 
+QString SubFeatureDefinition::index2value(quint32 idx) const{
+    for(auto iter : _subFeature2Index)   {
+        if (iter.second == idx){
+            return iter.first;
+        }
+    }
+    return sUNDEF;
+}
+
 quint32 SubFeatureDefinition::index(const QString &domainItem) const
 {
     if ( !_subFeatureDomain.isValid())
@@ -502,7 +511,22 @@ void FeatureAttributeDefinition::copyTo(Ilwis::FeatureAttributeDefinition &def) 
     if ( _subFeatureDefinition)
         def._subFeatureDefinition.reset(new FeatureAttributeDefinition());
 }
-
-
-
-
+int SubFeatureDefinition::contains(double value) const {
+    int idx=0;
+    for(auto v : _index2subFeature) {
+        if (v.toDouble() == value)
+            return idx;
+        ++idx;
+    }
+    return iUNDEF;
+}
+int SubFeatureDefinition::contains(const QString &value) const
+{
+    int idx=0;
+    for(auto v : _index2subFeature) {
+        if (v == value)
+            return idx;
+        ++idx;
+    }
+    return iUNDEF;
+}
