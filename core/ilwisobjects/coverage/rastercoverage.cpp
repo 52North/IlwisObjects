@@ -663,10 +663,10 @@ PixelIterator RasterCoverage::bandPrivate(quint32 bandIndex, const Ilwis::Boundi
 }
 
 
-bool RasterCoverage::band(QString bandIndex,  PixelIterator inputIter)
+bool RasterCoverage::band(QString bandIndex,  PixelIterator inputIter, MergeOptions mergeOption)
 {
     bool isAnonAdd = bandIndex == sUNDEF;
-    if ( bandIndex != sUNDEF && !_bandDefinition.domain()->contains(bandIndex))
+    if ( bandIndex != sUNDEF && !_bandDefinition.domain()->contains(bandIndex)  && mergeOption == moNONE)
         return false;
     if ( bandIndex == sUNDEF){
         bandIndex = _bandDefinition.insert(sUNDEF);
@@ -682,27 +682,33 @@ bool RasterCoverage::band(QString bandIndex,  PixelIterator inputIter)
             _datadefBands.resize(_size.zsize());
 
     }
-    return bandPrivate(isAnonAdd ? _size.zsize() - 1 : bndIndex, inputIter);
+    return bandPrivate(isAnonAdd ? _size.zsize() - 1 : bndIndex, inputIter, mergeOption);
 }
 
-bool RasterCoverage::band(double bandIndex,  PixelIterator inputIter)
+bool RasterCoverage::band(double bandIndex,  PixelIterator inputIter, MergeOptions mergeOption)
 {
 	bool isAnonAdd = bandIndex == rUNDEF;
 	bool first = size().zsize() == 1 && !datadefRef().range()->isValid();
-    if (bandIndex != rUNDEF &&  !_bandDefinition.domain()->contains(bandIndex))
+    int existingIdx = _bandDefinition.index(bandIndex);
+    if (bandIndex != rUNDEF &&  existingIdx != iUNDEF && mergeOption == moNONE)
         return false;
+
+
     if ( bandIndex == rUNDEF){
         bandIndex = _bandDefinition.insert(bandIndex, first);
     }
     if ( bandIndex == rUNDEF)
         throw InternalError(TR("Couldnt add band; indexe isnt usuable"));
 
-    int bndIndex = _bandDefinition.index(bandIndex);
-    if ( bndIndex >= size().zsize()){
-        _size.zsize(bndIndex + 1);
-        _grid->setBandProperties(this, size().zsize() - _grid->size().zsize());
+    auto bndIndex = _bandDefinition.index(bandIndex);
+    auto zsize = size().zsize();
+    if ( bndIndex == iUNDEF)
+        bndIndex = zsize;
+    if ( bndIndex >= zsize){
+        _size.zsize(bndIndex == iUNDEF ? 1 : bndIndex + 1);
+        _grid->setBandProperties(this, 1);
     }
-    return bandPrivate(isAnonAdd ? _size.zsize() - 1 : bndIndex, inputIter);
+    return bandPrivate(isAnonAdd ? _size.zsize() - 1 : bndIndex, inputIter, mergeOption);
 }
 
 void RasterCoverage::setBandDefinition(QString bandIndex, const DataDefinition &def)
@@ -729,12 +735,29 @@ void RasterCoverage::setBandDefinition(double bandIndex, const DataDefinition &d
         resourceRef().addProperty("domain",def.domain()->id());
 }
 
-
-bool RasterCoverage::bandPrivate(quint32 bandIndex,  PixelIterator inputIter)
+PIXVALUETYPE mergeValues(double v1, double v2, RasterCoverage::MergeOptions mergeOption) {
+    switch ( mergeOption) {
+        case RasterCoverage::moVALID:
+            return isNumericalUndef(v1) ? v2 : v1;
+        case RasterCoverage::moMAX:
+            return Ilwis::max(v1,v2);
+        case RasterCoverage::moMEAN:
+            return Ilwis::mean(v1, v2);
+        case RasterCoverage::moMIN:
+            return Ilwis::min(v1,v2);
+        case RasterCoverage::moRASTER1:
+            return v1;
+        case RasterCoverage::moRASTER2:
+            return v2;
+        default:
+            return v1;
+    }
+}
+bool RasterCoverage::bandPrivate(quint32 bandIndex,  PixelIterator inputIter,MergeOptions mergeOption)
 {
     if ( inputIter.box().size().zsize() != 1)
         return false;
-    bool isFirstLayer = !size().isValid() || size().isNull();
+    bool isFirstLayer = !size().isValid() || size().isNull() || size().zsize() == 0;
     if (!isFirstLayer)    { // if it is not the first layer, some rules for this raster have already been defined(2dsize + domain)
         if ( inputIter.box().xlength() != size().xsize() || inputIter.box().ylength() != size().ysize())
             return false;
@@ -745,10 +768,14 @@ bool RasterCoverage::bandPrivate(quint32 bandIndex,  PixelIterator inputIter)
 
     if ( isFirstLayer ){ //  totally new band in new coverage, initialize everything
 
-        coordinateSystem(inputIter.raster()->coordinateSystem());
-        georeference(inputIter.raster()->georeference());
-        datadefRef() = inputIter.raster()->datadef();
-        envelope(inputIter.raster()->envelope());
+        if ( !coordinateSystem().isValid())
+            coordinateSystem(inputIter.raster()->coordinateSystem());
+        if ( !georeference().isValid())
+            georeference(inputIter.raster()->georeference());
+        if (!datadef().isValid())
+            datadefRef() = inputIter.raster()->datadef();
+        if (!envelope().isValid())
+            envelope(inputIter.raster()->envelope());
 
         Size<> twodsz = inputIter.box().size().twod();
         size(Size<>(twodsz.xsize(), twodsz.ysize() ,stackDefinition().count()));
@@ -761,17 +788,21 @@ bool RasterCoverage::bandPrivate(quint32 bandIndex,  PixelIterator inputIter)
     trq->prepare("Copying input data","Initializing raster band",size().xsize() * size().ysize());
     quint64 count = 0;
     PixelIterator iter = bandPrivate(bandIndex);
-	double v, minv = 1e307, maxv = -1e307;
+    double v1, minv = 1e307, maxv = -1e307;
 	if (datadefRef().range()->isValid() && datadefRef().domain()->ilwisType() == itNUMERICDOMAIN) {
 		minv = datadefRef().range<NumericRange>()->min();
 		maxv = datadefRef().range<NumericRange>()->max();
 	}
     auto endPos = iter.end();
     while(iter != endPos){
-		v = *inputIter;
-		minv = Ilwis::min(v, minv);
-		maxv = Ilwis::max(v, maxv);
-        *iter = v;
+        v1 = *inputIter;
+        minv = Ilwis::min(v1, minv);
+        maxv = Ilwis::max(v1, maxv);
+        if ( mergeOption != moNONE){
+            double v2 = *iter;
+            v1 = mergeValues(v1,v2, mergeOption);
+        }
+        *iter = v1;
         ++iter;
         ++inputIter;
         if ( (++count % 1000) == 0){
@@ -1136,7 +1167,53 @@ void RasterCoverage::setRepresentation(const QString& atr, const IRepresentation
 	}
 }
 
+void RasterCoverage::copyBands(const IRasterCoverage &inRaster, const IRasterCoverage &outRaster, quint32 inputIndex, quint32 outputIndex, MergeOptions option) {
+    if ( isNumericalUndef(inputIndex) || isNumericalUndef(outputIndex)){
+        ERROR2(ERR_ILLEGAL_VALUE_2,TR("layer index"), isNumericalUndef(inputIndex) ? "input" : "output");
+        return;
+    }
+    auto inputSize = inRaster->size();
+    if ( inputIndex >= inRaster->size().zsize()){
+       ERROR2(ERR_ILLEGAL_VALUE_2,TR("layer index"), "input");
+       return;
+    }
+    PixelIterator iterIn(inRaster, BoundingBox(Pixel(0,0,inputIndex), Pixel(inputSize.xsize(), inputSize.ysize(), inputIndex + 1)));
+    PixelIterator iterOut(outRaster, BoundingBox(Pixel(0,0,outputIndex), Pixel(inputSize.xsize(), inputSize.ysize(), outputIndex + 1)));
+    if ( inRaster->id() == outRaster->id() && inputIndex == outputIndex){
+        ERROR2(ERR_ILLEGALE_OPERATION2, TR("copy"),TR("identical layers in same raster"));
+        return;
+    }
 
+    PixelIterator iterEnd = iterIn.end();
+    while(iterIn != iterEnd) {
+        PIXVALUETYPE vIn = *iterIn;
+        PIXVALUETYPE& vOut = *iterOut;
+        switch(option){
+        case moVALID:
+            vOut = vOut == rUNDEF ? vIn : vOut;
+            break;
+        case moMAX:
+            vOut= Ilwis::max(vIn, vOut);
+            break;
+        case moMIN:
+            vOut= Ilwis::min(vIn, vOut);
+            break;
+        case moMEAN:
+            vOut= Ilwis::mean(vIn, vOut);
+            break;
+        case moRASTER1:
+            vOut = vIn;
+            break;
+        case moRASTER2:
+            break;
+        default:
+            vOut = vIn;
+        }
+
+        ++iterIn;
+        ++iterOut;
+    }
+}
 
 
 
