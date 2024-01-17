@@ -155,7 +155,8 @@ bool OperationHelperRaster::addGrfFromInput(const RasterCoverage* raster, Resour
 			}
 			QString grfType = raster->georeference()->grfType();
 			if (grfType == "corners" ) {
-				QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(raster->size().twod().toString());
+                auto sz = raster->georeference()->size();
+                QString grfs = QString("code=georef:type=corners,csy=%1,envelope=%2,gridsize=%3").arg(codeCsy).arg(raster->envelope().toString()).arg(sz.twod().toString());
 				resource.addProperty("georeference", grfs, true);
 			}
 			if (grfType == "undeterminedGeoReference") {
