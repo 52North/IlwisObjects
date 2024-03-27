@@ -370,8 +370,38 @@ namespace pythonapi {
     }
 
     template<class IlwisType, class PyType, typename SizeType>
+    bool BoxTemplate<IlwisType, PyType, SizeType>::equals(const BoxTemplate<IlwisType, PyType, SizeType> &other, double delta)
+    {
+        return (this->data().equals(other.data(), delta));
+    }
+
+    template<class IlwisType, class PyType, typename SizeType>
+    void BoxTemplate<IlwisType, PyType, SizeType>::add(const BoxTemplate<IlwisType,  PyType, SizeType>& other){
+        this->data() += other.data();
+
+    }
+
+    template<class IlwisType, class PyType, typename SizeType>
+    bool BoxTemplate<IlwisType, PyType, SizeType>::intersects(const BoxTemplate<IlwisType,  PyType, SizeType>& other)
+    {
+        return (this->data()).intersects(other.data());
+
+    }
+
+    template<class IlwisType, class PyType, typename SizeType>
+    bool BoxTemplate<IlwisType, PyType, SizeType>::equalsP(const BoxTemplate<IlwisType,  PyType, SizeType>& other, double deltaX, double deltaY, double deltaZ)
+    {
+        return (this->data().equalsP(other.data(), deltaX, deltaY,deltaZ));
+    }
+
+    template<class IlwisType, class PyType, typename SizeType>
     Ilwis::Box<IlwisType>& BoxTemplate<IlwisType, PyType, SizeType>::data() const{
         return (*this->_data);
+    }
+
+    template<class IlwisType, class PyType, typename SizeType>
+    BoxTemplate<IlwisType, PyType, SizeType> BoxTemplate<IlwisType, PyType, SizeType>::overlap(const BoxTemplate<IlwisType, PyType, SizeType>& box1){
+        return (this->data().overlap(box1.data()));
     }
 
     template class BoxTemplate<Ilwis::Coordinate, Coordinate, double>;

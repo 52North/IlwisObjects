@@ -163,6 +163,11 @@ namespace pythonapi {
             bool __contains__(const BoxTemplate<IlwisType, PyType, SizeType>& box) const;
             bool operator==(const BoxTemplate<IlwisType, PyType, SizeType>& other);
             bool operator!=(const BoxTemplate<IlwisType, PyType, SizeType>& other);
+            bool equals(const BoxTemplate<IlwisType,  PyType, SizeType>& other, double delta);
+            bool equalsP(const BoxTemplate<IlwisType,  PyType, SizeType>& other, double deltaX, double deltaY, double deltaZ);
+            void add(const BoxTemplate<IlwisType,  PyType, SizeType>& other);
+            bool intersects(const BoxTemplate<IlwisType,  PyType, SizeType>& other);
+            BoxTemplate<IlwisType, PyType, SizeType> overlap(const BoxTemplate<IlwisType, PyType, SizeType>& box1);
 
             std::string __str__();
             bool __bool__() const;
