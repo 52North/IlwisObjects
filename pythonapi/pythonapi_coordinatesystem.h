@@ -25,6 +25,7 @@ namespace pythonapi {
     public:
         CoordinateSystem(const std::string &resource);
         pythonapi::Envelope envelope();
+        pythonapi::Envelope latlonEnvelope();
         void setEnvelope(const pythonapi::Envelope& env);
         bool operator==(const CoordinateSystem& csy);
         bool operator!=(const CoordinateSystem& csy);

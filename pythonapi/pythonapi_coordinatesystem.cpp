@@ -33,6 +33,10 @@ Envelope CoordinateSystem::envelope(){
     return Envelope(this->ptr()->as<Ilwis::CoordinateSystem>()->envelope());
 }
 
+Envelope CoordinateSystem::latlonEnvelope(){
+    return Envelope(this->ptr()->as<Ilwis::CoordinateSystem>()->envelope(true));
+}
+
 void CoordinateSystem::setEnvelope(const Envelope& env){
     Ilwis::Envelope ilwEnv = env.data();
     this->ptr()->as<Ilwis::CoordinateSystem>()->envelope(ilwEnv);
