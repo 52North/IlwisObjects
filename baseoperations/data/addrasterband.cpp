@@ -102,7 +102,7 @@ bool AddRasterBand::execute(ExecutionContext *ctx, SymbolTable& symTable)
     }
 
     //logOperation(_inputRaster, _expression, { _bands });
-    setOutput(_inputRaster, ctx, symTable);
+    setOutput(_outputRaster, ctx, symTable);
 
     return true;
 }
