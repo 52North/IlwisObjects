@@ -873,6 +873,7 @@ void RasterCoverage::size(const Size<> &sz)
             _georef->size(sz);
          stackDefinitionRef().setSubDefinition(sz.zsize()); // default filling, can be overruled
          if (datadef().isValid()) {
+             _datadefBands.resize(sz.zsize());
              for (int i = 0; i < sz.zsize(); ++i) {
                  if (!datadefRef(i).isValid()) {
                      datadefRef(i) = datadef();
@@ -1177,8 +1178,8 @@ void RasterCoverage::copyBands(const IRasterCoverage &inRaster, const IRasterCov
        ERROR2(ERR_ILLEGAL_VALUE_2,TR("layer index"), "input");
        return;
     }
-    PixelIterator iterIn(inRaster, BoundingBox(Pixel(0,0,inputIndex), Pixel(inputSize.xsize(), inputSize.ysize(), inputIndex + 1)));
-    PixelIterator iterOut(outRaster, BoundingBox(Pixel(0,0,outputIndex), Pixel(inputSize.xsize(), inputSize.ysize(), outputIndex + 1)));
+    PixelIterator iterIn(inRaster, BoundingBox(Pixel(0,0,inputIndex), Pixel(inputSize.xsize(), inputSize.ysize(), inputIndex )));
+    PixelIterator iterOut(outRaster, BoundingBox(Pixel(0,0,outputIndex), Pixel(inputSize.xsize(), inputSize.ysize(), outputIndex)));
     if ( inRaster->id() == outRaster->id() && inputIndex == outputIndex){
         ERROR2(ERR_ILLEGALE_OPERATION2, TR("copy"),TR("identical layers in same raster"));
         return;
