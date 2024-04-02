@@ -33,31 +33,26 @@ public:
 
 
 private:
+    const long iUNDEF = -2147483647; // Take care! Local override, to make Ilwis3 code work as-is.
     IIlwisObject _inputObj;
     IIlwisObject _outputObj;
-    quint8 _connectivity;
+    IIndexedIdDomain _arnDomain;
+    bool _f8Connected;
+    bool _fUseForPolFromRas;
+    long iAreaNumber(double rValue, long& iArnv, long iLastColPlus1, long iCount);
+    std::vector<long> ArnToBeReplacedWith;
+    std::vector<double> ArnRealAtt;
+    LongBufExt  iCurrLine;
+    RealBufExt  rCurrLine;
+    LongBufExt  iArnLine;
+    LongBufExt  iPrevLine;
+    RealBufExt  rPrevLine;
+    LongBufExt  iPrevArnLine;
 
     NEW_OPERATION(AreaNumbering);
 
 };
 
-class AreaNumberer {
-public:
-    AreaNumberer(quint32 xsize, quint8 connectivity);
-    std::map<int,int> pass2Entries();
-    quint32 value(const Ilwis::PixelIterator &inIter);
-
-    quint32 lastid() const;
-
-private:
-    quint8 _connectivity;
-    quint32 _currentId = 0;
-    std::vector<double> _neighboursIn;
-    std::vector<double> _neighboursOut;
-    std::map<int,int> _pass2Changes;
-    double do4connected(const Ilwis::PixelIterator &in);
-
-};
 }
 }
 
