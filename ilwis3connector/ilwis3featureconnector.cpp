@@ -273,10 +273,6 @@ bool FeatureConnector::loadBinaryPolygons37(FeatureCoverage *fcoverage, ITable& 
 
         quint32 numberOfHoles;
         stream.readRawData((char *)&value, 8);
-        if (value == rUNDEF) {
-            delete outerring; // this also deletes *outer
-            continue;
-        }
         stream.readRawData((char *)&numberOfHoles, 4);
         std::vector<geos::geom::Geometry*> *inners = new std::vector<geos::geom::Geometry*>();
         for(quint32 i=0; i< numberOfHoles;++i){
@@ -284,6 +280,12 @@ bool FeatureConnector::loadBinaryPolygons37(FeatureCoverage *fcoverage, ITable& 
             if ( ring){
                 inners->push_back(fcoverage->geomfactory()->createLinearRing(ring));
             }
+        }
+        if (value == rUNDEF) {
+            delete outerring; // this also deletes *outer
+            for (std::vector<geos::geom::Geometry*>::iterator ring = inners->begin(); ring != inners->end(); ++ring)
+                delete *ring;
+            continue;
         }
         geos::geom::Polygon *pol = fcoverage->geomfactory()->createPolygon(outerring, inners);
 
