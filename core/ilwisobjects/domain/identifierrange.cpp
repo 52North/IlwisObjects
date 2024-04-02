@@ -129,7 +129,8 @@ Range *IndexedIdentifierRange::clone() const
 {
     IndexedIdentifierRange *irange = new IndexedIdentifierRange();
     irange->_count = _count;
-    irange->add(_start->clone());
+    if (!_start.isNull())
+        irange->add(_start->clone());
 
     return irange;
 
