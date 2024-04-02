@@ -48,8 +48,8 @@ QString IndexedIdentifier::name() const
         return _prefix;
 
     if ( _prefix != "")
-        return QString("%1_%2").arg(_prefix).arg(_raw);
-    return QString::number(_raw);
+        return QString("%1 %2").arg(_prefix).arg(1 + _raw);
+    return QString::number(1 + _raw);
 }
 
 quint32 IndexedIdentifier::raw() const
