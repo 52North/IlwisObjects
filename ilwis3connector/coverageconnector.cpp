@@ -40,6 +40,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "thematicitem.h"
 #include "itemrange.h"
 #include "identifierrange.h"
+#include "interval.h"
+#include "intervalrange.h"
 #include "columndefinition.h"
 #include "table.h"
 #include "rawconverter.h"
@@ -346,25 +348,35 @@ bool CoverageConnector::storeMetaData(IlwisObject *obj, IlwisTypes type, const I
         }
     }
     if ( dom->ilwisType() == itITEMDOMAIN) {
-         if ( hasType(dom->valueType(),itTHEMATICITEM | itNUMERICITEM) && coverage->ilwisType() == itRASTER) {
-            _domainName =  Resource::toLocalFile(dom->resource().url(true), true, "dom");
-            if ( _domainName == sUNDEF){
-                if ( baseName != sUNDEF)
+        if (hasType(dom->valueType(), itTHEMATICITEM | itNUMERICITEM)) {
+            _domainName = Resource::toLocalFile(dom->resource().url(true), true, "dom");
+            if (_domainName == sUNDEF) {
+                if (baseName != sUNDEF)
                     _domainName = QFileInfo(baseName).baseName() + ".dom";
-                else{
+                else {
                     _domainName = !dom->isAnonymous() ? dom->name() : (QFileInfo(QUrl(_odf->url()).toLocalFile()).baseName() + ".dom"); // _resource.url(true).toLocalFile();
-                    if ( _domainName.indexOf(".dom") == -1)
+                    if (_domainName.indexOf(".dom") == -1)
                         _domainName += ".dom";
                 }
 
             }
-            IThematicDomain themdom = dom.as<ThematicDomain>();
-            if ( themdom.isValid()) {
-                _domainInfo = QString("%1;Byte;class;%2;;").arg(_domainName).arg(themdom->count());
-                _odf->setKeyValue("BaseMap","DomainInfo",_domainInfo);
-                _odf->setKeyValue("BaseMap","Domain",_domainName);
+            if (hasType(dom->valueType(), itNUMERICITEM)) { // group
+                IIntervalDomain intdom = dom.as<IntervalDomain>();
+                if (intdom.isValid()) {
+                    _domainInfo = QString("%1;Byte;group;%2;;").arg(_domainName).arg(intdom->count());
+                    _odf->setKeyValue("BaseMap", "DomainInfo", _domainInfo);
+                    _odf->setKeyValue("BaseMap", "Domain", _domainName);
+                    _itemCount = intdom->count();
+                }
+            } else if (hasType(dom->valueType(), itTHEMATICITEM)) { // class
+                IThematicDomain themdom = dom.as<ThematicDomain>();
+                if (themdom.isValid()) {
+                    _domainInfo = QString("%1;Byte;class;%2;;").arg(_domainName).arg(themdom->count());
+                    _odf->setKeyValue("BaseMap", "DomainInfo", _domainInfo);
+                    _odf->setKeyValue("BaseMap", "Domain", _domainName);
+                    _itemCount = themdom->count();
+                }
             }
-            _itemCount = themdom->count();
          } else if(dom->valueType() == itINDEXEDITEM) {
              if ( hasType(type, itFEATURE)){
                  _domainName = QFileInfo(QUrl(_odf->url()).toLocalFile()).fileName();
