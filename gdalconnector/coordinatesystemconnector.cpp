@@ -121,6 +121,24 @@ std::vector<double> CoordinateSystemConnector::getShifts(QString & filename, QSt
     return result;
 }
 
+void CoordinateSystemConnector::setEllipsoid(ConventionalCoordinateSystem* csyp, OGRSpatialReferenceH srshandle)
+{
+    QString ellipsoidName(gdal()->getAttributeValue(srshandle, "SPHEROID", 0));
+    char* wkt = new char[10000];
+    gdal()->exportToPrettyWkt(srshandle, &wkt, TRUE);
+    IEllipsoid ellipsoid;
+    if ((ellipsoidName.compare("unnamed", Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown", Qt::CaseInsensitive) != 0)) {
+        ellipsoid.prepare("code=wkt:" + ellipsoidName);
+        if (ellipsoid.isValid())
+            csyp->setEllipsoid(ellipsoid);
+        else
+            extractUserDefinedEllipsoid(csyp, srshandle);
+    }
+    else {
+        extractUserDefinedEllipsoid(csyp, srshandle);
+    }
+}
+
 void CoordinateSystemConnector::setDatum(ConventionalCoordinateSystem *csyp, OGRSpatialReferenceH srshandle)
 {
     QString datumName(gdal()->getAttributeValue(srshandle,"Datum",0));
@@ -157,7 +175,6 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
         CoordinateSystem *csy = static_cast<CoordinateSystem *>(data);
 
         if ( type() == itCONVENTIONALCOORDSYSTEM) {
-
             ConventionalCoordinateSystem *csyp = static_cast<ConventionalCoordinateSystem *>(csy);
             char *proj4;
             gdal()->export2Proj4(srshandle, &proj4);
@@ -165,22 +182,12 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
             if ( proj4){
                 gdal()->free(proj4);
                 csy->prepare(sproj4);
-                setDatum(csyp, srshandle);
-
+                if (csyp->ellipsoid()->wktShort().size() == 0)
+                    setEllipsoid(csyp, srshandle);
+                if (!csyp->datum()->isValid())
+                    setDatum(csyp, srshandle);
             }else {
-                QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
-                char *wkt = new char[10000];
-                gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
-                IEllipsoid ellipsoid;
-                if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
-                    ellipsoid.prepare("code=wkt:" + ellipsoidName);
-                    if ( ellipsoid.isValid())
-                        csyp->setEllipsoid(ellipsoid);
-                    else
-                     extractUserDefinedEllipsoid(csyp, srshandle);
-                }else {
-                    extractUserDefinedEllipsoid(csyp, srshandle);
-                }
+                setEllipsoid(csyp, srshandle);
                 setDatum(csyp, srshandle);
 
                 QString projectionName(gdal()->getAttributeValue(srshandle,"Projection",0));
@@ -216,19 +223,7 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
         }else {
             ConventionalCoordinateSystem *csyp =dynamic_cast<ConventionalCoordinateSystem *>(csy);
             if ( csyp){
-                QString ellipsoidName(gdal()->getAttributeValue(srshandle,"SPHEROID",0));
-                char *wkt = new char[10000];
-                gdal()->exportToPrettyWkt(srshandle,&wkt,TRUE);
-                IEllipsoid ellipsoid;
-                if ( (ellipsoidName.compare("unnamed",Qt::CaseInsensitive) != 0) && (ellipsoidName.compare("unknown",Qt::CaseInsensitive) != 0)) {
-                    ellipsoid.prepare("code=wkt:" + ellipsoidName);
-                    if ( ellipsoid.isValid())
-                        csyp->setEllipsoid(ellipsoid);
-                    else
-                     extractUserDefinedEllipsoid(csyp, srshandle);
-                }else {
-                    extractUserDefinedEllipsoid(csyp, srshandle);
-                }
+                setEllipsoid(csyp, srshandle);
             }
         }
     }else{
