@@ -538,6 +538,7 @@ HEADERS += \
    ./core/util/geometries.h \
    ./core/util/ilwisconfiguration.h \
    ./core/util/ilwiscoordinate.h \
+   ./core/util/ilwis3buf.h \
    ./core/util/juliantime.h \
    ./core/util/location.h \
    ./core/util/locker.h \
