@@ -18,7 +18,7 @@ win32{
     PYTHON_INCLUDE_FILES=../../external/python3/python3$$PYMINORVERSION/include/
 }
 linux {
-    PYMINORVERSION=10
+    PYMINORVERSION=8
     PYTHON_INCLUDE_FILES =/usr/include/python3.$$PYMINORVERSION
     LIBS += -L$$/usr/libs -lpython3.$$PYMINORVERSION
     OUTPUTPATHPYTHON=$$clean_path($$PWD/../output/$$PREFIX_COMPILER/$$CONF/ilwispy/ilwis)
