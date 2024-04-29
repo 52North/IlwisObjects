@@ -85,6 +85,9 @@ namespace Ilwis {
 
 			std::vector<bool> tmpFeatureFlags;
 
+			int usedIdCount;
+			std::map<const geos::geom::Geometry*, int> lsidmap;
+
 			long _xsize, _ysize;
 			int _minlength;
 
@@ -95,6 +98,9 @@ namespace Ilwis {
 			long   m_iStreve;
 			double m_rTotalUpstreamLength;
 			QString m_sUpstreamLink;
+
+			std::vector<long> m_ids;
+			bool isContinue(long id);
 
 		private:
 			void IniParms();

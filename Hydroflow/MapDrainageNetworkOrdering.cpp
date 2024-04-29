@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <future>
 #include "kernel.h"
 #include "raster.h"
-//#include "geos/geom/PrecisionModel.h"
 
 #include "symboltable.h"
 #include "columndefinition.h"
@@ -183,7 +182,6 @@ Ilwis::OperationImplementation::State DrainageNetworkOrdering::prepare(Execution
 	{
 		QString orderName = "OrderID";
 		_orderDomain.prepare();
-		//_orderDomain->name(orderName);
 		_idrange = new NamedIdentifierRange();
 		_orderDomain->range(_idrange);
 
@@ -377,7 +375,7 @@ bool DrainageNetworkOrdering::executeDrainageNetworkOrdering()
 
 					m_rLength = rDistance(c1, c2);
 					int iLink = IdentifyLink(rcDownCell);
-					AddDomainItem(m_iLinkNumber);
+					//AddDomainItem(m_iLinkNumber);
 					StoreSegment(_outputfeatures, m_iLinkNumber, true);
 					m_iStrahler = ComputeStrahlerOrder(vUpstreamLink);
 					m_iStreve = ComputeStreveOrder(vUpstreamLink);
@@ -401,6 +399,12 @@ bool DrainageNetworkOrdering::executeDrainageNetworkOrdering()
 	}
 
 	iterDrainage = PixelIterator(_outDrainageRaster, BoundingBox(), PixelIterator::fXYZ);
+	while (iterDrainage != inEnd)
+	{
+		*iterDrainage = (*iterDrainage != 0) ? (*iterDrainage - 1) : rUNDEF;
+		++iterDrainage;
+	}
+
 
 	FillTableRecords();
 	return true;
@@ -418,14 +422,11 @@ void DrainageNetworkOrdering::PatchSegment(IFeatureCoverage sm, long iSegID)
 
 		if (ls_geom && ls_geom->isValid() && !tmpFeatureFlags[flg])
 		{
-			if (ls_geom->getSRID() == iSegID)
+			if (lsidmap[ls_geom] == iSegID)
 			{
 				geos::geom::CoordinateSequence* crdbuf1 = ls_geom->getCoordinates();
 	
 				geos::geom::CoordinateSequence* crdbufnew = crdbuf1->clone();
-
-				geos::geom::Geometry* geometry = sm->geomfactory()->createLineString(crdbufnew);
-				geometry->setSRID(iSegID);
 
 				for (int i = 0; i < m_vStreamLink.size(); ++i)
 				{
@@ -435,6 +436,10 @@ void DrainageNetworkOrdering::PatchSegment(IFeatureCoverage sm, long iSegID)
 					crdbufnew->add(c);
 				}
 
+				usedIdCount--;
+				lsidmap[ls_geom] = usedIdCount; // ls_geom is "marked" to be deleted / cleaned up
+				geos::geom::Geometry* geometry = sm->geomfactory()->createLineString(crdbufnew);
+				lsidmap[geometry] = iSegID; // geometry takes over the iSegID
 				tmpFeatureFlags[flg] = true;
 
 				if (geometry->isValid())
@@ -455,6 +460,8 @@ void DrainageNetworkOrdering::PatchSegment(IFeatureCoverage sm, long iSegID)
 void DrainageNetworkOrdering::StoreSegment(IFeatureCoverage sm, long iSegID, bool fConvert)
 {
 	std::vector<Coordinate> coordsPts;
+
+	bool tmpadd = fConvert;
 
 	fConvert = true;
 
@@ -478,43 +485,65 @@ void DrainageNetworkOrdering::StoreSegment(IFeatureCoverage sm, long iSegID, boo
 	{
 		geos::geom::CoordinateSequence* cl1 = toCoordinateSequence(coordsPts);
 		geos::geom::Geometry* geometry = sm->geomfactory()->createLineString(cl1);
-		geometry->setSRID(iSegID);
+		lsidmap[geometry] = iSegID;
 
 		if (geometry->isValid())
 		{
 			sm->newFeature(geometry);
 			tmpFeatureFlags.push_back(false);
 		}
-	
+
+		if (tmpadd)
+			m_ids.push_back(iSegID);
 	}
 }
 
-
 void DrainageNetworkOrdering::CleanSegment(IFeatureCoverage smpTo, IFeatureCoverage smpFrom)
 {
-	long flg(0);
+	std::vector< const geos::geom::Geometry*> geomarr;
+	m_ids.resize(0);
+
 	for (auto feature : smpFrom)
 	{
 		const geos::geom::LineString* ls_geom =
 			dynamic_cast<const geos::geom::LineString*>(feature->geometry().get());
 
-		if (!ls_geom->isEmpty() && ls_geom->isValid() && !tmpFeatureFlags[flg])
+		int id = lsidmap[ls_geom];
+		if (!ls_geom->isEmpty() && ls_geom->isValid() && id > 0)//!tmpFeatureFlags[flg])
 		{
-			geos::geom::CoordinateSequence* crdbuf1 = ls_geom->getCoordinates();
-
-			geos::geom::CoordinateSequence* crdbufnew = crdbuf1->clone();
-			
-			geos::geom::Geometry* geometry = smpTo->geomfactory()->createLineString(crdbufnew);
-			geometry->setSRID(ls_geom->getSRID());
-
-			if (geometry->isValid())
-			{
-				smpTo->newFeature(geometry);
-			}
+			geomarr.push_back(ls_geom);
 		}
-		flg++;
 	}
-	
+
+	struct Less {
+		Less(DrainageNetworkOrdering& c)
+			: cl(c)
+		{}
+		bool operator () (const geos::geom::Geometry* a, const geos::geom::Geometry* b) {
+			return cl.lsidmap[a] < cl.lsidmap[b];
+		}
+		DrainageNetworkOrdering& cl;
+	};
+
+	std::sort(geomarr.begin(), geomarr.end(), Less(*this));
+
+	for (std::vector< const geos::geom::Geometry* >::iterator geomPtr = geomarr.begin();
+		geomPtr < geomarr.end(); ++geomPtr)
+	{
+		geos::geom::CoordinateSequence* crdbuf1 = (*geomPtr)->getCoordinates();
+		geos::geom::CoordinateSequence* crdbufnew = crdbuf1->clone();
+
+		geos::geom::Geometry* geometry = smpTo->geomfactory()->createLineString(crdbufnew);
+		lsidmap[geometry] = lsidmap[*geomPtr];
+
+		if (geometry->isValid())
+		{
+			smpTo->newFeature(geometry);
+		}
+
+		m_ids.push_back(lsidmap[*geomPtr]);
+	}
+
 }
 
 
@@ -863,6 +892,7 @@ void DrainageNetworkOrdering::IniParms()
 	m_iStreve = 1;
 	m_sUpstreamLink = "0";
 	m_rTotalUpstreamLength = 0;
+	usedIdCount = 0;
 }
 
 bool DrainageNetworkOrdering::IsAllUpstreamIdentified(Pixel node, std::vector<long>& vUpstreamPos)
@@ -928,7 +958,21 @@ QString DrainageNetworkOrdering::CoordinateFormatString(QString crd)
 void DrainageNetworkOrdering::AddDomainItem(long iItem)
 {
 	QString sUniqueID = QString("%1").arg(iItem,0,10);
+	if (isContinue(iItem))
+		m_ids.push_back(iItem);
 	//m_dm->pdsrt()->iAdd(sUniqueID, true);
+}
+
+bool DrainageNetworkOrdering::isContinue(long id)
+{
+	if (m_ids.size() == 0)
+		return true;
+
+	if (id - m_ids[m_ids.size()-1] != 1)
+		return false;
+
+	return true;
+
 }
 
 long DrainageNetworkOrdering::ComputeStrahlerOrder(std::vector<long> vUpstreamLink)
@@ -1058,6 +1102,7 @@ void DrainageNetworkOrdering::CreateTable(long maxStrahler)
 		}
 		newTable->addColumn("StrahlerClass", strahlerDomain, true);
 	}
+
 	_outputTable = newTable;
 }
 
@@ -1073,11 +1118,11 @@ void DrainageNetworkOrdering::FillTableRecords()
 	}
 
 	CreateTable(iMaxOrder);
+
 	_outputTable->addColumn(_outDrainageRaster->primaryKey(), _orderDomain);
-	//_outDrainageRaster->setAttributes(_outputTable);
 
 	Coordinate c1, c2;
-	long index = 0;
+
 	double rUpstreamHeight, rDownstreamHeight;
 
 	quint32 record = 0;
@@ -1100,69 +1145,69 @@ void DrainageNetworkOrdering::FillTableRecords()
 				id = QString::number(totalcount);
 			}
 			*_idrange << id;
+
+			record = record - 1;
+
+			//_outputTable->setCell("StreamID", record, QVariant(record));
+
+			_outputTable->setCell("UpstreamLinkID", record, QVariant(rec.UpstreamLink));
+
+			Pixel pxl = rec.UpstreamCoord;
+			Coordinate c1 = _inRaster->georeference()->pixel2Coord(pxl);
+			QString crd = c1.toString();
+			_outputTable->setCell("UpstreamCoord", record, QVariant(CoordinateFormatString(crd)));
+
+			rUpstreamHeight = *iterDEM(pxl);
+			_outputTable->setCell("UpstreamElevation", record, QVariant(rUpstreamHeight));
+			if (rec.DownstreamLink == 0)
+				rec.DownstreamLink = iUNDEF;
+			_outputTable->setCell("DownstreamLinkID", record, QVariant(rec.DownstreamLink));
+
+			pxl = rec.DownstreamCoord;
+			Coordinate c2 = _inRaster->georeference()->pixel2Coord(pxl);
+			crd = c2.toString();
+			_outputTable->setCell("DownstreamCoord", record, QVariant(CoordinateFormatString(crd)));
+
+			rDownstreamHeight = *iterDEM(pxl);
+			_outputTable->setCell("DownstreamElevation", record, QVariant(rDownstreamHeight));
+
+			double rDrop = rUpstreamHeight - rDownstreamHeight;
+			_outputTable->setCell("ElevationDifference", record, QVariant(rDrop));
+
+			_outputTable->setCell("Strahler", record, QVariant(rec.Strahler));
+
+			_outputTable->setCell("Shreve", record, QVariant(rec.Streve));
+			_outputTable->setCell("Length", record, QVariant(rec.Length));
+			double rStraightLength = rDistance(c1, c2);
+			_outputTable->setCell("StraightLength", record, QVariant(rStraightLength));
+
+			double rSlop = rComputeSlope(rDrop, rec.Length, false);
+			_outputTable->setCell("SlopeAlongDrainagePerc", record, QVariant(rSlop));
+
+			rSlop = rComputeSlope(rDrop, rec.Length, true);
+			_outputTable->setCell("SlopeAlongDrainageDegree", record, QVariant(rSlop));
+
+			rSlop = rComputeSlope(rDrop, rStraightLength, false);
+			_outputTable->setCell("SlopeDrainageStraightPerc", record, QVariant(rSlop));
+
+			rSlop = rComputeSlope(rDrop, rStraightLength, true);
+			_outputTable->setCell("SlopeDrainageStraightDegree", record, QVariant(rSlop));
+
+			double rSinuosity = rComputeSinuosity(rec.Length, rStraightLength);
+			_outputTable->setCell("Sinuosity", record, QVariant(rSinuosity));
+
+			_outputTable->setCell("TotalUpstreamAlongDrainageLength", record, QVariant(rec.TotalUpstreamLength));
+
+			Pixel pxl1 = rec.TostreamCoord;
+			Coordinate c = _inRaster->georeference()->pixel2Coord(pxl1);
+			QString crdc = c.toString();
+
+			_outputTable->setCell("TostreamCoord", record, QVariant(CoordinateFormatString(crdc)));
+
+			_outputTable->setCell("StrahlerClass", record, QVariant(QString("Strahler %1").arg(rec.Strahler)));
+
+			_outputTable->setCell(_outDrainageRaster->primaryKey(), record, QVariant(record));
 		}
-
-		record = record - 1;
-
-		//_outputTable->setCell("StreamID", record, QVariant(record));
-
-		_outputTable->setCell("UpstreamLinkID", record, QVariant(rec.UpstreamLink));
-
-		Pixel pxl = rec.UpstreamCoord;
-		Coordinate c1 = _inRaster->georeference()->pixel2Coord(pxl);
-		QString crd = c1.toString();
-		_outputTable->setCell("UpstreamCoord", record, QVariant(CoordinateFormatString(crd)));
-
-		rUpstreamHeight = *iterDEM(pxl);
-		_outputTable->setCell("UpstreamElevation", record, QVariant(rUpstreamHeight));
-		_outputTable->setCell("DownstreamLinkID", record, QVariant(rec.DownstreamLink));
-
-		pxl = rec.DownstreamCoord;
-		Coordinate c2 = _inRaster->georeference()->pixel2Coord(pxl);
-		crd = c2.toString();
-		_outputTable->setCell("DownstreamCoord", record, QVariant(CoordinateFormatString(crd)));
-
-		rDownstreamHeight = *iterDEM(pxl);
-		_outputTable->setCell("DownstreamElevation", record, QVariant(rDownstreamHeight));
-
-		double rDrop = rUpstreamHeight - rDownstreamHeight;
-		_outputTable->setCell("ElevationDifference", record, QVariant(rDrop));
-
-		_outputTable->setCell("Strahler", record, QVariant(rec.Strahler));
-
-		_outputTable->setCell("Shreve", record, QVariant(rec.Streve));
-		_outputTable->setCell("Length", record, QVariant(rec.Length));
-		double rStraightLength = rDistance(c1, c2);
-		_outputTable->setCell("StraightLength", record, QVariant(rStraightLength));
-
-		double rSlop = rComputeSlope(rDrop, rec.Length, false);
-		_outputTable->setCell("SlopeAlongDrainagePerc", record, QVariant(rSlop));
-
-		rSlop = rComputeSlope(rDrop, rec.Length, true);
-		_outputTable->setCell("SlopeAlongDrainageDegree", record, QVariant(rSlop));
-
-		rSlop = rComputeSlope(rDrop, rStraightLength, false);
-		_outputTable->setCell("SlopeDrainageStraightPerc", record, QVariant(rSlop));
-
-		rSlop = rComputeSlope(rDrop, rStraightLength, true);
-		_outputTable->setCell("SlopeDrainageStraightDegree", record, QVariant(rSlop));
-
-		double rSinuosity = rComputeSinuosity(rec.Length, rStraightLength);
-		_outputTable->setCell("Sinuosity", record, QVariant(rSinuosity));
-
-		_outputTable->setCell("TotalUpstreamAlongDrainageLength", record, QVariant(rec.TotalUpstreamLength));
-
-		Pixel pxl1 = rec.TostreamCoord;
-		Coordinate c = _inRaster->georeference()->pixel2Coord(pxl1);
-		QString crdc = c.toString();
-
-		_outputTable->setCell("TostreamCoord", record, QVariant(CoordinateFormatString(crdc)));
-
-		//_outputTable->setCell("StrahlerClass", record, QVariant(rec.Strahler));
-		_outputTable->setCell("StrahlerClass", record, QVariant(QString("Strahler %1").arg(rec.Strahler)));
-
-		_outputTable->setCell(_outDrainageRaster->primaryKey(), record, QVariant(record));
-		index++;
 	}
 	m_vRecords.resize(0);
 }
