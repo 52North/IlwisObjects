@@ -5,7 +5,7 @@ CONFIG += ordered
 SUBDIRS += \
     core.pro \
     baseoperations.pro \
-    commandlineclient.pro \
+    #commandlineclient.pro \
     featureoperations.pro \
     gdalconnector.pro \
     hydroflow.pro \
