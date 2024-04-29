@@ -60,6 +60,8 @@ public:
     friend class Grid;
     friend class RasterInterpolator;
 
+    enum MergeOptions{moNONE, moVALID, moMEAN, moRASTER1, moRASTER2, moMAX, moMIN};
+
     /*!
      * The constructor for an empty RasterCoverage
      */
@@ -155,6 +157,7 @@ public:
      * \param index The starting point of the copy
      */
     void copyBinary(const IlwisData<RasterCoverage> &raster, quint32 indexIn, quint32 indexOut=0);
+    static void copyBands(const IlwisData<RasterCoverage>& inRaster, const IlwisData<RasterCoverage>& outRaster, quint32 inputIndex, quint32 outputIndex=0, MergeOptions option = moNONE);
 
     /*!
      * transforms a certain coordinate to relevant the value<br>
@@ -205,8 +208,8 @@ public:
 
     PixelIterator band(const QString &variantIndex, const BoundingBox& box=BoundingBox()) ;
     PixelIterator band(double bandIndex, const Ilwis::BoundingBox &box=BoundingBox()) ;
-    bool band(QString bandIndex, PixelIterator inputData);
-    bool band(double bandIndex,  PixelIterator inputIter);
+    bool band(QString bandIndex, PixelIterator inputData, MergeOptions mergeOption = moNONE);
+    bool band(double bandIndex,  PixelIterator inputIter, MergeOptions mergeOption = moNONE);
     void setBandDefinition(QString bandIndex, const DataDefinition& def);
     void setBandDefinition(double bandIndex, const DataDefinition &def);
     RasterStackDefinition& stackDefinitionRef() ;
@@ -251,7 +254,7 @@ private:
     QString _primaryKey = "coverage_key";
     std::map<Raw, int> _recordLookup; // lookup table for converting a raw value to a record in the attribute table
 
-    bool bandPrivate(quint32 bandIndex,  PixelIterator inputIter) ;
+    bool bandPrivate(quint32 bandIndex,  PixelIterator inputIter, MergeOptions mergeOption) ;
     PixelIterator bandPrivate(quint32 index, const Ilwis::BoundingBox &box=BoundingBox());
 	bool loadHistograms(const QString& attribute, int mode, int bins=0);
 	void storeHistograms(const QString& attribute, int mode) ;

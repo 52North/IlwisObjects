@@ -425,6 +425,24 @@ def __getitem__(self, name):
                 arg8 = "'" + arg8 + "'"
             if (type(arg9)==str and len(arg9) > 0):
                 arg9 = "'" + arg9 + "'"
+            if (type(arg1) == list):
+                arg1 = "|".join(map(str,arg1))
+            if (type(arg2) == list):
+                arg2 = "|".join(map(str,arg2))
+            if (type(arg3) == list):
+                arg3 = "|".join(map(str,arg3))      
+            if (type(arg4) == list):
+                arg4 = "|".join(map(str,arg4))  
+            if (type(arg5) == list):
+                arg5 = "|".join(map(str,arg5))
+            if (type(arg6) == list):
+                arg6 = "|".join(map(str,arg6))
+            if (type(arg7) == list):
+                arg7 = "|".join(map(str,arg7)) 
+            if (type(arg8) == list):
+                arg8 = "|".join(map(str,arg8))
+            if (type(arg9) == list):
+                arg9 = "|".join(map(str,arg9)) 
             obj = Engine__do(str(out),str(operation),str(arg1),str(arg2),str(arg3),str(arg4),str(arg5),str(arg6),str(arg7),str(arg8),str(arg9))
         else:
             raise IlwisException("no operation given!")

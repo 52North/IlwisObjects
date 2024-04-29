@@ -81,6 +81,7 @@ inline long min(long a, long b) { return ((a<=b && a!=iUNDEF) || b==iUNDEF) ? a 
 inline long max(long a, long b) { return (a>=b && a!=iUNDEF) ? a : b; }
 inline qint64 max(qint64 a, qint64 b) { return a>=b && a!=i64UNDEF ? a : b;}
 
+
 enum LogicalOperator{loNONE,loAND, loOR, loXOR, loLESS, loLESSEQ, loNEQ, loEQ, loGREATER, loGREATEREQ, loNOT};
 enum BlockPosition{bpTOPLEFT, bpTOPMIDDLE, bpTOPRIGHT, bpMIDDLELEFT, bpCENTER, bpMIDDLERIGHT, bpBOTTOMLEFT, bpBOTTOMMIDDLE, bpBOTTOMRIGHT};
 
@@ -174,6 +175,10 @@ template<typename T> T round(T x, T frac) {
         return x;
     T numvalue = (std::ceil(x / frac)) * frac;
     return numvalue;
+}
+
+namespace Ilwis {
+template<typename T> T mean(T a, T b) { T out = (isNumericalUndef(a) || isNumericalUndef(b)) ? undef<T>() : (a + b)/2; return out;}
 }
 
 #endif // ILWIS_H

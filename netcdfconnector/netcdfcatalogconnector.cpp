@@ -43,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwiscontext.h"
 #include "netcdfcatalogconnector.h"
 #include "mastercatalogcache.h"
-#include <netcdf>
+#include <netcdf.h>
 
 
 using namespace Ilwis;

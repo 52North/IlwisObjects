@@ -66,14 +66,28 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     std::vector<QString> selectionBands = bands(inputRaster);
     initialize(outputRaster->size().linearSize());
 
-    PixelIterator iterOut(outputRaster);
+    auto inputBox = BoundingBox(inputRaster->size());
+    auto outputBox = BoundingBox(outputRaster->size());
+    long oleft = _box.min_corner().x < 0 ? std::abs((long)_box.min_corner().x) : 0;
+    long oright = outputBox.xlength() > oleft + inputBox.xlength() ? oleft + inputBox.xlength() -1: outputBox.max_corner().x;
+    long otop = _box.min_corner().y < 0 ? std::abs((long)_box.min_corner().x) : 0;
+    long obottom = outputBox.ylength() > otop + inputBox.ylength() ? otop + inputBox.ylength()-1 : outputBox.max_corner().y;
+    auto outputBoxIter = BoundingBox(Location<long>(oleft, otop), Location<long>(oright, obottom));
+    PixelIterator iterOut(outputRaster, outputBoxIter);
+
+    long ileft = _box.min_corner().x < 0 ? 0 : _box.min_corner().x;
+    long iright = outputBox.xlength() > ileft + inputBox.xlength() ? inputBox.max_corner().x : ileft + outputBox.xlength() -1 ;
+    long itop = _box.min_corner().y < 0 ? 0 : std::abs((long)_box.min_corner().x) ;
+    long ibottom = outputBox.ylength() > itop + inputBox.ylength() ? inputBox.max_corner().y : itop + outputBox.ylength()-1  ;
+    auto inputBoxIter = BoundingBox(Location<long>(ileft, itop), Location<long>(iright, ibottom));
+
     int count = 0;
     bool numeric = outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN;
     double minv = 1e307, maxv = -1e307;
     quint32 bandIx = 0;
     for(QString band : selectionBands){
         double minBand = 1e307, maxBand = -1e307;
-        PixelIterator iterIn = inputRaster->band(band, _box);
+        PixelIterator iterIn = inputRaster->band(band, inputBoxIter );
         PixelIterator iterEnd = iterIn.end();
         while(iterIn != iterEnd) {
             bool ok = true;

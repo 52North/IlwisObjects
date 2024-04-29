@@ -41,9 +41,9 @@ CalculatorOperation::CalculatorOperation()
 
 CalculatorOperation::CalculatorOperation(quint64 metaid,const Ilwis::OperationExpression &expr) : NumericOperation(metaid, expr)
 {
-    _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},
-                 {"log10",1},{"ln",1},{"exp",1},{"abs",1},{"ceil",1},{"floor",1},{"sq",1},{"sqrt",1},{"max",2},
-                 {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3} };
+    _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},{"tanh",1},{"sinh",1},{"tanh",1},{"cosh",1},{"asinh",1},{"acosh",1},{"atahn",1},
+                 {"log10",1},{"ln",1},{"exp",1},{"abs",1},{"ceil",1},{"int",1},{"round",1}, {"floor",1},{"sq",1},{"sqrt",1},{"max",2},
+                 {"log",2}, {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3} };
     _operators["+"] = { 2, LEFT_ASSOC };
     _operators["-"] = { 2, LEFT_ASSOC };
     _operators["*"] = { 5, LEFT_ASSOC };
@@ -193,14 +193,23 @@ CalculatorOperation::MathAction CalculatorOperation::string2action(const QString
     if ( action == "*") return maMULT;
     if ( action == "iff") return maIFF;
     if ( action == "sin") return maSIN;
+    if ( action == "sinh") return maSINH;
     if ( action == "cos") return maCOS;
+    if ( action == "cosh") return maCOSH;
     if ( action == "tan") return maTAN;
-    if ( action == "asin") return maASIN;
+    if ( action == "tanh") return maTANH;
+    if ( action == "asin") return maASINH;
+    if ( action == "asinh") return maASIN;
     if ( action == "acos") return maACOS;
+    if ( action == "acosh") return maACOSH;
     if ( action == "atan") return maATAN;
+    if ( action == "atanh") return maATANH;
     if ( action == "pow") return maPOW;
     if ( action == "ln") return maLN;
+    if ( action == "log") return maLOG;
     if ( action == "exp") return maEXP;
+    if ( action == "int") return maINT;
+    if ( action == "round") return maINT;
     if ( action == "log10") return maLOG10;
     if ( action == "max") return maMAX;
     if ( action == "min") return maMIN;
@@ -635,16 +644,46 @@ PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) 
                 calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::cos(v);
                 break;
             }
+            case maACOSH:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::acosh(v);
+                break;
+            }
+            case maASINH:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  isNumericalUndef(v) ? PIXVALUEUNDEF : std::asinh(v);
+                break;
+            }
             case maTAN:
             {
                 PIXVALUETYPE v = GetValue(action._values[0],result);
                 calcResult =  (std::abs(v) == M_PI / 2 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::tan(v);
                 break;
             }
+            case maTANH:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::tanh(v);
+                break;
+            }
             case maACOS:
             {
                 PIXVALUETYPE v = GetValue(action._values[0],result);
                 calcResult =  ( v < -1 || v > 1 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::acos(v);
+                break;
+            }
+            case maCOSH:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::cosh(v);
+                break;
+            }
+            case maSINH:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  ( isNumericalUndef(v)) ? PIXVALUEUNDEF : std::sinh(v);
                 break;
             }
             case maASIN:
@@ -659,10 +698,27 @@ PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) 
                 calcResult =  ( v < -M_PI/2 || v > M_PI/2 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::acos(v);
                 break;
             }
+            case maATANH:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::atanh(v);
+                break;
+            }
             case maLOG10:
             {
                 PIXVALUETYPE v = GetValue(action._values[0],result);
                 calcResult =  ( v <= 0 || isNumericalUndef(v)) ? PIXVALUEUNDEF : std::log10(v);
+                break;
+            }
+            case maLOG:
+            {
+                PIXVALUETYPE v1 = GetValue(action._values[0],result);
+                PIXVALUETYPE v2 = GetValue(action._values[1],result);
+                if ( v2 > 0){
+                    v2 = log(v2);
+                    calcResult =  ( v1 <= 0 || isNumericalUndef(v1) || v2 == 0) ? PIXVALUEUNDEF : std::log2(v1) / v2;
+                } else
+                    calcResult = PIXVALUEUNDEF;
                 break;
             }
             case maLN:
@@ -675,6 +731,18 @@ PIXVALUETYPE CalculatorOperation::calc(const std::vector<Action>& localActions) 
             {
                 PIXVALUETYPE v = GetValue(action._values[0],result);
                 calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::exp(v);
+                break;
+            }
+            case maINT:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : (qlonglong)(v);
+                break;
+            }
+            case maROUND:
+            {
+                PIXVALUETYPE v = GetValue(action._values[0],result);
+                calcResult =  (isNumericalUndef(v)) ? PIXVALUEUNDEF : std::round(v);
                 break;
             }
             case maABS:

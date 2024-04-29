@@ -215,6 +215,8 @@ public:
         return this->min_corner().is3D() && this->max_corner().is3D();
     }
 
+
+
     void invalidate() {
         this->min_corner().x = this->min_corner().undefined();
         this->min_corner().y = this->min_corner().undefined();
@@ -256,6 +258,20 @@ public:
             ok &= p.z >= pmin.z && p.z <= pmax.z;
         }
         return ok;
+    }
+
+    Box<PointType> overlap(const Box<PointType>& box1){
+        int overlap_x1 = std::max(box1.min_corner().x, min_corner().x);
+        int overlap_y1 = std::max(box1.min_corner().y, min_corner().y);
+        int overlap_x2 = std::min(box1.max_corner().x, max_corner().x);
+        int overlap_y2 = std::min(box1.max_corner().y, max_corner().y);
+
+        if (overlap_x1 < overlap_x2 && overlap_y1 < overlap_y2) {
+            return Box<PointType>(PointType(overlap_x1, overlap_y1), PointType(overlap_x2, overlap_y2));
+        } else {
+            // No overlap, return an invalid rectangle
+            return Box<PointType>();
+        }
     }
 
     bool intersects(const Box<PointType>& box) const{
@@ -337,6 +353,36 @@ public:
             if ( std::abs( min_corner().z - pmin.z) > delta)
                 return false;
             if ( std::abs( max_corner().z - pmax.z) > delta)
+                return false;
+        }
+        return true;
+    }
+
+    bool equalsP(Box<PointType>& box, double deltaX, double deltaY, double deltaZ=0) const {
+        if ( !box.isValid())
+            return false;
+        if (!isValid())
+            return false;
+        double dz = 0;
+        const PointType& pmin = box.min_corner();
+        const PointType& pmax = box.max_corner();
+        double dx = 2*(center().x - min_corner().x) * deltaX;
+        double dy = 2*(center().y - min_corner().y) * deltaY;
+        if ( is3D() && box.is3D()) {
+            dz = 2*(center().z - min_corner().z) * deltaZ;
+        }
+        if ( std::abs( min_corner().x - pmin.x) > dx)
+            return false;
+        if ( std::abs( min_corner().y - pmin.y) > dy)
+            return false;
+        if ( std::abs( max_corner().x - pmax.x) > dx)
+            return false;
+        if ( std::abs( max_corner().y - pmax.y) > dy)
+            return false;
+        if ( is3D() && box.is3D()) {
+            if ( std::abs( min_corner().z - pmin.z) > dz)
+                return false;
+            if ( std::abs( max_corner().z - pmax.z) > dz)
                 return false;
         }
         return true;

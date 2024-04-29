@@ -598,12 +598,12 @@ PixelIterator RasterCoverage::band(PyObject *pyTrackIndex){
 void RasterCoverage::addBand(PyObject* pyTrackIndex, PixelIterator* pyIter){
     QVariant qIndex = resolveIndex(pyTrackIndex);
     if((QMetaType::Type)qIndex.type() == QMetaType::Double){
-        if (qIndex.toDouble() != rUNDEF)
-            this->_ilwisObject->as<Ilwis::RasterCoverage>()->stackDefinitionRef().insert(qIndex.toDouble());
+        //if (qIndex.toDouble() != rUNDEF)
+        //    this->_ilwisObject->as<Ilwis::RasterCoverage>()->stackDefinitionRef().insert(qIndex.toDouble());
         this->_ilwisObject->as<Ilwis::RasterCoverage>()->band(qIndex.toDouble(), pyIter->ptr());
     } else if((QMetaType::Type)qIndex.type() == QMetaType::QString){
-        if (qIndex.toString() != sUNDEF)
-            this->_ilwisObject->as<Ilwis::RasterCoverage>()->stackDefinitionRef().insert(qIndex.toString());
+        //if (qIndex.toString() != sUNDEF)
+        //   this->_ilwisObject->as<Ilwis::RasterCoverage>()->stackDefinitionRef().insert(qIndex.toString());
         this->_ilwisObject->as<Ilwis::RasterCoverage>()->band(qIndex.toString(), pyIter->ptr());
     } else {
         throw InvalidObject("The index is not included in the definition.");

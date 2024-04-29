@@ -333,7 +333,7 @@ char *Grid::blockAsMemory(quint32 block) {
 }
 
 void Grid::setBandProperties(RasterCoverage *raster, int n){
-    _size.zsize(_size.zsize() + n);
+    _size.zsize(_size.zsize() == iUNDEF ? n : _size.zsize() + n);
     quint32 oldBlocks = (quint32)_blocks.size();
     quint32 newBlocks = numberOfBlocks();
     _blocks.resize(newBlocks);
@@ -350,6 +350,8 @@ void Grid::setBandProperties(RasterCoverage *raster, int n){
         if ( totalLines <= 0) // to next band
             totalLines = _size.ysize();
     }
+    if (_cache.size() == 0)
+        _cache.resize(1);
 }
 
 void Grid::resetBlocksPerBand(quint64 rasterid, quint32 blockCount, int maxlines) {

@@ -40,6 +40,7 @@ class Range: public Object{
     template<typename OutputType, typename RangeType, typename IlwOutput,  typename IlwRange>
     friend class RangeIterator;
     friend class Interval;
+    friend class TimeInterval;
 
 
 
@@ -225,7 +226,7 @@ private:
    // std::shared_ptr<Ilwis::Range> _rangeItem = pythonapi::ItemRange::_range;
 };
 
-class TimeInterval : public NumericRange{
+class TimeInterval : public pythonapi::NumericRange{
 public:
     TimeInterval(IlwisTypes tp = itUNKNOWN);
     TimeInterval(const PyObject *beg, const PyObject *end, std::string step="", IlwisTypes tp = itUNKNOWN);
