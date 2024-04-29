@@ -121,7 +121,7 @@ namespace Ilwis {
 				const std::vector<int>& fSegExist, const std::vector<int>& fBeginSeg,
 				const std::vector<SegBound*>& sbSeg);
 
-			bool RasterToPolygon::fFindBoundaries(const Ilwis::IRasterCoverage& mpAreas);
+			bool fFindBoundaries(const Ilwis::IRasterCoverage& mpAreas);
 
 			bool appendCoords(geos::geom::CoordinateSequence*& coordsA, geos::geom::CoordinateSequence& coordsB, bool fForward) const;
 			void autocorrectCoords(std::vector<geos::geom::CoordinateSequence*>& coords) const;

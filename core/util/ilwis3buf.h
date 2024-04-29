@@ -68,27 +68,27 @@ namespace Ilwis {
 		private:
 			int iExtendLo, iExtendHi;
 		public:
-			int iTotSize() const { return (int)(iSz + iExtLo() + iExtHi()); }
+			int iTotSize() const { return (int)(this->iSz + iExtLo() + iExtHi()); }
 			int iExtLo() const { return iExtendLo; }
 			int iExtHi() const { return iExtendHi; }
-			int iUpper() const { return (int)(iSize() + iExtHi() - 1); }
+			int iUpper() const { return (int)(this->iSize() + iExtHi() - 1); }
 			int iLower() const { return -(int)iExtLo(); }
-			BufExt() : Buf<T>() { iExtendLo = iExtendHi = 0; fExt = true; };
+			BufExt() : Buf<T>() { iExtendLo = iExtendHi = 0; this->fExt = true; };
 			BufExt(int iBufSize, int iExtLo = 0, int iExtHi = 0)
 				: Buf<T>()
 			{
-				Size(iBufSize, iExtLo, iExtHi); fExt = true;
+				Size(iBufSize, iExtLo, iExtHi); this->fExt = true;
 			}
 			BufExt(const BufExt<T>& buf);
 			BufExt<T>& operator = (const BufExt<T>& buf);
 			virtual ~BufExt();
 			void SetPtr()
 			{
-				ptr += iExtLo();
+				this->ptr += iExtLo();
 			}
 			void ResetPtr()
 			{
-				ptr -= iExtLo();
+				this->ptr -= iExtLo();
 			}
 			void Size(int iBufSize, int iExtLo = 0, int iExtHi = 0);
 			friend void Swap(BufExt<T>& buf1, BufExt<T>& buf2)
@@ -160,15 +160,15 @@ namespace Ilwis {
 		{
 			iExtendLo = buf.iExtLo();
 			iExtendHi = buf.iExtHi();
-			iSz = buf.iSize();
-			fExt = true;
-			ptr = new T[(long)buf.iTotSize()];
+			this->iSz = buf.iSize();
+			this->fExt = true;
+			this->ptr = new T[(long)buf.iTotSize()];
 			//if (0 == ptr)
 			//	MemAllocError();
 			SetPtr();
 			//  memcpy(&ptr[iLower()], &(buf.buf()[iLower()]), iTotSize() * sizeof(T));
 			for (int i = iLower(); i <= iUpper(); i++)
-				operator[](i) = buf[i];
+				this->operator[](i) = buf[i];
 		}
 
 		template <class T>
@@ -180,31 +180,31 @@ namespace Ilwis {
 		template <class T>
 		void BufExt<T>::Size(int iBufSize, int iExtLo, int iExtHi)
 		{
-			if (ptr) {
+			if (this->ptr) {
 				ResetPtr();
-				delete[] ptr;
+				delete[] this->ptr;
 			}
-			iSz = iBufSize;
+			this->iSz = iBufSize;
 			iExtendLo = iExtLo; iExtendHi = iExtHi;
-			if (iSz != 0) {
+			if (this->iSz != 0) {
 				long iSz = iTotSize();
-				ptr = new T[iSz];
+				this->ptr = new T[iSz];
 				//if (0 == ptr)
 				//	MemAllocError();
 				SetPtr();
 			}
 			else
-				ptr = 0;
+				this->ptr = 0;
 		}
 
 		template <class T>
 		BufExt<T>& BufExt<T>::operator = (const BufExt<T>& buf)
 		{
-			assert(ptr);
+			assert(this->ptr);
 			int iMax = min(iUpper(), buf.iUpper());
 			int iMin = max(iLower(), buf.iLower());
 			for (int i = iMin; i <= iMax; i++)
-				operator[](i) = buf[i];
+				this->operator[](i) = buf[i];
 			return *this;
 		}
 

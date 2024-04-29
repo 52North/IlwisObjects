@@ -1084,7 +1084,7 @@ bool RasterToPolygon::execute(ExecutionContext* ctx, SymbolTable& symTable) {
 				}
 			}
 			else {
-				outfeature->setCell(0, iRaw);
+				outfeature->setCell(0, (long long) iRaw);
 			}
 		}
 	}

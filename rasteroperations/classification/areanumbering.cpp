@@ -322,7 +322,7 @@ bool AreaNumbering::execute(ExecutionContext *ctx, SymbolTable& symTable)
 	}
 
 	for (i = 0; i < iFinalArn - 1; i++)
-        newTable->setCell(1, i, QVariant(aiNrPix[i]));
+        newTable->setCell(1, i, QVariant((long long) aiNrPix[i]));
 	if (fKnownPixelSize)
 		for (i = 0; i < iFinalArn - 1; i++)
             newTable->setCell(2, i, QVariant(arArea[i]));
