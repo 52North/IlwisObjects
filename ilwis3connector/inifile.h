@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QFileInfo>
 #include <unordered_map>
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 namespace std{
 /* std::hash specialization for QString so it can be used
      * as a key in std::unordered_map */
@@ -32,6 +33,8 @@ template<> struct hash<QString> {
     inline uint operator()(const QString &s) const { return qHash(s); }
 };
 }
+#endif
+
 using namespace std;
 
 namespace Ilwis {
