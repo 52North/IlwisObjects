@@ -689,9 +689,9 @@ bool RasterCoverage::band(double bandIndex,  PixelIterator inputIter, MergeOptio
 {
 	bool isAnonAdd = bandIndex == rUNDEF;
 	bool first = size().zsize() == 1 && !datadefRef().range()->isValid();
-    int existingIdx = _bandDefinition.index(bandIndex);
-    if (bandIndex != rUNDEF &&  existingIdx != iUNDEF && mergeOption == moNONE)
-        return false;
+    //int existingIdx = _bandDefinition.index(bandIndex);
+    //if (bandIndex != rUNDEF &&  existingIdx != iUNDEF && mergeOption == moNONE)
+    //    return false;
 
 
     if ( bandIndex == rUNDEF){
