@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define ILWISTYPES_H
 
 #include "kernel_global.h"
+#include <QVariant>
 
 typedef quint64 IlwisTypes;
 
