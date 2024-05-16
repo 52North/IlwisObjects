@@ -32,14 +32,14 @@ REGISTER_OPERATION(AggregateRasterStatistics)
 double stats_min(std::vector<double>& data) {
 	double result = rUNDEF;
 	for (double v : data) {
-		result = std::min(v, result);
+        result = Ilwis::min(v, result);
 	}
 	return result;
 }
 double stats_max(std::vector<double>& data) {
 	double result = rUNDEF;
 	for (double v : data) {
-		result = std::max(v, result);
+        result = Ilwis::max(v, result);
 	}
 	return result;
 }
