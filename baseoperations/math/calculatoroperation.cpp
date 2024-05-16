@@ -41,7 +41,7 @@ CalculatorOperation::CalculatorOperation()
 
 CalculatorOperation::CalculatorOperation(quint64 metaid,const Ilwis::OperationExpression &expr) : NumericOperation(metaid, expr)
 {
-    _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},{"tanh",1},{"sinh",1},{"tanh",1},{"cosh",1},{"asinh",1},{"acosh",1},{"atahn",1},
+    _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},{"tanh",1},{"sinh",1},{"tanh",1},{"cosh",1},{"asinh",1},{"acosh",1},{"atanh",1},
                  {"log10",1},{"ln",1},{"exp",1},{"abs",1},{"ceil",1},{"int",1},{"round",1}, {"floor",1},{"sq",1},{"sqrt",1},{"max",2},
                  {"log",2}, {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3} };
     _operators["+"] = { 2, LEFT_ASSOC };
