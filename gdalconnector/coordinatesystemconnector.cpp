@@ -184,7 +184,7 @@ bool CoordinateSystemConnector::loadMetaData(IlwisObject *data, const IOOptions 
                 csy->prepare(sproj4);
                 if (csyp->ellipsoid()->wktShort().size() == 0)
                     setEllipsoid(csyp, srshandle);
-                if (!csyp->datum()->isValid())
+                if (!csyp->datum() || !csyp->datum()->isValid())
                     setDatum(csyp, srshandle);
             }else {
                 setEllipsoid(csyp, srshandle);
