@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QUrl>
 #include <QStringList>
 #include <typeinfo>
+#include <QStandardPaths>
 #include <mutex>
 //#include "ilwis.h"
 #include "errorobject.h"
@@ -27,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "ilwisobject.h"
 #include "catalog/resource.h"
 #include "mastercatalog.h"
+
 
 
 namespace Ilwis {
@@ -172,7 +174,8 @@ public:
         QUrl url(QString(INTERNAL_CATALOG + "/%1").arg(name));
         res.name(name);
         res.setUrl(url);
-        res.setUrl(url, true);
+        QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/internalcatalog/" + name;
+        res.setUrl(QUrl::fromLocalFile(path), true);
 		res.createTime(Time::now());
         return prepare(res);
 

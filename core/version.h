@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #define VERSION_H
 
 #include "kernel_global.h"
+#include "ilwistypes.h"
 #include "module.h"
 
 
