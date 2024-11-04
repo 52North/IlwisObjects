@@ -19,28 +19,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 namespace Ilwis {
 
-typedef  std::function<bool(const BoundingBox&, int threadIdx)> BoxedAsyncFunc;
+
 class Parameter;
+
+class KERNELSHARED_EXPORT ProcessingBoundingBoxes{
+public:
+    ProcessingBoundingBoxes(const IRasterCoverage& raster);
+    ProcessingBoundingBoxes() : _maxThreads(1){}
+
+    void sizeBoxesVector(int maxThreads);
+    void addBox(const IIlwisObject& obj, int threadIndex, const BoundingBox& box);
+    void addBoxes(const IIlwisObject& obj, const std::vector<BoundingBox>& boxes);
+    BoundingBox box(const Ilwis::IIlwisObject &obj, int threadIndex=0) const;
+private:
+    // boxes per ilwisid
+    std::map<quint64, std::vector<BoundingBox>> _boxes;
+    int _maxThreads = 1;
+};
+
+typedef  std::function<bool(const ProcessingBoundingBoxes&, int threadIdx)> BoxedAsyncFunc;
 
 class KERNELSHARED_EXPORT OperationHelperRaster
 {
 public:
     OperationHelperRaster();
     static BoundingBox initialize(const IRasterCoverage &inputRaster, IRasterCoverage &outputRaster, quint64 what);
-    static void subdivideTasks(int cores,const IRasterCoverage& raster, std::vector<BoundingBox > &boxes);
+    static void subdivideTasks(int cores, IRasterCoverage& raster, ProcessingBoundingBoxes &pboxes);
     static bool resample(IRasterCoverage& input1, IRasterCoverage& input2, ExecutionContext *ctx);
     static IRasterCoverage resample(const IRasterCoverage& sourceRaster, const IGeoReference& targetGrf);
 	static bool addCsyFromInput(const Coverage* cov, Resource& res);
 	static bool addGrfFromInput(const RasterCoverage* cov, Resource& resource);
 
     template<typename T> static bool execute(ExecutionContext* ctx, T func, const std::vector<IRasterCoverage>& rasters) {
-        std::vector<BoundingBox> boxes;
+        ProcessingBoundingBoxes boxes;
 
 		auto outputRaster = rasters.back(); // last entry is always the output raster and determines the core use.
 		if (!outputRaster.isValid())
 			return false;
 		int cores = 1;
-        ctx->_threaded = false;
+        bool res = true;
 		if (ctx->_threaded) {
 			cores = QThread::idealThreadCount();
 			int prefCount = outputRaster->grid()->blocks() / 2 + 1;
@@ -55,28 +72,22 @@ public:
 					raster->gridRef()->prepare4Operation(cores);
 				}
 			}
+            std::vector<std::future<bool>> futures(cores);
+            for(int i =0; i < cores; ++i) {
+                futures[i] = std::async(std::launch::async, func, boxes,cores > 1 ? i + 1 : 0); // threadindex starts at 1 as the 0 is the default ( no threads). In the grid administration, the cache at index 0 is the standard cache used in the non threading case.
+            }
+
+            for(int i =0; i < cores; ++i) {
+                 res &= futures[i].get();
+             }
+             for (auto raster : rasters)
+                 raster->gridRef()->unprepare4Operation();
 		}
 		else {
-			boxes.push_back(BoundingBox(outputRaster->size()));
+            boxes = ProcessingBoundingBoxes(outputRaster);
+            res = func(boxes,0);
 		}
 
-       // std::vector<std::future<bool>> futures(cores);
-        bool res = true;
-        res = func(boxes[0],0);
-
-        //2022-02-06 : for the moment disabled. for unknown reasons the std::async(std::launch::async, func, boxes[i],cores > 1 ? i + 1 : 0) statement crashes for all operations without every arriving at the function call.
-        // At this moment I can not find any reason for this as nothing has changed in this respect. What the call std::async() is doing is quite complex with regards to moves and copies etc... so I suspect a compiler bug
-        // as I have seen those before with regard to temporary objects being copied/moved but why now? Will investigate later
-
-       // for(int i =0; i < cores; ++i) {
-       //     futures[i] = std::async(std::launch::async, func, boxes[i],cores > 1 ? i + 1 : 0); // threadindex starts at 1 as the 0 is the default ( no threads). In the grid administration, the cache at index 0 is the standard cache used in the non threading case.
-       // }
-
-      //  for(int i =0; i < cores; ++i) {
-       //     res &= futures[i].get();
-      //  }
-		for (auto raster : rasters)
-			raster->gridRef()->unprepare4Operation();
 
         double minv=1e307,maxv = -1e307;
         double minBand = minv, maxBand = maxv;

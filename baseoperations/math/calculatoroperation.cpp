@@ -43,7 +43,7 @@ CalculatorOperation::CalculatorOperation(quint64 metaid,const Ilwis::OperationEx
 {
     _functions ={{"iff",3},{"sin",1},{"cos",1},{"tan",1},{"asin",1},{"acos",1},{"atan",1},{"tanh",1},{"sinh",1},{"tanh",1},{"cosh",1},{"asinh",1},{"acosh",1},{"atanh",1},
                  {"log10",1},{"ln",1},{"exp",1},{"abs",1},{"ceil",1},{"int",1},{"round",1}, {"floor",1},{"sq",1},{"sqrt",1},{"max",2},
-                 {"log",2}, {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3} };
+                 {"log",2}, {"min",2},{"pow",2}, {"not", 1}, {"xor", 2},{"ifundef",3}, {"ifnotundef", 3},{"arcsinh", 1},{"arccosh", 1},{"arctanh", 1} };
     _operators["+"] = { 2, LEFT_ASSOC };
     _operators["-"] = { 2, LEFT_ASSOC };
     _operators["*"] = { 5, LEFT_ASSOC };
@@ -198,12 +198,12 @@ CalculatorOperation::MathAction CalculatorOperation::string2action(const QString
     if ( action == "cosh") return maCOSH;
     if ( action == "tan") return maTAN;
     if ( action == "tanh") return maTANH;
-    if ( action == "asin") return maASINH;
-    if ( action == "asinh") return maASIN;
-    if ( action == "acos") return maACOS;
-    if ( action == "acosh") return maACOSH;
-    if ( action == "atan") return maATAN;
-    if ( action == "atanh") return maATANH;
+    if ( action == "asin" || action == "arcsin") return maASINH;
+    if ( action == "asinh" || action == "arcsinh") return maASIN;
+    if ( action == "acos" || action == "arcscos") return maACOS;
+    if ( action == "acosh" || action == "arcosh") return maACOSH;
+    if ( action == "atan" || action == "arctan") return maATAN;
+    if ( action == "atanh" || action == "arctanh") return maATANH;
     if ( action == "pow") return maPOW;
     if ( action == "ln") return maLN;
     if ( action == "log") return maLOG;

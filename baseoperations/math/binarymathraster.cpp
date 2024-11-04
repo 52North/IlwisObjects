@@ -56,9 +56,9 @@ bool BinaryMathRaster::setOutput(ExecutionContext *ctx, SymbolTable& symTable) {
 bool BinaryMathRaster::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& symTable) {
 
     quint64 currentCount = 0;
-    auto binaryMath = [&](const BoundingBox box, int threadIdx) -> bool {
-        PixelIterator iterIn(_inputGC1, box);
-        PixelIterator iterOut(_outputGC, BoundingBox(box.size()));
+    auto binaryMath = [&](const ProcessingBoundingBoxes box, int threadIdx) -> bool {
+        PixelIterator iterIn(_inputGC1, threadIdx, box);
+        PixelIterator iterOut(_outputGC, threadIdx, box);
 
         std::for_each(iterOut, iterOut.end(), [&](double& v){
 
@@ -80,10 +80,10 @@ bool BinaryMathRaster::executeCoverageNumber(ExecutionContext *ctx, SymbolTable&
 
 bool BinaryMathRaster::executeCoverageCoverage(ExecutionContext *ctx, SymbolTable& symTable) {
     quint64 currentCount = 0;
-    std::function<bool(const BoundingBox, int )> binaryMath = [&](const BoundingBox box, int threadIdx) -> bool {
-        PixelIterator iterIn1(_inputGC1, box);
-        PixelIterator iterIn2(_inputGC2, box);
-        PixelIterator iterOut(_outputGC, box);
+    std::function<bool(const ProcessingBoundingBoxes, int )> binaryMath = [&](const ProcessingBoundingBoxes box, int threadIdx) -> bool {
+        PixelIterator iterIn1(_inputGC1, threadIdx, box);
+        PixelIterator iterIn2(_inputGC2, threadIdx, box);
+        PixelIterator iterOut(_outputGC, threadIdx, box);
        // trq()->prepare(TR("BinaryMathRaster"),"Executes a binary operation on rasters", _inputGC1->size().linearSize());
 
         PixelIterator iterEnd = end(iterOut);

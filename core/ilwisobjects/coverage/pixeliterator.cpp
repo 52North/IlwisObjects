@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include "pixeliterator.h"
 #include "bresenham.h"
 #include "vertexiterator.h"
+#include "operationhelpergrid.h"
 
 using namespace Ilwis;
 
@@ -115,6 +116,18 @@ PixelIterator::PixelIterator(const IRasterCoverage& raster, int threadIdx, const
 	_threadIndex(threadIdx)
 {
 	init();
+}
+
+PixelIterator::PixelIterator(const IRasterCoverage& raster, int threadIdx, const ProcessingBoundingBoxes& boxes, Flow flow)  :
+    _raster(raster),
+    _box(boxes.box(raster, threadIdx)),
+    _localOffset(0),
+    _currentBlock(0),
+    _flow(flow),
+    _isValid(false),
+    _threadIndex(threadIdx)
+{
+    init();
 }
 
 PixelIterator::PixelIterator(const IRasterCoverage &raster, PixelIterator::Flow flow) :

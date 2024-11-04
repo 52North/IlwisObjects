@@ -368,7 +368,8 @@ BoundingBox SelectionBase::boundingBox(const IRasterCoverage& raster) const
         if ( !box.isValid())
             box = raster->size();
         auto &p = box.max_corner();
-        p.z = bands.size() - 1;
+        if ( p.is3D())
+            p.z = bands.size() - 1;
     }
     return box;
 }

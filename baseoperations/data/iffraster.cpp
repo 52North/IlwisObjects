@@ -47,17 +47,17 @@ bool IffRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-    BoxedAsyncFunc iffunc = [&](const BoundingBox& box, int threadIdx) -> bool {
+    BoxedAsyncFunc iffunc = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
 
-        PixelIterator iterOut(_outputGC,box);
-        PixelIterator iterIn(_inputGC,box);
+        PixelIterator iterOut(_outputGC,threadIdx, box);
+        PixelIterator iterIn(_inputGC,threadIdx, box);
         PixelIterator iter1, iter2;
         bool isCoverage1 = _coverages[0].isValid();
         bool isCoverage2 = _coverages[1].isValid();
         if ( isCoverage1)
-            iter1 = PixelIterator(_coverages[0].as<RasterCoverage>(), box);
+            iter1 = PixelIterator(_coverages[0].as<RasterCoverage>(), threadIdx, box);
         if ( isCoverage2)
-            iter2 = PixelIterator(_coverages[1].as<RasterCoverage>(), box);
+            iter2 = PixelIterator(_coverages[1].as<RasterCoverage>(), threadIdx, box);
         PixelIterator iterEnd = iterOut.end();
         while(iterOut != iterEnd) {
             double v1,v2;

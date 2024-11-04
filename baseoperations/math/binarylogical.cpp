@@ -52,9 +52,9 @@ bool BinaryLogical::setOutput(ExecutionContext *ctx, SymbolTable& symTable) {
 
 bool BinaryLogical::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& symTable) {
 
-    auto BinaryLogical = [&](const BoundingBox box, int threadIdx ) -> bool {
-        PixelIterator iterIn(_inputGC1, box);
-        PixelIterator iterOut(_outputGC, BoundingBox(box.size()));
+    auto BinaryLogical = [&](const ProcessingBoundingBoxes& box, int threadIdx ) -> bool {
+        PixelIterator iterIn(_inputGC1, threadIdx, box);
+        PixelIterator iterOut(_outputGC, threadIdx,box);
 
         std::for_each(iterOut, iterOut.end(), [&](double& v){
             double v_in1 = *iterIn;
@@ -71,10 +71,10 @@ bool BinaryLogical::executeCoverageNumber(ExecutionContext *ctx, SymbolTable& sy
 }
 
 bool BinaryLogical::executeCoverageCoverage(ExecutionContext *ctx, SymbolTable& symTable) {
-    std::function<bool(const BoundingBox&, int threadIdx)> binaryLogical = [&](const BoundingBox& box, int threadIdx) -> bool {
-        PixelIterator iterIn1(_inputGC1, box);
-        PixelIterator iterIn2(_inputGC2, box);
-        PixelIterator iterOut(_outputGC, BoundingBox(box.size()));
+    BoxedAsyncFunc binaryLogical = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
+        PixelIterator iterIn1(_inputGC1, threadIdx, box);
+        PixelIterator iterIn2(_inputGC2, threadIdx, box);
+        PixelIterator iterOut(_outputGC, threadIdx, box);
 
         double v_in1 = 0;
         double v_in2 = 0;

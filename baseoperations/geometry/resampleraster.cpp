@@ -39,7 +39,7 @@ ResampleRaster::ResampleRaster()
 
 ResampleRaster::ResampleRaster(quint64 metaid, const Ilwis::OperationExpression &expr) :
     OperationImplementation(metaid, expr),
-    _method(RasterInterpolator::ipBICUBIC)
+    _method(RasterInterpolator::ipNEARESTNEIGHBOUR)
 {
 }
 
@@ -49,9 +49,9 @@ bool ResampleRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-    BoxedAsyncFunc resampleFun = [&](const BoundingBox& box, int threadIdx) -> bool {
-        PixelIterator iterOut(_outputRaster,box);
-        RasterInterpolator interpolator(_inputRaster, _method);
+    BoxedAsyncFunc resampleFun = [&](const ProcessingBoundingBoxes& boxes, int threadIdx) -> bool {
+        PixelIterator iterOut(_outputRaster, threadIdx,boxes);
+        RasterInterpolator interpolator(_inputRaster, _method, threadIdx);
         PixelIterator iterEnd = iterOut.end();
         bool equalCsy = _inputRaster->coordinateSystem()->isEqual(_outputRaster->coordinateSystem().ptr());
         while(iterOut != iterEnd) {
@@ -67,7 +67,7 @@ bool ResampleRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
         return true;
     };
 
-	ctx->_threaded = true;
+    ctx->_threaded = false;
 	bool OK = OperationHelperRaster::execute(ctx, resampleFun, { _inputRaster, _outputRaster });
 
 

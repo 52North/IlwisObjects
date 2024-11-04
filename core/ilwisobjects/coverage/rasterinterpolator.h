@@ -25,7 +25,7 @@ class KERNELSHARED_EXPORT RasterInterpolator
 public:
     enum InterpolationMethod{ipNEARESTNEIGHBOUR, ipBILINEAR, ipBICUBIC};
 
-    RasterInterpolator(const IRasterCoverage& raster, int method) ;
+    RasterInterpolator(const IRasterCoverage& raster, int method ,int threadIdx= 0) ;
     double pix2value(const Pixeld &pix);
     double coord2value(const Coordinate& crd, quint32 z);
 
@@ -43,6 +43,7 @@ private:
     IGeoReference _grf;
     int _method;
     bool _valid;
+    int _threadIndex=0;
 };
 }
 

@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 using namespace Ilwis;
 
-RasterInterpolator::RasterInterpolator(const IRasterCoverage& raster, int method) : _gcoverage(raster), _grid(_gcoverage->grid()),_method(method)  {
+RasterInterpolator::RasterInterpolator(const IRasterCoverage& raster, int method, int threadIdx) : _gcoverage(raster), _grid(_gcoverage->grid()),_method(method), _threadIndex(threadIdx)  {
 
     _grf = _gcoverage->georeference();
     _valid = _grf.isValid() && _grid != 0;
@@ -31,7 +31,7 @@ double RasterInterpolator::pix2value(const Pixeld& pix) {
     switch( _method) {
     case 0: {//nearestneighbour
         Pixel rc = Pixel((int)floor(pix.x), (int)floor(pix.y), pix.z);
-        return _grid->value(rc);
+        return _grid->value(rc, _threadIndex);
     }
     case 1: //bilinear
         return bilinear(pix);
@@ -67,7 +67,8 @@ double RasterInterpolator::bilinear(const Pixeld& pix) {
     _weight[3] = deltaY * deltaX;
     double tot_weight=0.0, totValue=0.0;
     for (int i = 0; i < 4; ++i) {
-        double rVal = _grid->value({_nbcols[i],_nbrows[i], (int)pix.z});
+        Pixel pixIn(_nbcols[i],_nbrows[i], (int)pix.z);
+        double rVal = _grid->value(pixIn, _threadIndex);
         if (rVal != rUNDEF) {
             totValue +=  rVal * _weight[i];
             tot_weight += _weight[i];
@@ -112,7 +113,8 @@ double RasterInterpolator::bicubicResult(long row, long column, long z, const do
   if ( row >= _gcoverage->size().ysize())
        return rUNDEF;
   for( i=0; i<4; ++i){
-      _xvalues[i]= _grid->value({column-1L+i,row, z});
+      Pixel pix(column-1L+i,row, z);
+      _xvalues[i]= _grid->value(pix, _threadIndex);
   }
   if(resolveRealUndefs(_xvalues))
     return bicubicPolynom(_xvalues, deltaCol);

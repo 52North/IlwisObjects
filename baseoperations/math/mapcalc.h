@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 namespace Ilwis {
+class ProcessingBoundingBoxes;
 namespace BaseOperations{
 class MapCalc : public CalculatorOperation
 {
@@ -40,7 +41,7 @@ private:
     DataDefinition datadef(int index);
     bool check(int index) const;
 	std::vector<IIlwisObject> rasters() const;
-	void prepareActions(std::vector<Action>& localActions, std::map<int, PixelIterator>& inputRasters, const BoundingBox& box, int threadIndex) const;
+    void prepareActions(std::vector<Action>& localActions, std::map<int, PixelIterator>& inputRasters, const ProcessingBoundingBoxes& box, int threadIndex) const;
 };
 
 class MapCalc1 : public MapCalc{

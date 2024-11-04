@@ -74,6 +74,7 @@ class KERNELSHARED_EXPORT GridBlock {
 
 public:
     enum Pivot{pLEFTUP, pCENTER};
+    enum EdgeRule{ erCONSTANT, erREPLICATE, erREFLECT, erREFLECTNEXT, erWRAP};
 
     GridBlock();
     GridBlock(BlockIterator *biter);
@@ -89,6 +90,8 @@ public:
     void setValue(double v);
     std::vector<double> toVector(Pivot pivot = pLEFTUP) const;
 	DoubleVector3D to3DVector() const;
+    void edgeRule(const QString& edgeRule);
+
 
 private:
     BlockIterator* _iterator;
@@ -98,12 +101,15 @@ private:
     quint32 _blockXSize;
     quint32 _bandOffset;
     quint64 _XYSize;
+    EdgeRule _edgeRule = erREPLICATE;
+    double _defOutsideValue = 0;
     bool actualPosition(qint32 &x, qint32 &y, qint32 &z) const;
 };
 
 class KERNELSHARED_EXPORT BlockIterator : public PixelIterator {
 public:
     friend class GridBlock;
+
 
     BlockIterator(IRasterCoverage raster, const Size<> &sz, const BoundingBox& box=BoundingBox(), const Size<> &steps=Size<>(), bool acceptOutside=false);
 
@@ -113,6 +119,7 @@ public:
     const GridBlock& operator*() const{
         return _block;
     }
+    void edgeRule(const QString &edgeRule);
     BlockIterator& operator++();
     BlockIterator& operator--();
     BlockIterator end() const ;

@@ -28,6 +28,7 @@ public:
     bool isValid() const;
     virtual double applyTo(const Ilwis::GridBlock &block) = 0;
     virtual QSize size() const = 0;
+    virtual QString edgeRule() const { return "";};
 
 protected:
     bool _valid;
@@ -40,11 +41,13 @@ public:
 
     double applyTo(const Ilwis::GridBlock &block);
     QSize size() const;
+    QString edgeRule() const;
 
 private:
     quint32 _columns;
     quint32 _rows;
     double _gain;
+    QString _edgeRule;
     std::vector<std::vector<double>> _filterdef;
 
     bool definition(const QString& name);

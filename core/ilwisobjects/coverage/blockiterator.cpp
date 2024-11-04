@@ -173,11 +173,44 @@ bool GridBlock::actualPosition(qint32& x, qint32& y, qint32& z) const
 	if (_iterator->_acceptOutside) {
 		if (px < 0 || py < 0 || pz < 0 ||
 			px > _iterator->_endx || py > _iterator->_endy || pz > _iterator->_endz)
-			return false;
+            return false;
 	}
-    x = std::max((qint64)0, std::min(px,_iterator->_endx));
-    y = std::max((qint64)0, std::min(py,_iterator->_endy));
-    z = std::max((qint64)0, std::min(pz,_iterator->_endz));
+    switch(_edgeRule){
+    case erREPLICATE:
+            x = std::max((qint64)0, std::min(px,_iterator->_endx));
+            y = std::max((qint64)0, std::min(py,_iterator->_endy));
+            z = std::max((qint64)0, std::min(pz,_iterator->_endz));
+        break;
+    case erREFLECT:
+        if ( px < 0) px = -(px + 1);
+        if ( py < 0 ) py = -(py + 1);
+        if ( pz < 0 ) pz = -(pz + 1);
+        if ( px > _iterator->_endx) px = _iterator->_endx - (x-1);
+        if ( py > _iterator->_endy) py = _iterator->_endy - (y-1);
+        if ( pz > _iterator->_endz) pz = _iterator->_endz - (z-1);
+        break;
+    case erREFLECTNEXT:
+        if ( px < 0) px = -(px + 2);
+        if ( py < 0 ) py = -(py + 2);
+        if ( pz < 0 ) pz = -(pz + 2);
+        if ( px > _iterator->_endx) px = _iterator->_endx - (x + 2);
+        if ( py > _iterator->_endy) py = _iterator->_endy - (y + 2);
+        if ( pz > _iterator->_endz) pz = _iterator->_endz - (z + 2);
+        break;
+     case erWRAP:
+        if ( px < 0)  px = _iterator->_endx - x;
+        if ( py < 0 ) py = _iterator->_endy - y;
+        if ( pz < 0 ) pz = _iterator->_endz - z;
+        if ( px > x)  px = -px;
+        if ( py > _iterator->_endy) py = -py;
+        if ( pz > _iterator->_endz) pz = -pz;
+
+   }
+   x = px;
+   y = py;
+   z = pz;
+
+
 
 	return true;
 }
@@ -257,6 +290,24 @@ DoubleVector3D GridBlock::to3DVector() const {
 	return v;
 }
 
+void GridBlock::edgeRule(const QString& edgeRule){
+   bool ok;
+   double d = edgeRule.toDouble(&ok);
+   if (ok){
+       _edgeRule = erCONSTANT;
+       _defOutsideValue = d;
+   }else if ( edgeRule == "replicate"){
+       _edgeRule = erREPLICATE;
+   } else if (edgeRule == "reflect"){
+       _edgeRule = erREFLECT;
+   } else if ( edgeRule == "reflectnext"){
+       _edgeRule = erREFLECTNEXT;
+   } else if (edgeRule == "wrap"){
+       _edgeRule = erWRAP;
+   }else
+        _edgeRule = erREPLICATE;
+}
+
 //----------------------------------------------------------------------------------------------
 BlockIterator::BlockIterator(IRasterCoverage raster, const Size<> &sz, const BoundingBox &box, const Size<>& stepsize, bool acceptOutside ) :
     PixelIterator(raster,box),
@@ -271,6 +322,7 @@ BlockIterator::BlockIterator(IRasterCoverage raster, const Size<> &sz, const Bou
 BlockIterator::BlockIterator(quint64 endpos) : PixelIterator(endpos)
 {
 }
+
 
 BlockIterator& BlockIterator::operator ++()
 {
@@ -328,6 +380,10 @@ BlockIterator& BlockIterator::operator=(const Pixel &pix) {
 	PixelIterator::operator=(pix);
 
 	return *this;
+}
+
+void BlockIterator::edgeRule(const QString& edgeRule){
+    _block.edgeRule(edgeRule);
 }
 
 

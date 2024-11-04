@@ -45,10 +45,10 @@ MapCalc::MapCalc(quint64 metaid,const Ilwis::OperationExpression &expr) : Calcul
 
 }
 
-void MapCalc::prepareActions(std::vector<Action>& localActions, std::map<int, PixelIterator>& inputRasters, const BoundingBox& box, int threadIndex)  const {
+void MapCalc::prepareActions(std::vector<Action>& localActions, std::map<int, PixelIterator>& inputRasters, const ProcessingBoundingBoxes& boxes, int threadIndex)  const {
 	for (auto& piter : inputRasters) {
 		piter.second.threadIndex(threadIndex);
-		piter.second.box(box);
+        piter.second.box(boxes.box(piter.second.raster(), threadIndex));
 	}
 	// as for multithreaded use the pixel iterators are different per thread we must create local copies of the actions and ensure that the "local" pixeliterator point to the correct values
 	for (auto& action : localActions) {
@@ -70,14 +70,14 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
         if((_prepState = prepare(ctx, symTable)) != sPREPARED)
             return false;
 
-	 BoxedAsyncFunc calcFun = [&](const BoundingBox& box, int threadIndex) -> bool {
+     BoxedAsyncFunc calcFun = [&](const ProcessingBoundingBoxes& box, int threadIndex) -> bool {
 		 PixelIterator iterOut(_outputRaster, threadIndex, box);
 
 		 std::vector<Action> localActions = _actions;
 		 std::map<int, PixelIterator> inputRasters = _inputRasters;
 
 		 // as for multithreaded use the pixel iterators are different per thread we must create local copies of the actions end ensure that the "local" pixeliterator point to the correct values
-		 prepareActions(localActions, inputRasters, box, threadIndex);
+         prepareActions(localActions, inputRasters, box, threadIndex);
 
 
 		 PixelIterator iterEnd = end(iterOut);
@@ -103,6 +103,7 @@ bool MapCalc::execute(ExecutionContext *ctx, SymbolTable& symTable)
 	 }
 	 allRasters.push_back(_outputRaster);
 
+     ctx->_threaded = false;
 	 OperationHelperRaster::execute(ctx, calcFun, allRasters);
 
 	if (_outputRaster->datadef().domain()->ilwisType() == itNUMERICDOMAIN) {

@@ -49,9 +49,9 @@ bool UnaryMathRasterAndNumber::execute(ExecutionContext *ctx, SymbolTable& symTa
             return false;
 
     if ( _case == otSPATIAL) {
-        BoxedAsyncFunc unaryFun = [&](const BoundingBox& box, int threadIdx) -> bool {
-            PixelIterator iterIn(_inputGC, _box);
-            PixelIterator iterOut(_outputGC, BoundingBox(_box.size()));
+        BoxedAsyncFunc unaryFun = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
+            PixelIterator iterIn(_inputGC, threadIdx, _box);
+            PixelIterator iterOut(_outputGC, threadIdx, _box);
 
             double v_in = 0;
             std::for_each(iterOut, iterOut.end(), [&](double& v){

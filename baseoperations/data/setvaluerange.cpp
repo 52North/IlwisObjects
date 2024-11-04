@@ -54,9 +54,9 @@ bool SetValueRange::execute(ExecutionContext *ctx, SymbolTable &symTable)
     datadef.range(rng);
 
 
-    std::function<bool(const BoundingBox&, int)> SetValrange = [&](const BoundingBox& box, int threadIdx) -> bool {
-        PixelIterator iter(_raster, box);
-        PixelIterator iterOut(_outputRaster, box);
+    std::function<bool(const ProcessingBoundingBoxes&, int)> SetValrange = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
+        PixelIterator iter(_raster, threadIdx, box);
+        PixelIterator iterOut(_outputRaster, threadIdx, box);
         auto end =  iter.end();
         while(iter != end){
             double val = *iter;

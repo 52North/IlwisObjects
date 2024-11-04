@@ -74,17 +74,24 @@ bool LinearGridFilter::makeCustomFilter(const QString& definition){
             _gain = parts[1].toDouble() ;
         }
     }else {
-        if ( parts.size() == 3 || parts.size() == 4){
+        if ( parts.size() == 3 || parts.size() == 4 || parts.size() == 5){
             int xsize = parts[0].toInt();
             int ysize = parts[1].toInt();
             QStringList numbers = parts[2].split(" ");
             fillDef(xsize, ysize, numbers);
         }
-        if (parts.size() == 4){
+        if (parts.size() >= 4){
             _gain = parts[3].toDouble() ;
+        }
+        if (parts.size() == 5){
+            _edgeRule = parts[4].toLower();
         }
     }
     return true;
+}
+
+QString LinearGridFilter::edgeRule() const{
+    return _edgeRule;
 }
 
 bool LinearGridFilter::definition(const QString &name)

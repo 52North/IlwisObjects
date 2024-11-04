@@ -42,7 +42,7 @@ Size<> GridBlockInternal::size() const
 GridBlockInternal *GridBlockInternal::clone(Grid *newParentGrid)
 {
 
-    GridBlockInternal *block = new GridBlockInternal(newParentGrid, blockNr(), _size.xsize(), _size.ysize());
+    GridBlockInternal *block = new GridBlockInternal(newParentGrid, blockNr(), _size.ysize(), _size.xsize());
     block->init();
     std::copy(_data.begin(), _data.end(), block->_data.begin());
     block->_inMemory = true;
@@ -371,7 +371,7 @@ bool Grid::prepare(quint64 rasterid, const Size<> &sz) {
     if ( _size.isNull()|| !_size.isValid() || _maxLines == 0)
         return false;
 
-    if ( _size.zsize() == 0)
+    if ( _size.zsize() == 0 || _size.zsize() == iUNDEF)
         _size.zsize(1);
 
     _rasterid = rasterid;
@@ -546,9 +546,9 @@ void Grid::prepare4Operation(int nThreads) {
     for(int t = 0; t < nThreads; ++t){
         createCacheFile(t);
     }
-    for (int idx = 1; idx < _cache.size(); ++idx) {
-        int threadIdx = _cache[0]._cacheBlocks[idx]._blocknr / _blocksPerBand + 1;
-        _cache[threadIdx]._cacheBlocks.push_back({ _cache[0]._cacheBlocks[idx]._grid, _cache[0]._cacheBlocks[idx]._blocknr });
+    for (std::size_t idx = 1; idx < _cache[0]._cacheBlocks.size(); ++idx) {
+            int threadIdx = (int)((nThreads * (double)(_cache[0]._cacheBlocks[idx]._blocknr) / _blocksPerBand) + 1);
+           _cache[threadIdx]._cacheBlocks.push_back({ _cache[0]._cacheBlocks[idx]._grid, _cache[0]._cacheBlocks[idx]._blocknr });
 	}
 	_maxCacheBlocks = std::max(1, 1 + (int)_maxCacheBlocks / nThreads);
 }

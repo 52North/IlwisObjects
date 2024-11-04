@@ -73,7 +73,7 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     long otop = _box.min_corner().y < 0 ? std::abs((long)_box.min_corner().x) : 0;
     long obottom = outputBox.ylength() > otop + inputBox.ylength() ? otop + inputBox.ylength()-1 : outputBox.max_corner().y;
     auto outputBoxIter = BoundingBox(Location<long>(oleft, otop), Location<long>(oright, obottom));
-    PixelIterator iterOut(outputRaster, outputBoxIter);
+    //PixelIterator iterOut(outputRaster, outputBoxIter);
 
     long ileft = _box.min_corner().x < 0 ? 0 : _box.min_corner().x;
     long iright = outputBox.xlength() > ileft + inputBox.xlength() ? inputBox.max_corner().x : ileft + outputBox.xlength() -1 ;
@@ -88,6 +88,7 @@ bool SelectionRaster::execute(ExecutionContext *ctx, SymbolTable& symTable)
     for(QString band : selectionBands){
         double minBand = 1e307, maxBand = -1e307;
         PixelIterator iterIn = inputRaster->band(band, inputBoxIter );
+        PixelIterator iterOut = outputRaster->band(band, outputBoxIter );
         PixelIterator iterEnd = iterIn.end();
         while(iterIn != iterEnd) {
             bool ok = true;

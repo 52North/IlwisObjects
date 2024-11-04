@@ -28,6 +28,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 #include <QThread>
 using namespace Ilwis;
 
+ProcessingBoundingBoxes::ProcessingBoundingBoxes(const IRasterCoverage& raster){
+    _maxThreads = 1;
+    _boxes[raster->id()].push_back(BoundingBox(raster->size()));
+}
+void ProcessingBoundingBoxes::sizeBoxesVector(int maxThreads){
+    _maxThreads = maxThreads;
+    for(auto& v : _boxes){
+        v.second.resize(_maxThreads);
+    }
+}
+
+void ProcessingBoundingBoxes::addBoxes(const IIlwisObject &obj, const std::vector<BoundingBox>& boxes){
+    if ( boxes.size() >= _maxThreads)
+        return;
+    _boxes[obj->id()] = boxes;
+}
+
+void ProcessingBoundingBoxes::addBox(const IIlwisObject &obj, int threadIndex, const BoundingBox& box){
+    if ( _boxes[obj->id()].size() == 0)
+        _boxes[obj->id()].resize(_maxThreads);
+    if ( threadIndex < _maxThreads)
+        _boxes[obj->id()][threadIndex] = box;
+}
+BoundingBox ProcessingBoundingBoxes::box(const IIlwisObject &obj, int threadIndex) const{
+    if ( threadIndex >= _maxThreads)
+        return BoundingBox();
+    if ( threadIndex == 0) // non threaded;
+        return ((*_boxes.begin()).second)[0]; // first thread, first box
+    auto iter = _boxes.find(obj->id());
+    if ( iter != _boxes.end())
+        return ((*iter).second)[threadIndex];
+    return BoundingBox();
+}
+
+
 OperationHelperRaster::OperationHelperRaster()
 {
 }
@@ -168,7 +203,7 @@ bool OperationHelperRaster::addGrfFromInput(const RasterCoverage* raster, Resour
 	return false;
 }
 
-void OperationHelperRaster::subdivideTasks(int cores,const IRasterCoverage& raster, std::vector<BoundingBox > &boxes)
+void OperationHelperRaster::subdivideTasks(int cores, IRasterCoverage &raster, ProcessingBoundingBoxes &pboxes)
 {
     if ( !raster.isValid() || raster->size().isNull() || raster->size().ysize() == 0) {
         ERROR1(ERR_NO_INITIALIZED_1, "Grid size");
@@ -178,12 +213,11 @@ void OperationHelperRaster::subdivideTasks(int cores,const IRasterCoverage& rast
 	int nBlocks = raster->gridRef()->blocksPerBand();
     int blockYSize = std::min(raster->gridRef()->maxLines(), (int)raster->size().ysize()-1);
 	double f = (double)nBlocks / cores;
-	int coreBlocks = std::ceil(f);
+    int coreBlocks = std::floor(f);
 	if (coreBlocks == 0)
 		cores = 1;
 
-	boxes.clear();
-	boxes.resize(cores);
+    std::vector<BoundingBox> boxes(cores);
 
 	int lastY = 0;
 	for (int i = 0; i < cores - 1; ++i) {
@@ -191,6 +225,7 @@ void OperationHelperRaster::subdivideTasks(int cores,const IRasterCoverage& rast
 		lastY += blockYSize * coreBlocks;
 	}
 	boxes[cores - 1] = BoundingBox(Pixel(0, lastY ), Pixel( raster->size().xsize()-1, raster->size().ysize() - 1 ) );
+    pboxes.addBoxes(raster, boxes);
 
 }
 

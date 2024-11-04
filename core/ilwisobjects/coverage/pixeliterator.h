@@ -28,9 +28,9 @@ class Geometery;
 namespace Ilwis {
 
 typedef std::unique_ptr<geos::geom::Geometry> UPGeometry;
+class ProcessingBoundingBoxes;
 
 class Tranquilizer;
-
 typedef std::shared_ptr<Tranquilizer> SPTranquilizer;
 
 /*!
@@ -129,6 +129,7 @@ public:
      */
     PixelIterator(const IRasterCoverage& raster, const BoundingBox& box=BoundingBox(), Flow flow=fXYZ);
 	PixelIterator(const IRasterCoverage& raster, int threadIdx, const BoundingBox& box = BoundingBox(), Flow flow = fXYZ);
+    PixelIterator(const IRasterCoverage& raster, int threadIdx, const ProcessingBoundingBoxes& boxes, Flow flow = fXYZ);
     PixelIterator(const IRasterCoverage& raster, Flow flow);
 	
     /*!

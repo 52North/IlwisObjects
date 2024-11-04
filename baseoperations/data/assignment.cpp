@@ -64,10 +64,10 @@ bool Assignment::assignTable(ExecutionContext *ctx) {
 
 bool Assignment::assignRasterCoverage(ExecutionContext *ctx) {
     IRasterCoverage outputRaster = _outputObj.as<RasterCoverage>();
-    std::function<bool(const BoundingBox, int threadIdx)> Assign = [&](const BoundingBox box, int threadIdx) -> bool {
+    std::function<bool(const ProcessingBoundingBoxes& box, int threadIdx)> Assign = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
         IRasterCoverage inputRaster = _inputObj.as<RasterCoverage>();
-        PixelIterator iterIn(inputRaster, box);
-        PixelIterator iterOut(outputRaster, box);
+        PixelIterator iterIn(inputRaster, threadIdx, box);
+        PixelIterator iterOut(outputRaster, threadIdx, box);
 
         double v_in = 0;
         //TODO: in principle the stl::copy should work but as yet there is no overload yet(20130621) for
