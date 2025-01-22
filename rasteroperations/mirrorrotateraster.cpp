@@ -115,7 +115,7 @@ bool MirrorRotateRaster::execute(ExecutionContext *ctx, SymbolTable &symTable)
     PixelIterator itertt = PixelIterator(_inputRaster);
 
 
-    std::function<bool(const BoundingBox,int)> Transform = [&](const BoundingBox box, int threadIdx) -> bool {
+    BoxedAsyncFunc Transform = [&](const ProcessingBoundingBoxes box, int threadIdx) -> bool {
         if ( _method == tmMirrorVertical){
             translatepixels(PixelIterator(_inputRaster),PixelIterator(_outputRaster), _outputRaster->size().xsize(),  0,1);
         }

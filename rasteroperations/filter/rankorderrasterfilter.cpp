@@ -48,9 +48,9 @@ bool RankOrderRasterFilter::execute(ExecutionContext *ctx, SymbolTable &symTable
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-   BoxedAsyncFunc filterFun = [&](const BoundingBox& box, int threadIdx) -> bool {
-        PixelIterator iterOut(_outputRaster, box);
-        BlockIterator blockIter(_inputRaster,_filter->size(), box, Size<>(1,1,1));
+   BoxedAsyncFunc filterFun = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
+        PixelIterator iterOut(_outputRaster, threadIdx, box);
+        BlockIterator blockIter(_inputRaster,_filter->size(), box.box(_inputRaster, threadIdx), Size<>(1,1,1));
         PixelIterator iterEnd = iterOut.end();
         while(iterOut != iterEnd) {
             *iterOut = _filter->applyTo(*blockIter);

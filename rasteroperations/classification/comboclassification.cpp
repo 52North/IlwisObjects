@@ -68,10 +68,10 @@ bool ComboClassification::execute(ExecutionContext *ctx,SymbolTable& symTable){
     }
 
     quint64 currentCount = 0;
-    std::function<bool(const BoundingBox, int)> binaryMath = [&](const BoundingBox box, int threadIdx) -> bool {
-        PixelIterator iterInX(_inputRasterX, box);
-        PixelIterator iterInY(_inputRasterY, box);
-        PixelIterator iterOut(_outputRaster, box);
+    BoxedAsyncFunc binaryMath = [&](const ProcessingBoundingBoxes box, int threadIdx) -> bool {
+        PixelIterator iterInX(_inputRasterX, threadIdx, box);
+        PixelIterator iterInY(_inputRasterY, threadIdx, box);
+        PixelIterator iterOut(_outputRaster, threadIdx, box);
 
         std::vector<int> raw2indexX = raw2index(CombinationMatrix::aXAXIS);
         std::vector<int> raw2indexY = raw2index(CombinationMatrix::aYAXIS);

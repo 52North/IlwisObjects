@@ -48,10 +48,10 @@ bool RasterSlicing::execute(ExecutionContext *ctx, SymbolTable &symTable)
         if((_prepState = prepare(ctx,symTable)) != sPREPARED)
             return false;
 
-    BoxedAsyncFunc sliceFun = [&](const BoundingBox& box, int threadIdx) -> bool {
-        PixelIterator iterOut(_outputRaster, box);
+    BoxedAsyncFunc sliceFun = [&](const ProcessingBoundingBoxes& box, int threadIdx) -> bool {
+        PixelIterator iterOut(_outputRaster, threadIdx, box);
         PixelIterator iterEnd = iterOut.end();
-        PixelIterator iterIn(_inputRaster, box);
+        PixelIterator iterIn(_inputRaster, threadIdx, box);
         qint32 lastIndex = -1;
         double lastMin, lastMax;
         ITable attTable = _outputRaster->attributeTable();
