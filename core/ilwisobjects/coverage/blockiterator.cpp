@@ -177,9 +177,9 @@ bool GridBlock::actualPosition(qint32& x, qint32& y, qint32& z) const
 	}
     switch(_edgeRule){
     case erREPLICATE:
-            x = std::max((qint64)0, std::min(px,_iterator->_endx));
-            y = std::max((qint64)0, std::min(py,_iterator->_endy));
-            z = std::max((qint64)0, std::min(pz,_iterator->_endz));
+        px = std::max((qint64)0, std::min(px,_iterator->_endx));
+        py = std::max((qint64)0, std::min(py,_iterator->_endy));
+        pz = std::max((qint64)0, std::min(pz,_iterator->_endz));
         break;
     case erREFLECT:
         if ( px < 0) px = -(px + 1);
@@ -204,15 +204,14 @@ bool GridBlock::actualPosition(qint32& x, qint32& y, qint32& z) const
         if ( px > x)  px = -px;
         if ( py > _iterator->_endy) py = -py;
         if ( pz > _iterator->_endz) pz = -pz;
-
+        break;
+     default:
+        break;
    }
    x = px;
    y = py;
    z = pz;
-
-
-
-	return true;
+   return true;
 }
 
 Size<> GridBlock::size() const
