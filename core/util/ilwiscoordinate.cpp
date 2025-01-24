@@ -50,7 +50,7 @@ Ilwis::Coordinate::Coordinate(const QString& scrd)  {
 	if (parts.size() >= 2 && parts.size() < 4) {
 		bool ok1, ok2;
 		x = parts[0].toDouble(&ok1);
-		y = parts[0].toDouble(&ok2);
+		y = parts[1].toDouble(&ok2);
 		if (!ok1 || !ok2) {
 			*this = Coordinate();
 			return;
