@@ -134,6 +134,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hydroflow", "hydroflow.vcxp
 		{8676F964-09A2-3019-9D14-5CFA2C3BCDDB} = {8676F964-09A2-3019-9D14-5CFA2C3BCDDB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pythonapi312", "pythonapi312.vcxproj", "{7AB33EBC-0992-400B-A8CD-B3F60F80648F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648E} = {7AB33EBC-0992-400B-A8CD-B3F60F80648E}
+		{D3E35BD0-24B8-33B1-84F8-218783A77FAC} = {D3E35BD0-24B8-33B1-84F8-218783A77FAC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -232,6 +238,10 @@ Global
 		{AA766689-9258-41DB-BFE4-43060F1A5F17}.Debug|x64.Build.0 = Debug|x64
 		{AA766689-9258-41DB-BFE4-43060F1A5F17}.Release|x64.ActiveCfg = Release|x64
 		{AA766689-9258-41DB-BFE4-43060F1A5F17}.Release|x64.Build.0 = Release|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648F}.Debug|x64.ActiveCfg = Debug|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648F}.Debug|x64.Build.0 = Debug|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648F}.Release|x64.ActiveCfg = Release|x64
+		{7AB33EBC-0992-400B-A8CD-B3F60F80648F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
