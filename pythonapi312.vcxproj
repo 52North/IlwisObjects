@@ -131,7 +131,7 @@ echo path = os.path.dirname(__file__) + '\\ilwisobjects' + "/" &gt;&gt; ..\temp\
 echo os.environ["PATH"] = path + os.pathsep + os.environ["PATH"] &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi312\temp.py
 echo os.add_dll_directory(path) &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi312\temp.py
 echo sys.path.append(path) &gt;&gt;..\temp\GeneratedFiles\Release\pythonapi312\temp.py
-type $(MSBuildProjectDirectory)\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi312\temp.py
+call $(PYTHONROOT312)\python.exe pythonapi\patch_swig_312.py $(MSBuildProjectDirectory)\pythonapi\ilwisobjects.py &gt;&gt; ..\temp\GeneratedFiles\Release\pythonapi312\temp.py
 copy ..\temp\GeneratedFiles\Release\pythonapi312\temp.py ..\output\release\ilwispy312\ilwis\__init__.py /y
 cd pythonapi
 call create_whl.bat $(PYTHONROOT312) ilwispy312 python_whl312
