@@ -1,8 +1,6 @@
 name: Build ilwispy
 
 on:
-  push:
-    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
@@ -24,6 +22,10 @@ jobs:
            sudo apt-get install libeigen3-dev
            sudo apt-get install libnetcdf-c++4-dev
            sudo apt-get install swig3.0
+    - name: patch
+      run: |
+           sed -i 's/PYMINORVERSION=8/PYMINORVERSION=10/g' pythonapi.pro
+           ln -s /usr/include/quazip5/ ilwis4connector/quazip
     - name: configure
       run: |
            qmake -o Makefile.core core.pro
