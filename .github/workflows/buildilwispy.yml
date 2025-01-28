@@ -1,0 +1,46 @@
+name: Build ilwispy
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: install dependencies
+      run: |
+           sudo apt-get install build-essential
+           sudo apt-get install qt5-qmake
+           sudo apt-get install qtbase5-dev
+           sudo apt-get install python3-dev
+           sudo apt-get install libquazip5-dev
+           sudo apt-get install libgdal-dev
+           sudo apt-get install libgsl-dev
+           sudo apt-get install libeigen3-dev
+           sudo apt-get install libnetcdf-c++4-dev
+           sudo apt-get install swig3.0
+    - name: configure
+      run: |
+           qmake -o Makefile.core core.pro
+           qmake -o Makefile.baseoperations baseoperations.pro
+           qmake -o Makefile.featureoperations featureoperations.pro
+           qmake -o Makefile.gdalconnector gdalconnector.pro
+           qmake -o Makefile.hydroflow hydroflow.pro
+           qmake -o Makefile.ilwis3connector ilwis3connector.pro
+           qmake -o Makefile.ilwis4connector ilwis4connector.pro
+           qmake -o Makefile.ilwisscript ilwisscript.pro
+           qmake -o Makefile.internalconnector internalconnector.pro
+           qmake -o Makefile.netcdfconnector netcdfconnector.pro
+           qmake -o Makefile.opencv opencv.pro
+           qmake -o Makefile.projectionimplproj4 projectionimplproj4.pro
+           qmake -o Makefile.pythonapi pythonapi.pro
+           qmake -o Makefile.rasteroperations rasteroperations.pro
+           qmake -o Makefile.streamconnector streamconnector.pro
+           qmake -o Makefile ilwisobjects.pro
+    - name: make
+      run: make -f Makefile
