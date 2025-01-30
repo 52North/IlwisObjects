@@ -257,5 +257,8 @@
     <None Include="pythonapi\create_whl.bat">
       <Filter>Other Files</Filter>
     </None>
+    <None Include="pythonapi\patch_swig_312.py">
+      <Filter>Other Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

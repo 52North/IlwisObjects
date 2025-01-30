@@ -344,6 +344,7 @@ if errorlevel 1 goto VCEnd
     <None Include="pythonapi\ilwisobjects.i" />
     <None Include="pythonapi\ilwisobjects.py" />
     <None Include="pythonapi\installerPy.nsi" />
+    <None Include="pythonapi\patch_swig_312.py" />
     <None Include="pythonapi\paths.py" />
     <None Include="pythonapi\README" />
     <None Include="pythonapi\setup.py" />
