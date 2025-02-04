@@ -13,11 +13,15 @@ jobs:
       run: |
            c:
            cd \
-           mkdir Python
-           choco install -y python38 --params "/InstallDir:C:\Python\Python38" --force --apply-package-parameters-to-dependencies
-           choco install -y python39 --params "/InstallDir:C:\Python\Python39" --force --apply-package-parameters-to-dependencies
+           rem mkdir Python
+           rem choco install -y python38 --params "/InstallDir:C:\Python\Python38" --force --apply-package-parameters-to-dependencies
+           rem choco install -y python39 --params "/InstallDir:C:\Python\Python39" --force --apply-package-parameters-to-dependencies
            choco install -y python38 --params "/InstallDir:C:\Python38" --force --apply-package-parameters-to-dependencies
            choco install -y python39 --params "/InstallDir:C:\Python39" --force --apply-package-parameters-to-dependencies
            dir c:\
-           dir c:\Python\python39
-           dir c:\Python\python38
+           dir c:\python39
+           dir c:\python38
+           c:\python38\python.exe -m pip install --upgrade pip
+           c:\python38\python.exe -m pip install wheel
+           c:\python39\python.exe -m pip install --upgrade pip
+           c:\python39\python.exe -m pip install wheel
