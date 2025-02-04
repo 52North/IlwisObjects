@@ -11,8 +11,13 @@ jobs:
     steps:
     - name: install tools
       run: |
-           choco install -y python38 --params "/InstallDir:C:\Python39" --force --apply-package-parameters-to-dependencies
+           c:
+           cd \
+           mkdir Python
+           choco install -y python38 --params "/InstallDir:C:\Python\Python38" --force --apply-package-parameters-to-dependencies
+           choco install -y python39 --params "/InstallDir:C:\Python\Python39" --force --apply-package-parameters-to-dependencies
+           choco install -y python38 --params "/InstallDir:C:\Python38" --force --apply-package-parameters-to-dependencies
            choco install -y python39 --params "/InstallDir:C:\Python39" --force --apply-package-parameters-to-dependencies
            dir c:\
-           dir c:\python39
-           dir c:\python38
+           dir c:\Python\python39
+           dir c:\Python\python38
