@@ -13,8 +13,8 @@ jobs:
       run: |
            c:
            cd \
-           choco install -y python38 --params "/InstallDir:C:\Python38" --force --apply-package-parameters-to-dependencies
-           choco install -y python39 --params "/InstallDir:C:\Python39" --force --apply-package-parameters-to-dependencies
+           choco install -y python38 --params "/InstallDir:C:\Python38" --force --apply-package-parameters-to-dependencies --install-args "TargetDir=C:\Python38"
+           choco install -y python39 --params "/InstallDir:C:\Python39" --force --apply-package-parameters-to-dependencies --install-args "TargetDir=C:\Python39"
            dir c:\
            dir c:\python39
            dir c:\python38
