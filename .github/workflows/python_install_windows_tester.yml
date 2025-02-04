@@ -11,5 +11,8 @@ jobs:
     steps:
     - name: install tools
       run: |
+           choco install -y python38 --params "/InstallDir:C:\Python39" --force
            choco install -y python39 --params "/InstallDir:C:\Python39" --force
            dir c:\
+           dir c:\python38
+           dir c:\python39
