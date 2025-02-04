@@ -13,9 +13,6 @@ jobs:
       run: |
            c:
            cd \
-           rem mkdir Python
-           rem choco install -y python38 --params "/InstallDir:C:\Python\Python38" --force --apply-package-parameters-to-dependencies
-           rem choco install -y python39 --params "/InstallDir:C:\Python\Python39" --force --apply-package-parameters-to-dependencies
            choco install -y python38 --params "/InstallDir:C:\Python38" --force --apply-package-parameters-to-dependencies
            choco install -y python39 --params "/InstallDir:C:\Python39" --force --apply-package-parameters-to-dependencies
            dir c:\
