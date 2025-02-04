@@ -1,7 +1,10 @@
 # Generate qt.props
 
-qtdir=r'D:\Qt\5.12.1\msvc2017_64'
-pythonroots={'PYTHONROOT':r'C:\Python36', 'PYTHONROOT37':r'C:\Python37', 'PYTHONROOT38':r'C:\Python38', 'PYTHONROOT39':r'C:\Python39', 'PYTHONROOT310':r'C:\Python310', 'PYTHONROOT311':r'C:\Python311', 'PYTHONROOT312':r'C:\Python312'}
+import sys
+
+qtdir=sys.argv[1]
+pythonsearchpath=sys.argv[2]
+pythonroots={'PYTHONROOT':pythonsearchpath+r'\Python36', 'PYTHONROOT37':pythonsearchpath+r'\Python37', 'PYTHONROOT38':pythonsearchpath+r'\Python38', 'PYTHONROOT39':pythonsearchpath+r'\Python39', 'PYTHONROOT310':pythonsearchpath+r'\Python310', 'PYTHONROOT311':pythonsearchpath+r'\Python311', 'PYTHONROOT312':pythonsearchpath+r'\Python312'}
 
 print('<?xml version="1.0" encoding="utf-8"?>')
 print('<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">')
