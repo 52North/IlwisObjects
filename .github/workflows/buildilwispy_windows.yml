@@ -13,15 +13,29 @@ jobs:
       run: |
            choco install -y git
            choco install -y visualstudio2022-workload-vctools
-           choco install -y python36 --params "/InstallDir:C:\Python36" --force
-           choco install -y python37 --params "/InstallDir:C:\Python37" --force
-           choco install -y python38 --params "/InstallDir:C:\Python38" --force
-           choco install -y python39 --params "/InstallDir:C:\Python39" --force
-           choco install -y python310 --params "/InstallDir:C:\Python310" --force
-           choco install -y python311 --params "/InstallDir:C:\Python311" --force
-           choco install -y python312 --params "/InstallDir:C:\Python312" --force
+           choco install -y python36
+           choco install -y python37
+           choco install -y python38
+           choco install -y python39
+           choco install -y python310
+           choco install -y python311
+           choco install -y python312
            choco install -y wget
            choco install -y unzip
+    - name: uninstall corrupt cached python versions 38 til 312
+      run: |
+           choco uninstall -y python38
+           choco uninstall -y python39
+           choco uninstall -y python310
+           choco uninstall -y python311
+           choco uninstall -y python312
+    - name: reinstall python versions 38 til 312
+      run: |
+           choco install -y python38
+           choco install -y python39
+           choco install -y python310
+           choco install -y python311
+           choco install -y python312
     - name: install python packages
       run: |
            c:\python36\python.exe -m pip install --upgrade pip
