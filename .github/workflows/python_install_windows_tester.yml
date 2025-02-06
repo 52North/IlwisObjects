@@ -17,7 +17,7 @@ jobs:
            cd /
            mkdir develop
            cd develop
-           "C:/Program Files/Git/bin/git.exe" clone https://github.com/52North/IlwisObjects.git
+           git clone https://github.com/52North/IlwisObjects.git
     - name: Setup tmate session
       if: success() || failure()
       uses: mxschmitt/action-tmate@v3
