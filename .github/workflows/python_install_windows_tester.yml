@@ -22,3 +22,6 @@ jobs:
            c:\python38\python.exe -m pip install wheel
            c:\python39\python.exe -m pip install --upgrade pip
            c:\python39\python.exe -m pip install wheel
+    - name: Setup tmate session
+      if: success() || failure()
+      uses: mxschmitt/action-tmate@v3
