@@ -13,6 +13,11 @@ jobs:
       run: |
            choco install -y git
            choco install -y visualstudio2022-workload-vctools
+           "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
+           cd /
+           mkdir develop
+           cd develop
+           "C:/Program Files/Git/bin/git.exe" clone https://github.com/52North/IlwisObjects.git
     - name: Setup tmate session
       if: success() || failure()
       uses: mxschmitt/action-tmate@v3
