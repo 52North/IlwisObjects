@@ -38,35 +38,35 @@ jobs:
            choco install -y python312
     - name: install python packages
       run: |
-           c:\python36\python.exe -m pip install --upgrade pip
-           c:\python36\python.exe -m pip install wheel
-           c:\python37\python.exe -m pip install --upgrade pip
-           c:\python37\python.exe -m pip install wheel
-           c:\python38\python.exe -m pip install --upgrade pip
-           c:\python38\python.exe -m pip install wheel
-           c:\python39\python.exe -m pip install --upgrade pip
-           c:\python39\python.exe -m pip install wheel
-           c:\python310\python.exe -m pip install --upgrade pip
-           c:\python310\python.exe -m pip install wheel
-           c:\python311\python.exe -m pip install --upgrade pip
-           c:\python311\python.exe -m pip install wheel
-           c:\python312\python.exe -m pip install --upgrade pip
-           c:\python312\python.exe -m pip install wheel
+           c:/python36/python.exe -m pip install --upgrade pip
+           c:/python36/python.exe -m pip install wheel
+           c:/python37/python.exe -m pip install --upgrade pip
+           c:/python37/python.exe -m pip install wheel
+           c:/python38/python.exe -m pip install --upgrade pip
+           c:/python38/python.exe -m pip install wheel
+           c:/python39/python.exe -m pip install --upgrade pip
+           c:/python39/python.exe -m pip install wheel
+           c:/python310/python.exe -m pip install --upgrade pip
+           c:/python310/python.exe -m pip install wheel
+           c:/python311/python.exe -m pip install --upgrade pip
+           c:/python311/python.exe -m pip install wheel
+           c:/python312/python.exe -m pip install --upgrade pip
+           c:/python312/python.exe -m pip install wheel
     - name: install Qt
       run: |
            wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/msvc2017_64.zip
-           mkdir C:\Qt\
-           mkdir C:\Qt\5.12.1\
-           move msvc2017_64.zip C:\Qt\5.12.1\
-           cd C:\Qt\5.12.1\
+           mkdir C:/Qt/
+           mkdir C:/Qt/5.12.1/
+           move msvc2017_64.zip C:/Qt/5.12.1/
+           cd C:/Qt/5.12.1/
            unzip msvc2017_64.zip
            del msvc2017_64.zip
     - name: fetch latest ilwis source code
       run: |
-           cd \
+           cd /
            mkdir develop
            cd develop
-           "c:\Program Files\git\bin\git.exe" clone https://github.com/52North/IlwisObjects.git
+           git clone https://github.com/52North/IlwisObjects.git
     - name: fetch external libraries
       run: |
            wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/external.zip
@@ -75,13 +75,13 @@ jobs:
     - name: fetch moc compiler
       run: |
            wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/qt-vsaddin-msvc2022-2.10.0.vsix
-           unzip qt-vsaddin-msvc2022-2.10.0.vsix QtMSBuild\*
+           unzip qt-vsaddin-msvc2022-2.10.0.vsix QtMSBuild/*
            del qt-vsaddin-msvc2022-2.10.0.vsix
     - name: configure environment
       run: |
-           "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+           "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
            cd IlwisObjects
-           c:\python36\python.exe generate.qt.props.py C:\Qt\5.12.1\msvc2017_64 C: > qt.props
+           c:/python36/python.exe generate.qt.props.py C:\Qt\5.12.1\msvc2017_64 C: > qt.props
            set QtMsBuild=C:\develop\QtMSBuild
     - name: build
       run: msbuild ilwisobjects_msvc1564.sln /p:configuration=release
