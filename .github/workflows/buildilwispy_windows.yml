@@ -39,19 +39,19 @@ jobs:
     - name: install python packages
       run: |
            c:/python36/python.exe -m pip install --upgrade pip
-           c:/python36/python.exe -m pip install wheel
+           c:/python36/python.exe -m pip install wheel setuptools
            c:/python37/python.exe -m pip install --upgrade pip
-           c:/python37/python.exe -m pip install wheel
+           c:/python37/python.exe -m pip install wheel setuptools
            c:/python38/python.exe -m pip install --upgrade pip
-           c:/python38/python.exe -m pip install wheel
+           c:/python38/python.exe -m pip install wheel setuptools
            c:/python39/python.exe -m pip install --upgrade pip
-           c:/python39/python.exe -m pip install wheel
+           c:/python39/python.exe -m pip install wheel setuptools
            c:/python310/python.exe -m pip install --upgrade pip
-           c:/python310/python.exe -m pip install wheel
+           c:/python310/python.exe -m pip install wheel setuptools
            c:/python311/python.exe -m pip install --upgrade pip
-           c:/python311/python.exe -m pip install wheel
+           c:/python311/python.exe -m pip install wheel setuptools
            c:/python312/python.exe -m pip install --upgrade pip
-           c:/python312/python.exe -m pip install wheel
+           c:/python312/python.exe -m pip install wheel setuptools
     - name: install Qt
       run: |
            wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/msvc2017_64.zip
@@ -86,5 +86,6 @@ jobs:
            D:
            cd D:/develop/IlwisObjects
            c:/python36/python.exe generate.qt.props.py D:\Qt\5.12.1\msvc2017_64 C: > qt.props
+           c:/python36/python.exe exclude_project_from_solution.py cl3.vcxproj ilwisobjects_msvc1564.sln > ilwisobjects_msvc1564_corrected.sln
            $env:QtMsBuild="D:/develop/QtMSBuild"
-           & "c:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/msbuild.exe" ilwisobjects_msvc1564.sln /p:configuration=release
+           & "c:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/msbuild.exe" ilwisobjects_msvc1564_corrected.sln /p:configuration=release
