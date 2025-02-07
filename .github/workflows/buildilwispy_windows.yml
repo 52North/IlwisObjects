@@ -83,9 +83,8 @@ jobs:
            del qt-vsaddin-msvc2022-2.10.0.vsix
     - name: configure environment and build
       run: |
-           "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
            D:
            cd D:/develop/IlwisObjects
            c:/python36/python.exe generate.qt.props.py D:\Qt\5.12.1\msvc2017_64 C: > qt.props
            set QtMsBuild=D:\develop\QtMSBuild
-           msbuild ilwisobjects_msvc1564.sln /p:configuration=release
+           "c:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/msbuild.exe" ilwisobjects_msvc1564.sln /p:configuration=release
