@@ -116,17 +116,17 @@
 
 xcopy  core\resources ..\output\release\bin\resources\* /S /Y /I
 xcopy ..\external\libraries\$(Configuration)\*.dll ..\output\release\bin\* /y/i 
-xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects  /y/i
+xcopy "$(TargetPath)" ..\output\release\ilwispy\ilwis\ilwisobjects\*  /y/i
 
 
 xcopy  core\resources ..\output\release\ilwispy\ilwis\ilwisobjects\resources\* /S /Y /I
 xcopy ..\external\libraries\$(Configuration)\*.dll ..\output\release\ilwispy\ilwis\ilwisobjects\* /y/i
-xcopy $(QTDIR)\bin\Qt5Concurrent.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y/i
-xcopy $(QTDIR)\bin\Qt5Core.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y/i
-xcopy $(QTDIR)\bin\Qt5Gui.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y/i
-xcopy $(QTDIR)\bin\Qt5Network.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y/i
-xcopy $(QTDIR)\bin\Qt5Sql.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y/i
-xcopy $(QTDIR)\bin\Qt5XmlPatterns.dll  ..\output\release\ilwispy\ilwis\ilwisobjects /y /i 
+xcopy $(QTDIR)\bin\Qt5Concurrent.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\* /y/i
+xcopy $(QTDIR)\bin\Qt5Core.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\* /y/i
+xcopy $(QTDIR)\bin\Qt5Gui.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\* /y/i
+xcopy $(QTDIR)\bin\Qt5Network.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\* /y/i
+xcopy $(QTDIR)\bin\Qt5Sql.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\* /y/i
+xcopy $(QTDIR)\bin\Qt5XmlPatterns.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\* /y /i 
 xcopy $(QTDIR)\plugins\sqldrivers\qsqlite.dll  ..\output\release\ilwispy\ilwis\ilwisobjects\plugins\sqldrivers\* /y/i</Command>
       <Message>
       </Message>
