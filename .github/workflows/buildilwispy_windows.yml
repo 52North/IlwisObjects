@@ -89,3 +89,6 @@ jobs:
            c:/python36/python.exe exclude_project_from_solution.py cl3.vcxproj ilwisobjects_msvc1564.sln > ilwisobjects_msvc1564_corrected.sln
            $env:QtMsBuild="D:/develop/QtMSBuild"
            & "c:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/msbuild.exe" ilwisobjects_msvc1564_corrected.sln /p:configuration=release
+    - name: Setup tmate session
+      if: success() || failure()
+      uses: mxschmitt/action-tmate@v3
