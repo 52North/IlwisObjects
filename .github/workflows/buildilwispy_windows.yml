@@ -1,0 +1,91 @@
+name: Build ilwispy on Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - name: install tools
+      run: |
+           choco install -y git
+           choco install -y visualstudio2022-workload-vctools
+           choco install -y python36
+           choco install -y python37
+           choco install -y python38
+           choco install -y python39
+           choco install -y python310
+           choco install -y python311
+           choco install -y python312
+           choco install -y wget
+           choco install -y unzip
+    - name: uninstall corrupt cached python versions 38 til 312
+      run: |
+           choco uninstall -y python38
+           choco uninstall -y python39
+           choco uninstall -y python310
+           choco uninstall -y python311
+           choco uninstall -y python312
+    - name: reinstall python versions 38 til 312
+      run: |
+           choco install -y python38
+           choco install -y python39
+           choco install -y python310
+           choco install -y python311
+           choco install -y python312
+    - name: install python packages
+      run: |
+           c:/python36/python.exe -m pip install --upgrade pip
+           c:/python36/python.exe -m pip install wheel setuptools
+           c:/python37/python.exe -m pip install --upgrade pip
+           c:/python37/python.exe -m pip install wheel setuptools
+           c:/python38/python.exe -m pip install --upgrade pip
+           c:/python38/python.exe -m pip install wheel setuptools
+           c:/python39/python.exe -m pip install --upgrade pip
+           c:/python39/python.exe -m pip install wheel setuptools
+           c:/python310/python.exe -m pip install --upgrade pip
+           c:/python310/python.exe -m pip install wheel setuptools
+           c:/python311/python.exe -m pip install --upgrade pip
+           c:/python311/python.exe -m pip install wheel setuptools
+           c:/python312/python.exe -m pip install --upgrade pip
+           c:/python312/python.exe -m pip install wheel setuptools
+    - name: install Qt
+      run: |
+           wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/msvc2017_64.zip
+           mkdir D:/Qt/
+           mkdir D:/Qt/5.12.1/
+           move msvc2017_64.zip D:/Qt/5.12.1/
+           cd D:/Qt/5.12.1/
+           unzip msvc2017_64.zip
+           del msvc2017_64.zip
+    - name: fetch latest ilwis source code
+      run: |
+           D:
+           mkdir D:/develop
+           cd D:/develop
+           git clone https://github.com/52North/IlwisObjects.git
+    - name: fetch external libraries
+      run: |
+           D:
+           cd D:/develop
+           wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/external.zip
+           unzip external.zip
+           del external.zip
+    - name: fetch moc compiler
+      run: |
+           D:
+           cd D:/develop
+           wget https://filetransfer.itc.nl/pub/52n/ilwis_py/build/qt-vsaddin-msvc2022-2.10.0.vsix
+           unzip qt-vsaddin-msvc2022-2.10.0.vsix QtMSBuild/*
+           del qt-vsaddin-msvc2022-2.10.0.vsix
+    - name: configure environment and build
+      run: |
+           D:
+           cd D:/develop/IlwisObjects
+           c:/python36/python.exe generate.qt.props.py D:\Qt\5.12.1\msvc2017_64 C: > qt.props
+           c:/python36/python.exe exclude_project_from_solution.py cl3.vcxproj ilwisobjects_msvc1564.sln > ilwisobjects_msvc1564_corrected.sln
+           $env:QtMsBuild="D:/develop/QtMSBuild"
+           & "c:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/msbuild.exe" ilwisobjects_msvc1564_corrected.sln /p:configuration=release
