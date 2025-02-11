@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_NO_DEBUG;QT_GUI_LIB;QT_SQL_LIB;QT_NETWORK_LIB;QT_CONCURRENT_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy /s ..\output\release\ilwispy\ilwis\ilwisobjects\ ..\output\release\ilwispy37\ilwis\ilwisobjects\ /y
+      <Command>xcopy /s ..\output\release\ilwispy\ilwis\ilwisobjects ..\output\release\ilwispy37\ilwis\ilwisobjects /y /i
 
 xcopy "$(TargetPath)" ..\output\release\ilwispy37\ilwis\* /y
 xcopy $(MSBuildProjectDirectory)\pythonapi\README ..\output\release\ilwispy37\ilwis\* /y
