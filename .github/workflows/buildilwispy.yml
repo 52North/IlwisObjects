@@ -6,10 +6,17 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v4
+    - name: install python
+      uses: actions/setup-python@v5
+      with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.11'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
     - name: install dependencies
       run: |
            sudo apt-get install build-essential
@@ -17,6 +24,7 @@ jobs:
            sudo apt-get install qtbase5-dev
            sudo apt-get install python3-dev
            sudo apt-get install libquazip5-dev
+           sudo apt-get install libboost-dev
            sudo apt-get install libgdal-dev
            sudo apt-get install libgsl-dev
            sudo apt-get install libeigen3-dev
@@ -24,7 +32,7 @@ jobs:
            sudo apt-get install swig3.0
     - name: patch
       run: |
-           sed -i 's/PYMINORVERSION=8/PYMINORVERSION=10/g' pythonapi.pro
+           python3 patch_pythonapi_linux.py
            ln -s /usr/include/quazip5/ ilwis4connector/quazip
     - name: configure
       run: |
