@@ -30,6 +30,10 @@ jobs:
            sudo apt-get install libeigen3-dev
            sudo apt-get install libnetcdf-c++4-dev
            sudo apt-get install swig3.0
+    - name: install python packages
+      run: |
+           python3 -m pip install --upgrade pip
+           python3 -m pip install wheel setuptools
     - name: patch
       run: |
            python3 patch_pythonapi_linux.py
