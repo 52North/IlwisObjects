@@ -64,7 +64,8 @@ setup = setuptools.setup(
     classifiers=[
 		'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3 :: Only',
-        'Operating System :: Windows',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX :: Linux',
     ],
     python_requires='>=3.6',
 	package_data={'': extra_files},
