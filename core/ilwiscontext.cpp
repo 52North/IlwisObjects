@@ -80,6 +80,53 @@ QFileInfo IlwisContext::ilwisFolder() const {
     return this->_ilwisDir;
 }
 
+QString IlwisContext::setCacheLocation(const QString loc){
+    QString locat = loc;
+    if ( loc == "" || loc == sUNDEF){
+        QString location = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/cache-location",QString(sUNDEF));
+        if ( location == sUNDEF){
+            QDir localDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+            locat = localDir.absolutePath();
+        }else
+            locat = location;
+    }
+    _cacheLocation = QUrl::fromLocalFile(locat);
+    QDir cacheDir(locat);
+
+    if (!cacheDir.exists()){
+        cacheDir.mkpath(loc);
+    }
+    QStringList files = cacheDir.entryList(QStringList() << "gridblock*.*" << "osm*.png", QDir::Files);
+    for(QString file : files)
+        cacheDir.remove(file);
+
+    return locat;
+}
+QString Ilwis::IlwisContext::setInternalCatalog(const QString& loc)
+{
+    QString datalocation = loc;
+    if ( loc == "" || loc == sUNDEF){
+
+        datalocation = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/internalcatalog-location",QString(sUNDEF));
+        if ( datalocation == sUNDEF){
+            datalocation = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/internalcatalog";
+        }else
+            datalocation = QUrl(datalocation).toLocalFile();
+        datalocation = OSHelper::neutralizeFileName(datalocation);
+    }
+
+    QDir localDir(datalocation);
+
+    if (!localDir.exists()){
+        localDir.mkpath(datalocation);
+    }
+    _persistentInternalCatalog = QUrl::fromLocalFile(datalocation);
+    auto files = localDir.entryList(QStringList() << "*", QDir::Files);
+    for(QString file : files)
+        localDir.remove(file);
+    return datalocation;
+}
+
 void IlwisContext::init(const QString &ilwisDir)
 {
     if (ilwisDir.length() > 0) {
@@ -106,40 +153,8 @@ void IlwisContext::init(const QString &ilwisDir)
  
     _configuration.prepare(file.absoluteFilePath());
 
-    QString location = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/cache-location",QString(sUNDEF));
-    if ( location == sUNDEF){
-        QDir localDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-        _cacheLocation = QUrl::fromLocalFile(localDir.absolutePath());
-    }else
-        _cacheLocation = QUrl(location);
-
-    QDir cacheDir(_cacheLocation.toLocalFile());
-
-    if (!cacheDir.exists()){
-        cacheDir.mkpath(location);
-    }
-    QStringList files = cacheDir.entryList(QStringList() << "gridblock*.*" << "osm*.png", QDir::Files);
-    for(QString file : files)
-        cacheDir.remove(file);
-
-    QString datalocation = ilwisconfig("users/" + Ilwis::context()->currentUser() + "/internalcatalog-location",QString(sUNDEF));
-    if ( datalocation == sUNDEF){
-        datalocation = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/internalcatalog";
-    }else
-        datalocation = QUrl(datalocation).toLocalFile();
-    datalocation = OSHelper::neutralizeFileName(datalocation);
-
-    QDir localDir(datalocation);
-
-    if (!localDir.exists()){
-        localDir.mkpath(datalocation);
-    }
-    _persistentInternalCatalog = QUrl::fromLocalFile(datalocation);
-    files = localDir.entryList(QStringList() << "*", QDir::Files);
-    for(QString file : files)
-        localDir.remove(file);
-
-
+    setCacheLocation();
+    setInternalCatalog();
 
     mastercatalog()->addContainer(INTERNAL_CATALOG_URL);
     Resource res = mastercatalog()->name2Resource(INTERNAL_CATALOG_URL.toString(),itCATALOG);
@@ -159,21 +174,6 @@ void IlwisContext::init(const QString &ilwisDir)
     mastercatalog()->addContainer(QUrl("ilwis://system/coverages"));
     mastercatalog()->addContainer(QUrl("ilwis://system/scripts"));
 	mastercatalog()->addContainer(QUrl("ilwis://system/tables"));
-
-  /*  loc = _configuration("users/" + currentUser() + "/workingcatalog",QString(""));
-    if ( loc == ""){
-        loc = OSHelper::neutralizeFileName(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) +  + "/ilwisdata");
-        QDir datadir(loc);
-        datadir.mkpath(loc);
-        loc = QUrl::fromLocalFile(loc).toString();
-
-    }
-    if ( loc != ""){
-        setWorkingCatalog(ICatalog(loc));
-        if ( hasType(_runMode, rmCOMMANDLINE)){
-            mastercatalog()->addContainer(loc);
-        }
-    }*/
 
     if (!hasType(_runMode, rmDESKTOP)){
         initializationFinished(true);
@@ -209,7 +209,7 @@ void IlwisContext::setWorkingCatalog(const ICatalog &cat)
     var->setValue(cat);
     kernel()->setTLS("workingcatalog", var);
     context()->configurationRef().putValue("users/" + currentUser() + "/workingcatalog",cat->resource().url().toString());
-    QFileInfo inf(cat->resource().url().toLocalFile());
+    //QFileInfo inf(cat->resource().url().toLocalFile());
 }
 
 QUrl IlwisContext::cacheLocation() const
