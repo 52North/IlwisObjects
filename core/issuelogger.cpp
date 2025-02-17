@@ -143,16 +143,28 @@ QString IssueObject::type2String() const{
 //---------------------------------------------------------------------------
 IssueLogger::IssueLogger(QObject *parent) : QObject(parent), _repeatCount(0)
 {
-    QString apploc= QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    initLogger();
+}
+
+void Ilwis::IssueLogger::initLogger(const QString& location)
+{
+    QString apploc = location;
+    if ( apploc == sUNDEF)
+        apploc= QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     apploc += "/log";
     QDir dir(apploc);
     if ( !dir.exists())
         dir.mkpath(apploc);
     QString rlogFilePath = apploc + "/logfile.txt";
     QString clogFilePath = apploc + "/logfile_ext.txt";
+    if (_logFileRegular.is_open()){
+        _logFileCode.close();
+        _logFileRegular.close();
+    }
     _logFileRegular.open(rlogFilePath.toLatin1());
     _logFileCode.open(clogFilePath.toLatin1());
 }
+
 
 IssueLogger::~IssueLogger()
 {

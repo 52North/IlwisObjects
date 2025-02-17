@@ -106,6 +106,8 @@ public:
     void silent(bool yesno);
     QString lastIssue();
 
+    void initLogger(const QString &location = "?");
+    
 signals:
     void updateIssues(const IssueObject& issue);
 
