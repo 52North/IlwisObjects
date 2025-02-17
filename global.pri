@@ -39,6 +39,7 @@ linux{
     QMAKE_CXXFLAGS += -Wno-sign-compare
     QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
+    QMAKE_CXXFLAGS += -Wdeprecated-copy
     PREFIX_COMPILER=gccx64_
     CORELIBPATH =gccx64_ilwiscore
     LIB_EXTENSION = so.1.0.0
