@@ -60,6 +60,8 @@ public:
     void runMode(int mode);
     bool initializationFinished() const;
     void initializationFinished(bool yesno);
+    QString setCacheLocation(const QString loc="");
+    QString setInternalCatalog(const QString &loc="");
 
 private:
     void init(const QString & ilwisDir);
