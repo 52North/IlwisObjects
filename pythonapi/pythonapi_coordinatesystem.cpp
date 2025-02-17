@@ -55,6 +55,11 @@ std::string CoordinateSystem::toWKT() const{
     return ilwStr.toStdString();
 }
 
+std::string CoordinateSystem::toEpsg() const{
+    QString ilwStr = this->ptr()->as<Ilwis::CoordinateSystem>()->toEpsg();
+    return ilwStr.toStdString();
+}
+
 std::string CoordinateSystem::toProj4() const{
     if(const_cast<CoordinateSystem*>(this)->type() == "ConventionalCoordinateSystem"){
         QString ilwStr = this->ptr()->as<Ilwis::ConventionalCoordinateSystem>()->toProj4();

@@ -32,6 +32,7 @@ namespace pythonapi {
 
         std::string toWKT() const;
         std::string toProj4() const;
+        std::string toEpsg() const;
         pythonapi::Envelope convertEnvelope(const CoordinateSystem& pyCsy, const pythonapi::Envelope& pyEnv);
 
         pythonapi::Coordinate coord2coord(const CoordinateSystem& pyCsy, const pythonapi::Coordinate& pyCoord);
