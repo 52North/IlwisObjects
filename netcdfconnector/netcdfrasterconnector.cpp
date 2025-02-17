@@ -54,14 +54,17 @@ IlwisObject *NetCdfRasterConnector::create() const {
 
 bool NetCdfRasterConnector::loadMetaData(IlwisObject *obj, const IOOptions &)
 {
-    QString csyCode = obj->resourceRef()["coordinatesystem"].toString();
+    auto url = obj->resource().url();
+    auto items = NetCdfCatalogExplorer::createResources(url);
+    const Resource& res = items[0];
+    QString csyCode = res["coordinatesystem"].toString();
     ICoordinateSystem csy;
     if (!csy.prepare(csyCode))
         return false;
     RasterCoverage *raster = static_cast<RasterCoverage *>(obj);
     raster->coordinateSystem(csy);
 
-    Resource& res = obj->resourceRef();
+
     Size<> sz(res.dimensions());
 
     IGeoReference grf;
@@ -70,20 +73,40 @@ bool NetCdfRasterConnector::loadMetaData(IlwisObject *obj, const IOOptions &)
         return false;
     raster->georeference(grf);
     raster->size(sz);
-    std::vector<double> bands(sz.zsize()-1);
-    for(int z=1 ; z <= bands.size(); ++z)
+    std::vector<double> bands(sz.zsize());
+    for(unsigned int z=0 ; z < bands.size(); ++z)
         bands[z] = z;
+    QString dom = res["domain"].toString();
     raster->setDataDefintions({ "code=domain:value" }, bands);
 
+    auto keys = res["dimension vars"].toString();
+    _dimVars = keys.split("|");
+
+
     return true;
+}
+QString getAttrValue(const netCDF::NcVar& v, const QString& label) {
+    try{
+        auto att2 = v.getAtt(label.toStdString());
+        std::string s;
+        att2.getValues(s);
+        return QString::fromStdString(s)    ;
+
+    } catch(const std::exception& ex){
+        return sUNDEF;
+    }
+    return sUNDEF;
+
+
+
 }
 
 template<class T> void NetCdfRasterConnector::getValues(const std::vector<size_t>& index, const std::vector<size_t>& count, int maxX, int maxY,  bool xy, netCDF::NcVar& var,std::vector<T>&data, std::vector<double>& values){
     try
     {
     var.getVar(index,count, data.data());
-    double undef;
-    var.getAtt("_FillValue").getValues(&undef);
+    QString s = getAttrValue(var, "_FillValue");
+    double undef = s == sUNDEF ? rUNDEF : s.toDouble();
 
     for(int y =0; y < maxY; ++y){
         for(int x = 0; x < maxX; ++x){
@@ -149,14 +172,17 @@ bool NetCdfRasterConnector::loadData(IlwisObject* obj, const IOOptions& options)
 
     if (!_binaryIsLoaded) {
         const Resource& res = obj->resourceRef();
-        res.container().toLocalFile();
-        netCDF::NcFile file(res.container().toLocalFile().toStdString(), netCDF::NcFile::read);
+        auto filename = res.url().toLocalFile();
+        netCDF::NcFile file(filename.toStdString(), netCDF::NcFile::read);
         std::multimap<std::string,netCDF::NcVar> vars = file.getVars();
-        std::multimap<std::string,netCDF::NcVar>::const_iterator iter = vars.find(res.name().toStdString());
+        auto name = res["used var"].toString();
+        std::multimap<std::string,netCDF::NcVar>::const_iterator iter = vars.find(name.toStdString());
 
         if ( iter == vars.end())
             return false;
         netCDF::NcVar var = iter->second;
+
+
 
         //double undef = res["undefined_value"].toDouble();
         RasterCoverage *raster = static_cast<RasterCoverage *>(obj);

@@ -26,11 +26,16 @@ namespace Ilwis {
     class CoordinateSystem;
     typedef IlwisData<CoordinateSystem> ICoordinateSystem;
     class GeoReference;
+
     typedef IlwisData<GeoReference> IGeoReference;
 
     namespace NetCdf {
+
         class NetCdfCatalogExplorer : public CatalogExplorer
+
         {
+        friend class NetCdfRasterConnector;
+
         public:
             NetCdfCatalogExplorer(const Ilwis::Resource &resource, const IOOptions& options = IOOptions());
 
@@ -57,14 +62,14 @@ namespace Ilwis {
 
             NEW_CATALOGEXPLORER(NetCdfCatalogExplorer);
             IlwisObject *createType(IlwisTypes tp);
-            std::vector<Resource> createResources(const QUrl &url) const;
-            std::map<QString, QVariant> getGlobals(const std::multimap<std::string, netCDF::NcGroupAtt> &attributes) const;
-            void setMetaData(const std::map<QString, QVariant> &globals, Resource &res) const;
-            std::map<QString, std::pair<unsigned int, QString> > getDimensions(const std::multimap<std::string, netCDF::NcVar> &vars, const netCDF::NcVar &var) const;
-            ICoordinateSystem getCoordSystem(const std::multimap<std::string, netCDF::NcVar> &vars, const std::pair<std::string, netCDF::NcVar> &var) const;
-            Ilwis::IGeoReference getGrfs(const QString &path, const Size<> sz, const ICoordinateSystem &csy, std::vector<Ilwis::IGeoReference> &grfs) const;
-            void setRasterGeometryinResource(const Ilwis::ICoordinateSystem &csy, const Ilwis::IGeoReference &grf, const Size<> &sz, Ilwis::Resource &res) const;
-            QString getProjection(const std::string &gridMapName) const;
+            static std::vector<Resource> createResources(const QUrl &url) ;
+            static std::map<QString, QVariant> getGlobals(const std::multimap<std::string, netCDF::NcGroupAtt> &attributes) ;
+            static void setMetaData(const std::map<QString, QVariant> &globals, Resource &res);
+            static std::map<QString, std::pair<unsigned int, QString> > getDimensions(const std::multimap<std::string, netCDF::NcVar> &vars, const netCDF::NcVar &var) ;
+            static ICoordinateSystem getCoordSystem(const std::multimap<std::string, netCDF::NcVar> &vars, const std::pair<std::string, netCDF::NcVar> &var) ;
+            static Ilwis::IGeoReference getGrfs(const QString &path, const Size<> sz, const ICoordinateSystem &csy, std::vector<Ilwis::IGeoReference> &grfs) ;
+            static void setRasterGeometryinResource(const Ilwis::ICoordinateSystem &csy, const Ilwis::IGeoReference &grf, const Size<> &sz, Ilwis::Resource &res) ;
+            static QString getProjection(const std::string &gridMapName) ;
         };
     }
 }

@@ -38,6 +38,7 @@ namespace Ilwis {
         private:
             quint32 _version;
             IRasterCoverage _dataRaster;
+            QList<QString> _dimVars;
 
             void getValue(const std::vector<size_t> &index, const std::vector<size_t> &count, int maxX, int maxY, bool xy, netCDF::NcVar &var, std::vector<double> &values);
             template<class T>
