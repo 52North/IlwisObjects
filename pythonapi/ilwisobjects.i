@@ -492,6 +492,11 @@ def __getitem__(self, name):
 %}
 
 %pythoncode %{
+    def setContextProperty(propertyName,path):
+        return Engine__setContextProperty(propertyName,path)
+%}
+
+%pythoncode %{
 def operations(query=""):
     return Engine__operations(query)
 %}
@@ -504,4 +509,13 @@ def operationMetaData(name, element1 = "syntax", ordinal=-1, element2=""):
 %pythoncode %{
    def showProgress(yesno):
        return Engine__showProgress(yesno)
+%}
+
+%pythoncode %{
+        def removeObject(objid):
+            return Engine__removeObject(objid)
+%}
+%pythoncode %{
+    def contextProperty(propertyName):
+        return Engine__contextProperty(propertyName)
 %}
