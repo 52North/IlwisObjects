@@ -245,6 +245,16 @@ QString Projection::toProj4() const
     return _implementation->toProj4();
 }
 
+QString Projection::toEpsg() const{
+    if ( _implementation.isNull()) {
+        ERROR1(ERR_NO_INITIALIZED_1, name());
+        return sUNDEF;
+    }
+    QString prj4 = _implementation->toProj4();
+    auto pdef = Proj4Parameters::lookupDefintion(prj4);
+    return sUNDEF;
+}
+
 IlwisTypes Projection::ilwisType() const
 {
     return itPROJECTION;

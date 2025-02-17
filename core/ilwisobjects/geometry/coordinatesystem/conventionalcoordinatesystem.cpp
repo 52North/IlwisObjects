@@ -14,6 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
+
 #include "kernel.h"
 #include "geometries.h"
 #include "ilwisdata.h"
@@ -135,6 +136,8 @@ bool ConventionalCoordinateSystem::canConvertToCoordinate() const
     return false;
 }
 
+
+
 QString ConventionalCoordinateSystem::toWKT(quint32 spaces) const
 {
     QString wkt = "PROJCS[\"" + name() + "\"" + ",";
@@ -178,6 +181,13 @@ QString ConventionalCoordinateSystem::toProj4() const
         return this->projection()->toProj4();
     else
         return QString("?");
+}
+
+QString ConventionalCoordinateSystem::toEpsg() const
+{
+    if ( this->projection().isValid())
+        return this->projection()->toEpsg();
+    return sUNDEF;
 }
 
 QString ConventionalCoordinateSystem::unit() const

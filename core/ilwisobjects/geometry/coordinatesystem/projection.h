@@ -51,6 +51,7 @@ public:
     QString wkt() const;
     void setWkt(const QString &wkt);
     QString toProj4() const;
+    QString toEpsg() const;
 
     IlwisTypes ilwisType() const;
     QString toWKT(quint32 spaces=0);

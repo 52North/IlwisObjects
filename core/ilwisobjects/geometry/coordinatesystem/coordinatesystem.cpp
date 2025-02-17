@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 #include <QString>
+#include <regex>
 
 #include "kernel.h"
 #include "geometries.h"
@@ -22,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 //#include "domain.h"
 #include "coordinatesystem.h"
 #include "projection.h"
+#include "ellipsoid.h"
 #include "conventionalcoordinatesystem.h"
 
 using namespace Ilwis;
@@ -145,5 +147,100 @@ bool CoordinateSystem::addCsyProperty(const ICoordinateSystem& csy, Resource& re
 	return false;
 }
 
+void setProjectionParameter(IProjection& proj, Projection::ProjectionParamValue pvType, const std::string& wkt, const std::regex& regex ){
+    std::smatch matches;
+    auto value = std::regex_search(wkt, matches, regex) ? QString::fromStdString(matches[1]) : sUNDEF;
+    if ( value != sUNDEF){
+        proj->setParameter(pvType, value.toDouble());
+    }
+}
 
+ICoordinateSystem CoordinateSystem::fromWKT(const QString& wkt){
+    std::regex projcsRegex(R"(PROJCS\[\s*\"([^\"]+)\"\s*,)");
+    std::regex geocsRegex(R"(GEOGCS\[\s*\"([^\"]+)\"\s*,)");
+    std::regex spheroidRegex(R"(SPHEROID\[\s*\"([^\"]+)\"\s*,\s*([\d\.]+)\s*,\s*([\d\.]+))");
+    std::regex projectionRegex(R"(PROJECTION\[\s*\"([^\"]+)\"\s*\])");
+    std::regex centralMeridianRegex(R"(PARAMETER\[\s*\"central_meridian\"\s*,\s*([\d\.\-]+))");
+    std::regex scaleFactorRegex(R"(PARAMETER\[\s*\"scale_factor\"\s*,\s*([\d\.\-]+))");
+    std::regex falseEastingRegex(R"(PARAMETER\[\s*\"false_easting\"\s*,\s*([\d\.\-]+))");
+    std::regex falseNorthingRegex(R"(PARAMETER\[\s*\"false_northing\"\s*,\s*([\d\.\-]+))");
+    std::regex latitude_of_originRegex(R"(PARAMETER\[\s*\"latitude_of_origin\"\s*,\s*([\d\.\-]+))");
+    std::regex standardPar1(R"(PARAMETER\[\s*\"standard_parallel_1 \"\s*,\s*([\d\.\-]+))");
+    std::regex standardPar2(R"(PARAMETER\[\s*\"standard_parallel_2 \"\s*,\s*([\d\.\-]+))");
+    std::regex azimuth(R"(PARAMETER\[\s*\"azimuth \"\s*,\s*([\d\.\-]+))");
+    std::smatch matches;
 
+    InternalDatabaseConnection db;
+    auto swkt = wkt.toStdString();
+    if (std::regex_search(swkt, matches, projcsRegex)) {
+        QString name = QString::fromStdString(matches[1]);
+
+        QString query(QString("select proj_params from projectedcsy where name='%1'").arg(name));
+        if ( db.exec(query)) {
+            if (db.next()) {
+                QSqlRecord rec = db.record();
+                auto projParms = rec.value("proj_params").toString();
+                ICoordinateSystem csy("proj4=" + projParms);
+                if ( csy.isValid())
+                    return csy;
+            }
+        }
+    }else{
+            if (std::regex_search(swkt, matches, geocsRegex)) {
+                auto wkt_name = QString::fromStdString(matches[1]);
+                if ( wkt_name == "WGS 84"){
+                    ICoordinateSystem csy("code=epsg:4326");
+                    return csy;
+                }
+            }
+            IEllipsoid ell;
+            if (std::regex_search(swkt, matches, spheroidRegex)) {
+                QString name = QString::fromStdString(matches[1]);
+                QString query(QString("select code from ellipsoid where wkt='%1' COLLATE NOCASE").arg(name));
+                if ( db.exec(query)) {
+                    if (db.next()) {
+                        QSqlRecord rec = db.record();
+                        auto code = rec.value("code").toString();
+                        ell.prepare("code=" + code);
+                    }
+                }
+                if (! ell.isValid()){
+                    QString sma = QString::fromStdString(matches[2]);
+                    QString rflat = QString::fromStdString(matches[3]);
+                    ell.prepare();
+                    ell->setEllipsoid(sma.toDouble(),rflat.toDouble());
+                }
+            }
+
+            IProjection proj;
+            if (std::regex_search(swkt, matches, projcsRegex)) {
+                auto wkt_name = QString::fromStdString(matches[1]);
+                QString query(QString("select code from projection where wkt='%1' COLLATE NOCASE").arg(wkt_name));
+                if ( db.exec(query)) {
+                    if (db.next()) {
+                        QSqlRecord rec = db.record();
+                        IProjection prj;
+                        proj.prepare("code=" + rec.value("code").toString());
+                        // TODO: this probably has to be extended with the rest of the parameters but for the moment we assume that first query works
+                    }
+                }
+                setProjectionParameter(proj, Projection::pvCENTRALMERIDIAN, wkt.toStdString(), centralMeridianRegex);
+                setProjectionParameter(proj, Projection::pvSCALE, wkt.toStdString(), scaleFactorRegex);
+                setProjectionParameter(proj, Projection::pvFALSEEASTING, wkt.toStdString(), falseEastingRegex);
+                setProjectionParameter(proj, Projection::pvFALSENORTHING, wkt.toStdString(), falseNorthingRegex);
+                setProjectionParameter(proj, Projection::pvLATITUDEOFTRUESCALE, wkt.toStdString(), latitude_of_originRegex);
+                setProjectionParameter(proj, Projection::pvSTANDARDPARALLEL1, wkt.toStdString(), standardPar1);
+                setProjectionParameter(proj, Projection::pvSTANDARDPARALLEL2, wkt.toStdString(), standardPar2);
+                setProjectionParameter(proj, Projection::pvAZIMYAXIS, wkt.toStdString(), azimuth);
+            }
+            if ( ell.isValid() && proj.isValid()){
+                IConventionalCoordinateSystem csy;
+                csy.prepare();
+                csy->setEllipsoid(ell);
+                csy->setProjection(proj);
+                return csy;
+            }
+    }
+
+    return ICoordinateSystem();
+}

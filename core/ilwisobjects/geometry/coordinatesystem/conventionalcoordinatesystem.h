@@ -59,6 +59,7 @@ public:
     bool canConvertToCoordinate() const;
     QString toWKT(quint32 spaces=0) const;
     QString toProj4() const;
+    QString toEpsg() const;
     QString unit() const;
     void unit(const QString &unit);
     bool isCompatibleWith(const IlwisObject *obj, bool strict=false) const;
