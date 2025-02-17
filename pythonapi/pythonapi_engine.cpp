@@ -424,3 +424,42 @@ void Engine::_showProgress(bool show) {
     else
         Ilwis::context()->runMode(Ilwis::rmCOMMANDLINE | Ilwis::rmNOUI);
 }
+
+void Engine::_removeObject(quint64 id) {
+    Ilwis::Resource res = Ilwis::mastercatalog()->id2Resource(id);
+    if ( res.isValid())
+        Ilwis::mastercatalog()->removeItems({res});
+}
+
+std::string Engine::_contextProperty(const std::string& propName){
+    QString pn = QString::fromStdString(propName);
+    pn = pn.toLower();
+    QString result = sUNDEF;
+    if ( propName == "cachelocation"){
+        result = Ilwis::context()->cacheLocation().toLocalFile();
+    }else if (propName == "ilwisfolder"){
+        result = Ilwis::context()->ilwisFolder().filePath();
+    }else if ( propName == "workingcatalog"){
+       Ilwis::ICatalog cat = Ilwis::context()->workingCatalog();
+       QUrl location = cat->filesystemLocation();
+       result = location.toString();
+    }else if ( propName == "systemcatalog"){
+        const Ilwis::ICatalog cat = Ilwis::context()->systemCatalog();
+        QUrl location = cat->filesystemLocation();
+        result = location.toString();
+     }
+    return result.toStdString();
+}
+
+void Engine::_setContextProperty(const std::string& propName, const std::string& value){
+    QString pn = QString::fromStdString(propName);
+    pn = pn.toLower();
+    QString result = sUNDEF;
+    if ( propName == "cachelocation"){
+        Ilwis::context()->setCacheLocation(QString::fromStdString(value));
+    }else if (propName == "internalcatalog"){
+        Ilwis::context()->setInternalCatalog(QString::fromStdString(value));
+    } else if ( propName == "initlogger"){
+        Ilwis::kernel()->issues()->initLogger(QString::fromStdString(value));
+    }
+}

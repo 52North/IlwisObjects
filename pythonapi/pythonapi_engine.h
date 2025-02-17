@@ -22,6 +22,9 @@ namespace pythonapi {
         static std::string _version();
         static PyObject* _operations(const std::string& q="");
         static void _showProgress(bool show);
+        static void _removeObject(quint64 objectid);
+        static std::string _contextProperty(const std::string& propName);
+        static void _setContextProperty(const std::string& propName, const std::string& value);
     private:
         static std::string addQuotesIfNeeded(std::string parameter);
     };
