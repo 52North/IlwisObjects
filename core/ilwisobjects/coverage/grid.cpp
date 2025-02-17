@@ -77,7 +77,10 @@ bool GridBlockInternal::save2Cache() {
     Locker<> lock(_mutex);
     quint64 bytesNeeded = _data.size() * sizeof(PIXVALUETYPE);
     _seekPosition = _id * _parentGrid->_blockSizes[0] * sizeof(PIXVALUETYPE);
-    _parentGrid->save2cache(0, _seekPosition, (char *)&_data[0], bytesNeeded);
+    if (!_parentGrid->save2cache(0, _seekPosition, (char *)&_data[0], bytesNeeded)){
+        QString f = _parentGrid->_cache[0]._cacheFile->fileName();
+        return ERROR1(ERR_COULD_NOT_OPEN_WRITING_1,QString("cache file ") + f);
+    }
     _inMemory = false;
     _data = std::vector<PIXVALUETYPE>();
     _dataLoadedFromSource = true; // apparently we have loaded the data from source and no longer need the source
@@ -137,8 +140,10 @@ bool GridBlockInternal::loadFromCache() {
         return true; // totaly new block; never been swapped so no load needed
     }
     quint64 bytesNeeded = _data.size() * sizeof(PIXVALUETYPE);
-    if (!_parentGrid->loadFromCache(0, _seekPosition, (char *)&_data[0], bytesNeeded))
-        return ERROR1(ERR_COULD_NOT_OPEN_READING_1,QString("cache file"));
+    if (!_parentGrid->loadFromCache(0, _seekPosition, (char *)&_data[0], bytesNeeded)){
+        QString f = _parentGrid->_cache[0]._cacheFile->fileName();
+        return ERROR1(ERR_COULD_NOT_OPEN_READING_1,QString("cache file ") + f);
+    }
 
     return true;
 }
