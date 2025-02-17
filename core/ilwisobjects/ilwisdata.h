@@ -175,6 +175,8 @@ public:
         res.name(name);
         res.setUrl(url);
         QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/internalcatalog/" + name;
+        if ( path.indexOf(":////") != -1) // got this in docker container, dont know why
+            path.replace("////", "///");
         res.setUrl(QUrl::fromLocalFile(path), true);
 		res.createTime(Time::now());
         return prepare(res);
