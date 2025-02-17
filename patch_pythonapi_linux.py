@@ -39,7 +39,7 @@ if retcode != 0:
     f = open('pythonapi.pro', 'w')
     while i < len(lines):
         line = lines[i]
-        if line.strip() == 'PYMINORVERSION=8':
+        if line.strip() == 'PYMINORVERSION=10':
             f.write(line + '\n')
             i = i + 1
             line = lines[i]
