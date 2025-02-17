@@ -244,7 +244,7 @@ void PublicDatabase::loadAdjustments() {
 		stream.setVersion(vers);
 		QString v;
 		stream >> v;
-		InternalDatabaseConnection db;
+        InternalDatabaseConnection db;
 		while (!stream.atEnd()) {
 			QString property, value, ilwisType, objUrl;
 			int ism;
